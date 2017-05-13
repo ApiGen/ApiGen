@@ -43,20 +43,20 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
 
     private function generateForAnnotation(string $annotation): void
     {
-        $elements = $this->annotationStorage->findByAnnotation($annotation);
+        $singleAnnotationStorage = $this->annotationStorage->findByAnnotation($annotation);
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('annotation-group'),
             $this->configuration->getDestinationWithPrefixName('annotation-group-', $annotation),
             [
-                'annotation' => $annotation,
-                'hasElements' => (bool) count(array_filter($elements, 'count')),
-                'classes' => $elements['classes'],
-                'interfaces' => $elements['interfaces'],
-                'traits' => $elements['traits'],
-                'methods' => $elements['methods'],
-                'functions' => $elements['functions'],
-                'properties' => $elements['properties']
+                'annotation' => $singleAnnotationStorage->getAnnotation(),
+                'hasElements' =>  $singleAnnotationStorage->hasAnyElements(),
+                'classes' => $singleAnnotationStorage->getClassReflections(),
+                'interfaces' => $singleAnnotationStorage->getInterfaceReflections(),
+                'traits' => $singleAnnotationStorage->getTraitReflections(),
+                'methods' => $singleAnnotationStorage->getClassOrTraitMethodReflections(),
+                'functions' => $singleAnnotationStorage->getFunctionReflections(),
+                'properties' => $singleAnnotationStorage->getClassOrTraitPropertyReflections()
             ]
         );
     }

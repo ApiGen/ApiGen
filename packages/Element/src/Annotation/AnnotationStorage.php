@@ -17,57 +17,61 @@ final class AnnotationStorage
         $this->reflectionStorage = $reflectionStorage;
     }
 
-    /**
-     * @return AnnotationsInterface[][]
-     */
-    public function findByAnnotation(string $annotation): array
+    public function findByAnnotation(string $annotation): SingleAnnotationStorage
     {
-        $elements = [
-            // these might be empty, if no classes
-            'methods' => [],
-            'constants' => [],
-            'properties' => [],
-        ];
-
-        $elements['functions'] = $this->filterReflectionsByAnnotation(
+        $functionReflections = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getFunctionReflections(),
             $annotation
         );
 
-        $elements['classes'] = $this->filterReflectionsByAnnotation(
+        $classReflections = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getClassReflections(),
             $annotation
         );
 
-        $elements['interfaces'] = $this->filterReflectionsByAnnotation(
+        $interfaceReflections = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getInterfaceReflections(),
             $annotation
         );
 
-        $elements['traits'] = $this->filterReflectionsByAnnotation(
+        $traitReflections = $this->filterReflectionsByAnnotation(
             $this->reflectionStorage->getTraitReflections(),
             $annotation
         );
 
+        $constantReflections = [];
+        $methodReflections = [];
+        $propertyReflections = [];
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            $elements['methods'] = $this->extractByAnnotationAndMerge(
+            $methodReflections = $this->extractByAnnotationAndMerge(
                 $classReflection->getOwnMethods(),
                 $annotation,
-                $elements['methods']
+                $methodReflections
             );
-            $elements['constants'] = $this->extractByAnnotationAndMerge(
+
+            $constantReflections = $this->extractByAnnotationAndMerge(
                 $classReflection->getOwnConstants(),
                 $annotation,
-                $elements['constants']
+                $constantReflections
             );
-            $elements['properties'] = $this->extractByAnnotationAndMerge(
+
+            $propertyReflections = $this->extractByAnnotationAndMerge(
                 $classReflection->getOwnProperties(),
                 $annotation,
-                $elements['properties']
+                $propertyReflections
             );
         }
 
-        return $elements;
+        return new SingleAnnotationStorage(
+            $annotation,
+            $classReflections,
+            $interfaceReflections,
+            $traitReflections,
+            $functionReflections,
+            $methodReflections,
+            $propertyReflections,
+            $constantReflections
+        );
     }
 
     /**

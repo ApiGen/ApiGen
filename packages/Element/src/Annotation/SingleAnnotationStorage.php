@@ -80,16 +80,79 @@ final class SingleAnnotationStorage
         $this->classOrInterfaceConstantReflections = $classOrInterfaceConstantReflections;
     }
 
+    /**
+     * @return string
+     */
+    public function getAnnotation(): string
+    {
+        return $this->annotation;
+    }
 
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getClassReflections(): array
+    {
+        return $this->classReflections;
+    }
 
-//'annotation' => $annotation,
-//                'hasElements' => (bool) count(array_filter($elements, 'count')),
-//                'classes' => $elements['classes'],
-//                'interfaces' => $elements['interfaces'],
-//                'traits' => $elements['traits'],
-//                'methods' => $elements['methods'],
-//                'functions' => $elements['functions'],
-//                'properties' => $elements['properties']
+    /**
+     * @return InterfaceReflectionInterface[]
+     */
+    public function getInterfaceReflections(): array
+    {
+        return $this->interfaceReflections;
+    }
 
+    /**
+     * @return TraitReflectionInterface[]
+     */
+    public function getTraitReflections(): array
+    {
+        return $this->traitReflections;
+    }
 
+    /**
+     * @return FunctionReflectionInterface[]
+     */
+    public function getFunctionReflections(): array
+    {
+        return $this->functionReflections;
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getClassOrTraitMethodReflections(): array
+    {
+        return $this->classOrTraitMethodReflections;
+    }
+
+    /**
+     * @return ClassPropertyReflectionInterface[]|TraitPropertyReflectionInterface[]
+     */
+    public function getClassOrTraitPropertyReflections(): array
+    {
+        return $this->classOrTraitPropertyReflections;
+    }
+
+    /**
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
+     */
+    public function getClassOrInterfaceConstantReflections(): array
+    {
+        return $this->classOrInterfaceConstantReflections;
+    }
+
+    public function hasAnyElements(): bool
+    {
+        return (bool)
+            count($this->classReflections) +
+            count($this->interfaceReflections) +
+            count($this->traitReflections) +
+            count($this->functionReflections) +
+            count($this->classOrTraitMethodReflections) +
+            count($this->classOrTraitPropertyReflections) +
+            count($this->classOrInterfaceConstantReflections);
+    }
 }

@@ -25,14 +25,14 @@ final class AnnotationStorageTest extends AbstractContainerAwareTestCase
 
     public function test(): void
     {
-        $reflectionsWithDeprecatedAnnotation = $this->annotationStorage->findByAnnotation(AnnotationList::DEPRECATED);
-        $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['classes']);
-        $this->assertCount(0, $reflectionsWithDeprecatedAnnotation['interfaces']);
-        $this->assertCount(0, $reflectionsWithDeprecatedAnnotation['traits']);
-        $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['functions']);
-        $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['methods']);
-        $this->assertCount(1, $reflectionsWithDeprecatedAnnotation['properties']);
+        $singleAnnotationStorage = $this->annotationStorage->findByAnnotation(AnnotationList::DEPRECATED);
+        $this->assertCount(1, $singleAnnotationStorage->getClassReflections());
+        $this->assertCount(0, $singleAnnotationStorage->getInterfaceReflections());
+        $this->assertCount(0, $singleAnnotationStorage->getTraitReflections());
+        $this->assertCount(1, $singleAnnotationStorage->getFunctionReflections());
+        $this->assertCount(1, $singleAnnotationStorage->getClassOrTraitMethodReflections());
+        $this->assertCount(1, $singleAnnotationStorage->getClassOrTraitPropertyReflections());
         // @todo 1
-        $this->assertCount(0, $reflectionsWithDeprecatedAnnotation['constants']);
+        $this->assertCount(0, $singleAnnotationStorage->getClassOrInterfaceConstantReflections());
     }
 }

@@ -12,7 +12,7 @@ final class PartiallyDeprecatedClass
     /**
      * @deprecated
      */
-    private $work;
+    protected $work;
 
     /**
      * @deprecated

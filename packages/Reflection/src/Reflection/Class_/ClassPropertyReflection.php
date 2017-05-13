@@ -107,7 +107,6 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function hasAnnotation(string $name): bool
     {
-        dump($name);
         return $this->docBlock->hasTag($name);
     }
 
