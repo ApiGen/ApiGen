@@ -4,6 +4,8 @@ namespace ApiGen\Element\Contract;
 
 interface AutocompleteElementsInterface
 {
+    // use ReflectionCollector
+
     /**
      * @return string[][]
      */

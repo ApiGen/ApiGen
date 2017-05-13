@@ -14,3 +14,7 @@
 
 # Trait_
 - ApiGen\Element\Tree\TraitUsersResolver
+
+# Reflection Collector
+- ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector
+- ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector
