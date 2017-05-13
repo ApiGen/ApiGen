@@ -21,7 +21,6 @@
         "nette/bootstrap": "^2.4",
         "nette/di": "^2.4",
         "nette/neon": "^2.4",
-        "nette/reflection": "^2.4",
         "tracy/tracy": "^2.4",
 
         "contributte/console": "^0.1",

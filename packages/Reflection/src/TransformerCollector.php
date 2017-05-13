@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
@@ -15,6 +16,16 @@ final class TransformerCollector implements TransformerCollectorInterface
      * @var TransformerInterface[]
      */
     private $transformers = [];
+
+    /**
+     * @var ReflectionCollectorCollectorInterface
+     */
+    private $reflectionCollectorCollector;
+
+    public function __construct(ReflectionCollectorCollectorInterface $reflectionCollectorCollector)
+    {
+        $this->reflectionCollectorCollector = $reflectionCollectorCollector;
+    }
 
     public function addTransformer(TransformerInterface $transformer): void
     {
@@ -67,13 +78,15 @@ final class TransformerCollector implements TransformerCollectorInterface
                 continue;
             }
 
-            $element = $transformer->transform($reflection);
+            $newReflection = $transformer->transform($reflection);
 
-            if ($element instanceof TransformerCollectorAwareInterface) {
-                $element->setTransformerCollector($this);
+            if ($newReflection instanceof TransformerCollectorAwareInterface) {
+                $newReflection->setTransformerCollector($this);
             }
 
-            return $element;
+            $this->reflectionCollectorCollector->processReflection($newReflection);
+
+            return $newReflection;
         }
 
         throw new UnsupportedReflectionClassException(sprintf(
