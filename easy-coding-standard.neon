@@ -74,6 +74,7 @@ checkers:
 parameters:
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+            # covariant implementers
             - packages/Reflection/src/Transformer/BetterReflection/Class_/ClassMethodReflectionTransformer.php
             - packages/Reflection/src/Transformer/BetterReflection/Class_/ClassPropertyReflectionTransformer.php
             - packages/Reflection/src/Transformer/BetterReflection/Function_/FunctionParameterReflectionTransformer.php
@@ -84,6 +85,10 @@ parameters:
             - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitMethodReflectionTransformer.php
             - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitPropertyReflectionTransformer.php
             - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitReflectionTransformer.php
+
+            # tests
+            - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php
+            - packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php
 
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php

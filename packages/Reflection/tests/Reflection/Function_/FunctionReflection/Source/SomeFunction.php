@@ -7,7 +7,10 @@ namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionReflection\Source
  *
  * And more lines!
  *
- *
+ * @param int $number
+ * @param string|null $name
+ * @param string[] $arguments
+ * @return string
  */
 function someAloneFunction(int $number, ?string $name = null, string ...$arguments): string
 {

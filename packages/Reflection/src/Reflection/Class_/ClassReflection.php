@@ -16,9 +16,6 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use InvalidArgumentException;
-use InvalidArgumentException;
-use InvalidArgumentException;
-use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 

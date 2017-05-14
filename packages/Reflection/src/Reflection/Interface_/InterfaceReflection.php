@@ -11,7 +11,6 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use Exception;
-use Exception;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
