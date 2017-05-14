@@ -2,6 +2,7 @@
 
 namespace ApiGen\Element\Tree;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
@@ -17,7 +18,10 @@ final class TraitUsersResolver
         $this->reflectionStorage = $reflectionStorage;
     }
 
-    public function getUsers(TraitReflectionInterface $traitReflection)
+    /**
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
+     */
+    public function getUsers(TraitReflectionInterface $traitReflection): array
     {
         $users = [];
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {

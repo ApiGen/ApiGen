@@ -110,6 +110,9 @@ final class NamespaceStorage
         $this->makeNoNamespaceLast();
     }
 
+    /**
+     * @param mixed[] $reflections
+     */
     private function categorizeReflectionsToNamespace(array $reflections, string $type): void
     {
         foreach ($reflections as $reflection) {

@@ -25,11 +25,6 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
     private $classReflection;
 
     /**
-     * @var mixed
-     */
-    private $modifier;
-
-    /**
      * @param mixed $value
      */
     private function __construct(string $name, $value, ClassReflectionInterface $classReflection)
@@ -42,8 +37,11 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
     /**
      * @param mixed $value
      */
-    public static function createFromNameValueAndClass(string $name, $value, ClassReflectionInterface $classReflection): self
-    {
+    public static function createFromNameValueAndClass(
+        string $name,
+        $value,
+        ClassReflectionInterface $classReflection
+    ): self {
         return new self($name, $value, $classReflection);
     }
 

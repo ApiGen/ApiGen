@@ -40,19 +40,8 @@ final class TransformerCollector implements TransformerCollectorInterface
     {
         $elements = [];
         foreach ($reflections as $name => $reflection) {
-            // also ! $this->reflection->isInternal();, remove isDocumented()
-
-            // @let decide voters if element is passed?
-            // here alreay 2 conditions
-
             $transformedReflection = $this->transformSingle($reflection);
-            if ($transformedReflection instanceof AnnotationsInterface && $transformedReflection->hasAnnotation('internal')) {
-                continue;
-            }
-
-            // $this->configuration->getVisibilityLevels()
-            // @todo: here is the place to filter out public/protected etc - use service!
-            if (! $this->hasAllowedAccessLevel($transformedReflection)) {
+            if ($this->shouldSkipReflection($transformedReflection)) {
                 continue;
             }
 
@@ -96,6 +85,9 @@ final class TransformerCollector implements TransformerCollectorInterface
         ));
     }
 
+    /**
+     * @param object $transformedReflection
+     */
     private function hasAllowedAccessLevel($transformedReflection): bool
     {
         if (! $transformedReflection instanceof AccessLevelInterface) {
@@ -104,6 +96,30 @@ final class TransformerCollector implements TransformerCollectorInterface
 
         // hardcoded @todo make service-like and using ConfigurationInterface
         if ($transformedReflection->isPublic() || $transformedReflection->isProtected()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param object $transformedReflection
+     */
+    private function shouldSkipReflection($transformedReflection): bool
+    {
+        // also ! $this->reflection->isInternal();, remove isDocumented()
+
+        // @let decide voters if element is passed?
+        // here alreay 2 conditions
+        if ($transformedReflection instanceof AnnotationsInterface
+            && $transformedReflection->hasAnnotation('internal')
+        ) {
+            return true;
+        }
+
+        // $this->configuration->getVisibilityLevels()
+        // @todo: here is the place to filter out public/protected etc - use service!
+        if (! $this->hasAllowedAccessLevel($transformedReflection)) {
             return true;
         }
 

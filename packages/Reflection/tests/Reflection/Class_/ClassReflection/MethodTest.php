@@ -14,7 +14,10 @@ final class MethodTest extends AbstractReflectionClassTestCase
 
     public function testGetMethod(): void
     {
-        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->reflectionClass->getMethod('publicMethod'));
+        $this->assertInstanceOf(
+            ClassMethodReflectionInterface::class,
+            $this->reflectionClass->getMethod('publicMethod')
+        );
     }
 
     /**

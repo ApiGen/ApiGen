@@ -14,7 +14,8 @@ use phpDocumentor\Reflection\Types\Object_;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class FunctionParameterReflection implements FunctionParameterReflectionInterface, TransformerCollectorAwareInterface
+final class FunctionParameterReflection implements FunctionParameterReflectionInterface,
+    TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter

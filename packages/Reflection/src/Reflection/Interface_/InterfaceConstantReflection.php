@@ -38,8 +38,11 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
     /**
      * @param mixed $value
      */
-    public static function createFromNameValueAndInterface(string $name, $value, InterfaceReflectionInterface $interfaceReflection): self
-    {
+    public static function createFromNameValueAndInterface(
+        string $name,
+        $value,
+        InterfaceReflectionInterface $interfaceReflection
+    ): self {
         return new self($name, $value, $interfaceReflection);
     }
 

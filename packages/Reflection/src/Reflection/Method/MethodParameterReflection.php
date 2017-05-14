@@ -5,7 +5,6 @@ namespace ApiGen\Reflection\Reflection\Method;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
@@ -19,11 +18,6 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
      * @var ReflectionParameter
      */
     private $betterParameterReflection;
-
-    /**
-     * @var ClassMethodReflectionInterface|FunctionReflectionInterface
-     */
-    private $declaringFunction;
 
     /**
      * @var TransformerCollectorInterface
@@ -146,14 +140,6 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
     public function isCallable(): bool
     {
         return $this->betterParameterReflection->isCallable();
-    }
-
-    /**
-     * @param ClassMethodReflectionInterface|FunctionReflectionInterface $declaringFunction
-     */
-    public function setDeclaringFunction($declaringFunction): void
-    {
-        $this->declaringFunction = $declaringFunction;
     }
 
     private function getAnnotation(): ?Param

@@ -11,6 +11,7 @@ final class PartiallyDeprecatedClass
 
     /**
      * @deprecated
+     * @var int
      */
     protected $work;
 

@@ -114,4 +114,4 @@ parameters:
             - tests/Parser/Parser/ParserSource/SomeInterface.php
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
-            - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+            - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php
