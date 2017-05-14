@@ -5,7 +5,7 @@ namespace ApiGen\Generator;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
-use ApiGen\Element\Annotation\AnnotationStorage;
+use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 
 final class AnnotationGroupsGenerator implements GeneratorInterface
 {
@@ -15,23 +15,23 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
     private $configuration;
 
     /**
-     * @var AnnotationStorage
-     */
-    private $annotationStorage;
-
-    /**
      * @var TemplateRendererInterface
      */
     private $templateRenderer;
 
+    /**
+     * @var AnnotationReflectionCollector
+     */
+    private $annotationReflectionCollector;
+
     public function __construct(
         ConfigurationInterface $configuration,
-        AnnotationStorage $annotationStorage,
-        TemplateRendererInterface $templateRenderer
+        TemplateRendererInterface $templateRenderer,
+        AnnotationReflectionCollector $annotationReflectionCollector
     ) {
         $this->configuration = $configuration;
-        $this->annotationStorage = $annotationStorage;
         $this->templateRenderer = $templateRenderer;
+        $this->annotationReflectionCollector = $annotationReflectionCollector;
     }
 
     public function generate(): void
@@ -43,20 +43,20 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
 
     private function generateForAnnotation(string $annotation): void
     {
-        $singleAnnotationStorage = $this->annotationStorage->findByAnnotation($annotation);
+        $this->annotationReflectionCollector->setActiveAnnotation($annotation);
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('annotation-group'),
             $this->configuration->getDestinationWithPrefixName('annotation-group-', $annotation),
             [
-                'annotation' => $singleAnnotationStorage->getAnnotation(),
-                'hasElements' =>  $singleAnnotationStorage->hasAnyElements(),
-                'classes' => $singleAnnotationStorage->getClassReflections(),
-                'interfaces' => $singleAnnotationStorage->getInterfaceReflections(),
-                'traits' => $singleAnnotationStorage->getTraitReflections(),
-                'methods' => $singleAnnotationStorage->getClassOrTraitMethodReflections(),
-                'functions' => $singleAnnotationStorage->getFunctionReflections(),
-                'properties' => $singleAnnotationStorage->getClassOrTraitPropertyReflections()
+                'annotation' => $annotation,
+                'hasElements' =>  $this->annotationReflectionCollector->hasAnyElements(),
+                'classes' => $this->annotationReflectionCollector->getClassReflections(),
+                'interfaces' => $this->annotationReflectionCollector->getInterfaceReflections(),
+                'traits' => $this->annotationReflectionCollector->getTraitReflections(),
+                'methods' => $this->annotationReflectionCollector->getClassOrTraitMethodReflections(),
+                'functions' => $this->annotationReflectionCollector->getFunctionReflections(),
+                'properties' => $this->annotationReflectionCollector->getClassOrTraitPropertyReflections()
             ]
         );
     }

@@ -45,6 +45,7 @@ interface ReflectionCollectorInterface
      * @return ClassPropertyReflectionInterface[]|TraitPropertyReflectionInterface[]
      */
     public function getClassOrTraitPropertyReflections(): array;
+
     /**
      * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */

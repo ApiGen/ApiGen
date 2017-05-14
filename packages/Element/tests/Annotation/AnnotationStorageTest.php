@@ -4,7 +4,7 @@ namespace ApiGen\Element\Tests\Annotation;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Element\Annotation\AnnotationStorage;
+use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Reflection\Contract\ParserInterface;
@@ -13,16 +13,16 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 final class AnnotationStorageTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var AnnotationStorage
+     * @var AnnotationReflectionCollector
      */
-    private $annotationStorage;
+    private $annotationReflectionCollector;
 
     protected function setUp(): void
     {
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
-           DestinationOption::NAME => '...',
+           DestinationOption::NAME => TEMP_DIR,
            AnnotationGroupsOption::NAME => [AnnotationList::DEPRECATED]
         ]);
 
@@ -30,19 +30,20 @@ final class AnnotationStorageTest extends AbstractContainerAwareTestCase
         $parser = $this->container->getByType(ParserInterface::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->annotationStorage = $this->container->getByType(AnnotationStorage::class);
+        $this->annotationReflectionCollector = $this->container->getByType(AnnotationReflectionCollector::class);
     }
 
     public function test(): void
     {
-        $singleAnnotationStorage = $this->annotationStorage->findByAnnotation(AnnotationList::DEPRECATED);
-        $this->assertCount(1, $singleAnnotationStorage->getClassReflections());
-        $this->assertCount(1, $singleAnnotationStorage->getInterfaceReflections());
-        $this->assertCount(1, $singleAnnotationStorage->getTraitReflections());
-        $this->assertCount(1, $singleAnnotationStorage->getFunctionReflections());
-        $this->assertCount(1, $singleAnnotationStorage->getClassOrTraitMethodReflections());
-        $this->assertCount(1, $singleAnnotationStorage->getClassOrTraitPropertyReflections());
+        $this->annotationReflectionCollector->setActiveAnnotation(AnnotationList::DEPRECATED);
+
+        $this->assertCount(1, $this->annotationReflectionCollector->getClassReflections());
+        $this->assertCount(1, $this->annotationReflectionCollector->getInterfaceReflections());
+        $this->assertCount(1, $this->annotationReflectionCollector->getTraitReflections());
+        $this->assertCount(1, $this->annotationReflectionCollector->getFunctionReflections());
+        $this->assertCount(1, $this->annotationReflectionCollector->getClassOrTraitMethodReflections());
+        $this->assertCount(1, $this->annotationReflectionCollector->getClassOrTraitPropertyReflections());
         // @todo 1
-        $this->assertCount(0, $singleAnnotationStorage->getClassOrInterfaceConstantReflections());
+        $this->assertCount(0, $this->annotationReflectionCollector->getClassOrInterfaceConstantReflections());
     }
 }
