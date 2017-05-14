@@ -21,7 +21,10 @@ final class FunctionParameterReflectionTransformer implements TransformerInterfa
         return $reflection->getDeclaringClass() === null;
     }
 
-    public function transform(ReflectionParameter $reflection): FunctionParameterReflectionInterface
+    /**
+     * @param object|ReflectionParameter $reflection
+     */
+    public function transform($reflection): FunctionParameterReflectionInterface
     {
         return new FunctionParameterReflection($reflection);
     }

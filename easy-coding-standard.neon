@@ -74,6 +74,17 @@ checkers:
 parameters:
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+            - packages/Reflection/src/Transformer/BetterReflection/Class_/ClassMethodReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Class_/ClassPropertyReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Function_/FunctionParameterReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Function_/FunctionReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Interface_/InterfaceMethodReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Interface_/InterfaceReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Method/MethodParameterReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitMethodReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitPropertyReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitReflectionTransformer.php
+
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php
             - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php

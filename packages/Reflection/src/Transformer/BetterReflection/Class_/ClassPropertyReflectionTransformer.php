@@ -37,7 +37,10 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
         return ! $declaringClassOrTrait->isTrait();
     }
 
-    public function transform(ReflectionProperty $reflection): ClassPropertyReflectionInterface
+    /**
+     * @param object|ReflectionProperty $reflection
+     */
+    public function transform($reflection): ClassPropertyReflectionInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

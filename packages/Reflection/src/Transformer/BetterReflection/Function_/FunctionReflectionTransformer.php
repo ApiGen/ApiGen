@@ -27,7 +27,10 @@ final class FunctionReflectionTransformer implements TransformerInterface
         return $reflection instanceof BetterReflectionFunction;
     }
 
-    public function transform(BetterReflectionFunction $reflection): FunctionReflection
+    /**
+     * @param object|BetterReflectionFunction $reflection
+     */
+    public function transform($reflection): FunctionReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

@@ -20,7 +20,10 @@ final class MethodParameterReflectionTransformer implements TransformerInterface
         return (bool) $reflection->getDeclaringClass();
     }
 
-    public function transform(ReflectionParameter $reflection): MethodParameterReflection
+    /**
+     * @param ReflectionParameter|object $reflection
+     */
+    public function transform($reflection): MethodParameterReflection
     {
         return new MethodParameterReflection($reflection);
     }

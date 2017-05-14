@@ -34,7 +34,10 @@ final class InterfaceReflectionTransformer implements TransformerInterface
         return $reflection instanceof ReflectionClass && $reflection->isInterface();
     }
 
-    public function transform(ReflectionClass $reflection): InterfaceReflection
+    /**
+     * @param object|ReflectionClass $reflection
+     */
+    public function transform($reflection): InterfaceReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
         return new InterfaceReflection($reflection, $docBlock, $this->implementersResolver);
