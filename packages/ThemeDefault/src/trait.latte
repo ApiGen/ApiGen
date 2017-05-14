@@ -29,12 +29,14 @@
 	{/define}
 
 	<div n:if="$trait->getUsers()">
-		<h4>Known Users</h4>
-		{include children, children => $trait->getUsers()}
+        <br>
+        <div>
+		    <h4>Known Users</h4>
+		    {include children, children => $trait->getUsers()}
+        </div>
 	</div>
 
 	<div class="info">
-		{if $trait->isInternal()}<b>PHP Extension:</b> <a href="{$trait->extension|manualUrl}" title="Go to PHP documentation">{$trait->extension->getName()|firstUpper}</a><br>{/if}
 		{if $trait->getNamespaceName()}<b>Namespace:</b> {$trait->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 
 		{var $filteredAnnotations = ($trait->getAnnotations()|annotationFilter)}
@@ -44,11 +46,7 @@
 				{$value|annotation:$annotation:$trait|noescape}<br>
 			{/foreach}
 		{/foreach}
-		{if $trait->isInternal()}
-			<b>Documented at</b> <a href="{$trait|manualUrl}" title="Go to PHP documentation">php.net</a>
-		{else}
-			<b>Located at</b> <a href="{$trait|sourceUrl}" title="Go to source code">{$trait->getFileName()|relativePath}</a>
-		{/if}
+        <b>Located at</b> <a href="{$trait|sourceUrl}" title="Go to source code">{$trait->getFileName()|relativePath}</a>
 		<br>
 	</div>
 
@@ -69,11 +67,7 @@
 		<td class="name"><div>
 		<a class="anchor" href="#_{$method->getName()}">#</a>
 		<code>{block|strip}
-			{if $trait->isInternal()}
-				<a href="{$method|manualUrl}" title="Go to PHP documentation">{$method->getName()}</a>(
-			{else}
-				<a href="{$method|sourceUrl}" title="Go to source code">{$method->getName()}</a>(
-			{/if}
+            <a href="{$method|sourceUrl}" title="Go to source code">{$method->getName()}</a>(
 			{foreach $method->parameters as $parameter}
 				<span>{$parameter->typeHint|typeLinks:$method|noescape}
 				<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$trait|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
@@ -206,11 +200,7 @@
 		</code></td>
 
 		<td class="name">
-			{if $trait->isInternal()}
-				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->getName()}</var></a>
-			{else}
-				<a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->getName()}</var></a>
-			{/if}
+            <a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->getName()}</var></a>
 
 			<div class="description detailed">
 				{$property|description|noescape}
