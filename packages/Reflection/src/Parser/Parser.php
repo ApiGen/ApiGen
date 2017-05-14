@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Parser;
 
+use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -25,10 +26,19 @@ final class Parser implements ParserInterface
      */
     private $reflectionStorage;
 
-    public function __construct(TransformerCollectorInterface $transformerCollector, ReflectionStorageInterface $reflectionStorage)
-    {
+    /**
+     * @var ReflectionWarmUpper
+     */
+    private $reflectionWarmUpper;
+
+    public function __construct(
+        TransformerCollectorInterface $transformerCollector,
+        ReflectionStorageInterface $reflectionStorage,
+        ReflectionWarmUpper $reflectionWarmUpper
+    ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
+        $this->reflectionWarmUpper = $reflectionWarmUpper;
     }
 
     /**
@@ -46,6 +56,8 @@ final class Parser implements ParserInterface
         // Add classes from @param, @var, @return, @throws annotations as well
         // as parent classes to the overall class list.
         // @see \ApiGen\Parser\Broker\Backend
+
+        $this->reflectionWarmUpper->warmUp();
     }
 
     /**

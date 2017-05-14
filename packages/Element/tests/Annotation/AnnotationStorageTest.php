@@ -37,8 +37,8 @@ final class AnnotationStorageTest extends AbstractContainerAwareTestCase
     {
         $singleAnnotationStorage = $this->annotationStorage->findByAnnotation(AnnotationList::DEPRECATED);
         $this->assertCount(1, $singleAnnotationStorage->getClassReflections());
-        $this->assertCount(0, $singleAnnotationStorage->getInterfaceReflections());
-        $this->assertCount(0, $singleAnnotationStorage->getTraitReflections());
+        $this->assertCount(1, $singleAnnotationStorage->getInterfaceReflections());
+        $this->assertCount(1, $singleAnnotationStorage->getTraitReflections());
         $this->assertCount(1, $singleAnnotationStorage->getFunctionReflections());
         $this->assertCount(1, $singleAnnotationStorage->getClassOrTraitMethodReflections());
         $this->assertCount(1, $singleAnnotationStorage->getClassOrTraitPropertyReflections());

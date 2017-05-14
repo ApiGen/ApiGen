@@ -58,15 +58,12 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
             // $reflection->hasAnnotation('@author', 'Tomas Votruba');
             // url: annotation-author-tomasvotruba.html
 
-            dump(get_class($reflection), $reflection->getName());
-
             if (! $reflection->hasAnnotation($annotation)) {
                 continue;
             }
 
-            dump('OK');
-
-            $this->collectedReflections[get_class($reflection)][$annotation][$reflection->getName()] = $reflection;
+            $reflectionInterface = $this->getReflectionInterfaceFromReflection($reflection);
+            $this->collectedReflections[$reflectionInterface][$annotation][$reflection->getName()] = $reflection;
         }
     }
 
@@ -132,5 +129,15 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
     public function hasAnyElements(): bool
     {
         return (bool) count($this->collectedReflections);
+    }
+
+    /**
+     * @param object $reflection
+     */
+    private function getReflectionInterfaceFromReflection($reflection): string
+    {
+        $implementedInterfaces = class_implements($reflection);
+
+        return array_shift($implementedInterfaces);
     }
 }
