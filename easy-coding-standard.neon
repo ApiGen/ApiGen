@@ -89,6 +89,7 @@ parameters:
             # tests
             - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php
             - packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php
+            - packages/Reflection/src/Reflection/Trait_/TraitPropertyReflection.php
 
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php

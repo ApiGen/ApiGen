@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Reflection\Contract\Reflection\AbstractMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
@@ -35,7 +36,7 @@ final class ParameterReflection implements AbstractParameterReflectionInterface
     }
 
     /**
-     * @return ClassMethodReflectionInterface|FunctionReflectionInterface
+     * @return AbstractMethodReflectionInterface|FunctionReflectionInterface
      */
     public function getDeclaringFunction()
     {

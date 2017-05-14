@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitPropertyReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Trait_\TraitPropertyReflection\Source\TraitProperty;
+use ApiGen\Reflection\Tests\Reflection\Trait_\TraitPropertyReflection\Source\TraitPropertyTrait;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class TraitPropertyReflectionTest extends AbstractParserAwareTestCase
@@ -18,13 +18,13 @@ final class TraitPropertyReflectionTest extends AbstractParserAwareTestCase
     {
         $this->parser->parseDirectories([__DIR__ . '/Source']);
         $traitReflections = $this->reflectionStorage->getTraitReflections();
-        $traitReflection = $traitReflections[TraitProperty::class];
+        $traitReflection = $traitReflections[TraitPropertyTrait::class];
         $this->propertyReflection = $traitReflection->getProperty('memberCount');
     }
 
     public function testGetDeclaringTrait(): void
     {
         $this->assertInstanceOf(TraitReflectionInterface::class, $this->propertyReflection->getDeclaringTrait());
-        $this->assertSame(TraitProperty::class, $this->propertyReflection->getDeclaringTraitName());
+        $this->assertSame(TraitPropertyTrait::class, $this->propertyReflection->getDeclaringTraitName());
     }
 }
