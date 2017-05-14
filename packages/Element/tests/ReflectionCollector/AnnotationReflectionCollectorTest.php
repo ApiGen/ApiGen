@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Element\Tests\Annotation;
+namespace ApiGen\Element\Tests\ReflectionCollector;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
@@ -10,7 +10,7 @@ use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class AnnotationStorageTest extends AbstractContainerAwareTestCase
+final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var AnnotationReflectionCollector
