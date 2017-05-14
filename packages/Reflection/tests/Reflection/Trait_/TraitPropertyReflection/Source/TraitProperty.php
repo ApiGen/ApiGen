@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitPropertyReflection\Source;
 
-trait TraitProperty
+trait TraitPropertyTrait
 {
     /**
      * @var int

@@ -2,7 +2,6 @@
 
 namespace ApiGen\Element\Cache;
 
-use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 /**

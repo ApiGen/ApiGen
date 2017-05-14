@@ -16,7 +16,7 @@ class SomeClass
      */
     public $someProperty;
 
-    public function SomeMethod()/*: void - brokes old parser */
+    public function SomeMethod(): void/*: void - brokes old parser */
     {
 
     }

@@ -5,6 +5,6 @@ namespace ApiGen\Element\Tests\Annotation\Annotation;
 /**
  * @deprecated
  */
-function deprecatedFunction()
+function deprecatedFunction(): void
 {
 }

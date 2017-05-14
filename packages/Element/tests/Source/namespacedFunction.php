@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element\Tests\Namespaces;
 
-function namespacedFunction()
+function namespacedFunction(): void
 {
 
 }

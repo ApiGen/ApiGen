@@ -7,11 +7,10 @@ use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevel
 
 final class MethodTest extends AbstractReflectionClassTestCase
 {
-    public function testNames()
+    public function testNames(): void
     {
         $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
     }
-
 
     public function testGetMethod(): void
     {

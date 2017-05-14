@@ -3,8 +3,8 @@
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
-use ApiGen\Reflection\Reflection\Class_\ClassPropertyReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Reflection\Class_\ClassPropertyReflection;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
@@ -37,10 +37,7 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
         return ! $declaringClassOrTrait->isTrait();
     }
 
-    /**
-     * @param ReflectionProperty $reflection
-     */
-    public function transform($reflection): ClassPropertyReflectionInterface
+    public function transform(ReflectionProperty $reflection): ClassPropertyReflectionInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

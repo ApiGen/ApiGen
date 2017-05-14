@@ -29,10 +29,7 @@ final class InterfaceMethodReflectionTransformer implements TransformerInterface
             && $reflection->getDeclaringClass()->isInterface();
     }
 
-    /**
-     * @param BetterReflectionFunction $reflection
-     */
-    public function transform($reflection): InterfaceMethodReflection
+    public function transform(BetterReflectionFunction $reflection): InterfaceMethodReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

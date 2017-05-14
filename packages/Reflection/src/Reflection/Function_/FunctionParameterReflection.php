@@ -6,9 +6,9 @@ use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\Object_;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -123,7 +123,7 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
     public function getClassName(): ?string
     {
         $typeHint = $this->betterParameterReflection->getTypeHint();
-        if ( ! $typeHint instanceof Object_) {
+        if (! $typeHint instanceof Object_) {
             return null;
         }
 

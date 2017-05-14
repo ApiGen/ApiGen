@@ -4,17 +4,21 @@ namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Element\Tree\ClassTraitElementResolver;
+use ApiGen\Element\Tree\ParentClassElementsResolver;
 use ApiGen\Element\Tree\SubClassesResolver;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Element\Tree\ParentClassElementsResolver;
+use InvalidArgumentException;
+use InvalidArgumentException;
+use InvalidArgumentException;
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -172,7 +176,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
             return $this->getMethods()[$name];
         }
 
-        throw new \InvalidArgumentException(sprintf(
+        throw new InvalidArgumentException(sprintf(
             'Method "%s" does not exist in "%s" class.',
             $name,
             $this->getName()
@@ -196,7 +200,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
         return $this->sortUsedMethods($usedMethods);
     }
-
 
     public function hasMethod(string $name): bool
     {
@@ -253,7 +256,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
             return $this->getConstants()[$name];
         }
 
-        throw new \InvalidArgumentException(sprintf(
+        throw new InvalidArgumentException(sprintf(
             'Constant %s does not exist in class %s',
             $name,
             $this->getName()
@@ -263,7 +266,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getOwnConstant(string $name): ClassConstantReflectionInterface
     {
         if (! isset($this->getOwnConstants()[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Constant %s does not exist in class %s',
                 $name,
                 $this->getName()
@@ -330,7 +333,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getProperty(string $name): ClassPropertyReflectionInterface
     {
         if (! $this->hasProperty($name)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Property %s does not exist in class %s',
                 $name,
                 $this->getName()
@@ -365,7 +368,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->betterClassReflection->isSubclassOf($class);
     }
 
-
     public function isDeprecated(): bool
     {
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
@@ -388,8 +390,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     {
         return $this->betterClassReflection->getFileName();
     }
-
-
 
     /**
      * @param mixed[] $usedMethods
@@ -453,6 +453,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         foreach ($this->getTraits() as $traitReflection) {
             $traitMethods = array_merge($traitMethods, $traitReflection->getMethods());
         }
+
         return $traitMethods;
     }
 

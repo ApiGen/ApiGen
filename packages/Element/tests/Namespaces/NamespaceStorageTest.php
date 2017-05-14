@@ -18,7 +18,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
      */
     private $namespaceStorage;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
@@ -26,7 +26,6 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
 
         $this->namespaceStorage = $this->container->getByType(NamespaceStorage::class);
     }
-
 
     public function testSort(): void
     {
@@ -40,7 +39,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         ], $namespaces);
     }
 
-    public function testFindInNamespace()
+    public function testFindInNamespace(): void
     {
         $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix);
         $this->assertCount(1, $namespacedItems->getClassReflections());
@@ -62,7 +61,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         $this->assertCount(1, $namespacedItems->getClassReflections());
     }
 
-    public function testNamespace()
+    public function testNamespace(): void
     {
         $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix);
 

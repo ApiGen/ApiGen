@@ -6,7 +6,6 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use PhpParser\Node\Stmt\Class_;
-use ReflectionClass;
 
 final class ClassConstantReflection implements ClassConstantReflectionInterface
 {
@@ -53,7 +52,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function isPublic(): bool
     {
-        return TRUE;
+        return true;
         // return (bool) ($this->modifier & Class_::MODIFIER_PUBLIC);
     }
 
@@ -62,7 +61,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function isProtected(): bool
     {
-        return FALSE;
+        return false;
     }
 
     /**
@@ -70,7 +69,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function isPrivate(): bool
     {
-        return FALSE;
+        return false;
     }
 
     public function getName(): string

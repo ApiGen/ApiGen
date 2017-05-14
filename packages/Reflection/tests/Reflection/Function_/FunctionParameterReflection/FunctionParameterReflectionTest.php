@@ -52,7 +52,6 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertNull($this->functionParameterReflection->getClassName());
     }
 
-
     public function testDescription(): void
     {
         $this->assertSame('and their description', $this->functionParameterReflection->getDescription());

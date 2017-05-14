@@ -63,9 +63,6 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
         return $this->betterPropertyReflection->getName();
     }
 
-    /**
-     * @todo: what does this mean? better naming?
-     */
     public function isDefault(): bool
     {
         return $this->betterPropertyReflection->isDefault();

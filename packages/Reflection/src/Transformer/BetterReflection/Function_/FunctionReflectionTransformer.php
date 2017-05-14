@@ -2,8 +2,8 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Function_;
 
-use ApiGen\Reflection\Reflection\Function_\FunctionReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Reflection\Function_\FunctionReflection;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 
@@ -27,10 +27,7 @@ final class FunctionReflectionTransformer implements TransformerInterface
         return $reflection instanceof BetterReflectionFunction;
     }
 
-    /**
-     * @param BetterReflectionFunction $reflection
-     */
-    public function transform($reflection): FunctionReflection
+    public function transform(BetterReflectionFunction $reflection): FunctionReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

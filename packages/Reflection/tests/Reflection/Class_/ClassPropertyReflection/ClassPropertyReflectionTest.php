@@ -23,7 +23,7 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
         $this->propertyReflection = $classReflection->getProperty('memberCount');
     }
 
-    public function testName()
+    public function testName(): void
     {
         $this->assertSame('memberCount', $this->propertyReflection->getName());
         $this->assertSame(

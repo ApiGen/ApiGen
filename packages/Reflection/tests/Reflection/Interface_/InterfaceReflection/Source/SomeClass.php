@@ -4,11 +4,11 @@ namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Sour
 
 final class SomeClass implements SomeInterface
 {
-    public function getSomeStuff()
+    public function getSomeStuff(): void
     {
     }
 
-    public function riseAndShine()
+    public function riseAndShine(): void
     {
     }
 }

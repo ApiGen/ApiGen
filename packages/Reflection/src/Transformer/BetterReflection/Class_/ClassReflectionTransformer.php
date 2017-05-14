@@ -3,11 +3,11 @@
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
 use ApiGen\Element\Tree\ClassTraitElementResolver;
+use ApiGen\Element\Tree\ParentClassElementsResolver;
 use ApiGen\Element\Tree\SubClassesResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Reflection\Class_\ClassReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
-use ApiGen\Element\Tree\ParentClassElementsResolver;
+use ApiGen\Reflection\Reflection\Class_\ClassReflection;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 

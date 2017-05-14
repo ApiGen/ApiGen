@@ -98,7 +98,7 @@ final class TransformerCollector implements TransformerCollectorInterface
 
     private function hasAllowedAccessLevel($transformedReflection): bool
     {
-        if ( ! $transformedReflection instanceof AccessLevelInterface) {
+        if (! $transformedReflection instanceof AccessLevelInterface) {
             return true;
         }
 

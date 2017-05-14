@@ -10,7 +10,8 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionIn
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Tests\Parser\Reflection\ReflectionConstantTest;
+use Exception;
+use Exception;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -210,7 +211,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
             }
         }
 
-        throw new \Exception(
+        throw new Exception(
             sprintf('missing cosntant %s', $name)
         );
     }
@@ -223,7 +224,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
             }
         }
 
-        throw new \Exception(
+        throw new Exception(
             sprintf('missing cosntant %s', $name)
         );
     }

@@ -130,6 +130,7 @@ final class NamespaceStorage
             if ($parentNamespace === $namespace) {
                 break;
             }
+
             $parentNamespaces[] = $parentNamespace;
         }
 

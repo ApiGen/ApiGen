@@ -2,9 +2,7 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Trait_;
 
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
-use ApiGen\Reflection\Reflection\Class_\ClassMethodReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Reflection\Trait_\TraitMethodReflection;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
@@ -36,10 +34,7 @@ final class TraitMethodReflectionTransformer implements TransformerInterface
         return $declaringClassOrTrait->isTrait();
     }
 
-    /**
-     * @param ReflectionMethod $reflection
-     */
-    public function transform($reflection): TraitMethodReflectionInterface
+    public function transform(ReflectionMethod $reflection): TraitMethodReflectionInterface
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 

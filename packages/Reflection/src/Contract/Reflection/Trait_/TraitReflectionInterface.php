@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 

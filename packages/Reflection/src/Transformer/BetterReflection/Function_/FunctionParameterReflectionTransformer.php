@@ -3,8 +3,8 @@
 namespace ApiGen\Reflection\Transformer\BetterReflection\Function_;
 
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
-use ApiGen\Reflection\Reflection\Function_\FunctionParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Reflection\Function_\FunctionParameterReflection;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 final class FunctionParameterReflectionTransformer implements TransformerInterface
@@ -21,10 +21,7 @@ final class FunctionParameterReflectionTransformer implements TransformerInterfa
         return $reflection->getDeclaringClass() === null;
     }
 
-    /**
-     * @param ReflectionParameter $reflection
-     */
-    public function transform($reflection): FunctionParameterReflectionInterface
+    public function transform(ReflectionParameter $reflection): FunctionParameterReflectionInterface
     {
         return new FunctionParameterReflection($reflection);
     }

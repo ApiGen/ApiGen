@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassConstantReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 use ApiGen\Tests\Parser\Reflection\ReflectionConstantSource\ConstantInClass;
@@ -46,13 +45,13 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
         $this->assertSame(55, $this->classConstantReflection->getValue());
     }
 
-    public function testLines()
+    public function testLines(): void
     {
         $this->assertSame(25, $this->classConstantReflection->getStartLine());
         $this->assertSame(35, $this->classConstantReflection->getEndLine());
     }
 
-    public function testVisibility()
+    public function testVisibility(): void
     {
         $this->assertTrue($this->classConstantReflection->isPublic());
         $this->assertFalse($this->classConstantReflection->isProtected());

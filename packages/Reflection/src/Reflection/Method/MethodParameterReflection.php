@@ -10,7 +10,6 @@ use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterf
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 

@@ -4,14 +4,14 @@ namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Element\Tree\TraitUsersResolver;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use InvalidArgumentException;
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -69,7 +69,6 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return trim($description);
     }
 
-
     /**
      * @return ClassReflectionInterface[]
      */
@@ -121,7 +120,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     public function getMethod(string $name): TraitMethodReflectionInterface
     {
         if (! $this->hasMethod($name)) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Method "%s" does not exist in trait "%s".',
                 $name,
                 $this->getName()
@@ -185,7 +184,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     public function getProperty(string $name): TraitPropertyReflectionInterface
     {
         if (! isset($this->getProperties()[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Property "%s" does not exist in trait "%s".',
                 $name,
                 $this->getName()
