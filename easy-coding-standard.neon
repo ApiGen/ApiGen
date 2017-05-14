@@ -71,46 +71,47 @@ checkers:
     - PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
     - PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer
 
-skip:
-    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
-        - tests/Parser/Parser/ParserSource/SomeClass.php
-        - tests/Generator/Source/SomeFunction.php
-        - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php
-        - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
-        - tests/Parser/Reflection/ReflectionClassSource/SomeTrait.php
-        - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
-        - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
-        - tests/Generator/DeprecatedSources/DeprecatedMethod.php
-        - tests/Generator/DeprecatedSources/DeprecatedClass.php
-        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
-        - src/Console/Input/LiberalFormatArgvInput.php
-        - src/Console/Command/AbstractCommand.php
-        - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
-        - tests/Parser/Parser/ParserSource/SomeFunction.php
-        - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
-        - packages/Reflection/src/Transformer/BetterClassReflectionTransformer.php
-        - packages/Reflection/src/Transformer/BetterFunctionReflectionTransformer.php
-        - packages/Reflection/src/Transformer/InterfaceReflectionTransformer.php
-        - packages/Reflection/src/Transformer/BetterParameterReflectionTransformer.php
-        - packages/Reflection/src/Transformer/BetterTraitReflectionTransformer.php
-        - packages/Reflection/src/Transformer/TokenClassReflectionTransformer.php
-        - packages/Reflection/src/Transformer/TokenConstantReflectionTransformer.php
-        - packages/Reflection/src/Transformer/TokenMethodReflectionTransformer.php
-        - packages/Reflection/src/Transformer/TokenParameterReflectionTransformer.php
-        - packages/Reflection/src/Transformer/TokenPropertyReflectionTransformer.php
-        - packages/Reflection/src/Reflection/ClassReflection.php
-        - packages/Reflection/src/Reflection/ClassPropertyReflection.php
-        - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
-        - packages/Reflection/src/Transformer/BetterPropertyReflectionTransformer.php
-        - packages/ModularConfiguration/src/Option/SourceOption.php
-        - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
+parameters:
+    skip:
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+            - tests/Parser/Parser/ParserSource/SomeClass.php
+            - tests/Generator/Source/SomeFunction.php
+            - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php
+            - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
+            - tests/Parser/Reflection/ReflectionClassSource/SomeTrait.php
+            - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
+            - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
+            - tests/Generator/DeprecatedSources/DeprecatedMethod.php
+            - tests/Generator/DeprecatedSources/DeprecatedClass.php
+            - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+            - src/Console/Input/LiberalFormatArgvInput.php
+            - src/Console/Command/AbstractCommand.php
+            - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
+            - tests/Parser/Parser/ParserSource/SomeFunction.php
+            - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterClassReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterFunctionReflectionTransformer.php
+            - packages/Reflection/src/Transformer/InterfaceReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterParameterReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterTraitReflectionTransformer.php
+            - packages/Reflection/src/Transformer/TokenClassReflectionTransformer.php
+            - packages/Reflection/src/Transformer/TokenConstantReflectionTransformer.php
+            - packages/Reflection/src/Transformer/TokenMethodReflectionTransformer.php
+            - packages/Reflection/src/Transformer/TokenParameterReflectionTransformer.php
+            - packages/Reflection/src/Transformer/TokenPropertyReflectionTransformer.php
+            - packages/Reflection/src/Reflection/ClassReflection.php
+            - packages/Reflection/src/Reflection/ClassPropertyReflection.php
+            - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
+            - packages/Reflection/src/Transformer/BetterPropertyReflectionTransformer.php
+            - packages/ModularConfiguration/src/Option/SourceOption.php
+            - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
 
-    SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
-        - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
-        - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
-        - tests/Parser/Parser/ParserTest.php
-        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
-        - tests/Parser/Parser/ParserSource/SomeInterface.php
+        SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
+            - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
+            - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
+            - tests/Parser/Parser/ParserTest.php
+            - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+            - tests/Parser/Parser/ParserSource/SomeInterface.php
 
-    SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
-        - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
+        SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
+            - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php

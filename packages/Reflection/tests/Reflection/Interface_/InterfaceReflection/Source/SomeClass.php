@@ -7,4 +7,8 @@ final class SomeClass implements SomeInterface
     public function getSomeStuff()
     {
     }
+
+    public function riseAndShine()
+    {
+    }
 }

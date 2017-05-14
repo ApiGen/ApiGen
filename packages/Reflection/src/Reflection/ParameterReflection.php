@@ -3,14 +3,15 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class ParameterReflection implements ParameterReflectionInterface
+final class ParameterReflection implements AbstractParameterReflectionInterface
 {
     /**
      * @var ReflectionParameter
@@ -18,7 +19,7 @@ final class ParameterReflection implements ParameterReflectionInterface
     private $reflection;
 
     /**
-     * @var ClassMethodReflectionInterface|FunctionReflectionInterface
+     * @var ClassMethodReflectionInterface|TraitMethodReflectionInterface|FunctionReflectionInterface
      */
     private $declaringFunction;
 
