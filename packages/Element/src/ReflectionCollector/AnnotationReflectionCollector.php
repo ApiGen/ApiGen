@@ -3,7 +3,6 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
@@ -16,17 +15,12 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
-final class AnnotationReflectionCollector implements ReflectionCollectorInterface
+final class AnnotationReflectionCollector extends AbstractReflectionCollector
 {
     /**
      * @var ConfigurationInterface
      */
     private $configuration;
-
-    /**
-     * @var mixed
-     */
-    private $collectedReflections = [];
 
     /**
      * @var string
@@ -124,20 +118,5 @@ final class AnnotationReflectionCollector implements ReflectionCollectorInterfac
     {
         return ($this->collectedReflections[ClassConstantReflectionInterface::class][$this->activeAnnotation] ?? [])
             + ($this->collectedReflections[InterfaceConstantReflectionInterface::class][$this->activeAnnotation] ?? []);
-    }
-
-    public function hasAnyElements(): bool
-    {
-        return (bool) count($this->collectedReflections);
-    }
-
-    /**
-     * @param object $reflection
-     */
-    private function getReflectionInterfaceFromReflection($reflection): string
-    {
-        $implementedInterfaces = class_implements($reflection);
-
-        return array_shift($implementedInterfaces);
     }
 }

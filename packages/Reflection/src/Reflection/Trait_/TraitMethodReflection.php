@@ -1,6 +1,7 @@
 <?php declare(strict_types=1);
 
 namespace ApiGen\Reflection\Reflection\Trait_;
+
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
