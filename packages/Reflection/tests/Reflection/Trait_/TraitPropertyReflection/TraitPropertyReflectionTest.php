@@ -17,7 +17,6 @@ final class TraitPropertyReflectionTest extends AbstractParserAwareTestCase
     protected function setUp(): void
     {
         $this->parser->parseDirectories([__DIR__ . '/Source']);
-
         $traitReflections = $this->reflectionStorage->getTraitReflections();
         $traitReflection = $traitReflections[TraitProperty::class];
         $this->propertyReflection = $traitReflection->getProperty('memberCount');

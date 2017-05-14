@@ -98,7 +98,9 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
      */
     public function getParameters(): array
     {
-        // TODO: Implement getParameters() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterMethodReflection->getParameters()
+        );
     }
 
     public function isDeprecated(): bool
