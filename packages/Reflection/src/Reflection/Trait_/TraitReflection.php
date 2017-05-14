@@ -139,9 +139,12 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getTraits(): array
     {
-        return $this->transformerCollector->transformGroup(
-            $this->betterTraitReflection->getTraits()
-        );
+        return [];
+        // fails for now, see:
+        // https://github.com/nikic/PHP-Parser/issues/73#issuecomment-24533846
+        // $this->betterTraitReflection->getTraits();
+        // and PR wit htest
+        // https://github.com/Roave/BetterReflection/pull/274
     }
 
     /**
@@ -149,7 +152,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getTraitAliases(): array
     {
-        // TODO: Implement getTraitAliases() method.
+        return $this->betterTraitReflection->getTraitAliases();
     }
 
     /**
@@ -177,7 +180,13 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getUsedProperties(): array
     {
-        // TODO: Implement getUsedProperties() method.
+        $traitReflections = $this->getTraits();
+
+        $usedProperties = [];
+        foreach ($traitReflections as $traitReflection) {
+            $usedProperties[$traitReflection->getName()] = $traitReflection->getOwnProperties();
+        }
+        return $usedProperties;
     }
 
     public function getProperty(string $name): TraitPropertyReflectionInterface
