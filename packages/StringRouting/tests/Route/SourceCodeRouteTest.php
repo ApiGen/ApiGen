@@ -2,7 +2,16 @@
 
 namespace ApiGen\StringRouting\Tests;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\StringRouting\Router;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -19,21 +28,135 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $this->router = $this->container->getByType(Router::class);
     }
 
-    public function testClassReflection(): void
+    /**
+     * @dataProvider provideDataForBuildRoute
+     */
+    public function testBasicReflection(string $reflectionInterface, string $expectedUrl): void
     {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-        $classReflectionMock->method('getName')
+        $reflectionMock = $this->createMock($reflectionInterface);
+        $reflectionMock->method('getName')
             ->willReturn('someName');
 
-        $this->assertSame('source-class-someName.html', $this->router->buildRoute('sourceCode', $classReflectionMock));
+        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
     }
 
-    public function testTraitReflection(): void
+    /**
+     * @return string[][]
+     */
+    public function provideDataForBuildRoute(): array
     {
-        $traitReflectionMock = $this->createMock(TraitReflectionInterface::class);
-        $traitReflectionMock->method('getName')
-            ->willReturn('someName');
+        return [
+            [ClassReflectionInterface::class, 'source-class-someName.html'],
+            [InterfaceReflectionInterface::class, 'source-interface-someName.html'],
+            [TraitReflectionInterface::class, 'source-trait-someName.html'],
+        ];
+    }
 
-        $this->assertSame('source-trait-someName.html', $this->router->buildRoute('sourceCode', $traitReflectionMock));
+    /**
+     * @dataProvider provideDataForBuildLinedRoute
+     */
+    public function testLinedReflection(string $reflectionInterface, string $expectedUrl): void
+    {
+        $reflectionMock = $this->createMock($reflectionInterface);
+        $reflectionMock->method('getName')
+            ->willReturn('someName');
+        $reflectionMock->method('getStartLine')
+            ->willReturn(15);
+        $reflectionMock->method('getEndLine')
+            ->willReturn(25);
+
+        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function provideDataForBuildLinedRoute(): array
+    {
+        return [
+            [FunctionReflectionInterface::class, 'source-function-someName.html#15-25']
+        ];
+    }
+
+    /**
+     * @dataProvider provideDataForBuilderClassElementRoute
+     */
+    public function testClassElements(string $reflectionInterface, string $expectedUrl): void
+    {
+        $reflectionMock = $this->createMock($reflectionInterface);
+        $reflectionMock->method('getDeclaringClassName')
+            ->willReturn('someClass');
+        $reflectionMock->method('getStartLine')
+            ->willReturn(20);
+        $reflectionMock->method('getEndLine')
+            ->willReturn(30);
+
+        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function provideDataForBuilderClassElementRoute(): array
+    {
+        return [
+            [ClassConstantReflectionInterface::class, 'source-class-someClass.html#20-30'],
+            [ClassMethodReflectionInterface::class, 'source-class-someClass.html#20-30'],
+            [ClassPropertyReflectionInterface::class, 'source-class-someClass.html#20-30']
+        ];
+    }
+
+    /**
+     * @dataProvider provideDataForBuilderInterfaceElementRoute
+     */
+    public function testInterfaceElements(string $reflectionInterface, string $expectedUrl): void
+    {
+        $reflectionMock = $this->createMock($reflectionInterface);
+        $reflectionMock->method('getDeclaringInterfaceName')
+            ->willReturn('someInterface');
+        $reflectionMock->method('getStartLine')
+            ->willReturn(20);
+        $reflectionMock->method('getEndLine')
+            ->willReturn(30);
+
+        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function provideDataForBuilderInterfaceElementRoute(): array
+    {
+        return [
+            [InterfaceConstantReflectionInterface::class, 'source-interface-someInterface.html#20-30'],
+            [InterfaceMethodReflectionInterface::class, 'source-interface-someInterface.html#20-30'],
+        ];
+    }
+
+    /**
+     * @dataProvider provideDataForBuilderTraitElementRoute
+     */
+    public function testTraitElements(string $reflectionInterface, string $expectedUrl): void
+    {
+        $reflectionMock = $this->createMock($reflectionInterface);
+        $reflectionMock->method('getDeclaringTraitName')
+            ->willReturn('someTrait');
+        $reflectionMock->method('getStartLine')
+            ->willReturn(20);
+        $reflectionMock->method('getEndLine')
+            ->willReturn(30);
+
+        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function provideDataForBuilderTraitElementRoute(): array
+    {
+        return [
+            [TraitPropertyReflectionInterface::class, 'source-trait-someTrait.html#20-30'],
+            [TraitMethodReflectionInterface::class, 'source-trait-someTrait.html#20-30'],
+        ];
     }
 }

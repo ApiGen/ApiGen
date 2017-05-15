@@ -89,17 +89,14 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
     }
 
     public function getStartLine(): int
     {
-        // TODO: Implement getStartLine() method.
     }
 
     public function getEndLine(): int
     {
-        // TODO: Implement getEndLine() method.
     }
 
     public function getDeclaringInterfaceName(): string

@@ -33,6 +33,6 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
 
     public function testVisibility(): void
     {
-        $this->assertCount(1, $this->reflectionClass->getMethods());
+        $this->assertCount(5, $this->reflectionClass->getMethods());
     }
 }

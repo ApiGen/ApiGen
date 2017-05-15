@@ -3,3 +3,4 @@
 #    - ApiGen\StringRouting\Route\ReflectionRoute
 - ApiGen\StringRouting\Route\SourceCodeRoute
 - ApiGen\StringRouting\Router
+- ApiGen\StringRouting\Route\StaticRoute

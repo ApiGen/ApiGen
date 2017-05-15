@@ -133,12 +133,12 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
 
     public function getStartLine(): int
     {
-        // TODO: Implement getStartLine() method.
+        return $this->betterMethodReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        // TODO: Implement getEndLine() method.
+        return $this->betterMethodReflection->getEndLine();
     }
 
     public function isPublic(): bool
