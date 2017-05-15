@@ -182,9 +182,13 @@
 	    </tr>
 	</table>
 
+
+
+
+    {* used traits directly! *}
 	<table n:foreach="$class->getUsedMethods() as $traitName => $methods" class="summary used">
         {var $trait = ($traitName|getClass)}
-        <caption>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$trait">{$traitName}</a></caption>
+        <caption>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$trait">{$traitName}</a> trait</caption>
         <tr>
             <td>
                 <code>
