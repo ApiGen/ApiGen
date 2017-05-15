@@ -17,10 +17,4 @@ abstract class AbstractReflectionCollector implements ReflectionCollectorInterfa
         return (bool) count($this->collectedReflections);
     }
 
-    protected function getReflectionInterfaceFromReflection(AbstractReflectionInterface $reflection): string
-    {
-        $implementedInterfaces = class_implements($reflection);
-
-        return array_shift($implementedInterfaces);
-    }
 }

@@ -3,8 +3,9 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Generator\Resolvers\RelativePathResolver;
+use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class PathFilters extends Filters
+final class PathFilters implements LatteFiltersProviderInterface
 {
     /**
      * @var RelativePathResolver
@@ -16,8 +17,15 @@ final class PathFilters extends Filters
         $this->relativePathResolver = $relativePathResolver;
     }
 
-    public function relativePath(string $fileName): string
+    /**
+     * @return callable[]
+     */
+    public function getFilters(): array
     {
-        return $this->relativePathResolver->getRelativePath($fileName);
+        return [
+            'relativePath' => function (string $fileName): string {
+                return $this->relativePathResolver->getRelativePath($fileName);
+            }
+        ];
     }
 }

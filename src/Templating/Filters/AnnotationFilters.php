@@ -4,8 +4,9 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Event\FilterAnnotationsEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class AnnotationFilters extends Filters
+final class AnnotationFilters implements LatteFiltersProviderInterface
 {
     /**
      * @var EventDispatcherInterface
@@ -18,20 +19,22 @@ final class AnnotationFilters extends Filters
     }
 
     /**
-     * @param string[] $annotations
-     * @param string[] $annotationsToRemove
-     * @return string[]
+     * @return callable[]
      */
-    public function annotationFilter(array $annotations, array $annotationsToRemove = []): array
+    public function getFilters(): array
     {
-        $filterAnnotationsEvent = new FilterAnnotationsEvent($annotations);
-        $this->eventDispatcher->dispatch(FilterAnnotationsEvent::class, $filterAnnotationsEvent);
-        $annotations = $filterAnnotationsEvent->getAnnotations();
+        return [
+            'annotationFilter' => function (array $annotations, array $annotationsToRemove = []) {
+                $filterAnnotationsEvent = new FilterAnnotationsEvent($annotations);
+                $this->eventDispatcher->dispatch(FilterAnnotationsEvent::class, $filterAnnotationsEvent);
+                $annotations = $filterAnnotationsEvent->getAnnotations();
 
-        foreach ($annotationsToRemove as $annotationToRemove) {
-            unset($annotations[$annotationToRemove]);
-        }
+                foreach ($annotationsToRemove as $annotationToRemove) {
+                    unset($annotations[$annotationToRemove]);
+                }
 
-        return $annotations;
+                return $annotations;
+            }
+        ];
     }
 }

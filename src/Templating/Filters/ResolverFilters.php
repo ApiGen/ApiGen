@@ -2,19 +2,17 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Reflection\Contract\Reflection\TokenReflection\ReflectionInterface;
-use ApiGen\Generator\Resolvers\ElementResolver;
-use ApiGen\Parser\Reflection\AbstractReflectionElement;
-use ApiGen\Parser\Reflection\ReflectionClass;
+use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 
-class ResolverFilters extends Filters
+final class ResolverFilters extends Filters
 {
     /**
-     * @var ElementResolver
+     * @var ElementResolverInterface
      */
     private $elementResolver;
 
-    public function __construct(ElementResolver $elementResolver)
+    public function __construct(ElementResolverInterface $elementResolver)
     {
         $this->elementResolver = $elementResolver;
     }
@@ -33,9 +31,9 @@ class ResolverFilters extends Filters
     }
 
     /**
-     * @param AbstractReflectionElement|ReflectionInterface $context
+     * @param AbstractReflectionInterface $context
      * @param null $expectedName
-     * @return AbstractReflectionElement|bool|null
+     * @return AbstractReflectionInterface|bool|null
      */
     public function resolveElement(string $definition, $context, &$expectedName = null)
     {

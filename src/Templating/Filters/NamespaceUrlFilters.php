@@ -3,8 +3,9 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class NamespaceUrlFilters extends Filters
+final class NamespaceUrlFilters implements LatteFiltersProviderInterface
 {
     /**
      * @var LinkBuilder
@@ -16,18 +17,36 @@ final class NamespaceUrlFilters extends Filters
         $this->linkBuilder = $linkBuilder;
     }
 
-    public function subgroupName(string $groupName): string
+    /**
+     * @return callable[]
+     */
+    public function getFilters(): array
     {
-        $pos = strrpos($groupName, '\\');
+        return [
+            'subNamespaceName' => function (string $namespaceName): string {
+                $namespaceSeparatorPosition = strrpos($namespaceName, '\\');
+                if ($namespaceSeparatorPosition) {
+                    return substr($namespaceName, $namespaceSeparatorPosition + 1);
+                }
 
-        if ($pos) {
-            return substr($groupName, $pos + 1);
-        }
+                return $namespaceName;
+            },
 
-        return $groupName;
+            'namespaceUrl' => function (string $name): string {
+                return $this->namespaceUrl($name);
+            },
+
+            'namespaceLinks' => function (string $namespace): string {
+                return $this->namespaceLinks($namespace);
+            },
+
+            'namespaceLinksWithoutLast' => function (string $namespace): string {
+                return $this->namespaceLinks($namespace, true);
+            }
+        ];
     }
 
-    public function namespaceLinks(string $namespace, bool $skipLast = true): string
+    private function namespaceLinks(string $namespace, bool $skipLast = true): string
     {
         $links = [];
 
@@ -42,10 +61,7 @@ final class NamespaceUrlFilters extends Filters
         return implode('\\', $links);
     }
 
-    // @todo
-    // public function namespaceLinkWithoutLast(string $namespace): string
-
-    public function namespaceUrl(string $name): string
+    private function namespaceUrl(string $name): string
     {
         return sprintf('namespace-%s.html', Filters::urlize($name));
     }

@@ -3,80 +3,96 @@
 namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Helper\ReflectionAnalyzer;
+use Nette\Utils\Strings;
+use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class SourceFilters extends Filters
+final class SourceFilters implements LatteFiltersProviderInterface
 {
     /**
      * @var ConfigurationInterface
      */
     private $configuration;
 
+    /**
+     * @var callable[]
+     */
+    private $reflectionToCallbackMap = [];
+
     public function __construct(ConfigurationInterface $configuration)
     {
         $this->configuration = $configuration;
-    }
 
-    public function staticFile(string $name): string
-    {
-        $filename = $this->configuration->getOption('destination') . '/' . $name;
-        if (is_file($filename)) {
-            $name .= '?' . sha1_file($filename);
-        }
-
-        return $name;
+        $this->reflectionToCallbackMap[ClassReflectionInterface::class] = function (ClassReflectionInterface $classReflection) {
+            return 'source-class-' . Strings::webalize($classReflection->getName()) . 'html';
+        };
+        $this->reflectionToCallbackMap[TraitReflectionInterface::class] = function (TraitReflectionInterface $classReflection) {
+            return 'source-trait-' . Strings::webalize($classReflection->getName()) . 'html';
+        };
+        $this->reflectionToCallbackMap[InterfaceReflectionInterface::class] = function (InterfaceReflectionInterface $classReflection) {
+            return 'source-interface-' . Strings::webalize($classReflection->getName()) . 'html';
+        };
     }
 
     /**
-     * @todo split into 2 methods, no bool
+     * @return callable[]
      */
-    public function sourceUrl(ReflectionInterface $element, bool $withLine = true): string
+    public function getFilters(): array
     {
-        // classSourceUrl
-        // traitSourceUrl
-        // interfaceSourceUrl
-        // methodSourceUrl
-        // functionSourceUrl
-
-        $file = '';
-        $elementName = '';
-
-        if ($this->isDirectUrl($element)) {
-            $elementName = $element->getName();
-            if ($element instanceof ClassReflectionInterface) {
-                $file = 'class-';
-            } elseif ($element instanceof FunctionReflectionInterface) {
-                $file = 'function-';
+        return [
+            'staticFile' => function (string $filename): string {
+                return $this->staticFile($filename);
+            },
+            'sourceUrl' => function (AbstractReflectionInterface $reflection): string {
+                return $this->sourceUrl($reflection);
+            },
+            'sourceUrlWithLine' => function (StartAndEndLineInterface $reflection): string {
+                return $this->sourceUrl($reflection) . $this->getElementLinesAnchor($reflection);
             }
-        } elseif ($element instanceof InClassInterface) {
-            $elementName = $element->getDeclaringClassName();
-            $file = 'class-';
-        }
-
-        $file .= self::urlize($elementName);
-
-        $url = sprintf('source-%s.html', $file);
-        if ($withLine) {
-            $url .= $this->getElementLinesAnchor($element);
-        }
-
-        return $url;
+        ];
     }
 
-    private function isDirectUrl(ReflectionInterface $element): bool
+    private function staticFile(string $filename): string
     {
-        if ($element instanceof ClassReflectionInterface
-            || $element instanceof FunctionReflectionInterface
-        ) {
-            return true;
+        $filename = $this->configuration->getOption(DestinationOption::NAME) . '/' . $filename;
+        if (is_file($filename)) {
+            $filename .= '?' . md5_file($filename);
         }
 
-        return false;
+        return $filename;
     }
 
-    private function getElementLinesAnchor($element): string
+    /**
+     * @param AbstractReflectionInterface|StartAndEndLineInterface $reflection
+     */
+    private function sourceUrl(AbstractReflectionInterface $reflection): string
+    {
+        $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
+
+        return $this->reflectionToCallbackMap[$reflectionInterface]($reflection);
+//        // reflection map => output
+//
+//        $relativeUrl = 'source-';
+//
+//            if ($reflection instanceof ClassReflectionInterface) {
+//                $relativeUrl .= 'class-' . Strings::webalize($reflection->getName());
+//            } elseif ($reflection instanceof FunctionReflectionInterface) {
+//                $relativeUrl .= 'function-' . Strings::webalize($reflection->getName());
+//            }
+//        } elseif ($reflection instanceof InClassInterface) {
+//            $relativeUrl .= 'class-' . Strings::webalize($reflection->getDeclaringClassName());
+//        }
+//
+//        return $relativeUrl .= '.html';
+    }
+
+    private function getElementLinesAnchor(StartAndEndLineInterface $element): string
     {
         $anchor = '#' . $element->getStartLine();
         if ($element->getStartLine() !== $element->getEndLine()) {

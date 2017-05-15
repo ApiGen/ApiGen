@@ -2,15 +2,14 @@
 
 namespace ApiGen\Templating\Filters;
 
+use ApiGen\Reflection\Contract\Reflection\AbstractMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
 use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
+use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class ElementUrlFilters extends Filters
+final class ElementUrlFilters implements LatteFiltersProviderInterface
 {
     /**
      * @var ElementUrlFactory
@@ -22,36 +21,47 @@ final class ElementUrlFilters extends Filters
         $this->elementUrlFactory = $elementUrlFactory;
     }
 
+    /**
+     * @return callable[]
+     */
+    public function getFilters(): array
+    {
+        return [
+
+        ];
+    }
+
     public function elementUrl(ReflectionInterface $element): string
     {
         return $this->elementUrlFactory->createForElement($element);
     }
+//    /**
+//     * @param string|ClassReflectionInterface $class
+//     */
 
-    /**
-     * @param string|ClassReflectionInterface $class
-     */
-    public function classUrl($class): string
+    public function classUrl(ClassReflectionInterface $class): string
     {
         return $this->elementUrlFactory->createForClass($class);
     }
 
-    public function methodUrl(ClassMethodReflectionInterface $method, ?ClassReflectionInterface $class = null): string
+    public function methodUrl(AbstractMethodReflectionInterface $methodReflection) { //, ?ClassReflectionInterface $class = null): string
     {
-        return $this->elementUrlFactory->createForMethod($method, $class);
+        return $this->elementUrlFactory->createForMethod($methodReflection); //, $class);
     }
 
-    public function propertyUrl(ClassPropertyReflectionInterface $property, ?ClassReflectionInterface $class = null): string
+    public function propertyUrl(ClassPropertyReflectionInterface $propertyReflection) { //}, ?ClassReflectionInterface $class = null): string
     {
-        return $this->elementUrlFactory->createForProperty($property, $class);
+        return $this->elementUrlFactory->createForProperty($propertyReflection);
+        //, $class);
     }
 
-    public function constantUrl(ClassConstantReflectionInterface $constant): string
+    public function constantUrl(ClassConstantReflectionInterface $classConstantReflection): string
     {
-        return $this->elementUrlFactory->createForConstant($constant);
+        return $this->elementUrlFactory->createForConstant($classConstantReflection);
     }
 
-    public function functionUrl(FunctionReflectionInterface $function): string
+    public function functionUrl(FunctionReflectionInterface $functionReflection): string
     {
-        return $this->elementUrlFactory->createForFunction($function);
+        return $this->elementUrlFactory->createForFunction($functionReflection);
     }
 }

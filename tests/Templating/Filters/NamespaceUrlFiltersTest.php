@@ -55,7 +55,7 @@ final class NamespaceUrlFiltersTest extends AbstractContainerAwareTestCase
 
     public function testSubgroupName(): void
     {
-        $this->assertSame('Subgroup', $this->namespaceUrlFilters->subgroupName('Group\\Subgroup'));
-        $this->assertSame('Group', $this->namespaceUrlFilters->subgroupName('Group'));
+        $this->assertSame('Subgroup', $this->namespaceUrlFilters->subNamespaceName('Group\\Subgroup'));
+        $this->assertSame('Group', $this->namespaceUrlFilters->subNamespaceName('Group'));
     }
 }

@@ -15,6 +15,7 @@ use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 
 final class AnnotationReflectionCollector extends AbstractReflectionCollector
 {
@@ -54,7 +55,7 @@ final class AnnotationReflectionCollector extends AbstractReflectionCollector
                 continue;
             }
 
-            $reflectionInterface = $this->getReflectionInterfaceFromReflection($reflection);
+            $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
             $this->collectedReflections[$reflectionInterface][$annotation][$reflection->getName()] = $reflection;
         }
     }
