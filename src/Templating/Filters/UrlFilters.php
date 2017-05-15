@@ -5,6 +5,7 @@ namespace ApiGen\Templating\Filters;
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Event\ProcessDocTextEvent;
@@ -14,8 +15,9 @@ use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte\Runtime\Filters as LatteFilters;
 use Nette\Utils\Validators;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class UrlFilters extends Filters
+final class UrlFilters implements LatteFiltersProviderInterface
 {
     /**
      * @var SourceCodeHighlighterInterface
@@ -134,9 +136,9 @@ final class UrlFilters extends Filters
         return $this->doc($description, $reflectionElement);
     }
 
-    public function description(ReflectionInterface $element): string
+    public function description(AnnotationsInterface $reflection): string
     {
-        $long = $element->getDescription();
+        $long = $reflection->getDescription();
 
         // Merge lines
         $long = preg_replace_callback('~(?:<(code|pre)>.+?</\1>)|([^<]*)~s', function ($matches) {
@@ -145,29 +147,15 @@ final class UrlFilters extends Filters
                 : $matches[0];
         }, $long);
 
-        return $this->doc($long, $element);
+        return $this->doc($long, $reflection);
     }
 
     public function doc(string $text, ReflectionInterface $reflectionElement): string
     {
-        $text = $this->resolveInternalAnnotation($text);
-
         $processDocTextEvent = new ProcessDocTextEvent($text, $reflectionElement);
         $this->eventDispatcher->dispatch(ProcessDocTextEvent::class, $processDocTextEvent);
 
         return $this->resolveLinkAndSeeAnnotation($processDocTextEvent->getText(), $reflectionElement);
-    }
-
-    private function resolveInternalAnnotation(string $text): string
-    {
-        $pattern = '~\\{@(\\w+)(?:(?:\\s+((?>(?R)|[^{}]+)*)\\})|\\})~';
-        return preg_replace_callback($pattern, function ($matches) {
-            if ($matches[1] !== 'internal') {
-                return $matches[0];
-            }
-
-            return '';
-        }, $text);
     }
 
     private function resolveLinkAndSeeAnnotation(string $text, ReflectionInterface $reflectionElement): string
@@ -266,5 +254,13 @@ final class UrlFilters extends Filters
         }
 
         return null;
+    }
+
+    /**
+     * @return callable[]
+     */
+    public function getFilters(): array
+    {
+        // TODO: Implement getFilters() method.
     }
 }

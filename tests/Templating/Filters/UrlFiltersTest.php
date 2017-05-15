@@ -73,19 +73,6 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
     }
 
     /**
-     * @return string[][]
-     */
-    public function getInternalData(): array
-    {
-        return [
-            ['{@internal Inside {@link some comment}, foo}', ''],
-            ['{@internal} Inside {@link some comment}', ' Inside {@link some comment}'],
-            ['{@internal}', ''],
-            ['{@inherited bar}', '{@inherited bar}'],
-        ];
-    }
-
-    /**
      * @dataProvider getLinkAndSeeData()
      */
     public function testResolveLinkAndSeeAnnotation(string $docBlock, string $expectedLink): void
