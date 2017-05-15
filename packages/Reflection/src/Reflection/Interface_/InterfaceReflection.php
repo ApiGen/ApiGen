@@ -131,14 +131,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         // TODO: Implement getInheritedMethods() method.
     }
 
-    /**
-     * @return InterfaceMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array
-    {
-        // TODO: Implement getUsedMethods() method.
-    }
-
     public function getMethod(string $name): InterfaceMethodReflectionInterface
     {
         // TODO: Implement getMethod() method.

@@ -188,16 +188,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->parentClassElementsResolver->getInheritedMethods($this);
     }
 
-    /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array
-    {
-        $usedMethods = $this->classTraitElementResolver->getUsedMethods($this);
-
-        return $this->sortUsedMethods($usedMethods);
-    }
-
     public function hasMethod(string $name): bool
     {
         return isset($this->getMethods()[$name]);
@@ -378,26 +368,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getFileName(): string
     {
         return $this->betterClassReflection->getFileName();
-    }
-
-    /**
-     * @param mixed[] $usedMethods
-     * @return mixed[]
-     */
-    private function sortUsedMethods(array $usedMethods): array
-    {
-        array_walk($usedMethods, function (&$methods) {
-            ksort($methods);
-            array_walk($methods, function (&$aliasedMethods) {
-                if (! isset($aliasedMethods['aliases'])) {
-                    $aliasedMethods['aliases'] = [];
-                }
-
-                ksort($aliasedMethods['aliases']);
-            });
-        });
-
-        return $usedMethods;
     }
 
     /**

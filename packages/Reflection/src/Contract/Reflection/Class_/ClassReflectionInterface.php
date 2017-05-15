@@ -59,11 +59,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     /**
      * @return TraitMethodReflectionInterface[]
      */
-    public function getUsedMethods(): array;
-
-    /**
-     * @return TraitMethodReflectionInterface[]
-     */
     public function getTraitMethods(): array;
 
     public function getMethod(string $name): ClassMethodReflectionInterface;

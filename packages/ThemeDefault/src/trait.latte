@@ -175,17 +175,17 @@
 	    </tr>
 	</table>
 
-	<table n:foreach="$trait->getUsedMethods() as $traitName => $methods" class="summary used">
-        {var $trait = ($traitName|getClass)}
-        <caption>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$trait">{$traitName}</a> trait</caption>
+    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary used">
+        <caption>Methods used from <a href="{$traitName|classUrl}#methods">{$traitName}</a> trait</caption>
         <tr>
             <td>
                 <code>
-                    {foreach $methods as $data}
-                        <a href="{$data['method']|methodUrl: $data['method']->declaringTrait}" n:tag-if="$trait">
-                            <span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$data['method']->getName()}()</span>
+                    {foreach $trait->getOwnMethods() as $traitMethod}
+                        <a href="{$traitMethod|methodUrl: $traitMethod->declaringTrait}">
+                            <span n:tag-if="$traitMethod->isDeprecated()" class="deprecated">{$traitMethod->getName()}()</span>
                         </a>
-                        {if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}
+                        {* @todo *}
+                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
                     {/foreach}
                 </code>
             </td>
