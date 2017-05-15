@@ -56,34 +56,6 @@ final class SourceCodeRoute implements RouteInterface
         return '/';
     }
 
-//    /**
-//     * @param AbstractReflectionInterface|StartAndEndLineInterface $reflection
-//     */
-//    private function sourceUrl(AbstractReflectionInterface $reflection): string
-//    {
-//        foreach ($this->reflectionToCallbackMap as $reflectionInterface => $sourceUrlCallback) {
-//            if ($reflection instanceof $reflectionInterface) {
-//                return $sourceUrlCallback($reflection);
-//            }
-//        }
-//
-//        return '';
-//        // reflection map => output
-//
-//        $relativeUrl = 'source-';
-//
-//            if ($reflection instanceof ClassReflectionInterface) {
-//                $relativeUrl .= 'class-' . Strings::webalize($reflection->getName());
-//            } elseif ($reflection instanceof FunctionReflectionInterface) {
-//                $relativeUrl .= 'function-' . Strings::webalize($reflection->getName());
-//            }
-//        } elseif ($reflection instanceof InClassInterface) {
-//            $relativeUrl .= 'class-' . Strings::webalize($reflection->getDeclaringClassName());
-//        }
-//
-//        return $relativeUrl .= '.html';
-//    }
-
     private function buildLineAnchor(StartAndEndLineInterface $reflection): string
     {
         $anchor = '#' . $reflection->getStartLine();
