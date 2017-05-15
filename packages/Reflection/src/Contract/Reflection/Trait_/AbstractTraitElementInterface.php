@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
-interface AbstractTraitElementInterface
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+
+interface AbstractTraitElementInterface extends AbstractReflectionInterface
 {
     public function getDeclaringTrait(): TraitReflectionInterface;
 

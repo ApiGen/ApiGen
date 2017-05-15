@@ -6,8 +6,6 @@ use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
 interface InterfaceConstantReflectionInterface extends AbstractInterfaceElementInterface, StartAndEndLineInterface
 {
-    public function getName(): string;
-
     /**
      * @return mixed
      */

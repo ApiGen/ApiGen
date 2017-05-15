@@ -6,8 +6,6 @@ use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
 
 interface InterfaceMethodReflectionInterface extends AbstractInterfaceElementInterface
 {
-    public function getName(): string;
-
     public function getShortName(): string;
 
     /**

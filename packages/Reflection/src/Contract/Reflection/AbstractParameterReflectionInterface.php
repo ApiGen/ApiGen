@@ -5,10 +5,8 @@ namespace ApiGen\Reflection\Contract\Reflection;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 
-interface AbstractParameterReflectionInterface
+interface AbstractParameterReflectionInterface extends AbstractReflectionInterface
 {
-    public function getName(): string;
-
     public function getTypeHint(): string;
 
     public function getDefaultValueDefinition(): ?string;

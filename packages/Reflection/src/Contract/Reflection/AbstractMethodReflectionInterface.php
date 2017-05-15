@@ -10,10 +10,8 @@ use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 
 interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
-    AccessLevelInterface
+    AccessLevelInterface, AbstractReflectionInterface
 {
-    public function getName(): string;
-
     public function getShortName(): string;
 
     /**

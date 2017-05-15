@@ -2,6 +2,7 @@
 
 namespace ApiGen\Element\Contract\ReflectionCollector;
 
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -11,10 +12,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
 interface ReflectionCollectorInterface
 {
-    /**
-     * @param object $reflection
-     */
-    public function processReflection($reflection): void;
+    public function processReflection(AbstractReflectionInterface $reflection): void;
 
     /**
      * @return ClassReflectionInterface[]

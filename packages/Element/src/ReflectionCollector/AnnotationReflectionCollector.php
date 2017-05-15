@@ -3,6 +3,7 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
@@ -37,10 +38,7 @@ final class AnnotationReflectionCollector extends AbstractReflectionCollector
         $this->activeAnnotation = $activeAnnotation;
     }
 
-    /**
-     * @param object $reflection
-     */
-    public function processReflection($reflection): void
+    public function processReflection(AbstractReflectionInterface $reflection): void
     {
         if (! $reflection instanceof AnnotationsInterface) {
             return;

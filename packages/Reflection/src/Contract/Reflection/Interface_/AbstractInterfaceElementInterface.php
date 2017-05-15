@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
-interface AbstractInterfaceElementInterface
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+
+interface AbstractInterfaceElementInterface extends AbstractReflectionInterface
 {
     public function getDeclaringInterfaceName(): string;
 

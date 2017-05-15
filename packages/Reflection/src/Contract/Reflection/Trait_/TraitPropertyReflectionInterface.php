@@ -21,8 +21,4 @@ interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
     public function getTypeHint(): string;
 
     public function getNamespaceName(): string;
-
-    public function getName(): string;
-
-    public function isDeprecated(): bool;
 }

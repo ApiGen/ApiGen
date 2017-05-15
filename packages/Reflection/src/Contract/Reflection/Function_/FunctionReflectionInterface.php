@@ -2,10 +2,11 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Function_;
 
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface FunctionReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
+interface FunctionReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface
 {
     public function returnsReference(): bool;
 
@@ -14,11 +15,7 @@ interface FunctionReflectionInterface extends StartAndEndLineInterface, Annotati
      */
     public function getParameters(): array;
 
-    public function getName(): string;
-
     public function getShortName(): string;
-
-    public function isDeprecated(): bool;
 
     public function getNamespaceName(): string;
 

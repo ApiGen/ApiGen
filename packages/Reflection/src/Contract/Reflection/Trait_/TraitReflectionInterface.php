@@ -2,13 +2,12 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 
-interface TraitReflectionInterface extends AnnotationsInterface
+interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflectionInterface
 {
-    public function getName(): string;
-
     /**
      * Returns the unqualified name (UQN).
      */

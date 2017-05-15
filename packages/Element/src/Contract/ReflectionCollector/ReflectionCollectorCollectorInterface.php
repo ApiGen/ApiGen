@@ -2,12 +2,11 @@
 
 namespace ApiGen\Element\Contract\ReflectionCollector;
 
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+
 interface ReflectionCollectorCollectorInterface
 {
     public function addReflectionCollector(ReflectionCollectorInterface $reflectionCollector): void;
 
-    /**
-     * @param object $reflection
-     */
-    public function processReflection($reflection): void;
+    public function processReflection(AbstractReflectionInterface $reflection): void;
 }
