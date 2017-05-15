@@ -9,7 +9,6 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 use Nette\Utils\Strings;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
@@ -36,7 +35,8 @@ final class SourceFilters implements LatteFiltersProviderInterface
             return 'source-trait-' . Strings::webalize($classReflection->getName()) . 'html';
         };
         $this->reflectionToCallbackMap[InterfaceReflectionInterface::class] = function (InterfaceReflectionInterface $classReflection) {
-            return 'source-interface-' . Strings::webalize($classReflection->getName()) . 'html';
+            return 'source-in
+            terface-' . Strings::webalize($classReflection->getName()) . 'html';
         };
     }
 
@@ -73,9 +73,13 @@ final class SourceFilters implements LatteFiltersProviderInterface
      */
     private function sourceUrl(AbstractReflectionInterface $reflection): string
     {
-        $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
+        foreach ($this->reflectionToCallbackMap as $reflectionInterface => $sourceUrlCallback) {
+            if ($reflection instanceof $reflectionInterface) {
+                return $sourceUrlCallback($reflection);
+            }
+        }
 
-        return $this->reflectionToCallbackMap[$reflectionInterface]($reflection);
+        return '';
 //        // reflection map => output
 //
 //        $relativeUrl = 'source-';

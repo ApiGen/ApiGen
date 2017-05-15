@@ -4,6 +4,7 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
@@ -62,7 +63,7 @@ final class UrlFilters implements LatteFiltersProviderInterface
      * Tries to parse a definition of a class/method/property/constant/function
      * and returns the appropriate link if successful.
      */
-    public function resolveLink(string $definition, ReflectionInterface $reflectionElement): ?string
+    public function resolveLink(string $definition, AbstractReflectionInterface $reflection): ?string
     {
         if (empty($definition)) {
             return null;
@@ -74,7 +75,7 @@ final class UrlFilters implements LatteFiltersProviderInterface
             $suffix = '[]';
         }
 
-        $element = $this->elementResolver->resolveElement($definition, $reflectionElement, $expectedName);
+        $element = $this->elementResolver->resolveElement($definition, $reflection, $expectedName);
         if ($element === null || $element instanceof FunctionReflectionInterface) {
             return $expectedName;
         }
@@ -89,31 +90,28 @@ final class UrlFilters implements LatteFiltersProviderInterface
         return '<code>' . $link . $suffix . '</code>';
     }
 
-    /**
-     * @todo refactor to annotation collector
-     */
-    public function annotation(string $value, string $name, ReflectionInterface $reflectionElement): string
+    public function annotation(string $value, string $name, AbstractReflectionInterface $reflection): string
     {
         $annotationProcessors = [
-            'return' => $this->processReturnAnnotations($value, $reflectionElement),
-            'throws' => $this->processThrowsAnnotations($value, $reflectionElement),
+            'return' => $this->processReturnAnnotations($value, $reflection),
+            'throws' => $this->processThrowsAnnotations($value, $reflection),
             'license' => $this->processLicenseAnnotations($value),
             'link' => $this->processLinkAnnotations($value),
-            'see' => $this->processSeeAnnotations($value, $reflectionElement),
-            'uses' => $this->processUsesAnnotations($value, $reflectionElement),
+            'see' => $this->processSeeAnnotations($value, $reflection),
+            'uses' => $this->processUsesAnnotations($value, $reflection),
         ];
 
         if (isset($annotationProcessors[$name])) {
             return $annotationProcessors[$name];
         }
 
-        return $this->doc($value, $reflectionElement);
+        return $this->doc($value, $reflection);
     }
 
     /**
      * Returns links for types.
      */
-    public function typeLinks(string $annotation, ReflectionInterface $reflectionElement): string
+    public function typeLinks(string $annotation, AbstractReflectionInterface $reflection): string
     {
         $links = [];
 
@@ -124,16 +122,16 @@ final class UrlFilters implements LatteFiltersProviderInterface
 
         foreach (explode('|', $parts[0]) as $type) {
             $type = $this->getTypeName($type, false);
-            $links[] = $this->resolveLink($type, $reflectionElement) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
+            $links[] = $this->resolveLink($type, $reflection) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
         }
 
         return implode('|', $links);
     }
 
-    public function annotationDescription(string $annotation, ReflectionInterface $reflectionElement): string
+    public function annotationDescription(string $annotation, AbstractReflectionInterface $reflection): string
     {
         $description = trim(strpbrk($annotation, "\n\r\t $")) ?: $annotation;
-        return $this->doc($description, $reflectionElement);
+        return $this->doc($description, $reflection);
     }
 
     public function description(AnnotationsInterface $reflection): string
@@ -150,12 +148,12 @@ final class UrlFilters implements LatteFiltersProviderInterface
         return $this->doc($long, $reflection);
     }
 
-    public function doc(string $text, ReflectionInterface $reflectionElement): string
+    public function doc(string $text, AbstractReflectionInterface $reflection): string
     {
-        $processDocTextEvent = new ProcessDocTextEvent($text, $reflectionElement);
+        $processDocTextEvent = new ProcessDocTextEvent($text, $reflection);
         $this->eventDispatcher->dispatch(ProcessDocTextEvent::class, $processDocTextEvent);
 
-        return $this->resolveLinkAndSeeAnnotation($processDocTextEvent->getText(), $reflectionElement);
+        return $this->resolveLinkAndSeeAnnotation($processDocTextEvent->getText(), $reflection);
     }
 
     private function resolveLinkAndSeeAnnotation(string $text, ReflectionInterface $reflectionElement): string
