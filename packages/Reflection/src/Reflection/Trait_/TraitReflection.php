@@ -69,7 +69,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
     public function getUsers(): array
     {

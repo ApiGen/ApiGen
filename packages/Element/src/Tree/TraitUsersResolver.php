@@ -21,15 +21,24 @@ final class TraitUsersResolver
     /**
      * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
-    public function getUsers(TraitReflectionInterface $traitReflection): array
+    public function getUsers(TraitReflectionInterface $parentTraitReflection): array
     {
         $users = [];
+
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if (! in_array($traitReflection, $classReflection->getTraits())) {
+            if (! array_key_exists($parentTraitReflection->getName(), $classReflection->getTraits())) {
                 continue;
             }
 
-            $users[] = $classReflection;
+            $users[$classReflection->getName()] = $classReflection;
+        }
+
+        foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
+            if (! array_key_exists($parentTraitReflection->getName(), $traitReflection->getTraits())) {
+                continue;
+            }
+
+            $users[$traitReflection->getName()] = $traitReflection;
         }
 
         uksort($users, 'strcasecmp');

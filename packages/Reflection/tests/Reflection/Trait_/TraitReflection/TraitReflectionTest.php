@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Trait_\TraitReflection\Source\ClassUsingTrait;
 use ApiGen\Reflection\Tests\Reflection\Trait_\TraitReflection\Source\SimpleTrait;
 use ApiGen\Reflection\Tests\Reflection\Trait_\TraitReflection\Source\ToBeAliasedTrait;
 use ApiGen\Tests\AbstractParserAwareTestCase;
@@ -31,13 +32,20 @@ final class TraitReflectionTest extends AbstractParserAwareTestCase
         );
     }
 
-    public function testUsers(): void
+    public function testUsedProperties(): void
     {
         $usedProperties = $this->traitReflection->getUsedProperties();
         // bug, should be:
         // $this->assertCount(1, $usedProperties);
         // see: packages/Reflection/src/Reflection/Trait_/TraitReflection.php:140
         $this->assertCount(0, $usedProperties);
+    }
+
+    public function testUsers(): void
+    {
+        $users = $this->traitReflection->getUsers();
+        $this->assertCount(1, $users);
+        $this->assertArrayHasKey(ClassUsingTrait::class, $users);
     }
 
     public function testTraitMethodAliases(): void

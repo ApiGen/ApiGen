@@ -21,7 +21,7 @@ interface TraitReflectionInterface extends AnnotationsInterface
     public function getFileName(): string;
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
     public function getUsers(): array;
 
