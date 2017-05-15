@@ -42,7 +42,11 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
 
     public function getDescription(): string
     {
-        // TODO: Implement getDescription() method.
+        $description = $this->docBlock->getSummary()
+            . AnnotationList::EMPTY_LINE
+            . $this->docBlock->getDescription();
+
+        return trim($description);
     }
 
     public function getDeclaringTrait(): TraitReflectionInterface
@@ -143,19 +147,6 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
     public function isPublic(): bool
     {
         return $this->betterPropertyReflection->isPublic();
-    }
-
-    public function getDeclaringClass(): ?ClassReflectionInterface
-    {
-        return $this->transformerCollector->transformSingle(
-            $this->betterPropertyReflection->getDeclaringClass()
-        );
-    }
-
-    public function getDeclaringClassName(): string
-    {
-        return $this->betterPropertyReflection->getDeclaringClass()
-            ->getName();
     }
 
     /**

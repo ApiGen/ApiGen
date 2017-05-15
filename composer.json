@@ -52,7 +52,10 @@
             "ApiGen\\Tests\\": "tests",
             "ApiGen\\Element\\Tests\\": "packages/Element/tests",
             "ApiGen\\Reflection\\Tests\\": "packages/Reflection/tests"
-        }
+        },
+        "files": [
+            "packages/Element/tests/Source/NoneNamespacedClass.php"
+        ]
     },
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],

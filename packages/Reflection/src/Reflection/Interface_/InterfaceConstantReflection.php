@@ -48,17 +48,20 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
 
     public function isPrivate(): bool
     {
-        return $this->reflection->isPrivate();
+        // @todo
+        return false;
     }
 
     public function isProtected(): bool
     {
-        return $this->reflection->isProtected();
+        // @todo
+        return false;
     }
 
     public function isPublic(): bool
     {
-        return $this->reflection->isPublic();
+        // @todo
+        return false;
     }
 
     public function getName(): string

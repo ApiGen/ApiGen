@@ -43,8 +43,13 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function getDescription(): string
     {
-        // TODO: Implement getDescription() method.
+        $description = $this->docBlock->getSummary()
+            . AnnotationList::EMPTY_LINE
+            . $this->docBlock->getDescription();
+
+        return trim($description);
     }
+
 
     public function getStartLine(): int
     {
@@ -154,7 +159,7 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void

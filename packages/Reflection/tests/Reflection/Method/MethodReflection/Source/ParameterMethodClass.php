@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection\Source;
+namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source;
 
 class ParameterMethodClass
 {

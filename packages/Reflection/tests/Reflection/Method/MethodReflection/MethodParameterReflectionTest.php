@@ -1,11 +1,11 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection;
+namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection\Source\ParameterMethodClass;
+use ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
