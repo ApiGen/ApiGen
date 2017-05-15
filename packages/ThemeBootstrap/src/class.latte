@@ -72,9 +72,6 @@
 	{var $ownMethods = $class->ownMethods}
 	{var $inheritedMethods = $class->inheritedMethods}
 	{var $usedMethods = $class->usedMethods}
-	{var $ownMagicMethods = $class->ownMagicMethods}
-	{var $inheritedMagicMethods = $class->inheritedMagicMethods}
-	{var $usedMagicMethods = $class->usedMagicMethods}
 
 	{if $ownMethods || $inheritedMethods || $usedMethods}
 		{define method}
@@ -203,33 +200,6 @@
 		{/foreach}
 		</p>
 		{/foreach}
-
-		{if $ownMagicMethods}
-		<h3>Magic methods summary</h3>
-		<div class="summary" id="magicMethods" n:if="$ownMagicMethods">
-		{foreach $ownMagicMethods as $method}
-			{include method, method => $method}
-		{/foreach}
-		</div>
-		{/if}
-
-		{foreach $inheritedMagicMethods as $parentName => $methods}
-		<h3>Magic methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
-		<p class="elementList">
-		{foreach $methods as $method}
-			<code><a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)"><span n:tag-if="$method->deprecated" class="deprecated">{$method->name}()</span></a></code>{sep}, {/sep}
-		{/foreach}
-		</p>
-		{/foreach}
-
-		{foreach $usedMagicMethods as $traitName => $methods}
-		<h3>Magic methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a></h3>
-		<p class="elementList">
-		{foreach $methods as $data}
-			<code><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->deprecated" class="deprecated">{$data['method']->name}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->deprecated" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}
-		{/foreach}
-		</p>
-		{/foreach}
 	{/if}
 
 
@@ -287,11 +257,8 @@
 	{var $ownProperties = $class->ownProperties}
 	{var $inheritedProperties = $class->inheritedProperties}
 	{var $usedProperties = $class->usedProperties}
-	{var $ownMagicProperties = $class->ownMagicProperties}
-	{var $inheritedMagicProperties = $class->inheritedMagicProperties}
-	{var $usedMagicProperties = $class->usedMagicProperties}
 
-	{if $ownProperties || $inheritedProperties || $usedProperties || $ownMagicProperties || $inheritedMagicProperties || $usedMagicProperties}
+	{if $ownProperties || $inheritedProperties || $usedProperties}
 		{define property}
 		<div data-order="{$property->name}" id="${$property->name}" n:class="element">
 			<a href="#${$property->name}" class="anchor"></a>
@@ -348,33 +315,6 @@
 
 		{foreach $usedProperties as $traitName => $properties}
 		<h3>Properties used from <a href="{$traitName|classUrl}#properties" n:tag-if="$template->getClass($traitName)">{$traitName}</a></h3>
-		<p class="elementList">
-		{foreach $properties as $property}
-			<code><a href="{$property|propertyUrl:$property->declaringTrait}" n:tag-if="$template->getClass($traitName)"><var><span n:tag-if="$property->deprecated" class="deprecated">${$property->name}</span></var></a></code>{sep}, {/sep}
-		{/foreach}
-		</p>
-		{/foreach}
-
-		{if $ownMagicProperties}
-		<h3>Magic properties</h3>
-		<div class="summary properties" id="magicProperties">
-		{foreach $ownMagicProperties as $property}
-			{include property, property => $property}
-		{/foreach}
-		</div>
-		{/if}
-
-		{foreach $inheritedMagicProperties as $parentName => $properties}
-		<h3>Magic properties inherited from <a href="{$parentName|classUrl}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
-		<p class="elementList">
-		{foreach $properties as $property}
-			<code><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var><span n:tag-if="$property->deprecated" class="deprecated">${$property->name}</span></var></a></code>{sep}, {/sep}
-		{/foreach}
-		</p>
-		{/foreach}
-
-		{foreach $usedMagicProperties as $traitName => $properties}
-		<h3>Magic properties used from <a href="{$traitName|classUrl}#properties" n:tag-if="$template->getClass($traitName)">{$traitName}</a></h3>
 		<p class="elementList">
 		{foreach $properties as $property}
 			<code><a href="{$property|propertyUrl:$property->declaringTrait}" n:tag-if="$template->getClass($traitName)"><var><span n:tag-if="$property->deprecated" class="deprecated">${$property->name}</span></var></a></code>{sep}, {/sep}
