@@ -41,8 +41,6 @@ interface InterfaceReflectionInterface extends StartAndEndLineInterface, Annotat
 
     public function getMethod(string $name): InterfaceMethodReflectionInterface;
 
-    public function hasMethod(string $name): bool;
-
     /**
      * @return InterfaceConstantReflectionInterface[]
      */

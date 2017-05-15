@@ -33,12 +33,6 @@ final class ReflectionClassTest extends AbstractReflectionClassTestCase
 
     public function testVisibility(): void
     {
-        $this->assertTrue($this->reflectionClass->hasMethod('publicMethod'));
-        $this->assertTrue($this->reflectionClass->hasMethod('protectedMethod'));
-        $this->assertFalse($this->reflectionClass->hasMethod('privateMethod'));
-
-        $this->assertTrue($this->reflectionClass->hasProperty('publicProperty'));
-        $this->assertTrue($this->reflectionClass->hasProperty('protectedProperty'));
-        $this->assertFalse($this->reflectionClass->hasProperty('privateProperty'));
+        $this->assertCount(1, $this->reflectionClass->getMethods());
     }
 }

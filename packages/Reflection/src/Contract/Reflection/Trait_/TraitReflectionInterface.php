@@ -8,9 +8,6 @@ use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 
 interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflectionInterface
 {
-    /**
-     * Returns the unqualified name (UQN).
-     */
     public function getShortName(): string;
 
     public function isDeprecated(): bool;
@@ -36,8 +33,6 @@ interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflect
 
     public function getMethod(string $name): TraitMethodReflectionInterface;
 
-    public function hasMethod(string $name): bool;
-
     /**
      * @return TraitReflectionInterface[]
      */
@@ -59,8 +54,4 @@ interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflect
     public function getOwnProperties(): array;
 
     public function getProperty(string $name): TraitPropertyReflectionInterface;
-
-    public function hasProperty(string $name): bool;
-
-    public function usesTrait(string $name): bool;
 }

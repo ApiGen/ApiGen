@@ -161,15 +161,15 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getMethod(string $name): ClassMethodReflectionInterface
     {
-        if ($this->hasMethod($name)) {
-            return $this->getMethods()[$name];
+        if (! isset($this->getMethods()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Method "%s" does not exist in "%s" class.',
+                $name,
+                $this->getName()
+            ));
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'Method "%s" does not exist in "%s" class.',
-            $name,
-            $this->getName()
-        ));
+        return $this->getMethods()[$name];
     }
 
     /**
@@ -178,11 +178,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getInheritedMethods(): array
     {
         return $this->parentClassElementsResolver->getInheritedMethods($this);
-    }
-
-    public function hasMethod(string $name): bool
-    {
-        return isset($this->getMethods()[$name]);
     }
 
     /**
@@ -303,7 +298,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getProperty(string $name): ClassPropertyReflectionInterface
     {
-        if (! $this->hasProperty($name)) {
+        if (! isset($this->getProperties()[$name])) {
             throw new InvalidArgumentException(sprintf(
                 'Property %s does not exist in class %s',
                 $name,
@@ -312,16 +307,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         }
 
         return $this->getProperties()[$name];
-    }
-
-    public function hasProperty(string $name): bool
-    {
-        return isset($this->getProperties()[$name]);
-    }
-
-    public function usesTrait(string $trait): bool
-    {
-        return isset($this->getTraits()[$trait]);
     }
 
     public function isAbstract(): bool

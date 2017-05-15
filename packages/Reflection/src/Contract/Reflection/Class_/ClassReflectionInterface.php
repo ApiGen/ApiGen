@@ -61,8 +61,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
 
     public function getMethod(string $name): ClassMethodReflectionInterface;
 
-    public function hasMethod(string $name): bool;
-
     /**
      * @return ClassConstantReflectionInterface[]
      */
@@ -105,10 +103,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getInheritedProperties(): array;
 
     public function getProperty(string $name): ClassPropertyReflectionInterface;
-
-    public function hasProperty(string $name): bool;
-
-    public function usesTrait(string $name): bool;
 
     public function isAbstract(): bool;
 

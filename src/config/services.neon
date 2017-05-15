@@ -43,10 +43,7 @@
 - ApiGen\Templating\Filters\AnnotationFilters
 - ApiGen\Templating\Filters\PathFilters
 - ApiGen\Templating\Filters\ResolverFilters
-- ApiGen\Templating\Filters\SourceFilters
 - ApiGen\Templating\Filters\UrlFilters
-- ApiGen\Templating\Filters\NamespaceUrlFilters
-- ApiGen\Templating\Filters\ElementUrlFilters
 
 # Theme
 - ApiGen\Theme\ThemeResources

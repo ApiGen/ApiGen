@@ -136,11 +136,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         // TODO: Implement getMethod() method.
     }
 
-    public function hasMethod(string $name): bool
-    {
-        // TODO: Implement hasMethod() method.
-    }
-
     /**
      * @return InterfaceConstantReflectionInterface[]
      */

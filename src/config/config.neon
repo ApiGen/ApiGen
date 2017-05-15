@@ -3,6 +3,7 @@ extensions:
     - ApiGen\Element\DI\ElementExtension
     - ApiGen\Reflection\DI\ReflectionExtension
     - ApiGen\ModularConfiguration\DI\ModularConfigurationExtension
+    - ApiGen\StringRouting\DI\StringRoutingExtension
 
     # Symfony components integration to Nette\DI
     - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension
