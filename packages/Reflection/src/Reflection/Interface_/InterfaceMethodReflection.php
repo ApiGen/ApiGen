@@ -10,10 +10,10 @@ use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Reflection\DocBlock\Tag;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class InterfaceMethodReflection implements InterfaceMethodReflectionInterface, TransformerCollectorAwareInterface, AnnotationsInterface
+final class InterfaceMethodReflection implements InterfaceMethodReflectionInterface, TransformerCollectorAwareInterface,
+    AnnotationsInterface
 {
     /**
      * @var ReflectionMethod

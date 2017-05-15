@@ -50,7 +50,6 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
         return trim($description);
     }
 
-
     public function getStartLine(): int
     {
         // @todo

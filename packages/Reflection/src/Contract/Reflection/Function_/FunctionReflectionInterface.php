@@ -6,7 +6,8 @@ use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface FunctionReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface
+interface FunctionReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
+    AbstractReflectionInterface
 {
     public function returnsReference(): bool;
 

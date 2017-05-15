@@ -7,7 +7,8 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface
+interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
+    AbstractReflectionInterface
 {
     public function getNamespaceName(): string;
 

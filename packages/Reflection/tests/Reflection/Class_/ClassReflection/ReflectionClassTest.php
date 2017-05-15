@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\AbstractReflectionClassTestCase;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 
