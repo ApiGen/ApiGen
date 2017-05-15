@@ -46,11 +46,7 @@
                     <a n:tag-if="'constant' !== $active" href="{$constant|constantUrl}" title="Summary of {$constant->name}"><span class="nav-link">Constant</span></a>
                 </li>
 
-                <li class="divider-vertical" n:if="$config->tree || $config->deprecated || $config->todo"></li>
-
-                <li n:class="'tree' === $active ? active" n:if="$config->tree">
-                    <a n:tag-if="'tree' !== $active" href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span class="nav-link">Tree</span></a>
-                </li>
+                <li class="divider-vertical" n:if="$config->isDeprecated()"></li>
 
                 {foreach $annotationGroups as $annotation}
                     <li n:class="$active === 'annotation-group-' . $annotation ? active">
@@ -59,12 +55,6 @@
                         </a>
                     </li>
                 {/foreach}
-
-                <li class="divider-vertical" n:if="$config->download"></li>
-
-                <li n:if="$config->download">
-                    <a href="{$archive}" class="nav-link" title="Download documentation as ZIP archive"><span>Download</span></a>
-                </li>
 	        {/capture}
 	        {$navbarNav|noescape}
             </ul>

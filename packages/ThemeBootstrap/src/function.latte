@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'function'}
 
-{block title}{if $function->deprecated}Deprecated {/if}Function {$function->name}{/block}
+{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->name}{/block}
 
 {block content}
 <div id="content" class="function">
-	<h1 n:class="$function->deprecated ? deprecated"><span class="type">Function</span> {$function->getShortName()}</h1>
+	<h1 n:class="$function->isDeprecated() ? deprecated"><span class="type">Function</span> {$function->getShortName()}</h1>
 
 	<div class="description" n:if="$template->longDescription($function)">
 	{$function|longDescription|noescape}
@@ -21,7 +21,7 @@
 			{/foreach}
 		{/foreach}
 		<b>Located at</b>
-		<a n:tag-if="$config->sourceCode" href="{$function|sourceUrl}" title="Go to source code">
+		<a href="{$function|sourceUrl}" title="Go to source code">
 			{$function->fileName|relativePath}
 		</a><br>
 	</div>

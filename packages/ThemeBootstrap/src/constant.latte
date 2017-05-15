@@ -1,11 +1,11 @@
 {layout '@layout.latte'}
 {var $active = 'constant'}
 
-{block title}{if $constant->deprecated}Deprecated {/if}Constant {$constant->name}{/block}
+{block title}{if $constant->isDeprecated()}Deprecated {/if}Constant {$constant->name}{/block}
 
 {block content}
 <div id="content" class="constant">
-	<h1 n:class="$constant->deprecated ? deprecated"><span class="type">Constant</span> {$constant->getShortName()}</h1>
+	<h1 n:class="$constant->isDeprecated() ? deprecated"><span class="type">Constant</span> {$constant->getShortName()}</h1>
 
 	<div class="description" n:if="$template->longDescription($constant)">
 	{$constant|longDescription|noescape}
@@ -21,7 +21,7 @@
 			{/foreach}
 		{/foreach}
 		<b>Located at</b>
-		<a n:tag-if="$config->sourceCode" href="{$constant|sourceUrl}" title="Go to source code">
+		<a href="{$constant|sourceUrl}" title="Go to source code">
 			{$constant->fileName|relativePath}
 		</a><br>
 	</div>
