@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflection;
 
-use ApiGen\Reflection\Reflection\Function_\FunctionParameterReflection;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
@@ -13,7 +13,7 @@ final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
     private $namespacePrefix = 'ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflection\Source';
 
     /**
-     * @var FunctionParameterReflection
+     * @var FunctionParameterReflectionInterface
      */
     private $functionParameterReflection;
 

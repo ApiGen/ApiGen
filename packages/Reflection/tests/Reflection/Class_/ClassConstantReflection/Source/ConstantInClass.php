@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Parser\Reflection\ReflectionConstantSource;
+namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassConstantReflection\Source;
 
 class ConstantInClass
 {

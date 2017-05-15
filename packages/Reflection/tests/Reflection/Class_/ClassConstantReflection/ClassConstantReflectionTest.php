@@ -4,8 +4,8 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassConstantReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassConstantReflection\Source\ConstantInClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Tests\Parser\Reflection\ReflectionConstantSource\ConstantInClass;
 
 final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
 {

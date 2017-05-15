@@ -1,9 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Parser\Reflection\ReflectionClass;
+namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\AbstractReflectionClassTestCase;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 
 final class ParentsTest extends AbstractReflectionClassTestCase

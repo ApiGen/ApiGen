@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
@@ -29,9 +30,9 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
     protected $reflectionClassOfTrait;
 
     /**
-     * @var ClassReflectionInterface
+     * @var InterfaceReflectionInterface
      */
-    protected $reflectionClassOfInterface;
+    protected $interfaceReflection;
 
     protected function setUp(): void
     {
@@ -50,6 +51,6 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
 //        $this->reflectionClassOfTrait = $traitReflections[SomeTrait::class];
 
         $interfaceReflections = $reflectionStorage->getInterfaceReflections();
-        $this->reflectionClassOfInterface = $interfaceReflections[RichInterface::class];
+        $this->interfaceReflection = $interfaceReflections[RichInterface::class];
     }
 }

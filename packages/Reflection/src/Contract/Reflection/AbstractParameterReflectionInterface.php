@@ -28,4 +28,6 @@ interface AbstractParameterReflectionInterface extends AbstractReflectionInterfa
     public function isVariadic(): bool;
 
     public function isCallable(): bool;
+
+    public function getDescription(): string;
 }
