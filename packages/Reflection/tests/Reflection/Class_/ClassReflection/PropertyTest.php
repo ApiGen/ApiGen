@@ -37,9 +37,4 @@ final class PropertyTest extends AbstractReflectionClassTestCase
     {
         $this->assertCount(1, $this->reflectionClass->getInheritedProperties());
     }
-
-    public function testGetUsedProperties(): void
-    {
-        $this->assertCount(1, $this->reflectionClass->getUsedProperties());
-    }
 }

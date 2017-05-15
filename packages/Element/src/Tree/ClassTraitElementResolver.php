@@ -8,32 +8,6 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 
 final class ClassTraitElementResolver
 {
-    /**
-     * @return TraitPropertyReflectionInterface[][]
-     */
-    public function getUsedProperties(ClassReflectionInterface $classReflection): array
-    {
-        $ownPropertiesNames = array_keys($classReflection->getOwnProperties());
-        $ownPropertiesNames = array_combine($ownPropertiesNames, $ownPropertiesNames);
-
-        $properties = [];
-        foreach ($classReflection->getTraits() as $traitReflection) {
-            $usedProperties = [];
-            foreach ($traitReflection->getOwnProperties() as $property) {
-                if (! array_key_exists($property->getName(), $ownPropertiesNames)) {
-                    $usedProperties[$property->getName()] = $property;
-                    $ownPropertiesNames[$property->getName()] = null;
-                }
-            }
-
-            if (! empty($usedProperties)) {
-                ksort($usedProperties);
-                $properties[$traitReflection->getName()] = array_values($usedProperties);
-            }
-        }
-
-        return $properties;
-    }
 
     /**
      * @return TraitMethodReflectionInterface[]

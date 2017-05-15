@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Element\Tests\Annotation\Annotation;
+namespace ApiGen\Element\Tests\ReflectionCollector\Source;
 
 final class PartiallyDeprecatedClass
 {

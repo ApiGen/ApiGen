@@ -42,7 +42,10 @@
             "ApiGen\\Element\\": "packages/Element/src",
             "ApiGen\\Reflection\\": "packages/Reflection/src",
             "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
-        }
+        },
+        "files": [
+            "packages/Element/tests/Source/namespacedFunction.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

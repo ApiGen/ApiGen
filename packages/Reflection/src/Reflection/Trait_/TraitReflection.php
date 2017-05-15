@@ -175,20 +175,6 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         );
     }
 
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getUsedProperties(): array
-    {
-        $traitReflections = $this->getTraits();
-
-        $usedProperties = [];
-        foreach ($traitReflections as $traitReflection) {
-            $usedProperties[$traitReflection->getName()] = $traitReflection->getOwnProperties();
-        }
-        return $usedProperties;
-    }
-
     public function getProperty(string $name): TraitPropertyReflectionInterface
     {
         if (! isset($this->getProperties()[$name])) {

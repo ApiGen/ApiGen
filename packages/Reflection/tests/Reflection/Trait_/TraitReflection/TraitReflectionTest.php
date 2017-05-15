@@ -32,15 +32,6 @@ final class TraitReflectionTest extends AbstractParserAwareTestCase
         );
     }
 
-    public function testUsedProperties(): void
-    {
-        $usedProperties = $this->traitReflection->getUsedProperties();
-        // bug, should be:
-        // $this->assertCount(1, $usedProperties);
-        // see: packages/Reflection/src/Reflection/Trait_/TraitReflection.php:140
-        $this->assertCount(0, $usedProperties);
-    }
-
     public function testUsers(): void
     {
         $users = $this->traitReflection->getUsers();

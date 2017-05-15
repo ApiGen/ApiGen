@@ -236,18 +236,19 @@
 	{/foreach}
 	</table>
 
-	<table n:foreach="$trait->getUsedProperties() as $traitName => $properties" class="summary used">
-        {var $trait = ($traitName|getClass)}
-    	<caption>Properties used from <a href="{$traitName|classUrl}#properties" n:tag-if="$trait">{$traitName}</a></caption>
+    <table n:foreach="$trait->getTraits() as $traitName => $trait" class="summary used">
+        <caption>Properties used from <a href="{$traitName|classUrl}#properties">{$traitName}</a></caption>
         <tr>
             <td>
                 <code>
-                    {foreach $properties as $property}
-                        <a href="{$property|propertyUrl: $property->declaringTrait}" n:tag-if="$trait"><var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var></a>{sep}, {/sep}
+                    {foreach $trait->getOwnProperties() as $property}
+                    <a href="{$property|propertyUrl: $trait}">
+                        <var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var>
+                        </a>{sep}, {/sep}
                     {/foreach}
                 </code>
             </td>
         </tr>
-	</table>
+    </table>
 </div>
 {/block}

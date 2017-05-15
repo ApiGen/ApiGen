@@ -319,14 +319,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->parentClassElementsResolver->getInheritedProperties($this);
     }
 
-    /**
-     * @return ClassPropertyReflectionInterface[][]
-     */
-    public function getUsedProperties(): array
-    {
-        return $this->classTraitElementResolver->getUsedProperties($this);
-    }
-
     public function getProperty(string $name): ClassPropertyReflectionInterface
     {
         if (! $this->hasProperty($name)) {

@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Element;
+namespace ApiGen\Element\Tests;
 
+use ApiGen\Element\AutocompleteElements;
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
