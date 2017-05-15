@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Element\Tree\ClassTraitElementResolver;
 use ApiGen\Element\Tree\ParentClassElementsResolver;
 use ApiGen\Element\Tree\SubClassesResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
@@ -42,11 +41,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     private $parentClassElementsResolver;
 
     /**
-     * @var ClassTraitElementResolver
-     */
-    private $classTraitElementResolver;
-
-    /**
      * @var SubClassesResolver
      */
     private $subClassesResolver;
@@ -55,13 +49,11 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         ReflectionClass $betterClassReflection,
         DocBlock $docBlock,
         ParentClassElementsResolver $parentClassElementsResolver,
-        ClassTraitElementResolver $classTraitElementResolver,
         SubClassesResolver $subClassesResolver
     ) {
         $this->betterClassReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
         $this->parentClassElementsResolver = $parentClassElementsResolver;
-        $this->classTraitElementResolver = $classTraitElementResolver;
         $this->subClassesResolver = $subClassesResolver;
     }
 

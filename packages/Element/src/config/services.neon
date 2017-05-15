@@ -5,7 +5,6 @@
 
 # Class_
 - ApiGen\Element\Tree\ParentClassElementsResolver
-- ApiGen\Element\Tree\ClassTraitElementResolver
 - ApiGen\Element\Tree\SubClassesResolver
 
 # Interface_
