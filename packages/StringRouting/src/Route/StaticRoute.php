@@ -32,6 +32,7 @@ final class StaticRoute implements RouteInterface
         if (is_file($filename)) {
             $filename .= '?' . md5_file($filename);
         }
+
         return $filename;
     }
 }

@@ -7,7 +7,7 @@ interface RouteInterface
     public function match(string $name): bool;
 
     /**
-     * @param mixed$argument
+     * @param mixed $argument
      */
     public function constructUrl($argument): string;
 }

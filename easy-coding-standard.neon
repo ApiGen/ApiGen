@@ -91,6 +91,10 @@ parameters:
             - packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php
             - packages/Reflection/src/Reflection/Trait_/TraitPropertyReflection.php
 
+            # covariant implementers
+            - packages/StringRouting/src/Route/StaticRoute.php
+            - packages/StringRouting/src/Route/SourceCodeRoute.php
+
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php
             - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php
