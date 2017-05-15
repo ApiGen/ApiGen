@@ -11,7 +11,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
     /**
      * @var string
      */
-    private $namespacePrefix = 'ApiGen\Element\Tests\Namespaces';
+    private $namespacePrefix = 'ApiGen\Element\Tests\Namespaces\Source';
 
     /**
      * @var NamespaceStorage
@@ -22,7 +22,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseDirectories([__DIR__ . '/../Source']);
+        $parser->parseDirectories([__DIR__ . '/Source']);
 
         $this->namespaceStorage = $this->container->getByType(NamespaceStorage::class);
     }
@@ -69,7 +69,8 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         $this->assertSame([
             'ApiGen',
             'ApiGen\Element',
-            'ApiGen\Element\Tests'
+            'ApiGen\Element\Tests',
+            'ApiGen\Element\Tests\Namespaces'
         ], $namespacedItems->getParentNamespaces());
     }
 }

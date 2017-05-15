@@ -42,10 +42,7 @@
             "ApiGen\\Element\\": "packages/Element/src",
             "ApiGen\\Reflection\\": "packages/Reflection/src",
             "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
-        },
-        "files": [
-            "packages/Element/tests/Source/namespacedFunction.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
@@ -54,7 +51,8 @@
             "ApiGen\\Reflection\\Tests\\": "packages/Reflection/tests"
         },
         "files": [
-            "packages/Element/tests/Source/NoneNamespacedClass.php",
+            "packages/Element/tests/Namespaces/Source/namespacedFunction.php",
+            "packages/Element/tests/Namespaces/Source/NoneNamespacedClass.php",
             "packages/Element/tests/ReflectionCollector/Source/deprecatedFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",
