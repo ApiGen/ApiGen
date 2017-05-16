@@ -1,6 +1,11 @@
 # routes
 #    - ApiGen\StringRouting\Route\NamespaceRoute
 #    - ApiGen\StringRouting\Route\ReflectionRoute
+- ApiGen\StringRouting\StringRouter
+
+# routes
 - ApiGen\StringRouting\Route\SourceCodeRoute
-- ApiGen\StringRouting\Router
 - ApiGen\StringRouting\Route\StaticRoute
+
+# Latte helper integration
+- ApiGen\StringRouting\Latte\Filter\StringRoutingFiltersProvider

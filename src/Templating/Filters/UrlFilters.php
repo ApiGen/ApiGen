@@ -259,6 +259,6 @@ final class UrlFilters implements LatteFiltersProviderInterface
      */
     public function getFilters(): array
     {
-        // TODO: Implement getFilters() method.
+        return [];
     }
 }

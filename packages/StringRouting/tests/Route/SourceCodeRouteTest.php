@@ -13,19 +13,19 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\StringRouting\Router;
+use ApiGen\StringRouting\StringRouter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var Router
+     * @var StringRouter
      */
     private $router;
 
     protected function setUp(): void
     {
-        $this->router = $this->container->getByType(Router::class);
+        $this->router = $this->container->getByType(StringRouter::class);
     }
 
     /**

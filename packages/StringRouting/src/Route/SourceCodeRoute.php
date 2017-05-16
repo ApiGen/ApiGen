@@ -15,9 +15,14 @@ use ApiGen\StringRouting\Contract\Route\RouteInterface;
 
 final class SourceCodeRoute implements RouteInterface
 {
+    /**
+     * @var string
+     */
+    public const NAME = 'sourceCode';
+
     public function match(string $name): bool
     {
-        return $name === 'sourceCode';
+        return $name === self::NAME;
     }
 
     /**

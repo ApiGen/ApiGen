@@ -4,7 +4,7 @@ namespace ApiGen\StringRouting;
 
 use ApiGen\StringRouting\Contract\Route\RouteInterface;
 
-final class Router
+final class StringRouter
 {
     /**
      * @var string

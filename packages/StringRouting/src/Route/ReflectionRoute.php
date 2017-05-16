@@ -2,59 +2,79 @@
 
 namespace ApiGen\StringRouting\Route;
 
-final class ReflectionRoute
+use ApiGen\StringRouting\Contract\Route\RouteInterface;
+
+final class ReflectionRoute implements RouteInterface
 {
     /**
-     * @var ElementUrlFactory
+     * @var string
      */
-    private $elementUrlFactory;
+    public const NAME = 'reflection';
 
-    public function __construct(ElementUrlFactory $elementUrlFactory)
+    public function match(string $name): bool
     {
-        $this->elementUrlFactory = $elementUrlFactory;
+        return $name === self::NAME;
     }
 
     /**
-     * @return callable[]
+     * @param mixed $argument
      */
-    public function getFilters(): array
+    public function constructUrl($argument): string
     {
-        return [
-
-        ];
+        // TODO: Implement constructUrl() method.
     }
 
-    public function elementUrl(ReflectionInterface $element): string
-    {
-        return $this->elementUrlFactory->createForElement($element);
-    }
 //    /**
-//     * @param string|ClassReflectionInterface $class
+//     * @var ElementUrlFactory
 //     */
-
-    public function classUrl(ClassReflectionInterface $class): string
-    {
-        return $this->elementUrlFactory->createForClass($class);
-    }
-
-    public function methodUrl(AbstractMethodReflectionInterface $methodReflection) { //, ?ClassReflectionInterface $class = null): string
-        {
-            return $this->elementUrlFactory->createForMethod($methodReflection); //, $class);
-        }
-
-        public function propertyUrl(ClassPropertyReflectionInterface $propertyReflection) { //}, ?ClassReflectionInterface $class = null): string
-            {
-                return $this->elementUrlFactory->createForProperty($propertyReflection);
-                //, $class);
-            }
-
-            public function constantUrl(ClassConstantReflectionInterface $classConstantReflection): string
-            {
-                return $this->elementUrlFactory->createForConstant($classConstantReflection);
-            }
-
-            public function functionUrl(FunctionReflectionInterface $functionReflection): string
-            {
-                return $this->elementUrlFactory->createForFunction($functionReflection);
-            }
+//    private $elementUrlFactory;
+//
+//    public function __construct(ElementUrlFactory $elementUrlFactory)
+//    {
+//        $this->elementUrlFactory = $elementUrlFactory;
+//    }
+//
+//    /**
+//     * @return callable[]
+//     */
+//    public function getFilters(): array
+//    {
+//        return [
+//
+//        ];
+//    }
+//
+//    public function elementUrl(ReflectionInterface $element): string
+//    {
+//        return $this->elementUrlFactory->createForElement($element);
+//    }
+////    /**
+////     * @param string|ClassReflectionInterface $class
+////     */
+//
+//    public function classUrl(ClassReflectionInterface $class): string
+//    {
+//        return $this->elementUrlFactory->createForClass($class);
+//    }
+//
+//    public function methodUrl(AbstractMethodReflectionInterface $methodReflection) { //, ?ClassReflectionInterface $class = null): string
+//        {
+//            return $this->elementUrlFactory->createForMethod($methodReflection); //, $class);
+//        }
+//
+//        public function propertyUrl(ClassPropertyReflectionInterface $propertyReflection) { //}, ?ClassReflectionInterface $class = null): string
+//            {
+//                return $this->elementUrlFactory->createForProperty($propertyReflection);
+//                //, $class);
+//            }
+//
+//            public function constantUrl(ClassConstantReflectionInterface $classConstantReflection): string
+//            {
+//                return $this->elementUrlFactory->createForConstant($classConstantReflection);
+//            }
+//
+//            public function functionUrl(FunctionReflectionInterface $functionReflection): string
+//            {
+//                return $this->elementUrlFactory->createForFunction($functionReflection);
+//            }
 }

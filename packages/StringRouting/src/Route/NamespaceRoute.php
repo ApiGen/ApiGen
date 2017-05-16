@@ -2,8 +2,29 @@
 
 namespace ApiGen\StringRouting\Route;
 
-final class NamespaceRoute
+use ApiGen\StringRouting\Contract\Route\RouteInterface;
+
+final class NamespaceRoute implements RouteInterface
 {
+    /**
+     * @var string
+     */
+    public const NAME = 'namespace';
+
+    public function match(string $name): bool
+    {
+        return $name === self::NAME;
+    }
+
+    /**
+     * @param mixed $argument
+     */
+    public function constructUrl($argument): string
+    {
+        // TODO: Implement constructUrl() method.
+    }
+
+
 //
 //    /**
 //     * @return callable[]
@@ -52,6 +73,7 @@ final class NamespaceRoute
 //    private function namespaceUrl(string $name): string
 //    {
 //        return sprintf('namespace-%s.html', Filters::urlize($name));
+
 //    }
 
 }
