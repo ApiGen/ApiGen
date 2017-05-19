@@ -17,13 +17,12 @@ final class NamespaceRoute implements RouteInterface
     }
 
     /**
-     * @param mixed $argument
+     * @param string $argument
      */
-    public function constructUrl($argument): string
+    public function constructUrl(string $argument): string
     {
         // TODO: Implement constructUrl() method.
     }
-
 
 //
 //    /**

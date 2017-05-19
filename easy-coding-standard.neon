@@ -94,6 +94,7 @@ parameters:
             # covariant implementers
             - packages/StringRouting/src/Route/StaticRoute.php
             - packages/StringRouting/src/Route/SourceCodeRoute.php
+            - packages/StringRouting/src/Route/ReflectionRoute.php
 
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php
