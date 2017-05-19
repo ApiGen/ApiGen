@@ -33,7 +33,7 @@
 			<h2>Methods summary</h2>
 			<table class="summary" id="methods">
 				<tr n:foreach="$annotationMethods as $method">
-					<td class="name"><a href="{$method->declaringClassName|classUrl}">{$method->declaringClassName}</a></td>
+					<td class="name"><a href="{$method->getDeclaringClassName()|classUrl}">{$method->getDeclaringClassName()}</a></td>
 					<td class="name"><code><a href="{$method|methodUrl}">{$method->name}()</a></code></td>
 					<td>
 						{if $method->hasAnnotation($annotation)}
@@ -52,14 +52,8 @@
 			<h2>Constants summary</h2>
 			<table class="summary" id="constants">
 				<tr n:foreach="$annotationConstants as $constant">
-					{if $constant->declaringClassName}
-						<td class="name"><a href="{$constant->declaringClassName|classUrl}">{$constant->declaringClassName}</a></td>
-						<td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
-
-					{else}
-						<td class="name" n:if="$namespaces || $classes || $interfaces || $traits || $exceptions"><a n:if="$constant->namespaceName" href="{$constant->namespaceName|namespaceUrl}">{$constant->namespaceName}</a></td>
-						<td n:class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->getShortName()}</b></a></code></td>
-					{/if}
+					<td class="name"><a href="{$constant->getDeclaringClassName()|classUrl}">{$constant->getDeclaringClassName()}</a></td>
+					<td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
 					<td>
 						{foreach $constant->annotations[$annotation] as $description}
 							{if $description}
@@ -75,7 +69,7 @@
 			<h2>Properties summary</h2>
 			<table class="summary" id="properties">
 				<tr n:foreach="$annotationProperties as $property">
-					<td class="name"><a href="{$property->declaringClassName|classUrl}">{$property->declaringClassName}</a></td>
+					<td class="name"><a href="{$property->getDeclaringClassName()|classUrl}">{$property->getDeclaringClassName()}</a></td>
 					<td class="name"><a href="{$property|propertyUrl}"><var>${$property->name}</var></a></td>
 					<td>
 						{foreach $property->annotations[$annotation] as $description}
@@ -92,7 +86,7 @@
 			<h2>Functions summary</h2>
 			<table class="summary" id="functions">
 				<tr n:foreach="$annotationFunctions as $function">
-					<td class="name" n:if="$namespaces"><a n:if="$function->namespaceName" href="{$function->namespaceName|namespaceUrl}">{$function->namespaceName}</a></td>
+					<td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|namespaceUrl}">{$function->getNamespaceName()}</a></td>
 					<td class="name"><code><a href="{$function|functionUrl}">{$function->getShortName()}</a></code></td>
 					<td>
 						{foreach $function->annotations[$annotation] as $description}

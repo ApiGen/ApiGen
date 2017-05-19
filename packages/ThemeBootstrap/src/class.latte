@@ -56,7 +56,7 @@
 
 	<div class="alert alert-info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
-		{if $class->inNamespace()}<b>Namespace:</b> {$class->namespaceName|namespaceLinks|noescape}<br>{/if}
+		{if $class->inNamespace()}<b>Namespace:</b> {$class->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 		{if $class->inPackage()}<b>Package:</b> {$class->packageName|packageLinks|noescape}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
@@ -158,13 +158,13 @@
 				{var $overriddenMethod = $method->overriddenMethod}
 				{if $overriddenMethod}
 					<h4>Overrides</h4>
-					<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->declaringClassName)" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->declaringClassName}::{$overriddenMethod->name}</a></code></div>
+					<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->getDeclaringClassName())" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->getDeclaringClassName()}::{$overriddenMethod->name}</a></code></div>
 				{/if}
 
 				{var $implementedMethod = $method->implementedMethod}
 				{if $implementedMethod}
 					<h4>Implementation of</h4>
-					<div class="list"><code><a n:tag-if="$template->getClass($implementedMethod->declaringClassName)" href="{$implementedMethod|methodUrl}">{$implementedMethod|prettyMethodName}</a></code></div>
+					<div class="list"><code><a n:tag-if="$template->getClass($implementedMethod->getDeclaringClassName())" href="{$implementedMethod|methodUrl}">{$implementedMethod|prettyMethodName}</a></code></div>
 				{/if}
 			</div>
 		</div>

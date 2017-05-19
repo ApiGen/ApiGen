@@ -20,9 +20,6 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
 	        {capture $navbarNav}
-                <li n:class="'package' === $active ? active" n:if="$packages">
-                    <a n:tag-if="'package' !== $active && $package" href="{$package|packageUrl}" title="Summary of {$package}"><span class="nav-link">Package</span></a>
-                </li>
                 <li n:class="'namespace' === $active ? active" n:if="$namespaces">
                     <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span class="nav-link">Namespace</span></a>
                 </li>
@@ -77,7 +74,7 @@
 				{foreach $groups as $group}
 					{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
 					<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main">
-						<a href="{if $groupBy === 'package'}{$group|packageUrl}{else}{$group|namespaceUrl}{/if}">
+						<a href="{$group|namespaceUrl}">
 							{$group|subgroupName}<span n:tag-if="$nextLevel"></span>
 						</a>
 						{if $nextLevel}
@@ -93,13 +90,8 @@
 		{/define}
 
 		<div id="groups">
-			{if $namespaces}
-				<strong>Namespaces</strong>
-				{include group, groups => $namespaces, actualGroup => $namespace, groupBy => 'namespace'}
-			{elseif $packages}
-				<strong>Packages</strong>
-				{include group, groups => $packages, actualGroup => $package, groupBy => 'package'}
-			{/if}
+			<strong>Namespaces</strong>
+			{include group, groups => $namespaces, actualGroup => $namespace}
 		</div>
 
 		{define elements}

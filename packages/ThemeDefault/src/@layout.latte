@@ -22,7 +22,7 @@
 				{continueIf $group === 'PHP'}
 				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
 				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active">
-					<a href="{if $groupBy === 'package'}{$group|packageUrl}{else}{$group|namespaceUrl}{/if}">
+					<a href="{$group|namespaceUrl}">
 						{$group|subgroupName}<span n:tag-if="$nextLevel"></span>
 					</a>
 
@@ -40,7 +40,7 @@
 
 		<div id="groups">
 			<h3>Namespaces</h3>
-			{include group, groups => $namespaces, actualGroup => $namespace, groupBy => 'namespace'}
+			{include group, groups => $namespaces, actualGroup => $namespace}
 		</div>
 
 		<hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
