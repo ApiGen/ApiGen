@@ -8,27 +8,27 @@ use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
-use ApiGen\Templating\Filters\Helpers\ElementUrlFactory;
+use ApiGen\Templating\Filters\Helpers\linkReflectionFactory;
 use PHPUnit\Framework\TestCase;
 use PHPUnit_Framework_MockObject_MockObject;
 
-final class ElementUrlFactoryTest extends TestCase
+final class linkReflectionFactoryTest extends TestCase
 {
     /**
-     * @var ElementUrlFactory
+     * @var linkReflectionFactory
      */
-    private $elementUrlFactory;
+    private $linkReflectionFactory;
 
     protected function setUp(): void
     {
-        $this->elementUrlFactory = new ElementUrlFactory;
+        $this->linkReflectionFactory = new linkReflectionFactory;
     }
 
     public function testCreateForElement(): void
     {
         $this->assertSame(
             'class-SomeNamespace.SomeClass.html',
-            $this->elementUrlFactory->createForElement($this->getReflectionClassMock())
+            $this->linkReflectionFactory->createForElement($this->getReflectionClassMock())
         );
 
         $reflectionMethodMock = $this->getReflectionMethodMock();
@@ -37,13 +37,13 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'class-SomeClass.html#_getSomeMethod',
-            $this->elementUrlFactory->createForElement($reflectionMethodMock)
+            $this->linkReflectionFactory->createForElement($reflectionMethodMock)
         );
 
         $reflectionPropertyMock = $this->getReflectionPropertyMock();
         $this->assertSame(
             'class-SomeClass.html#$someProperty',
-            $this->elementUrlFactory->createForElement($reflectionPropertyMock)
+            $this->linkReflectionFactory->createForElement($reflectionPropertyMock)
         );
 
         $reflectionConstantMock = $this->getReflectionConstantMock();
@@ -52,27 +52,27 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'class-SomeClass.html#someConstant',
-            $this->elementUrlFactory->createForElement($reflectionConstantMock)
+            $this->linkReflectionFactory->createForElement($reflectionConstantMock)
         );
 
         $this->assertSame(
             'function-someFunction.html',
-            $this->elementUrlFactory->createForElement($this->getReflectionFunctionMock())
+            $this->linkReflectionFactory->createForElement($this->getReflectionFunctionMock())
         );
 
         $reflectionElementMock = $this->createMock(ReflectionInterface::class);
-        $this->assertNull($this->elementUrlFactory->createForElement($reflectionElementMock));
+        $this->assertNull($this->linkReflectionFactory->createForElement($reflectionElementMock));
     }
 
     public function testCreateForClass(): void
     {
         $this->assertSame(
             'class-SomeNamespace.SomeClass.html',
-            $this->elementUrlFactory->createForClass($this->getReflectionClassMock())
+            $this->linkReflectionFactory->createForClass($this->getReflectionClassMock())
         );
         $this->assertSame(
             'class-SomeStringClass.html',
-            $this->elementUrlFactory->createForClass('SomeStringClass')
+            $this->linkReflectionFactory->createForClass('SomeStringClass')
         );
     }
 
@@ -84,7 +84,7 @@ final class ElementUrlFactoryTest extends TestCase
             ->willReturn('getSomeMethodOriginal');
         $this->assertSame(
             'class-SomeClass.html#_getSomeMethodOriginal',
-            $this->elementUrlFactory->createForMethod($reflectionMethodMock)
+            $this->linkReflectionFactory->createForMethod($reflectionMethodMock)
         );
     }
 
@@ -97,7 +97,7 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'class-SomeClass.html#_getSomeMethod',
-            $this->elementUrlFactory->createForMethod($reflectionMethodMock)
+            $this->linkReflectionFactory->createForMethod($reflectionMethodMock)
         );
     }
 
@@ -109,7 +109,7 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'class-SomeNamespace.SomeClass.html#_getSomeMethod',
-            $this->elementUrlFactory->createForMethod($reflectionMethodMock, $this->getReflectionClassMock())
+            $this->linkReflectionFactory->createForMethod($reflectionMethodMock, $this->getReflectionClassMock())
         );
     }
 
@@ -119,7 +119,7 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'class-SomeClass.html#$someProperty',
-            $this->elementUrlFactory->createForProperty($reflectionPropertyMock)
+            $this->linkReflectionFactory->createForProperty($reflectionPropertyMock)
         );
     }
 
@@ -129,7 +129,7 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'class-SomeNamespace.SomeClass.html#$someProperty',
-            $this->elementUrlFactory->createForProperty($reflectionPropertyMock, $this->getReflectionClassMock())
+            $this->linkReflectionFactory->createForProperty($reflectionPropertyMock, $this->getReflectionClassMock())
         );
     }
 
@@ -141,7 +141,7 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'class-SomeClass.html#someConstant',
-            $this->elementUrlFactory->createForConstant($reflectionConstantMock)
+            $this->linkReflectionFactory->createForConstant($reflectionConstantMock)
         );
     }
 
@@ -151,7 +151,7 @@ final class ElementUrlFactoryTest extends TestCase
 
         $this->assertSame(
             'function-someFunction.html',
-            $this->elementUrlFactory->createForFunction($reflectionFunctionMock)
+            $this->linkReflectionFactory->createForFunction($reflectionFunctionMock)
         );
     }
 

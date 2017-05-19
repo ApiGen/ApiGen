@@ -7,10 +7,10 @@ use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterf
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Event\ProcessDocTextEvent;
-use ApiGen\Templating\Filters\Helpers\ElementLinkFactory;
+use ApiGen\StringRouting\Route\ReflectionRoute;
+use ApiGen\StringRouting\StringRouter;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte\Runtime\Filters as LatteFilters;
@@ -36,27 +36,27 @@ final class UrlFilters implements LatteFiltersProviderInterface
     private $linkBuilder;
 
     /**
-     * @var ElementLinkFactory
-     */
-    private $elementLinkFactory;
-
-    /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+
+    /**
+     * @var StringRouter
+     */
+    private $stringRouter;
 
     public function __construct(
         SourceCodeHighlighterInterface $highlighter,
         ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
-        ElementLinkFactory $elementLinkFactory,
+        StringRouter $stringRouter,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->highlighter = $highlighter;
         $this->elementResolver = $elementResolver;
         $this->linkBuilder = $linkBuilder;
-        $this->elementLinkFactory = $elementLinkFactory;
         $this->eventDispatcher = $eventDispatcher;
+        $this->stringRouter = $stringRouter;
     }
 
     /**
@@ -85,13 +85,16 @@ final class UrlFilters implements LatteFiltersProviderInterface
             $classes[] = 'deprecated';
         }
 
-        $link = $this->elementLinkFactory->createForElement($element, $classes);
+        /** @var AbstractReflectionInterface $element */
+        $url = $this->stringRouter->buildRoute(ReflectionRoute::NAME, $element);
+        $link = $this->linkBuilder->build($url, $element->getName(), true, $classes);
 
         return '<code>' . $link . $suffix . '</code>';
     }
 
     public function annotation(string $value, string $name, AbstractReflectionInterface $reflection): string
     {
+        // todo: split to collector or dispatcher
         $annotationProcessors = [
             'return' => $this->processReturnAnnotations($value, $reflection),
             'throws' => $this->processThrowsAnnotations($value, $reflection),
@@ -254,9 +257,6 @@ final class UrlFilters implements LatteFiltersProviderInterface
         return null;
     }
 
-    /**
-     * @return callable[]
-     */
     public function getFilters(): array
     {
         return [];

@@ -37,8 +37,6 @@
 - ApiGen\EventSubscriber\ElementsTemplateVariablesEventSubscriber
 
 # Template Filters
-- ApiGen\Templating\Filters\Helpers\ElementLinkFactory
-- ApiGen\Templating\Filters\Helpers\ElementUrlFactory
 - ApiGen\Templating\Filters\Helpers\LinkBuilder
 - ApiGen\Templating\Filters\AnnotationFilters
 - ApiGen\Templating\Filters\PathFilters

@@ -10,7 +10,7 @@
 
 {define elements}
 <url n:foreach="$elements as $element">
-	<loc>{$config->baseUrl}/{$element|elementUrl}</loc>
+	<loc>{$config->baseUrl}/{$element|linkReflection}</loc>
 </url>
 {/define}
 
