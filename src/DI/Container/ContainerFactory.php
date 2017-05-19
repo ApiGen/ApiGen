@@ -23,7 +23,6 @@ final class ContainerFactory
         $this->loadConfigFiles($configurator);
 
         $configurator->defaultExtensions = [
-            'php' => PhpExtension::class,
             'extensions' => ExtensionsExtension::class,
         ];
 
