@@ -13,6 +13,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\StringRouting\Route\SourceCodeRoute;
 use ApiGen\StringRouting\StringRouter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -35,9 +36,9 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     {
         $reflectionMock = $this->createMock($reflectionInterface);
         $reflectionMock->method('getName')
-            ->willReturn('someName');
+            ->willReturn('SomeName');
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -46,9 +47,9 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     public function provideDataForBuildRoute(): array
     {
         return [
-            [ClassReflectionInterface::class, 'source-class-someName.html'],
-            [InterfaceReflectionInterface::class, 'source-interface-someName.html'],
-            [TraitReflectionInterface::class, 'source-trait-someName.html'],
+            [ClassReflectionInterface::class, 'source-class-SomeName.html'],
+            [InterfaceReflectionInterface::class, 'source-interface-SomeName.html'],
+            [TraitReflectionInterface::class, 'source-trait-SomeName.html'],
         ];
     }
 
@@ -59,13 +60,13 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     {
         $reflectionMock = $this->createMock($reflectionInterface);
         $reflectionMock->method('getName')
-            ->willReturn('someName');
+            ->willReturn('SomeName');
         $reflectionMock->method('getStartLine')
             ->willReturn(15);
         $reflectionMock->method('getEndLine')
             ->willReturn(25);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -74,7 +75,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     public function provideDataForBuildLinedRoute(): array
     {
         return [
-            [FunctionReflectionInterface::class, 'source-function-someName.html#15-25']
+            [FunctionReflectionInterface::class, 'source-function-SomeName.html#15-25']
         ];
     }
 
@@ -91,7 +92,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getEndLine')
             ->willReturn(30);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -119,7 +120,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getEndLine')
             ->willReturn(30);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -146,7 +147,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getEndLine')
             ->willReturn(30);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute('sourceCode', $reflectionMock));
+        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**

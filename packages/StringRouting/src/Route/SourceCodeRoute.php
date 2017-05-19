@@ -46,19 +46,21 @@ final class SourceCodeRoute implements RouteInterface
             return 'source-function-' . $reflection->getName() . '.html' . $this->buildLineAnchor($reflection);
         }
 
-        if ($reflection instanceof AbstractClassElementInterface) {
-            return 'source-class-' . $reflection->getDeclaringClassName() . '.html'
-                . $this->buildLineAnchor($reflection);
-        }
+        if ($reflection instanceof StartAndEndLineInterface) {
+            if ($reflection instanceof AbstractClassElementInterface) {
+                return 'source-class-' . $reflection->getDeclaringClassName() . '.html'
+                    . $this->buildLineAnchor($reflection);
+            }
 
-        if ($reflection instanceof AbstractInterfaceElementInterface) {
-            return 'source-interface-' . $reflection->getDeclaringInterfaceName() . '.html'
-                . $this->buildLineAnchor($reflection);
-        }
+            if ($reflection instanceof AbstractInterfaceElementInterface) {
+                return 'source-interface-' . $reflection->getDeclaringInterfaceName() . '.html'
+                    . $this->buildLineAnchor($reflection);
+            }
 
-        if ($reflection instanceof AbstractTraitElementInterface) {
-            return 'source-trait-' . $reflection->getDeclaringTraitName() . '.html'
-                . $this->buildLineAnchor($reflection);
+            if ($reflection instanceof AbstractTraitElementInterface) {
+                return 'source-trait-' . $reflection->getDeclaringTraitName() . '.html'
+                    . $this->buildLineAnchor($reflection);
+            }
         }
 
         return '/';
