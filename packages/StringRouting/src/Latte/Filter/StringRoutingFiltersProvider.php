@@ -43,7 +43,7 @@ final class StringRoutingFiltersProvider implements LatteFiltersProviderInterfac
                 $this->ensureArgumentsIsReflection($reflection, 'linkSource');
                 return $this->router->buildRoute(SourceCodeRoute::NAME, $reflection);
             },
-            // staticFile
+            // use in .latte <script src="{='resources/combined.js'|staticFile}"></script>
             'staticFile' => function ($reflection): string {
                 return $this->router->buildRoute(StaticRoute::NAME, $reflection);
             },
