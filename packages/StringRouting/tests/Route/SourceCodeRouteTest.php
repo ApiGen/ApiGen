@@ -22,11 +22,11 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     /**
      * @var StringRouter
      */
-    private $router;
+    private $stringRouter;
 
     protected function setUp(): void
     {
-        $this->router = $this->container->getByType(StringRouter::class);
+        $this->stringRouter = $this->container->getByType(StringRouter::class);
     }
 
     /**
@@ -38,7 +38,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getName')
             ->willReturn('SomeName');
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
+        $this->assertSame($expectedUrl, $this->stringRouter->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -66,7 +66,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getEndLine')
             ->willReturn(25);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
+        $this->assertSame($expectedUrl, $this->stringRouter->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -92,7 +92,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getEndLine')
             ->willReturn(30);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
+        $this->assertSame($expectedUrl, $this->stringRouter->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -120,7 +120,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getEndLine')
             ->willReturn(30);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
+        $this->assertSame($expectedUrl, $this->stringRouter->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**
@@ -147,7 +147,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock->method('getEndLine')
             ->willReturn(30);
 
-        $this->assertSame($expectedUrl, $this->router->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
+        $this->assertSame($expectedUrl, $this->stringRouter->buildRoute(SourceCodeRoute::NAME, $reflectionMock));
     }
 
     /**

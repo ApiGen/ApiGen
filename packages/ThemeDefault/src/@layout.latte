@@ -16,28 +16,6 @@
 	<div id="menu">
 		<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
 
-		{define group}
-			<ul>
-				{foreach $groups as $group}
-				{continueIf $group === 'PHP'}
-				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
-				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active">
-					<a href="{$group|namespaceUrl}">
-						{$group|subgroupName}<span n:tag-if="$nextLevel"></span>
-					</a>
-
-					{if $nextLevel}
-						<ul>
-					{else}
-						</li>
-						{if substr_count($iterator->nextValue, '\\') < substr_count($group, '\\')}
-							{='</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
-						{/if}
-					{/if}
-				{/foreach}
-			</ul>
-		{/define}
-
 		<div id="groups">
 			<h3>Namespaces</h3>
 			{include group, groups => $namespaces, actualGroup => $namespace}
@@ -132,3 +110,27 @@
     </script>
 </body>
 </html>
+
+
+{define namespaces}
+	<ul>
+		{foreach $groups as $group}
+			{continueIf $group === 'PHP'}
+
+			{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
+			<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active">
+				<a href="{$group|namespaceUrl}">
+					{$group|subNamespaceName}<span n:tag-if="$nextLevel"></span>
+				</a>
+
+				{if $nextLevel}
+					<ul>
+				{else}
+					</li>
+					{if substr_count($iterator->nextValue, '\\') < substr_count($group, '\\')}
+						{='</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
+					{/if}
+				{/if}
+		{/foreach}
+	</ul>
+{/define}

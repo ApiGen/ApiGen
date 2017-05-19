@@ -56,29 +56,9 @@
 				<ul>{$navbarNav|noescape}</ul>
 			</div>
 
-			{define group}
-			<ul>
-				{foreach $groups as $group}
-					{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
-					<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active, $config->main && 0 === strpos($group, $config->main) ? main">
-						<a href="{$group|namespaceUrl}">
-							{$group|subgroupName}<span n:tag-if="$nextLevel"></span>
-						</a>
-						{if $nextLevel}
-							<ul>
-						{else}
-							</li>
-							{if substr_count($iterator->nextValue, '\\') < substr_count($group, '\\')}
-								{='</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
-							{/if}
-						{/if}
-				{/foreach}
-			</ul>
-		{/define}
-
 		<div id="groups">
 			<strong>Namespaces</strong>
-			{include group, groups => $namespaces, actualGroup => $namespace}
+			{include namespaces, namespaces => $namespaces, actualNamespace => $namespace}
 		</div>
 
 		{define elements}
@@ -138,3 +118,27 @@
 <script src="{='elementlist.js'|staticFile}"></script>
 </body>
 </html>
+
+
+{define namespaces}
+	<ul>
+		{foreach $namespaces as $namespace}
+        	{continueIf $group === 'PHP'}
+
+			{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
+			<li n:class="$actualNamespace === $namespace || 0 === strpos($actualNamespace, $namespace . '\\') ? active, $config->main && 0 === strpos($namespace, $config->main) ? main">
+				<a href="{$namespace|namespaceUrl}">
+					{$namespace|subNamespaceName}<span n:tag-if="$nextLevel"></span>
+				</a>
+
+				{if $nextLevel}
+					<ul>
+				{else}
+					</li>
+					{if substr_count($iterator->nextValue, '\\') < substr_count($namespace, '\\')}
+						{='</ul></li>'|repeat:substr_count($namespace, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
+					{/if}
+				{/if}
+		{/foreach}
+	</ul>
+{/define}

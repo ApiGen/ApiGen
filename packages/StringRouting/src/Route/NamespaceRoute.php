@@ -21,7 +21,7 @@ final class NamespaceRoute implements RouteInterface
      */
     public function constructUrl($argument): string
     {
-        // TODO: Implement constructUrl() method.
+        return '...';
     }
 
 //
