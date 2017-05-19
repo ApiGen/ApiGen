@@ -3,10 +3,7 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Console\Command\GenerateCommand;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\MethodInvoker;

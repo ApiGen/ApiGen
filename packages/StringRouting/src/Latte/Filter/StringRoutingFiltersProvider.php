@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\StringRouting\Route\NamespaceRoute;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\StringRouting\Route\SourceCodeRoute;
+use ApiGen\StringRouting\Route\StaticRoute;
 use ApiGen\StringRouting\StringRouter;
 use Nette\InvalidArgumentException;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
@@ -33,14 +34,19 @@ final class StringRoutingFiltersProvider implements LatteFiltersProviderInterfac
                 return $this->router->buildRoute(NamespaceRoute::NAME, $namespace);
             },
             // use in .latte: <a href="{$refleciton|linkReflection}">{$name}</a>
-            'linkReflection' => function (AbstractReflectionInterface $reflection): string {
+            'linkReflection' => function ($reflection): string {
+                $this->ensureArgumentsIsReflection($reflection, 'linkReflection');
                 return $this->router->buildRoute(ReflectionRoute::NAME, $reflection);
             },
             // use in .latte: <a href="{$reflection|linkSource}">{$name}</a>
             'linkSource' => function ($reflection): string {
                 $this->ensureArgumentsIsReflection($reflection, 'linkSource');
                 return $this->router->buildRoute(SourceCodeRoute::NAME, $reflection);
-            }
+            },
+            // staticFile
+            'staticFile' => function ($reflection): string {
+                return $this->router->buildRoute(StaticRoute::NAME, $reflection);
+            },
         ];
     }
 

@@ -202,11 +202,11 @@ final class UrlFilters implements LatteFiltersProviderInterface
     /**
      * @param mixed $value
      */
-    private function getDescriptionFromValue($value, ReflectionInterface $Reflection): string
+    private function getDescriptionFromValue($value, AbstractReflectionInterface $reflection): string
     {
         $description = (string) trim((string) strpbrk($value, "\n\r\t $")) ?: null;
         if ($description) {
-            $description = '<br>' . $this->doc($description, $Reflection);
+            $description = '<br>' . $this->doc($description, $reflection);
         }
 
         return (string) $description;
@@ -228,26 +228,26 @@ final class UrlFilters implements LatteFiltersProviderInterface
         return '';
     }
 
-    private function processSeeAnnotations(string $value, ReflectionInterface $reflectionElement): string
+    private function processSeeAnnotations(string $value, AbstractReflectionInterface $reflection): string
     {
         $doc = [];
         foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
-            if ($this->elementResolver->resolveElement($link, $reflectionElement) !== null) {
-                $doc[] = $this->typeLinks($link, $reflectionElement);
+            if ($this->elementResolver->resolveElement($link, $reflection) !== null) {
+                $doc[] = $this->typeLinks($link, $reflection);
             } else {
-                $doc[] = $this->doc($link, $reflectionElement);
+                $doc[] = $this->doc($link, $reflection);
             }
         }
 
         return implode(', ', $doc);
     }
 
-    private function processUsesAnnotations(string $value, ReflectionInterface $reflectionElement): ?string
+    private function processUsesAnnotations(string $value, AbstractReflectionInterface $reflection): ?string
     {
         [$link, $description] = Strings::split($value);
-        $separator = $reflectionElement instanceof ClassReflectionInterface || ! $description ? ' ' : '<br>';
-        if ($this->elementResolver->resolveElement($link, $reflectionElement) !== null) {
-            $value = $this->typeLinks($link, $reflectionElement) . $separator . $description;
+        $separator = $reflection instanceof ClassReflectionInterface || ! $description ? ' ' : '<br>';
+        if ($this->elementResolver->resolveElement($link, $reflection) !== null) {
+            $value = $this->typeLinks($link, $reflection) . $separator . $description;
             return trim($value);
         }
 

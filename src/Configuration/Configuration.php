@@ -7,13 +7,12 @@ use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
-use ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
 use ApiGen\ModularConfiguration\Option\TitleOption;
 use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\ModularConfiguration\Parameter\ParameterProvider;
-use ApiGen\Templating\Filters\UrlFilters;
+use Nette\Utils\Strings;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -100,11 +99,6 @@ final class Configuration implements ConfigurationInterface
         return $this->getOptions()[BaseUrlOption::NAME];
     }
 
-    public function getGoogleAnalytics(): string
-    {
-        return $this->getOptions()[GoogleAnalyticsOption::NAME];
-    }
-
     /**
      * @return string[]
      */
@@ -132,7 +126,7 @@ final class Configuration implements ConfigurationInterface
     {
         return $this->getDestination() . DIRECTORY_SEPARATOR . sprintf(
             $prefix . '%s.html',
-            UrlFilters::urlize($name)
+            Strings::webalize($name)
         );
     }
 }

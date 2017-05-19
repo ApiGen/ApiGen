@@ -31,7 +31,6 @@ final class ConfigurationTemplateVariablesEventSubscriber implements EventSubscr
         $parameterBag = $createTemplateEvent->getParameterBag();
         $parameterBag->addParameters([
             'title' => $this->configuration->getTitle(),
-            'googleAnalytics' => $this->configuration->getGoogleAnalytics(),
             'annotationGroups' => $this->configuration->getAnnotationGroups()
         ]);
     }

@@ -42,7 +42,6 @@ parameters:
     title: "ApiGen Docs" # string
     baseUrl: http://apigen.org/api # string
     overwrite: false # bool
-    googleAnalytics: "" # string
 ```
 
 ## DocBlock Annotations

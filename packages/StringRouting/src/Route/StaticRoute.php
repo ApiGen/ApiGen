@@ -9,6 +9,11 @@ use ApiGen\StringRouting\Contract\Route\RouteInterface;
 final class StaticRoute implements RouteInterface
 {
     /**
+     * @var string
+     */
+    public const NAME = 'sourceCode';
+
+    /**
      * @var ConfigurationInterface
      */
     private $configuration;
