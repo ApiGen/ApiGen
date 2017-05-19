@@ -6,7 +6,7 @@ extensions:
     - ApiGen\StringRouting\DI\StringRoutingExtension
 
     # Symfony components integration to Nette\DI
-    - Contributte\EventDispatcher\DI\EventDispatcherExtension
+    - Symplify\SymfonyEventDispatcher\Adapter\Nette\DI\SymfonyEventDispatcherExtension
     - Contributte\Console\DI\ConsoleExtension
 
     - Symplify\ModularLatteFilters\DI\ModularLatteFiltersExtension

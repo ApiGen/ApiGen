@@ -6,7 +6,7 @@
 	<meta charset="utf-8">
 	<meta name="robots" content="noindex" n:if="!$robots">
 
-	<title>{include title}{if 'overview' !== $active && $title} | {$title}{/if}</title>
+	<title>{include title}{if $active !== 'overview' && $title} | {$title}{/if}</title>
 
 	<link rel="stylesheet" href="{='resources/style.css'|staticFile}">
 </head>
