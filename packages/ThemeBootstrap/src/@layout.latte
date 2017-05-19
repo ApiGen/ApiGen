@@ -10,7 +10,6 @@
 	<title>{include title}{if 'overview' !== $active && $title} | {$title}{/if}</title>
 
 	<link rel="stylesheet" href="{='resources/style.css'|staticFile}">
-	<link n:if="$config->googleCseId" rel="search" type="application/opensearchdescription+xml" title="{$title}" href="{$config->baseUrl}/opensearch.xml">
 </head>
 
 <body>
@@ -45,18 +44,6 @@
 	        {/capture}
 	        {$navbarNav|noescape}
             </ul>
-
-	        <form{if $config->googleCseId} action="http://www.google.com/cse"{/if} id="search" role="search" accept-charset="UTF-8" class="search-wrapper">
-		        <svg viewBox="0 0 512 640" xmlns="http://www.w3.org/2000/svg"><path d="M215.64 62.7a154.5 154.5 0 1 1-154.5 154.5 154.5 154.5 0 0 1 154.5-154.5m0-61.14a215.68 215.68 0 0 0-84 414.31A215.68 215.68 0 0 0 299.59 18.52a214.35 214.35 0 0 0-84-17z"/><path d="M315.188 356.876l43.232-43.233L511.997 467.22l-43.233 43.232z"/></svg>
-		        <input class="search-query"
-		               size="8"
-		               data-hotkey="s" name="q" placeholder="Search"
-		               aria-label="Search this document"
-		               data-unscoped-placeholder="Search GitHub"
-		               data-scoped-placeholder="Search"
-		               autocapitalize="off"
-		               type="text">
-	        </form>
         </div>
 	</nav>
 
