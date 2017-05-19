@@ -24,7 +24,7 @@
         "tracy/tracy": "^2.4",
 
         "contributte/console": "^0.1",
-        "symplify/symfony-event-dispatcher": "^1.4",
+        "contributte/event-dispatcher": "^0.2",
         "symplify/package-builder": "^1.4",
         "symplify/modular-latte-filters": "^1.4"
     },
