@@ -59,9 +59,17 @@
             {include namespaces, namespaces => $namespaces, actualNamespace => $namespace}
         </div>
 
+        <hr>
+
         {define elements}
             <ul>
-                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active"><a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></li>
+                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active">
+                    <a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">
+                        {if $activeNamespace}
+                            {$element->getShortName()}{else}{$element->getName()}
+                        {/if}
+                    </a>
+                </li>
             </ul>
         {/define}
 

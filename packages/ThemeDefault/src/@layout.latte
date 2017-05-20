@@ -19,13 +19,15 @@
             {include namespaces, namespaces => $namespaces, activeNamespace => $activeNamespace}
         </div>
 
-        <hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
+        <hr>
 
         {define elements}
             <ul>
-                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->getNamespaceName()">
+                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active">
                     <a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">
-                        {if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}
+                        {if $activeNamespace}
+                            {$element->getShortName()}{else}{$element->getName()}
+                        {/if}
                     </a>
                 </li>
             </ul>
@@ -33,23 +35,23 @@
 
         <div id="elements">
             {if $classes}
-            <h3>Classes</h3>
-            {include elements, elements => $classes, activeElement => $class}
+                <h3>Classes</h3>
+                {include elements, elements => $classes, activeElement => $class}
             {/if}
 
             {if $interfaces}
-            <h3>Interfaces</h3>
-            {include elements, elements => $interfaces, activeElement => $class}
+                <h3>Interfaces</h3>
+                {include elements, elements => $interfaces, activeElement => $class}
             {/if}
 
             {if $traits}
-            <h3>Traits</h3>
-            {include elements, elements => $traits, activeElement => $class}
+                <h3>Traits</h3>
+                {include elements, elements => $traits, activeElement => $class}
             {/if}
 
             {if $functions}
-            <h3>Functions</h3>
-            {include elements, elements => $functions, activeElement => $function}
+                <h3>Functions</h3>
+                {include elements, elements => $functions, activeElement => $function}
             {/if}
         </div>
     </div>
