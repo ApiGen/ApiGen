@@ -29,6 +29,18 @@ final class ReflectionRouteTest extends AbstractContainerAwareTestCase
         $this->stringRouter = $this->container->getByType(StringRouter::class);
     }
 
+    public function testWebalize(): void
+    {
+        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
+        $reflectionClassMock->method('getName')
+            ->willReturn('SomeNamespace\SomeName');
+
+        $this->assertSame(
+            'class-SomeNamespace-SomeName.html',
+            $this->stringRouter->buildRoute(ReflectionRoute::NAME, $reflectionClassMock)
+        );
+    }
+
     /**
      * @dataProvider provideDataForBuildRoute
      */

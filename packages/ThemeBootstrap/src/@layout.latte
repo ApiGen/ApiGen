@@ -128,7 +128,7 @@
 			{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
 			<li n:class="$actualNamespace === $namespace || 0 === strpos($actualNamespace, $namespace . '\\') ? active, $config->main && 0 === strpos($namespace, $config->main) ? main">
 				<a href="{$namespace|namespaceUrl}">
-					{$namespace|subNamespaceName}<span n:tag-if="$nextLevel"></span>
+					{$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
 				</a>
 
 				{if $nextLevel}

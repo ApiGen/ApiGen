@@ -19,14 +19,47 @@ final class NamespaceFilter implements LatteFiltersProviderInterface
     public function getFilters(): array
     {
         return [
-            'subNamespaceName' => function (string $namespaceName): string {
-                $namespaceSeparatorPosition = strrpos($namespaceName, self::NAMESPACE_SEPARATOR);
+            'subNamespace' => function (string $namespace): string {
+                $namespaceSeparatorPosition = strrpos($namespace, self::NAMESPACE_SEPARATOR);
                 if ($namespaceSeparatorPosition) {
-                    return substr($namespaceName, $namespaceSeparatorPosition + 1);
+                    return substr($namespace, $namespaceSeparatorPosition + 1);
                 }
 
-                return $namespaceName;
+                return $namespace;
             },
+
+            'linkAllNamespaceParts' => function (string $namespace): string {
+//    private function namespaceLinks(string $namespace): string
+//    {
+//        $links = [];
+//        $parent = '';
+//        foreach (explode('\\', $namespace) as $part) {
+//            $parent = ltrim($parent . '\\' . $part, '\\');
+//            $links[] = $parent !== $namespace
+//                ? $this->linkBuilder->build($this->namespaceUrl($parent), $part)
+//                : $part;
+//        }
+//
+//        return implode('\\', $links);
+//    }
+            }
+
+//    public function testNamespaceLinks(): void
+//    {
+//        $this->assertSame(
+//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
+//            $this->namespaceUrlFilters->namespaceLinks('Long\Namespace')
+//        );
+//    }
+//
+//    public function testNamespaceLinksWithNoNamespaces(): void
+//    {
+//        $this->assertSame(
+//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
+//            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
+//        );
+//    }
+//}
         ];
     }
 }
