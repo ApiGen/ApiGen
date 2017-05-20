@@ -32,34 +32,39 @@ final class SourceCodeRoute implements RouteInterface
     public function constructUrl($reflection): string
     {
         if ($reflection instanceof ClassReflectionInterface) {
-            return 'source-class-' . Strings::webalize($reflection->getName(), false, false) . '.html';
+            return 'source-class-' . Strings::webalize($reflection->getName(), null, false) . '.html';
         }
 
         if ($reflection instanceof TraitReflectionInterface) {
-            return 'source-trait-' . Strings::webalize($reflection->getName(), false, false) . '.html';
+            return 'source-trait-' . Strings::webalize($reflection->getName(), null, false) . '.html';
         }
 
         if ($reflection instanceof InterfaceReflectionInterface) {
-            return 'source-interface-' . Strings::webalize($reflection->getName(), false, false) . '.html';
+            return 'source-interface-' . Strings::webalize($reflection->getName(), null, false) . '.html';
         }
 
         if ($reflection instanceof FunctionReflectionInterface) {
-            return 'source-function-' . Strings::webalize($reflection->getName(), false, false) . '.html' . $this->buildLineAnchor($reflection);
+            return 'source-function-'
+                . Strings::webalize($reflection->getName(), null, false) . '.html'
+                . $this->buildLineAnchor($reflection);
         }
 
         if ($reflection instanceof StartAndEndLineInterface) {
             if ($reflection instanceof AbstractClassElementInterface) {
-                return 'source-class-' . Strings::webalize($reflection->getDeclaringClassName(), false, false) . '.html'
+                return 'source-class-'
+                    . Strings::webalize($reflection->getDeclaringClassName(), null, false) . '.html'
                     . $this->buildLineAnchor($reflection);
             }
 
             if ($reflection instanceof AbstractInterfaceElementInterface) {
-                return 'source-interface-' . Strings::webalize($reflection->getDeclaringInterfaceName(), false, false) . '.html'
+                return 'source-interface-'
+                    . Strings::webalize($reflection->getDeclaringInterfaceName(), null, false) . '.html'
                     . $this->buildLineAnchor($reflection);
             }
 
             if ($reflection instanceof AbstractTraitElementInterface) {
-                return 'source-trait-' . Strings::webalize($reflection->getDeclaringTraitName(), false, false) . '.html'
+                return 'source-trait-'
+                    . Strings::webalize($reflection->getDeclaringTraitName(), null, false) . '.html'
                     . $this->buildLineAnchor($reflection);
             }
         }

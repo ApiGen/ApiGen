@@ -20,8 +20,10 @@ checkers:
     # Dev & Dead Code
     - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
     - SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
-    # SlevomatCodingStandard\Sniffs\Commenting\ForbiddenAnnotationsSniff:
-    # or general_phpdoc_annotation_remove
+    PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
+         annotations:
+            - author
+            - expectedException
 
     # Constants
     - SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff
@@ -94,6 +96,7 @@ parameters:
             - packages/StringRouting/src/Route/StaticRoute.php
             - packages/StringRouting/src/Route/SourceCodeRoute.php
             - packages/StringRouting/src/Route/ReflectionRoute.php
+            - packages/StringRouting/src/Route/NamespaceRoute.php
 
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php
@@ -127,12 +130,9 @@ parameters:
             - packages/ModularConfiguration/src/Option/SourceOption.php
             - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
 
-        SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
-            - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
-            - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
-            - tests/Parser/Parser/ParserTest.php
-            - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
-            - tests/Parser/Parser/ParserSource/SomeInterface.php
-
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php
+
+        PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
+            - packages/Reflection/tests/Reflection/Partial/Source/SomeClassWithAnnotations.php
+            - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/SomeClass.php

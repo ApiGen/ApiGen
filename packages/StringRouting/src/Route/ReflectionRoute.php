@@ -40,19 +40,19 @@ final class ReflectionRoute implements RouteInterface
         }
 
         if ($reflection instanceof TraitReflectionInterface) {
-            return 'trait-' . Strings::webalize($reflection->getName(), false, false) . '.html';
+            return 'trait-' . Strings::webalize($reflection->getName(), null, false) . '.html';
         }
 
         if ($reflection instanceof InterfaceReflectionInterface) {
-            return 'interface-' . Strings::webalize($reflection->getName(), false, false) . '.html';
+            return 'interface-' . Strings::webalize($reflection->getName(), null, false) . '.html';
         }
 
         if ($reflection instanceof FunctionReflectionInterface) {
-            return 'function-' . Strings::webalize($reflection->getName(), false, false) . '.html';
+            return 'function-' . Strings::webalize($reflection->getName(), null, false) . '.html';
         }
 
         if ($reflection instanceof AbstractClassElementInterface) {
-            $class = 'class-' . Strings::webalize($reflection->getDeclaringClassName(), false, false) . '.html';
+            $class = 'class-' . Strings::webalize($reflection->getDeclaringClassName(), null, false) . '.html';
             $anchorPrefix = '';
             if ($reflection instanceof ClassMethodReflectionInterface) {
                 $anchorPrefix = '_';
@@ -62,21 +62,21 @@ final class ReflectionRoute implements RouteInterface
                 $anchorPrefix = '$';
             }
 
-            return $class . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), false, false);
+            return $class . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), null, false);
         }
 
         if ($reflection instanceof AbstractInterfaceElementInterface) {
-            $interface = 'interface-' . Strings::webalize($reflection->getDeclaringInterfaceName(), false, false) . '.html';
+            $interface = 'interface-' . Strings::webalize($reflection->getDeclaringInterfaceName(), null, false) . '.html';
             $anchorPrefix = '';
             if ($reflection instanceof InterfaceMethodReflectionInterface) {
                 $anchorPrefix = '_';
             }
 
-            return $interface . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), false, false);
+            return $interface . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), null, false);
         }
 
         if ($reflection instanceof AbstractTraitElementInterface) {
-            $trait = 'trait-' . Strings::webalize($reflection->getDeclaringTraitName(), false, false) . '.html';
+            $trait = 'trait-' . Strings::webalize($reflection->getDeclaringTraitName(), null, false) . '.html';
             $anchorPrefix = '';
             if ($reflection instanceof TraitMethodReflectionInterface) {
                 $anchorPrefix = '_';
@@ -86,7 +86,7 @@ final class ReflectionRoute implements RouteInterface
                 $anchorPrefix = '$';
             }
 
-            return $trait . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), false, false);
+            return $trait . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), null, false);
         }
 
         return '/';
