@@ -1,7 +1,7 @@
 {layout '@layout.latte'}
 {var $active = 'class'}
 
-{block title}{if $class->isDeprecated()}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->name}{/block}
+{block title}{if $class->isDeprecated()}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->getName()}{/block}
 
 {block content}
 <div id="content" class="class">
@@ -14,14 +14,14 @@
 	<dl class="tree well" n:if="$class->parentClass || $class->getOwnInterfaces() || $class->getTraits()">
 		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 2}ex">
 			<span n:if="$iterator->counter > 1">┗</span>
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->name}</span>{last}</b>{/last}</a>
+			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->getName()}</span>{last}</b>{/last}</a>
 			{var $itemOwnInterfaces = $item->getOwnInterfaces()}
 			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $interface}
-				<a href="{$interface|classUrl}"><span n:class="$interface->isDeprecated() ? deprecated">{$interface->name}</span></a>{sep}, {/sep}
+				<a href="{$interface|classUrl}"><span n:class="$interface->isDeprecated() ? deprecated">{$interface->getName()}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 			{var $itemTraits = $item->getTraits()}
 			{if $itemTraits} uses {foreach $itemTraits as $trait}
-                <a href="{$trait|classUrl}"><span n:class="$trait->isDeprecated() ? deprecated, !$trait->valid ? invalid">{$trait->name}</span></a>{sep}, {/sep}
+                <a href="{$trait|classUrl}"><span n:class="$trait->isDeprecated() ? deprecated, !$trait->valid ? invalid">{$trait->getName()}</span></a>{sep}, {/sep}
 			{/foreach}{/if}
 		</dd>
 	</dl>
@@ -29,7 +29,7 @@
 	{define children}
 		<p class="elementList">
 		{foreach $children as $child}
-			<code><a href="{$child|classUrl}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->name}</span></a></code>{sep}, {/sep}
+			<code><a href="{$child|classUrl}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a></code>{sep}, {/sep}
 		{/foreach}
 		</p>
 	{/define}
@@ -56,8 +56,7 @@
 
 	<div class="alert alert-info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
-		{if $class->inNamespace()}<b>Namespace:</b> {$class->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
-		{if $class->inPackage()}<b>Package:</b> {$class->packageName|packageLinks|noescape}<br>{/if}
+		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 			{foreach $values as $value}
@@ -65,19 +64,19 @@
 				{$value|annotation:$annotation:$class|noescape}<br>
 			{/foreach}
 		{/foreach}
-        <b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>
+        <b>Located at</b> <a href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>
 		<br>
 	</div>
 
-	{var $ownMethods = $class->ownMethods}
-	{var $inheritedMethods = $class->inheritedMethods}
-	{var $usedMethods = $class->usedMethods}
+	{var $ownMethods = $class->getOwnMethods()}
+	{var $inheritedMethods = $class->getInheritedMethods()}
+	{var $usedMethods = $class->getUsedMethods()}
 
 	{if $ownMethods || $inheritedMethods || $usedMethods}
 		{define method}
-		<div data-order="{$method->name}" id="_{$method->name}" n:class="element">
+		<div data-order="{$method->getName()}" id="_{$method->getName()}" n:class="element">
 			{var $annotations = $method->annotations}
-			<a class="anchor" href="#_{$method->name}"></a>
+			<a class="anchor" href="#_{$method->getName()}"></a>
 			<code class="signature">
 				<span class="modifier">
 				{if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
@@ -85,11 +84,11 @@
 				</span>
 
 				<span n:class="$method->isDeprecated() ? deprecated">{block|strip}
-                    <a href="{$method|sourceUrl}" title="Go to source code"><span class="name">{$method->name}</span></a>(
+                    <a href="{$method|sourceUrl}" title="Go to source code"><span class="name">{$method->getName()}</span></a>(
 					{if $method->parameters}
 					{foreach $method->parameters as $parameter}
 						<span class="method-param"><span n:if="$parameter->typeHint" class="type">{$parameter->typeHint|typeLinks:$method|noescape}</span>
-						<code class="parameter">{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</code><span class="initializer">{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|noescape}</span>{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
+						<code class="parameter">{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</code><span class="initializer">{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|noescape}</span>{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
 					{/foreach}
 					{else}
 						void
@@ -120,7 +119,7 @@
 					<h4>Parameters</h4>
 					<div class="list"><dl>
 					{foreach $method->parameters as $parameter}
-						<dt><code class="parameter">${$parameter->name}</code>{if $parameter->unlimited},…{/if}</dt>
+						<dt><code class="parameter">${$parameter->getName()}</code>{if $parameter->unlimited},…{/if}</dt>
 						<dd>{$parameter->getDescription()|description:$method|noescape}</dd>
 					{/foreach}
 					</dl></div>
@@ -158,7 +157,7 @@
 				{var $overriddenMethod = $method->overriddenMethod}
 				{if $overriddenMethod}
 					<h4>Overrides</h4>
-					<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->getDeclaringClassName())" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->getDeclaringClassName()}::{$overriddenMethod->name}</a></code></div>
+					<div class="list"><code><a n:tag-if="$template->getClass($overriddenMethod->getDeclaringClassName())" href="{$overriddenMethod|methodUrl}">{$overriddenMethod->getDeclaringClassName()}::{$overriddenMethod->getName()}</a></code></div>
 				{/if}
 
 				{var $implementedMethod = $method->implementedMethod}
@@ -182,7 +181,7 @@
 		<h3>Methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
 		<p class="elementList">
 		{foreach $methods as $method}
-			<code><a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)"><span n:tag-if="$method->isDeprecated()" class="deprecated">{$method->name}()</span></a></code>{sep}, {/sep}
+			<code><a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)"><span n:tag-if="$method->isDeprecated()" class="deprecated">{$method->getName()}()</span></a></code>{sep}, {/sep}
 		{/foreach}
 		</p>
 		{/foreach}
@@ -192,7 +191,7 @@
 		<h3>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a> trait</h3>
 		<p class="elementList">
 		{foreach $methods as $data}
-			<code><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$data['method']->name}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->name}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}
+			<code><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$data['method']->getName()}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}
 		{/foreach}
 		</p>
 		{/foreach}
@@ -205,13 +204,13 @@
 	{if $ownConstants || $inheritedConstants}
 		<h2>Constants summary</h2>
 		<div class="summary constants" id="constants" n:if="$ownConstants">
-		<div n:foreach="$ownConstants as $constant" data-order="{$constant->name}" id="{$constant->name}" n:class="element">
-			<a href="#{$constant->name}" class="anchor"></a>
+		<div n:foreach="$ownConstants as $constant" data-order="{$constant->getName()}" id="{$constant->getName()}" n:class="element">
+			<a href="#{$constant->getName()}" class="anchor"></a>
 			{var $annotations = $constant->annotations}
 
 			<code class="signature">
 				<span class="name">
-                <a nhref="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->name}</b></a>
+                <a nhref="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->getName()}</b></a>
 				</span>
 
                 <span class="type" n:if="$constant->typeHint">: {$constant->typeHint|typeLinks:$constant|noescape}</span>
@@ -240,7 +239,7 @@
 		<h3>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
 		<p class="elementList">
 		{foreach $constants as $constant}
-			<code><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->name}</span></b></a></code>{sep}, {/sep}
+			<code><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->getName()}</span></b></a></code>{sep}, {/sep}
 		{/foreach}
 		</p>
 		{/foreach}
@@ -251,15 +250,15 @@
 
 	{if $ownProperties || $inheritedProperties}
 		{define property}
-		<div data-order="{$property->name}" id="${$property->name}" n:class="element">
-			<a href="#${$property->name}" class="anchor"></a>
+		<div data-order="{$property->getName()}" id="${$property->getName()}" n:class="element">
+			<a href="#${$property->getName()}" class="anchor"></a>
 			<code class="signature">
 				<span class="modifier">
 				{if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
 				</span>
 
 				<span class="name">
-                <a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->name}</var></a>
+                <a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->getName()}</var></a>
 				</span>
 
 				{if $property->typeHint}: <span class="type">{$property->typeHint|typeLinks:$property|noescape}</span>{/if}
@@ -295,7 +294,7 @@
 		<h3>Properties inherited from <a href="{$parentName|classUrl}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
 		<p class="elementList">
 		{foreach $properties as $property}
-			<code><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->name}</span></var></a></code>{sep}, {/sep}
+			<code><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var></a></code>{sep}, {/sep}
 		{/foreach}
 		</p>
 		{/foreach}

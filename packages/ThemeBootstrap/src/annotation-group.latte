@@ -34,7 +34,7 @@
 			<table class="summary" id="methods">
 				<tr n:foreach="$annotationMethods as $method">
 					<td class="name"><a href="{$method->getDeclaringClassName()|classUrl}">{$method->getDeclaringClassName()}</a></td>
-					<td class="name"><code><a href="{$method|methodUrl}">{$method->name}()</a></code></td>
+					<td class="name"><code><a href="{$method|methodUrl}">{$method->getName()}()</a></code></td>
 					<td>
 						{if $method->hasAnnotation($annotation)}
 							{foreach $method->annotations[$annotation] as $description}
@@ -53,7 +53,7 @@
 			<table class="summary" id="constants">
 				<tr n:foreach="$annotationConstants as $constant">
 					<td class="name"><a href="{$constant->getDeclaringClassName()|classUrl}">{$constant->getDeclaringClassName()}</a></td>
-					<td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->name}</b></a></code></td>
+					<td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->getName()}</b></a></code></td>
 					<td>
 						{foreach $constant->annotations[$annotation] as $description}
 							{if $description}
@@ -70,7 +70,7 @@
 			<table class="summary" id="properties">
 				<tr n:foreach="$annotationProperties as $property">
 					<td class="name"><a href="{$property->getDeclaringClassName()|classUrl}">{$property->getDeclaringClassName()}</a></td>
-					<td class="name"><a href="{$property|propertyUrl}"><var>${$property->name}</var></a></td>
+					<td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
 					<td>
 						{foreach $property->annotations[$annotation] as $description}
 							{if $description}
@@ -108,7 +108,7 @@
 
 {define classes}
 	<tr n:foreach="$items as $class">
-		<td class="name"><a href="{$class|classUrl}">{$class->name}</a></td>
+		<td class="name"><a href="{$class|classUrl}">{$class->getName()}</a></td>
 		<td>
 			{foreach $class->annotations[$annotation] as $description}
 				{if $description}

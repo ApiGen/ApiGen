@@ -1,7 +1,7 @@
 {layout '@layout.latte'}
 {var $active = 'function'}
 
-{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->name}{/block}
+{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->getName()}{/block}
 
 {block content}
 <div id="content" class="function">
@@ -12,8 +12,7 @@
 	</div>
 
 	<div class="alert alert-info">
-		{if $function->inNamespace()}<b>Namespace:</b> {$function->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
-		{if $function->inPackage()}<b>Package:</b> {$function->packageName|packageLinks|noescape}<br>{/if}
+		{if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
 		{foreach $template->annotationSort($template->annotationFilter($function->annotations, array('param', 'return', 'throws'))) as $annotation => $values}
 			{foreach $values as $value}
 				<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
@@ -31,10 +30,10 @@
 	{if count($function->parameters)}
 	<h2>Parameters summary</h2>
 	<table class="summary" id="parameters">
-	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->name}">
+	<tr n:foreach="$function->parameters as $parameter" id="${$parameter->getName()}">
 		<td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
 		<td class="value"><code>{block|strip}
-			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->name}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->unlimited},…{/if}
+			<var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->unlimited},…{/if}
 		{/block}</code></td>
 		<td>{$parameter->getDescription()|description:$function}</td>
 	</tr>
