@@ -32,7 +32,7 @@ final class ApiGenExtension extends CompilerExtension
         $containerBuilder = $this->getContainerBuilder();
         $containerBuilder->addDefinition($this->prefix('latteFactory'))
             ->setClass(Engine::class)
-            ->addSetup('setTempDirectory', [$containerBuilder->expand('%tempDir%/cache/latte')]);
+            ->addSetup('setTempDirectory', [sys_get_temp_dir() . '/_latte_cache']);
     }
 
     private function setupGeneratorQueue(): void
