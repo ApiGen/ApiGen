@@ -1,12 +1,14 @@
 {layout '@layout.latte'}
 {var $active = 'interface'}
 
-{block title}{if $interface->isDeprecated()}Deprecated {/if}Interface {$interface->getName()}{/block}
+{block title}Interface {$interface->getName()}{/block}
 
 {block content}
 <div id="content" class="class">
     <h1 n:class="$interface->isDeprecated() ? deprecated">
-        Interface <code>{$interface->getName()}</code>
+        Interface
+        {if $interface->getNamespaceName()}{$interface->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
+        {$interface->getName()}
     </h1>
 
     <div class="description" n:if="$interface->getDescription()">
@@ -41,8 +43,6 @@
     {/if}
 
     <div class="info">
-        {if $interface->getNamespaceName()}<b>Namespace:</b> {$interface->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
-
         {var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter)}
         {foreach $filteredAnnotations as $annotation => $values}
             {foreach $values as $value}

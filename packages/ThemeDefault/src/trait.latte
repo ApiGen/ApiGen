@@ -1,12 +1,14 @@
 {layout '@layout.latte'}
 {var $active = 'trait'}
 
-{block title}{if $trait->isDeprecated()}Deprecated {/if}Trait {$trait->getName()}{/block}
+{block title}Trait {$trait->getName()}{/block}
 
 {block content}
 <div id="content" class="class">
     <h1 n:class="$trait->isDeprecated() ? deprecated">
-        Trait <code>{$trait->getName()}</code>
+        Trait
+        {if $trait->getNamespaceName()}{$trait->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
+        {$trait->getShortName()}
     </h1>
 
     <div class="description" n:if="$trait->getDescription()">
@@ -41,8 +43,6 @@
     </div>
 
     <div class="info">
-        {if $trait->getNamespaceName()}<b>Namespace:</b> {$trait->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
-
         {var $filteredAnnotations = ($trait->getAnnotations()|annotationFilter)}
         {foreach $filteredAnnotations as $annotation => $values}
             {foreach $values as $value}

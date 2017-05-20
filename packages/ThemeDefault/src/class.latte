@@ -1,11 +1,14 @@
 {layout '@layout.latte'}
 {var $active = 'class'}
 
-{block title}{if $class->isDeprecated()}Deprecated {/if}Class {$class->getName()}{/block}
+{block title}Class {$class->getName()}{/block}
 
 {block content}
 <div id="content" class="class">
-    <h1 n:class="$class->isDeprecated() ? deprecated">Class {$class->getName()}</h1>
+    <h1 n:class="$class->isDeprecated() ? deprecated">
+        Class {if $class->getNamespaceName()}{$class->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
+        {$class->getShortName()}
+    </h1>
     <div class="description" n:if="$class->getDescription()">
         {$class->getDescription()|noescape}
     </div>
@@ -52,7 +55,6 @@
 
     <div class="info">
         {if $class->isAbstract() || $class->isFinal()}<b>{if $class->isAbstract()}Abstract{else}Final{/if}</b><br>{/if}
-        {if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
 
         {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter)}
         {foreach $filteredAnnotations as $annotation => $values}

@@ -1,7 +1,7 @@
 {layout '@layout.latte'}
 {var $active = 'class'}
 
-{block title}{if $class->isDeprecated()}Deprecated {/if}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->getName()}{/block}
+{block title}{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if} {$class->getName()}{/block}
 
 {block content}
 <div id="content" class="class">
