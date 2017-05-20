@@ -4,23 +4,21 @@
 {block title}{$title ?: 'Overview'}{/block}
 
 {block content}
-<div id="content">
-    <h1>{include title}</h1>
+    <div id="content">
+        <h1>{include title}</h1>
 
-    <table class="summary" id="namespaces" n:if="$allNamespaces">
-        <caption>Namespaces summary</caption>
-        {foreach $allNamespaces as $namespace}
-            <tr>
-                {var $group = true}
+        <h2>Namespaces summary</h2>
+
+        <table n:ifcontent class="summary" id="namespaces">
+            <tr n:foreach="$allNamespaces as $namespace">
                 <td class="name">
                     <a href="{$namespace|linkNamespace}">{$namespace}</a>
                 </td>
             </tr>
-        {/foreach}
-    </table>
+        </table>
 
-    {if count($allNamespaces) === 1}
-        {include '@elementlist.latte'}
-    {/if}
-</div>
+        {if count($allNamespaces) <= 1}
+            {include '@elementlist.latte'}
+        {/if}
+    </div>
 {/block}
