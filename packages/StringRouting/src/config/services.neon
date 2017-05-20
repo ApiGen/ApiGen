@@ -3,7 +3,6 @@
 # routes
 - ApiGen\StringRouting\Route\NamespaceRoute
 - ApiGen\StringRouting\Route\SourceCodeRoute
-- ApiGen\StringRouting\Route\StaticRoute
 - ApiGen\StringRouting\Route\ReflectionRoute
 
 # Latte helper integration

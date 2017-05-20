@@ -7,7 +7,6 @@
     <title>{include title}{if $active !== 'overview' && $title} | {$title}{/if}</title>
 
     <link rel="stylesheet" href="resources/style.css">
-    <link rel="stylesheet" href="{='resources/style.css'|staticFile}">
 </head>
 
 <body>
@@ -99,13 +98,13 @@
     </div>
 </div>
 </div>
-    <script src="{='/js/jquery.min.js'|staticFile}"></script>
-    <script src="{='/js/jquery.cookie.js'|staticFile}"></script>
-    <script src="{='/js/jquery.sprintf.js'|staticFile}"></script>
-    <script src="{='/js/jquery.autocomplete.js'|staticFile}"></script>
-    <script src="{='/js/jquery.sortElements.js'|staticFile}"></script>
-    <script src="{='/js/main.js'|staticFile}"></script>
-    <script src="{='elementlist.js'|staticFile}"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/jquery.cookie.js"></script>
+    <script src="/js/jquery.sprintf.js"></script>
+    <script src="/js/jquery.autocomplete.js"></script>
+    <script src="/js/jquery.sortElements.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="elementlist.js"></script>
 
     <script type="javascript">
         var ApiGen = ApiGen || {};
