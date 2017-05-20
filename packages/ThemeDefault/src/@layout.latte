@@ -3,97 +3,97 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
-	<meta name="robots" content="noindex" n:if="!$robots">
+    <meta charset="utf-8">
+    <meta name="robots" content="noindex" n:if="!$robots">
 
-	<title>{include title}{if $active !== 'overview' && $title} | {$title}{/if}</title>
+    <title>{include title}{if $active !== 'overview' && $title} | {$title}{/if}</title>
 
-	<link rel="stylesheet" href="{='resources/style.css'|staticFile}">
+    <link rel="stylesheet" href="{='resources/style.css'|staticFile}">
 </head>
 
 <body>
 <div id="left">
-	<div id="menu">
-		<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
+    <div id="menu">
+        <a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
 
-		<div id="groups">
-			<h3>Namespaces</h3>
-			{include namespace, namespaces => $namespaces, actualNamespace => $namespace}
-		</div>
+        <div id="groups">
+            <h3>Namespaces</h3>
+            {include namespace, namespaces => $namespaces, actualNamespace => $namespace}
+        </div>
 
-		<hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
+        <hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
 
-		{define elements}
-			<ul>
-				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->getNamespaceName()"><a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></li>
-			</ul>
-		{/define}
+        {define elements}
+            <ul>
+                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->getNamespaceName()"><a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></li>
+            </ul>
+        {/define}
 
-		<div id="elements">
-			{if $classes}
-			<h3>Classes</h3>
-			{include elements, elements => $classes, activeElement => $class}
-			{/if}
+        <div id="elements">
+            {if $classes}
+            <h3>Classes</h3>
+            {include elements, elements => $classes, activeElement => $class}
+            {/if}
 
-			{if $interfaces}
-			<h3>Interfaces</h3>
-			{include elements, elements => $interfaces, activeElement => $class}
-			{/if}
+            {if $interfaces}
+            <h3>Interfaces</h3>
+            {include elements, elements => $interfaces, activeElement => $class}
+            {/if}
 
-			{if $traits}
-			<h3>Traits</h3>
-			{include elements, elements => $traits, activeElement => $class}
-			{/if}
+            {if $traits}
+            <h3>Traits</h3>
+            {include elements, elements => $traits, activeElement => $class}
+            {/if}
 
-			{if $functions}
-			<h3>Functions</h3>
-			{include elements, elements => $functions, activeElement => $function}
-			{/if}
-		</div>
-	</div>
+            {if $functions}
+            <h3>Functions</h3>
+            {include elements, elements => $functions, activeElement => $function}
+            {/if}
+        </div>
+    </div>
 </div>
 
 <div id="splitter"></div>
 
 <div id="right">
 <div id="rightInner">
-	<form id="search">
-		<input type="hidden" name="ie" value="UTF-8">
-		<input type="text" name="q" class="text" placeholder="Search"{if 'overview' === $active} autofocus{/if}>
-	</form>
+    <form id="search">
+        <input type="hidden" name="ie" value="UTF-8">
+        <input type="text" name="q" class="text" placeholder="Search"{if 'overview' === $active} autofocus{/if}>
+    </form>
 
-	<div id="navigation">
-		<ul>
-			<li n:class="'overview' === $active ? active">
-				<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
-			</li>
-			<li n:class="'namespace' === $active ? active" n:if="$namespaces">
-				<a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
-			</li>
-			<li n:class="'class' === $active ? active" n:if="!$function">
-				<a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->getName()}"><span>Class</span></a>
-			</li>
+    <div id="navigation">
+        <ul>
+            <li n:class="'overview' === $active ? active">
+                <a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
+            </li>
+            <li n:class="'namespace' === $active ? active" n:if="$namespaces">
+                <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
+            </li>
+            <li n:class="'class' === $active ? active" n:if="!$function">
+                <a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->getName()}"><span>Class</span></a>
+            </li>
             {* @todo: add interfaces and traits *}
-			<li n:class="'function' === $active ? active" n:if="$function">
-				<a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->getName()}"><span>Function</span></a>
-			</li>
-		</ul>
-		<ul>
-			{foreach $annotationGroups as $annotationGroup}
-				<li n:class="$active === 'annotation-group-' . $annotationGroup ? active">
-					<a href="annotation-group-{$annotationGroup}.html" title="List of elements with {$annotationGroup} annotation">
-						<span>{$annotationGroup|firstUpper}</span>
-					</a>
-				</li>
-			{/foreach}
-		</ul>
-	</div>
+            <li n:class="'function' === $active ? active" n:if="$function">
+                <a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->getName()}"><span>Function</span></a>
+            </li>
+        </ul>
+        <ul>
+            {foreach $annotationGroups as $annotationGroup}
+                <li n:class="$active === 'annotation-group-' . $annotationGroup ? active">
+                    <a href="annotation-group-{$annotationGroup}.html" title="List of elements with {$annotationGroup} annotation">
+                        <span>{$annotationGroup|firstUpper}</span>
+                    </a>
+                </li>
+            {/foreach}
+        </ul>
+    </div>
 
-	{include content}
+    {include content}
 
-	<div id="footer">
-		{$title} API documentation generated by <a href="http://apigen.org">ApiGen</a>
-	</div>
+    <div id="footer">
+        {$title} API documentation generated by <a href="http://apigen.org">ApiGen</a>
+    </div>
 </div>
 </div>
     <script src="{='/js/jquery.min.js'|staticFile}"></script>
@@ -113,24 +113,24 @@
 
 
 {define namespaces}
-	<ul>
-		{foreach $namespaces as $namespace}
-			{continueIf $namespace === 'PHP'}
+    <ul>
+        {foreach $namespaces as $namespace}
+            {continueIf $namespace === 'PHP'}
 
-			{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
-			<li n:class="$actualGroup === $namespace || 0 === strpos($actualGroup, $namespace . '\\') ? active">
-				<a href="{$namespace|namespaceUrl}">
-					{$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
-				</a>
+            {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
+            <li n:class="$actualGroup === $namespace || 0 === strpos($actualGroup, $namespace . '\\') ? active">
+                <a href="{$namespace|namespaceUrl}">
+                    {$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
+                </a>
 
-				{if $nextLevel}
-					<ul>
-				{else}
-					</li>
-					{if substr_count($iterator->nextValue, '\\') < substr_count($namespace, '\\')}
-						{='</ul></li>'|repeat:substr_count($namespace, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
-					{/if}
-				{/if}
-		{/foreach}
-	</ul>
+                {if $nextLevel}
+                    <ul>
+                {else}
+                    </li>
+                    {if substr_count($iterator->nextValue, '\\') < substr_count($namespace, '\\')}
+                        {='</ul></li>'|repeat:substr_count($namespace, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
+                    {/if}
+                {/if}
+        {/foreach}
+    </ul>
 {/define}

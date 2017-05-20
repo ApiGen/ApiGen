@@ -5,23 +5,23 @@
 
 {block content}
 <div id="content">
-	<h1>{include title}</h1>
+    <h1>{include title}</h1>
 
-	{var $group = false}
+    {var $group = false}
 
-	<table class="summary" id="namespaces" n:if="$namespaces">
-		<caption>Namespaces summary</caption>
-		{foreach $namespaces as $namespace}
-			{continueIf $namespace === 'PHP'}
-			<tr>
-				{var $group = true}
-				<td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
-			</tr>
-		{/foreach}
-	</table>
+    <table class="summary" id="namespaces" n:if="$namespaces">
+        <caption>Namespaces summary</caption>
+        {foreach $namespaces as $namespace}
+            {continueIf $namespace === 'PHP'}
+            <tr>
+                {var $group = true}
+                <td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+            </tr>
+        {/foreach}
+    </table>
 
-	{if ! $group}
-		{include '@elementlist.latte'}
-	{/if}
+    {if ! $group}
+        {include '@elementlist.latte'}
+    {/if}
 </div>
 {/block}

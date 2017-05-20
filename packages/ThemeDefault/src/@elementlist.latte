@@ -1,7 +1,7 @@
 {define elements}
 <tr n:foreach="$elements as $element">
-	<td class="name"><a href="{$element|linkReflection}" n:class="$element->isDeprecated() ? deprecated">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></td>
-	<td>{$element|description|noescape}</td>
+    <td class="name"><a href="{$element|linkReflection}" n:class="$element->isDeprecated() ? deprecated">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></td>
+    <td>{$element|description|noescape}</td>
 </tr>
 {/define}
 

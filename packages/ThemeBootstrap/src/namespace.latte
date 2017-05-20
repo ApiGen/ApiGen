@@ -5,17 +5,17 @@
 
 {block content}
 <div id="content" class="namespace">
-	<h1>{if $namespace != 'None'}<span class="type">Namespace</span> {$namespace|linkAllNamespaceParts|noescape}{else}No namespace{/if}</h1>
+    <h1>{if $namespace != 'None'}<span class="type">Namespace</span> {$namespace|linkAllNamespaceParts|noescape}{else}No namespace{/if}</h1>
 
-	{if $parentNamespaces}
-	<h2>Namespaces summary</h2>
-	<table class="summary" id="namespaces">
-	<tr n:foreach="$parentNamespaces as $parentNamespace">
-		<td class="name"><a href="{$parentNamespace|namespaceUrl}">{$parentNamespace}</a></td>
-	</tr>
-	</table>
-	{/if}
+    {if $parentNamespaces}
+    <h2>Namespaces summary</h2>
+    <table class="summary" id="namespaces">
+    <tr n:foreach="$parentNamespaces as $parentNamespace">
+        <td class="name"><a href="{$parentNamespace|namespaceUrl}">{$parentNamespace}</a></td>
+    </tr>
+    </table>
+    {/if}
 
-	{include '@elementlist.latte'}
+    {include '@elementlist.latte'}
 </div>
 {/block}
