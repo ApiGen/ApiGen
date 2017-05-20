@@ -118,7 +118,7 @@
             {continueIf $namespace === 'PHP'}
 
             {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
-            <li n:class="$actualGroup === $namespace || 0 === strpos($actualGroup, $namespace . '\\') ? active">
+            <li n:class="$actualNamespace === $namespace || 0 === strpos($actualNamespace, $namespace . '\\') ? active">
                 <a href="{$namespace|linkNamespace}">
                     {$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
                 </a>
