@@ -66,7 +66,8 @@ final class ReflectionRoute implements RouteInterface
         }
 
         if ($reflection instanceof AbstractInterfaceElementInterface) {
-            $interface = 'interface-' . Strings::webalize($reflection->getDeclaringInterfaceName(), null, false) . '.html';
+            $interface = 'interface-'
+                . Strings::webalize($reflection->getDeclaringInterfaceName(), null, false) . '.html';
             $anchorPrefix = '';
             if ($reflection instanceof InterfaceMethodReflectionInterface) {
                 $anchorPrefix = '_';
