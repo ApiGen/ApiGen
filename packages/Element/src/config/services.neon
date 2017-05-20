@@ -2,6 +2,7 @@
 
 - ApiGen\Element\AutocompleteElements
 - ApiGen\Element\Namespaces\NamespaceStorage
+- ApiGen\Element\Latte\Filter\NamespaceFilter
 
 # Class_
 - ApiGen\Element\Tree\ParentClassElementsResolver
