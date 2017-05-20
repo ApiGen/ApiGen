@@ -94,32 +94,34 @@
                 {/ifset}
             {/if}
 
-            {if $method->getParameters() && isset($annotations['param'])}
+            {if $method->getParameters()}
                 <h4>Parameters</h4>
-                <div class="list"><dl>
-                {foreach $method->getParameters() as $parameter}
-                    <dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
-                    <dd>{$parameter->getDescription()|annotationDescription:$method|noescape}</dd>
-                {/foreach}
-                </dl></div>
+                <div class="list">
+                    <dl>
+                        {foreach $method->getParameters() as $parameter}
+                            <dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
+                            <dd>{$parameter->getDescription()|annotationDescription:$method|noescape}</dd>
+                        {/foreach}
+                    </dl>
+                </div>
             {/if}
 
-            {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
+            {if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
                 <h4>Returns</h4>
                 <div class="list">
-                {foreach $annotations['return'] as $description}
-                    {$description|annotation:'return':$method|noescape}{sep}<br>{/}
-                {/foreach}
+                    {foreach $annotations['return'] as $description}
+                        {$description|annotation:'return':$method|noescape}{sep}<br>{/}
+                    {/foreach}
                 </div>
             {/if}
 
             {ifset $annotations['throws']}
                 <h4>Throws</h4>
                 <div class="list">
-                {foreach $annotations['throws'] as $description}
-                    {$description|annotation:'throws':$method|noescape}{sep}<br>{/}
-                {/foreach}
-                </div>
+                    {foreach $annotations['throws'] as $description}
+                        {$description|annotation:'throws':$method|noescape}{sep}<br>{/}
+                    {/foreach}
+                    </div>
             {/ifset}
 
             {var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter: ['deprecated', 'param', 'return', 'throws'])}
@@ -133,22 +135,6 @@
                 {/foreach}
                 </div>
             {/foreach}
-
-            {var $overriddenMethod = $method->overriddenMethod}
-            {if $overriddenMethod}
-                <h4>Overrides</h4>
-                <div class="list">
-                    <code><a n:tag-if="$overriddenMethod->declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod|prettyMethodName}</a></code>
-                </div>
-            {/if}
-
-            {var $implementedMethod = $method->implementedMethod}
-            {if $implementedMethod}
-                <h4>Implementation of</h4>
-                <div class="list">
-                    <code><a n:tag-if="$implementedMethod->declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod|prettyMethodName}</a></code>
-                </div>
-            {/if}
         </div>
         </div></td>
     </tr>
@@ -161,60 +147,40 @@
     {/foreach}
     </table>
 
-    <table n:foreach="$interface->getInheritedMethods() as $parentName => $methods" class="summary inherited">
-        {var $parentClass = ($parentName|getClass)}
-        <caption>
-            Methods inherited from <a href="{$parentName|linkReflection}#methods" n:tag-if="$parentClass">{$parentName}</a>
-        </caption>
-        <tr>
-            <td>
+    <table class="summary constants" id="constants" n:if="$interface->getOwnConstants()">
+        <caption>Constants summary</caption>
+        <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
+            {var $annotations = $constant->getAnnotations()}
+
+            <td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
+            <td class="name">
                 <code>
-                    {foreach $methods as $method}
-                        <a href="{$method|methodUrl}" n:tag-if="$parentClass">
-                            <span n:tag-if="$method->isDeprecated()" class="deprecated">{$method->getName()}()</span>
-                        </a>{sep}, {/sep}
-                    {/foreach}
+                <a href="{$constant|linkSource}" title="Go to source code"><b>{$constant->getName()}</b></a>
                 </code>
+
+                <div class="description detailed">
+                    {$constant->getDescription()}
+
+                    {var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter: ['var'])}
+                    {foreach $filteredAnnotations as $annotation => $descriptions}
+                        <h4>{$annotation}</h4>
+                        <div class="list">
+                        {foreach $descriptions as $description}
+                            {if $description}
+                                {$description|annotation:$annotation:$constant|noescape}<br>
+                            {/if}
+                        {/foreach}
+                        </div>
+                    {/foreach}
+                </div>
+            </td>
+            <td class="value">
+                <div>
+                    <a href="#{$constant->getName()}" class="anchor">#</a>
+                    <code>{$constant->valueDefinition|highlightValue:$interface|noescape}</code>
+                </div>
             </td>
         </tr>
-    </table>
-
-    {var $ownConstants = $interface->getOwnConstants()}
-
-    <table class="summary constants" id="constants" n:if="$ownConstants">
-    <caption>Constants summary</caption>
-    <tr n:foreach="$ownConstants as $constant" id="{$constant->getName()}">
-        {var $annotations = $constant->getAnnotations()}
-
-        <td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
-        <td class="name">
-            <code>
-            <a href="{$constant|linkSource}" title="Go to source code"><b>{$constant->getName()}</b></a>
-            </code>
-
-            <div class="description detailed">
-                {$constant->getDescription()}
-
-                {var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter: ['var'])}
-                {foreach $filteredAnnotations as $annotation => $descriptions}
-                    <h4>{$annotation}</h4>
-                    <div class="list">
-                    {foreach $descriptions as $description}
-                        {if $description}
-                            {$description|annotation:$annotation:$constant|noescape}<br>
-                        {/if}
-                    {/foreach}
-                    </div>
-                {/foreach}
-            </div>
-        </td>
-        <td class="value">
-            <div>
-                <a href="#{$constant->getName()}" class="anchor">#</a>
-                <code>{$constant->valueDefinition|highlightValue:$interface|noescape}</code>
-            </div>
-        </td>
-    </tr>
     </table>
 
     <table n:foreach="$interface->getInheritedConstants() as $parentName => $inheritedConstants" class="summary inherited">
@@ -223,9 +189,9 @@
         <tr>
             <td>
                 <code>
-                {foreach $inheritedConstants as $constant}
-                    <a href="{$constant|constantUrl}" n:tag-if="$parentClass"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->getName()}</span></b></a>{sep}, {/sep}
-                {/foreach}
+                    {foreach $inheritedConstants as $constant}
+                        <a href="{$constant|constantUrl}" n:tag-if="$parentClass"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->getName()}</span></b></a>{sep}, {/sep}
+                    {/foreach}
                 </code>
             </td>
         </tr>

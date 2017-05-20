@@ -38,15 +38,6 @@ $(window).load(function() {
 
     // Search autocompletion
     var autocompleteFound = false;
-    var autocompleteFiles = {
-        'c': 'class',
-        'f': 'function',
-        'm': 'class',
-        'mm': 'class',
-        'p': 'class',
-        'mp': 'class',
-        'cc': 'class'
-    };
     var $search = $('#search input[name=q]');
     $search
         .autocomplete(ApiGen.elements, {
@@ -83,17 +74,16 @@ $(window).load(function() {
             autocompleteFound = true;
             var location = window.location.href.split('/');
             location.pop();
-            var parts = data[1].split(/::|$/);
-            var file = '...';
-            // @todo: link instead of mm/mp/m...
-            if (parts[1]) {
-                file += '#' + ('mm' === data[0] || 'mp' === data[0] ? 'm' : '') + parts[1].replace(/([\w]+)\(\)/, '_$1');
-            }
+            // var parts = data[1].split(/::|$/);
+            var file = data[0];
+
+            console.log(file);
+
+            // if (parts[1]) {
+            //     file = data[0];
+            // }
             location.push(file);
             window.location = location.join('/');
-
-            // Workaround for Opera bug
-            $(this).closest('form').attr('action', location.join('/'));
         }).closest('form')
             .submit(function() {
                 var query = $search.val();
