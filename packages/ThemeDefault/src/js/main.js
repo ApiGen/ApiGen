@@ -1,9 +1,5 @@
 $(window).load(function() {
     var $document = $(document);
-    var $left = $('#left');
-    var $right = $('#right');
-    var $rightInner = $('#rightInner');
-    var $splitter = $('#splitter');
     var $groups = $('#groups');
 
     // Menu
@@ -43,7 +39,7 @@ $(window).load(function() {
         .autocomplete(ApiGen.elements, {
             matchContains: true,
             scrollHeight: 200,
-            max: 20,
+            max: 5,
             noRecord: '',
             highlight: function(value, term) {
                 var term = term.toUpperCase().replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1").replace(/[A-Z0-9]/g, function(m, offset) {

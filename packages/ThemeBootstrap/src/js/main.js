@@ -53,23 +53,6 @@
         })
     }
 
-    function markDetailedElements()
-    {
-        forEach(document.body.querySelectorAll('.element .description.detailed.hidden'), function (detailed) {
-
-            var element = detailed.closest('.element')
-            var short = element.querySelector('.description.short')
-
-            if (short.textContent.trim() == detailed.textContent.trim())
-            {
-                return
-            }
-
-            element.classList.add('expandable')
-
-        })
-    }
-
     jQuery(document).ready(function ($) {
 
         var assets = indexAssets()
@@ -144,7 +127,6 @@ $(window).load(function() {
 
     // Search autocompletion
     var autocompleteFound = false;
-    var autocompleteFiles = {'c': 'class', 'co': 'constant', 'f': 'function', 'm': 'class', 'mm': 'class', 'p': 'class', 'mp': 'class', 'cc': 'class'};
     var $search = $('#search input[name=q]');
     $search
         .autocomplete(ApiGen.elements, {
