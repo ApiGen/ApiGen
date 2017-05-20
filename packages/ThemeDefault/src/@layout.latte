@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{include title}{if $active !== 'overview' && $title} | {$title}{/if}</title>
+    <title>{include title}{if $activePage !== 'overview' && $title} | {$title}{/if}</title>
 
     <link rel="stylesheet" href="resources/style.css">
 </head>
@@ -12,7 +12,7 @@
 <body>
 <div id="left">
     <div id="menu">
-        <a n:tag-if="$active !== overview" href="index.html" title="Overview">
+        <a n:tag-if="$activePage !== overview" href="index.html" title="Overview">
             <span>{if $title}{$title}{else}Overview{/if}</span>
         </a>
 
@@ -70,21 +70,27 @@
 
     <div id="navigation">
         <ul>
-            <li n:class="'namespace' === $active ? active" n:if="$namespaces">
-                <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|linkNamespace}" title="Summary of {$namespace}"><span>Namespace</span></a>
+            <li n:class="$activePage === namespace ? active" n:if="$namespaces">
+                <a n:tag-if="$activePage !== namespace && $activeNamespace" href="{$activeNamespace|linkNamespace}">
+                    <span>Namespace</span>
+                </a>
             </li>
-            <li n:class="'class' === $active ? active" n:if="!$function">
-                <a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->getName()}"><span>Class</span></a>
+            <li n:class="$activePage === class ? active" n:if="!$function">
+                <a n:tag-if="$activePage !== class && $activeClass" href="{$activeClass|classUrl}">
+                    <span>Class</span>
+                </a>
             </li>
             {* @todo: add interfaces and traits *}
-            <li n:class="'function' === $active ? active" n:if="$function">
-                <a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->getName()}"><span>Function</span></a>
+            <li n:class="$activePage === function ? active" n:if="$function">
+                <a n:tag-if="$activePage !== function" href="{$function|functionUrl}">
+                    <span>Function</span>
+                </a>
             </li>
         </ul>
         <ul>
             {foreach $annotationGroups as $annotationGroup}
-                <li n:class="$active === 'annotation-group-' . $annotationGroup ? active">
-                    <a href="annotation-group-{$annotationGroup}.html" title="List of elements with {$annotationGroup} annotation">
+                <li n:class="$activePage === 'annotation-group-' . $annotationGroup ? active">
+                    <a href="annotation-group-{$annotationGroup}.html">
                         <span>{$annotationGroup|firstUpper}</span>
                     </a>
                 </li>
