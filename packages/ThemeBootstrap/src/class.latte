@@ -44,18 +44,8 @@
 		{include children, children => $indirectSubClasses}
 	</div>
 
-	<div n:if="$directImplementers">
-		<h3>Direct known implementers</h3>
-		{include children, children => $directImplementers}
-	</div>
-
-	<div n:if="$indirectImplementers">
-		<h3>Indirect known implementers</h3>
-		{include children, children => $indirectImplementers}
-	</div>
-
 	<div class="alert alert-info">
-		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
+		{if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
 		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
