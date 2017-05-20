@@ -86,7 +86,11 @@
             <h2>Functions summary</h2>
             <table class="summary" id="functions">
                 <tr n:foreach="$annotationFunctions as $function">
-                    <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
+                    <td class="name" n:if="$namespaces">
+                        <a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">
+                            {$function->getNamespaceName()}
+                        </a>
+                    </td>
                     <td class="name"><code><a href="{$function|linkReflection}">{$function->getShortName()}</a></code></td>
                     <td>
                         {foreach $function->annotations[$annotation] as $description}

@@ -4,7 +4,7 @@
 <url>
     <loc>{$baseUrl}/index.html</loc>
 </url>
-<url n:foreach="$namespaces as $namespace">
+<url n:foreach="$allNamespaces as $namespace">
     <loc>{$baseUrl}/{$namespace|linkNamespace}</loc>
 </url>
 

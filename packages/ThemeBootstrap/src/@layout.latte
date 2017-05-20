@@ -18,7 +18,7 @@
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav">
             {capture $navbarNav}
-                <li n:class="$activePage === namespace  ? active" n:if="$namespaces">
+                <li n:class="$activePage === namespace  ? active" n:if="$allNamespaces">
                     <a n:tag-if="$activePage !== namespace && $namespace" href="{$namespace|linkNamespace}">
                         <span class="nav-link">Namespace</span>
                     </a>
@@ -61,7 +61,7 @@
 
         <div id="groups">
             <strong>Namespaces</strong>
-            {include namespaces, namespaces => $namespaces, actualNamespace => $namespace}
+            {include namespaces, namespaces => $allNamespaces, activeNamespace => $activeNamespace}
         </div>
 
         <hr>
@@ -127,11 +127,11 @@
 
 {define namespaces}
     <ul>
-        {foreach $namespaces as $namespace}
+        {foreach $allNamespaces as $namespace}
             {continueIf $group === 'PHP'}
 
             {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
-            <li n:class="$actualNamespace === $namespace || 0 === strpos($actualNamespace, $namespace . '\\') ? active, $config->main && 0 === strpos($namespace, $config->main) ? main">
+            <li n:class="$activeNamespace === $namespace || 0 === strpos($activeNamespace, $namespace . '\\') ? active, $config->main && 0 === strpos($namespace, $config->main) ? main">
                 <a href="{$namespace|linkNamespace}">
                     {$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
                 </a>

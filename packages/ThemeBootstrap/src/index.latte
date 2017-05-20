@@ -9,11 +9,10 @@
 
     {var $group = false}
 
-    {if count($namespaces)}
+    {if count($allNamespaces)}
         <h2>Namespaces summary</h2>
         <table class="summary" id="namespaces">
-            {foreach $namespaces as $namespace}
-                {continueIf $config->main && 0 !== strpos($namespace, $config->main)}
+            {foreach $allNamespaces as $namespace}
                 <tr>
                     {var $group = true}
                     <td class="name"><a href="{$namespace|linkNamespace}">{$namespace}</a></td>

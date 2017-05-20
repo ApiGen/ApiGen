@@ -3,7 +3,9 @@
 {block title}File {$fileName|relativePath}{/block}
 
 {block content}
-{var $lineRegex = '~<span class="line">(\\s*(\\d+):\\s*)</span>([^\\n]*(?:\\n|$))~'}
-<pre class="numbers"><code>{$source|replaceRE:$lineRegex,'<span class="l"><a href="#$2">$1</a></span>'|noescape}</code></pre>
-<pre class="code"><code>{$source|replaceRE:$lineRegex,'<span id="$2" class="l">$3</span>'|noescape}</code></pre>
+    <div id="source">
+        {var $lineRegex = '~<span class="line">(\\s*(\\d+):\\s*)</span>([^\\n]*(?:\\n|$))~'}
+        <pre class="numbers"><code>{$source|replaceRE:$lineRegex,'<span class="l"><a href="#$2">$1</a></span>'|noescape}</code></pre>
+        <pre class="code"><code>{$source|replaceRE:$lineRegex,'<span id="$2" class="l">$3</span>'|noescape}</code></pre>
+    </div>
 {/block}
