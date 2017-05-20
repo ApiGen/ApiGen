@@ -80,13 +80,13 @@
 
         <div id="elements">
             {if $allClasses}
-            <strong>Classes</strong>
-            {include elements, elements => $allClasses, activeElement => $class}
+                <strong>Classes</strong>
+                {include elements, elements => $allClasses, activeElement => $activeTrait}
             {/if}
 
             {if $allInterfaces}
                 <strong>Interfaces</strong>
-                {include elements, elements => $allInterfaces, activeElement => $activeClass}
+                {include elements, elements => $allInterfaces, activeElement => $activeInterface}
             {/if}
 
             {if $allTraits}

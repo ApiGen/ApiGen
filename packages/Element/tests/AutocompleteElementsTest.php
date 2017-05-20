@@ -2,7 +2,6 @@
 
 namespace ApiGen\Element\Tests;
 
-use ApiGen\Element\AutocompleteElements;
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;

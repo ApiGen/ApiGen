@@ -51,6 +51,8 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
             'activePage' => null,
             'activeNamespace' => null,
             'activeClass' => null,
+            'activeInterface' => null,
+            'activeTrait' => null,
             'activeFunction' => null,
         ]);
         // add all available elements (for layout)
