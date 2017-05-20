@@ -44,7 +44,7 @@ final class StringRoutingFiltersProvider implements LatteFiltersProviderInterfac
                 return $this->router->buildRoute(SourceCodeRoute::NAME, $reflection);
             },
             // use in .latte <script src="{='resources/combined.js'|staticFile}"></script>
-            'staticFile' => function ($reflection): string {
+            'staticFile' => function (string $reflection): string {
                 return $this->router->buildRoute(StaticRoute::NAME, $reflection);
             },
         ];

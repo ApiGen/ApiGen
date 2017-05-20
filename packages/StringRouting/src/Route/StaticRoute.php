@@ -25,7 +25,7 @@ final class StaticRoute implements RouteInterface
 
     public function match(string $name): bool
     {
-        return $name === 'static';
+        return $name === self::NAME;
     }
 
     /**

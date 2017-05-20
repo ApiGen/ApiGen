@@ -3,10 +3,11 @@
 namespace ApiGen\StringRouting\Tests\Route;
 
 use ApiGen\StringRouting\Route\NamespaceRoute;
+use ApiGen\StringRouting\Route\StaticRoute;
 use ApiGen\StringRouting\StringRouter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class NamespaceRouteTest extends AbstractContainerAwareTestCase
+final class StaticRouteTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var StringRouter
@@ -20,31 +21,11 @@ final class NamespaceRouteTest extends AbstractContainerAwareTestCase
 
     public function test(): void
     {
-        $namespaceName = 'SomeNamespace\SubNamespace';
+        $file = __DIR__ . '/Source/someFile.txt';
 
         $this->assertSame(
-            'namespace-SomeNamespace-SubNamespace.html',
-            $this->stringRouter->buildRoute(NamespaceRoute::NAME, $namespaceName)
+            '/',
+            $this->stringRouter->buildRoute(StaticRoute::NAME, $file)
         );
     }
-
-//    public function testNamespaceLinks(): void
-//    {
-//        $this->assertSame(
-//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
-//            $this->namespaceUrlFilters->namespaceLinks('Long\Namespace')
-//        );
-//    }
-//
-//    public function testNamespaceLinksWithNoNamespaces(): void
-//    {
-//        $this->assertSame(
-//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
-//            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
-//        );
-//    }
-//    {
-//        $this->assertSame('Subgroup', $this->namespaceUrlFilters->subNamespaceName('Group\\Subgroup'));
-//        $this->assertSame('Group', $this->namespaceUrlFilters->subNamespaceName('Group'));
-//    }
 }
