@@ -47,7 +47,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
     {
         $parameterBag = $createTemplateEvent->getParameterBag();
         $parameterBag->addParameters([
-            'namespace' => null,
+            'activeNamespace' => null,
             'class' => null,
             'function' => null,
             'namespaces' => $this->namespaceStorage->getNamespaces(),

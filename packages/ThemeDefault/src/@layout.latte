@@ -16,7 +16,7 @@
 
         <div id="groups">
             <h3>Namespaces</h3>
-            {include namespaces, namespaces => $namespaces, actualNamespace => $namespace}
+            {include namespaces, namespaces => $namespaces, actualNamespace => $activeNamespace}
         </div>
 
         <hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
