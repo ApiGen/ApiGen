@@ -134,59 +134,25 @@
                 {/foreach}
                 </div>
             {/foreach}
-
-            {var $overriddenMethod = $method->overriddenMethod}
-            {if $overriddenMethod}
-                <h4>Overrides</h4>
-                <div class="list">
-                    <code><a n:tag-if="$overriddenMethod->declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod|prettyMethodName}</a></code>
-                </div>
-            {/if}
-
-            {var $implementedMethod = $method->implementedMethod}
-            {if $implementedMethod}
-                <h4>Implementation of</h4>
-                <div class="list">
-                    <code><a n:tag-if="$implementedMethod->declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod|prettyMethodName}</a></code>
-                </div>
-            {/if}
         </div>
         </div></td>
     </tr>
     {/define}
 
     <table class="summary methods" id="methods" n:if="$ownMethods">
-    <caption>Methods summary</caption>
-    {foreach $ownMethods as $method}
-        {include method, method => $method}
-    {/foreach}
+        <caption>Methods summary</caption>
+        {foreach $ownMethods as $method}
+            {include method, method => $method}
+        {/foreach}
     </table>
 
-    <table n:foreach="$trait->getInheritedMethods() as $parentName => $methods" class="summary inherited">
-        {var $parentClass = ($parentName|getClass)}
-        <caption>
-            Methods inherited from <a href="{$parentName|linkReflection}#methods" n:tag-if="$parentClass">{$parentName}</a>
-        </caption>
+    <table n:foreach="$trait->getTraits() as $usedTrait" class="summary used">
+        <caption>Methods used from <a href="{$usedTrait->getName()|linkReflection}#methods">{$usedTrait->getName()}</a> trait</caption>
         <tr>
             <td>
                 <code>
-                    {foreach $methods as $method}
-                        <a href="{$method|methodUrl}" n:tag-if="$parentClass">
-                            <span n:tag-if="$method->isDeprecated()" class="deprecated">{$method->getName()}()</span>
-                        </a>{sep}, {/sep}
-                    {/foreach}
-                </code>
-            </td>
-        </tr>
-    </table>
-
-    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary used">
-        <caption>Methods used from <a href="{$traitName|linkReflection}#methods">{$traitName}</a> trait</caption>
-        <tr>
-            <td>
-                <code>
-                    {foreach $trait->getOwnMethods() as $traitMethod}
-                        <a href="{$traitMethod|methodUrl: $traitMethod->declaringTrait}">
+                    {foreach $usedTrait->getOwnMethods() as $usedTraitMethod}
+                        <a href="{$usedTraitMethod|methodUrl: $usedTraitMethod->declaringTrait}">
                             <span n:tag-if="$traitMethod->isDeprecated()" class="deprecated">{$traitMethod->getName()}()</span>
                         </a>
                         {* @todo *}
@@ -239,21 +205,6 @@
     {foreach $ownProperties as $property}
         {include property, property => $property}
     {/foreach}
-    </table>
-
-    <table n:foreach="$trait->getTraits() as $traitName => $trait" class="summary used">
-        <caption>Properties used from <a href="{$traitName|linkReflection}#properties">{$traitName}</a></caption>
-        <tr>
-            <td>
-                <code>
-                    {foreach $trait->getOwnProperties() as $property}
-                    <a href="{$property|propertyUrl: $trait}">
-                        <var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var>
-                        </a>{sep}, {/sep}
-                    {/foreach}
-                </code>
-            </td>
-        </tr>
     </table>
 </div>
 {/block}

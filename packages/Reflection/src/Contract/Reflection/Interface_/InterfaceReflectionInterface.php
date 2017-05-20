@@ -42,6 +42,11 @@ interface InterfaceReflectionInterface extends StartAndEndLineInterface, Annotat
     public function getOwnConstants(): array;
 
     /**
+     * @return InterfaceReflectionInterface[]
+     */
+    public function getOwnInterfaces(): array;
+
+    /**
      * @return InterfaceConstantReflectionInterface[]
      */
     public function getInheritedConstants(): array;

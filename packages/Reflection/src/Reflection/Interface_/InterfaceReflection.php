@@ -246,4 +246,14 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     {
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
+
+    /**
+     * @return InterfaceReflectionInterface[]
+     */
+    public function getOwnInterfaces(): array
+    {
+        return $this->transformerCollector->transformGroup(
+            $this->betterInterfaceReflection->getImmediateInterfaces()
+        );
+    }
 }
