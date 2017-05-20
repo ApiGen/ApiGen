@@ -31,13 +31,12 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     public function testGetElementsClasses(): void
     {
         $elements = $this->autocompleteElements->getElements();
+        $this->assertCount(5, $elements);
 
-        $this->assertSame([
-            ['f', $this->namespacePrefix . '\namespacedFunction()'],
-            ['c', 'NoneNamespacedClass'],
-            ['c', $this->namespacePrefix . '\NamespacedClass'],
-            ['i', $this->namespacePrefix . '\SubNamespace\SubNamespacedInterface'],
-            ['t', $this->namespacePrefix . '\SubNamespace\SubNamespacedTrait'],
-        ], $elements);
+        $this->assertContains($this->namespacePrefix . '\namespacedFunction()', $elements);
+        $this->assertContains('NoneNamespacedClass', $elements);
+        $this->assertContains($this->namespacePrefix . '\NamespacedClass', $elements);
+        $this->assertContains($this->namespacePrefix . '\SubNamespace\SubNamespacedInterface', $elements);
+        $this->assertContains($this->namespacePrefix . '\SubNamespace\SubNamespacedTrait', $elements);
     }
 }
