@@ -5,29 +5,37 @@
 
 {block content}
 <div id="content" class="class">
-	<h1 n:class="$class->isDeprecated() ? deprecated">Class {$class->getShortName()}</h1>
-	{var $classDescription = ($class|description)}
-	<div class="description" n:if="$classDescription">
-		{$classDescription|noescape}
+	<h1 n:class="$class->isDeprecated() ? deprecated">Class {$class->getName()}</h1>
+	<div class="description" n:if="$class->getDescription()">
+		{$class->getDescription()|noescape}
 	</div>
 
-	<dl class="tree" n:if="$class->getParentClass() || $class->getOwnInterfaces() || $class->getTraits()">
-		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
-			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->getName()}</span>{last}</b>{/last}</a>
-			{var $itemOwnInterfaces = $item->getOwnInterfaces()}
-			{if $itemOwnInterfaces} implements {foreach $itemOwnInterfaces as $ownInterface}
-				<a href="{$ownInterface|classUrl}"><span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span></a>{sep}, {/sep}
-			{/foreach}{/if}
-			{var $itemOwnTraits = $item->getTraits()}
-			{if $itemOwnTraits} uses {foreach $itemOwnTraits as $ownTrait}
-				{if is_string($ownTrait)}
-					{$ownTrait} (not available)
+	<dl class="tree" n:ifcontent>
+		<dd>
+            {if $class->getParentClass()}
+				extends
+				<a href="{$class->getParentClass()|reflectionLink}">
+					<span n:class="$class->getParentClass()->isDeprecated() ? deprecated">{$class->getParentClass()->getName()}</span>
+				</a>
+            {/if}
 
-				{else}
-					<a href="{$ownTrait|classUrl}"><span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span></a>{sep}, {/sep}
-				{/}
-			{/foreach}{/if}
+			{if $class->getOwnInterfaces()}
+				implements
+				{foreach $class->getOwnInterfaces() as $ownInterface}
+					<a href="{$ownInterface|reflectionLink}">
+						<span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span>
+					</a>{sep}, {/sep}
+				{/foreach}
+			{/if}
+
+			{if $class->getOwnTraits()}
+				uses
+				{foreach $class->getOwnTraits() as $ownTrait}
+					<a href="{$ownTrait|reflectionLink}">
+						<span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
+					</a>{sep}, {/sep}
+				{/foreach}
+			{/if}
 		</dd>
 	</dl>
 

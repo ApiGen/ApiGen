@@ -5,20 +5,24 @@
 
 {block content}
 <div id="content" class="class">
-	<h1 n:class="$trait->isDeprecated() ? deprecated">Trait {$trait->getShortName()}</h1>
-	{var $traitDescription = ($trait|description)}
-	<div class="description" n:if="$traitDescription">
-		{$traitDescription|noescape}
+	<h1 n:class="$trait->isDeprecated() ? deprecated">
+		Trait <code>{$trait->getName()}</code>
+	</h1>
+
+	<div class="description" n:if="$trait->getDescription()">
+		{$trait->getDescription()|noescape}
 	</div>
 
-	<dl class="tree" n:if="$trait->getTraits()">
-		<dd n:foreach="$tree as $item" style="padding-left:{($iterator->counter - 1) * 30}px">
-			<img src="resources/inherit.png" alt="Extended by" n:if="$iterator->counter > 1">
-			<a href="{$item|classUrl}" n:tag-if="!$iterator->last">{last}<b>{/last}<span n:class="$item->isDeprecated() ? deprecated">{$item->getName()}</span>{last}</b>{/last}</a>
-			{var $itemTraits = $item->getTraits()}
-			{if $itemTraits} uses {foreach $itemTraits as $itemTrait}
-                <a href="{$itemTrait|classUrl}"><span n:class="$itemTrait->isDeprecated() ? deprecated">{$itemTrait->getName()}</span></a>{sep}, {/sep}
-			{/foreach}{/if}
+	<dl class="tree" n:ifcontent>
+		<dd>
+            {if $trait->getTraits()}
+				uses
+                {foreach $trait->getTraits() as $ownTrait}
+				<a href="{$ownTrait|reflectionLink}">
+					<span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
+					</a>{sep}, {/sep}
+                {/foreach}
+            {/if}
 		</dd>
 	</dl>
 
