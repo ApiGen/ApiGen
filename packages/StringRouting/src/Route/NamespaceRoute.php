@@ -22,6 +22,6 @@ final class NamespaceRoute implements RouteInterface
      */
     public function constructUrl($argument): string
     {
-        return 'namespace-' . Strings::webalize($argument, 'a-z0-9', false) . '.html';
+        return 'namespace-' . Strings::webalize($argument, null, false) . '.html';
     }
 }

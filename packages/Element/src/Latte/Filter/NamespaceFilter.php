@@ -3,8 +3,9 @@
 
 namespace ApiGen\Element\Latte\Filter;
 
+use ApiGen\StringRouting\Route\NamespaceRoute;
+use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
-
 
 final class NamespaceFilter implements LatteFiltersProviderInterface
 {
@@ -12,6 +13,22 @@ final class NamespaceFilter implements LatteFiltersProviderInterface
      * @var string
      */
     private const NAMESPACE_SEPARATOR = '\\';
+
+    /**
+     * @var NamespaceRoute
+     */
+    private $namespaceRoute;
+
+    /**
+     * @var LinkBuilder
+     */
+    private $linkBuilder;
+
+    public function __construct(NamespaceRoute $namespaceRoute, LinkBuilder $linkBuilder)
+    {
+        $this->namespaceRoute = $namespaceRoute;
+        $this->linkBuilder = $linkBuilder;
+    }
 
     /**
      * @return callable[]
@@ -27,39 +44,16 @@ final class NamespaceFilter implements LatteFiltersProviderInterface
 
                 return $namespace;
             },
-
             'linkAllNamespaceParts' => function (string $namespace): string {
-//    private function namespaceLinks(string $namespace): string
-//    {
-//        $links = [];
-//        $parent = '';
-//        foreach (explode('\\', $namespace) as $part) {
-//            $parent = ltrim($parent . '\\' . $part, '\\');
-//            $links[] = $parent !== $namespace
-//                ? $this->linkBuilder->build($this->namespaceUrl($parent), $part)
-//                : $part;
-//        }
-//
-//        return implode('\\', $links);
-//    }
-            }
+                $links = [];
+                $parent = '';
+                foreach (explode('\\', $namespace) as $part) {
+                    $parent = ltrim($parent . '\\' . $part, '\\');
+                    $links[] = $this->linkBuilder->build($this->namespaceRoute->constructUrl($parent), $part);
+                }
 
-//    public function testNamespaceLinks(): void
-//    {
-//        $this->assertSame(
-//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
-//            $this->namespaceUrlFilters->namespaceLinks('Long\Namespace')
-//        );
-//    }
-//
-//    public function testNamespaceLinksWithNoNamespaces(): void
-//    {
-//        $this->assertSame(
-//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
-//            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
-//        );
-//    }
-//}
+                return implode('\\', $links);
+            }
         ];
     }
 }

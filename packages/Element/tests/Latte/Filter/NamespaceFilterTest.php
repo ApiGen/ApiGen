@@ -7,13 +7,31 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class NamespaceFilterTest extends AbstractContainerAwareTestCase
 {
-    public function test(): void
+    /**
+     * @var NamespaceFilter
+     */
+    private $namespaceFilter;
+
+    protected function setUp(): void
     {
-        $namespaceFilter = $this->container->getByType(NamespaceFilter::class);
-        $filter = $namespaceFilter->getFilters()['subNamespaceName'];
+        $this->namespaceFilter = $this->container->getByType(NamespaceFilter::class);
+    }
+
+    public function testSubNamespace(): void
+    {
+        $filter = $this->namespaceFilter->getFilters()['subNamespace'];
 
         $this->assertSame('SubNamespace', $filter('SubNamespace'));
         $this->assertSame('SubNamespace', $filter('Namespace\SubNamespace'));
         $this->assertSame('OneMore', $filter('Namespace\SubNamespace\OneMore'));
+    }
+
+    public function testLinkAllNamespaceParts(): void
+    {
+        $filter = $this->namespaceFilter->getFilters()['linkAllNamespaceParts'];
+        $this->assertSame(
+            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long-Namespace.html">Namespace</a>',
+            $filter('Long\Namespace')
+        );
     }
 }
