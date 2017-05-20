@@ -30,7 +30,7 @@
 
     {define children}
         {foreach $children as $child}
-            <a href="{$child|classUrl}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
+            <a href="{$child|linkReflection}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
         {/foreach}
     {/define}
 
@@ -164,7 +164,7 @@
     <table n:foreach="$interface->getInheritedMethods() as $parentName => $methods" class="summary inherited">
         {var $parentClass = ($parentName|getClass)}
         <caption>
-            Methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$parentClass">{$parentName}</a>
+            Methods inherited from <a href="{$parentName|linkReflection}#methods" n:tag-if="$parentClass">{$parentName}</a>
         </caption>
         <tr>
             <td>
@@ -219,7 +219,7 @@
 
     <table n:foreach="$interface->getInheritedConstants() as $parentName => $inheritedConstants" class="summary inherited">
         {var $parentClass = ($parentName|getClass)}
-        <caption>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$parentClass">{$parentName}</a></caption>
+        <caption>Constants inherited from <a href="{$parentName|linkReflection}#constants" n:tag-if="$parentClass">{$parentName}</a></caption>
         <tr>
             <td>
                 <code>

@@ -16,14 +16,14 @@
                 <ul>
             {/if}
 
-            <li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$reflectionName|classUrl}"><span n:class="$reflection->isDeprecated() ? deprecated">{$reflectionName}</span></a>
+            <li n:class="!$tree->hasSibling() ? last"><div class="{if $tree->hasSibling()}not{/if}last"><a href="{$reflectionName|linkReflection}"><span n:class="$reflection->isDeprecated() ? deprecated">{$reflectionName}</span></a>
             {var $allInterfaces = $reflection->getOwnInterfaces()}
             {if $allInterfaces} implements {foreach $allInterfaces as $interface}
-                <a href="{$interface|classUrl}"><span n:class="$interface->isDeprecated() ? deprecated">{$interface->getName()}</span></a>{sep}, {/sep}
+                <a href="{$interface|linkReflection}"><span n:class="$interface->isDeprecated() ? deprecated">{$interface->getName()}</span></a>{sep}, {/sep}
             {/foreach}{/if}
             {var $allTraits = $reflection->getTraits()}
             {if $allTraits}{if $allInterfaces}<br><span class="padding"></span>{/if} uses {foreach $allTraits as $trait}
-                <a href="{$trait|classUrl}"><span n:class="$trait->isDeprecated() ? deprecated">{$trait->getName()}</span></a>{sep}, {/sep}
+                <a href="{$trait|linkReflection}"><span n:class="$trait->isDeprecated() ? deprecated">{$trait->getName()}</span></a>{sep}, {/sep}
             {/foreach}{/if}
             </div>
 

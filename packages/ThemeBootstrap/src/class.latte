@@ -43,7 +43,7 @@
     {define children}
         <p class="elementList">
         {foreach $children as $child}
-            <code><a href="{$child|classUrl}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a></code>{sep}, {/sep}
+            <code><a href="{$child|linkReflection}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a></code>{sep}, {/sep}
         {/foreach}
         </p>
     {/define}
@@ -182,7 +182,7 @@
 
         {* use traits directly *}
         {foreach $inheritedMethods as $parentName => $methods}
-        <h3>Methods inherited from <a href="{$parentName|classUrl}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
+        <h3>Methods inherited from <a href="{$parentName|linkReflection}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
         <p class="elementList">
         {foreach $methods as $method}
             <code><a href="{$method|methodUrl}" n:tag-if="$template->getClass($parentName)"><span n:tag-if="$method->isDeprecated()" class="deprecated">{$method->getName()}()</span></a></code>{sep}, {/sep}
@@ -192,7 +192,7 @@
 
         {* use traits directly *}
         {foreach $usedMethods as $traitName => $methods}
-        <h3>Methods used from <a href="{$traitName|classUrl}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a> trait</h3>
+        <h3>Methods used from <a href="{$traitName|linkReflection}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a> trait</h3>
         <p class="elementList">
         {foreach $methods as $data}
             <code><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$data['method']->getName()}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}
@@ -240,7 +240,7 @@
         </div>
 
         {foreach $inheritedConstants as $parentName => $constants}
-        <h3>Constants inherited from <a href="{$parentName|classUrl}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
+        <h3>Constants inherited from <a href="{$parentName|linkReflection}#constants" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
         <p class="elementList">
         {foreach $constants as $constant}
             <code><a href="{$constant|constantUrl}" n:tag-if="$template->getClass($parentName)"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->getName()}</span></b></a></code>{sep}, {/sep}
@@ -295,7 +295,7 @@
         </div>
 
         {foreach $inheritedProperties as $parentName => $properties}
-        <h3>Properties inherited from <a href="{$parentName|classUrl}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
+        <h3>Properties inherited from <a href="{$parentName|linkReflection}#properties" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
         <p class="elementList">
         {foreach $properties as $property}
             <code><a href="{$property|propertyUrl}" n:tag-if="$template->getClass($parentName)"><var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var></a></code>{sep}, {/sep}
@@ -304,7 +304,7 @@
         {/foreach}
 
         <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary used">
-            <caption>Properties used from <a href="{$traitName|classUrl}#properties">{$traitName}</a></caption>
+            <caption>Properties used from <a href="{$traitName|linkReflection}#properties">{$traitName}</a></caption>
             <tr>
                 <td>
                     <code>

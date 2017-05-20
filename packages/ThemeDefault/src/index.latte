@@ -9,9 +9,9 @@
 
     {var $group = false}
 
-    <table class="summary" id="namespaces" n:if="$namespaces">
+    <table class="summary" id="namespaces" n:if="$allNamespaces">
         <caption>Namespaces summary</caption>
-        {foreach $namespaces as $namespace}
+        {foreach $allNamespaces as $namespace}
             {continueIf $namespace === 'PHP'}
             <tr>
                 {var $group = true}
