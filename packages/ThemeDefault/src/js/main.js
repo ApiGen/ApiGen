@@ -84,7 +84,8 @@ $(window).load(function() {
             var location = window.location.href.split('/');
             location.pop();
             var parts = data[1].split(/::|$/);
-            var file = $.sprintf(ApiGen.config.templates[autocompleteFiles[data[0]]].filename, parts[0].replace(/\(\)/, '').replace(/[^\w]/g, '.'));
+            var file = '...';
+            // @todo: link instead of mm/mp/m...
             if (parts[1]) {
                 file += '#' + ('mm' === data[0] || 'mp' === data[0] ? 'm' : '') + parts[1].replace(/([\w]+)\(\)/, '_$1');
             }

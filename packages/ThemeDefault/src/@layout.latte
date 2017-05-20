@@ -18,7 +18,7 @@
 
         <div id="groups">
             <h3>Namespaces</h3>
-            {include namespaces, namespaces => $namespaces, activeNamespace => $activeNamespace}
+            {include namespaces, allNamespaces => $allNamespaces, activeNamespace => $activeNamespace}
         </div>
 
         <hr>
@@ -36,24 +36,24 @@
         {/define}
 
         <div id="elements">
-            {if $classes}
+            {if $allClasses}
                 <h3>Classes</h3>
-                {include elements, elements => $classes, activeElement => $class}
+                {include elements, elements => $allClasses, activeElement => $class}
             {/if}
 
-            {if $interfaces}
+            {if $allInterfaces}
                 <h3>Interfaces</h3>
-                {include elements, elements => $interfaces, activeElement => $class}
+                {include elements, elements => $allInterfaces, activeElement => $class}
             {/if}
 
-            {if $traits}
+            {if $allTraits}
                 <h3>Traits</h3>
-                {include elements, elements => $traits, activeElement => $class}
+                {include elements, elements => $allTraits, activeElement => $class}
             {/if}
 
-            {if $functions}
+            {if $allFunctions}
                 <h3>Functions</h3>
-                {include elements, elements => $functions, activeElement => $function}
+                {include elements, elements => $allFunctions, activeElement => $function}
             {/if}
         </div>
     </div>
@@ -70,7 +70,7 @@
 
     <div id="navigation">
         <ul>
-            <li n:class="$activePage === namespace ? active" n:if="$namespaces">
+            <li n:if="$allNamespaces" n:class="$activePage === namespace ? active">
                 <a n:tag-if="$activePage !== namespace && $activeNamespace" href="{$activeNamespace|linkNamespace}">
                     <span>Namespace</span>
                 </a>
@@ -81,8 +81,8 @@
                 </a>
             </li>
             {* @todo: add interfaces and traits *}
-            <li n:class="$activePage === function ? active" n:if="$function">
-                <a n:tag-if="$activePage !== function" href="{$function|functionUrl}">
+            <li n:if="$activeFunction" n:class="$activePage === function ? active">
+                <a n:tag-if="$activePage !== function" href="{$activeFunction|functionUrl}">
                     <span>Function</span>
                 </a>
             </li>
@@ -112,18 +112,13 @@
     <script src="/js/jquery.sortElements.js"></script>
     <script src="/js/main.js"></script>
     <script src="elementlist.js"></script>
-
-    <script type="javascript">
-        var ApiGen = ApiGen || {};
-        ApiGen.config = {};
-    </script>
 </body>
 </html>
 
 
 {define namespaces}
     <ul>
-        {foreach $namespaces as $namespace}
+        {foreach $allNamespaces as $namespace}
             {continueIf $namespace === 'PHP'}
 
             {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}

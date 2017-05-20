@@ -8,19 +8,19 @@
     <h1>{include title}</h1>
 
     {if $hasElements}
-        <table class="summary" id="classes" n:if="$classes">
+        <table class="summary" id="classes" n:if="$allClasses">
             <caption>Classes summary</caption>
-            {include items, items => $classes}
+            {include items, items => $allClasses}
         </table>
 
-        <table class="summary" id="interfaces" n:if="$interfaces">
+        <table class="summary" id="interfaces" n:if="$allInterfaces">
             <caption>Interfaces summary</caption>
-            {include items, items => $interfaces}
+            {include items, items => $allInterfaces}
         </table>
 
-        <table class="summary" id="traits" n:if="$traits">
+        <table class="summary" id="traits" n:if="$allTraits">
             <caption>Traits summary</caption>
-            {include items, items => $traits}
+            {include items, items => $allTraits}
         </table>
 
         <table class="summary" id="methods" n:if="$methods">
@@ -55,9 +55,9 @@
             </tr>
         </table>
 
-        <table class="summary" id="functions" n:if="$functions">
+        <table class="summary" id="functions" n:if="$allFunctions">
             <caption>Functions summary</caption>
-            <tr n:foreach="$functions as $function">
+            <tr n:foreach="$allFunctions as $function">
                 <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
                 <td class="name"><code><a href="{$function|functionUrl}">{$function->getShortName()}</a></code></td>
                 <td>

@@ -70,19 +70,19 @@
         {/define}
 
         <div id="elements">
-            {if $classes}
+            {if $allClasses}
             <strong>Classes</strong>
-            {include elements, elements => $classes, activeElement => $class}
+            {include elements, elements => $allClasses, activeElement => $class}
             {/if}
 
-            {if $interfaces}
+            {if $allInterfaces}
             <strong>Interfaces</strong>
-            {include elements, elements => $interfaces, activeElement => $class}
+            {include elements, elements => $allInterfaces, activeElement => $class}
             {/if}
 
-            {if $traits}
+            {if $allTraits}
             <strong>Traits</strong>
-            {include elements, elements => $traits, activeElement => $class}
+            {include elements, elements => $allTraits, activeElement => $class}
             {/if}
 
             {if $constants}
@@ -90,9 +90,9 @@
             {include elements, elements => $constants, activeElement => $constant}
             {/if}
 
-            {if $functions}
+            {if $allFunctions}
             <strong>Functions</strong>
-            {include elements, elements => $functions, activeElement => $function}
+            {include elements, elements => $allFunctions, activeElement => $function}
             {/if}
         </div>
     </nav>

@@ -9,22 +9,22 @@
     </tr>
 {/define}
 
-<table class="summary" id="classes" n:if="$classes">
+<table class="summary" id="classes" n:if="$allClasses">
     <caption>Classes summary</caption>
-    {include elements, elements => $classes}
+    {include elements, elements => $allClasses}
 </table>
 
-<table class="summary" id="interfaces" n:if="$interfaces">
+<table class="summary" id="interfaces" n:if="$allInterfaces">
     <caption>Interfaces summary</caption>
-    {include elements, elements => $interfaces}
+    {include elements, elements => $allInterfaces}
 </table>
 
-<table class="summary" id="traits" n:if="$traits">
+<table class="summary" id="traits" n:if="$allTraits">
     <caption>Traits summary</caption>
-    {include elements, elements => $traits}
+    {include elements, elements => $allTraits}
 </table>
 
-<table class="summary" id="functions" n:if="$functions">
+<table class="summary" id="functions" n:if="$allFunctions">
     <caption>Functions summary</caption>
-    {include elements, elements => $functions}
+    {include elements, elements => $allFunctions}
 </table>
