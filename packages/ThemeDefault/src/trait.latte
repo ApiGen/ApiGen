@@ -37,7 +37,7 @@
 	</div>
 
 	<div class="info">
-		{if $trait->getNamespaceName()}<b>Namespace:</b> {$trait->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
+		{if $trait->getNamespaceName()}<b>Namespace:</b> {$trait->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
 
 		{var $filteredAnnotations = ($trait->getAnnotations()|annotationFilter)}
 		{foreach $filteredAnnotations as $annotation => $values}

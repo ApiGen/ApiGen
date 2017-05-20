@@ -44,7 +44,7 @@
 
 	<div class="info">
 		{if $class->isAbstract() || $class->isFinal()}<b>{if $class->isAbstract()}Abstract{else}Final{/if}</b><br>{/if}
-		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
+		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
 
 		{var $filteredAnnotations = ($class->getAnnotations()|annotationFilter)}
 		{foreach $filteredAnnotations as $annotation => $values}

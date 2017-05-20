@@ -56,7 +56,7 @@
 
 	<div class="alert alert-info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
-		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
+		{if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
 
 		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
 			{foreach $values as $value}

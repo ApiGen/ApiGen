@@ -37,7 +37,7 @@
     {/if}
 
 	<div class="info">
-		{if $interface->getNamespaceName()}<b>Namespace:</b> {$interface->getNamespaceName()|namespaceLinks|noescape}<br>{/if}
+		{if $interface->getNamespaceName()}<b>Namespace:</b> {$interface->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
 
 		{var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter)}
 		{foreach $filteredAnnotations as $annotation => $values}
