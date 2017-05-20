@@ -68,7 +68,8 @@
                 {$value|annotation:$annotation:$class|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b> <a href="{$class|linkSource}" title="Go to source code">{$class->getFileName()|relativePath}</a>
+        <strong>Located at</strong>
+        <a href="{$class|linkSource}">{$class->getFileName()|relativePath}</a>
         <br>
     </div>
 
@@ -88,7 +89,7 @@
                 </span>
 
                 <span n:class="$method->isDeprecated() ? deprecated">{block|strip}
-                    <a href="{$method|linkSource}" title="Go to source code"><span class="name">{$method->getName()}</span></a>(
+                    <a href="{$method|linkSource}"><span class="name">{$method->getName()}</span></a>(
                     {if $method->getParameters()}
                     {foreach $method->getParameters() as $parameter}
                         <span class="method-param"><span n:if="$parameter->typeHint" class="type">{$parameter->typeHint|typeLinks:$method|noescape}</span>
@@ -214,7 +215,7 @@
 
             <code class="signature">
                 <span class="name">
-                <a nhref="{$constant|linkSource}" title="Go to source code"><b>{$constant->getName()}</b></a>
+                <a nhref="{$constant|linkSource}"><b>{$constant->getName()}</b></a>
                 </span>
 
                 <span class="type" n:if="$constant->typeHint">: {$constant->typeHint|typeLinks:$constant|noescape}</span>
@@ -262,7 +263,7 @@
                 </span>
 
                 <span class="name">
-                <a href="{$property|linkSource}" title="Go to source code"><var>${$property->getName()}</var></a>
+                <a href="{$property|linkSource}"><var>${$property->getName()}</var></a>
                 </span>
 
                 {if $property->typeHint}: <span class="type">{$property->typeHint|typeLinks:$property|noescape}</span>{/if}

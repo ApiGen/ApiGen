@@ -12,7 +12,7 @@
     </h1>
 
     <div class="description" n:if="$trait->getDescription()">
-        {$trait->getDescription()|noescape}
+        {$trait->getDescription()}
     </div>
 
     <dl class="tree" n:ifcontent>
@@ -50,7 +50,8 @@
                 {$value|annotation:$annotation:$trait|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b> <a href="{$trait|linkSource}" title="Go to source code">{$trait->getFileName()|relativePath}</a>
+        <strong>Located at</strong>
+        <a href="{$trait|linkSource}">{$trait->getFileName()|relativePath}</a>
         <br>
     </div>
 
@@ -71,7 +72,7 @@
         <td class="name"><div>
         <a class="anchor" href="#_{$method->getName()}">#</a>
         <code>{block|strip}
-            <a href="{$method|linkSource}" title="Go to source code">{$method->getName()}</a>(
+            <a href="{$method|linkSource}">{$method->getName()}</a>(
             {foreach $method->getParameters() as $parameter}
                 <span>{$parameter->typeHint|typeLinks:$method|noescape}
                 <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$trait|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
@@ -204,7 +205,7 @@
         </code></td>
 
         <td class="name">
-            <a href="{$property|linkSource}" title="Go to source code"><var>${$property->getName()}</var></a>
+            <a href="{$property|linkSource}"><var>${$property->getName()}</var></a>
 
             <div class="description detailed">
                 {$property->getDescription()}

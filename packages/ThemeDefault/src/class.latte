@@ -10,7 +10,7 @@
         {$class->getShortName()}
     </h1>
     <div class="description" n:if="$class->getDescription()">
-        {$class->getDescription()|noescape}
+        {$class->getDescription()}
     </div>
 
     <dl class="tree" n:ifcontent>
@@ -63,7 +63,8 @@
                 {$value|annotation:$annotation:$class|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b> <a href="{$class|linkSource}" title="Go to source code">{$class->getFileName()|relativePath}</a>
+        <strong>Located at</strong>
+        <a href="{$class|linkSource}">{$class->getFileName()|relativePath}</a>
         <br>
     </div>
 
@@ -84,7 +85,7 @@
         <td class="name"><div>
         <a class="anchor" href="#_{$method->getName()}">#</a>
         <code>{block|strip}
-            <a href="{$method|linkSource}" title="Go to source code">{$method->getName()}</a>(
+            <a href="{$method|linkSource}">{$method->getName()}</a>(
             {foreach $method->getParameters() as $parameter}
                 <span>{$parameter->typeHint|typeLinks:$method|noescape}
                 <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}

@@ -12,14 +12,14 @@
     </h1>
 
     <div class="description" n:if="$interface->getDescription()">
-        {$interface->getDescription()|noescape}
+        {$interface->getDescription()}
     </div>
 
     <dl class="tree" n:ifcontent>
         <dd>
-            {if $class->getOwnInterfaces()}
+            {if $interface->getOwnInterfaces()}
                 implements
-                {foreach $class->getOwnInterfaces() as $ownInterface}
+                {foreach $interface->getOwnInterfaces() as $ownInterface}
                 <a href="{$ownInterface|reflectionLink}">
                     <span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span>
                     </a>{sep}, {/sep}
@@ -28,17 +28,15 @@
         </dd>
     </dl>
 
-    {define children}
-        {foreach $children as $child}
-            <a href="{$child|linkReflection}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
-        {/foreach}
-    {/define}
-
     {if $interface->getImplementers()}
         <br>
         <div>
             <h4>Known implementers</h4>
-            {include children, children => $interface->getImplementers()}
+            {foreach $interface->getImplementers() as $implementer}
+                <a href="{$implementer|linkReflection}">
+                    <span n:tag-if="$implementer->isDeprecated()" class="deprecated">{$implementer->getName()}</span>
+                </a>{sep}, {/sep}
+            {/foreach}
         </div>
     {/if}
 
@@ -50,7 +48,8 @@
                 {$value|annotation:$annotation:$interface|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b> <a href="{$interface|linkSource}" title="Go to source code">{$interface->getFileName()|relativePath}</a>
+        <strong>Located at</strong>
+        <a href="{$interface|linkSource}">{$interface->getFileName()|relativePath}</a>
         <br>
     </div>
 
@@ -71,7 +70,7 @@
         <td class="name"><div>
         <a class="anchor" href="#_{$method->getName()}">#</a>
         <code>{block|strip}
-            <a href="{$method|linkSource}" title="Go to source code">{$method->getName()}</a>(
+            <a href="{$method|linkSource}">{$method->getName()}</a>(
             {foreach $method->getParameters() as $parameter}
                 <span>{$parameter->typeHint|typeLinks:$method|noescape}
                 <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$interface|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
@@ -155,7 +154,7 @@
             <td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
             <td class="name">
                 <code>
-                <a href="{$constant|linkSource}" title="Go to source code"><b>{$constant->getName()}</b></a>
+                <a href="{$constant|linkSource}"><b>{$constant->getName()}</b></a>
                 </code>
 
                 <div class="description detailed">

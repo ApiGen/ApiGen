@@ -19,10 +19,8 @@
                 {$value|annotation:$annotation:$function|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b>
-        <a href="{$function|linkSource}" title="Go to source code">
-            {$function->getFileName()|relativePath}
-        </a><br>
+        <strong>Located at</strong>
+        <a href="{$function|linkSource}">{$function->getFileName()|relativePath}</a><br>
     </div>
 
     {var $annotations = $function->annotations}
