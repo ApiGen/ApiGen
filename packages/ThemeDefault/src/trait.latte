@@ -152,7 +152,7 @@
             <td>
                 <code>
                     {foreach $usedTrait->getOwnMethods() as $usedTraitMethod}
-                        <a href="{$usedTraitMethod|methodUrl: $usedTraitMethod->declaringTrait}">
+                        <a href="{$usedTraitMethod|methodUrl: $usedTraitMethod->getDeclaringTrait()}">
                             <span n:tag-if="$traitMethod->isDeprecated()" class="deprecated">{$traitMethod->getName()}()</span>
                         </a>
                         {* @todo *}

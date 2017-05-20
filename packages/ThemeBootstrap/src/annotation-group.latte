@@ -37,7 +37,7 @@
                     <td class="name"><code><a href="{$method|methodUrl}">{$method->getName()}()</a></code></td>
                     <td>
                         {if $method->hasAnnotation($annotation)}
-                            {foreach $method->annotations[$annotation] as $description}
+                            {foreach $method->getAnnotations()[$annotation] as $description}
                                 {if $description}
                                     {$description|annotation:$annotation:$method|noescape}<br>
                                 {/if}
@@ -55,7 +55,7 @@
                     <td class="name"><a href="{$constant->getDeclaringClassName()|linkReflection}">{$constant->getDeclaringClassName()}</a></td>
                     <td class="name"><code><a href="{$constant|constantUrl}"><b>{$constant->getName()}</b></a></code></td>
                     <td>
-                        {foreach $constant->annotations[$annotation] as $description}
+                        {foreach $constant->getAnnotations()[$annotation] as $description}
                             {if $description}
                                 {$description|annotation:$annotation:$constant|noescape}<br>
                             {/if}
@@ -72,7 +72,7 @@
                     <td class="name"><a href="{$property->getDeclaringClassName()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
                     <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
                     <td>
-                        {foreach $property->annotations[$annotation] as $description}
+                        {foreach $property->getAnnotations()[$annotation] as $description}
                             {if $description}
                                 {$description|annotation:$annotation:$property|noescape}<br>
                             {/if}
@@ -93,7 +93,7 @@
                     </td>
                     <td class="name"><code><a href="{$function|linkReflection}">{$function->getShortName()}</a></code></td>
                     <td>
-                        {foreach $function->annotations[$annotation] as $description}
+                        {foreach $function->getAnnotations()[$annotation] as $description}
                             {if $description}
                                 {$description|annotation:$annotation:$function|noescape}<br>
                             {/if}
@@ -114,7 +114,7 @@
     <tr n:foreach="$items as $class">
         <td class="name"><a href="{$class|linkReflection}">{$class->getName()}</a></td>
         <td>
-            {foreach $class->annotations[$annotation] as $description}
+            {foreach $class->getAnnotations()[$annotation] as $description}
                 {if $description}
                     {$description|annotation:$annotation:$class|noescape}<br>
                 {/if}

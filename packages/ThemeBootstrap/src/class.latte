@@ -62,7 +62,7 @@
         {if $class->abstract || $class->final}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
         {if $class->getNamespaceName()}<b>Namespace:</b> {$class->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
 
-        {foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}
+        {foreach $template->getAnnotations()ort($template->annotationFilter($class->getAnnotations())) as $annotation => $values}
             {foreach $values as $value}
                 <b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
                 {$value|annotation:$annotation:$class|noescape}<br>
@@ -75,12 +75,11 @@
 
     {var $ownMethods = $class->getOwnMethods()}
     {var $inheritedMethods = $class->getInheritedMethods()}
-    {var $usedMethods = $class->getUsedMethods()}
 
-    {if $ownMethods || $inheritedMethods || $usedMethods}
+    {if $ownMethods || $inheritedMethods}
         {define method}
         <div id="_{$method->getName()}" n:class="element">
-            {var $annotations = $method->annotations}
+            {var $annotations = $method->getAnnotations()}
             <a class="anchor" href="#_{$method->getName()}"></a>
             <code class="signature">
                 <span class="modifier">
@@ -148,7 +147,7 @@
                     </div>
                 {/ifset}
 
-                {foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
+                {foreach $template->getAnnotations()ort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}
                     <h4>{$annotation|annotationBeautify}</h4>
                     <div class="list">
                     {foreach $descriptions as $description}
@@ -181,7 +180,7 @@
         {/foreach}
         </div>
 
-        {* use traits directly *}
+        {* use classes directly *}
         {foreach $inheritedMethods as $parentName => $methods}
         <h3>Methods inherited from <a href="{$parentName|linkReflection}#methods" n:tag-if="$template->getClass($parentName)">{$parentName}</a></h3>
         <p class="elementList">
@@ -191,19 +190,23 @@
         </p>
         {/foreach}
 
-        {* use traits directly *}
-        {foreach $usedMethods as $traitName => $methods}
-        <h3>Methods used from <a href="{$traitName|linkReflection}#methods" n:tag-if="$template->getClass($traitName)">{$traitName}</a> trait</h3>
-        <p class="elementList">
-        {foreach $methods as $data}
-            <code><a href="{$data['method']|methodUrl:$data['method']->declaringTrait}" n:tag-if="$template->getClass($traitName)"><span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$data['method']->getName()}()</span></a>{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}
-        {/foreach}
-        </p>
+        {foreach $class->getTraits() as $trait}
+            <h3>Methods used from <a href="{$trait->getName()|linkReflection}#methods">{$trait->getName()}</a> trait</h3>
+                <p class="elementList">
+                {foreach $trait->getOwnMethods() as $traitMethod}
+                {foreach $methods as $data}
+                    <code><a href="{$traitMethod|linkReflection}">
+                        <span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$data['method']->getName()}()</span></a>
+                        {* todo *}
+                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}*}
+                        {*<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}</code>{sep}, {/sep}*}
+                {/foreach}
+                </p>
+            {/foreach}
         {/foreach}
     {/if}
 
-
-    {var $ownConstants = $class->ownConstants}
+    {var $ownConstants = $class->getOwnContants()}
     {var $inheritedConstants = $class->inheritedConstants}
 
     {if $ownConstants || $inheritedConstants}
@@ -211,7 +214,7 @@
         <div class="summary constants" id="constants" n:if="$ownConstants">
         <div n:foreach="$ownConstants as $constant" id="{$constant->getName()}" n:class="element">
             <a href="#{$constant->getName()}" class="anchor"></a>
-            {var $annotations = $constant->annotations}
+            {var $annotations = $constant->getAnnotations()}
 
             <code class="signature">
                 <span class="name">
@@ -224,7 +227,7 @@
             <div n:class="description, detailed">
                 {$constant->getDescription()}
 
-                {foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
+                {foreach $template->getAnnotations()ort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
                     <h4>{$annotation|annotationBeautify}</h4>
                     <div class="list">
                     {foreach $descriptions as $description}
@@ -272,7 +275,7 @@
             <div n:class="description, detailed">
                 {$property->getDescription()}
 
-                {foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}
+                {foreach $template->getAnnotations()ort($template->annotationFilter($property->getAnnotations(), array('var'))) as $annotation => $descriptions}
                     <h4>{$annotation|annotationBeautify}</h4>
                     <div class="list">
                     {foreach $descriptions as $description}
