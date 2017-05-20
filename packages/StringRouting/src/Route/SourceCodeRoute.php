@@ -31,6 +31,7 @@ final class SourceCodeRoute implements RouteInterface
      */
     public function constructUrl($reflection): string
     {
+        # todo: allow Github links, based on configuration
         if ($reflection instanceof ClassReflectionInterface) {
             return 'source-class-' . Strings::webalize($reflection->getName(), null, false) . '.html';
         }

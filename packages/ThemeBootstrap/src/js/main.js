@@ -111,7 +111,6 @@
 $(window).load(function() {
     var $right = $('#right');
     var $groups = $('#groups');
-    var $content = $('#content');
 
     // Menu
 
