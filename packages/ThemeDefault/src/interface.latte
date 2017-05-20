@@ -72,14 +72,14 @@
         <a class="anchor" href="#_{$method->getName()}">#</a>
         <code>{block|strip}
             <a href="{$method|linkSource}" title="Go to source code">{$method->getName()}</a>(
-            {foreach $method->parameters as $parameter}
+            {foreach $method->getParameters() as $parameter}
                 <span>{$parameter->typeHint|typeLinks:$method|noescape}
                 <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$interface|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
             {/foreach}
         ){/block}</code>
 
         <div class="description detailed">
-            {$method|description|noescape}
+            {$method->getDescription()}
 
             {if !$interface->isDeprecated() && $method->isDeprecated()}
                 <h4>Deprecated</h4>
@@ -94,10 +94,10 @@
                 {/ifset}
             {/if}
 
-            {if $method->parameters && isset($annotations['param'])}
+            {if $method->getParameters() && isset($annotations['param'])}
                 <h4>Parameters</h4>
                 <div class="list"><dl>
-                {foreach $method->parameters as $parameter}
+                {foreach $method->getParameters() as $parameter}
                     <dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
                     <dd>{$parameter->getDescription()|annotationDescription:$method|noescape}</dd>
                 {/foreach}
@@ -193,7 +193,7 @@
             </code>
 
             <div class="description detailed">
-                {$constant|description|noescape}
+                {$constant->getDescription()}
 
                 {var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter: ['var'])}
                 {foreach $filteredAnnotations as $annotation => $descriptions}

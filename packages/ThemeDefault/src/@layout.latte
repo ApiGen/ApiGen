@@ -25,7 +25,11 @@
 
         {define elements}
             <ul>
-                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->getNamespaceName()"><a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></li>
+                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->getNamespaceName()">
+                    <a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">
+                        {if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}
+                    </a>
+                </li>
             </ul>
         {/define}
 

@@ -55,9 +55,4 @@ class Filters
         // Class, constant or function
         return $trimNamespaceSeparator ? ltrim($name, '\\') : $name;
     }
-
-    protected function url(string $url): string
-    {
-        return rawurlencode($url);
-    }
 }

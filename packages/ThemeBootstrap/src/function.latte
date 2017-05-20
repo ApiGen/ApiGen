@@ -27,15 +27,18 @@
 
     {var $annotations = $function->annotations}
 
-    {if count($function->parameters)}
+    {if count($function->getParameters())}
     <h2>Parameters summary</h2>
     <table class="summary" id="parameters">
-    <tr n:foreach="$function->parameters as $parameter" id="${$parameter->getName()}">
-        <td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
+    <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
+        <td class="name"><code>{$parameter->getTypeHint()|typeLinks:$function|noescape}</code></td>
         <td class="value"><code>{block|strip}
-            <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->unlimited},…{/if}
+            <var>
+                {if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}
+            </var>
+            {if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
         {/block}</code></td>
-        <td>{$parameter->getDescription()|description:$function}</td>
+        <td>{$parameter->getDescription()}</td>
     </tr>
     </table>
     {/if}
@@ -48,21 +51,7 @@
             {$annotations['return'][0]|typeLinks:$function|noescape}
         </code></td>
         <td>
-            {$annotations['return'][0]|description:$function|noescape}
-        </td>
-    </tr>
-    </table>
-    {/if}
-
-    {if isset($annotations['throws'])}
-    <h2>Thrown exceptions summary</h2>
-    <table class="summary" id="throws">
-    <tr n:foreach="$annotations['throws'] as $throws">
-        <td class="name"><code>
-            {$throws|typeLinks:$function|noescape}
-        </code></td>
-        <td>
-            {$throws|description:$function|noescape}
+            {$annotations['return'][0]->getDescription()}
         </td>
     </tr>
     </table>

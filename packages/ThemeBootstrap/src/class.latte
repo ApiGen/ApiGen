@@ -89,8 +89,8 @@
 
                 <span n:class="$method->isDeprecated() ? deprecated">{block|strip}
                     <a href="{$method|linkSource}" title="Go to source code"><span class="name">{$method->getName()}</span></a>(
-                    {if $method->parameters}
-                    {foreach $method->parameters as $parameter}
+                    {if $method->getParameters()}
+                    {foreach $method->getParameters() as $parameter}
                         <span class="method-param"><span n:if="$parameter->typeHint" class="type">{$parameter->typeHint|typeLinks:$method|noescape}</span>
                         <code class="parameter">{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</code><span class="initializer">{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|noescape}</span>{elseif $parameter->unlimited},…{/if}</span>{sep}, {/sep}
                     {/foreach}
@@ -104,7 +104,7 @@
             </code>
 
             <div n:class="description, detailed">
-                {$method|description|noescape}
+                {$method->getDescription()}
 
                 {if ! $class->isDeprecated() && $method->isDeprecated()}
                     <h4>Deprecated</h4>
@@ -119,12 +119,12 @@
                     {/ifset}
                 {/if}
 
-                {if $method->parameters && isset($annotations['param'])}
+                {if $method->getParameters() && isset($annotations['param'])}
                     <h4>Parameters</h4>
                     <div class="list"><dl>
-                    {foreach $method->parameters as $parameter}
+                    {foreach $method->getParameters() as $parameter}
                         <dt><code class="parameter">${$parameter->getName()}</code>{if $parameter->unlimited},…{/if}</dt>
-                        <dd>{$parameter->getDescription()|description:$method|noescape}</dd>
+                        <dd>{$parameter->getDescription()}</dd>
                     {/foreach}
                     </dl></div>
                 {/if}
@@ -221,7 +221,7 @@
             </code>
 
             <div n:class="description, detailed">
-                {$constant|description|noescape}
+                {$constant->getDescription()}
 
                 {foreach $template->annotationSort($template->annotationFilter($annotations, array('var'))) as $annotation => $descriptions}
                     <h4>{$annotation|annotationBeautify}</h4>
@@ -269,7 +269,7 @@
             </code>
 
             <div n:class="description, detailed">
-                {$property|description|noescape}
+                {$property->getDescription()}
 
                 {foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}
                     <h4>{$annotation|annotationBeautify}</h4>
