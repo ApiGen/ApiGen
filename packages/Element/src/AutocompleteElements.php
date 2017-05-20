@@ -5,7 +5,6 @@ namespace ApiGen\Element;
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
-use ApiGen\StringRouting\Route\SourceCodeRoute;
 
 final class AutocompleteElements implements AutocompleteElementsInterface
 {
