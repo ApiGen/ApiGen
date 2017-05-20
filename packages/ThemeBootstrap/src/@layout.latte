@@ -1,11 +1,10 @@
-{default $active = ''}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>{include title}{if 'overview' !== $active && $title} | {$title}{/if}</title>
+    <title>{include title}{if $active !== 'overview' && $title} | {$title}{/if}</title>
 
     <link rel="stylesheet" href="resources/style.css">
 </head>

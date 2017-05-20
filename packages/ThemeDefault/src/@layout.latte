@@ -1,8 +1,8 @@
-{default $active = ''}
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <title>{include title}{if $active !== 'overview' && $title} | {$title}{/if}</title>
 
@@ -12,7 +12,7 @@
 <body>
 <div id="left">
     <div id="menu">
-        <a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
+        <a n:tag-if="$active !== overview" href="index.html" title="Overview"><span>Overview</span></a>
 
         <div id="groups">
             <h3>Namespaces</h3>
@@ -63,7 +63,7 @@
 <div id="rightInner">
     <form id="search">
         <input type="hidden" name="ie" value="UTF-8">
-        <input type="text" name="q" class="text" placeholder="Search"{if 'overview' === $active} autofocus{/if}>
+        <input type="text" name="q" class="text" placeholder="Search" autofocus>
     </form>
 
     <div id="navigation">

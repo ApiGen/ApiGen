@@ -1,4 +1,5 @@
 parameters:
+    title: "ApiGen It-self"
     source:
         - src
     visibilityLevels: [public, protected, private]

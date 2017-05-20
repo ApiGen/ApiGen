@@ -47,6 +47,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
     {
         $parameterBag = $createTemplateEvent->getParameterBag();
         $parameterBag->addParameters([
+            'active' => null, // @todo: rename to active page
             'activeNamespace' => null,
             'class' => null,
             'function' => null,

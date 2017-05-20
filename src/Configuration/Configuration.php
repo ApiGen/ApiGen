@@ -126,7 +126,7 @@ final class Configuration implements ConfigurationInterface
     {
         return $this->getDestination() . DIRECTORY_SEPARATOR . sprintf(
             $prefix . '%s.html',
-            Strings::webalize($name)
+            Strings::webalize($name, null, false)
         );
     }
 }
