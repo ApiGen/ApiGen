@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
@@ -40,11 +41,9 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         ], $options);
     }
 
-    /**
-     * @expectedException \ApiGen\ModularConfiguration\Exception\ConfigurationException
-     */
     public function testPrepareOptionsDestinationNotSet(): void
     {
+        $this->expectException(ConfigurationException::class);
         $this->configuration->resolveOptions([]);
     }
 

@@ -89,12 +89,12 @@ final class ElementLinkFactoryTest extends AbstractContainerAwareTestCase
         );
     }
 
-    /**
-     * @expectedException \UnexpectedValueException
-     */
     public function testCreateForElementOfUnspecificType(): void
     {
         $reflectionElement = $this->createMock(ReflectionInterface::class);
+
+        $this->expectException(\UnexpectedValueException::class);
+
         $this->elementLinkFactory->createForElement($reflectionElement);
     }
 

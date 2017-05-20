@@ -53,7 +53,6 @@ checkers:
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         usefulAnnotations:
             - @dataProvider
-            - @expectedException
             - @deprecated
             - @todo
         enableEachParameterAndReturnInspection: true
