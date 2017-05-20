@@ -12,7 +12,9 @@
 <body>
 <div id="left">
     <div id="menu">
-        <a n:tag-if="$active !== overview" href="index.html" title="Overview"><span>Overview</span></a>
+        <a n:tag-if="$active !== overview" href="index.html" title="Overview">
+            <span>{if $title}{$title}{else}Overview{/if}</span>
+        </a>
 
         <div id="groups">
             <h3>Namespaces</h3>
@@ -68,9 +70,6 @@
 
     <div id="navigation">
         <ul>
-            <li n:class="'overview' === $active ? active">
-                <a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
-            </li>
             <li n:class="'namespace' === $active ? active" n:if="$namespaces">
                 <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|linkNamespace}" title="Summary of {$namespace}"><span>Namespace</span></a>
             </li>

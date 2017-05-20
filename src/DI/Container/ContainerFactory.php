@@ -41,6 +41,7 @@ final class ContainerFactory
     {
         $configurator->addConfig(__DIR__ . '/../../config/config.neon');
         $localConfig = getcwd() . '/' . self::CONFIG_NAME;
+
         if (file_exists($localConfig)) {
             $configurator->addConfig($localConfig);
         }
