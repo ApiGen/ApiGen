@@ -16,7 +16,7 @@
 
         <div id="groups">
             <h3>Namespaces</h3>
-            {include namespaces, namespaces => $namespaces, actualNamespace => $activeNamespace}
+            {include namespaces, namespaces => $namespaces, activeNamespace => $activeNamespace}
         </div>
 
         <hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
@@ -120,7 +120,7 @@
             {continueIf $namespace === 'PHP'}
 
             {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
-            <li n:class="$actualNamespace === $namespace || 0 === strpos($actualNamespace, $namespace . '\\') ? active">
+            <li n:class="$activeNamespace === $namespace || 0 === strpos($activeNamespace, $namespace . '\\') ? active">
                 <a href="{$namespace|linkNamespace}">
                     {$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
                 </a>
