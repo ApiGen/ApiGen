@@ -68,7 +68,7 @@
                 {$value|annotation:$annotation:$class|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b> <a href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>
+        <b>Located at</b> <a href="{$class|linkSource}" title="Go to source code">{$class->getFileName()|relativePath}</a>
         <br>
     </div>
 
@@ -78,7 +78,7 @@
 
     {if $ownMethods || $inheritedMethods || $usedMethods}
         {define method}
-        <div data-order="{$method->getName()}" id="_{$method->getName()}" n:class="element">
+        <div id="_{$method->getName()}" n:class="element">
             {var $annotations = $method->annotations}
             <a class="anchor" href="#_{$method->getName()}"></a>
             <code class="signature">
@@ -88,7 +88,7 @@
                 </span>
 
                 <span n:class="$method->isDeprecated() ? deprecated">{block|strip}
-                    <a href="{$method|sourceUrl}" title="Go to source code"><span class="name">{$method->getName()}</span></a>(
+                    <a href="{$method|linkSource}" title="Go to source code"><span class="name">{$method->getName()}</span></a>(
                     {if $method->parameters}
                     {foreach $method->parameters as $parameter}
                         <span class="method-param"><span n:if="$parameter->typeHint" class="type">{$parameter->typeHint|typeLinks:$method|noescape}</span>
@@ -106,16 +106,16 @@
             <div n:class="description, detailed">
                 {$method|description|noescape}
 
-                {if !$class->isDeprecated() && $method->isDeprecated()}
+                {if ! $class->isDeprecated() && $method->isDeprecated()}
                     <h4>Deprecated</h4>
                     {ifset $annotations['deprecated']}
-                    <div class="list">
-                    {foreach $annotations['deprecated'] as $description}
-                        {if $description}
-                            {$description|annotation:'deprecated':$method|noescape}<br>
-                        {/if}
-                    {/foreach}
-                    </div>
+                        <div class="list">
+                        {foreach $annotations['deprecated'] as $description}
+                            {if $description}
+                                {$description|annotation:'deprecated':$method|noescape}<br>
+                            {/if}
+                        {/foreach}
+                        </div>
                     {/ifset}
                 {/if}
 
@@ -208,13 +208,13 @@
     {if $ownConstants || $inheritedConstants}
         <h2>Constants summary</h2>
         <div class="summary constants" id="constants" n:if="$ownConstants">
-        <div n:foreach="$ownConstants as $constant" data-order="{$constant->getName()}" id="{$constant->getName()}" n:class="element">
+        <div n:foreach="$ownConstants as $constant" id="{$constant->getName()}" n:class="element">
             <a href="#{$constant->getName()}" class="anchor"></a>
             {var $annotations = $constant->annotations}
 
             <code class="signature">
                 <span class="name">
-                <a nhref="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->getName()}</b></a>
+                <a nhref="{$constant|linkSource}" title="Go to source code"><b>{$constant->getName()}</b></a>
                 </span>
 
                 <span class="type" n:if="$constant->typeHint">: {$constant->typeHint|typeLinks:$constant|noescape}</span>
@@ -254,7 +254,7 @@
 
     {if $ownProperties || $inheritedProperties}
         {define property}
-        <div data-order="{$property->getName()}" id="${$property->getName()}" n:class="element">
+        <div id="${$property->getName()}" n:class="element">
             <a href="#${$property->getName()}" class="anchor"></a>
             <code class="signature">
                 <span class="modifier">
@@ -262,7 +262,7 @@
                 </span>
 
                 <span class="name">
-                <a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->getName()}</var></a>
+                <a href="{$property|linkSource}" title="Go to source code"><var>${$property->getName()}</var></a>
                 </span>
 
                 {if $property->typeHint}: <span class="type">{$property->typeHint|typeLinks:$property|noescape}</span>{/if}

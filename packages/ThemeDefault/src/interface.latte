@@ -50,14 +50,14 @@
                 {$value|annotation:$annotation:$interface|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b> <a href="{$interface|sourceUrl}" title="Go to source code">{$interface->getFileName()|relativePath}</a>
+        <b>Located at</b> <a href="{$interface|linkSource}" title="Go to source code">{$interface->getFileName()|relativePath}</a>
         <br>
     </div>
 
     {var $ownMethods = $interface->getOwnMethods()}
 
     {define method}
-    <tr data-order="{$method->getName()}" id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
+    <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
         {var $annotations = $method->getAnnotations()}
 
         <td class="attributes"><code>
@@ -71,7 +71,7 @@
         <td class="name"><div>
         <a class="anchor" href="#_{$method->getName()}">#</a>
         <code>{block|strip}
-            <a href="{$method|sourceUrl}" title="Go to source code">{$method->getName()}</a>(
+            <a href="{$method|linkSource}" title="Go to source code">{$method->getName()}</a>(
             {foreach $method->parameters as $parameter}
                 <span>{$parameter->typeHint|typeLinks:$method|noescape}
                 <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$interface|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
@@ -183,13 +183,13 @@
 
     <table class="summary constants" id="constants" n:if="$ownConstants">
     <caption>Constants summary</caption>
-    <tr n:foreach="$ownConstants as $constant" data-order="{$constant->getName()}" id="{$constant->getName()}">
+    <tr n:foreach="$ownConstants as $constant" id="{$constant->getName()}">
         {var $annotations = $constant->getAnnotations()}
 
         <td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
         <td class="name">
             <code>
-            <a href="{$constant|sourceUrl}" title="Go to source code"><b>{$constant->getName()}</b></a>
+            <a href="{$constant|linkSource}" title="Go to source code"><b>{$constant->getName()}</b></a>
             </code>
 
             <div class="description detailed">

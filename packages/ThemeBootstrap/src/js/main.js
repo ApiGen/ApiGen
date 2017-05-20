@@ -200,39 +200,6 @@ $(window).load(function() {
                 return !autocompleteFound && '' !== $('#search input[name=cx]').val();
             });
 
-    // Save natural order
-    $('.summary [data-order]', $content).each(function(index) {
-        do {
-            index = '0' + index;
-        } while (index.length < 3);
-        $(this).attr('data-order-natural', index);
-    });
-
-    // Switch between natural and alphabetical order
-    var $caption = $('.summary', $content)
-        .filter(':has([data-order])')
-            .prev('h2');
-    $caption
-        .click(function() {
-            var $this = $(this);
-            var order = $this.data('order') || 'natural';
-            order = 'natural' === order ? 'alphabetical' : 'natural';
-            $this.data('order', order);
-            $.cookie('order', order, {expires: 365});
-            var attr = 'alphabetical' === order ? 'data-order' : 'data-order-natural';
-            $this
-                .next('.summary')
-                    .find('.element').sortElements(function(a, b) {
-                        return $(a).attr(attr) > $(b).attr(attr) ? 1 : -1;
-                    });
-            return false;
-        })
-        .addClass('switchable')
-        .attr('title', 'Switch between natural and alphabetical order');
-    if ((null === $.cookie('order') && 'alphabetical' === ApiGen.config.options.elementsOrder) || 'alphabetical' === $.cookie('order')) {
-        $caption.click();
-    }
-
     // Select selected lines
     var matches = window.location.hash.substr(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/);
     if (null !== matches) {

@@ -50,14 +50,14 @@
                 {$value|annotation:$annotation:$trait|noescape}<br>
             {/foreach}
         {/foreach}
-        <b>Located at</b> <a href="{$trait|sourceUrl}" title="Go to source code">{$trait->getFileName()|relativePath}</a>
+        <b>Located at</b> <a href="{$trait|linkSource}" title="Go to source code">{$trait->getFileName()|relativePath}</a>
         <br>
     </div>
 
     {var $ownMethods = $trait->getOwnMethods()}
 
     {define method}
-    <tr data-order="{$method->getName()}" id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
+    <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
         {var $annotations = $method->getAnnotations()}
 
         <td class="attributes"><code>
@@ -71,7 +71,7 @@
         <td class="name"><div>
         <a class="anchor" href="#_{$method->getName()}">#</a>
         <code>{block|strip}
-            <a href="{$method|sourceUrl}" title="Go to source code">{$method->getName()}</a>(
+            <a href="{$method|linkSource}" title="Go to source code">{$method->getName()}</a>(
             {foreach $method->parameters as $parameter}
                 <span>{$parameter->typeHint|typeLinks:$method|noescape}
                 <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$trait|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
@@ -197,14 +197,14 @@
     </table>
 
     {define property}
-    <tr data-order="{$property->getName()}" id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
+    <tr id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
         <td class="attributes"><code>
             {if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
             {$property->typeHint|typeLinks:$property|noescape}
         </code></td>
 
         <td class="name">
-            <a href="{$property|sourceUrl}" title="Go to source code"><var>${$property->getName()}</var></a>
+            <a href="{$property|linkSource}" title="Go to source code"><var>${$property->getName()}</var></a>
 
             <div class="description detailed">
                 {$property|description|noescape}

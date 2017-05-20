@@ -20,8 +20,8 @@
             {/foreach}
         {/foreach}
         <b>Located at</b>
-        <a href="{$function|sourceUrl}" title="Go to source code">
-            {$function->fileName|relativePath}
+        <a href="{$function|linkSource}" title="Go to source code">
+            {$function->getFileName()|relativePath}
         </a><br>
     </div>
 
