@@ -29,9 +29,9 @@
                 {/foreach}
             {/if}
 
-            {if $class->getOwnTraits()}
+            {if $class->getTraits()}
                 uses
-                {foreach $class->getOwnTraits() as $ownTrait}
+                {foreach $class->getTraits() as $ownTrait}
                 <a href="{$ownTrait|reflectionLink}">
                     <span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
                     </a>{sep}, {/sep}

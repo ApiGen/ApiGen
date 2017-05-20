@@ -11,7 +11,7 @@
     <h2>Namespaces summary</h2>
     <table class="summary" id="namespaces">
     <tr n:foreach="$parentNamespaces as $parentNamespace">
-        <td class="name"><a href="{$parentNamespace|namespaceUrl}">{$parentNamespace}</a></td>
+        <td class="name"><a href="{$parentNamespace|linkNamespace}">{$parentNamespace}</a></td>
     </tr>
     </table>
     {/if}

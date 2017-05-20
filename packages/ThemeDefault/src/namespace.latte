@@ -10,7 +10,7 @@
     <table class="summary" id="namespaces" n:if="$parentNamespaces">
     <caption>Namespaces summary</caption>
     <tr n:foreach="$parentNamespaces as $subnamespace">
-        <td class="name"><a href="{$subnamespace|namespaceUrl}">{$subnamespace}</a></td>
+        <td class="name"><a href="{$subnamespace|linkNamespace}">{$subnamespace}</a></td>
     </tr>
     </table>
 

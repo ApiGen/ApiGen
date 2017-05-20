@@ -20,7 +20,7 @@
             <ul class="navbar-nav">
             {capture $navbarNav}
                 <li n:class="'namespace' === $active ? active" n:if="$namespaces">
-                    <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span class="nav-link">Namespace</span></a>
+                    <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|linkNamespace}" title="Summary of {$namespace}"><span class="nav-link">Namespace</span></a>
                 </li>
                 <li n:class="'class' === $active ? active" n:if="!$function && !$constant">
                     <a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->getName()}"><span class="nav-link">Class</span></a>
@@ -127,7 +127,7 @@
 
             {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
             <li n:class="$actualNamespace === $namespace || 0 === strpos($actualNamespace, $namespace . '\\') ? active, $config->main && 0 === strpos($namespace, $config->main) ? main">
-                <a href="{$namespace|namespaceUrl}">
+                <a href="{$namespace|linkNamespace}">
                     {$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
                 </a>
 

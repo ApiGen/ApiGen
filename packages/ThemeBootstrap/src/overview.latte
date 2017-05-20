@@ -16,7 +16,7 @@
                 {continueIf $config->main && 0 !== strpos($namespace, $config->main)}
                 <tr>
                     {var $group = true}
-                    <td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+                    <td class="name"><a href="{$namespace|linkNamespace}">{$namespace}</a></td>
                 </tr>
             {/foreach}
         </table>

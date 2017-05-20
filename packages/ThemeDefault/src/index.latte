@@ -15,7 +15,7 @@
             {continueIf $namespace === 'PHP'}
             <tr>
                 {var $group = true}
-                <td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
+                <td class="name"><a href="{$namespace|linkNamespace}">{$namespace}</a></td>
             </tr>
         {/foreach}
     </table>

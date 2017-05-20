@@ -18,7 +18,7 @@
 
         <div id="groups">
             <h3>Namespaces</h3>
-            {include namespace, namespaces => $namespaces, actualNamespace => $namespace}
+            {include namespaces, namespaces => $namespaces, actualNamespace => $namespace}
         </div>
 
         <hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
@@ -68,7 +68,7 @@
                 <a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
             </li>
             <li n:class="'namespace' === $active ? active" n:if="$namespaces">
-                <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
+                <a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|linkNamespace}" title="Summary of {$namespace}"><span>Namespace</span></a>
             </li>
             <li n:class="'class' === $active ? active" n:if="!$function">
                 <a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->getName()}"><span>Class</span></a>
@@ -119,7 +119,7 @@
 
             {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
             <li n:class="$actualGroup === $namespace || 0 === strpos($actualGroup, $namespace . '\\') ? active">
-                <a href="{$namespace|namespaceUrl}">
+                <a href="{$namespace|linkNamespace}">
                     {$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
                 </a>
 
