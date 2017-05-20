@@ -58,7 +58,6 @@ final class ClassGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithPrefixName('class-', $classReflection->getName()),
             [
                 'class' => $classReflection,
-                'tree' => array_merge(array_reverse($classReflection->getParentClasses()), [$classReflection]),
             ]
         );
     }

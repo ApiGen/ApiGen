@@ -58,7 +58,6 @@ final class InterfaceGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithPrefixName('interface-', $interfaceReflection->getName()),
             [
                 'interface' => $interfaceReflection,
-                'tree' => array_merge(array_reverse($interfaceReflection->getParentClasses()), [$interfaceReflection]),
             ]
         );
     }

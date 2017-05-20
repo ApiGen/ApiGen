@@ -59,7 +59,6 @@ final class TraitGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithPrefixName('trait-',$traitReflection->getName()),
             [
                 'trait' => $traitReflection,
-                'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
             ]
         );
     }
