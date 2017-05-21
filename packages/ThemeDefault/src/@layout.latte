@@ -63,10 +63,7 @@
 
 <div id="right">
     <div id="rightInner">
-        <form id="search">
-            <input type="hidden" name="ie" value="UTF-8">
-            <input type="text" name="q" class="text" placeholder="Search" autofocus>
-        </form>
+        {include searchForm}
 
         <div id="navigation">
             <ul>
@@ -105,11 +102,11 @@
         </div>
     </div>
 </div>
-    {* jquery - needed for autocomplete *}
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" defer></script>
     {* jquery autocomplete *}
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
-    <script src="/js/main.js"></script>
+
+    <script src="/resources/main.js"></script>
     <script src="/elementlist.js"></script>
 </body>
 </html>
@@ -136,4 +133,12 @@
                 {/if}
         {/foreach}
     </ul>
+{/define}
+
+
+{define searchForm}
+    <form id="search">
+        <input type="hidden" name="ie" value="UTF-8">
+        <input type="text" name="q" class="text" placeholder="Search" autofocus>
+    </form>
 {/define}

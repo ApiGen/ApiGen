@@ -1,4 +1,5 @@
-$(window).load(function() {
+$( function() {
+// $(window).load(function() {
     var $document = $(document);
     var $groups = $('#groups');
 
@@ -31,6 +32,15 @@ $(window).load(function() {
     }
 
     // Content
+
+    var availableTags = [
+        "ActionScript",
+        "Able"
+    ];
+
+    $('#search input[name=q]').autocomplete({
+        source: availableTags
+    });
 
     // Search autocompletion
     var autocompleteFound = false;
