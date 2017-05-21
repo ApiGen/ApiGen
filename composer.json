@@ -62,7 +62,7 @@
     },
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],
-        "phpstan": "vendor/bin/phpstan analyse packages --level 4 -c phpstan.neon",
+        "phpstan": "vendor/bin/phpstan analyse packages src/DI --level 4 -c phpstan.neon",
         "check-cs": "vendor/bin/easy-coding-standard check packages src/DI",
         "fix-cs": "vendor/bin/easy-coding-standard check packages src/DI --fix"
     }
