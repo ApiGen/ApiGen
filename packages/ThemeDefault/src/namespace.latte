@@ -7,12 +7,14 @@
 <div id="content" class="namespace">
     <h1>{if $activeNamespace !== 'None'}Namespace {$activeNamespace|linkAllNamespaceParts|noescape}{else}No namespace{/if}</h1>
 
-    <table class="summary" id="namespaces" n:if="$parentNamespaces">
-    <caption>Namespaces summary</caption>
-    <tr n:foreach="$parentNamespaces as $subnamespace">
-        <td class="name"><a href="{$subnamespace|linkNamespace}">{$subnamespace}</a></td>
-    </tr>
-    </table>
+    {if $parentNamespaces}
+        <table class="summary" id="namespaces">
+            <caption>Namespaces summary</caption>
+            <tr n:foreach="$parentNamespaces as $subnamespace">
+                <td class="name"><a href="{$subnamespace|linkNamespace}">{$subnamespace}</a></td>
+            </tr>
+        </table>
+    {/if}
 
     {include '@elementlist.latte'}
 </div>
