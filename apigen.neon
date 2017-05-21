@@ -5,3 +5,4 @@ parameters:
         # - packages/**/src, @todo: add support
     visibilityLevels: [public, protected]
     baseUrl: http://apigen.org
+    themeDirectory: packages/ThemeBootstrap/src

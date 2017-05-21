@@ -1,8 +1,6 @@
 /*
 
 z-index:
-    3: veil (if .show-sidebar)
-    4: sidebar
     5: veil
     10: navbar
     20: search suggestion
@@ -243,23 +241,6 @@ pre,
     color: inherit;
 }
 
-.sidebar-toggle {
-    display: none;
-    fill: white;
-    box-sizing: border-box;
-    height: 2rem;
-    width: 2rem;
-    padding: .25em;
-    border-radius: .25em;
-    cursor: default;
-    user-select: none;
-}
-
-.show-sidebar .sidebar-toggle {
-    fill: #24292E;
-    padding: .4em;
-}
-
 .search-wrapper {
     margin: 0;
     float: right;
@@ -302,36 +283,6 @@ pre,
 .search-query:focus {
     width: 30ex;
     opacity: 1;
-}
-
-/* sidebar */
-
-.sidebar {
-    position: fixed;
-    top: 3rem;
-    bottom: 0;
-    width: 270px;
-    min-width: 270px;
-    border-right: 1px solid #eee;
-    box-sizing: border-box;
-    background: #FAFAFA;
-    overflow-y: auto;
-    overflow-x: hidden;
-    z-index: 4;
-}
-
-.sidebar:hover {
-    width: auto;
-}
-
-.sidebar.overflowing:hover {
-    box-shadow: 10px 20px 20px rgba(0,0,0,.1);
-}
-
-/* forced style to compute overflowing */
-.sidebar.computing {
-    width: 270px !important;
-    overflow-x: hidden !important;
 }
 
 /* search suggestion */
@@ -393,12 +344,7 @@ pre,
     transition: opacity 120ms linear;
 }
 
-.show-sidebar .veil {
-    z-index: 3;
-}
-
-.in-search .veil,
-.show-sidebar .veil{
+.in-search .veil{
     opacity: .8;
     top: 3rem;
     right: 0;
@@ -455,23 +401,6 @@ table.summary {
 .summary .element {
     position: relative;
     padding: 1rem 0;
-}
-
-.summary .element.expandable {
-    cursor: zoom-in;
-}
-
-.summary .element.expanded {
-    cursor: zoom-out;
-}
-
-.summary .element.expanded .short {
-    display: none !important;
-}
-
-.summary .element.expanded .detailed {
-    display: block !important;
-    visibility: visible !important;
 }
 
 .summary td,
@@ -759,15 +688,6 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
         display: none;
     }
 
-    .navbar .sidebar-toggle {
-        display: inline-block;
-    }
-
-    .show-sidebar .sidebar-toggle {
-        color: #3a3f42;
-        background: white;
-    }
-
     .search-wrapper {
         float: none;
     }
@@ -796,26 +716,6 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
         cursor: default;
     }
 
-    .sidebar {
-        width: auto;
-        box-shadow: 10px 20px 20px rgba(0, 0, 0, .1);
-        font-size: inherit;
-        visibility: hidden;
-        opacity: .6;
-        transform: translate(-200px);
-        transition: linear all 120ms;
-    }
-
-    body.show-sidebar .sidebar {
-        visibility: visible;
-        opacity: 1;
-        transform: translate(0px);
-    }
-
-    .sidebar nav {
-        opacity: 1;
-    }
-
     #right {
         left: 0;
     }
@@ -830,7 +730,6 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     }
 }
 
-.in-search .sidebar-toggle,
 .in-search .navbar-brand,
 .in-search .navbar-nav {
     display: none;

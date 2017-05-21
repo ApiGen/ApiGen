@@ -52,56 +52,6 @@
 
     <div class="veil"></div>
 
-    <aside class="sidebar">
-        <nav>
-            <div id="navigation-mirror">
-                <strong>Navigation</strong>
-                <ul>{$navbarNav|noescape}</ul>
-            </div>
-
-        <div id="groups">
-            <strong>Namespaces</strong>
-            {include namespaces, allNamespaces => $allNamespaces, activeNamespace => $activeNamespace}
-        </div>
-
-        <hr>
-
-        {define elements}
-            <ul>
-                <li n:foreach="$elements as $element" n:class="$activeElement === $element ? active">
-                    <a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">
-                        {if $activeNamespace}
-                            {$element->getShortName()}{else}{$element->getName()}
-                        {/if}
-                    </a>
-                </li>
-            </ul>
-        {/define}
-
-        <div id="elements">
-            {if $allClasses}
-                <strong>Classes</strong>
-                {include elements, elements => $allClasses, activeElement => $activeTrait}
-            {/if}
-
-            {if $allInterfaces}
-                <strong>Interfaces</strong>
-                {include elements, elements => $allInterfaces, activeElement => $activeInterface}
-            {/if}
-
-            {if $allTraits}
-                <strong>Traits</strong>
-                {include elements, elements => $allTraits, activeElement => $activeTrait}
-            {/if}
-
-            {if $allFunctions}
-                <strong>Functions</strong>
-                {include elements, elements => $allFunctions, activeElement => $activeFunction}
-            {/if}
-        </div>
-    </nav>
-</aside>
-
 <div id="right">
     <div id="rightInner">
         {include content}
