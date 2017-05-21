@@ -145,33 +145,6 @@ code a b {
     background-color: #006aeb;
 }
 
-#menu #groups span {
-    position: absolute;
-    top: 4px;
-    right: 2px;
-    cursor: pointer;
-    display: block;
-    width: 12px;
-    height: 12px;
-    background: url('collapsed.png') transparent 0 0 no-repeat;
-}
-
-#menu #groups span:hover {
-    background-position: -12px 0;
-}
-
-#menu #groups span.collapsed {
-    background-position: 0 -12px;
-}
-
-#menu #groups span.collapsed:hover {
-    background-position: -12px -12px;
-}
-
-#menu #groups ul.collapsed {
-    display: none;
-}
-
 /* Right side */
 #right {
     overflow: auto;
@@ -338,11 +311,6 @@ dl.tree dd {
     border-width: 1px 1px 0;
 }
 
-.summary caption.switchable {
-    background: #ecede5 url('sort.png') no-repeat center right;
-    cursor: pointer;
-}
-
 .summary td {
     border: 1px solid #cccccc;
     margin: 0;
@@ -442,20 +410,6 @@ td.attributes {
 
 .list {
     margin: 0 0 5px 25px;
-}
-
-/* Splitter */
-#splitter {
-    position: fixed;
-    height: 100%;
-    width: 5px;
-    left: 270px;
-    background: #1e5eb6 url('resize.png') left center no-repeat;
-    cursor: e-resize;
-}
-
-#splitter.active {
-    opacity: .5;
 }
 
 /* Footer */

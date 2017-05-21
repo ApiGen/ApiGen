@@ -334,82 +334,6 @@ pre,
     overflow-x: hidden !important;
 }
 
-/* Menu */
-.sidebar nav {
-    padding: 0 1rem 1rem 1rem;
-    overflow-x: hidden;
-    opacity: .6;
-    transition: opacity 120ms linear;
-}
-
-.sidebar:hover nav {
-    opacity: 1;
-}
-
-.sidebar strong {
-    margin: 1rem 0 .2rem 0;
-    display: block;
-    font-weight: 500;
-}
-
-.sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.sidebar ul ul {
-    padding-left: .5rem;
-}
-
-.sidebar li {
-    white-space: nowrap;
-    position: relative;
-}
-
-.sidebar a {
-    display: block;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: inherit;
-}
-
-.sidebar a:hover,
-.sidebar .active > a {
-    color: #4078c0;
-}
-
-.sidebar .active > a.invalid {
-    color: #dd1144;
-}
-
-.sidebar #groups span {
-    position: absolute;
-    top: 6px;
-    right: 3px;
-    cursor: pointer;
-    display: block;
-    width: 12px;
-    height: 12px;
-    background: url('collapsed.png') transparent 0 0 no-repeat;
-}
-
-.sidebar #groups span:hover {
-    background-position: -12px 0;
-}
-
-.sidebar #groups span.collapsed {
-    background-position: 0 -12px;
-}
-
-.sidebar #groups span.collapsed:hover {
-    background-position: -12px -12px;
-}
-
-.sidebar #groups ul.collapsed {
-    display: none;
-}
-
 /* search suggestion */
 
 .search-suggestion {
@@ -508,15 +432,6 @@ pre,
 
 .elementList {
     line-height: 2rem;
-}
-
-h2.switchable {
-    cursor: pointer;
-}
-
-h2.switchable::after {
-    content: "\2B0D";
-    float: right;
 }
 
 table.summary {
