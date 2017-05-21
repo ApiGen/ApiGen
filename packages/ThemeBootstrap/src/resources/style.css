@@ -705,44 +705,6 @@ footer {
     font-size: 12px;
 }
 
-/* Tree */
-.tree ul {
-    list-style: none;
-    background: url('tree-vertical.png') left repeat-y;
-    padding: 0;
-    margin-left: 20px;
-}
-
-.tree dd,
-.tree li {
-    margin: 0;
-    padding: 0;
-}
-
-.tree div {
-    padding-left: 30px;
-}
-
-.tree div.notlast {
-    background: url('tree-hasnext.png') left 10px no-repeat;
-}
-
-.tree div.last {
-    background: url('tree-last.png') left -240px no-repeat;
-}
-
-.tree li.last {
-    background: url('tree-cleaner.png') left center repeat-y;
-}
-
-.tree span.padding {
-    padding-left: 15px;
-}
-
-.tree b {
-    font-weight: 600;
-}
-
 /* Source code */
 #source {
     overflow: auto;

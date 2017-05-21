@@ -1,4 +1,4 @@
-!function () {
+/js/main.js!function () {
     "use strict";
 
     function forEach(nodeList, callback)
