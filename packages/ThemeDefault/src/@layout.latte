@@ -3,109 +3,63 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-    <title>{include title}{if $activePage !== 'overview' && $title} | {$title}{/if}</title>
-
+    {* Bootstrap 3 CDN *}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="resources/style.css">
+
+    <title>
+        {include title}{if $activePage !== 'overview' && $title} | {$title}{/if}
+    </title>
 </head>
 
 <body>
-{*<div id="left">*}
+    <div class="container">
+        <div id="right">
+            <div id="rightInner">
+                {include searchForm}
 
-    {*<div id="menu">*}
+                <div id="navigation">
+                    <ul>
+                        <li>
+                            <a href="index.html" n:class="$activePage === overview ? active">
+                                <span>{if $title}{$title}{else}Overview{/if}</span>
+                            </a>
+                        </li>
+                        <li n:if="$allNamespaces" n:class="$activePage === namespace ? active">
+                            <a n:tag-if="$activePage !== namespace && $activeNamespace" href="{$activeNamespace|linkNamespace}">
+                                <span>Namespace</span>
+                            </a>
+                        </li>
+                        <li n:class="$activePage === class ? active" n:if="!$activeFunction">
+                            <a n:tag-if="$activePage !== class && $activeClass" href="{$activeClass|linkReflection}">
+                                <span>Class</span>
+                            </a>
+                        </li>
+                        {* @todo: add interfaces and traits *}
+                        <li n:if="$activeFunction" n:class="$activePage === function ? active">
+                            <a n:tag-if="$activePage !== function" href="{$activeFunction|linkReflection}">
+                                <span>Function</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <ul>
+                        {foreach $annotationGroups as $annotationGroup}
+                            <li n:class="$activePage === 'annotation-group-' . $annotationGroup ? active">
+                                <a href="annotation-group-{$annotationGroup}.html">
+                                    <span>{$annotationGroup|firstUpper}</span>
+                                </a>
+                            </li>
+                        {/foreach}
+                    </ul>
+                </div>
 
-
-        {*<div id="groups">*}
-            {*<h3>Namespaces</h3>*}
-            {*{include namespaces, allNamespaces => $allNamespaces, activeNamespace => $activeNamespace}*}
-        {*</div>*}
-
-        {*<hr>*}
-
-        {*{define elements}*}
-            {*<ul>*}
-                {*<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active">*}
-                    {*<a n:class="$element->isDeprecated() ? deprecated" href="{$element|linkReflection}">*}
-                        {*{if $activeNamespace}*}
-                            {*{$element->getShortName()}{else}{$element->getName()}*}
-                        {*{/if}*}
-                    {*</a>*}
-                {*</li>*}
-            {*</ul>*}
-        {*{/define}*}
-
-        {*<div id="elements">*}
-            {*{if $allClasses}*}
-                {*<h3>Classes</h3>*}
-                {*{include elements, elements => $allClasses, activeElement => $activeClass}*}
-            {*{/if}*}
-
-            {*{if $allInterfaces}*}
-                {*<h3>Interfaces</h3>*}
-                {*{include elements, elements => $allInterfaces, activeElement => $activeInterface}*}
-            {*{/if}*}
-
-            {*{if $allTraits}*}
-                {*<h3>Traits</h3>*}
-                {*{include elements, elements => $allTraits, activeElement => $activeTrait}*}
-            {*{/if}*}
-
-            {*{if $allFunctions}*}
-                {*<h3>Functions</h3>*}
-                {*{include elements, elements => $allFunctions, activeElement => $activeFunction}*}
-            {*{/if}*}
-        {*</div>*}
-    {*</div>*}
-{*</div>*}
-
-{*<div id="splitter"></div>*}
-
-<div id="right">
-    <div id="rightInner">
-        {include searchForm}
-
-        <div id="navigation">
-            <ul>
-                <li>
-                    <a href="index.html" n:class="$activePage === overview ? active">
-                        <span>{if $title}{$title}{else}Overview{/if}</span>
-                    </a>
-                </li>
-                <li n:if="$allNamespaces" n:class="$activePage === namespace ? active">
-                    <a n:tag-if="$activePage !== namespace && $activeNamespace" href="{$activeNamespace|linkNamespace}">
-                        <span>Namespace</span>
-                    </a>
-                </li>
-                <li n:class="$activePage === class ? active" n:if="!$activeFunction">
-                    <a n:tag-if="$activePage !== class && $activeClass" href="{$activeClass|linkReflection}">
-                        <span>Class</span>
-                    </a>
-                </li>
-                {* @todo: add interfaces and traits *}
-                <li n:if="$activeFunction" n:class="$activePage === function ? active">
-                    <a n:tag-if="$activePage !== function" href="{$activeFunction|linkReflection}">
-                        <span>Function</span>
-                    </a>
-                </li>
-            </ul>
-            <ul>
-                {foreach $annotationGroups as $annotationGroup}
-                    <li n:class="$activePage === 'annotation-group-' . $annotationGroup ? active">
-                        <a href="annotation-group-{$annotationGroup}.html">
-                            <span>{$annotationGroup|firstUpper}</span>
-                        </a>
-                    </li>
-                {/foreach}
-            </ul>
+                {include content}
+                {include footer}
+            </div>
         </div>
-
-        {include content}
-
-        <div id="footer">
-            Generated by <a href="https://apigen.org">ApiGen</a>
-        </div>
-    </div>
-</div>
     {* jquery autocomplete *}
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" defer></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
@@ -116,35 +70,16 @@
 </html>
 
 
-{* todo: drop this and use namespace search => Symfony\Console => type "console"? *}
-
-{define namespaces}
-    <ul>
-        {foreach $allNamespaces as $namespace}
-            {continueIf $namespace === 'PHP'}
-
-            {var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($namespace, '\\')}
-            <li n:class="$activeNamespace === $namespace || 0 === strpos($activeNamespace, $namespace . '\\') ? active">
-                <a href="{$namespace|linkNamespace}">
-                    {$namespace|subNamespace}<span n:tag-if="$nextLevel"></span>
-                </a>
-
-                {if $nextLevel}
-                    <ul>
-                {else}
-                    </li>
-                    {if substr_count($iterator->nextValue, '\\') < substr_count($namespace, '\\')}
-                        {='</ul></li>'|repeat:substr_count($namespace, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
-                    {/if}
-                {/if}
-        {/foreach}
-    </ul>
-{/define}
-
-
 {define searchForm}
     <form id="search">
         <input type="hidden" name="ie" value="UTF-8">
         <input type="text" name="q" class="text" placeholder="Search" autofocus>
     </form>
+{/define}
+
+
+{define footer}
+    <div id="footer">
+        Generated by <a href="https://apigen.org">ApiGen</a>
+    </div>
 {/define}
