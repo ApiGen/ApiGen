@@ -145,21 +145,6 @@ code a b {
     background-color: #006aeb;
 }
 
-/* Right side */
-#right {
-    overflow: auto;
-    margin-left: 275px;
-    height: 100%;
-    position: relative;
-    left: 0;
-    right: 0;
-}
-
-#rightInner {
-    max-width: 1000px;
-    min-width: 350px;
-}
-
 /* Search */
 #search {
     float: right;
@@ -496,30 +481,8 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     color: #c0c0c0 !important;
 }
 
-#rightInner.medium #navigation {
+#navigation {
     height: 52px;
-}
-
-#rightInner.medium #navigation ul:first-child + ul {
-    clear: left;
-    border: none;
-    padding: 0;
-}
-
-#rightInner.medium .name, #rightInner.medium .attributes {
-    white-space: normal;
-}
-
-#rightInner.small #search {
-    float: left;
-}
-
-#rightInner.small #navigation {
-    height: 78px;
-}
-
-#rightInner.small #navigation ul:first-child {
-    clear: both;
 }
 
 /* global style */

@@ -13,12 +13,12 @@
 
     <div class="alert alert-info">
         {if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
-        {foreach $template->getAnnotations()ort($template->annotationFilter($function->getAnnotations(), array('param', 'return', 'throws'))) as $annotation => $values}
-            {foreach $values as $value}
-                <b>{$annotation|annotationBeautify}{if $value}:{/if}</b>
-                {$value|annotation:$annotation:$function|noescape}<br>
-            {/foreach}
-        {/foreach}
+        {*{foreach $template->getAnnotations() sort($template->annotationFilter($function->getAnnotations(), array('param', 'return', 'throws'))) as $annotation => $values}*}
+            {*{foreach $values as $value}*}
+                {*<b>{$annotation|annotationBeautify}{if $value}:{/if}</b>*}
+                {*{$value|annotation:$annotation:$function|noescape}<br>*}
+            {*{/foreach}*}
+        {*{/foreach}*}
         <strong>Open source code</strong> at
         <a href="{$function|linkSource}">{$function->getFileName()|relativePath}</a><br>
     </div>
