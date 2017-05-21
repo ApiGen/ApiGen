@@ -1,0 +1,30 @@
+<tr id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
+    <td class="attributes"><code>
+            {if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
+            {$property->typeHint|typeLinks:$property|noescape}
+        </code></td>
+
+    <td class="name">
+        <div class="description detailed">
+            {$property->getDescription()}
+
+            {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
+            {foreach $filteredAnnotations as $annotation => $descriptions}
+                <h4>{$annotation}</h4>
+                <div class="list">
+                    {foreach $descriptions as $description}
+                        {if $description}
+                            {$description|annotation:$annotation:$property|noescape}<br>
+                        {/if}
+                    {/foreach}
+                </div>
+            {/foreach}
+        </div>
+    </td>
+    <td class="value">
+        <div>
+            <a href="#${$property->getName()}" class="anchor">#</a>
+            <code>{$property->defaultValueDefinition|highlightValue: $class|noescape}</code>
+        </div>
+    </td>
+</tr>

@@ -68,112 +68,14 @@
         <br>
     </div>
 
-    {var $ownMethods = $class->getOwnMethods()}
-
-    {define method}
-    <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
-        {var $annotations = $method->getAnnotations()}
-
-        <td class="attributes"><code>
-            {if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
-
-            {ifset $annotations['return']}{$annotations['return'][0]|typeLinks:$method|noescape}{/ifset}
-            {if $method->returnsReference()}&amp;{/if}
-            </code>
-        </td>
-
-        <td class="name"><div>
-        <a class="anchor" href="#_{$method->getName()}">#</a>
-        <code>{block|strip}
-            <a href="{$method|linkSource}">{$method->getName()}</a>(
-            {foreach $method->getParameters() as $parameter}
-                <span>{$parameter->typeHint|typeLinks:$method|noescape}
-                <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
+    {if $class->getOwnMethods()}
+        <table class="summary methods" id="methods">
+            <caption>Methods summary</caption>
+            {foreach $ownMethods as $method}
+                {include "partial/method.latte", method => $method}
             {/foreach}
-        ){/block}</code>
-
-        <div class="description detailed">
-            {$method->getDescription()}
-
-            {if !$class->isDeprecated() && $method->isDeprecated()}
-                <h4>Deprecated</h4>
-                {ifset $annotations['deprecated']}
-                <div class="list">
-                {foreach $annotations['deprecated'] as $description}
-                    {if $description}
-                        {$description|annotation:'deprecated':$method|noescape}<br>
-                    {/if}
-                {/foreach}
-                </div>
-                {/ifset}
-            {/if}
-
-            {if $method->getParameters() && isset($annotations['param'])}
-                <h4>Parameters</h4>
-                <div class="list"><dl>
-                {foreach $method->getParameters() as $parameter}
-                    <dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
-                    <dd>{$parameter->getDescription()|annotationDescription:$method|noescape}</dd>
-                {/foreach}
-                </dl></div>
-            {/if}
-
-            {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
-                <h4>Returns</h4>
-                <div class="list">
-                {foreach $annotations['return'] as $description}
-                    {$description|annotation:'return':$method|noescape}{sep}<br>{/}
-                {/foreach}
-                </div>
-            {/if}
-
-            {ifset $annotations['throws']}
-                <h4>Throws</h4>
-                <div class="list">
-                {foreach $annotations['throws'] as $description}
-                    {$description|annotation:'throws':$method|noescape}{sep}<br>{/}
-                {/foreach}
-                </div>
-            {/ifset}
-
-            {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['deprecated', 'param', 'return', 'throws'])}
-            {foreach $filteredAnnotations as $annotation => $descriptions}
-                <h4>{$annotation}</h4>
-                <div class="list">
-                {foreach $descriptions as $description}
-                    {if $description}
-                        {$description|annotation:$annotation:$method|noescape}<br>
-                    {/if}
-                {/foreach}
-                </div>
-            {/foreach}
-
-            {var $overriddenMethod = $method->overriddenMethod}
-            {if $overriddenMethod}
-                <h4>Overrides</h4>
-                <div class="list">
-                    <code><a n:tag-if="$overriddenMethod->declaringClass" href="{$overriddenMethod|methodUrl}">{$overriddenMethod|prettyMethodName}</a></code>
-                </div>
-            {/if}
-
-            {var $implementedMethod = $method->implementedMethod}
-            {if $implementedMethod}
-                <h4>Implementation of</h4>
-                <div class="list">
-                    <code><a n:tag-if="$implementedMethod->declaringClass" href="{$implementedMethod|methodUrl}">{$implementedMethod|prettyMethodName}</a></code>
-                </div>
-            {/if}
-        </div>
-        </div></td>
-    </tr>
-    {/define}
-
-    <table class="summary methods" id="methods" n:if="$ownMethods">
-    <caption>Methods summary</caption>
-    {foreach $ownMethods as $method}
-        {include method, method => $method}
-    {/foreach}
-    </table>
+        </table>
+    {/if}
 
     <table n:foreach="$class->getInheritedMethods() as $parentName => $methods" class="summary inherited">
         {var $parentClass = ($parentName|getClass)}
@@ -259,46 +161,17 @@
     </table>
 
     {define property}
-    <tr id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
-        <td class="attributes"><code>
-            {if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-            {$property->typeHint|typeLinks:$property|noescape}
-        </code></td>
 
-        <td class="name">
-            <div class="description detailed">
-                {$property->getDescription()}
-
-                {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
-                {foreach $filteredAnnotations as $annotation => $descriptions}
-                    <h4>{$annotation}</h4>
-                    <div class="list">
-                    {foreach $descriptions as $description}
-                        {if $description}
-                            {$description|annotation:$annotation:$property|noescape}<br>
-                        {/if}
-                    {/foreach}
-                    </div>
-                {/foreach}
-            </div>
-        </td>
-        <td class="value">
-            <div>
-                <a href="#${$property->getName()}" class="anchor">#</a>
-                <code>{$property->defaultValueDefinition|highlightValue: $class|noescape}</code>
-            </div>
-        </td>
-    </tr>
     {/define}
 
-    {var $ownProperties = $class->getOwnProperties()}
-
-    <table class="summary properties" id="properties" n:if="$ownProperties">
-    <caption>Properties summary</caption>
-    {foreach $ownProperties as $property}
-        {include property, property => $property}
-    {/foreach}
-    </table>
+    {if $class->getOwnProperties()}
+        <table class="summary properties" id="properties">
+            <caption>Properties summary</caption>
+            {foreach $class->getOwnProperties() as $property}
+                {include "partial/property.latte", method => $method}
+            {/foreach}
+        </table>
+    {/if}
 
     <table n:foreach="$class->getInheritedProperties() as $parentName => $properties" class="summary inherited">
         {var $parentClass = ($parentName|getClass)}
