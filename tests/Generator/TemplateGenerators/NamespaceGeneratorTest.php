@@ -2,9 +2,9 @@
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\Parser\ParserInterface;
 use ApiGen\Generator\NamespaceGenerator;
 use ApiGen\Generator\TraitGenerator;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class NamespaceGeneratorTest extends AbstractContainerAwareTestCase

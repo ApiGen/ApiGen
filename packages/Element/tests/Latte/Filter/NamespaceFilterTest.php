@@ -21,7 +21,7 @@ final class NamespaceFilterTest extends AbstractContainerAwareTestCase
     {
         $filter = $this->namespaceFilter->getFilters()['linkAllNamespaceParts'];
         $this->assertSame(
-            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long-Namespace.html">Namespace</a>',
+            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
             $filter('Long\Namespace')
         );
     }

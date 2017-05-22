@@ -36,7 +36,7 @@ final class ReflectionRouteTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeNamespace\SomeName');
 
         $this->assertSame(
-            'class-SomeNamespace-SomeName.html',
+            'class-SomeNamespace.SomeName.html',
             $this->stringRouter->buildRoute(ReflectionRoute::NAME, $reflectionClassMock)
         );
     }
