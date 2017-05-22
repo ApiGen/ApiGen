@@ -17,15 +17,6 @@ final class NamespaceFilterTest extends AbstractContainerAwareTestCase
         $this->namespaceFilter = $this->container->getByType(NamespaceFilter::class);
     }
 
-    public function testSubNamespace(): void
-    {
-        $filter = $this->namespaceFilter->getFilters()['subNamespace'];
-
-        $this->assertSame('SubNamespace', $filter('SubNamespace'));
-        $this->assertSame('SubNamespace', $filter('Namespace\SubNamespace'));
-        $this->assertSame('OneMore', $filter('Namespace\SubNamespace\OneMore'));
-    }
-
     public function testLinkAllNamespaceParts(): void
     {
         $filter = $this->namespaceFilter->getFilters()['linkAllNamespaceParts'];
