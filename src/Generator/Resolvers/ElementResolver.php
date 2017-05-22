@@ -3,14 +3,13 @@
 namespace ApiGen\Generator\Resolvers;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
-use ApiGen\Reflection\Contract\Reflection\Behavior\InClassInterface;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ParameterReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassPropertyReflectionInterface;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class ElementResolver implements ElementResolverInterface
 {
@@ -33,9 +32,19 @@ final class ElementResolver implements ElementResolverInterface
         'mixed' => 1
     ];
 
+    /**
+     * @var ReflectionStorageInterface
+     */
+    private $reflectionStorage;
+
+    public function __construct(ReflectionStorageInterface $reflectionStorage)
+    {
+        $this->reflectionStorage = $reflectionStorage;
+    }
+
     public function getClass(string $name, string $namespace = ''): ?ClassReflectionInterface
     {
-        $parsedClasses = // $this->parserStorage->getClasses();
+        $parsedClasses = $this->reflectionStorage->getClassReflections();
 
         $class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
         if ($class) {
@@ -50,7 +59,7 @@ final class ElementResolver implements ElementResolverInterface
      */
     public function getFunction(string $name, string $namespace = '')
     {
-        $parsedFunctions = // $this->parserStorage->getFunctions();
+        $parsedFunctions = $this->reflectionStorage->getFunctionReflections();
         $function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
         if ($function) {
             return $function;
@@ -87,6 +96,9 @@ final class ElementResolver implements ElementResolverInterface
         }
 
         $definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
+
+        dump('Test');
+        die;
 
         $className = Resolver::resolveClassFQN($definition, [], $reflectionElement->getNamespaceName());
 
@@ -147,6 +159,8 @@ final class ElementResolver implements ElementResolverInterface
     ): ?ClassReflectionInterface {
         $class = $this->getClass(substr($definition, 0, $pos), $reflectionElement->getNamespaceName());
         if ($class === null) {
+            dump('test');
+            die;
             $fqnName = Resolver::resolveClassFQN(
                 substr($definition, 0, $pos),
                 [],
@@ -166,16 +180,16 @@ final class ElementResolver implements ElementResolverInterface
     /**
      * @return ClassReflectionInterface|ClassConstantReflectionInterface|FunctionReflectionInterface|null
      */
-    private function resolveIfParsed(string $definition, ReflectionInterface $reflectionElement)
+    private function resolveIfParsed(string $definition, AbstractReflectionInterface $reflection)
     {
         $definition = $this->removeEndBrackets($definition);
 
-        $class = $class = $this->getClass($definition, $reflectionElement->getNamespaceName());
+        $class = $class = $this->getClass($definition, $reflection->getNamespaceName());
         if ($class) {
             return $class;
         }
 
-        $function = $this->getFunction($definition, $reflectionElement->getNamespaceName());
+        $function = $this->getFunction($definition, $reflection->getNamespaceName());
         if ($function) {
             return $function;
         }
@@ -226,21 +240,21 @@ final class ElementResolver implements ElementResolverInterface
 
     private function resolveContextForClassProperty(
         string $definition,
-        ClassReflectionInterface $reflectionClass,
+        ClassReflectionInterface $classReflection,
         int $position
     ): ?ClassReflectionInterface {
         // Class::something or Class->something
-        $parentClassName = $reflectionClass->getParentClassName();
+        $parentClassName = $classReflection->getParentClassName();
 
         if (strpos($definition, 'parent::') === 0 && $parentClassName) {
             return $this->getClass($parentClassName);
         }
 
         if (strpos($definition, 'self::') !== 0) {
-            return $this->resolveContextForSelfProperty($definition, $position, $reflectionClass);
+            return $this->resolveContextForSelfProperty($definition, $position, $classReflection);
         }
 
-        return $reflectionClass;
+        return $classReflection;
     }
 
     /**
@@ -259,9 +273,9 @@ final class ElementResolver implements ElementResolverInterface
 
     /**
      * @param mixed[] $elements
-     * @return mixed|ReflectionInterface
+     * @return ClassReflectionInterface|null
      */
-    private function findElementByNameAndNamespace(array $elements, string $name, string $namespace)
+    private function findElementByNameAndNamespace(array $elements, string $name, string $namespace): ?AbstractReflectionInterface
     {
         $namespacedName = $namespace . '\\' . $name;
         if (isset($elements[$namespacedName])) {

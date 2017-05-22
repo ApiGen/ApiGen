@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
-use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 abstract class AbstractElementResolverTest extends AbstractContainerAwareTestCase
@@ -14,13 +14,13 @@ abstract class AbstractElementResolverTest extends AbstractContainerAwareTestCas
     protected $elementResolver;
 
     /**
-     * @var ParserStorageInterface
+     * @var ParserInterface
      */
-    protected $parserStorage;
+    protected $parser;
 
     protected function setUp(): void
     {
         $this->elementResolver = $this->container->getByType(ElementResolverInterface::class);
-        $this->parserStorage = $this->container->getByType(ParserStorageInterface::class);
+        $this->parser = $this->container->getByType(ParserInterface::class);
     }
 }

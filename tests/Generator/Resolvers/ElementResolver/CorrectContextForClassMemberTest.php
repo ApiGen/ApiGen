@@ -3,8 +3,6 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
 final class CorrectContextForClassMemberTest extends AbstractElementResolverTest
@@ -27,29 +25,27 @@ final class CorrectContextForClassMemberTest extends AbstractElementResolverTest
         $this->assertSame($classReflectionMock, $resolvedElement);
     }
 
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|ClassMethodReflectionInterface
-     */
-    private function createMethodReflectionMock()
-    {
-        $reflectionMethodMock = $this->createMock(ClassMethodReflectionInterface::class);
-        $reflectionMethodMock->method('getDeclaringClassName')
-            ->willReturn('SomeClass');
+//    /**
+//     * @return PHPUnit_Framework_MockObject_MockObject|ClassMethodReflectionInterface
+//     */
+//    private function createMethodReflectionMock()
+//    {
+//        $reflectionMethodMock = $this->createMock(ClassMethodReflectionInterface::class);
+//        $reflectionMethodMock->method('getDeclaringClassName')
+//            ->willReturn('SomeClass');
+//
+//        return $reflectionMethodMock;
+//    }
 
-        return $reflectionMethodMock;
-    }
-
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
-     */
-    private function createClassReflectionMock()
-    {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-        $classReflectionMock->method('getName')
-            ->willReturn('SomeClass');
-        $classReflectionMock->method('isDocumented')
-            ->willReturn(true);
-
-        return $classReflectionMock;
-    }
+//    /**
+//     * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
+//     */
+//    private function createClassReflectionMock()
+//    {
+//        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
+//        $classReflectionMock->method('getName')
+//            ->willReturn('SomeClass');
+//
+//        return $classReflectionMock;
+//    }
 }

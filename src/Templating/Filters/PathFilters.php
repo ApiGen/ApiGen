@@ -22,6 +22,8 @@ final class PathFilters implements LatteFiltersProviderInterface
      */
     public function getFilters(): array
     {
+        // @todo: possibly drop, not added value to display the name manually,
+        // already in url!
         return [
             'relativePath' => function (string $fileName): string {
                 return $this->relativePathResolver->getRelativePath($fileName);

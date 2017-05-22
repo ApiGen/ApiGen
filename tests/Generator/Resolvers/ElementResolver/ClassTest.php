@@ -2,26 +2,23 @@
 
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use PHPUnit_Framework_MockObject_MockObject;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 
 final class ClassTest extends AbstractElementResolverTest
 {
+    /**
+     * @var string
+     */
+    private $namespace = 'ApiGen\Tests\Generator\Resolvers\ElementResolver\Source';
+
     public function testGetClass(): void
     {
-        $this->parserStorage->setClasses([
-            'SomeClass' => $this->createClassReflection(true),
-            'SomeNamespace\SomeClass' => $this->createClassReflection(true),
-        ]);
+        $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $element = $this->elementResolver->getClass('SomeClass');
 
-        $this->assertInstanceOf(ReflectionInterface::class, $element);
-
-        $element2 = $this->elementResolver->getClass('SomeClass', 'SomeNamespace');
-
-        $this->assertInstanceOf(ReflectionInterface::class, $element2);
+        $element2 = $this->elementResolver->getClass('SomeClass', $this->namespace);
+        $this->assertInstanceOf(AbstractReflectionInterface::class, $element2);
 
         $this->assertNotSame($element, $element2);
     }
@@ -29,26 +26,5 @@ final class ClassTest extends AbstractElementResolverTest
     public function testGetClassNotExisting(): void
     {
         $this->assertNull($this->elementResolver->getClass('NotExistingClass'));
-    }
-
-    public function testGetClassNotDocumented(): void
-    {
-        $this->parserStorage->setClasses([
-            'SomeNotDocumentedClass' => $this->createClassReflection(false)
-        ]);
-
-        $this->assertNull($this->elementResolver->getClass('SomeNotDocumentedClass'));
-    }
-
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
-     */
-    private function createClassReflection(bool $isDocumented)
-    {
-        $classReflection = $this->createMock(ClassReflectionInterface::class);
-        $classReflection->method('isDocumented')
-            ->willReturn($isDocumented);
-
-        return $classReflection;
     }
 }

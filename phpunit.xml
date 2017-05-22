@@ -6,11 +6,13 @@
     <testsuites>
         <testsuite>
             <directory>packages/*/tests</directory>
+            <directory>tests/Generator</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory>packages/*/src</directory>
+            <directory>src/Generator</directory>
         </whitelist>
     </filter>
 </phpunit>
