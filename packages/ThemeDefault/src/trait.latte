@@ -50,12 +50,11 @@
                 {$value|annotation:$annotation:$trait|noescape}<br>
             {/foreach}
         {/foreach}
-        <strong>Open source code</strong> at
-        <a href="{$trait|linkSource}">{$trait->getFileName()|relativePath}</a>
+        <strong>
+            <a href="{$trait|linkSource}">Open source code</a>
+        </strong>
         <br>
     </div>
-
-    {var $ownMethods = }
 
     {if $trait->getOwnMethods()}
         <table class="summary methods" id="methods">
@@ -82,8 +81,6 @@
             </td>
         </tr>
     </table>
-
-    {var $ownProperties = }
 
     {if $trait->getOwnProperties()}
         <table class="summary properties" id="properties">

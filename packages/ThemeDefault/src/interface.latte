@@ -48,8 +48,9 @@
                 {$value|annotation:$annotation:$interface|noescape}<br>
             {/foreach}
         {/foreach}
-        <strong>Open source code</strong> at
-        <a href="{$interface|linkSource}">{$interface->getFileName()|relativePath}</a>
+        <a href="{$interface|linkSource}">
+            <strong>Open source code</strong>
+        </a>
         <br>
     </div>
 

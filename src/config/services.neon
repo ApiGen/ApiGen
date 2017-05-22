@@ -16,7 +16,6 @@
 
 # Elements
 - ApiGen\Generator\Resolvers\ElementResolver
-- ApiGen\Generator\Resolvers\RelativePathResolver
 
 # Generator
 - ApiGen\Generator\EventSubscriber\ProgressBarEventSubscriber

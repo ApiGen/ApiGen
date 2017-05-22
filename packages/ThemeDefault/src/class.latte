@@ -63,8 +63,9 @@
                 {$value|annotation:$annotation:$class|noescape}<br>
             {/foreach}
         {/foreach}
-        <strong>Open source code</strong> at
-        <a href="{$class|linkSource}">{$class->getFileName()|relativePath}</a>
+        <strong>
+            <a href="{$class|linkSource}">Open source code</a>
+        </strong>
         <br>
     </div>
 

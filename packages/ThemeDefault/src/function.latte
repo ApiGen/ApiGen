@@ -23,8 +23,10 @@
                     {$value|annotation:$annotation:$function|noescape}<br>
                 {/foreach}
             {/foreach}
-            <strong>Open source code</strong> at
-            <a href="{$function|linkSource}">{$function->getFileName()|relativePath}</a><br>
+            <strong>
+                <a href="{$function|linkSource}">Open source code</a>
+            </strong>
+            <br>
         </div>
 
         {var $annotations = $function->getAnnotations()}
