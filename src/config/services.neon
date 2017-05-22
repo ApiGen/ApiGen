@@ -38,7 +38,6 @@
 # Template Filters
 - ApiGen\Templating\Filters\Helpers\LinkBuilder
 - ApiGen\Templating\Filters\AnnotationFilters
-- ApiGen\Templating\Filters\PathFilters
 - ApiGen\Templating\Filters\ResolverFilters
 - ApiGen\Templating\Filters\UrlFilters
 
