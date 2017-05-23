@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source;
 
-final class SomeClass implements SomeInterface
+use Nette\DI\CompilerExtension;
+
+final class SomeClass extends CompilerExtension  implements SomeInterface
 {
     public function getSomeStuff(): void
     {
