@@ -19,6 +19,7 @@ final class ParseClassWithParentFromAnotherSourceTest extends AbstractParserAwar
 
         $classReflection = $classReflections[ClassWithParentFromAnotherSource::class];
 
+        // @question: how to remove this and actually return parent class reflection?
         $this->expectException(IdentifierNotFound::class);
         $this->expectExceptionMessage(sprintf(
             '%s "%s" could not be found in the located source',
