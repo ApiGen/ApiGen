@@ -52,10 +52,13 @@ final class Parser implements ParserInterface
         $this->parseClassElements($directoriesSourceLocator);
         $this->parseFunctions($directoriesSourceLocator);
 
+
+
         // @legacy
         // Add classes from @param, @var, @return, @throws annotations as well
         // as parent classes to the overall class list.
-        // @see \ApiGen\Parser\Broker\Backend
+        // @see \ApiGen\Parser\Broker\Backend: https://github.com/ApiGen/ApiGen/blob/fa603928b656a9e7c826e001f5295200d23f9712/src/Parser/Broker/Backend.php#L174
+
 
         $this->reflectionWarmUpper->warmUp();
     }
@@ -68,17 +71,17 @@ final class Parser implements ParserInterface
         $classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof ClassReflectionInterface;
         });
-        $this->reflectionStorage->setClassReflections($classReflections);
+        $this->reflectionStorage->addClassReflections($classReflections);
 
         $interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof InterfaceReflectionInterface;
         });
-        $this->reflectionStorage->setInterfaceReflections($interfaceReflections);
+        $this->reflectionStorage->addInterfaceReflections($interfaceReflections);
 
         $traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof TraitReflectionInterface;
         });
-        $this->reflectionStorage->setTraitReflections($traitReflections);
+        $this->reflectionStorage->addTraitReflections($traitReflections);
     }
 
     /**
