@@ -9,7 +9,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
  *
  * @author Me.
  */
-class SomeClass
+class SomeClass extends ParentClass
 {
     /**
      * @var int

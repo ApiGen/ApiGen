@@ -20,12 +20,12 @@
 # Generator
 - ApiGen\Generator\EventSubscriber\ProgressBarEventSubscriber
 - ApiGen\Generator\GeneratorQueue
-- ApiGen\Generator\AnnotationGroupsGenerator
-- ApiGen\Generator\ElementListGenerator
-- ApiGen\Generator\IndexGenerator
+#- ApiGen\Generator\AnnotationGroupsGenerator
+#- ApiGen\Generator\ElementListGenerator
+#- ApiGen\Generator\IndexGenerator
 # elements
-- ApiGen\Generator\NamespaceGenerator
-- ApiGen\Generator\ClassGenerator
+#- ApiGen\Generator\NamespaceGenerator
+#- ApiGen\Generator\ClassGenerator
 - ApiGen\Generator\InterfaceGenerator
 - ApiGen\Generator\TraitGenerator
 - ApiGen\Generator\FunctionGenerator

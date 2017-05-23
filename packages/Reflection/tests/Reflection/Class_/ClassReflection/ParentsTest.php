@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
+use ArrayAccess;
 
 final class ParentsTest extends AbstractReflectionClassTestCase
 {
@@ -24,6 +25,12 @@ final class ParentsTest extends AbstractReflectionClassTestCase
 
     public function testGetSubClasses(): void
     {
-        $this->assertCount(1, $this->reflectionClassOfParent->getSubClasses());
+        $this->assertCount(2, $this->reflectionClassOfParent->getSubClasses());
+    }
+
+    public function testIsSubclassOf(): void
+    {
+        $this->assertTrue($this->reflectionClass->isSubclassOf(ParentClass::class));
+        $this->assertFalse($this->reflectionClass->isSubclassOf(ArrayAccess::class));
     }
 }
