@@ -2,11 +2,10 @@
 
 namespace ApiGen\Reflection\Tests\Parser;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Tests\Parser\AnotherSource\ParentClassFromAnotherSource;
 use ApiGen\Reflection\Tests\Parser\Source\ClassWithParentFromAnotherSource;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflector\Exception\IdentifierNotFound;
 
 final class ParseClassWithParentFromAnotherSourceTest extends AbstractParserAwareTestCase
 {
@@ -19,13 +18,8 @@ final class ParseClassWithParentFromAnotherSourceTest extends AbstractParserAwar
 
         $classReflection = $classReflections[ClassWithParentFromAnotherSource::class];
 
-        // @question: how to remove this and actually return parent class reflection?
-        $this->expectException(IdentifierNotFound::class);
-        $this->expectExceptionMessage(sprintf(
-            '%s "%s" could not be found in the located source',
-            ReflectionClass::class,
-            ParentClassFromAnotherSource::class
-        ));
-        $classReflection->getParentClass();
+        $parentClassReflection = $classReflection->getParentClass();
+        $this->assertInstanceOf(ClassReflectionInterface::class, $parentClassReflection);
+        $this->assertSame(ParentClassFromAnotherSource::class, $parentClassReflection->getName());
     }
 }
