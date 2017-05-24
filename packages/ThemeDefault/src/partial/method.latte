@@ -14,7 +14,7 @@
             <code>{block|strip}
                     <a href="{$method|linkSource}">{$method->getName()}</a>(
                     {foreach $method->getParameters() as $parameter}
-                        <span>{$parameter->typeHint|typeLinks:$method|noescape}
+                        <span>{$parameter->getTypeHint()|typeLinks:$method|noescape}
                         <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
                     ){/block}</code>

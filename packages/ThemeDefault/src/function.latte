@@ -34,9 +34,10 @@
         <table class="summary" id="parameters" n:if="count($function->getParameters())">
         <caption>Parameters summary</caption>
         <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
-            <td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
+            <td class="name"><code>{$parameter->getTypeHint()|typeLinks:$function|noescape}</code></td>
             <td class="value"><code>{block|strip}
-                <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+                <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
+                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
             {/block}</code></td>
             <td>{$parameter->getDescription()|annotationDescription:$function}</td>
         </tr>
