@@ -24,16 +24,6 @@ final class ResolverFiltersTest extends AbstractContainerAwareTestCase
         $parser->parseDirectories([__DIR__ . '/ResolveFilterSource']);
     }
 
-    public function testGetClass(): void
-    {
-        $this->assertInstanceOf(ClassReflectionInterface::class, $this->resolverFilters->getClass(SomeClassToResolve::class));
-    }
-
-    public function testGetClassForNonExistingClass(): void
-    {
-        $this->assertFalse($this->resolverFilters->getClass('NotExistingClass'));
-    }
-
     public function testNonExistingElementOnClass(): void
     {
         $reflectionElementMock = $this->createMock(ClassReflectionInterface::class);

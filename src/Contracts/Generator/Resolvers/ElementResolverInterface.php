@@ -9,8 +9,6 @@ use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
 
 interface ElementResolverInterface
 {
-    public function getClass(string $className, string $namespace = ''): ?ClassReflectionInterface;
-
     /**
      * @return FunctionReflectionInterface|ClassMethodReflectionInterface|null
      */
