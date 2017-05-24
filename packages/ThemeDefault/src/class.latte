@@ -138,7 +138,7 @@
         <table class="summary properties" id="properties">
             <caption>Properties summary</caption>
             {foreach $class->getOwnProperties() as $property}
-                {include "partial/property.latte", method => $method}
+                {include "partial/property.latte", property => $property}
             {/foreach}
         </table>
     {/if}

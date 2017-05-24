@@ -22,11 +22,6 @@ class Filters
         return null;
     }
 
-    public static function urlize(string $string): string
-    {
-        return preg_replace('~[^\w]~', '.', $string);
-    }
-
     protected function getTypeName(string $name, bool $trimNamespaceSeparator = true): string
     {
         $names = [

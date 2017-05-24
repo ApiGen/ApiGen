@@ -1,0 +1,13 @@
+<?php declare(strict_types=1);
+
+namespace ApiGen\Tests\Annotation\AnnotationDecoratorSource;
+
+final class SomeClassWithReturnTypes
+{
+    /**
+     * @return ReturnedClass[]
+     */
+    public function returnArray(): array
+    {
+    }
+}

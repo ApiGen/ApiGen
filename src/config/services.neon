@@ -20,12 +20,12 @@
 # Generator
 - ApiGen\Generator\EventSubscriber\ProgressBarEventSubscriber
 - ApiGen\Generator\GeneratorQueue
-#- ApiGen\Generator\AnnotationGroupsGenerator
-#- ApiGen\Generator\ElementListGenerator
-#- ApiGen\Generator\IndexGenerator
+- ApiGen\Generator\AnnotationGroupsGenerator
+- ApiGen\Generator\ElementListGenerator
+- ApiGen\Generator\IndexGenerator
 # elements
-#- ApiGen\Generator\NamespaceGenerator
-#- ApiGen\Generator\ClassGenerator
+- ApiGen\Generator\NamespaceGenerator
+- ApiGen\Generator\ClassGenerator
 - ApiGen\Generator\InterfaceGenerator
 - ApiGen\Generator\TraitGenerator
 - ApiGen\Generator\FunctionGenerator
@@ -38,8 +38,9 @@
 # Template Filters
 - ApiGen\Templating\Filters\Helpers\LinkBuilder
 - ApiGen\Templating\Filters\AnnotationFilters
-- ApiGen\Templating\Filters\ResolverFilters
 - ApiGen\Templating\Filters\UrlFilters
+
+- ApiGen\Annotation\AnnotationDecorator
 
 # Theme
 - ApiGen\Theme\ThemeResources

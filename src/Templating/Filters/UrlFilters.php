@@ -58,7 +58,22 @@ final class UrlFilters implements LatteFiltersProviderInterface
         $this->stringRouter = $stringRouter;
     }
 
-    public function annotation(string $value, string $name, AbstractReflectionInterface $reflection): string
+    /**
+     * @return callable[]
+     */
+    public function getFilters(): array
+    {
+        return [
+            'annotation' => function (string $value, string $name, AbstractReflectionInterface $reflection): string {
+                return $this->annotation( $value, $name, $reflection);
+            },
+            'typeLinks' => function (string $definition, AbstractReflectionInterface $reflection): ?string {
+                return $this->resolveLink($definition, $reflection);
+            }
+        ];
+    }
+
+    private function annotation(string $value, string $name, AbstractReflectionInterface $reflection): string
     {
         // todo: split to collector or dispatcher
         $annotationProcessors = [
@@ -75,6 +90,26 @@ final class UrlFilters implements LatteFiltersProviderInterface
         }
 
         return $this->doc($value, $reflection);
+    }
+
+    /**
+     * Returns links for types.
+     */
+    private function typeLinks(string $annotation, AbstractReflectionInterface $reflection): string
+    {
+        $links = [];
+
+        // typehints can not contain spaces
+        // valid typehint is:
+        // [TYPE[|TYPE[|...]][SPACE[METHOD|PARAM][DESCRIPTION]]
+        $parts = explode(' ', $annotation);
+
+        foreach (explode('|', $parts[0]) as $type) {
+            $type = $this->getTypeName($type, false);
+            $links[] = $this->resolveLink($type, $reflection) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
+        }
+
+        return implode('|', $links);
     }
 
     /**
@@ -108,26 +143,6 @@ final class UrlFilters implements LatteFiltersProviderInterface
         $link = $this->linkBuilder->build($url, $element->getName(), true, $classes);
 
         return '<code>' . $link . $suffix . '</code>';
-    }
-
-    /**
-     * Returns links for types.
-     */
-    public function typeLinks(string $annotation, AbstractReflectionInterface $reflection): string
-    {
-        $links = [];
-
-        // typehints can not contain spaces
-        // valid typehint is:
-        // [TYPE[|TYPE[|...]][SPACE[METHOD|PARAM][DESCRIPTION]]
-        $parts = explode(' ', $annotation);
-
-        foreach (explode('|', $parts[0]) as $type) {
-            $type = $this->getTypeName($type, false);
-            $links[] = $this->resolveLink($type, $reflection) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
-        }
-
-        return implode('|', $links);
     }
 
     public function annotationDescription(string $annotation, AbstractReflectionInterface $reflection): string
@@ -242,8 +257,4 @@ final class UrlFilters implements LatteFiltersProviderInterface
         return null;
     }
 
-    public function getFilters(): array
-    {
-        return [];
-    }
 }

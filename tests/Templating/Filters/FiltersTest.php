@@ -18,12 +18,6 @@ final class FiltersTest extends TestCase
         $this->filters = new FooFilters;
     }
 
-    public function testLoader(): void
-    {
-        $this->assertSame('Filtered: foo', $this->filters->loader('bazFilter', 'foo'));
-        $this->assertNull($this->filters->loader('nonExisting'));
-    }
-
     /**
      * @dataProvider typeNameProvider()
      */
