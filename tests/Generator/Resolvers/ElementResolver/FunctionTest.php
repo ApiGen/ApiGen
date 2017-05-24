@@ -3,8 +3,6 @@
 namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use PHPUnit_Framework_MockObject_MockObject;
 
 final class FunctionTest extends AbstractElementResolverTest
 {
@@ -21,13 +19,5 @@ final class FunctionTest extends AbstractElementResolverTest
     public function testNonExistingFunction(): void
     {
         $this->assertNull($this->elementResolver->getFunction('NotExistingFunction'));
-    }
-
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|FunctionReflectionInterface
-     */
-    private function createFunctionReflection()
-    {
-        return $this->createMock(FunctionReflectionInterface::class);
     }
 }

@@ -42,32 +42,6 @@ final class ElementResolver implements ElementResolverInterface
         $this->reflectionStorage = $reflectionStorage;
     }
 
-    public function getClass(string $name, string $namespace = ''): ?ClassReflectionInterface
-    {
-        $parsedClasses = $this->reflectionStorage->getClassReflections();
-
-        $class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
-        if ($class) {
-            return $class;
-        }
-
-        return null;
-    }
-
-    /**
-     * @return FunctionReflectionInterface|ClassMethodReflectionInterface|null
-     */
-    public function getFunction(string $name, string $namespace = '')
-    {
-        $parsedFunctions = $this->reflectionStorage->getFunctionReflections();
-        $function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
-        if ($function) {
-            return $function;
-        }
-
-        return null;
-    }
-
     /**
      * @param object|string $reflectionElement
      * @return ClassReflectionInterface|ClassConstantReflectionInterface|FunctionReflectionInterface|ClassMethodReflectionInterface|ClassPropertyReflectionInterface|null
@@ -128,6 +102,32 @@ final class ElementResolver implements ElementResolverInterface
         }
 
         return $this->resolveIfInContext($definition, $reflectionElement);
+    }
+
+    /**
+     * @return FunctionReflectionInterface|ClassMethodReflectionInterface|null
+     */
+    private function getFunction(string $name, string $namespace = '')
+    {
+        $parsedFunctions = $this->reflectionStorage->getFunctionReflections();
+        $function = $this->findElementByNameAndNamespace($parsedFunctions, $name, $namespace);
+        if ($function) {
+            return $function;
+        }
+
+        return null;
+    }
+
+    private function getClass(string $name, string $namespace = ''): ?ClassReflectionInterface
+    {
+        $parsedClasses = $this->reflectionStorage->getClassReflections();
+
+        $class = $this->findElementByNameAndNamespace($parsedClasses, $name, $namespace);
+        if ($class) {
+            return $class;
+        }
+
+        return null;
     }
 
     /**
