@@ -54,63 +54,72 @@
         {*<br>*}
     {*</div>*}
 
-    {*{if $interface->getOwnMethods()}*}
-        {*<table class="summary methods" id="methods">*}
-            {*<caption>Methods summary</caption>*}
-            {*{foreach $interface->getOwnMethods() as $method}*}
-                {*{include "partial/method.latte", method => $method}*}
-            {*{/foreach}*}
-        {*</table>*}
-    {*{/if}*}
+    {if $interface->getOwnMethods()}
+        <table class="summary methods" id="methods">
+            <caption>Methods summary</caption>
+            {foreach $interface->getOwnMethods() as $method}
+                {include "partial/method.latte", method => $method}
+            {/foreach}
+        </table>
+    {/if}
 
-    {*<table class="summary constants" id="constants" n:if="$interface->getOwnConstants()">*}
-        {*<caption>Constants summary</caption>*}
-        {*<tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">*}
-            {*{var $annotations = $constant->getAnnotations()}*}
+    <table n:if="$interface->getOwnConstants()" class="summary constants" id="constants">
+        <caption>Constants summary</caption>
+        <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
+            <td class="attributes">
+                <code>{$constant->typeHint|typeLinks:$constant|noescape}</code>
+            </td>
+            <td class="name">
+                <code>
+                    <a href="{$constant|linkSource}"><b>{$constant->getName()}</b></a>
+                </code>
 
-            {*<td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>*}
-            {*<td class="name">*}
-                {*<code>*}
-                {*<a href="{$constant|linkSource}"><b>{$constant->getName()}</b></a>*}
-                {*</code>*}
+                <div class="description detailed">
+                    {$constant->getDescription()}
 
-                {*<div class="description detailed">*}
-                    {*{$constant->getDescription()}*}
+                    {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+                    {foreach $filteredAnnotations as $annotation => $descriptions}
+                        <h4>{$annotation}</h4>
+                        <div class="list">
+                        {foreach $descriptions as $description}
+                            {if $description}
+                                {$description|annotation:$annotation:$constant|noescape}<br>
+                            {/if}
+                        {/foreach}
+                        </div>
+                    {/foreach}
+                </div>
+            </td>
+            <td class="value">
+                <div>
+                    <a href="#{$constant->getName()}" class="anchor">#</a>
+                    <code>{$constant->valueDefinition|highlightValue:$interface|noescape}</code>
+                </div>
+            </td>
+        </tr>
+    </table>
 
-                    {*{var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter: ['var'])}*}
-                    {*{foreach $filteredAnnotations as $annotation => $descriptions}*}
-                        {*<h4>{$annotation}</h4>*}
-                        {*<div class="list">*}
-                        {*{foreach $descriptions as $description}*}
-                            {*{if $description}*}
-                                {*{$description|annotation:$annotation:$constant|noescape}<br>*}
-                            {*{/if}*}
-                        {*{/foreach}*}
-                        {*</div>*}
-                    {*{/foreach}*}
-                {*</div>*}
-            {*</td>*}
-            {*<td class="value">*}
-                {*<div>*}
-                    {*<a href="#{$constant->getName()}" class="anchor">#</a>*}
-                    {*<code>{$constant->valueDefinition|highlightValue:$interface|noescape}</code>*}
-                {*</div>*}
-            {*</td>*}
-        {*</tr>*}
-    {*</table>*}
-
-    {*<table n:foreach="$interface->getInheritedConstants() as $parentName => $inheritedConstants" class="summary inherited">*}
-        {*{var $parentClass = ($parentName|getClass)}*}
-        {*<caption>Constants inherited from <a href="{$parentName|linkReflection}#constants" n:tag-if="$parentClass">{$parentName}</a></caption>*}
-        {*<tr>*}
-            {*<td>*}
-                {*<code>*}
-                    {*{foreach $inheritedConstants as $constant}*}
-                        {*<a href="{$constant|constantUrl}" n:tag-if="$parentClass"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->getName()}</span></b></a>{sep}, {/sep}*}
-                    {*{/foreach}*}
-                {*</code>*}
-            {*</td>*}
-        {*</tr>*}
-    {*</table>*}
+    {foreach $interface->getInterfaces() as $parentInterface}
+        <table n:if="$parentInterface->getOwnConstants()" class="summary inherited">
+            <caption>
+                Constants inherited from <a href="{$parentInterface|linkReflection}#constants">{$parentInterface->getName()}</a>
+            </caption>
+            <tr>
+                <td>
+                    <code>
+                        {foreach $parentInterface->getOwnContants() as $parentInterfaceConstants}
+                            <a href="{$parentInterfaceConstants|constantUrl}">
+                                <strong>
+                                    <span n:tag-if="$parentInterfaceConstants->isDeprecated()" class"deprecated">
+                                        {$parentInterfaceConstants->getName()}
+                                    </span>
+                                </strong>
+                            </a>{sep}, {/sep}
+                        {/foreach}
+                    </code>
+                </td>
+            </tr>
+        </table>
+    {/foreach}
 </div>
 {/block}

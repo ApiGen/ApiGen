@@ -4,6 +4,7 @@ namespace ApiGen\Templating\Filters;
 
 use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 
 final class ResolverFilters extends Filters
 {
@@ -18,7 +19,7 @@ final class ResolverFilters extends Filters
     }
 
     /**
-     * @return ReflectionClass|false
+     * @return ClassReflectionInterface|false
      */
     public function getClass(string $className, ?string $namespace = '')
     {

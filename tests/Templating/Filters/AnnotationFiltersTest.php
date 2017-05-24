@@ -3,10 +3,9 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Templating\Filters\AnnotationFilters;
-use PHPUnit\Framework\TestCase;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class AnnotationFiltersTest extends TestCase
+final class AnnotationFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var AnnotationFilters
@@ -15,15 +14,17 @@ final class AnnotationFiltersTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->annotationFilters = new AnnotationFilters(new EventDispatcher);
+        $this->annotationFilters = $this->container->getByType(AnnotationFilters::class);
     }
 
     public function testAnnotationFilterWithCustom(): void
     {
+        $annotationFilter = $this->annotationFilters->getFilters()['annotation'];
+
         $annotations = ['remain' => true, 'otherToRemain' => true];
         $this->assertSame(
             ['otherToRemain' => true],
-            $this->annotationFilters->annotationFilter($annotations, ['remain'])
+            $annotationFilter($annotations, ['remain'])
         );
     }
 }

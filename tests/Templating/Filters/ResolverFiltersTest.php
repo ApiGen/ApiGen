@@ -2,11 +2,11 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Contracts\Parser\ParserStorageInterface;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Templating\Filters\ResolverFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use PHPUnit_Framework_MockObject_MockObject;
+use ApiGen\Tests\Templating\Filters\ResolveFilterSource\SomeClassToResolve;
 
 final class ResolverFiltersTest extends AbstractContainerAwareTestCase
 {
@@ -19,18 +19,14 @@ final class ResolverFiltersTest extends AbstractContainerAwareTestCase
     {
         $this->resolverFilters = $this->container->getByType(ResolverFilters::class);
 
-        $classReflectionMock = $this->createClassReflectionMock();
-
-        /** @var ParserStorageInterface $parserStorage */
-        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
-        $parserStorage->setClasses([
-            'SomeClass' => $classReflectionMock
-        ]);
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parser->parseDirectories([__DIR__ . '/ResolveFilterSource']);
     }
 
     public function testGetClass(): void
     {
-        $this->assertInstanceOf(ClassReflectionInterface::class, $this->resolverFilters->getClass('SomeClass'));
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->resolverFilters->getClass(SomeClassToResolve::class));
     }
 
     public function testGetClassForNonExistingClass(): void
@@ -38,17 +34,9 @@ final class ResolverFiltersTest extends AbstractContainerAwareTestCase
         $this->assertFalse($this->resolverFilters->getClass('NotExistingClass'));
     }
 
-    public function testResolveElementForNonExistingElement(): void
+    public function testNonExistingElementOnClass(): void
     {
         $reflectionElementMock = $this->createMock(ClassReflectionInterface::class);
         $this->assertFalse($this->resolverFilters->resolveElement('NonExistingElement', $reflectionElementMock));
-    }
-
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|ClassReflectionInterface
-     */
-    private function createClassReflectionMock()
-    {
-        return $this->createMock(ClassReflectionInterface::class);
     }
 }

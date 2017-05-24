@@ -3,7 +3,6 @@
 namespace ApiGen\Tests\Templating\Filters;
 
 use ApiGen\Templating\Filters\Filters;
-use ApiGen\Tests\MethodInvoker;
 use ApiGen\Tests\Templating\Filters\FiltersSource\FooFilters;
 use PHPUnit\Framework\TestCase;
 
@@ -61,22 +60,6 @@ final class FiltersTest extends TestCase
         $this->assertSame(
             '\\Namespace',
             MethodInvoker::callMethodOnObject($this->filters, 'getTypeName', ['\\Namespace', false])
-        );
-    }
-
-    public function testUrlize(): void
-    {
-        $this->assertSame(
-            'Some.class',
-            MethodInvoker::callMethodOnObject($this->filters, 'urlize', ['Some class'])
-        );
-    }
-
-    public function testUrl(): void
-    {
-        $this->assertSame(
-            'Some%20class',
-            MethodInvoker::callMethodOnObject($this->filters, 'url', ['Some class'])
         );
     }
 }

@@ -97,9 +97,6 @@ final class ElementResolver implements ElementResolverInterface
 
         $definitionBase = substr($definition, 0, strcspn($definition, '\\:'));
 
-        dump('Test');
-        die;
-
         $className = Resolver::resolveClassFQN($definition, [], $reflectionElement->getNamespaceName());
 
         $resolved = $this->resolveIfParsed($definition, $reflectionElement);

@@ -1,0 +1,26 @@
+<td class="attributes">
+    <code>{$constant->typeHint|typeLinks:$constant|noescape}</code>
+</td>
+<td class="name">
+    <div class="description detailed">
+        {$constant->getDescription()}
+
+        {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+        {foreach $filteredAnnotations as $annotation => $descriptions}
+            <h4>{$annotation}</h4>
+            <div class="list">
+                {foreach $descriptions as $description}
+                    {if $description}
+                        {$description|annotation:$annotation:$constant|noescape}<br>
+                    {/if}
+                {/foreach}
+            </div>
+        {/foreach}
+    </div>
+</td>
+<td class="value">
+    <div>
+        <a href="#{$constant->getName()}" class="anchor">#</a>
+        <code>{$constant->valueDefinition|highlightValue:$class|noescape}</code>
+    </div>
+</td>

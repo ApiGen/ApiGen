@@ -78,23 +78,24 @@
         </table>
     {/if}
 
-    <table n:foreach="$class->getInheritedMethods() as $parentName => $methods" class="summary inherited">
-        {var $parentClass = ($parentName|getClass)}
-        <caption>
-            Methods inherited from <a href="{$parentName|linkReflection}#methods" n:tag-if="$parentClass">{$parentName}</a>
-        </caption>
-        <tr>
-            <td>
-                <code>
-                    {foreach $methods as $method}
-                        <a href="{$method|methodUrl}" n:tag-if="$parentClass">
-                            <span n:tag-if="$method->isDeprecated()" class="deprecated">{$method->getName()}()</span>
-                        </a>{sep}, {/sep}
-                    {/foreach}
-                </code>
-            </td>
-        </tr>
-    </table>
+    {foreach $class->getParentsClasses() as $parentClass}}
+        <table n:foreach="$parentClass->getOwnMethods() as $parentClassMethods" class="summary inherited">
+            <caption>
+                Methods inherited from <a href="{$parentClass|linkReflection}#methods">{$parentClass->getName()}</a>
+            </caption>
+            <tr>
+                <td>
+                    <code>
+                        {foreach $parentClassMethods as $parentClassMethod}
+                            <a href="{$parentClassMethod|methodUrl}" n:tag-if="$parentClass">
+                                <span n:tag-if="$parentClassMethod->isDeprecated()" class="deprecated">{$parentClassMethod->getName()}()</span>
+                            </a>{sep}, {/sep}
+                        {/foreach}
+                    </code>
+                </td>
+            </tr>
+        </table>
+    {/foreach}
 
     <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary used">
         <caption>Methods used from <a href="{$traitName|linkReflection}#methods">{$traitName}</a> trait</caption>
@@ -116,54 +117,22 @@
     {var $ownConstants = $class->getOwnConstants()}
 
     <table class="summary constants" id="constants" n:if="$ownConstants">
-    <caption>Constants summary</caption>
-    <tr n:foreach="$ownConstants as $constant" id="{$constant->getName()}">
-        {var $annotations = $constant->getAnnotations()}
-
-        <td class="attributes"><code>{$constant->typeHint|typeLinks:$constant|noescape}</code></td>
-        <td class="name">
-            <div class="description detailed">
-                {$constant->getDescription()}
-
-                {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
-                {foreach $filteredAnnotations as $annotation => $descriptions}
-                    <h4>{$annotation}</h4>
-                    <div class="list">
-                    {foreach $descriptions as $description}
-                        {if $description}
-                            {$description|annotation:$annotation:$constant|noescape}<br>
-                        {/if}
-                    {/foreach}
-                    </div>
-                {/foreach}
-            </div>
-        </td>
-        <td class="value">
-            <div>
-                <a href="#{$constant->getName()}" class="anchor">#</a>
-                <code>{$constant->valueDefinition|highlightValue:$class|noescape}</code>
-            </div>
-        </td>
-    </tr>
-    </table>
-
-    <table n:foreach="$class->getInheritedConstants() as $parentName => $inheritedConstants" class="summary inherited">
-        {var $parentClass = ($parentName|getClass)}
-        <caption>Constants inherited from <a href="{$parentName|linkReflection}#constants" n:tag-if="$parentClass">{$parentName}</a></caption>
-        <tr>
-            <td>
-                <code>
-                {foreach $inheritedConstants as $constant}
-                    <a href="{$constant|constantUrl}" n:tag-if="$parentClass"><b><span n:tag-if="$constant->isDeprecated()" class"deprecated">{$constant->getName()}</span></b></a>{sep}, {/sep}
-                {/foreach}
-                </code>
-            </td>
+        <caption>Constants summary</caption>
+        <tr n:foreach="$ownConstants as $constant" id="{$constant->getName()}">
+            {include "partial/constant.latte", constant => $constant}
         </tr>
     </table>
 
-    {define property}
-
-    {/define}
+    {foreach $class->getParentClasses() as $parentClass}
+        <table n:if="$parentClass->getOwnConstants()" class="summary inherited">
+            <caption>
+                Constants inherited from <a href="{$parentClass|linkReflection}#constants">{$parentClass->getName}</a>
+            </caption>
+            <tr>
+                {include "partial/parentConstant.latte", parentClass => $parentClass}
+            </tr>
+        </table>
+    {/foreach}
 
     {if $class->getOwnProperties()}
         <table class="summary properties" id="properties">
@@ -174,17 +143,28 @@
         </table>
     {/if}
 
-    <table n:foreach="$class->getInheritedProperties() as $parentName => $properties" class="summary inherited">
-        {var $parentClass = ($parentName|getClass)}
-        <caption>Properties inherited from <a href="{$parentName|linkReflection}#properties" n:tag-if="$parentClass">{$parentName}</a></caption>
-        <tr>
-            <td><code>
-            {foreach $properties as $property}
-                <a href="{$property|propertyUrl}" n:tag-if="$parentClass"><var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var></a>{sep}, {/sep}
-            {/foreach}
-            </code></td>
-        </tr>
-    </table>
+    {foreach $class->getParentClasses() as $parentClass}
+        <table n:if="$parentClass->getOwnProperties()" class="summary inherited">
+            <caption>
+                Properties inherited from <a href="{$parentClass|linkReflection}#properties" n:tag-if="$parentClass">{$parentClass->getName()}</a>
+            </caption>
+            <tr>
+                <td>
+                    <code>
+                        {foreach $parentClass->getOwnProperties() as $parentClassProperty}
+                            <a href="{$parentClassProperty|propertyUrl}">
+                                <var>
+                                    <span n:tag-if="$property->isDeprecated()" class="deprecated">
+                                        ${$property->getName()}
+                                    </span>
+                                </var>
+                            </a>{sep}, {/sep}
+                        {/foreach}
+                    </code>
+                </td>
+            </tr>
+        </table>
+    {/foreach}
 
     <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary used">
         <caption>Properties used from <a href="{$traitName|linkReflection}#properties">{$traitName}</a></caption>
