@@ -4,9 +4,13 @@ namespace ApiGen\Tests\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Exception\ConfigurationException;
+use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
+use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
+use ApiGen\ModularConfiguration\Option\TitleOption;
 use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -30,14 +34,14 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         ]);
 
         $this->assertSame([
-            'source' => [],
-            'visibilityLevels' => 768,
-            'baseUrl' => 'http://apigen.org',
-            'destination' => TEMP_DIR,
-            'annotationGroups' => [],
-            'overwrite' => false,
-            'themeDirectory' => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
-            'title' => '',
+            TitleOption::NAME => 'ApiGen It-self',
+            SourceOption::NAME => [],
+            VisibilityLevelOption::NAME => 768,
+            BaseUrlOption::NAME => 'http://apigen.org',
+            DestinationOption::NAME => TEMP_DIR,
+            AnnotationGroupsOption::NAME => [],
+            OverwriteOption::NAME => false,
+            ThemeDirectoryOption::NAME => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
         ], $options);
     }
 
@@ -57,16 +61,5 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
         $options = $this->configuration->resolveOptions($configAndDestinationOptions);
 
         $this->assertSame(__DIR__, $options['source'][0]);
-    }
-
-    public function testPrepareOptionsMergeIsCorrect(): void
-    {
-        $options = $this->configuration->resolveOptions([
-            SourceOption::NAME => [__DIR__],
-            DestinationOption::NAME => TEMP_DIR . '/api',
-        ]);
-
-        $this->assertSame(768, $options[VisibilityLevelOption::NAME]);
-        $this->assertSame('http://apigen.org', $options[BaseUrlOption::NAME]);
     }
 }
