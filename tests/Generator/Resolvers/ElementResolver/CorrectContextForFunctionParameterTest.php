@@ -54,9 +54,6 @@ final class CorrectContextForFunctionParameterTest extends AbstractElementResolv
         $functionReflectionMock->method('getName')
             ->willReturn('SomeFunction');
 
-        $functionReflectionMock->method('isDocumented')
-            ->willReturn(true);
-
         return $functionReflectionMock;
     }
 }

@@ -49,10 +49,6 @@ final class ResolverFiltersTest extends AbstractContainerAwareTestCase
      */
     private function createClassReflectionMock()
     {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-        $classReflectionMock->method('isDocumented')
-            ->willReturn(true);
-
-        return $classReflectionMock;
+        return $this->createMock(ClassReflectionInterface::class);
     }
 }

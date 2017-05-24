@@ -46,8 +46,6 @@ final class ResolveIfParsedTest extends AbstractElementResolverTest
         $methodReflectionMock = $this->createMock(ClassMethodReflectionInterface::class);
         $methodReflectionMock->method('getName')
             ->willReturn('SomeFunction');
-        $methodReflectionMock->method('isDocumented')
-            ->willReturn(true);
 
         return $methodReflectionMock;
     }

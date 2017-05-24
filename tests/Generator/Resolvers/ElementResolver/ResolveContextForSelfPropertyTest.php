@@ -16,8 +16,6 @@ final class ResolveContextForSelfPropertyTest extends AbstractElementResolverTes
         $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
         $classReflectionMock->method('getName')
             ->willReturn('SomeClass');
-        $classReflectionMock->method('isDocumented')
-            ->willReturn(true);
 
         $this->parserStorage->setClasses([
             'SomeClass' => $classReflectionMock,

@@ -68,9 +68,6 @@ final class ResolveContextForClassPropertyTest extends AbstractElementResolverTe
         $parentClassReflectionMock->method('getName')
             ->willReturn('SomeClass');
 
-        $parentClassReflectionMock->method('isDocumented')
-            ->willReturn(true);
-
         return $parentClassReflectionMock;
     }
 }

@@ -7,12 +7,14 @@
         <testsuite>
             <directory>packages/*/tests</directory>
             <directory>tests/Generator</directory>
+            <directory>tests/Configuration</directory>
         </testsuite>
     </testsuites>
     <filter>
         <whitelist>
             <directory>packages/*/src</directory>
             <directory>src/Generator</directory>
+            <directory>src/Configuration</directory>
         </whitelist>
     </filter>
 </phpunit>

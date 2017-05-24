@@ -28,10 +28,6 @@ final class FunctionTest extends AbstractElementResolverTest
      */
     private function createFunctionReflection()
     {
-        $functionReflection = $this->createMock(FunctionReflectionInterface::class);
-        $functionReflection->method('isDocumented')
-            ->willReturn(true);
-
-        return $functionReflection;
+        return $this->createMock(FunctionReflectionInterface::class);
     }
 }

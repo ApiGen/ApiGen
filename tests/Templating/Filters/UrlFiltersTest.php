@@ -6,7 +6,6 @@ use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\MethodInvoker;
 use PHPUnit_Framework_MockObject_MockObject;
 
 final class UrlFiltersTest extends AbstractContainerAwareTestCase
@@ -41,8 +40,6 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
         $classReflectionMock->method('getName')
             ->willReturn('SomeClass');
         $classReflectionMock->method('isDeprecated')
-            ->willReturn(true);
-        $classReflectionMock->method('isDocumented')
             ->willReturn(true);
 
         /** @var ParserStorageInterface $parserStorage */
