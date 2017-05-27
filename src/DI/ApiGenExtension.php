@@ -2,6 +2,8 @@
 
 namespace ApiGen\DI;
 
+use ApiGen\Annotation\AnnotationDecorator;
+use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
 use Latte\Engine;
@@ -24,6 +26,7 @@ final class ApiGenExtension extends CompilerExtension
     public function beforeCompile(): void
     {
         $this->setupGeneratorQueue();
+        $this->setupAnnotationDecorator();
     }
 
     private function setupTemplating(): void
@@ -42,6 +45,16 @@ final class ApiGenExtension extends CompilerExtension
             GeneratorQueueInterface::class,
             GeneratorInterface::class,
             'addGenerator'
+        );
+    }
+
+    private function setupAnnotationDecorator(): void
+    {
+        DefinitionCollector::loadCollectorWithType(
+            $this->getContainerBuilder(),
+            AnnotationDecorator::class,
+            AnnotationSubscriberInterface::class,
+            'addAnnotationSubscriber'
         );
     }
 }
