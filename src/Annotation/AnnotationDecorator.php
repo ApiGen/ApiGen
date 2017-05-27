@@ -23,9 +23,6 @@ final class AnnotationDecorator
         $this->annotationSubscribers[] = $annotationSubscriber;
     }
 
-    // @todo set SingleAnnotationDecoratorInterface
-    // listen to @return, @see... etc.
-
     public function decorate(Tag $tag, AbstractReflectionInterface $reflection): string
     {
         foreach ($this->annotationSubscribers as $annotationSubscriber) {

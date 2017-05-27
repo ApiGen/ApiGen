@@ -6,7 +6,6 @@ use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\AbstractClassElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
@@ -19,11 +18,6 @@ use phpDocumentor\Reflection\Types\This;
 final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
 {
     /**
-     * @var ReflectionStorageInterface
-     */
-    private $reflectionStorage;
-
-    /**
      * @var ReflectionRoute
      */
     private $reflectionRoute;
@@ -34,11 +28,9 @@ final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
     private $linkBuilder;
 
     public function __construct(
-        ReflectionStorageInterface $reflectionStorage,
         ReflectionRoute $reflectionRoute,
         LinkBuilder $linkBuilder
     ) {
-        $this->reflectionStorage = $reflectionStorage;
         $this->reflectionRoute = $reflectionRoute;
         $this->linkBuilder = $linkBuilder;
     }
