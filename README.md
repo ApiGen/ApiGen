@@ -8,6 +8,13 @@
 Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakephp.org/3.4/) or [Doctrine API](http://www.doctrine-project.org/api/orm/2.5/).
 
 
+## Built on Shoulders of Giants
+
+- PHP 7.1
+- [Roave/BetterReflection](https://github.com/Roave/BetterReflection)
+- [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver)
+
+
 ## Install
 
 ```bash

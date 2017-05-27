@@ -72,8 +72,10 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
     public function testResolveLinkAndSeeAnnotation(string $docBlock, string $expectedLink): void
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $reflectionClassMock->method('getName')->willReturn(GenerateCommand::class);
-        $reflectionClassMock->method('isDeprecated')->willReturn(true);
+        $reflectionClassMock->method('getName')
+            ->willReturn(GenerateCommand::class);
+        $reflectionClassMock->method('isDeprecated')
+            ->willReturn(true);
 
         $this->assertSame(
             $expectedLink,
