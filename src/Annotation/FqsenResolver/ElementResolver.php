@@ -40,7 +40,7 @@ final class ElementResolver
     }
 
     /**
-     * @return ClassReflectionInterface|ClassPropertyReflectionInterface|ClassMethodReflectionInterface
+     * @return ClassReflectionInterface|ClassPropertyReflectionInterface|ClassMethodReflectionInterface|string
      */
     public function resolveReflectionFromNameAndReflection(string $name, AbstractReflectionInterface $reflection)
     {
@@ -67,7 +67,15 @@ final class ElementResolver
         $classReflectionName = (string) $this->fqsenResolver->resolve(ltrim($name, '\\'), $context);
         $classReflectionName = ltrim($classReflectionName, '\\');
 
-        $classReflection = $this->reflectionStorage->getClassReflections()[$classReflectionName];
+        // @todo: return only string on non resolved existing class
+        $classReflections = $this->reflectionStorage->getClassReflections();
+
+        if (! isset($classReflections[$classReflectionName])) {
+            // @todo or autoresolve class that exists?
+            return $name;
+        }
+
+        $classReflection = $classReflections[$classReflectionName];
 
         if ($isProperty) {
             return $classReflection->getProperty($propertyName);

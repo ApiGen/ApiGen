@@ -79,23 +79,5 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         );
     }
 
-    public function testSeeProperty()
-    {
-        $seePropertyAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[0];
 
-        $this->assertSame(
-            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.ReturnedClass.html#$someProperty">ReturnedClass::$someProperty</a></code>',
-            $this->annotationDecorator->decorate($seePropertyAnnotation, $this->methodReflection)
-        );
-    }
-
-    public function testSeeMethod()
-    {
-        $seeMethodAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[1];
-
-        $this->assertSame(
-            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.ReturnedClass.html#_someMethod">ReturnedClass::someMethod()</a></code>',
-            $this->annotationDecorator->decorate($seeMethodAnnotation, $this->methodReflection)
-        );
-    }
 }

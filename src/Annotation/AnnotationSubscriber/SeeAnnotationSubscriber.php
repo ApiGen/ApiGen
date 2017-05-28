@@ -48,13 +48,19 @@ final class SeeAnnotationSubscriber implements AnnotationSubscriberInterface
     public function process($content, AbstractReflectionInterface $reflection): string
     {
         if ($content->getReference() instanceof Fqsen) {
+            $reference = (string) $content->getReference();
+            $reference = ltrim($reference, '\\');
+
             $resolvedReflection = $this->elementResolver->resolveReflectionFromNameAndReflection(
-                (string) $content->getReference(), $reflection
+                $reference, $reflection
             );
 
-            $url = $this->reflectionRoute->constructUrl($resolvedReflection);
+            if ($resolvedReflection instanceof AbstractReflectionInterface) {
+                $url = $this->reflectionRoute->constructUrl($resolvedReflection);
+                return '<code>' . $this->linkBuilder->build($url, ltrim($reference, '\\')) . '</code>';
+            }
 
-            return '<code>' . $this->linkBuilder->build($url, ltrim((string) $content->getReference(), '\\')) . '</code>';
+            return '<code>' . $reference . '</code>';
         }
 
         // @todo
