@@ -74,4 +74,16 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
             $this->annotationDecorator->decorate($seeMethodAnnotation, $this->methodReflection)
         );
     }
+
+    public function testMissingFunction(): void
+    {
+    }
+
+    public function testFunction(): void
+    {
+    }
+
+//['{@see NotActiveClass}', 'NotActiveClass'],
+//[sprintf('{@see %s}', GenerateCommand::class), self::APIGEN_LINK],
+
 }

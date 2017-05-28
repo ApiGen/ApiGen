@@ -38,4 +38,17 @@ final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
             $decoratedSeeAnnotation
         );
     }
+
+
+//    @todo: provide data method
+
+//[
+//'{@link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations}',
+//'<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'
+//],
+//['@link http://apigen.org Description', '<a href="http://apigen.org">Description</a>'],
+//['{@link http://apigen.org Description}', '<a href="http://apigen.org">Description</a>'],
+//['{@link http://apigen.org}', '<a href="http://apigen.org">http://apigen.org</a>'],
+
+
 }
