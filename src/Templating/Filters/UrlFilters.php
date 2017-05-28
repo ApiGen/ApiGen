@@ -12,7 +12,6 @@ use ApiGen\StringRouting\StringRouter;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use ApiGen\Templating\Filters\Helpers\Strings;
 use Latte\Runtime\Filters as LatteFilters;
-use Nette\Utils\Validators;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
@@ -71,10 +70,8 @@ final class UrlFilters implements LatteFiltersProviderInterface
         $annotationProcessors = [
             'return' => $this->processReturnAnnotations($value, $reflection),
             'throws' => $this->processThrowsAnnotations($value, $reflection),
-            'license' => $this->processLicenseAnnotations($value),
-            'link' => $this->processLinkAnnotations($value),
-            'see' => $this->processSeeAnnotations($value, $reflection),
             'uses' => $this->processUsesAnnotations($value, $reflection),
+            // @todo: @covers
         ];
 
         if (isset($annotationProcessors[$name])) {
@@ -148,46 +145,28 @@ final class UrlFilters implements LatteFiltersProviderInterface
         $processDocTextEvent = new ProcessDocTextEvent($text, $reflection);
         $this->eventDispatcher->dispatch(ProcessDocTextEvent::class, $processDocTextEvent);
 
-        return $this->resolveLinkAndSeeAnnotation($processDocTextEvent->getText(), $reflection);
+        return $processDocTextEvent->getText();
     }
 
-    private function resolveLinkAndSeeAnnotation(string $text, ReflectionInterface $reflectionElement): string
-    {
-        return preg_replace_callback('~{@(?:link|see)\\s+([^}]+)}~', function ($matches) use ($reflectionElement) {
-            [$url, $description] = Strings::split($matches[1]);
-
-            $link = $this->resolveLink($matches[1], $reflectionElement);
-            if ($link) {
-                return $link;
-            }
-
-            if (Validators::isUri($url)) {
-                return $this->linkBuilder->build($url, $description ?: $url);
-            }
-
-            return $matches[1];
-        }, $text);
-    }
-
-    public function highlightPhp(string $source, ReflectionInterface $reflectionElement): string
+    public function highlightPhp(string $source, AbstractReflectionInterface $reflectionElement): string
     {
         return $this->resolveLink($this->getTypeName($source), $reflectionElement)
             ?: $this->highlighter->highlight($source);
     }
 
-    public function highlightValue(string $definition, ReflectionInterface $reflectionElement): string
+    public function highlightValue(string $definition, AbstractReflectionInterface $reflectionElement): string
     {
         return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $reflectionElement);
     }
 
-    private function processReturnAnnotations(string $value, ReflectionInterface $reflectionElement): string
+    private function processReturnAnnotations(string $value, AbstractReflectionInterface $reflectionElement): string
     {
         $description = $this->getDescriptionFromValue($value, $reflectionElement);
         $typeLinks = $this->typeLinks($value, $reflectionElement);
         return $typeLinks . $description;
     }
 
-    private function processThrowsAnnotations(string $value, ReflectionInterface $Reflection): string
+    private function processThrowsAnnotations(string $value, AbstractReflectionInterface $Reflection): string
     {
         $description = $this->getDescriptionFromValue($value, $Reflection);
         $typeLinks = $this->typeLinks($value, $Reflection);
@@ -207,35 +186,6 @@ final class UrlFilters implements LatteFiltersProviderInterface
         return (string) $description;
     }
 
-    private function processLicenseAnnotations(string $value): string
-    {
-        [$url, $description] = Strings::split($value);
-        return $this->linkBuilder->build($url, $description ?: $url);
-    }
-
-    private function processLinkAnnotations(string $value): string
-    {
-        [$url, $description] = Strings::split($value);
-        if (Validators::isUrl($url)) {
-            return $this->linkBuilder->build($url, $description ?: $url);
-        }
-
-        return '';
-    }
-
-    private function processSeeAnnotations(string $value, AbstractReflectionInterface $reflection): string
-    {
-        $doc = [];
-        foreach (preg_split('~\\s*,\\s*~', $value) as $link) {
-            if ($this->elementResolver->resolveElement($link, $reflection) !== null) {
-                $doc[] = $this->typeLinks($link, $reflection);
-            } else {
-                $doc[] = $this->doc($link, $reflection);
-            }
-        }
-
-        return implode(', ', $doc);
-    }
 
     private function processUsesAnnotations(string $value, AbstractReflectionInterface $reflection): ?string
     {

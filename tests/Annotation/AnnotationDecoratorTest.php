@@ -78,6 +78,4 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
             $this->annotationDecorator->decorate($param2Annotation, $this->methodReflection)
         );
     }
-
-
 }
