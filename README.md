@@ -57,12 +57,13 @@ This section provides a list of [PHP DocBlock
 annotations](https://www.phpdoc.org/docs/latest/guides/docblocks.html) (tags)
 that are supported by ApiGen:
 
+- `@link` - website url
+- `@see` - reference to some element
+
 - `@deprected` - indicated that the associated element is deprecated and can be removed in the future version.
 - `@internal` - denotes that the associated elements is internal to this application or library and hides it by default.
-- `@link` - indicates a relation between the associated element and a page of a website.
 - `@param` - documents a single argument of a function or method.
 - `@return` - documents the return value of functions or methods.
-- `@see` - indicates a reference from the associated element to a website or other elements.
 - `@uses` - indicates a reference to (and from) a single associated element.
 
 - all urls are clickable (@todo)
@@ -70,12 +71,34 @@ that are supported by ApiGen:
 
 ### In Examples
 
+#### `@see`
+
+**In Code**
+
+```php
+/**
+ * @see SomeClass
+ * @see SomeClass::$propety
+ * @see SomeClass::someFunction()
+ */
+```
+
+**Generated**
+
+[SomeClass](class-SomeClass.html)
+[SomeClass::$property](class-SomeClass.html#$someProperty)
+[SomeClass::someFunction()](class-SomeClass.html#_someFunction)
+
+---
+
+#### `@link`
+
 **In Code**
 
 ```php
 /**
  * This is already mentioned on Wiki.
- * @see https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall 
+ * @link https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall 
  */
 ```
 

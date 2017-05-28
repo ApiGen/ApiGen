@@ -37,5 +37,10 @@ final class AnnotationList
     /**
      * @var string
      */
+    public const LINK = 'link';
+
+    /**
+     * @var string
+     */
     public const EMPTY_LINE = PHP_EOL . PHP_EOL;
 }

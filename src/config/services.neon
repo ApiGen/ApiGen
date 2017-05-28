@@ -3,7 +3,8 @@
 - ApiGen\Annotation\AnnotationSubscriber\ReturnAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\ParamAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\SeeAnnotationSubscriber
-- ApiGen\Annotation\AnnotationSubscriber\SeeDescriptionSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\LinkAnnotationSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\LinkifyDescriptionSubscriber
 
 - phpDocumentor\Reflection\FqsenResolver
 - phpDocumentor\Reflection\Types\ContextFactory
