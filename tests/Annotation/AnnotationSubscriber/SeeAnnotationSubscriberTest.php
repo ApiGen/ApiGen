@@ -34,46 +34,46 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
         $this->classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithSeeAnnotations::class];
         $this->methodReflection = $this->classReflection->getMethod('returnArray');
     }
-//
-//    public function testPropertyOnMissingClassReflection()
-//    {
-//        $seePropertyAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[0];
-//
-//        $this->assertSame(
-//            '<code>ReturnedClass::$someProperty</code>',
-//            $this->annotationDecorator->decorate($seePropertyAnnotation, $this->methodReflection)
-//        );
-//    }
-//
-//    public function testProperty()
-//    {
-//        $seePropertyAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[2];
-//
-//        $this->assertSame(
-//            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationSubscriber.SeeAnnotationSubscriberSource.PresentReturnedClass.html#$someProperty">PresentReturnedClass::$someProperty</a></code>',
-//            $this->annotationDecorator->decorate($seePropertyAnnotation, $this->methodReflection)
-//        );
-//    }
-//
-//    public function testMethodOnMissingClassReflection()
-//    {
-//        $seeMethodAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[1];
-//
-//        $this->assertSame(
-//            '<code>ReturnedClass::someMethod()</code>',
-//            $this->annotationDecorator->decorate($seeMethodAnnotation, $this->methodReflection)
-//        );
-//    }
-//
-//    public function testMethod()
-//    {
-//        $seeMethodAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[3];
-//
-//        $this->assertSame(
-//            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationSubscriber.SeeAnnotationSubscriberSource.PresentReturnedClass.html#_someMethod">PresentReturnedClass::someMethod()</a></code>',
-//            $this->annotationDecorator->decorate($seeMethodAnnotation, $this->methodReflection)
-//        );
-//    }
+
+    public function testPropertyOnMissingClassReflection()
+    {
+        $seePropertyAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[0];
+
+        $this->assertSame(
+            '<code>ReturnedClass::$someProperty</code>',
+            $this->annotationDecorator->decorate($seePropertyAnnotation, $this->methodReflection)
+        );
+    }
+
+    public function testProperty()
+    {
+        $seePropertyAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[2];
+
+        $this->assertSame(
+            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationSubscriber.SeeAnnotationSubscriberSource.PresentReturnedClass.html#$someProperty">PresentReturnedClass::$someProperty</a></code>',
+            $this->annotationDecorator->decorate($seePropertyAnnotation, $this->methodReflection)
+        );
+    }
+
+    public function testMethodOnMissingClassReflection()
+    {
+        $seeMethodAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[1];
+
+        $this->assertSame(
+            '<code>ReturnedClass::someMethod()</code>',
+            $this->annotationDecorator->decorate($seeMethodAnnotation, $this->methodReflection)
+        );
+    }
+
+    public function testMethod()
+    {
+        $seeMethodAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[3];
+
+        $this->assertSame(
+            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationSubscriber.SeeAnnotationSubscriberSource.PresentReturnedClass.html#_someMethod">PresentReturnedClass::someMethod()</a></code>',
+            $this->annotationDecorator->decorate($seeMethodAnnotation, $this->methodReflection)
+        );
+    }
 
     public function testMissingFunction(): void
     {
