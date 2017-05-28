@@ -20,6 +20,11 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
      */
     private $methodReflection;
 
+    /**
+     * @var ClassMethodReflectionInterface
+     */
+    private $secondMethodReflection;
+
     protected function setUp(): void
     {
         $this->parser->parseDirectories([__DIR__ . '/AnnotationDecoratorSource']);
@@ -27,6 +32,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
 
         $classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithReturnTypes::class];
         $this->methodReflection = $classReflection->getOwnMethods()['returnArray'];
+        $this->secondMethodReflection = $classReflection->getOwnMethods()['returnClass'];
     }
 
     public function testClassArray(): void
@@ -35,6 +41,16 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
 
         $this->assertSame(
             '<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a>[]</code>',
+            $this->annotationDecorator->decorate($returnAnnotation, $this->methodReflection)
+        );
+    }
+
+    public function testReturnClass(): void
+    {
+        $returnAnnotation = $this->secondMethodReflection->getAnnotation(AnnotationList::RETURN_)[0];
+
+        $this->assertSame(
+            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a></code>',
             $this->annotationDecorator->decorate($returnAnnotation, $this->methodReflection)
         );
     }
@@ -60,6 +76,16 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         $this->assertSame(
             'string|<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.SomeClassWithReturnTypes.html">$this</a></code>',
             $this->annotationDecorator->decorate($param2Annotation, $this->methodReflection)
+        );
+    }
+
+    public function testSeeProperty()
+    {
+        $seeAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[0];
+
+        $this->assertSame(
+            '',
+            $this->annotationDecorator->decorate($seeAnnotation, $this->methodReflection)
         );
     }
 }

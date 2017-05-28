@@ -27,10 +27,8 @@ final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
      */
     private $linkBuilder;
 
-    public function __construct(
-        ReflectionRoute $reflectionRoute,
-        LinkBuilder $linkBuilder
-    ) {
+    public function __construct(ReflectionRoute $reflectionRoute, LinkBuilder $linkBuilder)
+    {
         $this->reflectionRoute = $reflectionRoute;
         $this->linkBuilder = $linkBuilder;
     }
@@ -41,14 +39,14 @@ final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
     }
 
     /**
-     * @param Param $paramTag
+     * @param Param $seeTag
      * @return string
      */
-    public function process(Tag $paramTag, AbstractReflectionInterface $reflection): string
+    public function process(Tag $seeTag, AbstractReflectionInterface $reflection): string
     {
-        if ($paramTag->getType() instanceof Compound) {
+        if ($seeTag->getType() instanceof Compound) {
             /** @var Compound $compoundType */
-            $compoundType = $paramTag->getType();
+            $compoundType = $seeTag->getType();
             $returnValue = '';
             $i = 0;
             while ($compoundType->has($i)) {
@@ -80,3 +78,4 @@ final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
         // @todo
     }
 }
+

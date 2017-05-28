@@ -4,4 +4,8 @@ namespace ApiGen\Tests\Annotation\AnnotationDecoratorSource;
 
 final class ReturnedClass
 {
+    /**
+     * @var string
+     */
+    public $someProperty;
 }

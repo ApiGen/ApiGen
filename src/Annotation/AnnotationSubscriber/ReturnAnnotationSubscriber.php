@@ -2,28 +2,18 @@
 
 namespace ApiGen\Annotation\AnnotationSubscriber;
 
+use ApiGen\Annotation\FqsenResolver\ElementResolver;
 use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
-use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\Array_;
-use phpDocumentor\Reflection\Types\ContextFactory;
 use phpDocumentor\Reflection\Types\Object_;
-use ReflectionClass;
 
 final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
 {
-    /**
-     * @var ReflectionStorageInterface
-     */
-    private $reflectionStorage;
-
     /**
      * @var ReflectionRoute
      */
@@ -34,14 +24,19 @@ final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
      */
     private $linkBuilder;
 
+    /**
+     * @var ElementResolver
+     */
+    private $elementResolver;
+
     public function __construct(
-        ReflectionStorageInterface $reflectionStorage,
         ReflectionRoute $reflectionRoute,
-        LinkBuilder $linkBuilder
+        LinkBuilder $linkBuilder,
+        ElementResolver $elementResolver
     ) {
-        $this->reflectionStorage = $reflectionStorage;
         $this->reflectionRoute = $reflectionRoute;
         $this->linkBuilder = $linkBuilder;
+        $this->elementResolver = $elementResolver;
     }
 
     public function getAnnotation(): string
@@ -50,24 +45,25 @@ final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
     }
 
     /**
-     * @param Return_ $paramTag
+     * @param Return_ $seeTag
      * @return string
      */
-    public function process(Tag $paramTag, AbstractReflectionInterface $reflection): string
+    public function process(Tag $seeTag, AbstractReflectionInterface $reflection): string
     {
-        if ($paramTag->getType() instanceof Array_) {
+        if ($seeTag->getType() instanceof Array_) {
             /** @var Array_ $arrayType */
-            $arrayType = $paramTag->getType();
+            $arrayType = $seeTag->getType();
             if ($arrayType->getValueType() instanceof Object_) {
                 /** @var Object_ $objectValueType */
                 $objectValueType = $arrayType->getValueType();
-                $type = (string) $objectValueType->getFqsen()
-                    ->getName();
-
-                $singleClassReflection = $this->resolveReflectionFromNameAndReflection($type, $reflection);
-                $classUrl = $this->reflectionRoute->constructUrl($singleClassReflection);
-                return '<code>' . $this->linkBuilder->build($classUrl, $type) . '[]</code>';
+                $link = $this->createLinkFromObject($reflection, $objectValueType);
+                return '<code>' . $link . '[]</code>';
             }
+        } elseif ($seeTag->getType() instanceof Object_) {
+            /** @var Object_ $objectValueType */
+            $objectValueType = $seeTag->getType();
+            $link = $this->createLinkFromObject($reflection, $objectValueType);
+            return '<code>' . $link . '</code>';
         }
 
         // @todo
@@ -75,16 +71,14 @@ final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
         return '';
     }
 
-    private function resolveReflectionFromNameAndReflection(string $name, AbstractReflectionInterface $reflection): ClassReflectionInterface
+    private function createLinkFromObject(AbstractReflectionInterface $reflection, Object_ $objectValueType): string
     {
-        if ($reflection instanceof ClassMethodReflectionInterface) {
-            $reflectionName = $reflection->getDeclaringClassName();
-        }
+        $type = (string) $objectValueType->getFqsen()
+            ->getName();
 
-        $context = (new ContextFactory)->createFromReflector(new ReflectionClass($reflectionName));
-        $classReflectionName = (string) (new FqsenResolver)->resolve($name, $context);
-        $classReflectionName = ltrim($classReflectionName, '\\');
+        $singleClassReflection = $this->elementResolver->resolveReflectionFromNameAndReflection($type, $reflection);
+        $classUrl = $this->reflectionRoute->constructUrl($singleClassReflection);
 
-        return $this->reflectionStorage->getClassReflections()[$classReflectionName];
+        return $this->linkBuilder->build($classUrl, $type);
     }
 }

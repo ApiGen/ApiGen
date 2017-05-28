@@ -32,5 +32,10 @@ final class AnnotationList
     /**
      * @var string
      */
+    public const SEE = 'see';
+
+    /**
+     * @var string
+     */
     public const EMPTY_LINE = PHP_EOL . PHP_EOL;
 }

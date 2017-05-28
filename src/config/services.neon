@@ -2,6 +2,12 @@
 - ApiGen\Annotation\AnnotationDecorator
 - ApiGen\Annotation\AnnotationSubscriber\ReturnAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\ParamAnnotationSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\SeeAnnotationSubscriber
+
+- phpDocumentor\Reflection\FqsenResolver
+- phpDocumentor\Reflection\Types\ContextFactory
+- ApiGen\Annotation\FqsenResolver\ElementResolver
+
 
 # ApiGenApplication
 - ApiGen\Application\ApiGenApplication
