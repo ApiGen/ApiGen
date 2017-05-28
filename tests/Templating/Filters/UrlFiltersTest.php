@@ -44,6 +44,7 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
      */
     public function getTypeLinksData(): array
     {
+        // @param or return
         return [
             ['int|string[]', 'integer|string[]'],
             ['string|$this', 'string|<code><a href="class-.html"></a></code>'],

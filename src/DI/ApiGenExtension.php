@@ -48,6 +48,7 @@ final class ApiGenExtension extends CompilerExtension
         );
     }
 
+    // @todo: decouple to own package
     private function setupAnnotationDecorator(): void
     {
         DefinitionCollector::loadCollectorWithType(

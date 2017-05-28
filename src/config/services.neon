@@ -51,9 +51,6 @@
 - ApiGen\Templating\Filters\AnnotationFilters
 - ApiGen\Templating\Filters\UrlFilters
 
-# Theme
-- ApiGen\Theme\ThemeResources
-
 # Syntax Highlighter
 - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
 - FSHL\Output\Html
