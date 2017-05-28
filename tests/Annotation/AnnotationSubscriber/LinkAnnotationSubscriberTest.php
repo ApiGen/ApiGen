@@ -7,6 +7,8 @@ use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 use ApiGen\Tests\Annotation\AnnotationSubscriber\LinkAnnotationSubscriberSource\SomeClassWithLinkAnnotations;
+use phpDocumentor\Reflection\DocBlock\Description;
+use phpDocumentor\Reflection\DocBlock\Tags\Link;
 
 final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
 {
@@ -28,27 +30,37 @@ final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
         $this->classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithLinkAnnotations::class];
     }
 
-    public function testUrl(): void
+    public function testReflectionAnnotation(): void
     {
-        $seeAnnotation = $this->classReflection->getAnnotation(AnnotationList::LINK)[0];
-        $decoratedSeeAnnotation = $this->annotationDecorator->decorate($seeAnnotation, $this->classReflection);
+        $linkAnnotation = $this->classReflection->getAnnotation(AnnotationList::LINK)[0];
+        $decoratedAnnotation = $this->annotationDecorator->decorate($linkAnnotation, $this->classReflection);
+
+        $this->assertSame('<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>', $decoratedAnnotation);
+    }
+
+    /**
+     * @dataProvider getLinkAnnotationData()
+     */
+    public function testUrl(string $link, string $description, string $expectedOutput): void
+    {
+        $linkAnnotation = new Link($link, $description ? new Description($description) : null);
 
         $this->assertSame(
-            '<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>',
-            $decoratedSeeAnnotation
+            $expectedOutput,
+            $this->annotationDecorator->decorate($linkAnnotation, $this->classReflection)
         );
     }
 
-
-//    @todo: provide data method
-
-//[
-//'{@link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations}',
-//'<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'
-//],
-//['@link http://apigen.org Description', '<a href="http://apigen.org">Description</a>'],
-//['{@link http://apigen.org Description}', '<a href="http://apigen.org">Description</a>'],
-//['{@link http://apigen.org}', '<a href="http://apigen.org">http://apigen.org</a>'],
-
-
+    /**
+     * @return string[][]
+     */
+    public function getLinkAnnotationData(): array
+    {
+        return [
+            ['http://php.net/session_set_save_handler', '', '<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>'],
+            ['bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK', 'Donations', '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'],
+            ['http://licence.com', 'MIT', '<a href="http://licence.com">MIT</a>'],
+            ['https://apigen.org', 'Description', '<a href="https://apigen.org">Description</a>'],
+        ];
+    }
 }
