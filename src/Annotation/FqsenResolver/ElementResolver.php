@@ -11,6 +11,7 @@ use Nette\Utils\Strings;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\ContextFactory;
 use ReflectionClass;
+use ReflectionFunction;
 
 final class ElementResolver
 {
@@ -55,15 +56,32 @@ final class ElementResolver
             $isProperty = true;
         }
 
+        $isFunction = false;
         $isMethod = false;
         $methodName = '';
+        $functionName = '';
         if (Strings::contains($name, '()')) {
-            [$name, $methodName] = explode('::', $name);
-            $methodName = rtrim($methodName, '()');
-            $isMethod = true;
+            if (Strings::contains($name, '::')) {
+                [$name, $methodName] = explode('::', $name);
+                $methodName = rtrim($methodName, '()');
+                $isMethod = true;
+            } else {
+                $functionName = rtrim($name, '()');
+                $isFunction = true;
+            }
+        }
+
+
+        if ($isFunction) {
+            $namespace = $reflection->getDeclaringClass()->getNamespaceName();
+            $functionReflections = $this->reflectionStorage->getFunctionReflections();
+
+            $namespacedFunctionName = $namespace . '\\' . $functionName;
+            return $functionReflections[$namespacedFunctionName] ?? $namespacedFunctionName;
         }
 
         $context = $this->contextFactory->createFromReflector(new ReflectionClass($reflectionName));
+
         $classReflectionName = (string) $this->fqsenResolver->resolve(ltrim($name, '\\'), $context);
         $classReflectionName = ltrim($classReflectionName, '\\');
 

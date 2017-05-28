@@ -4,13 +4,22 @@ namespace ApiGen\Tests\Annotation\AnnotationSubscriber\SeeAnnotationSubscriberSo
 
 use ApiGen\Tests\Annotation\AnnotationDecoratorSource\ReturnedClass;
 
+function someExistingFunction()
+{
+
+}
+
 final class SomeClassWithSeeAnnotations
 {
     /**
      * @see ReturnedClass::$someProperty
      * @see ReturnedClass::someMethod()
+     *
      * @see PresentReturnedClass::$someProperty
      * @see PresentReturnedClass::someMethod()
+     *
+     * @see someMissingFunction()
+     * @see someExistingFunction()
      */
     public function returnArray(): array
     {
