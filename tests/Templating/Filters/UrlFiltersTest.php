@@ -6,7 +6,6 @@ use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Templating\Filters\UrlFilters;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use PHPUnit_Framework_MockObject_MockObject;
 
 final class UrlFiltersTest extends AbstractContainerAwareTestCase
 {
@@ -14,12 +13,6 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
      * @var string
      */
     private const SOME_CLASS_LINK = '<code><a href="class-SomeClass.html" class="deprecated">SomeClass</a></code>';
-
-    /**
-     * @var string
-     */
-    private const SOME_CLASS_LINK_MULTI = '<code><a href="class-SomeClass.html" class="deprecated">SomeClass</a>'
-        . '[]</code>';
 
     /**
      * @var string
@@ -32,60 +25,8 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
      */
     private $urlFilters;
 
-    protected function setUp(): void
-    {
-        $this->urlFilters = $this->container->getByType(UrlFilters::class);
-
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-        $classReflectionMock->method('getName')
-            ->willReturn('SomeClass');
-        $classReflectionMock->method('isDeprecated')
-            ->willReturn(true);
-
-        /** @var ParserStorageInterface $parserStorage */
-        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
-        $parserStorage->setClasses([
-            'SomeClass' => $classReflectionMock
-        ]);
-    }
-
-    public function testDoc(): void
-    {
-        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $this->assertSame('...', $this->urlFilters->doc('...', $reflectionClassMock));
-    }
-
     /**
-     * @dataProvider getInternalData()
-     */
-    public function testResolveInternal(string $docBlock, string $expectedLink): void
-    {
-        $this->assertSame(
-            $expectedLink,
-            MethodInvoker::callMethodOnObject($this->urlFilters, 'resolveInternalAnnotation', [$docBlock])
-        );
-    }
-
-    /**
-     * @dataProvider getLinkAndSeeData()
-     */
-    public function testResolveLinkAndSeeAnnotation(string $docBlock, string $expectedLink): void
-    {
-        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $reflectionClassMock->method('getName')
-            ->willReturn(GenerateCommand::class);
-        $reflectionClassMock->method('isDeprecated')
-            ->willReturn(true);
-
-        $this->assertSame(
-            $expectedLink,
-            MethodInvoker::callMethodOnObject($this->urlFilters, 'resolveLinkAndSeeAnnotation', [
-                $docBlock, $reflectionClassMock
-            ])
-        );
-    }
-
-    /**
+     * @todo move to see and link annotation subscribers!
      * @return string[][]
      */
     public function getLinkAndSeeData(): array
@@ -95,69 +36,12 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
                 '{@link bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK Donations}',
                 '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'
             ],
+            ['@link http://apigen.org Description', '<a href="http://apigen.org">Description</a>'],
             ['{@link http://apigen.org Description}', '<a href="http://apigen.org">Description</a>'],
             ['{@link http://apigen.org}', '<a href="http://apigen.org">http://apigen.org</a>'],
-            ['{@see http://php.net/manual/en PHP Manual}', '<a href="http://php.net/manual/en">PHP Manual</a>'],
             ['{@see NotActiveClass}', 'NotActiveClass'],
             [sprintf('{@see %s}', GenerateCommand::class), self::APIGEN_LINK],
         ];
-    }
-
-    /**
-     * Issue #753
-     *
-     * @todo needs to be resolved.
-     */
-    public function testResolveLinkAndSeeAnnotationForMethod(): void
-    {
-        $reflectionMethodMock = $this->createMock(ClassMethodReflectionInterface::class);
-        $reflectionMethodMock->method('getDeclaringClassName')->willReturn(GenerateCommand::class);
-        $reflectionMethodMock->method('getName')->willReturn('testMethod');
-        $reflectionMethodMock->method('isDeprecated')->willReturn(false);
-
-        /** @var ParserStorageInterface $parserStorage */
-        $parserStorage = $this->container->getByType(ParserStorageInterface::class);
-        $parserStorage->setClasses([
-            'SomeClass' => $this->createClassReflection()
-        ]);
-
-        $this->assertSame(
-            '<a href="SomeClass::someMethod()">SomeClass::someMethod()</a>',
-            MethodInvoker::callMethodOnObject($this->urlFilters, 'resolveLinkAndSeeAnnotation', [
-                '{@see SomeClass::someMethod()}', $reflectionMethodMock
-            ])
-        );
-    }
-
-    public function testAnnotationDescription(): void
-    {
-        $docBlock = <<<DOC
-/**
- * Some annotation
- * with more rows
- */
-DOC;
-
-        $reflectionElementMock = $this->createMock(ReflectionInterface::class);
-        $expected = <<<EXP
-* Some annotation
- * with more rows
- */
-EXP;
-        $this->assertSame($expected, $this->urlFilters->annotationDescription($docBlock, $reflectionElementMock));
-    }
-
-    public function testDescription(): void
-    {
-        $longDescription = <<<DOC
-Some long description with example:
-<code>echo "hi";</code>
-DOC;
-        $reflectionElementMock = $this->createMock(ReflectionInterface::class);
-        $reflectionElementMock->method('getDescription')
-            ->willReturn($longDescription);
-
-        $this->assertSame($longDescription, $this->urlFilters->description($reflectionElementMock));
     }
 
     public function testHighlightPhp(): void
@@ -200,26 +84,6 @@ DOC;
     }
 
     /**
-     * @dataProvider getResolveLinksData()
-     */
-    public function testResolveLink(string $definition, ?string $expected): void
-    {
-        $reflectionClass = $this->createMock(ClassReflectionInterface::class);
-        $this->assertSame($expected, $this->urlFilters->resolveLink($definition, $reflectionClass));
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getResolveLinksData(): array
-    {
-        return [
-            ['int', null],
-            ['SomeClass[]', self::SOME_CLASS_LINK_MULTI]
-        ];
-    }
-
-    /**
      * @dataProvider getAnnotationData()
      */
     public function testAnnotation(string $annotation, string $name, string $expected): void
@@ -238,25 +102,9 @@ DOC;
             ['SomeClass special class', 'return', self::SOME_CLASS_LINK . '<br>special class'],
             ['SomeClass', 'throws', self::SOME_CLASS_LINK],
             ['...', 'return', '...'],
-            ['http://licence.com MIT', 'license', '<a href="http://licence.com">MIT</a>'],
             ['http://licence.com MIT', 'link', '<a href="http://licence.com">MIT</a>'],
-            ['SomeClass', 'link', ''],
             ['SomeClass', 'see', self::SOME_CLASS_LINK],
             ['SomeClass', 'uses', self::SOME_CLASS_LINK]
         ];
-    }
-
-    /**
-     * @return ClassReflectionInterface|PHPUnit_Framework_MockObject_MockObject
-     */
-    private function createClassReflection()
-    {
-        $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
-        $reflectionClassMock->method('getName')
-            ->willReturn(GenerateCommand::class);
-        $reflectionClassMock->method('isDeprecated')
-            ->willReturn(true);
-
-        return $reflectionClassMock;
     }
 }
