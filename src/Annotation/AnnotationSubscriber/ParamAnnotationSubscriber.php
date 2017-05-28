@@ -8,7 +8,6 @@ use ApiGen\Reflection\Contract\Reflection\Class_\AbstractClassElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
-use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Self_;
@@ -33,20 +32,20 @@ final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
         $this->linkBuilder = $linkBuilder;
     }
 
-    public function getAnnotation(): string
+    public function matches($content): bool
     {
-        return Param::class;
+        return $content instanceof Param;
     }
 
     /**
-     * @param Param $seeTag
+     * @param Param $content
      * @return string
      */
-    public function process(Tag $seeTag, AbstractReflectionInterface $reflection): string
+    public function process($content, AbstractReflectionInterface $reflection): string
     {
-        if ($seeTag->getType() instanceof Compound) {
+        if ($content->getType() instanceof Compound) {
             /** @var Compound $compoundType */
-            $compoundType = $seeTag->getType();
+            $compoundType = $content->getType();
             $returnValue = '';
             $i = 0;
             while ($compoundType->has($i)) {

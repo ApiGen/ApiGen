@@ -7,11 +7,12 @@ use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use ApiGen\Templating\Filters\Helpers\Strings as ApiGenStrings;
+use Nette\Utils\Strings;
+use Nette\Utils\Validators;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\DocBlock\Tags\See;
-use phpDocumentor\Reflection\Fqsen;
 
-final class SeeAnnotationSubscriber implements AnnotationSubscriberInterface
+final class SeeDescriptionSubscriber implements AnnotationSubscriberInterface
 {
     /**
      * @var ReflectionRoute
@@ -39,26 +40,26 @@ final class SeeAnnotationSubscriber implements AnnotationSubscriberInterface
      */
     public function matches($content): bool
     {
-        return $content instanceof See;
+        return is_string($content) && Strings::contains($content, '@see');
     }
 
     /**
-     * @param See $content
+     * @param string $content
      */
     public function process($content, AbstractReflectionInterface $reflection): string
     {
-        if ($content->getReference() instanceof Fqsen) {
-            $resolvedReflection = $this->elementResolver->resolveReflectionFromNameAndReflection(
-                (string) $content->getReference(), $reflection
-            );
+        return preg_replace_callback('~@(?:link|see)\\s+([^}]+)~', function ($matches) use ($reflection) {
+            [$url, $description] = ApiGenStrings::split($matches[1]);
+            $description = trim($description);
 
-            $url = $this->reflectionRoute->constructUrl($resolvedReflection);
-
-            return '<code>' . $this->linkBuilder->build($url, ltrim((string) $content->getReference(), '\\')) . '</code>';
-        }
-
-        // @todo
-
-        return '';
+//            $link = $this->resolveLink($matches[1], $reflection);
+//            if ($link) {
+//                return $link;
+//            }
+//
+            if (Validators::isUri($url)) {
+                return $this->linkBuilder->build($url, $description ?: $url);
+            }
+        }, $content);
     }
 }

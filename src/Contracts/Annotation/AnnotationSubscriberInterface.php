@@ -7,7 +7,13 @@ use phpDocumentor\Reflection\DocBlock\Tag;
 
 interface AnnotationSubscriberInterface
 {
-    public function getAnnotation(): string;
+    /**
+     * @param Tag|string $content
+     */
+    public function matches($content): bool;
 
-    public function process(Tag $tag, AbstractReflectionInterface $reflection): string;
+    /**
+     * @param Tag|string $content
+     */
+    public function process($content, AbstractReflectionInterface $reflection): string;
 }

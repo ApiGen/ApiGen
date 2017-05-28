@@ -3,6 +3,7 @@
 - ApiGen\Annotation\AnnotationSubscriber\ReturnAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\ParamAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\SeeAnnotationSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\SeeDescriptionSubscriber
 
 - phpDocumentor\Reflection\FqsenResolver
 - phpDocumentor\Reflection\Types\ContextFactory
@@ -31,6 +32,7 @@
 - ApiGen\Generator\AnnotationGroupsGenerator
 - ApiGen\Generator\ElementListGenerator
 - ApiGen\Generator\IndexGenerator
+
 # elements
 - ApiGen\Generator\NamespaceGenerator
 - ApiGen\Generator\ClassGenerator

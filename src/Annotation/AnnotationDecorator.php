@@ -4,9 +4,6 @@ namespace ApiGen\Annotation;
 
 use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
-use ApiGen\StringRouting\Route\ReflectionRoute;
-use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
 # see: https://github.com/phpDocumentor/TypeResolver#resolving-an-fqsen
@@ -23,11 +20,14 @@ final class AnnotationDecorator
         $this->annotationSubscribers[] = $annotationSubscriber;
     }
 
-    public function decorate(Tag $tag, AbstractReflectionInterface $reflection): string
+    /**
+     * @param Tag|string $content
+     */
+    public function decorate($content, AbstractReflectionInterface $reflection): string
     {
         foreach ($this->annotationSubscribers as $annotationSubscriber) {
-            if (is_a($tag, $annotationSubscriber->getAnnotation())) {
-                return $annotationSubscriber->process($tag, $reflection);
+            if ($annotationSubscriber->matches($content)) {
+                return $annotationSubscriber->process($content, $reflection);
             }
         }
 

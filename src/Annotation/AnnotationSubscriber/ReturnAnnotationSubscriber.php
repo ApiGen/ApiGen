@@ -39,29 +39,31 @@ final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
         $this->elementResolver = $elementResolver;
     }
 
-    public function getAnnotation(): string
+    /**
+     * @param Tag|string $content
+     */
+    public function matches($content): bool
     {
-        return Return_::class;
+        return $content instanceof Return_;
     }
 
     /**
-     * @param Return_ $seeTag
-     * @return string
+     * @param Return_ $content
      */
-    public function process(Tag $seeTag, AbstractReflectionInterface $reflection): string
+    public function process($content, AbstractReflectionInterface $reflection): string
     {
-        if ($seeTag->getType() instanceof Array_) {
+        if ($content->getType() instanceof Array_) {
             /** @var Array_ $arrayType */
-            $arrayType = $seeTag->getType();
+            $arrayType = $content->getType();
             if ($arrayType->getValueType() instanceof Object_) {
                 /** @var Object_ $objectValueType */
                 $objectValueType = $arrayType->getValueType();
                 $link = $this->createLinkFromObject($reflection, $objectValueType);
                 return '<code>' . $link . '[]</code>';
             }
-        } elseif ($seeTag->getType() instanceof Object_) {
+        } elseif ($content->getType() instanceof Object_) {
             /** @var Object_ $objectValueType */
-            $objectValueType = $seeTag->getType();
+            $objectValueType = $content->getType();
             $link = $this->createLinkFromObject($reflection, $objectValueType);
             return '<code>' . $link . '</code>';
         }

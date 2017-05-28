@@ -65,6 +65,27 @@ that are supported by ApiGen:
 - `@see` - indicates a reference from the associated element to a website or other elements.
 - `@uses` - indicates a reference to (and from) a single associated element.
 
+- all urls are clickable (@todo)
+
+
+### In Examples
+
+**In Code**
+
+```php
+/**
+ * This is already mentioned on Wiki.
+ * @see https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall 
+ */
+```
+
+**Generated**
+
+```html
+This is already mentioned on Wiki.
+(https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall)[https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall] 
+```
+
 
 ## Themes
 

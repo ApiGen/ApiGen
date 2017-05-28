@@ -29,9 +29,14 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
 
     public function test(): void
     {
-        dump($this->classReflection->getDescription());
-        // use link
-        die;
-        // $this->
+        $decoratedDescription = $this->annotationDecorator->decorate($this->classReflection->getDescription(), $this->classReflection);
+
+        $this->assertSame(
+            'User session storage for PHP < 5.4.'
+                . PHP_EOL
+                . PHP_EOL
+                . ' <a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>',
+            $decoratedDescription
+        );
     }
 }
