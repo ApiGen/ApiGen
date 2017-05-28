@@ -53,18 +53,14 @@ parameters:
 
 ## DocBlock Annotations
 
-This section provides a list of [PHP DocBlock
-annotations](https://www.phpdoc.org/docs/latest/guides/docblocks.html) (tags)
-that are supported by ApiGen:
+These annotations are supported by ApiGen:
 
 - `@link` - website url
-- `@see` - reference to some element
+- `@see`, `@uses`, `@covers` - reference to some element (Class, Function, Property, Method...)
 
-- `@deprected` - indicated that the associated element is deprecated and can be removed in the future version.
-- `@internal` - denotes that the associated elements is internal to this application or library and hides it by default.
-- `@param` - documents a single argument of a function or method.
-- `@return` - documents the return value of functions or methods.
-- `@uses` - indicates a reference to (and from) a single associated element.
+- `@param` - an argument of a method or function 
+- `@return` - the return value of method or function 
+- `@internal` - denotes that the associated elements is internal to this application or library and hides it by default
 
 - all urls are clickable (@todo)
 

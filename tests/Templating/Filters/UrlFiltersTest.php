@@ -69,7 +69,6 @@ final class UrlFiltersTest extends AbstractContainerAwareTestCase
         return [
             ['SomeClass', 'return', self::SOME_CLASS_LINK],
             ['SomeClass special class', 'return', self::SOME_CLASS_LINK . '<br>special class'],
-            ['SomeClass', 'throws', self::SOME_CLASS_LINK],
             ['SomeClass', 'uses', self::SOME_CLASS_LINK]
         ];
     }
