@@ -35,25 +35,4 @@ final class ResolveTest extends AbstractElementResolverTest
             $this->elementResolver->resolveElement('someMethod', $classReflectionMock)
         );
     }
-
-    public function testNonExistingElement(): void
-    {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-
-        $this->assertNull($this->elementResolver->resolveElement('string', $classReflectionMock));
-    }
-
-    public function testThis(): void
-    {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-
-        $this->assertSame($classReflectionMock, $this->elementResolver->resolveElement('$this', $classReflectionMock));
-    }
-
-    public function testSelf(): void
-    {
-        $classReflectionMock = $this->createMock(ClassReflectionInterface::class);
-
-        $this->assertSame($classReflectionMock, $this->elementResolver->resolveElement('self', $classReflectionMock));
-    }
 }

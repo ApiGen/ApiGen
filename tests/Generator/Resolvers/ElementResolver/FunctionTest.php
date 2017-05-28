@@ -15,9 +15,4 @@ final class FunctionTest extends AbstractElementResolverTest
         $element = $this->elementResolver->getFunction('SomeFunction');
         $this->assertInstanceOf(ReflectionInterface::class, $element);
     }
-
-    public function testNonExistingFunction(): void
-    {
-        $this->assertNull($this->elementResolver->getFunction('NotExistingFunction'));
-    }
 }

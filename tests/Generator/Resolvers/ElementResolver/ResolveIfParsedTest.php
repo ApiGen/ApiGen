@@ -4,8 +4,6 @@ namespace ApiGen\Tests\Generator\Resolvers\ElementResolver;
 
 use ApiGen\Reflection\Contract\Reflection\ReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\ClassMethodReflectionInterface;
-use ApiGen\Tests\MethodInvoker;
-use PHPUnit_Framework_MockObject_MockObject;
 
 final class ResolveIfParsedTest extends AbstractElementResolverTest
 {
@@ -23,30 +21,5 @@ final class ResolveIfParsedTest extends AbstractElementResolverTest
         );
 
         $this->assertInstanceOf(ReflectionInterface::class, $resolvedElement);
-    }
-
-    public function testMissingElement(): void
-    {
-        $reflectionMock = $this->createMethodReflectionMock();
-
-        $resolvedElement = MethodInvoker::callMethodOnObject(
-            $this->elementResolver,
-            'resolveIfParsed',
-            ['NotPresent', $reflectionMock]
-        );
-
-        $this->assertNull($resolvedElement);
-    }
-
-    /**
-     * @return PHPUnit_Framework_MockObject_MockObject|ClassMethodReflectionInterface
-     */
-    private function createMethodReflectionMock()
-    {
-        $methodReflectionMock = $this->createMock(ClassMethodReflectionInterface::class);
-        $methodReflectionMock->method('getName')
-            ->willReturn('SomeFunction');
-
-        return $methodReflectionMock;
     }
 }

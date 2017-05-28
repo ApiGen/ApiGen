@@ -9,6 +9,7 @@ final class SomeClassWithReturnTypes
      * @param string|$this $value2
      *
      * @see ReturnedClass::$someProperty
+     * @see ReturnedClass::someMethod()
      *
      * @return ReturnedClass[]
      */

@@ -40,7 +40,7 @@ final class ElementResolver
     }
 
     /**
-     * @return ClassReflectionInterface|ClassPropertyReflectionInterface
+     * @return ClassReflectionInterface|ClassPropertyReflectionInterface|ClassMethodReflectionInterface
      */
     public function resolveReflectionFromNameAndReflection(string $name, AbstractReflectionInterface $reflection)
     {
@@ -49,9 +49,18 @@ final class ElementResolver
         }
 
         $isProperty = false;
+        $propertyName = '';
         if (Strings::contains( $name, '::$')) {
-            [$name, $property] = explode('::$', $name);
+            [$name, $propertyName] = explode('::$', $name);
             $isProperty = true;
+        }
+
+        $isMethod = false;
+        $methodName = '';
+        if (Strings::contains($name, '()')) {
+            [$name, $methodName] = explode('::', $name);
+            $methodName = rtrim($methodName, '()');
+            $isMethod = true;
         }
 
         $context = $this->contextFactory->createFromReflector(new ReflectionClass($reflectionName));
@@ -61,7 +70,11 @@ final class ElementResolver
         $classReflection = $this->reflectionStorage->getClassReflections()[$classReflectionName];
 
         if ($isProperty) {
-            return $classReflection->getProperty($property);
+            return $classReflection->getProperty($propertyName);
+        }
+
+        if ($isMethod) {
+            return $classReflection->getMethod($methodName);
         }
 
         return $classReflection;

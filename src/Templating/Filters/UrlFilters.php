@@ -2,7 +2,6 @@
 
 namespace ApiGen\Templating\Filters;
 
-use ApiGen\Contracts\Generator\Resolvers\ElementResolverInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
@@ -25,11 +24,6 @@ final class UrlFilters implements LatteFiltersProviderInterface
     private $highlighter;
 
     /**
-     * @var ElementResolverInterface
-     */
-    private $elementResolver;
-
-    /**
      * @var LinkBuilder
      */
     private $linkBuilder;
@@ -46,13 +40,11 @@ final class UrlFilters implements LatteFiltersProviderInterface
 
     public function __construct(
         SourceCodeHighlighterInterface $highlighter,
-        ElementResolverInterface $elementResolver,
         LinkBuilder $linkBuilder,
         StringRouter $stringRouter,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->highlighter = $highlighter;
-        $this->elementResolver = $elementResolver;
         $this->linkBuilder = $linkBuilder;
         $this->eventDispatcher = $eventDispatcher;
         $this->stringRouter = $stringRouter;
