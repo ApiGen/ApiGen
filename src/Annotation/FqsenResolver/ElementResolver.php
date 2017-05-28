@@ -7,6 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use Nette\Utils\Strings;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\ContextFactory;
 use ReflectionClass;
@@ -47,10 +48,22 @@ final class ElementResolver
             $reflectionName = $reflection->getDeclaringClassName();
         }
 
+        $isProperty = false;
+        if (Strings::contains( $name, '::$')) {
+            [$name, $property] = explode('::$', $name);
+            $isProperty = true;
+        }
+
         $context = $this->contextFactory->createFromReflector(new ReflectionClass($reflectionName));
-        $classReflectionName = (string) $this->fqsenResolver->resolve($name, $context);
+        $classReflectionName = (string) $this->fqsenResolver->resolve(ltrim($name, '\\'), $context);
         $classReflectionName = ltrim($classReflectionName, '\\');
 
-        return $this->reflectionStorage->getClassReflections()[$classReflectionName];
+        $classReflection = $this->reflectionStorage->getClassReflections()[$classReflectionName];
+
+        if ($isProperty) {
+            return $classReflection->getProperty($property);
+        }
+
+        return $classReflection;
     }
 }

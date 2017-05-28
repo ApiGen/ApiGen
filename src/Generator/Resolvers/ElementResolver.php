@@ -48,14 +48,14 @@ final class ElementResolver implements ElementResolverInterface
      */
     public function resolveElement(string $definition, $reflectionElement, ?string &$expectedName = null)
     {
-        if ($this->isSimpleType($definition)) {
-            return null;
-        }
+//        if ($this->isSimpleType($definition)) {
+//            return null;
+//        }
 
-        // @todo hotfix
-        if (class_exists($definition, false)) {
-            return $reflectionElement;
-        }
+//        // @todo hotfix
+//        if (class_exists($definition, false)) {
+//            return $reflectionElement;
+//        }
 
         $originalContext = $reflectionElement;
         $reflectionElement = $this->correctContextForParameterOrClassMember($reflectionElement);
@@ -169,10 +169,10 @@ final class ElementResolver implements ElementResolverInterface
         return $class;
     }
 
-    private function isSimpleType(string $definition): bool
-    {
-        return empty($definition) || isset($this->simpleTypes[$definition]);
-    }
+//    private function isSimpleType(string $definition): bool
+//    {
+//        return empty($definition) || isset($this->simpleTypes[$definition]);
+//    }
 
     /**
      * @return ClassReflectionInterface|ClassConstantReflectionInterface|FunctionReflectionInterface|null

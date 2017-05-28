@@ -84,7 +84,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         $seeAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[0];
 
         $this->assertSame(
-            '',
+            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.ReturnedClass.html#$someProperty">ReturnedClass::$someProperty</a></code>',
             $this->annotationDecorator->decorate($seeAnnotation, $this->methodReflection)
         );
     }
