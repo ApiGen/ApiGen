@@ -28,7 +28,7 @@ final class PhpHighlighterFilters implements LatteFiltersProviderInterface
             'typeLinks' => function (string $definition, AbstractReflectionInterface $reflection): ?string {
                 return $this->resolveLink($definition, $reflection);
             },
-            'higlightValue' => function (string $definition, AbstractReflectionInterface $reflectionElement) : string {)
+            'higlightValue' => function (string $definition, AbstractReflectionInterface $reflectionElement) : string {
                 return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $reflectionElement);
             }
         ];
