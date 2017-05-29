@@ -1,8 +1,9 @@
 <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
     {var $annotations = $method->getAnnotations()}
 
-    <td class="attributes"><code>
-            {if !$class->interface && $method->abstract}abstract{elseif $method->final}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->static}static{/if}
+    <td class="attributes">
+        <code>
+            {if !$class->isInterface() && $method->isAbstract()}abstract{elseif $method->isFiinal()}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->isStatic()}static{/if}
 
             {ifset $annotations['return']}{$annotations['return'][0]|typeLinks:$method|noescape}{/ifset}
             {if $method->returnsReference()}&amp;{/if}
@@ -75,21 +76,28 @@
                     </div>
                 {/foreach}
 
-                {var $overriddenMethod = $method->overriddenMethod}
-                {if $overriddenMethod}
+                {if $method->getOverridenMethod()}
                     <h4>Overrides</h4>
                     <div class="list">
-                        <code><a n:tag-if="$overriddenMethod->declaringClass" href="{$overriddenMethod|linkReflection}">{$overriddenMethod|prettyMethodName}</a></code>
+                        <code>
+                            <a n:tag-if="$method->getOverridenMethod()->getDeclaringClass()" href="{$method->getOverridenMethod()|linkReflection}">
+                                {$method->getOverridenMethod()|prettyMethodName}
+                            </a>
+                        </code>
                     </div>
                 {/if}
 
-                {var $implementedMethod = $method->implementedMethod}
-                {if $implementedMethod}
+                {if $method->getImplementedMethod()}
                     <h4>Implementation of</h4>
                     <div class="list">
-                        <code><a n:tag-if="$implementedMethod->declaringClass" href="{$implementedMethod|linkReflection}">{$implementedMethod|prettyMethodName}</a></code>
+                        <code>
+                            <a n:tag-if="$method->getImplementedMethod()->getDeclaringClass()" href="{$method->getImplementedMethod()|linkReflection}">
+                                {$method->getImplementedMethod()|prettyMethodName}
+                            </a>
+                        </code>
                     </div>
                 {/if}
             </div>
-        </div></td>
+        </div>
+    </td>
 </tr>
