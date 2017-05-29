@@ -2,6 +2,7 @@
 
 namespace ApiGen\Templating\Filters;
 
+use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
@@ -37,16 +38,23 @@ final class UrlFilters implements LatteFiltersProviderInterface
      */
     private $stringRouter;
 
+    /**
+     * @var AnnotationDecorator
+     */
+    private $annotationDecorator;
+
     public function __construct(
         SourceCodeHighlighterInterface $highlighter,
         LinkBuilder $linkBuilder,
         StringRouter $stringRouter,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        AnnotationDecorator $annotationDecorator
     ) {
         $this->highlighter = $highlighter;
         $this->linkBuilder = $linkBuilder;
         $this->eventDispatcher = $eventDispatcher;
         $this->stringRouter = $stringRouter;
+        $this->annotationDecorator = $annotationDecorator;
     }
 
     /**
@@ -56,7 +64,7 @@ final class UrlFilters implements LatteFiltersProviderInterface
     {
         return [
             'annotation' => function (string $value, string $name, AbstractReflectionInterface $reflection): string {
-                return $this->annotation( $value, $name, $reflection);
+                return $this->annotation($value, $name, $reflection);
             },
             'typeLinks' => function (string $definition, AbstractReflectionInterface $reflection): ?string {
                 return $this->resolveLink($definition, $reflection);
@@ -66,73 +74,64 @@ final class UrlFilters implements LatteFiltersProviderInterface
 
     private function annotation(string $value, string $name, AbstractReflectionInterface $reflection): string
     {
-        // todo: split to collector or dispatcher
-        $annotationProcessors = [
-            'return' => $this->processReturnAnnotations($value, $reflection),
-            'throws' => $this->processThrowsAnnotations($value, $reflection),
-            'uses' => $this->processUsesAnnotations($value, $reflection),
-            // @todo: @covers
-        ];
-
-        if (isset($annotationProcessors[$name])) {
-            return $annotationProcessors[$name];
-        }
+        dump($value, $name);
+        die;
 
         return $this->doc($value, $reflection);
     }
 
-    /**
-     * Returns links for types.
-     */
-    private function typeLinks(string $annotation, AbstractReflectionInterface $reflection): string
-    {
-        $links = [];
+//    /**
+//     * Returns links for types.
+//     */
+//    private function typeLinks(string $annotation, AbstractReflectionInterface $reflection): string
+//    {
+//        $links = [];
+//
+//        // typehints can not contain spaces
+//        // valid typehint is:
+//        // [TYPE[|TYPE[|...]][SPACE[METHOD|PARAM][DESCRIPTION]]
+//        $parts = explode(' ', $annotation);
+//
+//        foreach (explode('|', $parts[0]) as $type) {
+//            $type = $this->getTypeName($type, false);
+//            $links[] = $this->resolveLink($type, $reflection) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
+//        }
+//
+//        return implode('|', $links);
+//    }
 
-        // typehints can not contain spaces
-        // valid typehint is:
-        // [TYPE[|TYPE[|...]][SPACE[METHOD|PARAM][DESCRIPTION]]
-        $parts = explode(' ', $annotation);
-
-        foreach (explode('|', $parts[0]) as $type) {
-            $type = $this->getTypeName($type, false);
-            $links[] = $this->resolveLink($type, $reflection) ?: LatteFilters::escapeHtml(ltrim($type, '\\'));
-        }
-
-        return implode('|', $links);
-    }
-
-    /**
-     * Tries to parse a definition of a class/method/property/constant/function
-     * and returns the appropriate link if successful.
-     */
-    private function resolveLink(string $definition, AbstractReflectionInterface $reflection): ?string
-    {
-        if (empty($definition)) {
-            return null;
-        }
-
-        $suffix = '';
-        if (substr($definition, -2) === '[]') {
-            $definition = substr($definition, 0, -2);
-            $suffix = '[]';
-        }
-
-        $element = $this->elementResolver->resolveElement($definition, $reflection, $expectedName);
-        if ($element === null || $element instanceof FunctionReflectionInterface) {
-            return $expectedName;
-        }
-
-        $classes = [];
-        if ($element->isDeprecated()) {
-            $classes[] = 'deprecated';
-        }
-
-        /** @var AbstractReflectionInterface $element */
-        $url = $this->stringRouter->buildRoute(ReflectionRoute::NAME, $element);
-        $link = $this->linkBuilder->build($url, $element->getName(), true, $classes);
-
-        return '<code>' . $link . $suffix . '</code>';
-    }
+//    /**
+//     * Tries to parse a definition of a class/method/property/constant/function
+//     * and returns the appropriate link if successful.
+//     */
+//    private function resolveLink(string $definition, AbstractReflectionInterface $reflection): ?string
+//    {
+//        if (empty($definition)) {
+//            return null;
+//        }
+//
+//        $suffix = '';
+//        if (substr($definition, -2) === '[]') {
+//            $definition = substr($definition, 0, -2);
+//            $suffix = '[]';
+//        }
+//
+//        $element = $this->elementResolver->resolveElement($definition, $reflection, $expectedName);
+//        if ($element === null || $element instanceof FunctionReflectionInterface) {
+//            return $expectedName;
+//        }
+//
+//        $classes = [];
+//        if ($element->isDeprecated()) {
+//            $classes[] = 'deprecated';
+//        }
+//
+//        /** @var AbstractReflectionInterface $element */
+//        $url = $this->stringRouter->buildRoute(ReflectionRoute::NAME, $element);
+//        $link = $this->linkBuilder->build($url, $element->getName(), true, $classes);
+//
+//        return '<code>' . $link . $suffix . '</code>';
+//    }
 
     public function annotationDescription(string $annotation, AbstractReflectionInterface $reflection): string
     {
@@ -159,20 +158,6 @@ final class UrlFilters implements LatteFiltersProviderInterface
         return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $reflectionElement);
     }
 
-    private function processReturnAnnotations(string $value, AbstractReflectionInterface $reflectionElement): string
-    {
-        $description = $this->getDescriptionFromValue($value, $reflectionElement);
-        $typeLinks = $this->typeLinks($value, $reflectionElement);
-        return $typeLinks . $description;
-    }
-
-    private function processThrowsAnnotations(string $value, AbstractReflectionInterface $Reflection): string
-    {
-        $description = $this->getDescriptionFromValue($value, $Reflection);
-        $typeLinks = $this->typeLinks($value, $Reflection);
-        return $typeLinks . $description;
-    }
-
     /**
      * @param mixed $value
      */
@@ -185,18 +170,4 @@ final class UrlFilters implements LatteFiltersProviderInterface
 
         return (string) $description;
     }
-
-
-    private function processUsesAnnotations(string $value, AbstractReflectionInterface $reflection): ?string
-    {
-        [$link, $description] = Strings::split($value);
-        $separator = $reflection instanceof ClassReflectionInterface || ! $description ? ' ' : '<br>';
-        if ($this->elementResolver->resolveElement($link, $reflection) !== null) {
-            $value = $this->typeLinks($link, $reflection) . $separator . $description;
-            return trim($value);
-        }
-
-        return null;
-    }
-
 }
