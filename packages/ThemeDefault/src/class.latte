@@ -78,7 +78,7 @@
         </table>
     {/if}
 
-    {foreach $class->getParentsClasses() as $parentClass}}
+    {foreach $class->getParentClasses() as $parentClass}}
         <table n:foreach="$parentClass->getOwnMethods() as $parentClassMethods" class="summary inherited">
             <caption>
                 Methods inherited from <a href="{$parentClass|linkReflection}#methods">{$parentClass->getName()}</a>
