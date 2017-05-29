@@ -67,7 +67,7 @@
         <caption>Constants summary</caption>
         <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
             <td class="attributes">
-                <code>{$constant->typeHint|typeLinks:$constant|noescape}</code>
+                <code>{$constant->getTypeHint()|typeLinks:$constant|noescape}</code>
             </td>
             <td class="name">
                 <code>
@@ -93,7 +93,7 @@
             <td class="value">
                 <div>
                     <a href="#{$constant->getName()}" class="anchor">#</a>
-                    <code>{$constant->valueDefinition|highlightValue:$interface|noescape}</code>
+                    <code>{$constant->getValueDefinition()|highlightValue:$interface|noescape}</code>
                 </div>
             </td>
         </tr>

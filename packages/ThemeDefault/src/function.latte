@@ -37,7 +37,7 @@
             <td class="name"><code>{$parameter->getTypeHint()|typeLinks:$function|noescape}</code></td>
             <td class="value"><code>{block|strip}
                 <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
-                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
             {/block}</code></td>
             <td>{$parameter->getDescription()|description:$function}</td>
         </tr>

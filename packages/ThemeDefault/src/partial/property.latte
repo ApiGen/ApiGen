@@ -1,7 +1,7 @@
 <tr id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
     <td class="attributes"><code>
             {if $property->protected}protected{elseif $property->private}private{else}public{/if} {if $property->static}static{/if}
-            {$property->typeHint|typeLinks:$property|noescape}
+            {$property->getTypeHint()|typeLinks:$property|noescape}
         </code></td>
 
     <td class="name">
