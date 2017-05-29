@@ -4,7 +4,7 @@
 - ApiGen\Annotation\AnnotationSubscriber\ParamAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\SeeAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\LinkAnnotationSubscriber
-- ApiGen\Annotation\AnnotationSubscriber\LinkifyDescriptionSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\CoversUsesAnnotationSubscriber
 
 - phpDocumentor\Reflection\FqsenResolver
 - phpDocumentor\Reflection\Types\ContextFactory

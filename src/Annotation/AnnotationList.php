@@ -42,5 +42,15 @@ final class AnnotationList
     /**
      * @var string
      */
+    public const USES = 'uses';
+
+    /**
+     * @var string
+     */
+    public const COVERS = 'covers';
+
+    /**
+     * @var string
+     */
     public const EMPTY_LINE = PHP_EOL . PHP_EOL;
 }

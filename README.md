@@ -94,7 +94,7 @@ These annotations are supported by ApiGen:
 ```php
 /**
  * This is already mentioned on Wiki.
- * @link https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall 
+ * @link https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall  
  */
 ```
 

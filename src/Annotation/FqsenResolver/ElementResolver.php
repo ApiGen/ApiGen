@@ -11,7 +11,6 @@ use Nette\Utils\Strings;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\ContextFactory;
 use ReflectionClass;
-use ReflectionFunction;
 
 final class ElementResolver
 {
@@ -45,6 +44,7 @@ final class ElementResolver
      */
     public function resolveReflectionFromNameAndReflection(string $name, AbstractReflectionInterface $reflection)
     {
+        $reflectionName = $reflection->getName();
         if ($reflection instanceof ClassMethodReflectionInterface) {
             $reflectionName = $reflection->getDeclaringClassName();
         }
@@ -70,7 +70,6 @@ final class ElementResolver
                 $isFunction = true;
             }
         }
-
 
         if ($isFunction) {
             $namespace = $reflection->getDeclaringClass()->getNamespaceName();
