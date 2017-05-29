@@ -26,8 +26,8 @@
         <table class="summary" id="methods" n:if="$methods">
             <caption>Methods summary</caption>
             <tr n:foreach="$methods as $method">
-                <td class="name"><a href="{$method->getDeclaringClassName()|linkReflection}">{$method->getDeclaringClassName()}</a></td>
-                <td class="name"><code><a href="{$method|methodUrl}">{$method->getName()}()</a></code></td>
+                <td class="name"><a href="{$method->getDeclaringClass()|linkReflection}">{$method->getDeclaringClassName()}</a></td>
+                <td class="name"><code><a href="{$method|linkReflection}">{$method->getName()}()</a></code></td>
                 <td>
                     {if $method->hasAnnotation($annotation)}
                         {foreach $method->getAnnotations()[$annotation] as $description}
@@ -43,7 +43,7 @@
         <table class="summary" id="properties" n:if="$properties">
             <caption>Properties summary</caption>
             <tr n:foreach="$properties as $property">
-                <td class="name"><a href="{$property->getDeclaringClassName()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
+                <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
                 <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
                 <td>
                     {foreach $property->getAnnotations()[$annotation] as $description}

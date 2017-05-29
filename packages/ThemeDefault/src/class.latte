@@ -87,7 +87,7 @@
                 <td>
                     <code>
                         {foreach $parentClassMethods as $parentClassMethod}
-                            <a href="{$parentClassMethod|methodUrl}" n:tag-if="$parentClass">
+                            <a href="{$parentClassMethod|linkReflection}" n:tag-if="$parentClass">
                                 <span n:tag-if="$parentClassMethod->isDeprecated()" class="deprecated">{$parentClassMethod->getName()}()</span>
                             </a>{sep}, {/sep}
                         {/foreach}
@@ -103,7 +103,7 @@
             <td>
                 <code>
                     {foreach $trait->getOwnMethods() as $traitMethod}
-                        <a href="{$traitMethod|methodUrl: $trait}">
+                        <a href="{$traitMethod|linkReflection: $trait}">
                             <span n:tag-if="$traitMethod->isDeprecated()" class="deprecated">{$traitMethod->getName()}()</span>
                         </a>
                         {* @todo *}
