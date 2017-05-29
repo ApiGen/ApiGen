@@ -14,7 +14,7 @@
                 <div class="list">
                     {foreach $descriptions as $description}
                         {if $description}
-                            {$description|annotation:$annotation:$property|noescape}<br>
+                            {$description|annotation:$property|noescape}<br>
                         {/if}
                     {/foreach}
                 </div>

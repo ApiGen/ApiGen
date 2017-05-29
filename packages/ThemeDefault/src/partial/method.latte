@@ -29,7 +29,7 @@
                         <div class="list">
                             {foreach $annotations['deprecated'] as $description}
                                 {if $description}
-                                    {$description|annotation:'deprecated':$method|noescape}<br>
+                                    {$description|annotation:$method|noescape}<br>
                                 {/if}
                             {/foreach}
                         </div>
@@ -52,7 +52,7 @@
                     <h4>Returns</h4>
                     <div class="list">
                         {foreach $annotations['return'] as $description}
-                            {$description|annotation:'return':$method|noescape}{sep}<br>{/}
+                            {$description|annotation:$method|noescape}{sep}<br>{/}
                         {/foreach}
                     </div>
                 {/if}
@@ -61,7 +61,7 @@
                     <h4>Throws</h4>
                     <div class="list">
                         {foreach $annotations['throws'] as $description}
-                            {$description|annotation:'throws':$method|noescape}{sep}<br>{/}
+                            {$description|annotation:$method|noescape}{sep}<br>{/}
                         {/foreach}
                     </div>
                 {/ifset}
@@ -72,7 +72,7 @@
                     <div class="list">
                         {foreach $descriptions as $description}
                             {if $description}
-                                {$description|annotation:$annotation:$method|noescape}<br>
+                                {$description|annotation:$method|noescape}<br>
                             {/if}
                         {/foreach}
                     </div>

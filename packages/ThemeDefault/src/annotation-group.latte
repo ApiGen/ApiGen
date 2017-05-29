@@ -32,7 +32,7 @@
                     {if $method->hasAnnotation($annotation)}
                         {foreach $method->getAnnotations()[$annotation] as $description}
                             {if $description}
-                                {$description|annotation:$annotation:$method|noescape}<br>
+                                {$description|annotation:$method|noescape}<br>
                             {/if}
                         {/foreach}
                     {/if}
@@ -48,7 +48,7 @@
                 <td>
                     {foreach $property->getAnnotations()[$annotation] as $description}
                         {if $description}
-                            {$description|annotation:$annotation:$property|noescape}<br>
+                            {$description|annotation:$property|noescape}<br>
                         {/if}
                     {/foreach}
                 </td>
@@ -63,7 +63,7 @@
                 <td>
                     {foreach $function->getAnnotations()[$annotation] as $description}
                         {if $description}
-                            {$description|annotation:$annotation:$function|noescape}<br>
+                            {$description|annotation:$function|noescape}<br>
                         {/if}
                     {/foreach}
                 </td>
@@ -83,7 +83,7 @@
         <td>
             {foreach $class->getAnnotations()[$annotation] as $description}
                 {if $description}
-                    {$description|annotation:$annotation:$class|noescape}<br>
+                    {$description|annotation:$class|noescape}<br>
                 {/if}
             {/foreach}
         </td>
