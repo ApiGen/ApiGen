@@ -4,10 +4,8 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ArrayAccess;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
 final class ClassReflectionTest extends AbstractParserAwareTestCase

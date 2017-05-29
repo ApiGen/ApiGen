@@ -36,8 +36,10 @@ final class ImplementersResolver
      * @param mixed[] $implementers
      * @return ClassReflectionInterface[]
      */
-    private function getClassImplementers(array $implementers, InterfaceReflectionInterface $parentInterfaceReflection): array
-    {
+    private function getClassImplementers(
+        array $implementers,
+        InterfaceReflectionInterface $parentInterfaceReflection
+    ): array {
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
             if ($classReflection->implementsInterface($parentInterfaceReflection->getName())) {
                 $implementers[$classReflection->getName()] = $classReflection;
@@ -51,8 +53,10 @@ final class ImplementersResolver
      * @param ClassReflectionInterface[] $implementers
      * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
-    private function getInterfaceImplementers(array $implementers, InterfaceReflectionInterface $parentInterfaceReflection): array
-    {
+    private function getInterfaceImplementers(
+        array $implementers,
+        InterfaceReflectionInterface $parentInterfaceReflection
+    ): array {
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
             if ($interfaceReflection->implementsInterface($parentInterfaceReflection->getName())) {
                 $implementers[$interfaceReflection->getName()] = $interfaceReflection;

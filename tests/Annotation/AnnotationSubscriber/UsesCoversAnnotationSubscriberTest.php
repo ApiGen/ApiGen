@@ -37,7 +37,6 @@ final class UsesCoversAnnotationSubscriberTest extends AbstractParserAwareTestCa
         );
     }
 
-
     public function testUsesExistingClass(): void
     {
         $usesAnnotation = $this->classReflection->getAnnotation(AnnotationList::USES)[1];
@@ -46,7 +45,6 @@ final class UsesCoversAnnotationSubscriberTest extends AbstractParserAwareTestCa
             $this->annotationDecorator->decorate($usesAnnotation, $this->classReflection)
         );
     }
-
 
     public function testCovers(): void
     {
