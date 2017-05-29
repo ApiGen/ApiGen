@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\EventSubscriber;
+namespace ApiGen\EventSubscriber;
 
 use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
-use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Event\GenerateProgressEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ProgressBarEventSubscriber implements EventSubscriberInterface

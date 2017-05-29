@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\Event;
+namespace ApiGen\Event;
 
 use Symfony\Component\EventDispatcher\Event;
 

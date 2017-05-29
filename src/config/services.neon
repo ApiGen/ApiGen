@@ -27,7 +27,7 @@
 - ApiGen\Configuration\Configuration
 
 # Generator
-- ApiGen\Generator\EventSubscriber\ProgressBarEventSubscriber
+- ApiGen\EventSubscriber\ProgressBarEventSubscriber
 - ApiGen\Generator\GeneratorQueue
 - ApiGen\Generator\AnnotationGroupsGenerator
 - ApiGen\Generator\ElementListGenerator
