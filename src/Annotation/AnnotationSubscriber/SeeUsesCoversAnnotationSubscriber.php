@@ -8,10 +8,12 @@ use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\DocBlock\Tags\Covers;
 use phpDocumentor\Reflection\DocBlock\Tags\See;
+use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\Fqsen;
 
-final class SeeAnnotationSubscriber implements AnnotationSubscriberInterface
+final class SeeUsesCoversAnnotationSubscriber implements AnnotationSubscriberInterface
 {
     /**
      * @var ReflectionRoute
@@ -39,11 +41,11 @@ final class SeeAnnotationSubscriber implements AnnotationSubscriberInterface
      */
     public function matches($content): bool
     {
-        return $content instanceof See;
+        return $content instanceof See || $content instanceof Covers || $content instanceof Uses;
     }
 
     /**
-     * @param See $content
+     * @param See|Covers|Uses $content
      */
     public function process($content, AbstractReflectionInterface $reflection): string
     {

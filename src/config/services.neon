@@ -2,9 +2,8 @@
 - ApiGen\Annotation\AnnotationDecorator
 - ApiGen\Annotation\AnnotationSubscriber\ReturnAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\ParamAnnotationSubscriber
-- ApiGen\Annotation\AnnotationSubscriber\SeeAnnotationSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\SeeUsesCoversAnnotationSubscriber
 - ApiGen\Annotation\AnnotationSubscriber\LinkAnnotationSubscriber
-- ApiGen\Annotation\AnnotationSubscriber\CoversUsesAnnotationSubscriber
 
 - phpDocumentor\Reflection\FqsenResolver
 - phpDocumentor\Reflection\Types\ContextFactory
