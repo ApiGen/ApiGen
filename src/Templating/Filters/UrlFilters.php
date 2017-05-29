@@ -63,21 +63,10 @@ final class UrlFilters implements LatteFiltersProviderInterface
     public function getFilters(): array
     {
         return [
-            'annotation' => function (string $value, string $name, AbstractReflectionInterface $reflection): string {
-                return $this->annotation($value, $name, $reflection);
-            },
             'typeLinks' => function (string $definition, AbstractReflectionInterface $reflection): ?string {
                 return $this->resolveLink($definition, $reflection);
             }
         ];
-    }
-
-    private function annotation(string $value, string $name, AbstractReflectionInterface $reflection): string
-    {
-        dump($value, $name);
-        die;
-
-        return $this->doc($value, $reflection);
     }
 
 //    /**

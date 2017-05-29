@@ -39,7 +39,7 @@
                 <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
                 {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
             {/block}</code></td>
-            <td>{$parameter->getDescription()|annotationDescription:$function}</td>
+            <td>{$parameter->getDescription()|description:$function}</td>
         </tr>
         </table>
 
@@ -51,7 +51,7 @@
                         <code>{$annotations['return'][0]|typeLinks:$function|noescape}</code>
                     </td>
                     <td>
-                        {$annotations['return'][0]|annotationDescription:$function|noescape}
+                        {$annotations['return'][0]|annotation:$function|noescape}
                     </td>
                 </tr>
             </table>
