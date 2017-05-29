@@ -50,7 +50,7 @@ final class ImplementersResolver
     }
 
     /**
-     * @param ClassReflectionInterface[] $implementers
+     * @param ClassReflectionInterface[]|InterfaceReflectionInterface[] $implementers
      * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
     private function getInterfaceImplementers(
