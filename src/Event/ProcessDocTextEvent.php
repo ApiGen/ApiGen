@@ -3,6 +3,7 @@
 namespace ApiGen\Event;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 final class ProcessDocTextEvent extends Event
@@ -13,11 +14,14 @@ final class ProcessDocTextEvent extends Event
     private $text;
 
     /**
-     * @var AbstractReflectionInterface
+     * @var AnnotationsInterface|AbstractReflectionInterface
      */
     private $reflection;
 
-    public function __construct(string $text, AbstractReflectionInterface $reflection)
+    /**
+     * @param AnnotationsInterface|AbstractReflectionInterface $reflection
+     */
+    public function __construct(string $text, AnnotationsInterface $reflection)
     {
         $this->text = $text;
         $this->reflection = $reflection;
@@ -28,7 +32,10 @@ final class ProcessDocTextEvent extends Event
         return $this->text;
     }
 
-    public function getReflectionElement(): AbstractReflectionInterface
+    /**
+     * @return AnnotationsInterface|AbstractReflectionInterface
+     */
+    public function getReflectionElement(): AnnotationsInterface
     {
         return $this->reflection;
     }

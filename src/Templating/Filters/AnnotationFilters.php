@@ -6,6 +6,7 @@ use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Event\FilterAnnotationsEvent;
 use ApiGen\Event\ProcessDocTextEvent;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
@@ -33,12 +34,9 @@ final class AnnotationFilters implements LatteFiltersProviderInterface
     public function getFilters(): array
     {
         return [
-            // use in .latte: {$parameter->getDescription()|description: $function}
-            'description' => function ($description, AbstractReflectionInterface $reflection) {
-                // todo: maybe pass reflection directly
-                $description = trim(strpbrk($description, "\n\r\t $")) ?: $description;
-
-                $processDocTextEvent = new ProcessDocTextEvent($description, $reflection);
+            // use in .latte: {$parameter|description}
+            'description' => function (AnnotationsInterface $reflection) {
+                $processDocTextEvent = new ProcessDocTextEvent($reflection->getDescription(), $reflection);
                 $this->eventDispatcher->dispatch(ProcessDocTextEvent::class, $processDocTextEvent);
                 return $processDocTextEvent->getText();
             },

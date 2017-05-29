@@ -38,12 +38,14 @@
 
                 {if $method->getParameters() && isset($annotations['param'])}
                     <h4>Parameters</h4>
-                    <div class="list"><dl>
+                    <div class="list">
+                        <dl>
                             {foreach $method->getParameters() as $parameter}
                                 <dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
-                                <dd>{$parameter->getDescription()|description:$method|noescape}</dd>
+                                <dd>{$parameter|description}</dd>
                             {/foreach}
-                        </dl></div>
+                        </dl>
+                    </div>
                 {/if}
 
                 {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}

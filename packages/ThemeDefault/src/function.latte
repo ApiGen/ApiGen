@@ -39,7 +39,7 @@
                 <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
                 {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
             {/block}</code></td>
-            <td>{$parameter->getDescription()|description:$function}</td>
+            <td>{$parameter|description}</td>
         </tr>
         </table>
 
