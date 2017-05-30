@@ -67,7 +67,7 @@
         <caption>Constants summary</caption>
         <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
             <td class="attributes">
-                <code>{$constant->getTypeHint()|typeLinks:$constant|noescape}</code>
+                <code>{$constant->getTypeHint()}</code>
             </td>
             <td class="name">
                 <code>
