@@ -43,14 +43,11 @@
         </tr>
         </table>
 
-        {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
+        {if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
             <table class="summary" id="returns">
                 <caption>Return value summary</caption>
                 <tr>
                     <td class="name">
-                        <code>{$annotations['return'][0]|typeLinks:$function|noescape}</code>
-                    </td>
-                    <td>
                         {$annotations['return'][0]|annotation:$function|noescape}
                     </td>
                 </tr>

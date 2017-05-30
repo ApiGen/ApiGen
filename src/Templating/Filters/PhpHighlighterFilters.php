@@ -29,14 +29,10 @@ final class PhpHighlighterFilters implements LatteFiltersProviderInterface
                 return $this->resolveLink($definition, $reflection);
             },
             'higlightValue' => function (string $definition, AbstractReflectionInterface $reflectionElement) : string {
-                return $this->highlightPhp(preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition), $reflectionElement);
+                return $this->highlighter->highlight(
+                    preg_replace('~^(?:[ ]{4}|\t)~m', '', $definition)
+                );
             }
         ];
-    }
-
-    public function highlightPhp(string $source, AbstractReflectionInterface $reflectionElement): string
-    {
-        return $this->resolveLink($this->getTypeName($source), $reflectionElement)
-            ?: $this->highlighter->highlight($source);
     }
 }

@@ -5,7 +5,7 @@
         <code>
             {if !$class->isInterface() && $method->isAbstract()}abstract{elseif $method->isFiinal()}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->isStatic()}static{/if}
 
-            {ifset $annotations['return']}{$annotations['return'][0]|typeLinks:$method|noescape}{/ifset}
+            {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
             {if $method->returnsReference()}&amp;{/if}
         </code>
     </td>
