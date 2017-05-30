@@ -8,4 +8,9 @@ final class ReflectionProperty
      * @var int
      */
     public $memberCount = 52;
+
+    /**
+     * @var PropertyOfClassType
+     */
+    public $propertyOfClassType;
 }

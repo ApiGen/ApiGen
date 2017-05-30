@@ -5,9 +5,13 @@ namespace ApiGen\Reflection\Reflection\Class_;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tags\Var_;
+use phpDocumentor\Reflection\Types\Object_;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class ClassPropertyReflection implements ClassPropertyReflectionInterface, TransformerCollectorAwareInterface
@@ -87,15 +91,35 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function getTypeHint(): string
     {
-        /** @var DocBlock\Tags\Var_[] $varAnnotations */
-        $varAnnotations = $this->getAnnotation(AnnotationList::VAR_);
-
-        $typeHints = [];
-        foreach ($varAnnotations as $varAnnotation) {
-            $typeHints[] = (string) $varAnnotation->getType();
+        $typeHints = $this->betterPropertyReflection->getDocBlockTypes();
+        if (! count($typeHints)) {
+            return '';
         }
 
-        return implode('|', $typeHints);
+        $typeHint = $typeHints[0];
+        if ($typeHint instanceof Object_) {
+            $classOrInterfaceName = (string) $typeHint->getFqsen();
+            return ltrim($classOrInterfaceName, '\\');
+        }
+
+        return implode('|', $this->betterPropertyReflection->getDocBlockTypeStrings());
+    }
+
+    /**
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
+     */
+    public function getTypeHintClassOrInterfaceReflection()
+    {
+        if (! class_exists($this->getTypeHint())) {
+            return null;
+        }
+
+        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
+
+        /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
+        $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
+
+        return $classOrInterfaceReflection;
     }
 
     /**
