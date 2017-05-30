@@ -3,7 +3,7 @@
 
     <td class="attributes">
         <code>
-            {if !$class->isInterface() && $method->isAbstract()}abstract{elseif $method->isFiinal()}final{/if} {if $method->protected}protected{elseif $method->private}private{else}public{/if} {if $method->isStatic()}static{/if}
+            {if !$class->isInterface() && $method->isAbstract()}abstract{elseif $method->isFinal()}final{/if} {if $method->isProtected()}protected{elseif $method->isPrivate()}private{else}public{/if} {if $method->isStatic()}static{/if}
 
             {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
             {if $method->returnsReference()}&amp;{/if}
@@ -16,7 +16,12 @@
             <code>{block|strip}
                     <a href="{$method|linkSource}">{$method->getName()}</a>(
                     {foreach $method->getParameters() as $parameter}
-                        <span>{$parameter->getTypeHint()|typeLinks:$method|noescape}
+                        <span>
+                            {if $parameter->getTypeHintClassOrInterfaceReflection()}
+                                {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
+                            {else}
+                                {$parameter->getTypeHint()}
+                            {/if}
                         <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
                     ){/block}</code>
