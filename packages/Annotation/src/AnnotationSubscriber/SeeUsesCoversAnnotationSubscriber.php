@@ -29,8 +29,11 @@ final class SeeUsesCoversAnnotationSubscriber implements AnnotationSubscriberInt
      */
     private $elementResolver;
 
-    public function __construct(ReflectionRoute $reflectionRoute, LinkBuilder $linkBuilder, ElementResolver $elementResolver)
-    {
+    public function __construct(
+        ReflectionRoute $reflectionRoute,
+        LinkBuilder $linkBuilder,
+        ElementResolver $elementResolver
+    ) {
         $this->reflectionRoute = $reflectionRoute;
         $this->linkBuilder = $linkBuilder;
         $this->elementResolver = $elementResolver;

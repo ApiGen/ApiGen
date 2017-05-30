@@ -4,12 +4,17 @@ namespace ApiGen\Annotation\Tests;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Annotation\Tests\AnnotationDecoratorSource\SomeClassWithReturnTypes;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Annotation\Tests\AnnotationDecoratorSource\SomeClassWithReturnTypes;
 
 final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
 {
+    /**
+     * @var string
+     */
+    private const URL = 'class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.ReturnedClass.html';
+
     /**
      * @var AnnotationDecorator
      */
@@ -40,7 +45,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         $returnAnnotation = $this->methodReflection->getAnnotation(AnnotationList::RETURN_)[0];
 
         $this->assertSame(
-            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a>[]</code>',
+            '<code><a href="' . self::URL . '">ReturnedClass</a>[]</code>',
             $this->annotationDecorator->decorate($returnAnnotation, $this->methodReflection)
         );
     }
@@ -50,12 +55,12 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         $returnAnnotation = $this->secondMethodReflection->getAnnotation(AnnotationList::RETURN_)[0];
 
         $this->assertSame(
-            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a></code>',
+            '<code><a href="' . self::URL . '">ReturnedClass</a></code>',
             $this->annotationDecorator->decorate($returnAnnotation, $this->methodReflection)
         );
     }
 
-    public function testDoubleTypes()
+    public function testDoubleTypes(): void
     {
         $param1Annotation = $this->methodReflection->getAnnotation(AnnotationList::PARAM)[0];
 
@@ -65,16 +70,14 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         );
     }
 
-    /**
-     * @return $this
-     */
-    public function testDoubleWithSelfReference()
+    public function testDoubleWithSelfReference(): void
     {
         $param2Annotation = $this->methodReflection->getAnnotation(AnnotationList::PARAM)[1];
 
         // @todo: it doesn't make sense to link itself here, since it's the same page
         $this->assertSame(
-            'string|<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.SomeClassWithReturnTypes.html">$this</a></code>',
+            'string|<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.'
+            . 'SomeClassWithReturnTypes.html">$this</a></code>',
             $this->annotationDecorator->decorate($param2Annotation, $this->methodReflection)
         );
     }

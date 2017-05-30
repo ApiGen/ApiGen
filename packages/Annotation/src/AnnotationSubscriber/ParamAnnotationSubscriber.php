@@ -8,11 +8,12 @@ use ApiGen\Reflection\Contract\Reflection\Class_\AbstractClassElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\Compound;
 use phpDocumentor\Reflection\Types\Self_;
-use PhpParser\Node\Stmt\Static_;
 use phpDocumentor\Reflection\Types\This;
+use PhpParser\Node\Stmt\Static_;
 
 final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
 {
@@ -32,6 +33,9 @@ final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
         $this->linkBuilder = $linkBuilder;
     }
 
+    /**
+     * @param Tag|string $content
+     */
     public function matches($content): bool
     {
         return $content instanceof Param;
@@ -77,4 +81,3 @@ final class ParamAnnotationSubscriber implements AnnotationSubscriberInterface
         // @todo
     }
 }
-

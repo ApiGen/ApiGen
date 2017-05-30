@@ -2,10 +2,8 @@
 
 namespace ApiGen\Annotation\AnnotationSubscriber;
 
-use ApiGen\Annotation\FqsenResolver\ElementResolver;
 use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
-use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Templating\Filters\Helpers\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
@@ -13,25 +11,13 @@ use phpDocumentor\Reflection\DocBlock\Tags\Link;
 final class LinkAnnotationSubscriber implements AnnotationSubscriberInterface
 {
     /**
-     * @var ReflectionRoute
-     */
-    private $reflectionRoute;
-
-    /**
      * @var LinkBuilder
      */
     private $linkBuilder;
 
-    /**
-     * @var ElementResolver
-     */
-    private $elementResolver;
-
-    public function __construct(ReflectionRoute $reflectionRoute, LinkBuilder $linkBuilder, ElementResolver $elementResolver)
+    public function __construct(LinkBuilder $linkBuilder)
     {
-        $this->reflectionRoute = $reflectionRoute;
         $this->linkBuilder = $linkBuilder;
-        $this->elementResolver = $elementResolver;
     }
 
     /**

@@ -4,9 +4,9 @@ namespace ApiGen\Annotation\Tests\AnnotationSubscriber;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Annotation\Tests\AnnotationSubscriber\LinkAnnotationSubscriberSource\SomeClassWithLinkAnnotations;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Annotation\Tests\AnnotationSubscriber\LinkAnnotationSubscriberSource\SomeClassWithLinkAnnotations;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 
@@ -35,7 +35,10 @@ final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
         $linkAnnotation = $this->classReflection->getAnnotation(AnnotationList::LINK)[0];
         $decoratedAnnotation = $this->annotationDecorator->decorate($linkAnnotation, $this->classReflection);
 
-        $this->assertSame('<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>', $decoratedAnnotation);
+        $this->assertSame(
+            '<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>',
+            $decoratedAnnotation
+        );
     }
 
     /**
@@ -57,8 +60,16 @@ final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
     public function getLinkAnnotationData(): array
     {
         return [
-            ['http://php.net/session_set_save_handler', '', '<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>'],
-            ['bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK', 'Donations', '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'],
+            [
+                'http://php.net/session_set_save_handler',
+                '',
+                '<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>'
+            ],
+            [
+                'bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK',
+                'Donations',
+                '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'
+            ],
             ['http://licence.com', 'MIT', '<a href="http://licence.com">MIT</a>'],
             ['https://apigen.org', 'Description', '<a href="https://apigen.org">Description</a>'],
         ];

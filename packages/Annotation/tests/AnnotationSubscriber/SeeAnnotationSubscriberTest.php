@@ -4,10 +4,10 @@ namespace ApiGen\Annotation\Tests\AnnotationSubscriber;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource\SomeClassWithSeeAnnotations;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource\SomeClassWithSeeAnnotations;
 
 final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
 {
@@ -35,7 +35,7 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
         $this->methodReflection = $this->classReflection->getMethod('returnArray');
     }
 
-    public function testPropertyOnMissingClassReflection()
+    public function testPropertyOnMissingClassReflection(): void
     {
         $seePropertyAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[0];
 
@@ -45,17 +45,18 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
         );
     }
 
-    public function testProperty()
+    public function testProperty(): void
     {
         $seePropertyAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[2];
 
         $this->assertSame(
-            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource.PresentReturnedClass.html#$someProperty">PresentReturnedClass::$someProperty</a></code>',
+            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource.'
+            . 'PresentReturnedClass.html#$someProperty">PresentReturnedClass::$someProperty</a></code>',
             $this->annotationDecorator->decorate($seePropertyAnnotation, $this->methodReflection)
         );
     }
 
-    public function testMethodOnMissingClassReflection()
+    public function testMethodOnMissingClassReflection(): void
     {
         $seeMethodAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[1];
 
@@ -65,12 +66,13 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
         );
     }
 
-    public function testMethod()
+    public function testMethod(): void
     {
         $seeMethodAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[3];
 
         $this->assertSame(
-            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource.PresentReturnedClass.html#_someMethod">PresentReturnedClass::someMethod()</a></code>',
+            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource'
+            . '.PresentReturnedClass.html#_someMethod">PresentReturnedClass::someMethod()</a></code>',
             $this->annotationDecorator->decorate($seeMethodAnnotation, $this->methodReflection)
         );
     }
@@ -90,7 +92,8 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
         $seeFunctionAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[5];
 
         $this->assertSame(
-            '<code><a href="function-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource.someExistingFunction.html">someExistingFunction()</a></code>',
+            '<code><a href="function-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource'
+            . '.someExistingFunction.html">someExistingFunction()</a></code>',
             $this->annotationDecorator->decorate($seeFunctionAnnotation, $this->methodReflection)
         );
     }
