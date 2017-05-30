@@ -3,7 +3,7 @@
 </td>
 <td class="name">
     <div class="description detailed">
-        {$constant->getDescription()}
+        {$constant|description}
 
         {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
         {foreach $filteredAnnotations as $annotation => $descriptions}

@@ -27,7 +27,7 @@
                     ){/block}</code>
 
             <div class="description detailed">
-                {$method->getDescription()}
+                {$method|description}
 
                 {if !$class->isDeprecated() && $method->isDeprecated()}
                     <h4>Deprecated</h4>

@@ -10,7 +10,7 @@
         <h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
 
         <div class="description" n:if="$function->getDescription()">
-            {$function->getDescription()}
+            {$function|description}
         </div>
 
         {*<div class="alert alert-info">*}

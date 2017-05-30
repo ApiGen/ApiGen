@@ -12,7 +12,7 @@
     </h1>
 
     <div class="description" n:if="$interface->getDescription()">
-        {$interface->getDescription()}
+        {$interface|description}
     </div>
 
     <dl class="tree" n:ifcontent>
@@ -75,7 +75,7 @@
                 </code>
 
                 <div class="description detailed">
-                    {$constant->getDescription()}
+                    {$constant|description}
 
                     {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
                     {foreach $filteredAnnotations as $annotation => $descriptions}

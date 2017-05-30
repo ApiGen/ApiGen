@@ -8,7 +8,7 @@
 
     <td class="name">
         <div class="description detailed">
-            {$property->getDescription()}
+            {$property|description}
 
             {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
             {foreach $filteredAnnotations as $annotation => $descriptions}

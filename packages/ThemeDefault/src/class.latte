@@ -10,7 +10,7 @@
         {$class->getShortName()}
     </h1>
     <div class="description" n:if="$class->getDescription()">
-        {$class->getDescription()}
+        {$class|description}
     </div>
 
     <dl class="tree" n:ifcontent>

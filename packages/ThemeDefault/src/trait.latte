@@ -12,7 +12,7 @@
     </h1>
 
     <div class="description" n:if="$trait->getDescription()">
-        {$trait->getDescription()}
+        {$trait|description}
     </div>
 
     <dl class="tree" n:ifcontent>
