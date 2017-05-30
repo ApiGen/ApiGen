@@ -3,13 +3,13 @@
     colors="true"
     verbose="true"
 >
-    <testsuites>
-        <testsuite>
-            <directory>packages/*/tests</directory>
-            <directory>tests/Generator</directory>
-            <directory>tests/Configuration</directory>
-        </testsuite>
-    </testsuites>
+    <testsuite>
+        <directory>packages/*/tests</directory>
+        <directory>tests/Generator</directory>
+        <directory>tests/Configuration</directory>
+        <directory>tests/Templating</directory>
+        <directory>tests/Utils</directory>
+    </testsuite>
     <filter>
         <whitelist>
             <directory>packages/*/src</directory>
