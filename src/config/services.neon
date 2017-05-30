@@ -1,15 +1,3 @@
-# Annotation
-- ApiGen\Annotation\AnnotationDecorator
-- ApiGen\Annotation\AnnotationSubscriber\ReturnAnnotationSubscriber
-- ApiGen\Annotation\AnnotationSubscriber\ParamAnnotationSubscriber
-- ApiGen\Annotation\AnnotationSubscriber\SeeUsesCoversAnnotationSubscriber
-- ApiGen\Annotation\AnnotationSubscriber\LinkAnnotationSubscriber
-
-- phpDocumentor\Reflection\FqsenResolver
-- phpDocumentor\Reflection\Types\ContextFactory
-- ApiGen\Annotation\FqsenResolver\ElementResolver
-
-
 # ApiGenApplication
 - ApiGen\Application\ApiGenApplication
 
@@ -47,7 +35,6 @@
 
 # Template Filters
 - ApiGen\Templating\Filters\Helpers\LinkBuilder
-- ApiGen\Templating\Filters\AnnotationFilters
 
 # Syntax Highlighter
 - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter

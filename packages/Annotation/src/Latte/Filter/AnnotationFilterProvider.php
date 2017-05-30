@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Templating\Filters;
+namespace ApiGen\Annotation\Latte\Filter;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Event\FilterAnnotationsEvent;
@@ -10,7 +10,7 @@ use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class AnnotationFilters implements LatteFiltersProviderInterface
+final class AnnotationFilterProvider implements LatteFiltersProviderInterface
 {
     /**
      * @var EventDispatcherInterface

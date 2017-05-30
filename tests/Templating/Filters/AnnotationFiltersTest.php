@@ -2,19 +2,19 @@
 
 namespace ApiGen\Tests\Templating\Filters;
 
-use ApiGen\Templating\Filters\AnnotationFilters;
+use ApiGen\Templating\Filters\AnnotationFilterProvider;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class AnnotationFiltersTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var AnnotationFilters
+     * @var AnnotationFilterProvider
      */
     private $annotationFilters;
 
     protected function setUp(): void
     {
-        $this->annotationFilters = $this->container->getByType(AnnotationFilters::class);
+        $this->annotationFilters = $this->container->getByType(AnnotationFilterProvider::class);
     }
 
     public function testAnnotationFilterWithCustom(): void
