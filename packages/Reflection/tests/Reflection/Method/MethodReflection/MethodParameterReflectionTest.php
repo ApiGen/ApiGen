@@ -55,11 +55,6 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertNull($this->parameterReflection->getClass());
     }
 
-    public function testGetClassName(): void
-    {
-        $this->assertNull($this->parameterReflection->getClassName());
-    }
-
     public function testGetDeclaringFunction(): void
     {
         $this->assertInstanceOf(

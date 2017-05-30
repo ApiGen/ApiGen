@@ -58,9 +58,9 @@ final class ParameterReflection implements AbstractParameterReflectionInterface
             return 'callable';
         }
 
-        $className = $this->getClassName();
-        if ($className) {
-            return $className;
+        $class = $this->getClass();
+        if ($class) {
+            return $class->getName();
         }
 
         $annotation = $this->getAnnotation();
@@ -104,16 +104,6 @@ final class ParameterReflection implements AbstractParameterReflectionInterface
         $typeHint = $this->reflection->getTypeHint();
         if ($typeHint) {
             // @todo
-        }
-
-        return null;
-    }
-
-    public function getClassName(): ?string
-    {
-        $class = $this->getClass();
-        if ($class) {
-            return $class->getName();
         }
 
         return null;

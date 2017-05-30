@@ -57,9 +57,9 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
             return 'callable';
         }
 
-        $className = $this->getClassName();
-        if ($className) {
-            return $className;
+        $class = $this->getClass();
+        if ($class) {
+            return $class->getName();
         }
 
         $annotation = $this->getAnnotation();
@@ -104,17 +104,10 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
     {
         $typeHint = $this->betterParameterReflection->getTypeHint();
         if ($typeHint) {
+
+            dump($typeHint);
+            die;
             // @todo
-        }
-
-        return null;
-    }
-
-    public function getClassName(): ?string
-    {
-        $class = $this->getClass();
-        if ($class) {
-            return $class->getName();
         }
 
         return null;

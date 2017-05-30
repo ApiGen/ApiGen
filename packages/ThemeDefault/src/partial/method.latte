@@ -10,7 +10,8 @@
         </code>
     </td>
 
-    <td class="name"><div>
+    <td class="name">
+        <div>
             <a class="anchor" href="#_{$method->getName()}">#</a>
             <code>{block|strip}
                     <a href="{$method|linkSource}">{$method->getName()}</a>(
@@ -48,6 +49,7 @@
                     </div>
                 {/if}
 
+                {* @note: is not neccessary if return typehtint is already there *}
                 {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
                     <h4>Returns</h4>
                     <div class="list">

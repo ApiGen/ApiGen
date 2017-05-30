@@ -20,11 +20,6 @@ interface AbstractParameterReflectionInterface extends AbstractReflectionInterfa
      */
     public function getClass();
 
-    /**
-     * @todo This is actually return parameter typehint. Find a better name.
-     */
-    public function getClassName(): ?string;
-
     public function isVariadic(): bool;
 
     public function isCallable(): bool;

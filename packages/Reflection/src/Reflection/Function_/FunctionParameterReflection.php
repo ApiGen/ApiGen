@@ -121,16 +121,6 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
         return $classOrInterfaceReflection;
     }
 
-    public function getClassName(): ?string
-    {
-        $typeHint = $this->betterParameterReflection->getTypeHint();
-        if (! $typeHint instanceof Object_) {
-            return null;
-        }
-
-        return $typeHint->getFqsen()->getName();
-    }
-
     public function isVariadic(): bool
     {
         return $this->betterParameterReflection->isVariadic();
@@ -159,5 +149,15 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
         }
 
         return null;
+    }
+
+    private function getClassName(): ?string
+    {
+        $typeHint = $this->betterParameterReflection->getTypeHint();
+        if (! $typeHint instanceof Object_) {
+            return null;
+        }
+
+        return $typeHint->getFqsen()->getName();
     }
 }
