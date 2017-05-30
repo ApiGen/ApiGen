@@ -5,16 +5,12 @@
 >
     <testsuite>
         <directory>packages/*/tests</directory>
-        <directory>tests/Generator</directory>
-        <directory>tests/Configuration</directory>
-        <directory>tests/Templating</directory>
-        <directory>tests/Utils</directory>
+        <directory>tests</directory>
     </testsuite>
     <filter>
         <whitelist>
             <directory>packages/*/src</directory>
-            <directory>src/Generator</directory>
-            <directory>src/Configuration</directory>
+            <directory>src</directory>
         </whitelist>
     </filter>
 </phpunit>
