@@ -59,7 +59,8 @@
             "packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php",
-            "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithClass.php"
+            "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithClass.php",
+            "packages/Annotation/tests/AnnotationSubscriber/SeeAnnotationSubscriberSource/SomeClassWithSeeAnnotations.php"
         ]
     },
     "scripts": {
