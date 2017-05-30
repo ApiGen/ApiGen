@@ -4,7 +4,7 @@ namespace ApiGen\Templating;
 
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Event\CreateTemplateEvent;
-use ApiGen\Generator\Event\GenerateProgressEvent;
+use ApiGen\Event\GenerateProgressEvent;
 use ApiGen\Templating\Parameters\ParameterBag;
 use ApiGen\Utils\FileSystem;
 use Latte\Engine;
