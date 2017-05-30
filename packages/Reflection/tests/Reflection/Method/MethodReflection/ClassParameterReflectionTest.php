@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterClass;
 use ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
@@ -29,14 +30,8 @@ final class ClassParameterReflectionTest extends AbstractParserAwareTestCase
         $this->parameterReflection = $methodReflection->getParameters()['parameterClass'];
     }
 
-//    public function testGetTypeHint(): void
-//    {
-//        $this->assertSame('', $this->parameterReflection->getTypeHint());
-//    }
-
-    public function testGetClass(): void
+    public function testGetTypeHint(): void
     {
-        // expect class here!
-        $this->assertNull($this->parameterReflection->getClass());
+        $this->assertSame(ParameterClass::class, $this->parameterReflection->getTypeHint());
     }
 }

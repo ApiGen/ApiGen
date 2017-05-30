@@ -55,6 +55,7 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
 
     public function getTypeHint(): string
     {
+        // @todo: try only (string) $this->betterParameterReflection->getTypeHint()
         if ($this->betterParameterReflection->isArray()) {
             return 'array';
         }
@@ -63,9 +64,10 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
             return 'callable';
         }
 
-        $className = $this->getClassName();
-        if ($className) {
-            return $className;
+        $typeHint = $this->betterParameterReflection->getTypeHint();
+        if ($typeHint instanceof Object_) {
+            $classOrInterfaceName = (string) $typeHint->getFqsen();
+            return ltrim($classOrInterfaceName, '\\');
         }
 
         if (count($this->betterParameterReflection->getDocBlockTypes())) {
@@ -107,13 +109,13 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
     /**
      * @return ClassReflectionInterface|InterfaceReflectionInterface|null
      */
-    public function getClass()
+    public function getTypeHintClassOrInterfaceReflection()
     {
-        if ($this->getClassName() === null) {
+        if (! class_exists($this->getTypeHint())) {
             return null;
         }
 
-        $betterClassReflection = ReflectionClass::createFromName($this->getClassName());
+        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
 
         /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
         $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
@@ -149,15 +151,5 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
         }
 
         return null;
-    }
-
-    private function getClassName(): ?string
-    {
-        $typeHint = $this->betterParameterReflection->getTypeHint();
-        if (! $typeHint instanceof Object_) {
-            return null;
-        }
-
-        return $typeHint->getFqsen()->getName();
     }
 }

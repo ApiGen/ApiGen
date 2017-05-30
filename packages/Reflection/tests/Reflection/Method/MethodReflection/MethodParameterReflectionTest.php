@@ -52,7 +52,7 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testGetClass(): void
     {
-        $this->assertNull($this->parameterReflection->getClass());
+        $this->assertNull($this->parameterReflection->getTypeHintClassOrInterfaceReflection());
     }
 
     public function testGetDeclaringFunction(): void
