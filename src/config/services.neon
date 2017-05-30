@@ -48,7 +48,6 @@
 # Template Filters
 - ApiGen\Templating\Filters\Helpers\LinkBuilder
 - ApiGen\Templating\Filters\AnnotationFilters
-- ApiGen\Templating\Filters\PhpHighlighterFilters
 
 # Syntax Highlighter
 - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter

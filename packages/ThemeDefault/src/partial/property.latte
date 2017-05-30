@@ -3,7 +3,11 @@
         <code>
             {if $property->isProtected()}protected{elseif $property->isPrivate()}private{else}public{/if} {if $property->isStatic()}static{/if}
 
-            {$property->getTypeHint()|typeLinks:$property|noescape}
+            {if $property->getTypeHintClassOrInterfaceReflection()}
+                {$property->getTypeHintClassOrInterfaceReflection()|linkReflection}
+            {else}
+                {$property->getTypeHint()}
+            {/if}
         </code>
     </td>
 
