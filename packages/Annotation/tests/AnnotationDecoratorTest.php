@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation;
+namespace ApiGen\Annotation\Tests;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Tests\Annotation\AnnotationDecoratorSource\SomeClassWithReturnTypes;
+use ApiGen\Annotation\Tests\AnnotationDecoratorSource\SomeClassWithReturnTypes;
 
 final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
 {
@@ -40,7 +40,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         $returnAnnotation = $this->methodReflection->getAnnotation(AnnotationList::RETURN_)[0];
 
         $this->assertSame(
-            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a>[]</code>',
+            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a>[]</code>',
             $this->annotationDecorator->decorate($returnAnnotation, $this->methodReflection)
         );
     }
@@ -50,7 +50,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
         $returnAnnotation = $this->secondMethodReflection->getAnnotation(AnnotationList::RETURN_)[0];
 
         $this->assertSame(
-            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a></code>',
+            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.ReturnedClass.html">ReturnedClass</a></code>',
             $this->annotationDecorator->decorate($returnAnnotation, $this->methodReflection)
         );
     }
@@ -74,7 +74,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
 
         // @todo: it doesn't make sense to link itself here, since it's the same page
         $this->assertSame(
-            'string|<code><a href="class-ApiGen.Tests.Annotation.AnnotationDecoratorSource.SomeClassWithReturnTypes.html">$this</a></code>',
+            'string|<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.SomeClassWithReturnTypes.html">$this</a></code>',
             $this->annotationDecorator->decorate($param2Annotation, $this->methodReflection)
         );
     }

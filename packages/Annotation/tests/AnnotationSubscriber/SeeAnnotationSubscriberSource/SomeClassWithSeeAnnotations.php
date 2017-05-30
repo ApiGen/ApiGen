@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation\AnnotationSubscriber\SeeAnnotationSubscriberSource;
+namespace ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource;
 
-use ApiGen\Tests\Annotation\AnnotationDecoratorSource\ReturnedClass;
+use ApiGen\Annotation\Tests\AnnotationDecoratorSource\ReturnedClass;
 
 function someExistingFunction()
 {

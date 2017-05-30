@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation\AnnotationSubscriber;
+namespace ApiGen\Annotation\Tests\AnnotationSubscriber;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Tests\Annotation\AnnotationSubscriber\LinkAnnotationSubscriberSource\SomeClassWithLinkAnnotations;
+use ApiGen\Annotation\Tests\AnnotationSubscriber\LinkAnnotationSubscriberSource\SomeClassWithLinkAnnotations;
 use phpDocumentor\Reflection\DocBlock\Description;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 

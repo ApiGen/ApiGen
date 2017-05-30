@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation\AnnotationSubscriber\LinkAnnotationSubscriberSource;
+namespace ApiGen\Annotation\Tests\AnnotationSubscriber\LinkAnnotationSubscriberSource;
 
 /**
  * User session storage for PHP < 5.4.

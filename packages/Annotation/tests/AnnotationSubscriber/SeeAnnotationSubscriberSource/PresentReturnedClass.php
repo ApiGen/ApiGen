@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation\AnnotationSubscriber\SeeAnnotationSubscriberSource;
+namespace ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource;
 
 final class PresentReturnedClass
 {

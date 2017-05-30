@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation\AnnotationDecoratorSource;
+namespace ApiGen\Annotation\Tests\AnnotationDecoratorSource;
 
 final class SomeClassWithReturnTypes
 {

@@ -1,12 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation\AnnotationSubscriber;
+namespace ApiGen\Annotation\Tests\AnnotationSubscriber;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Tests\Annotation\AnnotationSubscriber\Source\UsesCoversClass;
+use ApiGen\Annotation\Tests\AnnotationSubscriber\Source\UsesCoversClass;
 
 final class UsesCoversAnnotationSubscriberTest extends AbstractParserAwareTestCase
 {
@@ -41,7 +41,7 @@ final class UsesCoversAnnotationSubscriberTest extends AbstractParserAwareTestCa
     {
         $usesAnnotation = $this->classReflection->getAnnotation(AnnotationList::USES)[1];
         $this->assertSame(
-            '<code><a href="class-ApiGen.Tests.Annotation.AnnotationSubscriber.Source.UsedClass.html">UsedClass</a></code>',
+            '<code><a href="class-ApiGen.Annotation.Tests.AnnotationSubscriber.Source.UsedClass.html">UsedClass</a></code>',
             $this->annotationDecorator->decorate($usesAnnotation, $this->classReflection)
         );
     }

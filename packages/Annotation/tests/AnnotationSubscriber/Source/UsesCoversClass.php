@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Annotation\AnnotationSubscriber\Source;
+namespace ApiGen\Annotation\Tests\AnnotationSubscriber\Source;
 
 use Nette\DI\ContainerBuilder;
 
