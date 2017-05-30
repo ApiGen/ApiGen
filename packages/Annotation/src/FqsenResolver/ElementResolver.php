@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Nette\Utils\Strings;
 use phpDocumentor\Reflection\FqsenResolver;
@@ -40,7 +41,7 @@ final class ElementResolver
     }
 
     /**
-     * @return ClassReflectionInterface|ClassPropertyReflectionInterface|ClassMethodReflectionInterface|string
+     * @return ClassReflectionInterface|ClassPropertyReflectionInterface|ClassMethodReflectionInterface|FunctionReflectionInterface|string
      */
     public function resolveReflectionFromNameAndReflection(string $name, AbstractReflectionInterface $reflection)
     {

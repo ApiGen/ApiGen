@@ -75,7 +75,7 @@ final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
 
     private function createLinkFromObject(AbstractReflectionInterface $reflection, Object_ $objectValueType): string
     {
-        $type = (string) $objectValueType->getFqsen()
+        $type = $objectValueType->getFqsen()
             ->getName();
 
         $singleClassReflection = $this->elementResolver->resolveReflectionFromNameAndReflection($type, $reflection);
