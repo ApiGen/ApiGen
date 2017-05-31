@@ -123,6 +123,7 @@ This is already mentioned on Wiki.
 ```
 
 
+
 ## Themes
 
 In order to enable a custom theme, you have to provide `themeDirectory` configuration
