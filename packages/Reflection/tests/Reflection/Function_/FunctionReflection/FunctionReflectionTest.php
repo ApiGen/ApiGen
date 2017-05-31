@@ -29,8 +29,8 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
 
     public function testLines(): void
     {
-        $this->assertSame(16, $this->functionReflection->getStartLine());
-        $this->assertSame(19, $this->functionReflection->getEndLine());
+        $this->assertSame(15, $this->functionReflection->getStartLine());
+        $this->assertSame(18, $this->functionReflection->getEndLine());
     }
 
     public function testNames(): void

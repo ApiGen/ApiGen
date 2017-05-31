@@ -3,13 +3,19 @@
 namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tag;
+use phpDocumentor\Reflection\Types\Object_;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
-final class TraitPropertyReflection implements TraitPropertyReflectionInterface
+final class TraitPropertyReflection implements TraitPropertyReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionProperty
@@ -32,11 +38,6 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
         $this->docBlock = $docBlock;
     }
 
-    public function getShortName(): string
-    {
-        return $this->getName();
-    }
-
     public function getNamespaceName(): string
     {
         return $this->betterPropertyReflection->getDeclaringClass()
@@ -45,7 +46,11 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
 
     public function getDescription(): string
     {
-        // TODO: Implement getDescription() method.
+        $description = $this->docBlock->getSummary()
+            . AnnotationList::EMPTY_LINE
+            . $this->docBlock->getDescription();
+
+        return trim($description);
     }
 
     public function getDeclaringTrait(): TraitReflectionInterface
@@ -101,27 +106,22 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
 
     public function getTypeHint(): string
     {
-        $annotations = $this->getAnnotation(AnnotationList::VAR_);
-
-        if ($annotations) {
-            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
-            if (! empty($types) && $types[0] !== '$') {
-                return $types;
-            }
-        }
-
-        try {
-            $type = gettype($this->getDefaultValue());
-            if (strtolower($type) !== 'null') {
-                return $type;
-            }
-        } catch (\Exception $exception) {
+        $typeHints = $this->betterPropertyReflection->getDocBlockTypes();
+        if (! count($typeHints)) {
             return '';
         }
+
+        $typeHint = $typeHints[0];
+        if ($typeHint instanceof Object_) {
+            $classOrInterfaceName = (string) $typeHint->getFqsen();
+            return ltrim($classOrInterfaceName, '\\');
+        }
+
+        return implode('|', $this->betterPropertyReflection->getDocBlockTypeStrings());
     }
 
     /**
-     * @return mixed[]
+     * @return Tag[]
      */
     public function getAnnotations(): array
     {
@@ -156,19 +156,6 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
         return $this->betterPropertyReflection->isPublic();
     }
 
-    public function getDeclaringClass(): ?ClassReflectionInterface
-    {
-        return $this->transformerCollector->transformSingle(
-            $this->betterPropertyReflection->getDeclaringClass()
-        );
-    }
-
-    public function getDeclaringClassName(): string
-    {
-        return $this->betterPropertyReflection->getDeclaringClass()
-            ->getName();
-    }
-
     /**
      * @todo What is this for?
      */
@@ -176,5 +163,32 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface
     {
         // @todo
         return $this->betterPropertyReflection->getDefaultValue();
+    }
+
+    public function isDeprecated(): bool
+    {
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
+    }
+
+    /**
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
+     */
+    public function getTypeHintClassOrInterfaceReflection()
+    {
+        if (! class_exists($this->getTypeHint())) {
+            return null;
+        }
+
+        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
+
+        /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
+        $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
+
+        return $classOrInterfaceReflection;
     }
 }

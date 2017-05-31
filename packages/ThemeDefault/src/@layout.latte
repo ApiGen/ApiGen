@@ -1,146 +1,55 @@
-{default $robots = true}
-{default $active = ''}
 <!DOCTYPE html>
 <html>
-<head>
-	<meta charset="utf-8">
-	<meta name="robots" content="noindex" n:if="!$robots">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
 
-	<title>{include title}{if 'overview' !== $active && $title} | {$title}{/if}</title>
+        {* Bootstrap 3 CDN *}
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="resources/style.css">
 
-	<link rel="stylesheet" href="{='resources/style.css'|staticFile}">
+        <title>
+            {include title}{if $activePage !== 'overview' && $title} | {$title}{/if}
+        </title>
+    </head>
 
-	<script n:if="$googleAnalytics">
-		var _gaq = _gaq || [];
-		_gaq.push(['_setAccount', {$googleAnalytics}]);
-		_gaq.push(['_trackPageview']);
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                {*<div id="right">*}
+                    {*<div id="rightInner">*}
+                        {include searchForm}
+                        {include "partial/menu.latte"}
+                        {include content}
+                        {include footer}
+                    {*</div>*}
+                </div>
+            </div>
+        </div>
 
-		(function() {
-			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-		})();
-	</script>
-</head>
+        {* jquery autocomplete *}
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" defer></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js" defer></script>
 
-<body>
-<div id="left">
-	<div id="menu">
-		<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
-
-		{define group}
-			<ul>
-				{foreach $groups as $group}
-				{continueIf $group === 'PHP'}
-				{var $nextLevel = substr_count($iterator->nextValue, '\\') > substr_count($group, '\\')}
-				<li n:class="$actualGroup === $group || 0 === strpos($actualGroup, $group . '\\') ? active">
-					<a href="{if $groupBy === 'package'}{$group|packageUrl}{else}{$group|namespaceUrl}{/if}">
-						{$group|subgroupName}<span n:tag-if="$nextLevel"></span>
-					</a>
-
-					{if $nextLevel}
-						<ul>
-					{else}
-						</li>
-						{if substr_count($iterator->nextValue, '\\') < substr_count($group, '\\')}
-							{='</ul></li>'|repeat:substr_count($group, '\\') - substr_count($iterator->nextValue, '\\')|noescape}
-						{/if}
-					{/if}
-				{/foreach}
-			</ul>
-		{/define}
-
-		<div id="groups">
-			<h3>Namespaces</h3>
-			{include group, groups => $namespaces, actualGroup => $namespace, groupBy => 'namespace'}
-		</div>
-
-		<hr n:if="($namespaces) && ($classes || $interfaces || $traits || $functions)">
-
-		{define elements}
-			<ul>
-				<li n:foreach="$elements as $element" n:class="$activeElement === $element ? active" n:if="$element->getNamespaceName()"><a n:class="$element->isDeprecated() ? deprecated" href="{$element|elementUrl}">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></li>
-			</ul>
-		{/define}
-
-		<div id="elements">
-			{if $classes}
-			<h3>Classes</h3>
-			{include elements, elements => $classes, activeElement => $class}
-			{/if}
-
-			{if $interfaces}
-			<h3>Interfaces</h3>
-			{include elements, elements => $interfaces, activeElement => $class}
-			{/if}
-
-			{if $traits}
-			<h3>Traits</h3>
-			{include elements, elements => $traits, activeElement => $class}
-			{/if}
-
-			{if $functions}
-			<h3>Functions</h3>
-			{include elements, elements => $functions, activeElement => $function}
-			{/if}
-		</div>
-	</div>
-</div>
-
-<div id="splitter"></div>
-
-<div id="right">
-<div id="rightInner">
-	<form id="search">
-		<input type="hidden" name="ie" value="UTF-8">
-		<input type="text" name="q" class="text" placeholder="Search"{if 'overview' === $active} autofocus{/if}>
-	</form>
-
-	<div id="navigation">
-		<ul>
-			<li n:class="'overview' === $active ? active">
-				<a n:tag-if="'overview' !== $active" href="index.html" title="Overview"><span>Overview</span></a>
-			</li>
-			<li n:class="'namespace' === $active ? active" n:if="$namespaces">
-				<a n:tag-if="'namespace' !== $active && $namespace" href="{$namespace|namespaceUrl}" title="Summary of {$namespace}"><span>Namespace</span></a>
-			</li>
-			<li n:class="'class' === $active ? active" n:if="!$function">
-				<a n:tag-if="'class' !== $active && $class" href="{$class|classUrl}" title="Summary of {$class->getName()}"><span>Class</span></a>
-			</li>
-            {* @todo: add interfaces and traits *}
-			<li n:class="'function' === $active ? active" n:if="$function">
-				<a n:tag-if="'function' !== $active" href="{$function|functionUrl}" title="Summary of {$function->getName()}"><span>Function</span></a>
-			</li>
-		</ul>
-		<ul>
-			{foreach $annotationGroups as $annotationGroup}
-				<li n:class="$active === 'annotation-group-' . $annotationGroup ? active">
-					<a href="annotation-group-{$annotationGroup}.html" title="List of elements with {$annotationGroup} annotation">
-						<span>{$annotationGroup|firstUpper}</span>
-					</a>
-				</li>
-			{/foreach}
-		</ul>
-	</div>
-
-	{include content}
-
-	<div id="footer">
-		{$title} API documentation generated by <a href="http://apigen.org">ApiGen</a>
-	</div>
-</div>
-</div>
-    <script src="{='/js/jquery.min.js'|staticFile}"></script>
-    <script src="{='/js/jquery.cookie.js'|staticFile}"></script>
-    <script src="{='/js/jquery.sprintf.js'|staticFile}"></script>
-    <script src="{='/js/jquery.autocomplete.js'|staticFile}"></script>
-    <script src="{='/js/jquery.sortElements.js'|staticFile}"></script>
-    <script src="{='/js/main.js'|staticFile}"></script>
-    <script src="{='elementlist.js'|staticFile}"></script>
-
-    <script type="javascript">
-        var ApiGen = ApiGen || {};
-        ApiGen.config = {};
-    </script>
-</body>
+        <script src="/resources/main.js"></script>
+        <script src="/elementlist.js"></script>
+    </body>
 </html>
+
+
+{define searchForm}
+    <form id="search">
+        <input type="hidden" name="ie" value="UTF-8">
+        <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace" autofocus >
+    </form>
+{/define}
+
+
+{define footer}
+    <div id="footer">
+        Generated by <a href="https://github.com/apigen/apigen">ApiGen</a>
+    </div>
+{/define}

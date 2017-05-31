@@ -38,24 +38,30 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
     /**
      * @param mixed $value
      */
-    public static function createFromNameValueAndInterface(string $name, $value, InterfaceReflectionInterface $interfaceReflection): self
-    {
+    public static function createFromNameValueAndInterface(
+        string $name,
+        $value,
+        InterfaceReflectionInterface $interfaceReflection
+    ): self {
         return new self($name, $value, $interfaceReflection);
     }
 
     public function isPrivate(): bool
     {
-        return $this->reflection->isPrivate();
+        // @todo
+        return false;
     }
 
     public function isProtected(): bool
     {
-        return $this->reflection->isProtected();
+        // @todo
+        return false;
     }
 
     public function isPublic(): bool
     {
-        return $this->reflection->isPublic();
+        // @todo
+        return false;
     }
 
     public function getName(): string
@@ -65,23 +71,12 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
 
     public function getTypeHint(): string
     {
-        $annotations = $this->getAnnotation(AnnotationList::VAR_);
-
-        if ($annotations) {
-            [$types] = preg_split('~\s+|$~', $annotations[0], 2);
-            if (! empty($types)) {
-                return $types;
-            }
+        $valueType = gettype($this->value);
+        if ($valueType === 'integer') {
+            return 'int';
         }
 
-        try {
-            $type = gettype($this->getValue());
-            if (strtolower($type) !== 'null') {
-                return $type;
-            }
-        } catch (Exception $exception) {
-            return '';
-        }
+        return $valueType;
     }
 
     /**
@@ -92,56 +87,16 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
         return $this->value;
     }
 
-    public function getValueDefinition(): string
-    {
-        return $this->reflection->getValueDefinition();
-    }
-
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
-    }
-
-    public function getNamespaceName(): string
-    {
-        // TODO: Implement getNamespaceName() method.
-    }
-
-    /**
-     *
-     * @return mixed[]
-     */
-    public function getAnnotations(): array
-    {
-        // TODO: Implement getAnnotations() method.
-    }
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotation(string $name): array
-    {
-        // TODO: Implement getAnnotation() method.
-    }
-
-    public function hasAnnotation(string $name): bool
-    {
-        // TODO: Implement hasAnnotation() method.
-    }
-
-    public function getDescription(): string
-    {
-        // TODO: Implement getDescription() method.
     }
 
     public function getStartLine(): int
     {
-        // TODO: Implement getStartLine() method.
     }
 
     public function getEndLine(): int
     {
-        // TODO: Implement getEndLine() method.
     }
 
     public function getDeclaringInterfaceName(): string

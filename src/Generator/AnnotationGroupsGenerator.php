@@ -5,7 +5,7 @@ namespace ApiGen\Generator;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
-use ApiGen\Element\Contract\ElementExtractorInterface;
+use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 
 final class AnnotationGroupsGenerator implements GeneratorInterface
 {
@@ -15,23 +15,23 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
     private $configuration;
 
     /**
-     * @var ElementExtractorInterface
-     */
-    private $elementExtractor;
-
-    /**
      * @var TemplateRendererInterface
      */
     private $templateRenderer;
 
+    /**
+     * @var AnnotationReflectionCollector
+     */
+    private $annotationReflectionCollector;
+
     public function __construct(
         ConfigurationInterface $configuration,
-        ElementExtractorInterface $elementExtractor,
-        TemplateRendererInterface $templateRenderer
+        TemplateRendererInterface $templateRenderer,
+        AnnotationReflectionCollector $annotationReflectionCollector
     ) {
         $this->configuration = $configuration;
-        $this->elementExtractor = $elementExtractor;
         $this->templateRenderer = $templateRenderer;
+        $this->annotationReflectionCollector = $annotationReflectionCollector;
     }
 
     public function generate(): void
@@ -43,20 +43,20 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
 
     private function generateForAnnotation(string $annotation): void
     {
-        $elements = $this->elementExtractor->extractElementsByAnnotation($annotation);
+        $this->annotationReflectionCollector->setActiveAnnotation($annotation);
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('annotation-group'),
             $this->configuration->getDestinationWithPrefixName('annotation-group-', $annotation),
             [
                 'annotation' => $annotation,
-                'hasElements' => (bool) count(array_filter($elements, 'count')),
-                'classes' => $elements['classes'],
-                'interfaces' => $elements['interfaces'],
-                'traits' => $elements['traits'],
-                'methods' => $elements['methods'],
-                'functions' => $elements['functions'],
-                'properties' => $elements['properties']
+                'hasElements' =>  $this->annotationReflectionCollector->hasAnyElements(),
+                'classes' => $this->annotationReflectionCollector->getClassReflections(),
+                'interfaces' => $this->annotationReflectionCollector->getInterfaceReflections(),
+                'traits' => $this->annotationReflectionCollector->getTraitReflections(),
+                'methods' => $this->annotationReflectionCollector->getClassOrTraitMethodReflections(),
+                'functions' => $this->annotationReflectionCollector->getFunctionReflections(),
+                'properties' => $this->annotationReflectionCollector->getClassOrTraitPropertyReflections()
             ]
         );
     }

@@ -2,25 +2,16 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface ClassConstantReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface
+interface ClassConstantReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface,
+        AnnotationsInterface
 {
-    public function getTypeHint(): string;
-
     /**
      * @return mixed
      */
     public function getValue();
 
-    public function getValueDefinition(): string;
-
-    /**
-     * @return mixed[]
-     */
-    public function getAnnotations(): array;
-
-    public function getNamespaceName(): string;
-
-    public function getName(): string;
+    public function getTypeHint(): string;
 }

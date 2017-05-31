@@ -15,7 +15,7 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
     /**
      * @var ReflectionFunction
      */
-    private $reflection;
+    private $betterFunctionReflection;
 
     /**
      * @var DocBlock
@@ -29,43 +29,43 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
 
     public function __construct(ReflectionFunction $betterFunctionReflection, DocBlock $docBlock)
     {
-        $this->reflection = $betterFunctionReflection;
+        $this->betterFunctionReflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
     }
 
     public function getName(): string
     {
-        return $this->reflection->getName();
+        return $this->betterFunctionReflection->getName();
     }
 
     public function getShortName(): string
     {
-        return $this->reflection->getShortName();
+        return $this->betterFunctionReflection->getShortName();
     }
 
     public function getStartLine(): int
     {
-        return $this->reflection->getStartLine();
+        return $this->betterFunctionReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        return $this->reflection->getEndLine();
+        return $this->betterFunctionReflection->getEndLine();
     }
 
     public function returnsReference(): bool
     {
-        return $this->reflection->returnsReference();
+        return $this->betterFunctionReflection->returnsReference();
     }
 
     public function isDeprecated(): bool
     {
-        return $this->reflection->isDeprecated();
+        return $this->betterFunctionReflection->isDeprecated();
     }
 
     public function getNamespaceName(): string
     {
-        return $this->reflection->getNamespaceName();
+        return $this->betterFunctionReflection->getNamespaceName();
     }
 
     /**
@@ -104,13 +104,13 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
     public function getParameters(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->reflection->getParameters()
+            $this->betterFunctionReflection->getParameters()
         );
     }
 
     public function getFileName(): string
     {
-        return $this->reflection->getFileName();
+        return $this->betterFunctionReflection->getFileName();
     }
 
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void

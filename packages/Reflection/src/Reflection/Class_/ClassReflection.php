@@ -3,14 +3,18 @@
 namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Element\Tree\ParentClassElementsResolver;
+use ApiGen\Element\Tree\SubClassesResolver;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -31,10 +35,26 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     private $transformerCollector;
 
-    public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock)
-    {
+    /**
+     * @var ParentClassElementsResolver
+     */
+    private $parentClassElementsResolver;
+
+    /**
+     * @var SubClassesResolver
+     */
+    private $subClassesResolver;
+
+    public function __construct(
+        ReflectionClass $betterClassReflection,
+        DocBlock $docBlock,
+        ParentClassElementsResolver $parentClassElementsResolver,
+        SubClassesResolver $subClassesResolver
+    ) {
         $this->betterClassReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
+        $this->parentClassElementsResolver = $parentClassElementsResolver;
+        $this->subClassesResolver = $subClassesResolver;
     }
 
     public function getName(): string
@@ -62,24 +82,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->betterClassReflection->getNamespaceName();
     }
 
-//        public function getNamespaceName(): string
-//    {
-//        static $namespaces = [];
-//
-//        $namespaceName = $this->reflection->getNamespaceName();
-//
-//        if (! $namespaceName) {
-//            return $namespaceName;
-//        }
-//
-//        $lowerNamespaceName = strtolower($namespaceName);
-//        if (! isset($namespaces[$lowerNamespaceName])) {
-//            $namespaces[$lowerNamespaceName] = $namespaceName;
-//        }
-//
-//        return $namespaces[$lowerNamespaceName];
-//    }
-
     /**
      * @return mixed[]
      */
@@ -99,20 +101,20 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getParentClass(): ?ClassReflectionInterface
     {
-        if ($this->betterClassReflection->getParentClass()) {
-            return $this->transformerCollector->transformSingle(
-                $this->betterClassReflection->getParentClass()
-            );
+        if (! $this->betterClassReflection->getParentClass()) {
+            return null;
         }
 
-        return null;
+        return $this->transformerCollector->transformSingle(
+            $this->betterClassReflection->getParentClass()
+        );
     }
 
     public function getParentClassName(): string
     {
         if ($this->betterClassReflection->getParentClass()) {
             return $this->betterClassReflection->getParentClass()
-                ->getShortName();
+                ->getName();
         }
 
         return '';
@@ -123,48 +125,23 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getParentClasses(): array
     {
-        if ($this->parentClasses === null) {
-            $this->parentClasses = array_map(function (IReflectionClass $class) {
-                return $this->getParsedClasses()[$class->getName()];
-            }, $this->betterClassReflection->getParentClasses());
+        $parentClasses = [];
+
+        $currentClass = $this->getParentClass();
+        while ($currentClass) {
+            $parentClasses[$currentClass->getName()] = $currentClass;
+            $currentClass = $currentClass->getParentClass();
         }
 
-        return $this->parentClasses;
-    }
-
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getDirectSubClasses(): array
-    {
-        $subClasses = [];
-        foreach ($this->getParsedClasses() as $class) {
-            if ($this->getName() === $class->getParentClassName()) {
-                $subClasses[] = $class;
-            }
-        }
-
-        uksort($subClasses, 'strcasecmp');
-        return $subClasses;
+        return $parentClasses;
     }
 
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getIndirectSubClasses(): array
+    public function getSubClasses(): array
     {
-        $subClasses = [];
-        foreach ($this->getParsedClasses() as $class) {
-            if ($this->getName() !== $class->getParentClassName()
-                && $class->isSubclassOf($this->getName())
-            ) {
-                $subClasses[] = $class;
-            }
-        }
-
-        uksort($subClasses, 'strcasecmp');
-        return $subClasses;
+        return $this->subClassesResolver->getSubClasses($this);
     }
 
     public function implementsInterface(string $interface): bool
@@ -173,34 +150,26 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return InterfaceReflectionInterface[]
      */
     public function getOwnInterfaces(): array
     {
-        return array_map(function (IReflectionClass $class) {
-            return $this->getParsedClasses()[$class->getName()];
-        }, $this->betterClassReflection->getOwnInterfaces());
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getOwnInterfaceNames(): array
-    {
-        return array_keys($this->betterClassReflection->getImmediateInterfaces());
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getImmediateInterfaces()
+        );
     }
 
     public function getMethod(string $name): ClassMethodReflectionInterface
     {
-        if ($this->hasMethod($name)) {
-            return $this->getMethods()[$name];
+        if (! isset($this->getMethods()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Method "%s" does not exist in "%s" class.',
+                $name,
+                $this->getName()
+            ));
         }
 
-        throw new \InvalidArgumentException(sprintf(
-            'Method "%s" does not exist in "%s" class.',
-            $name,
-            $this->getName()
-        ));
+        return $this->getMethods()[$name];
     }
 
     /**
@@ -208,39 +177,15 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getInheritedMethods(): array
     {
-        return $this->parentClassElementExtractor->getInheritedMethods();
+        return $this->parentClassElementsResolver->getInheritedMethods($this);
     }
 
     /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array
-    {
-        $usedMethods = $this->classTraitElementExtractor->getUsedMethods();
-        return $this->sortUsedMethods($usedMethods);
-    }
-
-
-    public function hasMethod(string $name): bool
-    {
-        return isset($this->getMethods()[$name]);
-    }
-
-    /**
-     * @return \ApiGen\Reflection\Contract\Reflection\ClassConstantReflectionInterface[]
+     * @return ClassConstantReflectionInterface[]
      */
     public function getConstants(): array
     {
-        if ($this->constants === null) {
-            $this->constants = [];
-            foreach ($this->betterClassReflection->getConstantReflections() as $constant) {
-                $apiConstant = $this->transformerCollector->transformReflectionToElement($constant);
-                /** @var ReflectionElement $constant */
-                $this->constants[$constant->getName()] = $apiConstant;
-            }
-        }
-
-        return $this->constants;
+        return $this->getOwnConstants() + $this->getInheritedConstants();
     }
 
     /**
@@ -248,17 +193,12 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getOwnConstants(): array
     {
-        if ($this->ownConstants === null) {
-            $this->ownConstants = [];
-            $className = $this->betterClassReflection->getName();
-            foreach ($this->getConstants() as $constantName => $constant) {
-                if ($className === $constant->getDeclaringClassName()) {
-                    $this->ownConstants[$constantName] = $constant;
-                }
-            }
+        $constants = [];
+        foreach ($this->betterClassReflection->getConstants() as $name => $value) {
+            $constants[$name] = ClassConstantReflection::createFromNameValueAndClass($name, $value, $this);
         }
 
-        return $this->ownConstants;
+        return $constants;
     }
 
     /**
@@ -266,7 +206,17 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getInheritedConstants(): array
     {
-        return $this->parentClassElementExtractor->getInheritedConstants();
+        $parentClassesConstants = [];
+        foreach ($this->getParentClasses() as $classReflection) {
+            $parentClassesConstants += $classReflection->getOwnConstants();
+        }
+
+        $interfaceConstants = [];
+        foreach ($this->getInterfaces() as $interfaceReflection) {
+            $interfaceConstants += $interfaceReflection->getOwnConstants();
+        }
+
+        return $parentClassesConstants + $interfaceConstants;
     }
 
     public function hasConstant(string $name): bool
@@ -283,40 +233,31 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         throw new InvalidArgumentException(sprintf(
             'Constant %s does not exist in class %s',
             $name,
-            $this->betterClassReflection->getName()
+            $this->getName()
         ));
     }
 
     public function getOwnConstant(string $name): ClassConstantReflectionInterface
     {
-        // TODO: Implement getOwnConstant() method.
+        if (! isset($this->getOwnConstants()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Constant %s does not exist in class %s',
+                $name,
+                $this->getName()
+            ));
+        }
+
+        return $this->getOwnConstants()[$name];
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return TraitReflectionInterface[]
      */
     public function getTraits(): array
     {
         return $this->transformerCollector->transformGroup(
             $this->betterClassReflection->getTraits()
         );
-    }
-
-    /**
-     * @return TraitReflectionInterface[]
-     */
-    public function getOwnTraits(): array
-    {
-        // @todo: filter only own
-        return $this->getTraits();
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getTraitNames(): array
-    {
-        return $this->betterClassReflection->getTraitNames();
     }
 
     /**
@@ -332,20 +273,9 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getProperties(): array
     {
-        if ($this->properties === null) {
-            $this->properties = $this->getOwnProperties();
-            foreach ($this->betterClassReflection->getProperties() as $property) {
-                /** @var ReflectionElement $property */
-                if (isset($this->properties[$property->getName()])) {
-                    continue;
-                }
-
-                $apiProperty = $this->transformerCollector->transformSingle($property);
-                $this->properties[$property->getName()] = $apiProperty;
-            }
-        }
-
-        return $this->properties;
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getProperties()
+        );
     }
 
     /**
@@ -353,71 +283,30 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getOwnProperties(): array
     {
-        if ($this->ownProperties === null) {
-            $this->ownProperties = [];
-            foreach ($this->betterClassReflection->getOwnProperties() as $property) {
-                $apiProperty = $this->transformerCollector->transformSingle($property);
-                /** @var ReflectionElement $property */
-                $this->ownProperties[$property->getName()] = $apiProperty;
-            }
-        }
-
-        return $this->ownProperties;
-    }
-
-    /**
-     * @return ClassPropertyReflectionInterface[]
-     */
-    public function getInheritedProperties(): array
-    {
-        return $this->parentClassElementExtractor->getInheriteProperties();
-    }
-
-    /**
-     * @return ClassPropertyReflectionInterface[]
-     */
-    public function getTraitProperties(): array
-    {
-        return $this->classTraitElementExtractor->getTraitProperties();
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getImmediateProperties()
+        );
     }
 
     /**
      * @return ClassPropertyReflectionInterface[][]
      */
-    public function getUsedProperties(): array
+    public function getInheritedProperties(): array
     {
-        return $this->classTraitElementExtractor->getUsedProperties();
+        return $this->parentClassElementsResolver->getInheritedProperties($this);
     }
 
     public function getProperty(string $name): ClassPropertyReflectionInterface
     {
-        if ($this->hasProperty($name)) {
-            return $this->properties[$name];
+        if (! isset($this->getProperties()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Property %s does not exist in class %s',
+                $name,
+                $this->getName()
+            ));
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'Property %s does not exist in class %s',
-            $name,
-            $this->betterClassReflection->getName()
-        ));
-    }
-
-    public function hasProperty(string $name): bool
-    {
-        return isset($this->getProperties()[$name]);
-    }
-
-    public function usesTrait(string $trait): bool
-    {
-        return $this->betterClassReflection->usesTrait($trait);
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getParsedClasses(): array
-    {
-        // TODO: Implement getParsedClasses() method.
+        return $this->getProperties()[$name];
     }
 
     public function isAbstract(): bool
@@ -435,10 +324,9 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->betterClassReflection->isSubclassOf($class);
     }
 
-
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
     /**
@@ -459,28 +347,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->betterClassReflection->getFileName();
     }
 
-
-
-    /**
-     * @param mixed[] $usedMethods
-     * @return mixed[]
-     */
-    private function sortUsedMethods(array $usedMethods): array
-    {
-        array_walk($usedMethods, function (&$methods) {
-            ksort($methods);
-            array_walk($methods, function (&$aliasedMethods) {
-                if (! isset($aliasedMethods['aliases'])) {
-                    $aliasedMethods['aliases'] = [];
-                }
-
-                ksort($aliasedMethods['aliases']);
-            });
-        });
-
-        return $usedMethods;
-    }
-
     /**
      * @return ClassMethodReflectionInterface[]|TraitMethodReflectionInterface[]
      */
@@ -489,7 +355,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         $allMethods = [];
         $allMethods += $this->getOwnMethods();
 
-        foreach ($this->getOwnTraits() as $traitReflection) {
+        foreach ($this->getTraits() as $traitReflection) {
             // @todo: check override from the left
             // keep already existing
             $allMethods += $traitReflection->getMethods();
@@ -519,15 +385,22 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getTraitMethods(): array
     {
-        return $this->classTraitElementExtractor->getTraitMethods();
+        $traitMethods = [];
+        foreach ($this->getTraits() as $traitReflection) {
+            $traitMethods = array_merge($traitMethods, $traitReflection->getMethods());
+        }
+
+        return $traitMethods;
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return InterfaceReflectionInterface[]
      */
     public function getInterfaces(): array
     {
-        // TODO: Implement getInterfaces() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getInterfaces()
+        );
     }
 
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void

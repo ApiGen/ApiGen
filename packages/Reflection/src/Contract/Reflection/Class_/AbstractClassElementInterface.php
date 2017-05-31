@@ -2,7 +2,10 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-interface AbstractClassElementInterface
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
+
+interface AbstractClassElementInterface extends AccessLevelInterface, AbstractReflectionInterface
 {
     public function getDeclaringClass(): ClassReflectionInterface;
 

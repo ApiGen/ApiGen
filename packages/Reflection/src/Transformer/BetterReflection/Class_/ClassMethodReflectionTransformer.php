@@ -3,8 +3,8 @@
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Reflection\Class_\ClassMethodReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Reflection\Class_\ClassMethodReflection;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
@@ -35,7 +35,7 @@ final class ClassMethodReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param ReflectionMethod $reflection
+     * @param ReflectionMethod|object $reflection
      */
     public function transform($reflection): ClassMethodReflectionInterface
     {

@@ -10,7 +10,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionIn
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Tests\Parser\Reflection\ReflectionConstantTest;
+use Exception;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -46,16 +46,6 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         $this->implementersResolver = $implementersResolver;
     }
 
-    public function getStartLine(): int
-    {
-        return $this->betterInterfaceReflection->getStartLine();
-    }
-
-    public function getEndLine(): int
-    {
-        return $this->betterInterfaceReflection->getEndLine();
-    }
-
     public function getName(): string
     {
         return $this->betterInterfaceReflection->getName();
@@ -64,6 +54,21 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     public function getShortName(): string
     {
         return $this->betterInterfaceReflection->getShortName();
+    }
+
+    public function getNamespaceName(): string
+    {
+        return $this->betterInterfaceReflection->getNamespaceName();
+    }
+
+    public function getStartLine(): int
+    {
+        return $this->betterInterfaceReflection->getStartLine();
+    }
+
+    public function getEndLine(): int
+    {
+        return $this->betterInterfaceReflection->getEndLine();
     }
 
     public function getDescription(): string
@@ -78,17 +83,9 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectImplementers(): array
+    public function getImplementers(): array
     {
-        return $this->implementersResolver->resolveDirectImplementersOfInterface($this->getName());
-    }
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectImplementers(): array
-    {
-        return $this->implementersResolver->resolveIndirectImplementersOfInterface($this->getName());
+        return $this->implementersResolver->getImplementers($this);
     }
 
     public function getFileName(): string
@@ -126,30 +123,9 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         );
     }
 
-    /**
-     * @return InterfaceMethodReflectionInterface[]
-     */
-    public function getInheritedMethods(): array
-    {
-        // TODO: Implement getInheritedMethods() method.
-    }
-
-    /**
-     * @return InterfaceMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array
-    {
-        // TODO: Implement getUsedMethods() method.
-    }
-
     public function getMethod(string $name): InterfaceMethodReflectionInterface
     {
         // TODO: Implement getMethod() method.
-    }
-
-    public function hasMethod(string $name): bool
-    {
-        // TODO: Implement hasMethod() method.
     }
 
     /**
@@ -213,7 +189,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
             }
         }
 
-        throw new \Exception(
+        throw new Exception(
             sprintf('missing cosntant %s', $name)
         );
     }
@@ -226,7 +202,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
             }
         }
 
-        throw new \Exception(
+        throw new Exception(
             sprintf('missing cosntant %s', $name)
         );
     }
@@ -264,5 +240,20 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     public function getAnnotation(string $name): array
     {
         return $this->docBlock->getTagsByName($name);
+    }
+
+    public function isDeprecated(): bool
+    {
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
+    }
+
+    /**
+     * @return InterfaceReflectionInterface[]
+     */
+    public function getOwnInterfaces(): array
+    {
+        return $this->transformerCollector->transformGroup(
+            $this->betterInterfaceReflection->getImmediateInterfaces()
+        );
     }
 }

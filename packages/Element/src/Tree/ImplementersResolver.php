@@ -3,6 +3,7 @@
 namespace ApiGen\Element\Tree;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class ImplementersResolver
@@ -18,16 +19,13 @@ final class ImplementersResolver
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
-    public function resolveDirectImplementersOfInterface(string $interfaceName): array
+    public function getImplementers(InterfaceReflectionInterface $parentInterfaceReflection): array
     {
         $implementers = [];
-        foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if ($this->isAllowedDirectImplementer($classReflection, $interfaceName)) {
-                $implementers[] = $classReflection;
-            }
-        }
+        $implementers = $this->getClassImplementers($implementers, $parentInterfaceReflection);
+        $implementers = $this->getInterfaceImplementers($implementers, $parentInterfaceReflection);
 
         uksort($implementers, 'strcasecmp');
 
@@ -35,30 +33,36 @@ final class ImplementersResolver
     }
 
     /**
+     * @param mixed[] $implementers
      * @return ClassReflectionInterface[]
      */
-    public function resolveIndirectImplementersOfInterface(string $interfaceName): array
-    {
-        $implementers = [];
+    private function getClassImplementers(
+        array $implementers,
+        InterfaceReflectionInterface $parentInterfaceReflection
+    ): array {
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if ($this->isAllowedIndirectImplementer($classReflection, $interfaceName)) {
-                $implementers[] = $classReflection;
+            if ($classReflection->implementsInterface($parentInterfaceReflection->getName())) {
+                $implementers[$classReflection->getName()] = $classReflection;
             }
         }
-
-        uksort($implementers, 'strcasecmp');
 
         return $implementers;
     }
 
-    private function isAllowedDirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
-    {
-        return in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
-    }
+    /**
+     * @param ClassReflectionInterface[]|InterfaceReflectionInterface[] $implementers
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
+     */
+    private function getInterfaceImplementers(
+        array $implementers,
+        InterfaceReflectionInterface $parentInterfaceReflection
+    ): array {
+        foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
+            if ($interfaceReflection->implementsInterface($parentInterfaceReflection->getName())) {
+                $implementers[$interfaceReflection->getName()] = $interfaceReflection;
+            }
+        }
 
-    private function isAllowedIndirectImplementer(ClassReflectionInterface $classReflection, string $interfaceName): bool
-    {
-        return $classReflection->implementsInterface($interfaceName)
-            && ! in_array($interfaceName, $classReflection->getOwnInterfaceNames(), true);
+        return $implementers;
     }
 }

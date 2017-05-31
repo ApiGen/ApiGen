@@ -26,10 +26,10 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $classReflections = $this->reflectionStorage->getClassReflections();
-        $this->classReflection = $classReflections[2];
+        $this->classReflection = $classReflections[SomeClass::class];
     }
 
-    public function test(): void
+    public function testInterface(): void
     {
         $this->assertInstanceOf(ClassReflectionInterface::class, $this->classReflection);
     }
@@ -38,10 +38,6 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
     {
         $this->assertSame(SomeClass::class, $this->classReflection->getName());
         $this->assertSame('SomeClass', $this->classReflection->getShortName());
-    }
-
-    public function testNamespace(): void
-    {
         $this->assertSame($this->namespacePrefix, $this->classReflection->getNamespaceName());
     }
 
@@ -64,5 +60,11 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
     {
         $this->assertSame(12, $this->classReflection->getStartLine());
         $this->assertSame(23, $this->classReflection->getEndLine());
+    }
+
+    public function testModifiers(): void
+    {
+        $this->assertFalse($this->classReflection->isAbstract());
+        $this->assertFalse($this->classReflection->isFinal());
     }
 }

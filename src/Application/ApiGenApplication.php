@@ -9,7 +9,6 @@ use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Theme\ThemeResources;
 use ApiGen\Utils\FileSystem;
 
 final class ApiGenApplication
@@ -34,23 +33,16 @@ final class ApiGenApplication
      */
     private $fileSystem;
 
-    /**
-     * @var ThemeResources
-     */
-    private $themeResources;
-
     public function __construct(
         ConfigurationInterface $configuration,
         ParserInterface $parser,
         GeneratorQueueInterface $generatorQueue,
-        FileSystem $fileSystem,
-        ThemeResources $themeResources
+        FileSystem $fileSystem
     ) {
         $this->configuration = $configuration;
         $this->parser = $parser;
         $this->generatorQueue = $generatorQueue;
         $this->fileSystem = $fileSystem;
-        $this->themeResources = $themeResources;
     }
 
     public function runCommand(RunCommand $runCommand): void
@@ -71,6 +63,14 @@ final class ApiGenApplication
             $this->fileSystem->purgeDir($destination);
         }
 
-        $this->themeResources->copyToDestination($destination);
+        $this->copyThemeResourcesToDestination($destination);
+    }
+
+    private function copyThemeResourcesToDestination(string $destination): void
+    {
+        $this->fileSystem->copyDirectory(
+            $this->configuration->getTemplatesDirectory() . '/resources',
+            $destination . '/resources'
+        );
     }
 }

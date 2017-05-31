@@ -2,10 +2,10 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Trait_;
 
-use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\Reflection\Trait_\TraitPropertyReflection;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class TraitPropertyReflectionTransformer implements TransformerInterface
@@ -38,12 +38,12 @@ final class TraitPropertyReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param ReflectionParameter $reflection
+     * @param object|ReflectionProperty $reflection
      */
-    public function transform($reflection): MethodParameterReflection
+    public function transform($reflection): TraitPropertyReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() ?: ' ');
+        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
 
-        return new MethodParameterReflection($reflection, $docBlock);
+        return new TraitPropertyReflection($reflection, $docBlock);
     }
 }

@@ -30,7 +30,7 @@ final class InterfaceMethodReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param BetterReflectionFunction $reflection
+     * @param object|BetterReflectionFunction $reflection
      */
     public function transform($reflection): InterfaceMethodReflection
     {

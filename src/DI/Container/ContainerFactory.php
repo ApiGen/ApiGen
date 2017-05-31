@@ -5,7 +5,6 @@ namespace ApiGen\DI\Container;
 use Nette\Configurator;
 use Nette\DI\Container;
 use Nette\DI\Extensions\ExtensionsExtension;
-use Nette\DI\Extensions\PhpExtension;
 use Nette\Utils\FileSystem;
 
 final class ContainerFactory
@@ -21,11 +20,7 @@ final class ContainerFactory
         $configurator->setTempDirectory($this->createAndReturnTempDir());
 
         $this->loadConfigFiles($configurator);
-
-        $configurator->defaultExtensions = [
-            'php' => PhpExtension::class,
-            'extensions' => ExtensionsExtension::class,
-        ];
+        $this->setDefaultExtensions($configurator);
 
         return $configurator->createContainer();
     }
@@ -42,8 +37,16 @@ final class ContainerFactory
     {
         $configurator->addConfig(__DIR__ . '/../../config/config.neon');
         $localConfig = getcwd() . '/' . self::CONFIG_NAME;
+
         if (file_exists($localConfig)) {
             $configurator->addConfig($localConfig);
         }
+    }
+
+    private function setDefaultExtensions(Configurator $configurator): void
+    {
+        $configurator->defaultExtensions = [
+            'extensions' => ExtensionsExtension::class,
+        ];
     }
 }

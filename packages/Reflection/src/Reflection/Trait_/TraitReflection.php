@@ -3,13 +3,14 @@
 namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Element\Tree\TraitUsersResolver;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -30,10 +31,19 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     private $transformerCollector;
 
-    public function __construct(ReflectionClass $betterClassReflection, DocBlock $docBlock)
-    {
+    /**
+     * @var TraitUsersResolver
+     */
+    private $traitUsersResolver;
+
+    public function __construct(
+        ReflectionClass $betterClassReflection,
+        DocBlock $docBlock,
+        TraitUsersResolver $traitUsersResolver
+    ) {
         $this->betterTraitReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
+        $this->traitUsersResolver = $traitUsersResolver;
     }
 
     public function getName(): string
@@ -58,45 +68,32 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return trim($description);
     }
 
-
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
-    public function getDirectUsers(): array
+    public function getUsers(): array
     {
-        return $this->classTraitElementExtractor->getDirectUsers();
+        return $this->traitUsersResolver->getUsers($this);
     }
 
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectUsers(): array
-    {
-        return $this->classTraitElementExtractor->getIndirectUsers();
-    }
-
-
-    /**
-     * Returns the unqualified name (UQN).
-     */
     public function getShortName(): string
     {
-        // TODO: Implement getShortName() method.
+        return $this->betterTraitReflection->getShortName();
     }
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
     public function getNamespaceName(): string
     {
-        // TODO: Implement getNamespaceName() method.
+        return $this->betterTraitReflection->getNamespaceName();
     }
 
     public function getFileName(): string
     {
-        // TODO: Implement getFileName() method.
+        return $this->betterTraitReflection->getFileName();
     }
 
     /**
@@ -114,25 +111,22 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getOwnMethods(): array
     {
-        // TODO: Implement getOwnMethods() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getImmediateMethods()
+        );
     }
 
-    /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getTraitMethods(): array
+    public function getMethod(string $name): TraitMethodReflectionInterface
     {
-        // TODO: Implement getTraitMethods() method.
-    }
+        if (! isset($this->getMethods()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Method "%s" does not exist in trait "%s".',
+                $name,
+                $this->getName()
+            ));
+        }
 
-    public function getMethod(string $name): ClassMethodReflectionInterface
-    {
-        // TODO: Implement getMethod() method.
-    }
-
-    public function hasMethod(string $name): bool
-    {
-        // TODO: Implement hasMethod() method.
+        return $this->getMethods()[$name];
     }
 
     /**
@@ -140,23 +134,12 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getTraits(): array
     {
-        // TODO: Implement getTraits() method.
-    }
-
-    /**
-     * @return TraitReflectionInterface[]
-     */
-    public function getOwnTraits(): array
-    {
-        // TODO: Implement getOwnTraits() method.
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getOwnTraitNames(): array
-    {
-        // TODO: Implement getOwnTraitNames() method.
+        return [];
+        // fails for now, see:
+        // https://github.com/nikic/PHP-Parser/issues/73#issuecomment-24533846
+        // $this->betterTraitReflection->getTraits();
+        // and PR wit htest
+        // https://github.com/Roave/BetterReflection/pull/274
     }
 
     /**
@@ -164,7 +147,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getTraitAliases(): array
     {
-        // TODO: Implement getTraitAliases() method.
+        return $this->betterTraitReflection->getTraitAliases();
     }
 
     /**
@@ -172,7 +155,9 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getProperties(): array
     {
-        // TODO: Implement getProperties() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getProperties()
+        );
     }
 
     /**
@@ -180,38 +165,22 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getOwnProperties(): array
     {
-        // TODO: Implement getOwnProperties() method.
-    }
-
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getTraitProperties(): array
-    {
-        // TODO: Implement getTraitProperties() method.
-    }
-
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getUsedProperties(): array
-    {
-        // TODO: Implement getUsedProperties() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterTraitReflection->getImmediateProperties()
+        );
     }
 
     public function getProperty(string $name): TraitPropertyReflectionInterface
     {
-        // TODO: Implement getProperty() method.
-    }
+        if (! isset($this->getProperties()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Property "%s" does not exist in trait "%s".',
+                $name,
+                $this->getName()
+            ));
+        }
 
-    public function hasProperty(string $name): bool
-    {
-        // TODO: Implement hasProperty() method.
-    }
-
-    public function usesTrait(string $name): bool
-    {
-        // TODO: Implement usesTrait() method.
+        return $this->getProperties()[$name];
     }
 
     /**
@@ -225,11 +194,6 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     public function hasAnnotation(string $name): bool
     {
         return $this->docBlock->hasTag($name);
-    }
-
-    public function addTransformer(TransformerInterface $transformer): void
-    {
-        // TODO: Implement addTransformer() method.
     }
 
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void

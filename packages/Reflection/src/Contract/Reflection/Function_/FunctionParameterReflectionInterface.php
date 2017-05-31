@@ -9,4 +9,6 @@ interface FunctionParameterReflectionInterface extends AbstractParameterReflecti
     public function getDeclaringFunction(): FunctionReflectionInterface;
 
     public function getDeclaringFunctionName(): string;
+
+    public function getDescription(): string;
 }

@@ -2,10 +2,14 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface, StartAndEndLineInterface, AnnotationsInterface
+interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface, StartAndEndLineInterface,
+    AnnotationsInterface, AccessLevelInterface
 {
     public function isDefault(): bool;
 
@@ -20,12 +24,8 @@ interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
 
     public function getNamespaceName(): string;
 
-    public function getName(): string;
-
     /**
-     * Returns the unqualified name (UQN).
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
      */
-    public function getShortName(): string;
-
-    public function isDeprecated(): bool;
+    public function getTypeHintClassOrInterfaceReflection();
 }

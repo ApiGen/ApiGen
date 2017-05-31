@@ -2,13 +2,18 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflection;
 
-use ApiGen\Reflection\Reflection\FunctionParameterReflection;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
 {
     /**
-     * @var FunctionParameterReflection
+     * @var string
+     */
+    private $namespacePrefix = 'ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflection\Source';
+
+    /**
+     * @var FunctionParameterReflectionInterface
      */
     private $functionParameterReflection;
 
@@ -17,21 +22,14 @@ final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
-        $functionReflection = $functionReflections[1];
+        $functionReflection = $functionReflections[$this->namespacePrefix . '\functionWithConstant'];
 
-        $functionParametersReflections = $functionReflection->getParameters();
-        $this->functionParameterReflection = array_pop($functionParametersReflections);
-    }
-
-    public function testName(): void
-    {
-        $this->assertSame('hello', $this->functionParameterReflection->getName());
+        $this->functionParameterReflection = $functionReflection->getParameters()['hello'];
     }
 
     public function testType(): void
     {
         $this->assertSame('', $this->functionParameterReflection->getTypeHint());
-        $this->assertNull($this->functionParameterReflection->getClassName());
     }
 
     public function testDefaultValue(): void

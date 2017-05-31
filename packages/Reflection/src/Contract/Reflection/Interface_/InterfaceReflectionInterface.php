@@ -2,25 +2,22 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
+interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
+    AbstractReflectionInterface
 {
-    public function getName(): string;
+    public function getNamespaceName(): string;
 
     public function getFileName(): string;
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
-    public function getDirectImplementers(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectImplementers(): array;
+    public function getImplementers(): array;
 
     /**
      * @return InterfaceReflectionInterface[]
@@ -37,19 +34,17 @@ interface InterfaceReflectionInterface extends StartAndEndLineInterface, Annotat
      */
     public function getOwnMethods(): array;
 
-    /**
-     * @return InterfaceMethodReflectionInterface[]
-     */
-    public function getInheritedMethods(): array;
-
     public function getMethod(string $name): InterfaceMethodReflectionInterface;
-
-    public function hasMethod(string $name): bool;
 
     /**
      * @return InterfaceConstantReflectionInterface[]
      */
     public function getOwnConstants(): array;
+
+    /**
+     * @return InterfaceReflectionInterface[]
+     */
+    public function getOwnInterfaces(): array;
 
     /**
      * @return InterfaceConstantReflectionInterface[]

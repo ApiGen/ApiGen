@@ -23,15 +23,9 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
-        $functionReflection = $functionReflections[2];
+        $functionReflection = $functionReflections[$this->namespacePrefix . '\functionWithVariadic'];
 
-        $functionParametersReflections = $functionReflection->getParameters();
-        $this->functionParameterReflection = $functionParametersReflections[0]; //array_pop($functionParametersReflections);
-    }
-
-    public function testName(): void
-    {
-        $this->assertSame('arguments', $this->functionParameterReflection->getName());
+        $this->functionParameterReflection = $functionReflection->getParameters()['arguments'];
     }
 
     public function testDeclaringFunction(): void
@@ -42,7 +36,7 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         );
 
         $this->assertSame(
-            $this->namespacePrefix . '\someAloneFunction',
+            $this->namespacePrefix . '\functionWithVariadic',
             $this->functionParameterReflection->getDeclaringFunctionName()
         );
     }
@@ -53,12 +47,7 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertTrue($this->functionParameterReflection->isVariadic());
         $this->assertFalse($this->functionParameterReflection->isArray());
         $this->assertFalse($this->functionParameterReflection->isCallable());
-
-        // @todo: add test for class
-        $this->assertNull($this->functionParameterReflection->getClass());
-        $this->assertNull($this->functionParameterReflection->getClassName());
     }
-
 
     public function testDescription(): void
     {

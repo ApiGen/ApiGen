@@ -2,23 +2,12 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Method;
 
-use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
-use phpDocumentor\Reflection\DocBlockFactoryInterface;
+use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 final class MethodParameterReflectionTransformer implements TransformerInterface
 {
-    /**
-     * @var DocBlockFactoryInterface
-     */
-    private $docBlockFactory;
-
-    public function __construct(DocBlockFactoryInterface $docBlockFactory)
-    {
-        $this->docBlockFactory = $docBlockFactory;
-    }
-
     /**
      * @param object $reflection
      */
@@ -28,19 +17,14 @@ final class MethodParameterReflectionTransformer implements TransformerInterface
             return false;
         }
 
-        dump($reflection);
-        die;
-
         return (bool) $reflection->getDeclaringClass();
     }
 
     /**
-     * @param ReflectionParameter $reflection
+     * @param ReflectionParameter|object $reflection
      */
     public function transform($reflection): MethodParameterReflection
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocBlockTypes() ?: ' ');
-
-        return new MethodParameterReflection($reflection, $docBlock);
+        return new MethodParameterReflection($reflection);
     }
 }

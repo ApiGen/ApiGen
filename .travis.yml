@@ -5,8 +5,8 @@ sudo: false
 matrix:
     include:
         - php: 7.1
-            # add variables to enable coverage, coding standard check and static analysis
-            env: PHPUNIT_FLAGS="--coverage-clover coverage.xml" CHECK_CS=1 RUN_PHPSTAN=1
+          # add variables to enable coverage, coding standard check and static analysis
+          env: PHPUNIT_FLAGS="--coverage-clover coverage.xml"
 
 install:
     # install composer dependencies
@@ -16,9 +16,9 @@ script:
     # run tests
     - vendor/bin/phpunit $PHPUNIT_FLAGS
     # check coding standard (defined in composer.json "scripts" section)
-    - if [[ $CHECK_CS = 1 ]]; then composer check-cs; fi
+    - composer check-cs
     # check with phpstan (defined in composer.json "scripts" section)
-    - if [[ $RUN_PHPSTAN = 1 ]]; then composer phpstan; fi
+    - composer phpstan
 
 after_script:
     # upload coverage.xml file to Scrutinizer to analyze it
@@ -29,8 +29,7 @@ after_script:
         fi
     - ./generate-api.sh
 
+# do not send success emails, they don't need any action
 notifications:
     email:
-        # temporary disable, many errors coming
         on_success: never
-        on_failure: never

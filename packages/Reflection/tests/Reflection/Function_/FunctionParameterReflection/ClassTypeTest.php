@@ -9,6 +9,11 @@ use ApiGen\Tests\AbstractParserAwareTestCase;
 final class ClassTypeTest extends AbstractParserAwareTestCase
 {
     /**
+     * @var string
+     */
+    private $namespacePrefix = 'ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflection\Source';
+
+    /**
      * @var FunctionParameterReflectionInterface
      */
     private $functionParameterReflection;
@@ -18,24 +23,17 @@ final class ClassTypeTest extends AbstractParserAwareTestCase
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
-        $functionReflection = $functionReflections[0];
+        $functionReflection = $functionReflections[$this->namespacePrefix . '\functionWithClass'];
 
-        $functionParametersReflections = $functionReflection->getParameters();
-        $this->functionParameterReflection = array_pop($functionParametersReflections);
-    }
-
-    public function testName(): void
-    {
-        $this->assertSame('splFileInfo', $this->functionParameterReflection->getName());
+        $this->functionParameterReflection = $functionReflection->getParameters()['splFileInfo'];
     }
 
     public function testType(): void
     {
         $this->assertSame('SplFileInfo', $this->functionParameterReflection->getTypeHint());
-
-        $typeHintClassReflection = $this->functionParameterReflection->getClass();
-        $this->assertSame('SplFileInfo', $this->functionParameterReflection->getClassName());
-
-        $this->assertInstanceOf(ClassReflectionInterface::class, $typeHintClassReflection);
+        $this->assertInstanceOf(
+            ClassReflectionInterface::class,
+            $this->functionParameterReflection->getTypeHintClassOrInterfaceReflection()
+        );
     }
 }

@@ -5,11 +5,14 @@ namespace ApiGen\Reflection\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
-final class ClassMethodReflection implements ClassMethodReflectionInterface
+final class ClassMethodReflection implements ClassMethodReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var string
@@ -19,17 +22,12 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     /**
      * @var ReflectionMethod
      */
-    private $reflection;
+    private $betterMethodReflection;
 
     /**
      * @var DocBlock
      */
     private $docBlock;
-
-    /**
-     * @var ClassReflectionInterface
-     */
-    private $declaringClass;
 
     /**
      * @var TransformerCollectorInterface
@@ -38,47 +36,43 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
 
     public function __construct(ReflectionMethod $betterFunctionReflection, DocBlock $docBlock)
     {
-        $this->reflection = $betterFunctionReflection;
+        $this->betterMethodReflection = $betterFunctionReflection;
         $this->docBlock = $docBlock;
     }
 
     public function getName(): string
     {
-        return $this->reflection->getName();
+        return $this->betterMethodReflection->getName();
     }
 
     public function getShortName(): string
     {
-        return $this->reflection->getShortName();
+        return $this->betterMethodReflection->getShortName();
     }
 
     public function getStartLine(): int
     {
-        return $this->reflection->getStartLine();
+        return $this->betterMethodReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        return $this->reflection->getEndLine();
+        return $this->betterMethodReflection->getEndLine();
     }
 
     public function returnsReference(): bool
     {
-        return $this->reflection->returnsReference();
+        return $this->betterMethodReflection->returnsReference();
     }
 
     public function isDeprecated(): bool
     {
-        if ($this->reflection->isDeprecated()) {
+        if ($this->betterMethodReflection->isDeprecated()) {
             return true;
         }
 
-        // if parent is deprecated, so is this
-    }
-
-    public function getNamespaceName(): string
-    {
-        return $this->reflection->getNamespaceName();
+        return $this->getDeclaringClass()
+            ->isDeprecated();
     }
 
     /**
@@ -95,7 +89,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     }
 
     /**
-     * @return mixed[]
+     * @return Tag[]
      */
     public function getAnnotation(string $name): array
     {
@@ -113,51 +107,45 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
 
     public function getDeclaringClass(): ClassReflectionInterface
     {
-        return $this->declaringClass;
+        return $this->transformerCollector->transformSingle(
+            $this->betterMethodReflection->getDeclaringClass()
+        );
     }
 
     public function getDeclaringClassName(): string
     {
-        if ($this->declaringClass) {
-            $this->declaringClass->getName();
-        }
-
-        return '';
-    }
-
-    public function setDeclaringClass(ClassReflectionInterface $classReflection): void
-    {
-        $this->declaringClass = $classReflection;
+        return $this->getDeclaringClass()
+            ->getName();
     }
 
     public function isPrivate(): bool
     {
-        return $this->reflection->isPrivate();
+        return $this->betterMethodReflection->isPrivate();
     }
 
     public function isProtected(): bool
     {
-        return $this->reflection->isProtected();
+        return $this->betterMethodReflection->isProtected();
     }
 
     public function isPublic(): bool
     {
-        return $this->reflection->isPublic();
+        return $this->betterMethodReflection->isPublic();
     }
 
     public function isAbstract(): bool
     {
-        return $this->reflection->isAbstract();
+        return $this->betterMethodReflection->isAbstract();
     }
 
     public function isFinal(): bool
     {
-        return $this->reflection->isFinal();
+        return $this->betterMethodReflection->isFinal();
     }
 
     public function isStatic(): bool
     {
-        return $this->reflection->isStatic();
+        return $this->betterMethodReflection->isStatic();
     }
 
     // @todo: is used?
@@ -165,7 +153,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     public function getImplementedMethod(): ?InterfaceMethodReflectionInterface
     {
         foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
-            if ($interface->hasMethod($this->getName())) {
+            if (isset($interface->getMethods()[$this->getName()])) {
                 return $interface->getMethod($this->getName());
             }
         }
@@ -195,12 +183,17 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface
     }
 
     /**
-     * @return ParameterReflectionInterface[]
+     * @return MethodParameterReflectionInterface[]
      */
     public function getParameters(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->reflection->getParameters()
+            $this->betterMethodReflection->getParameters()
         );
+    }
+
+    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }

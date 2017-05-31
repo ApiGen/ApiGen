@@ -9,14 +9,14 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
  *
  * @author Me.
  */
-class SomeClass
+class SomeClass extends ParentClass
 {
     /**
      * @var int
      */
     public $someProperty;
 
-    public function SomeMethod()/*: void - brokes old parser */
+    public function SomeMethod(): void/*: void - brokes old parser */
     {
 
     }

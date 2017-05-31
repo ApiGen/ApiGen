@@ -2,18 +2,15 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
-interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
+interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface
 {
-    public function getName(): string;
-
     public function getParentClass(): ?ClassReflectionInterface;
 
     public function getParentClassName(): ?string;
@@ -28,12 +25,7 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getDirectSubClasses(): array;
-
-    /**
-     * @return ClassReflectionInterface[]
-     */
-    public function getIndirectSubClasses(): array;
+    public function getSubClasses(): array;
 
     public function implementsInterface(string $name): bool;
 
@@ -46,11 +38,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
      * @return InterfaceReflectionInterface[]
      */
     public function getOwnInterfaces(): array;
-
-    /**
-     * @return string[]
-     */
-    public function getOwnInterfaceNames(): array;
 
     /**
      * @return ClassMethodReflectionInterface[]
@@ -68,18 +55,11 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getInheritedMethods(): array;
 
     /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array;
-
-    /**
      * @return TraitMethodReflectionInterface[]
      */
     public function getTraitMethods(): array;
 
     public function getMethod(string $name): ClassMethodReflectionInterface;
-
-    public function hasMethod(string $name): bool;
 
     /**
      * @return ClassConstantReflectionInterface[]
@@ -103,16 +83,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getTraits(): array;
 
     /**
-     * @return TraitReflectionInterface[]
-     */
-    public function getOwnTraits(): array;
-
-    /**
-     * @return string[]
-     */
-    public function getTraitNames(): array;
-
-    /**
      * @return string[]
      */
     public function getTraitAliases(): array;
@@ -132,21 +102,7 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
      */
     public function getInheritedProperties(): array;
 
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getTraitProperties(): array;
-
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getUsedProperties(): array;
-
     public function getProperty(string $name): ClassPropertyReflectionInterface;
-
-    public function hasProperty(string $name): bool;
-
-    public function usesTrait(string $name): bool;
 
     public function isAbstract(): bool;
 
@@ -158,5 +114,10 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
 
     public function getNamespaceName(): string;
 
+    /**
+     * @return ClassConstantReflectionInterface[]
+     */
     public function getConstants(): array;
+
+    public function isDeprecated(): bool;
 }

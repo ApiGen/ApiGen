@@ -8,7 +8,6 @@
 - ApiGen\ModularConfiguration\Option\SourceOption
 - ApiGen\ModularConfiguration\Option\ThemeDirectoryOption
 - ApiGen\ModularConfiguration\Option\VisibilityLevelOption
-- ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption
 - ApiGen\ModularConfiguration\Option\TitleOption
 - ApiGen\ModularConfiguration\Option\OverwriteOption
 

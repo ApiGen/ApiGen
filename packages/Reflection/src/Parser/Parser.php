@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Parser;
 
+use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -11,7 +12,10 @@ use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
+use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 final class Parser implements ParserInterface
 {
@@ -25,10 +29,19 @@ final class Parser implements ParserInterface
      */
     private $reflectionStorage;
 
-    public function __construct(TransformerCollectorInterface $transformerCollector, ReflectionStorageInterface $reflectionStorage)
-    {
+    /**
+     * @var ReflectionWarmUpper
+     */
+    private $reflectionWarmUpper;
+
+    public function __construct(
+        TransformerCollectorInterface $transformerCollector,
+        ReflectionStorageInterface $reflectionStorage,
+        ReflectionWarmUpper $reflectionWarmUpper
+    ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
+        $this->reflectionWarmUpper = $reflectionWarmUpper;
     }
 
     /**
@@ -45,7 +58,9 @@ final class Parser implements ParserInterface
         // @legacy
         // Add classes from @param, @var, @return, @throws annotations as well
         // as parent classes to the overall class list.
-        // @see \ApiGen\Parser\Broker\Backend
+        // @see \ApiGen\Parser\Broker\Backend: https://github.com/ApiGen/ApiGen/blob/fa603928b656a9e7c826e001f5295200d23f9712/src/Parser/Broker/Backend.php#L174
+
+        $this->reflectionWarmUpper->warmUp();
     }
 
     /**
@@ -56,17 +71,17 @@ final class Parser implements ParserInterface
         $classReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof ClassReflectionInterface;
         });
-        $this->reflectionStorage->setClassReflections($classReflections);
+        $this->reflectionStorage->addClassReflections($classReflections);
 
         $interfaceReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof InterfaceReflectionInterface;
         });
-        $this->reflectionStorage->setInterfaceReflections($interfaceReflections);
+        $this->reflectionStorage->addInterfaceReflections($interfaceReflections);
 
         $traitReflections = array_filter($classInterfaceAndTraitReflections, function ($reflection) {
             return $reflection instanceof TraitReflectionInterface;
         });
-        $this->reflectionStorage->setTraitReflections($traitReflections);
+        $this->reflectionStorage->addTraitReflections($traitReflections);
     }
 
     /**
@@ -89,16 +104,16 @@ final class Parser implements ParserInterface
         return $this->transformerCollector->transformGroup($betterClassReflections);
     }
 
-    private function parseClassElements(DirectoriesSourceLocator $directoriesSourceLocator): void
+    private function parseClassElements(SourceLocator $sourceLocator): void
     {
-        $classReflector = new ClassReflector($directoriesSourceLocator);
+        $classReflector = new ClassReflector($sourceLocator);
         $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections($classReflector);
         $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
     }
 
-    private function parseFunctions(DirectoriesSourceLocator $directoriesSourceLocator): void
+    private function parseFunctions(SourceLocator $sourceLocator): void
     {
-        $functionReflector = new FunctionReflector($directoriesSourceLocator);
+        $functionReflector = new FunctionReflector($sourceLocator);
         $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
         $this->reflectionStorage->setFunctionReflections($functionReflections);
     }
@@ -106,10 +121,13 @@ final class Parser implements ParserInterface
     /**
      * @param string[] $directories
      */
-    private function createDirectoriesSource(array $directories): DirectoriesSourceLocator
+    private function createDirectoriesSource(array $directories): SourceLocator
     {
         // @todo: use FileIteratorSourceLocator and FinderInterface
         // such service scan be replaced in config by own with custom finder implementation
-        return new DirectoriesSourceLocator($directories);
+        return new AggregateSourceLocator([
+            new DirectoriesSourceLocator($directories),
+            new AutoloadSourceLocator()
+        ]);
     }
 }

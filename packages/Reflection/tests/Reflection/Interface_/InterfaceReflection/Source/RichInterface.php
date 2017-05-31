@@ -4,5 +4,5 @@ namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Sour
 
 interface RichInterface extends PoorInterface
 {
-    public function getSomeStuff();
+    public function getSomeStuff(): void;
 }

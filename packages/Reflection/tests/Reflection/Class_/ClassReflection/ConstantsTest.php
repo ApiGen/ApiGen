@@ -3,9 +3,16 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
+use InvalidArgumentException;
 
 final class ConstantsTest extends AbstractReflectionClassTestCase
 {
+    public function testName(): void
+    {
+        $this->assertSame(AccessLevels::class, $this->reflectionClass->getName());
+    }
+
     public function testGetConstants(): void
     {
         $this->assertCount(2, $this->reflectionClass->getConstants());
@@ -35,19 +42,15 @@ final class ConstantsTest extends AbstractReflectionClassTestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetOwnConstantNonExisting(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->reflectionClass->getOwnConstant('NON_EXISTING');
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetConstantNonExisting(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->reflectionClass->getConstant('NON_EXISTING');
     }
 

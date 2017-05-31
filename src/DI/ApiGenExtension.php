@@ -4,7 +4,6 @@ namespace ApiGen\DI;
 
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
-use ApiGen\Templating\Filters\Filters;
 use Latte\Engine;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
@@ -24,7 +23,6 @@ final class ApiGenExtension extends CompilerExtension
 
     public function beforeCompile(): void
     {
-        $this->setupTemplatingFilters();
         $this->setupGeneratorQueue();
     }
 
@@ -34,17 +32,7 @@ final class ApiGenExtension extends CompilerExtension
         $containerBuilder = $this->getContainerBuilder();
         $containerBuilder->addDefinition($this->prefix('latteFactory'))
             ->setClass(Engine::class)
-            ->addSetup('setTempDirectory', [$containerBuilder->expand('%tempDir%/cache/latte')]);
-    }
-
-    private function setupTemplatingFilters(): void
-    {
-        // @todo: use Symplify package
-        $containerBuilder = $this->getContainerBuilder();
-        $latteFactory = $containerBuilder->getDefinitionByType(Engine::class);
-        foreach ($containerBuilder->findByType(Filters::class) as $definition) {
-            $latteFactory->addSetup('addFilter', [null, ['@' . $definition->getClass(), 'loader']]);
-        }
+            ->addSetup('setTempDirectory', [sys_get_temp_dir() . '/_latte_cache']);
     }
 
     private function setupGeneratorQueue(): void
