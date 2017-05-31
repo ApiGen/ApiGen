@@ -29,8 +29,7 @@ after_script:
         fi
     - ./generate-api.sh
 
+# do not send success emails, they don't need any action
 notifications:
     email:
-        # temporary disable, many errors coming
         on_success: never
-        on_failure: never

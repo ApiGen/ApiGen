@@ -26,6 +26,6 @@ final class NamespaceGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         $this->namespaceGenerator->generate();
-        $this->assertFileExists(TEMP_DIR . '/namespace-ApiGen.html');
+        $this->assertFileExists(TEMP_DIR . '/namespace-ApiGen.Tests.Generator.TemplateGenerators.Source.html');
     }
 }

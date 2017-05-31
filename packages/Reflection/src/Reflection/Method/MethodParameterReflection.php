@@ -5,11 +5,14 @@ namespace ApiGen\Reflection\Reflection\Method;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\Types\Object_;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 final class MethodParameterReflection implements MethodParameterReflectionInterface, TransformerCollectorAwareInterface
@@ -57,9 +60,10 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
             return 'callable';
         }
 
-        $className = $this->getClassName();
-        if ($className) {
-            return $className;
+        $typeHint = $this->betterParameterReflection->getTypeHint();
+        if ($typeHint instanceof Object_) {
+            $classOrInterfaceName = (string) $typeHint->getFqsen();
+            return ltrim($classOrInterfaceName, '\\');
         }
 
         $annotation = $this->getAnnotation();
@@ -68,6 +72,23 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
         }
 
         return '';
+    }
+
+    /**
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
+     */
+    public function getTypeHintClassOrInterfaceReflection()
+    {
+        if (! class_exists($this->getTypeHint())) {
+            return null;
+        }
+
+        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
+
+        /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
+        $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
+
+        return $classOrInterfaceReflection;
     }
 
     public function getDescription(): string
@@ -98,26 +119,6 @@ final class MethodParameterReflection implements MethodParameterReflectionInterf
     public function isArray(): bool
     {
         return $this->betterParameterReflection->isArray();
-    }
-
-    public function getClass(): ?ClassReflectionInterface
-    {
-        $typeHint = $this->betterParameterReflection->getTypeHint();
-        if ($typeHint) {
-            // @todo
-        }
-
-        return null;
-    }
-
-    public function getClassName(): ?string
-    {
-        $class = $this->getClass();
-        if ($class) {
-            return $class->getName();
-        }
-
-        return null;
     }
 
     public function getDeclaringClassName(): string

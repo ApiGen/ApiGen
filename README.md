@@ -57,6 +57,7 @@ These annotations are supported by ApiGen:
 
 - `@link` - website url
 - `@see`, `@uses`, `@covers` - reference to some element (Class, Function, Property, Method...)
+- `@deprecated` - element about to be removed, with replacement
 
 - `@param` - an argument of a method or function 
 - `@return` - the return value of method or function 
@@ -67,7 +68,7 @@ These annotations are supported by ApiGen:
 
 ### In Examples
 
-#### `@see`
+#### `@see`, `@covers`, `@uses`
 
 **In Code**
 
@@ -103,6 +104,22 @@ These annotations are supported by ApiGen:
 ```html
 This is already mentioned on Wiki.
 (https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall)[https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall] 
+```
+
+### `@deprecated`
+
+**In Code**
+
+```php
+/**
+ * @deprecated use Nette\Utils\ObjectMixin::setExtensionMethod() instead
+ */
+```
+
+**Generated**
+
+```html
+@todo
 ```
 
 

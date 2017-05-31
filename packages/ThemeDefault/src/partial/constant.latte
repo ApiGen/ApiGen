@@ -1,9 +1,9 @@
 <td class="attributes">
-    <code>{$constant->typeHint|typeLinks:$constant|noescape}</code>
+    <code>{$constant->getTypeHint()}</code>
 </td>
 <td class="name">
     <div class="description detailed">
-        {$constant->getDescription()}
+        {$constant|description}
 
         {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
         {foreach $filteredAnnotations as $annotation => $descriptions}
@@ -11,7 +11,7 @@
             <div class="list">
                 {foreach $descriptions as $description}
                     {if $description}
-                        {$description|annotation:$annotation:$constant|noescape}<br>
+                        {$description|annotation:$constant|noescape}<br>
                     {/if}
                 {/foreach}
             </div>
@@ -21,6 +21,6 @@
 <td class="value">
     <div>
         <a href="#{$constant->getName()}" class="anchor">#</a>
-        <code>{$constant->valueDefinition|highlightValue:$class|noescape}</code>
+        <code>{$constant->getValueDefinition()|highlightValue:$class|noescape}</code>
     </div>
 </td>

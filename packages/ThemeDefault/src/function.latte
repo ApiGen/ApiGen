@@ -10,7 +10,7 @@
         <h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
 
         <div class="description" n:if="$function->getDescription()">
-            {$function->getDescription()}
+            {$function|description}
         </div>
 
         {*<div class="alert alert-info">*}
@@ -20,7 +20,7 @@
             {foreach $filteredAnnotations as $annotation => $values}
                 {foreach $values as $value}
                     <b>{$annotation}{if $value}:{/if}</b>
-                    {$value|annotation:$annotation:$function|noescape}<br>
+                    {$value|annotation:$function|noescape}<br>
                 {/foreach}
             {/foreach}
             <strong>
@@ -34,24 +34,29 @@
         <table class="summary" id="parameters" n:if="count($function->getParameters())">
         <caption>Parameters summary</caption>
         <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
-            <td class="name"><code>{$parameter->getTypeHint()|typeLinks:$function|noescape}</code></td>
+            <td class="name">
+                <code>
+                    {if $parameter->getTypeHintClassOrInterfaceReflection()}
+                        {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
+                    {else}
+                        {$parameter->getTypeHint()}
+                    {/if}
+                </code>
+            </td>
             <td class="value"><code>{block|strip}
                 <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
-                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
             {/block}</code></td>
-            <td>{$parameter->getDescription()|annotationDescription:$function}</td>
+            <td>{$parameter|description}</td>
         </tr>
         </table>
 
-        {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
+        {if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
             <table class="summary" id="returns">
                 <caption>Return value summary</caption>
                 <tr>
                     <td class="name">
-                        <code>{$annotations['return'][0]|typeLinks:$function|noescape}</code>
-                    </td>
-                    <td>
-                        {$annotations['return'][0]|annotationDescription:$function|noescape}
+                        {$annotations['return'][0]|annotation:$function|noescape}
                     </td>
                 </tr>
             </table>

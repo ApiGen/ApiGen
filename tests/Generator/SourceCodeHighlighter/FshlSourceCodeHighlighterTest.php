@@ -2,13 +2,11 @@
 
 namespace ApiGen\Tests\Generator\SourceCodeHighlighter;
 
+use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter;
-use FSHL\Highlighter;
-use FSHL\Lexer\Php;
-use FSHL\Output\Html;
-use PHPUnit\Framework\TestCase;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class FshlSourceCodeHighlighterTest extends TestCase
+final class FshlSourceCodeHighlighterTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var FshlSourceCodeHighlighter
@@ -17,9 +15,7 @@ final class FshlSourceCodeHighlighterTest extends TestCase
 
     protected function setUp(): void
     {
-        $highlighter = new Highlighter(new Html);
-        $highlighter->setLexer(new Php);
-        $this->sourceCodeHighlighter = new FshlSourceCodeHighlighter($highlighter);
+        $this->sourceCodeHighlighter = $this->container->getByType(SourceCodeHighlighterInterface::class);
     }
 
     public function testHighlight(): void

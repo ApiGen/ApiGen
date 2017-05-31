@@ -21,7 +21,7 @@ final class NetteFinderTest extends TestCase
     public function testSource(): void
     {
         $this->assertCount(1, $this->finder->find([__DIR__ . '/NetteFinderSource']));
-        $this->assertCount(4, $this->finder->find([__DIR__ . '/Source']));
+        $this->assertCount(3, $this->finder->find([__DIR__ . '/Source']));
         $this->assertCount(1, $this->finder->find([__DIR__ . '/Source/SomeClass.php']));
     }
 }

@@ -36,8 +36,9 @@
     "autoload": {
         "psr-4": {
             "ApiGen\\": "src",
-            "ApiGen\\ModularConfiguration\\": "packages/ModularConfiguration/src",
+            "ApiGen\\Annotation\\": "packages/Annotation/src",
             "ApiGen\\Element\\": "packages/Element/src",
+            "ApiGen\\ModularConfiguration\\": "packages/ModularConfiguration/src",
             "ApiGen\\Reflection\\": "packages/Reflection/src",
             "ApiGen\\StringRouting\\": "packages/StringRouting/src",
             "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
@@ -46,6 +47,7 @@
     "autoload-dev": {
         "psr-4": {
             "ApiGen\\Tests\\": "tests",
+            "ApiGen\\Annotation\\Tests\\": "packages/Annotation/tests",
             "ApiGen\\Element\\Tests\\": "packages/Element/tests",
             "ApiGen\\Reflection\\Tests\\": "packages/Reflection/tests",
             "ApiGen\\StringRouting\\Tests\\": "packages/StringRouting/tests"
@@ -57,7 +59,8 @@
             "packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php",
-            "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithClass.php"
+            "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithClass.php",
+            "packages/Annotation/tests/AnnotationSubscriber/SeeAnnotationSubscriberSource/SomeClassWithSeeAnnotations.php"
         ]
     },
     "scripts": {

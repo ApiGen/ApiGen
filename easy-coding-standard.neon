@@ -87,10 +87,20 @@ parameters:
             - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitPropertyReflectionTransformer.php
             - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitReflectionTransformer.php
 
+            # covariant implements
+            - packages/Annotation/src/AnnotationSubscriber/ReturnAnnotationSubscriber.php
+            - packages/Annotation/src/AnnotationSubscriber/LinkAnnotationSubscriber.php
+            - packages/Annotation/src/AnnotationSubscriber/ParamAnnotationSubscriber.php
+            - packages/Annotation/src/AnnotationSubscriber/SeeUsesCoversAnnotationSubscriber.php
+            - packages/Annotation/tests/AnnotationSubscriber/SeeAnnotationSubscriberSource/SomeClassWithSeeAnnotations.php
+
             # tests
             - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php
             - packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php
             - packages/Reflection/src/Reflection/Trait_/TraitPropertyReflection.php
+
+            # tests
+            - packages/Annotation/tests/AnnotationDecoratorSource/SomeClassWithReturnTypes.php
 
             # covariant implementers
             - packages/StringRouting/src/Route/StaticRoute.php
