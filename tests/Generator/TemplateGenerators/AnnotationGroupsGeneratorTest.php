@@ -2,28 +2,15 @@
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Configuration;
-use ApiGen\Configuration\ConfigurationOptions as CO;
-use ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator;
-use ApiGen\Parser\Parser;
-use ApiGen\Templating\Template;
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Generator\AnnotationGroupsGenerator;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\MethodInvoker;
-use Latte\Engine;
-use Nette\Utils\Finder;
+use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedClass;
+use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedMethod;
 
 final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 {
-    /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
-     * @var Parser
-     */
-    private $parser;
-
     /**
      * @var AnnotationGroupsGenerator
      */
@@ -31,68 +18,32 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $this->configuration = $this->container->getByType(Configuration::class);
-        $this->parser = $this->container->getByType(Parser::class);
-        $this->annotationGroupsGenerator = $this->container->getByType(AnnotationGroupsGenerator::class);
-    }
-
-    public function testOptions(): void
-    {
-        $resolvedOptions = $this->configuration->resolveOptions([
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        $configuration->resolveOptions([
             'source' => [TEMP_DIR],
-            'destination' => TEMP_DIR . '/api',
-            'annotationGroups' => ['api', 'event'],
+            'destination' => TEMP_DIR,
+            'annotationGroups' => ['deprecated']
         ]);
-        $this->assertSame(['api', 'event'], $resolvedOptions[CO::ANNOTATION_GROUPS]);
+
+        /** @var ParserInterface $parser */
+        $parser = $this->container->getByType(ParserInterface::class);
+        $parser->parseDirectories([__DIR__ . '/DeprecatedSources']);
+        $this->annotationGroupsGenerator = $this->container->getByType(AnnotationGroupsGenerator::class);
     }
 
     public function testGenerate(): void
     {
-        $this->setCorrectConfiguration();
         $this->annotationGroupsGenerator->generate();
-        $this->assertFileExists(TEMP_DIR . '/api/annotation-group-deprecated.html');
-    }
 
-    public function testSetElementsWithAnnotationToTemplate(): void
-    {
-        $this->prepareGeneratorRequirements();
-
-        $template = new Template(new Engine);
-        $template = MethodInvoker::callMethodOnObject(
-            $this->annotationGroupsGenerator,
-            'setElementsWithAnnotationToTemplate',
-            [$template, 'deprecated']
+        $this->assertFileExists(TEMP_DIR . '/annotation-group-deprecated.html');
+        $this->assertContains(
+            DeprecatedClass::class,
+                file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
         );
-
-        /** @var Template $template */
-        $parameters = $template->getParameters();
-
-        $this->assertSame('deprecated', $parameters['annotation']);
-        $this->assertCount(1, $parameters['annotationClasses']);
-        $this->assertCount(1, $parameters['annotationMethods']);
-    }
-
-    private function prepareGeneratorRequirements(): void
-    {
-        $this->setCorrectConfiguration();
-
-        $files = [];
-        foreach (Finder::findFiles('*')->in(__DIR__ . '/DeprecatedSources')->getIterator() as $file) {
-            $files[] = $file;
-        }
-
-        $this->parser->parse($files);
-    }
-
-    private function setCorrectConfiguration(): void
-    {
-        $resolvedOptions = $this->configuration->resolveOptions([
-            'source' => [TEMP_DIR],
-            'destination' => TEMP_DIR . '/api',
-            'annotationGroups' => ['deprecated']
-        ]);
-
-        // note: new api
-        $this->configuration->setOptions($resolvedOptions);
+        $this->assertContains(
+            DeprecatedMethod::class,
+            file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
+        );
     }
 }

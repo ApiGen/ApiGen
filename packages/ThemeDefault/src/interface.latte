@@ -1,0 +1,125 @@
+{layout '@layout.latte'}
+{var $activePage = 'interface'}
+
+{block title}Interface {$interface->getName()}{/block}
+
+{block content}
+<div id="content" class="class">
+    <h1 n:class="$interface->isDeprecated() ? deprecated">
+        Interface
+        {if $interface->getNamespaceName()}{$interface->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
+        {$interface->getName()}
+    </h1>
+
+    <div class="description" n:if="$interface->getDescription()">
+        {$interface|description}
+    </div>
+
+    <dl class="tree" n:ifcontent>
+        <dd>
+            {if $interface->getOwnInterfaces()}
+                implements
+                {foreach $interface->getOwnInterfaces() as $ownInterface}
+                <a href="{$ownInterface|reflectionLink}">
+                    <span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span>
+                    </a>{sep}, {/sep}
+                {/foreach}
+            {/if}
+        </dd>
+    </dl>
+
+    {if $interface->getImplementers()}
+        <br>
+        <div>
+            <h4>Known implementers</h4>
+            {foreach $interface->getImplementers() as $implementer}
+                <a href="{$implementer|linkReflection}">
+                    <span n:tag-if="$implementer->isDeprecated()" class="deprecated">{$implementer->getName()}</span>
+                </a>{sep}, {/sep}
+            {/foreach}
+        </div>
+    {/if}
+
+    {*<div class="info">*}
+        {*{var $filteredAnnotations = ($interface->getAnnotations()|annotationFilter)}*}
+        {*{foreach $filteredAnnotations as $annotation => $values}*}
+            {*{foreach $values as $value}*}
+                {*<b>{$annotation}{if $value}:{/if}</b>*}
+                {*{$value|annotation:$interface|noescape}<br>*}
+            {*{/foreach}*}
+        {*{/foreach}*}
+        {*<a href="{$interface|linkSource}">*}
+            {*<strong>Open source code</strong>*}
+        {*</a>*}
+        {*<br>*}
+    {*</div>*}
+
+    {if $interface->getOwnMethods()}
+        <table class="summary methods" id="methods">
+            <caption>Methods summary</caption>
+            {foreach $interface->getOwnMethods() as $method}
+                {include "partial/method.latte", method => $method}
+            {/foreach}
+        </table>
+    {/if}
+
+    <table n:if="$interface->getOwnConstants()" class="summary constants" id="constants">
+        <caption>Constants summary</caption>
+        <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
+            <td class="attributes">
+                <code>{$constant->getTypeHint()}</code>
+            </td>
+            <td class="name">
+                <code>
+                    <a href="{$constant|linkSource}"><b>{$constant->getName()}</b></a>
+                </code>
+
+                <div class="description detailed">
+                    {$constant|description}
+
+                    {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+                    {foreach $filteredAnnotations as $annotation => $descriptions}
+                        <h4>{$annotation}</h4>
+                        <div class="list">
+                        {foreach $descriptions as $description}
+                            {if $description}
+                                {$description|annotation:$constant|noescape}<br>
+                            {/if}
+                        {/foreach}
+                        </div>
+                    {/foreach}
+                </div>
+            </td>
+            <td class="value">
+                <div>
+                    <a href="#{$constant->getName()}" class="anchor">#</a>
+                    <code>{$constant->getValueDefinition()|highlightValue:$interface|noescape}</code>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+    {foreach $interface->getInterfaces() as $parentInterface}
+        <table n:if="$parentInterface->getOwnConstants()" class="summary inherited">
+            <caption>
+                Constants inherited from <a href="{$parentInterface|linkReflection}#constants">{$parentInterface->getName()}</a>
+            </caption>
+            <tr>
+                <td>
+                    <code>
+                        {foreach $parentInterface->getOwnContants() as $parentInterfaceConstants}
+                            <a href="{$parentInterfaceConstants|constantUrl}">
+                                <strong>
+                                    <span n:tag-if="$parentInterfaceConstants->isDeprecated()" class"deprecated">
+                                        {$parentInterfaceConstants->getName()}
+                                    </span>
+                                </strong>
+                            </a>{sep}, {/sep}
+                        {/foreach}
+                    </code>
+                </td>
+            </tr>
+        </table>
+    {/foreach}
+</div>
+{/block}

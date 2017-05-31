@@ -1,30 +1,16 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Templating\TemplateFactory\TemplateFactoryInterface;
-use ApiGen\Generator\TemplateGenerators\OverviewGenerator;
+use ApiGen\Generator\IndexGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class OverviewGeneratorTest extends AbstractContainerAwareTestCase
 {
-    protected function setUp(): void
+    public function test(): void
     {
-        /** @var ConfigurationInterface $configuration */
-        $configuration = $this->container->getByType(ConfigurationInterface::class);
-        $configuration->resolveOptions([
-            'source' => [__DIR__],
-            'destination' => TEMP_DIR
-        ]);
-    }
-
-    public function testGenerate(): void
-    {
-        /** @var TemplateFactoryInterface $templateFactory */
-        $templateFactory = $this->container->getByType(TemplateFactoryInterface::class);
-
-        $overviewGenerator = new OverviewGenerator($templateFactory);
+        /** @var IndexGenerator $overviewGenerator */
+        $overviewGenerator = $this->container->getByType(IndexGenerator::class);
         $overviewGenerator->generate();
 
         $this->assertFileExists(TEMP_DIR . '/index.html');

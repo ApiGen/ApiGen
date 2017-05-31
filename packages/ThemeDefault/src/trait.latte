@@ -1,0 +1,94 @@
+{layout '@layout.latte'}
+{var $activePage = 'trait'}
+
+{block title}Trait {$trait->getName()}{/block}
+
+{block content}
+<div id="content" class="class">
+    <h1 n:class="$trait->isDeprecated() ? deprecated">
+        Trait
+        {if $trait->getNamespaceName()}{$trait->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
+        {$trait->getShortName()}
+    </h1>
+
+    <div class="description" n:if="$trait->getDescription()">
+        {$trait|description}
+    </div>
+
+    <dl class="tree" n:ifcontent>
+        <dd>
+            {if $trait->getTraits()}
+                uses
+                {foreach $trait->getTraits() as $ownTrait}
+                <a href="{$ownTrait|reflectionLink}">
+                    <span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
+                    </a>{sep}, {/sep}
+                {/foreach}
+            {/if}
+        </dd>
+    </dl>
+
+    {define children}
+        {foreach $children as $child}
+            <a href="{$child|linkReflection}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
+        {/foreach}
+    {/define}
+
+    <div n:if="$trait->getUsers()">
+        <br>
+        <div>
+            <h4>Known Users</h4>
+            {include children, children => $trait->getUsers()}
+        </div>
+    </div>
+
+    <div class="info">
+        {var $filteredAnnotations = ($trait->getAnnotations()|annotationFilter)}
+        {foreach $filteredAnnotations as $annotation => $values}
+            {foreach $values as $value}
+                <b>{$annotation}{if $value}:{/if}</b>
+                {$value|annotation:$trait|noescape}<br>
+            {/foreach}
+        {/foreach}
+        <strong>
+            <a href="{$trait|linkSource}">Open source code</a>
+        </strong>
+        <br>
+    </div>
+
+    {if $trait->getOwnMethods()}
+        <table class="summary methods" id="methods">
+            <caption>Methods summary</caption>
+            {foreach $trait->getOwnMethods() as $method}
+                {include "partial/method.latte", method => $method}
+            {/foreach}
+        </table>
+    {/if}
+
+    <table n:foreach="$trait->getTraits() as $usedTrait" class="summary used">
+        <caption>Methods used from <a href="{$usedTrait->getName()|linkReflection}#methods">{$usedTrait->getName()}</a> trait</caption>
+        <tr>
+            <td>
+                <code>
+                    {foreach $usedTrait->getOwnMethods() as $usedTraitMethod}
+                        <a href="{$usedTraitMethod|linkReflection: $usedTraitMethod->getDeclaringTrait()}">
+                            <span n:tag-if="$traitMethod->isDeprecated()" class="deprecated">{$traitMethod->getName()}()</span>
+                        </a>
+                        {* @todo *}
+                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
+                    {/foreach}
+                </code>
+            </td>
+        </tr>
+    </table>
+
+    {if $trait->getOwnProperties()}
+        <table class="summary properties" id="properties">
+            <caption>Properties summary</caption>
+            {foreach $trait->getOwnProperties() as $property}
+                {include property, property => $property}
+            {/foreach}
+        </table>
+    {/if}
+</div>
+{/block}

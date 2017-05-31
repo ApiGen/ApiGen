@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Utils\Tests\Finder\NetteFinderSrouce\SomeDir;
+namespace ApiGen\Tests\Utils\Finder\NetteFinderSrouce\SomeDir;
 
 class SomeClass
 {

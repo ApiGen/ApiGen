@@ -1,4 +1,4 @@
 parameters:
     ignoreErrors:
-        - "#getDocComment#"
-        - "#must implement interface PhpParser#"
+        - "#Constant #"
+        - "#AnnotationsInterface::getName()#"

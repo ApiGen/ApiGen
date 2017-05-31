@@ -1,0 +1,60 @@
+<?php declare(strict_types=1);
+
+namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassConstantReflection;
+
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassConstantReflection\Source\ConstantInClass;
+use ApiGen\Tests\AbstractParserAwareTestCase;
+
+final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
+{
+    /**
+     * @var ClassConstantReflectionInterface
+     */
+    private $classConstantReflection;
+
+    protected function setUp(): void
+    {
+        $this->parser->parseDirectories([__DIR__ . '/Source']);
+
+        $classReflections = $this->reflectionStorage->getClassReflections();
+        $classReflection = $classReflections[ConstantInClass::class];
+        $this->classConstantReflection = $classReflection->getConstant('CONSTANT_INSIDE');
+    }
+
+    public function testInstance(): void
+    {
+        $this->assertInstanceOf(ClassConstantReflectionInterface::class, $this->classConstantReflection);
+    }
+
+    public function testGetDeclaringClass(): void
+    {
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->classConstantReflection->getDeclaringClass());
+        $this->assertSame(ConstantInClass::class, $this->classConstantReflection->getDeclaringClassName());
+    }
+
+    public function testGetName(): void
+    {
+        $this->assertSame('CONSTANT_INSIDE', $this->classConstantReflection->getName());
+    }
+
+    public function testValue(): void
+    {
+        $this->assertSame('int', $this->classConstantReflection->getTypeHint());
+        $this->assertSame(55, $this->classConstantReflection->getValue());
+    }
+
+    public function testLines(): void
+    {
+        $this->assertSame(25, $this->classConstantReflection->getStartLine());
+        $this->assertSame(35, $this->classConstantReflection->getEndLine());
+    }
+
+    public function testVisibility(): void
+    {
+        $this->assertTrue($this->classConstantReflection->isPublic());
+        $this->assertFalse($this->classConstantReflection->isProtected());
+//        $this->assertFalse($this->classConstantReflection->isPrivate());
+    }
+}

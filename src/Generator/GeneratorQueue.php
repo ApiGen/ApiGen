@@ -3,10 +3,9 @@
 namespace ApiGen\Generator;
 
 use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
+use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
-use ApiGen\Contracts\Generator\StepCounterInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\ConditionalTemplateGeneratorInterface;
-use ApiGen\Contracts\Generator\TemplateGenerators\TemplateGeneratorInterface;
+use ApiGen\Progress\StepCounter;
 
 final class GeneratorQueue implements GeneratorQueueInterface
 {
@@ -16,52 +15,32 @@ final class GeneratorQueue implements GeneratorQueueInterface
     private $progressBar;
 
     /**
-     * @var TemplateGeneratorInterface[]
+     * @var GeneratorInterface[]
      */
-    private $queue = [];
+    private $generators = [];
 
-    public function __construct(ProgressBarInterface $progressBar)
+    /**
+     * @var StepCounter
+     */
+    private $stepCounter;
+
+    public function __construct(ProgressBarInterface $progressBar, StepCounter $stepCounter)
     {
         $this->progressBar = $progressBar;
+        $this->stepCounter = $stepCounter;
+    }
+
+    public function addGenerator(GeneratorInterface $generator): void
+    {
+        $this->generators[] = $generator;
     }
 
     public function run(): void
     {
-        $this->progressBar->init($this->getStepCount());
+        $this->progressBar->init($this->stepCounter->getStepCount());
 
-        foreach ($this->getAllowedQueue() as $templateGenerator) {
-            $templateGenerator->generate();
+        foreach ($this->generators as $generator) {
+            $generator->generate();
         }
-    }
-
-    public function addToQueue(TemplateGeneratorInterface $templateGenerator): void
-    {
-        $this->queue[] = $templateGenerator;
-    }
-
-    /**
-     * @return TemplateGeneratorInterface[]
-     */
-    private function getAllowedQueue(): array
-    {
-        return array_filter($this->queue, function (TemplateGeneratorInterface $generator) {
-            if ($generator instanceof ConditionalTemplateGeneratorInterface) {
-                return $generator->isAllowed();
-            }
-
-            return true;
-        });
-    }
-
-    private function getStepCount(): int
-    {
-        $steps = 0;
-        foreach ($this->getAllowedQueue() as $templateGenerator) {
-            if ($templateGenerator instanceof StepCounterInterface) {
-                $steps += $templateGenerator->getStepCount();
-            }
-        }
-
-        return $steps;
     }
 }

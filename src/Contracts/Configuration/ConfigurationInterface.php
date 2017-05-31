@@ -21,14 +21,9 @@ interface ConfigurationInterface
     public function getOptions(): array;
 
     /**
-     * @param mixed[] $options
-     */
-    public function setOptions(array $options): void;
-
-    /**
      * Get property/method visibility level (public, protected or private, in binary code).
      */
-    public function getVisibilityLevel(): int;
+    public function getVisibilityLevels(): int;
 
     /**
      * List of annotations.
@@ -38,6 +33,10 @@ interface ConfigurationInterface
     public function getAnnotationGroups(): array;
 
     public function getDestination(): string;
+
+    public function getTemplatesDirectory(): string;
+
+    public function getTemplateByName(string $name): string;
 
     /**
      * Get title of the project.
@@ -49,24 +48,12 @@ interface ConfigurationInterface
      */
     public function getBaseUrl(): string;
 
-    public function getGoogleAnalytics(): string;
-
     /**
      * @return string[]
      */
     public function getSource(): array;
 
-    /**
-     * Exclude masks for files/directories.
-     *
-     * @return string[]
-     */
-    public function getExclude(): array;
+    public function getDestinationWithName(string $prefix): string;
 
-    /**
-     * File extensions to be taken in account.
-     *
-     * @return string[]
-     */
-    public function getExtensions(): array;
+    public function getDestinationWithPrefixName(string $prefix, string $name): string;
 }

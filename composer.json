@@ -1,62 +1,72 @@
 {
     "name": "apigen/apigen",
-    "description": "PHP source code API generator",
-    "keywords": ["documentation", "phpdoc", "generator", "api"],
-    "homepage": "http://apigen.org/",
+    "description": "PHP 7.1 source code API generator.",
     "license": "MIT",
     "authors": [
-        { "name": "Tomáš Votruba", "homepage": "https://tomasvotruba.cz", "email": "tomas.vot@gmail.com" },
+        { "name": "ApiGen Contributors", "homepage": "https://github.com/apigen/apigen/graphs/contributors" },
         { "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
         { "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
         { "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
     ],
+    "bin": ["bin/apigen"],
     "require": {
         "php": "^7.1",
-        "popsul/php-token-reflection": "^1.5",
-        "apigen/theme-bootstrap": "1.1.*",
+        "roave/better-reflection": "dev-master",
+        "phpdocumentor/reflection-docblock": "^3.1",
         "kukulich/fshl": "^2.1",
+
         "latte/latte": "^2.4",
         "nette/bootstrap": "^2.4",
         "nette/di": "^2.4",
         "nette/neon": "^2.4",
-        "nette/reflection": "^2.4",
-        "symfony/options-resolver": "^3.2",
-        "tracy/tracy": "^2.3",
+        "tracy/tracy": "^2.4",
+
         "contributte/console": "^0.1",
-        "symplify/symfony-event-dispatcher": "^1.4"
+        "contributte/event-dispatcher": "^0.3",
+        "symplify/package-builder": "^1.4",
+        "symplify/modular-latte-filters": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^6.0",
-        "phpstan/phpstan": "^0.6.4",
-        "symplify/easy-coding-standard": "^1.4",
-        "squizlabs/php_codesniffer": "3.0.0RC4 as 2.8.1",
-        "slevomat/coding-standard": "^2.0",
-        "symplify/coding-standard": "^1.4.8"
+        "phpstan/phpstan": "^0.7",
+        "symplify/coding-standard": "v2.0.0-RC2",
+        "symplify/easy-coding-standard": "v2.0.0-RC2",
+        "squizlabs/php_codesniffer": "3.0.0RC4 as 2.8.1"
     },
     "autoload": {
         "psr-4": {
             "ApiGen\\": "src",
+            "ApiGen\\Annotation\\": "packages/Annotation/src",
+            "ApiGen\\Element\\": "packages/Element/src",
+            "ApiGen\\ModularConfiguration\\": "packages/ModularConfiguration/src",
+            "ApiGen\\Reflection\\": "packages/Reflection/src",
+            "ApiGen\\StringRouting\\": "packages/StringRouting/src",
             "PHP_CodeSniffer\\": "vendor/squizlabs/php_codesniffer/src"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "ApiGen\\Tests\\": "tests",
-            "ApiGen\\Parser\\Tests\\": "tests/Parser"
-        }
+            "ApiGen\\Annotation\\Tests\\": "packages/Annotation/tests",
+            "ApiGen\\Element\\Tests\\": "packages/Element/tests",
+            "ApiGen\\Reflection\\Tests\\": "packages/Reflection/tests",
+            "ApiGen\\StringRouting\\Tests\\": "packages/StringRouting/tests"
+        },
+        "files": [
+            "packages/Element/tests/Namespaces/Source/namespacedFunction.php",
+            "packages/Element/tests/Namespaces/Source/NoneNamespacedClass.php",
+            "packages/Element/tests/ReflectionCollector/Source/deprecatedFunction.php",
+            "packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php",
+            "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",
+            "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php",
+            "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithClass.php",
+            "packages/Annotation/tests/AnnotationSubscriber/SeeAnnotationSubscriberSource/SomeClassWithSeeAnnotations.php"
+        ]
     },
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],
-        "phpstan": "vendor/bin/phpstan analyse src --level 2 -c phpstan.neon",
-        "check-cs": "vendor/bin/easy-coding-standard check src tests",
-        "fix-cs": "vendor/bin/easy-coding-standard check src tests --fix"
-    },
-    "bin": [
-        "bin/apigen"
-    ],
-	"extra": {
-		"branch-alias": {
-			"dev-master": "5.0.x-dev"
-		}
-	}
+        "phpstan": "vendor/bin/phpstan analyse packages src/DI --level 4 -c phpstan.neon",
+        "check-cs": "vendor/bin/easy-coding-standard check packages src/DI",
+        "fix-cs": "vendor/bin/easy-coding-standard check packages src/DI --fix"
+    }
 }

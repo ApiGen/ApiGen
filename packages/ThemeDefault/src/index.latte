@@ -1,0 +1,23 @@
+{layout '@layout.latte'}
+{var $activePage = 'overview'}
+
+{block title}{$title ?: 'Overview'}{/block}
+
+{block content}
+    <div id="content">
+        <h1>{include title}</h1>
+
+        <table n:if="count($allNamespaces)" class="summary" id="namespaces">
+            <caption>Namespaces summary</caption>
+            <tr n:foreach="$allNamespaces as $namespace">
+                <td class="name">
+                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                </td>
+            </tr>
+        </table>
+
+        {if count($allNamespaces) <= 1}
+            {include '@elementlist.latte'}
+        {/if}
+    </div>
+{/block}

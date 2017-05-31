@@ -3,9 +3,11 @@
 namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\MethodInvoker;
-use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Output\Output;
@@ -31,46 +33,30 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
     {
         $this->assertFileNotExists(TEMP_DIR . '/api/index.html');
 
-        $inputMock = $this->createMock(InputInterface::class);
-        $inputMock->method('getArgument')->willReturn([
-            __DIR__ . '/Source'
+        $input = new ArrayInput([
+            SourceOption::NAME => [__DIR__ . '/Source'],
+            '--' . DestinationOption::NAME => TEMP_DIR . '/Api'
         ]);
-        $inputMock->method('getOptions')->willReturn([
-            'config' => null,
-            'destination' => TEMP_DIR . '/api',
-            'source' => __DIR__ . '/Source'
-        ]);
-        $outputMock = $this->createMock(OutputInterface::class);
 
+        $exitCode = $this->generateCommand->run($input, new NullOutput);
         $this->assertSame(
             0, // success
-            MethodInvoker::callMethodOnObject(
-                $this->generateCommand,
-                'execute',
-                [$inputMock, $outputMock]
-            )
+            $exitCode
         );
 
-        $this->assertFileExists(TEMP_DIR . '/api/index.html');
+        $this->assertFileExists(TEMP_DIR . '/Api/index.html');
     }
 
-    /**
-     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
-     */
     public function testExecuteWithError(): void
     {
-        $inputMock = $this->createMock(InputInterface::class);
-        $inputMock->method('getArgument')->willReturn([
-            __DIR__
-        ]);
-        $inputMock->method('getOptions')->willReturn([
-            'config' => null
+        $input = new ArrayInput([
+            SourceOption::NAME => ['missing'],
+            '--' . DestinationOption::NAME => TEMP_DIR,
         ]);
 
-        MethodInvoker::callMethodOnObject(
-            $this->generateCommand,
-            'execute',
-            [$inputMock, new NullOutput()]
-        );
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Source "missing" does not exist');
+
+        $this->generateCommand->run($input, new NullOutput);
     }
 }

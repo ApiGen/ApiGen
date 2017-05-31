@@ -1,0 +1,15 @@
+- ApiGen\Annotation\AnnotationDecorator
+
+# Subscribers
+- ApiGen\Annotation\AnnotationSubscriber\ReturnAnnotationSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\ParamAnnotationSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\SeeUsesCoversAnnotationSubscriber
+- ApiGen\Annotation\AnnotationSubscriber\LinkAnnotationSubscriber
+
+# Element Full Name Resolver
+- ApiGen\Annotation\FqsenResolver\ElementResolver
+- phpDocumentor\Reflection\FqsenResolver
+- phpDocumentor\Reflection\Types\ContextFactory
+
+# Latte
+- ApiGen\Annotation\Latte\Filter\AnnotationFilterProvider

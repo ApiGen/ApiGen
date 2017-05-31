@@ -1,7 +1,11 @@
+# ApiGenApplication
+- ApiGen\Application\ApiGenApplication
+
 # Console
 - ApiGen\Console\Helper\ProgressBar
 - ApiGen\Console\Command\GenerateCommand
 - Symfony\Component\Console\Output\ConsoleOutput
+- ApiGen\Progress\StepCounter
 
 # Utils
 - ApiGen\Utils\FileSystem
@@ -9,48 +13,28 @@
 
 # Configuration
 - ApiGen\Configuration\Configuration
-- ApiGen\Configuration\ConfigurationOptionsResolver
-- ApiGen\Configuration\OptionsResolverFactory
-- ApiGen\Configuration\Theme\ThemeConfigFactory
-- ApiGen\Configuration\Theme\ThemeConfigOptionsResolver
-
-# Elements
-- ApiGen\Generator\Resolvers\ElementResolver
-- ApiGen\Generator\Resolvers\RelativePathResolver
 
 # Generator
-- ApiGen\Generator\EventSubscriber\ProgressBarSubscriber
+- ApiGen\EventSubscriber\ProgressBarEventSubscriber
 - ApiGen\Generator\GeneratorQueue
-# intentionally first to collect output from other generators
-g1: ApiGen\Generator\TemplateGenerators\CombinedGenerator
-g2: ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator
-g3: ApiGen\Generator\TemplateGenerators\ElementListGenerator
-g4: ApiGen\Generator\TemplateGenerators\OverviewGenerator
-g5: ApiGen\Generator\TemplateGenerators\SourceCodeGenerator
+- ApiGen\Generator\AnnotationGroupsGenerator
+- ApiGen\Generator\ElementListGenerator
+- ApiGen\Generator\IndexGenerator
+
 # elements
-g6: ApiGen\Generator\TemplateGenerators\ClassElementGenerator
-g7: ApiGen\Generator\TemplateGenerators\ConstantElementGenerator
-g8: ApiGen\Generator\TemplateGenerators\FunctionElementGenerator
-g9: ApiGen\Generator\TemplateGenerators\NamespaceGenerator
-g10: ApiGen\Generator\TemplateGenerators\Loaders\NamespaceLoader
+- ApiGen\Generator\NamespaceGenerator
+- ApiGen\Generator\ClassGenerator
+- ApiGen\Generator\InterfaceGenerator
+- ApiGen\Generator\TraitGenerator
+- ApiGen\Generator\FunctionGenerator
 
 # Templating
-- ApiGen\Templating\TemplateElementsLoader
-- ApiGen\Templating\TemplateFactory
-- ApiGen\Templating\TemplateNavigator
-- ApiGen\Templating\Filters\Helpers\ElementLinkFactory
-- ApiGen\Templating\Filters\Helpers\ElementUrlFactory
-- ApiGen\Templating\Filters\Helpers\LinkBuilder
-- ApiGen\Templating\Filters\AnnotationFilters
-- ApiGen\Templating\Filters\PathFilters
-- ApiGen\Templating\Filters\ResolverFilters
-- ApiGen\Templating\Filters\SourceFilters
-- ApiGen\Templating\Filters\UrlFilters
-- ApiGen\Templating\Filters\NamespaceUrlFilters
-- ApiGen\Templating\Filters\ElementUrlFilters
+- ApiGen\Templating\TemplateRenderer
+- ApiGen\EventSubscriber\ConfigurationTemplateVariablesEventSubscriber
+- ApiGen\EventSubscriber\ElementsTemplateVariablesEventSubscriber
 
-# Theme
-- ApiGen\Theme\ThemeResources
+# Template Filters
+- ApiGen\Templating\Filters\Helpers\LinkBuilder
 
 # Syntax Highlighter
 - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
