@@ -12,7 +12,7 @@ use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\AbstractTraitElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\StringRouting\Contract\Route\RouteInterface;
-use Nette\Utils\Strings;
+use ApiGen\Utils\NamingHelper;
 
 final class SourceCodeRoute implements RouteInterface
 {
@@ -31,40 +31,41 @@ final class SourceCodeRoute implements RouteInterface
      */
     public function constructUrl($reflection): string
     {
+        # todo: allow Github links, based on configuration
         if ($reflection instanceof ClassReflectionInterface) {
-            return 'source-class-' . Strings::webalize($reflection->getName(), null, false) . '.html';
+            return 'source-class-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
         if ($reflection instanceof TraitReflectionInterface) {
-            return 'source-trait-' . Strings::webalize($reflection->getName(), null, false) . '.html';
+            return 'source-trait-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
         if ($reflection instanceof InterfaceReflectionInterface) {
-            return 'source-interface-' . Strings::webalize($reflection->getName(), null, false) . '.html';
+            return 'source-interface-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
         if ($reflection instanceof FunctionReflectionInterface) {
             return 'source-function-'
-                . Strings::webalize($reflection->getName(), null, false) . '.html'
+                . NamingHelper::nameToFilePath($reflection->getName()) . '.html'
                 . $this->buildLineAnchor($reflection);
         }
 
         if ($reflection instanceof StartAndEndLineInterface) {
             if ($reflection instanceof AbstractClassElementInterface) {
                 return 'source-class-'
-                    . Strings::webalize($reflection->getDeclaringClassName(), null, false) . '.html'
+                    . NamingHelper::nameToFilePath($reflection->getDeclaringClassName()) . '.html'
                     . $this->buildLineAnchor($reflection);
             }
 
             if ($reflection instanceof AbstractInterfaceElementInterface) {
                 return 'source-interface-'
-                    . Strings::webalize($reflection->getDeclaringInterfaceName(), null, false) . '.html'
+                    . NamingHelper::nameToFilePath($reflection->getDeclaringInterfaceName()) . '.html'
                     . $this->buildLineAnchor($reflection);
             }
 
             if ($reflection instanceof AbstractTraitElementInterface) {
                 return 'source-trait-'
-                    . Strings::webalize($reflection->getDeclaringTraitName(), null, false) . '.html'
+                    . NamingHelper::nameToFilePath($reflection->getDeclaringTraitName()) . '.html'
                     . $this->buildLineAnchor($reflection);
             }
         }

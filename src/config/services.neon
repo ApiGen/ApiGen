@@ -14,16 +14,13 @@
 # Configuration
 - ApiGen\Configuration\Configuration
 
-# Elements
-- ApiGen\Generator\Resolvers\ElementResolver
-- ApiGen\Generator\Resolvers\RelativePathResolver
-
 # Generator
-- ApiGen\Generator\EventSubscriber\ProgressBarEventSubscriber
+- ApiGen\EventSubscriber\ProgressBarEventSubscriber
 - ApiGen\Generator\GeneratorQueue
 - ApiGen\Generator\AnnotationGroupsGenerator
 - ApiGen\Generator\ElementListGenerator
 - ApiGen\Generator\IndexGenerator
+
 # elements
 - ApiGen\Generator\NamespaceGenerator
 - ApiGen\Generator\ClassGenerator
@@ -38,13 +35,6 @@
 
 # Template Filters
 - ApiGen\Templating\Filters\Helpers\LinkBuilder
-- ApiGen\Templating\Filters\AnnotationFilters
-- ApiGen\Templating\Filters\PathFilters
-- ApiGen\Templating\Filters\ResolverFilters
-- ApiGen\Templating\Filters\UrlFilters
-
-# Theme
-- ApiGen\Theme\ThemeResources
 
 # Syntax Highlighter
 - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter

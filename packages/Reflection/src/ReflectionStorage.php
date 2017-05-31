@@ -41,7 +41,7 @@ final class ReflectionStorage implements ReflectionStorageInterface
     /**
      * @param ClassReflectionInterface[] $classReflections
      */
-    public function setClassReflections(array $classReflections): void
+    public function addClassReflections(array $classReflections): void
     {
         array_walk($classReflections, function (ClassReflectionInterface $classReflection) {
         });
@@ -62,7 +62,7 @@ final class ReflectionStorage implements ReflectionStorageInterface
     /**
      * @param InterfaceReflectionInterface[] $interfaceReflections
      */
-    public function setInterfaceReflections(array $interfaceReflections): void
+    public function addInterfaceReflections(array $interfaceReflections): void
     {
         array_walk($interfaceReflections, function (InterfaceReflectionInterface $interfaceReflection) {
         });
@@ -83,7 +83,7 @@ final class ReflectionStorage implements ReflectionStorageInterface
     /**
      * @param TraitReflectionInterface[] $traitReflections
      */
-    public function setTraitReflections(array $traitReflections): void
+    public function addTraitReflections(array $traitReflections): void
     {
         array_walk($traitReflections, function (TraitReflectionInterface $traitReflection) {
         });

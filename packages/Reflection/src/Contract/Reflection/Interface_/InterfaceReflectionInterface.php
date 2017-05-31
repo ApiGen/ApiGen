@@ -34,17 +34,17 @@ interface InterfaceReflectionInterface extends StartAndEndLineInterface, Annotat
      */
     public function getOwnMethods(): array;
 
-    /**
-     * @return InterfaceMethodReflectionInterface[]
-     */
-    public function getInheritedMethods(): array;
-
     public function getMethod(string $name): InterfaceMethodReflectionInterface;
 
     /**
      * @return InterfaceConstantReflectionInterface[]
      */
     public function getOwnConstants(): array;
+
+    /**
+     * @return InterfaceReflectionInterface[]
+     */
+    public function getOwnInterfaces(): array;
 
     /**
      * @return InterfaceConstantReflectionInterface[]

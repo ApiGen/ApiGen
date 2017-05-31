@@ -1,0 +1,34 @@
+<div id="navigation">
+    <ul>
+        <li>
+            <a href="index.html" n:class="$activePage === overview ? active">
+                <span>{if $title}{$title}{else}Overview{/if}</span>
+            </a>
+        </li>
+        <li n:if="$allNamespaces" n:class="$activePage === namespace ? active">
+            <a n:tag-if="$activePage !== namespace && $activeNamespace" href="{$activeNamespace|linkNamespace}">
+                <span>Namespace</span>
+            </a>
+        </li>
+        <li n:class="$activePage === class ? active" n:if="!$activeFunction">
+            <a n:tag-if="$activePage !== class && $activeClass" href="{$activeClass|linkReflection}">
+                <span>Class</span>
+            </a>
+        </li>
+        {* @todo: add interfaces and traits *}
+        <li n:if="$activeFunction" n:class="$activePage === function ? active">
+            <a n:tag-if="$activePage !== function" href="{$activeFunction|linkReflection}">
+                <span>Function</span>
+            </a>
+        </li>
+    </ul>
+    <ul>
+        {foreach $annotationGroups as $annotationGroup}
+            <li n:class="$activePage === 'annotation-group-' . $annotationGroup ? active">
+                <a href="annotation-group-{$annotationGroup}.html">
+                    <span>{$annotationGroup|firstUpper}</span>
+                </a>
+            </li>
+        {/foreach}
+    </ul>
+</div>

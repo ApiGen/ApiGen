@@ -9,21 +9,14 @@ interface AbstractParameterReflectionInterface extends AbstractReflectionInterfa
 {
     public function getTypeHint(): string;
 
+    /**
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
+     */
+    public function getTypeHintClassOrInterfaceReflection();
+
     public function getDefaultValueDefinition(): ?string;
 
     public function isArray(): bool;
-
-    /**
-     * @todo This is actually return parameter typehint. Find a better name.
-     *
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getClass();
-
-    /**
-     * @todo This is actually return parameter typehint. Find a better name.
-     */
-    public function getClassName(): ?string;
 
     public function isVariadic(): bool;
 

@@ -7,6 +7,7 @@ use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class InterfaceGenerator implements GeneratorInterface
@@ -51,7 +52,7 @@ final class InterfaceGenerator implements GeneratorInterface
         }
     }
 
-    private function generateForInterface(ClassReflectionInterface $interfaceReflection): void
+    private function generateForInterface(InterfaceReflectionInterface $interfaceReflection): void
     {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('interface'),
@@ -62,7 +63,7 @@ final class InterfaceGenerator implements GeneratorInterface
         );
     }
 
-    private function generateSourceCodeForInterface(ClassReflectionInterface $interfaceReflection): void
+    private function generateSourceCodeForInterface(InterfaceReflectionInterface $interfaceReflection): void
     {
         $content = file_get_contents($interfaceReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);

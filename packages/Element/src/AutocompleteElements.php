@@ -4,6 +4,7 @@ namespace ApiGen\Element;
 
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\StringRouting\Route\ReflectionRoute;
 
 final class AutocompleteElements implements AutocompleteElementsInterface
 {
@@ -12,9 +13,15 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     private $reflectionStorage;
 
-    public function __construct(ReflectionStorageInterface $reflectionStorage)
+    /**
+     * @var ReflectionRoute
+     */
+    private $reflectionRoute;
+
+    public function __construct(ReflectionStorageInterface $reflectionStorage, ReflectionRoute $reflectionRoute)
     {
         $this->reflectionStorage = $reflectionStorage;
+        $this->reflectionRoute = $reflectionRoute;
     }
 
     /**
@@ -22,24 +29,27 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     public function getElements(): array
     {
-        // @todo: consider return [ name => file ]
-        // to skip template route building process
+        // @todo: add support for namespace search: type "console" => show Symfony\Console
 
         $elements = [];
         foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
-            $elements[] = ['f', $functionReflection->getName() . '()'];
+            $path = $this->reflectionRoute->constructUrl($functionReflection);
+            $elements[$path] = $functionReflection->getName() . '()';
         }
 
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            $elements[] = ['c', $classReflection->getName()];
+            $path = $this->reflectionRoute->constructUrl($classReflection);
+            $elements[$path] = $classReflection->getName();
         }
 
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
-            $elements[] = ['i', $interfaceReflection->getName()];
+            $path = $this->reflectionRoute->constructUrl($interfaceReflection);
+            $elements[$path] = $interfaceReflection->getName();
         }
 
         foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
-            $elements[] = ['t', $traitReflection->getName()];
+            $path = $this->reflectionRoute->constructUrl($traitReflection);
+            $elements[$path] = $traitReflection->getName();
         }
 
         return $elements;

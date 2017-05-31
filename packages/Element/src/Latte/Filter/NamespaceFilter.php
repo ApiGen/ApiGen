@@ -10,11 +10,6 @@ use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 final class NamespaceFilter implements LatteFiltersProviderInterface
 {
     /**
-     * @var string
-     */
-    private const NAMESPACE_SEPARATOR = '\\';
-
-    /**
      * @var NamespaceRoute
      */
     private $namespaceRoute;
@@ -36,14 +31,6 @@ final class NamespaceFilter implements LatteFiltersProviderInterface
     public function getFilters(): array
     {
         return [
-            'subNamespace' => function (string $namespace): string {
-                $namespaceSeparatorPosition = strrpos($namespace, self::NAMESPACE_SEPARATOR);
-                if ($namespaceSeparatorPosition) {
-                    return substr($namespace, $namespaceSeparatorPosition + 1);
-                }
-
-                return $namespace;
-            },
             'linkAllNamespaceParts' => function (string $namespace): string {
                 $links = [];
                 $parent = '';

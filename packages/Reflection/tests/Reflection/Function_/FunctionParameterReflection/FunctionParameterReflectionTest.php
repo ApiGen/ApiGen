@@ -47,9 +47,6 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertTrue($this->functionParameterReflection->isVariadic());
         $this->assertFalse($this->functionParameterReflection->isArray());
         $this->assertFalse($this->functionParameterReflection->isCallable());
-
-        $this->assertNull($this->functionParameterReflection->getClass());
-        $this->assertNull($this->functionParameterReflection->getClassName());
     }
 
     public function testDescription(): void

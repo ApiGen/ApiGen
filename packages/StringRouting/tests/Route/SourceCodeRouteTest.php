@@ -36,7 +36,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
             ->willReturn('SomeNamespace\SomeName');
 
         $this->assertSame(
-            'source-class-SomeNamespace-SomeName.html',
+            'source-class-SomeNamespace.SomeName.html',
             $this->stringRouter->buildRoute(SourceCodeRoute::NAME, $reflectionClassMock)
         );
     }

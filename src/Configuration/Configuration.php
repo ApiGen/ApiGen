@@ -12,7 +12,7 @@ use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
 use ApiGen\ModularConfiguration\Option\TitleOption;
 use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\ModularConfiguration\Parameter\ParameterProvider;
-use Nette\Utils\Strings;
+use ApiGen\Utils\NamingHelper;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -124,9 +124,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getDestinationWithPrefixName(string $prefix, string $name): string
     {
-        return $this->getDestination() . DIRECTORY_SEPARATOR . sprintf(
-            $prefix . '%s.html',
-            Strings::webalize($name)
-        );
+        return $this->getDestination() . DIRECTORY_SEPARATOR .
+            $prefix . NamingHelper::nameToFilePath($name) . '.html';
     }
 }

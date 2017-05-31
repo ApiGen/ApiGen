@@ -23,28 +23,8 @@ final class NamespaceRouteTest extends AbstractContainerAwareTestCase
         $namespaceName = 'SomeNamespace\SubNamespace';
 
         $this->assertSame(
-            'namespace-SomeNamespace-SubNamespace.html',
+            'namespace-SomeNamespace.SubNamespace.html',
             $this->stringRouter->buildRoute(NamespaceRoute::NAME, $namespaceName)
         );
     }
-
-//    public function testNamespaceLinks(): void
-//    {
-//        $this->assertSame(
-//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
-//            $this->namespaceUrlFilters->namespaceLinks('Long\Namespace')
-//        );
-//    }
-//
-//    public function testNamespaceLinksWithNoNamespaces(): void
-//    {
-//        $this->assertSame(
-//            '<a href="namespace-Long.html">Long</a>\<a href="namespace-Long.Namespace.html">Namespace</a>',
-//            $this->namespaceUrlFilters->namespaceLinks('Long\\Namespace')
-//        );
-//    }
-//    {
-//        $this->assertSame('Subgroup', $this->namespaceUrlFilters->subNamespaceName('Group\\Subgroup'));
-//        $this->assertSame('Group', $this->namespaceUrlFilters->subNamespaceName('Group'));
-//    }
 }

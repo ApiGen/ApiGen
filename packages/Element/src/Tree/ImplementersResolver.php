@@ -24,19 +24,44 @@ final class ImplementersResolver
     public function getImplementers(InterfaceReflectionInterface $parentInterfaceReflection): array
     {
         $implementers = [];
+        $implementers = $this->getClassImplementers($implementers, $parentInterfaceReflection);
+        $implementers = $this->getInterfaceImplementers($implementers, $parentInterfaceReflection);
+
+        uksort($implementers, 'strcasecmp');
+
+        return $implementers;
+    }
+
+    /**
+     * @param mixed[] $implementers
+     * @return ClassReflectionInterface[]
+     */
+    private function getClassImplementers(
+        array $implementers,
+        InterfaceReflectionInterface $parentInterfaceReflection
+    ): array {
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
             if ($classReflection->implementsInterface($parentInterfaceReflection->getName())) {
                 $implementers[$classReflection->getName()] = $classReflection;
             }
         }
 
+        return $implementers;
+    }
+
+    /**
+     * @param ClassReflectionInterface[]|InterfaceReflectionInterface[] $implementers
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
+     */
+    private function getInterfaceImplementers(
+        array $implementers,
+        InterfaceReflectionInterface $parentInterfaceReflection
+    ): array {
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
             if ($interfaceReflection->implementsInterface($parentInterfaceReflection->getName())) {
                 $implementers[$interfaceReflection->getName()] = $interfaceReflection;
             }
         }
-
-        uksort($implementers, 'strcasecmp');
 
         return $implementers;
     }

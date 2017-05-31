@@ -3,7 +3,7 @@
 namespace ApiGen\StringRouting\Route;
 
 use ApiGen\StringRouting\Contract\Route\RouteInterface;
-use Nette\Utils\Strings;
+use ApiGen\Utils\NamingHelper;
 
 final class NamespaceRoute implements RouteInterface
 {
@@ -22,6 +22,6 @@ final class NamespaceRoute implements RouteInterface
      */
     public function constructUrl($argument): string
     {
-        return 'namespace-' . Strings::webalize($argument, null, false) . '.html';
+        return 'namespace-' . NamingHelper::nameToFilePath($argument) . '.html';
     }
 }

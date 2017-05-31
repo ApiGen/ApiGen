@@ -71,6 +71,7 @@ final class ClassGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $this->configuration->getDestinationWithPrefixName('source-class-', $classReflection->getName()),
             [
+                'activeClass' => $classReflection,
                 'fileName' => $classReflection->getFileName(),
                 'source' => $highlightedContent
             ]

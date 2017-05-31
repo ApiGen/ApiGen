@@ -4,8 +4,8 @@
 <url>
     <loc>{$baseUrl}/index.html</loc>
 </url>
-<url n:foreach="$namespaces as $namespace">
-    <loc>{$baseUrl}/{$namespace|namespaceUrl}</loc>
+<url n:foreach="$allNamespaces as $namespace">
+    <loc>{$baseUrl}/{$namespace|linkNamespace}</loc>
 </url>
 
 {define elements}
@@ -14,8 +14,8 @@
 </url>
 {/define}
 
-{include elements, elements => $classes}
-{include elements, elements => $interfaces}
-{include elements, elements => $traits}
-{include elements, elements => $functions}
+{include elements, elements => $allClasses}
+{include elements, elements => $allInterfaces}
+{include elements, elements => $allTraits}
+{include elements, elements => $allFunctions}
 </urlset>

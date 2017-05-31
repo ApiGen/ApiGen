@@ -71,7 +71,8 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
             return true;
         }
 
-        // if parent is deprecated, so is this
+        return $this->getDeclaringClass()
+            ->isDeprecated();
     }
 
     /**

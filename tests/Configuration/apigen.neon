@@ -1,5 +1,0 @@
-parameters:
-    source:
-        - src
-    visibilityLevels: [public, protected, private]
-    baseUrl: http://apigen.org
