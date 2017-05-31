@@ -1,0 +1,28 @@
+- ApiGen\Reflection\Parser\Parser
+- ApiGen\Reflection\ReflectionStorage
+
+# DocBlock
+-
+    factory: phpDocumentor\Reflection\DocBlockFactory::createInstance
+
+- ApiGen\Reflection\TransformerCollector
+
+
+# Better Reflection Tranformers
+
+# Class
+- ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassPropertyReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Class_\ClassMethodReflectionTransformer
+# Function
+- ApiGen\Reflection\Transformer\BetterReflection\Function_\FunctionReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Function_\FunctionParameterReflectionTransformer
+# Interface
+- ApiGen\Reflection\Transformer\BetterReflection\Interface_\InterfaceReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Interface_\InterfaceMethodReflectionTransformer
+# Method
+- ApiGen\Reflection\Transformer\BetterReflection\Method\MethodParameterReflectionTransformer
+# Trait
+- ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitPropertyReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitReflectionTransformer
+- ApiGen\Reflection\Transformer\BetterReflection\Trait_\TraitMethodReflectionTransformer

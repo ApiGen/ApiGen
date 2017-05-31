@@ -3,6 +3,7 @@
 namespace ApiGen\Tests\Console\Command;
 
 use ApiGen\Console\Command\GenerateCommand;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -46,16 +47,15 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $this->assertFileExists(TEMP_DIR . '/Api/index.html');
     }
 
-    /**
-     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
-     * @expectedExceptionMessage Source "missing" does not exist
-     */
     public function testExecuteWithError(): void
     {
         $input = new ArrayInput([
             SourceOption::NAME => ['missing'],
             '--' . DestinationOption::NAME => TEMP_DIR,
         ]);
+
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Source "missing" does not exist');
 
         $this->generateCommand->run($input, new NullOutput);
     }

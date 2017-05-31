@@ -1,27 +1,23 @@
 {layout '@layout.latte'}
-{var $active = 'overview'}
+{var $activePage = 'overview'}
 
 {block title}{$title ?: 'Overview'}{/block}
 
 {block content}
-<div id="content">
-	<h1>{include title}</h1>
+    <div id="content">
+        <h1>{include title}</h1>
 
-	{var $group = false}
+        <table n:if="count($allNamespaces)" class="summary" id="namespaces">
+            <caption>Namespaces summary</caption>
+            <tr n:foreach="$allNamespaces as $namespace">
+                <td class="name">
+                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                </td>
+            </tr>
+        </table>
 
-	<table class="summary" id="namespaces" n:if="$namespaces">
-		<caption>Namespaces summary</caption>
-		{foreach $namespaces as $namespace}
-			{continueIf $namespace === 'PHP'}
-			<tr>
-				{var $group = true}
-				<td class="name"><a href="{$namespace|namespaceUrl}">{$namespace}</a></td>
-			</tr>
-		{/foreach}
-	</table>
-
-	{if ! $group}
-		{include '@elementlist.latte'}
-	{/if}
-</div>
+        {if count($allNamespaces) <= 1}
+            {include '@elementlist.latte'}
+        {/if}
+    </div>
 {/block}

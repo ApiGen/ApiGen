@@ -1,0 +1,20 @@
+- ApiGen\Element\Latte\Filter\MethodReflectionNamingFilter
+
+- ApiGen\Element\AutocompleteElements
+- ApiGen\Element\Namespaces\NamespaceStorage
+- ApiGen\Element\Latte\Filter\NamespaceFilter
+
+# Class_
+- ApiGen\Element\Tree\ParentClassElementsResolver
+- ApiGen\Element\Tree\SubClassesResolver
+
+# Interface_
+- ApiGen\Element\Tree\ImplementersResolver
+
+# Trait_
+- ApiGen\Element\Tree\TraitUsersResolver
+
+# Reflection Collector
+- ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector
+- ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector
+- ApiGen\Element\Cache\ReflectionWarmUpper

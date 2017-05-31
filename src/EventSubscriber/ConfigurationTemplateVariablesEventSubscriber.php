@@ -23,7 +23,9 @@ final class ConfigurationTemplateVariablesEventSubscriber implements EventSubscr
      */
     public static function getSubscribedEvents(): array
     {
-        return [CreateTemplateEvent::class => 'loadTemplateVariables'];
+        return [
+            CreateTemplateEvent::class => 'loadTemplateVariables'
+        ];
     }
 
     public function loadTemplateVariables(CreateTemplateEvent $createTemplateEvent): void
@@ -31,7 +33,6 @@ final class ConfigurationTemplateVariablesEventSubscriber implements EventSubscr
         $parameterBag = $createTemplateEvent->getParameterBag();
         $parameterBag->addParameters([
             'title' => $this->configuration->getTitle(),
-            'googleAnalytics' => $this->configuration->getGoogleAnalytics(),
             'annotationGroups' => $this->configuration->getAnnotationGroups()
         ]);
     }

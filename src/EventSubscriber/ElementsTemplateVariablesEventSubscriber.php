@@ -2,27 +2,37 @@
 
 namespace ApiGen\EventSubscriber;
 
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
 use ApiGen\Event\CreateTemplateEvent;
-use ApiGen\Parser\Elements\AutocompleteElements;
+use ApiGen\Element\Namespaces\NamespaceStorage;
+use ApiGen\Element\AutocompleteElements;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $elementStorage;
+    private $reflectionStorage;
 
     /**
      * @var AutocompleteElements
      */
     private $autocompleteElements;
 
-    public function __construct(ElementStorageInterface $elementStorage, AutocompleteElements $autocompleteElements)
-    {
-        $this->elementStorage = $elementStorage;
+    /**
+     * @var NamespaceStorage
+     */
+    private $namespaceStorage;
+
+    public function __construct(
+        ReflectionStorageInterface $reflectionStorage,
+        NamespaceStorage $namespaceStorage,
+        AutocompleteElements $autocompleteElements
+    ) {
+        $this->reflectionStorage = $reflectionStorage;
         $this->autocompleteElements = $autocompleteElements;
+        $this->namespaceStorage = $namespaceStorage;
     }
 
     /**
@@ -30,23 +40,33 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
      */
     public static function getSubscribedEvents(): array
     {
-        return [CreateTemplateEvent::class => 'loadTemplateVariables'];
+        return [
+            CreateTemplateEvent::class => 'loadTemplateVariables'
+        ];
     }
 
     public function loadTemplateVariables(CreateTemplateEvent $createTemplateEvent): void
     {
         $parameterBag = $createTemplateEvent->getParameterBag();
+        // add default empty values
         $parameterBag->addParameters([
-            'namespace' => null,
-            'class' => null,
-            'function' => null,
-            'namespaces' => array_keys($this->elementStorage->getNamespaces()),
-            'classes' => array_filter($this->elementStorage->getClasses()),
-            'interfaces' => array_filter($this->elementStorage->getInterfaces()),
-            'traits' => array_filter($this->elementStorage->getTraits()),
-            'exceptions' => array_filter($this->elementStorage->getExceptions()),
-            'functions' => array_filter($this->elementStorage->getFunctions()),
-            'elements' => $this->autocompleteElements->getElements()
+            'activePage' => null,
+            'activeNamespace' => null,
+            'activeClass' => null,
+            'activeInterface' => null,
+            'activeTrait' => null,
+            'activeFunction' => null,
+        ]);
+        // add all available elements (for layout)
+        $parameterBag->addParameters([
+            'allNamespaces' => $this->namespaceStorage->getNamespaces(),
+            // @todo what is array_filter for? make it explicit!
+//            'allClasses' => array_filter($this->reflectionStorage->getClassReflections()),
+            'allClasses' => $this->reflectionStorage->getClassReflections(),
+            'allInterfaces' => $this->reflectionStorage->getInterfaceReflections(),
+            'allTraits' => $this->reflectionStorage->getTraitReflections(),
+            'allFunctions' => $this->reflectionStorage->getFunctionReflections(),
+            'autocompleteElements' => $this->autocompleteElements->getElements()
         ]);
     }
 }

@@ -2,8 +2,8 @@
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Generator\TemplateGenerators\TraitGenerator;
+use ApiGen\Generator\TraitGenerator;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class TraitGeneratorTest extends AbstractContainerAwareTestCase
@@ -17,7 +17,7 @@ final class TraitGeneratorTest extends AbstractContainerAwareTestCase
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseDirectories([__DIR__ . DIRECTORY_SEPARATOR . 'Source']);
+        $parser->parseDirectories([__DIR__ . '/Source']);
 
         $this->traitGenerator = $this->container->getByType(TraitGenerator::class);
     }

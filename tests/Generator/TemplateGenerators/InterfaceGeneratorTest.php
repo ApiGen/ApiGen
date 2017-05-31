@@ -2,8 +2,8 @@
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Generator\TemplateGenerators\InterfaceGenerator;
+use ApiGen\Generator\InterfaceGenerator;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class InterfaceGeneratorTest extends AbstractContainerAwareTestCase

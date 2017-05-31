@@ -2,9 +2,9 @@
 
 namespace ApiGen\ModularConfiguration;
 
-use ApiGen\Configuration\Exceptions\ConfigurationException;
 use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 
 final class ConfigurationResolver implements ConfigurationResolverInterface
 {
@@ -29,14 +29,6 @@ final class ConfigurationResolver implements ConfigurationResolverInterface
         return $this->options[$name]->resolveValue($value);
     }
 
-    /**
-     * @return string[]
-     */
-    public function getOptionNames(): array
-    {
-        return array_keys($this->options);
-    }
-
     private function ensureOptionExists(string $name): void
     {
         if (! isset($this->options[$name])) {
@@ -46,5 +38,26 @@ final class ConfigurationResolver implements ConfigurationResolverInterface
                 array_keys($this->options)
             ));
         }
+    }
+
+    /**
+     * @param mixed[] $values
+     * @return mixed[]
+     */
+    public function resolveValuesWithDefaults(array $values): array
+    {
+        foreach ($this->getOptionNames() as $name) {
+            $values[$name] = $this->resolveValue($name, $values[$name] ?? null);
+        }
+
+        return $values;
+    }
+
+    /**
+     * @return string[]
+     */
+    private function getOptionNames(): array
+    {
+        return array_keys($this->options);
     }
 }

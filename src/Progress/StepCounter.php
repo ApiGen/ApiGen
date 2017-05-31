@@ -2,36 +2,42 @@
 
 namespace ApiGen\Progress;
 
-use ApiGen\Contracts\Parser\Elements\ElementStorageInterface;
+use ApiGen\Element\Namespaces\NamespaceStorage;
+use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class StepCounter
 {
     /**
-     * @var ElementStorageInterface
+     * @var ReflectionStorageInterface
      */
-    private $elementStorage;
+    private $reflectionStorage;
 
-    public function __construct(ElementStorageInterface $elementStorage)
+    /**
+     * @var NamespaceStorage
+     */
+    private $namespaceStorage;
+
+    public function __construct(ReflectionStorageInterface $reflectionStorage, NamespaceStorage $namespaceStorage)
     {
-        $this->elementStorage = $elementStorage;
+        $this->reflectionStorage = $reflectionStorage;
+        $this->namespaceStorage = $namespaceStorage;
     }
 
     public function getStepCount(): int
     {
         return $this->getSourceCodeStepCount()
-            + count($this->elementStorage->getNamespaces())
-            + count($this->elementStorage->getClasses())
-            + count($this->elementStorage->getTraits())
-            + count($this->elementStorage->getInterfaces())
-            + count($this->elementStorage->getFunctions());
+            + count($this->namespaceStorage->getNamespaces())
+            + count($this->reflectionStorage->getClassReflections())
+            + count($this->reflectionStorage->getTraitReflections())
+            + count($this->reflectionStorage->getInterfaceReflections())
+            + count($this->reflectionStorage->getFunctionReflections());
     }
 
     private function getSourceCodeStepCount(): int
     {
-        return count($this->elementStorage->getClasses())
-            + count($this->elementStorage->getInterfaces())
-            + count($this->elementStorage->getTraits())
-            + count($this->elementStorage->getExceptions())
-            + count($this->elementStorage->getFunctions());
+        return count($this->reflectionStorage->getClassReflections())
+            + count($this->reflectionStorage->getInterfaceReflections())
+            + count($this->reflectionStorage->getTraitReflections())
+            + count($this->reflectionStorage->getFunctionReflections());
     }
 }

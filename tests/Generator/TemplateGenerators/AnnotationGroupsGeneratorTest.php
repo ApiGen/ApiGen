@@ -2,10 +2,9 @@
 
 namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Generator\TemplateGenerators\AnnotationGroupsGenerator;
+use ApiGen\Generator\AnnotationGroupsGenerator;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedClass;
 use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedMethod;
@@ -20,7 +19,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         /** @var ConfigurationInterface $configuration */
-        $configuration = $this->container->getByType(Configuration::class);
+        $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
             'source' => [TEMP_DIR],
             'destination' => TEMP_DIR,

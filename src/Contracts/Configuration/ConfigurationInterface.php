@@ -48,26 +48,10 @@ interface ConfigurationInterface
      */
     public function getBaseUrl(): string;
 
-    public function getGoogleAnalytics(): string;
-
     /**
      * @return string[]
      */
     public function getSource(): array;
-
-    /**
-     * Exclude masks for files/directories.
-     *
-     * @return string[]
-     */
-    public function getExclude(): array;
-
-    /**
-     * File extensions to be taken in account.
-     *
-     * @return string[]
-     */
-    public function getExtensions(): array;
 
     public function getDestinationWithName(string $prefix): string;
 

@@ -3,18 +3,16 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
-use ApiGen\ModularConfiguration\Option\ExcludeOption;
-use ApiGen\ModularConfiguration\Option\ExtensionsOption;
-use ApiGen\ModularConfiguration\Option\GoogleAnalyticsOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
 use ApiGen\ModularConfiguration\Option\TitleOption;
 use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\ModularConfiguration\Parameter\ParameterProvider;
-use ApiGen\Templating\Filters\UrlFilters;
+use ApiGen\Utils\NamingHelper;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -24,21 +22,21 @@ final class Configuration implements ConfigurationInterface
     private $options;
 
     /**
-     * @var ConfigurationOptionsResolver
-     */
-    private $configurationOptionsResolver;
-
-    /**
      * @var ParameterProvider
      */
     private $parameterProvider;
 
+    /**
+     * @var ConfigurationResolverInterface
+     */
+    private $configurationResolver;
+
     public function __construct(
-        ConfigurationOptionsResolver $configurationOptionsResolver,
-        ParameterProvider $parameterProvider
+        ParameterProvider $parameterProvider,
+        ConfigurationResolverInterface $configurationResolver
     ) {
-        $this->configurationOptionsResolver = $configurationOptionsResolver;
         $this->parameterProvider = $parameterProvider;
+        $this->configurationResolver = $configurationResolver;
     }
 
     /**
@@ -49,7 +47,8 @@ final class Configuration implements ConfigurationInterface
     {
         $configParameters = $this->parameterProvider->provide();
         $options = array_merge($configParameters, $options);
-        return $this->options = $this->configurationOptionsResolver->resolve($options);
+
+        return $this->options = $this->configurationResolver->resolveValuesWithDefaults($options);
     }
 
     /**
@@ -100,33 +99,12 @@ final class Configuration implements ConfigurationInterface
         return $this->getOptions()[BaseUrlOption::NAME];
     }
 
-    public function getGoogleAnalytics(): string
-    {
-        return $this->getOptions()[GoogleAnalyticsOption::NAME];
-    }
-
     /**
      * @return string[]
      */
     public function getSource(): array
     {
         return $this->getOptions()[SourceOption::NAME];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getExclude(): array
-    {
-        return $this->getOptions()[ExcludeOption::NAME];
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getExtensions(): array
-    {
-        return $this->getOptions()[ExtensionsOption::NAME];
     }
 
     public function getTemplatesDirectory(): string
@@ -146,9 +124,7 @@ final class Configuration implements ConfigurationInterface
 
     public function getDestinationWithPrefixName(string $prefix, string $name): string
     {
-        return $this->getDestination() . DIRECTORY_SEPARATOR . sprintf(
-            $prefix . '%s.html',
-            UrlFilters::urlize($name)
-        );
+        return $this->getDestination() . DIRECTORY_SEPARATOR .
+            $prefix . NamingHelper::nameToFilePath($name) . '.html';
     }
 }
