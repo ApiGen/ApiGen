@@ -26,13 +26,13 @@
         <table class="summary" id="methods" n:if="$methods">
             <caption>Methods summary</caption>
             <tr n:foreach="$methods as $method">
-                <td class="name"><a href="{$method->getDeclaringClassName()|linkReflection}">{$method->getDeclaringClassName()}</a></td>
-                <td class="name"><code><a href="{$method|methodUrl}">{$method->getName()}()</a></code></td>
+                <td class="name"><a href="{$method->getDeclaringClass()|linkReflection}">{$method->getDeclaringClassName()}</a></td>
+                <td class="name"><code><a href="{$method|linkReflection}">{$method->getName()}()</a></code></td>
                 <td>
                     {if $method->hasAnnotation($annotation)}
                         {foreach $method->getAnnotations()[$annotation] as $description}
                             {if $description}
-                                {$description|annotation:$annotation:$method|noescape}<br>
+                                {$description|annotation:$method|noescape}<br>
                             {/if}
                         {/foreach}
                     {/if}
@@ -43,12 +43,12 @@
         <table class="summary" id="properties" n:if="$properties">
             <caption>Properties summary</caption>
             <tr n:foreach="$properties as $property">
-                <td class="name"><a href="{$property->getDeclaringClassName()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
+                <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
                 <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
                 <td>
                     {foreach $property->getAnnotations()[$annotation] as $description}
                         {if $description}
-                            {$description|annotation:$annotation:$property|noescape}<br>
+                            {$description|annotation:$property|noescape}<br>
                         {/if}
                     {/foreach}
                 </td>
@@ -63,7 +63,7 @@
                 <td>
                     {foreach $function->getAnnotations()[$annotation] as $description}
                         {if $description}
-                            {$description|annotation:$annotation:$function|noescape}<br>
+                            {$description|annotation:$function|noescape}<br>
                         {/if}
                     {/foreach}
                 </td>
@@ -83,7 +83,7 @@
         <td>
             {foreach $class->getAnnotations()[$annotation] as $description}
                 {if $description}
-                    {$description|annotation:$annotation:$class|noescape}<br>
+                    {$description|annotation:$class|noescape}<br>
                 {/if}
             {/foreach}
         </td>

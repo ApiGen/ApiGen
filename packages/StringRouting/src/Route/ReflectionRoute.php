@@ -16,7 +16,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\StringRouting\Contract\Route\RouteInterface;
-use Nette\Utils\Strings;
+use ApiGen\Utils\NamingHelper;
 
 final class ReflectionRoute implements RouteInterface
 {
@@ -36,23 +36,23 @@ final class ReflectionRoute implements RouteInterface
     public function constructUrl($reflection): string
     {
         if ($reflection instanceof ClassReflectionInterface) {
-            return 'class-' . Strings::webalize($reflection->getName(), null, false) . '.html';
+            return 'class-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
         if ($reflection instanceof TraitReflectionInterface) {
-            return 'trait-' . Strings::webalize($reflection->getName(), null, false) . '.html';
+            return 'trait-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
         if ($reflection instanceof InterfaceReflectionInterface) {
-            return 'interface-' . Strings::webalize($reflection->getName(), null, false) . '.html';
+            return 'interface-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
         if ($reflection instanceof FunctionReflectionInterface) {
-            return 'function-' . Strings::webalize($reflection->getName(), null, false) . '.html';
+            return 'function-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
         if ($reflection instanceof AbstractClassElementInterface) {
-            $class = 'class-' . Strings::webalize($reflection->getDeclaringClassName(), null, false) . '.html';
+            $class = 'class-' . NamingHelper::nameToFilePath($reflection->getDeclaringClassName()) . '.html';
             $anchorPrefix = '';
             if ($reflection instanceof ClassMethodReflectionInterface) {
                 $anchorPrefix = '_';
@@ -62,22 +62,22 @@ final class ReflectionRoute implements RouteInterface
                 $anchorPrefix = '$';
             }
 
-            return $class . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), null, false);
+            return $class . '#' . $anchorPrefix . NamingHelper::nameToFilePath($reflection->getName());
         }
 
         if ($reflection instanceof AbstractInterfaceElementInterface) {
             $interface = 'interface-'
-                . Strings::webalize($reflection->getDeclaringInterfaceName(), null, false) . '.html';
+                . NamingHelper::nameToFilePath($reflection->getDeclaringInterfaceName()) . '.html';
             $anchorPrefix = '';
             if ($reflection instanceof InterfaceMethodReflectionInterface) {
                 $anchorPrefix = '_';
             }
 
-            return $interface . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), null, false);
+            return $interface . '#' . $anchorPrefix . NamingHelper::nameToFilePath($reflection->getName());
         }
 
         if ($reflection instanceof AbstractTraitElementInterface) {
-            $trait = 'trait-' . Strings::webalize($reflection->getDeclaringTraitName(), null, false) . '.html';
+            $trait = 'trait-' . NamingHelper::nameToFilePath($reflection->getDeclaringTraitName()) . '.html';
             $anchorPrefix = '';
             if ($reflection instanceof TraitMethodReflectionInterface) {
                 $anchorPrefix = '_';
@@ -87,7 +87,7 @@ final class ReflectionRoute implements RouteInterface
                 $anchorPrefix = '$';
             }
 
-            return $trait . '#' . $anchorPrefix . Strings::webalize($reflection->getName(), null, false);
+            return $trait . '#' . $anchorPrefix . NamingHelper::nameToFilePath($reflection->getName());
         }
 
         return '/';

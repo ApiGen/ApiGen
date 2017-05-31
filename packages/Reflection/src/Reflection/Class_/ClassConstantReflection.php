@@ -42,6 +42,13 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         $value,
         ClassReflectionInterface $classReflection
     ): self {
+// inspire from PHPStan
+//        $reflectionConstant = $this->getNativeReflection()->getReflectionConstant($name);
+//        $this->constants[$name] = new ClassConstantWithVisibilityReflection(
+//            $this->broker->getClass($reflectionConstant->getDeclaringClass()->getName()),
+//            $reflectionConstant
+//        );
+
         return new self($name, $value, $classReflection);
     }
 

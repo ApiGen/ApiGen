@@ -29,6 +29,8 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     public function getElements(): array
     {
+        // @todo: add support for namespace search: type "console" => show Symfony\Console
+
         $elements = [];
         foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
             $path = $this->reflectionRoute->constructUrl($functionReflection);

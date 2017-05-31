@@ -40,7 +40,9 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
      */
     public static function getSubscribedEvents(): array
     {
-        return [CreateTemplateEvent::class => 'loadTemplateVariables'];
+        return [
+            CreateTemplateEvent::class => 'loadTemplateVariables'
+        ];
     }
 
     public function loadTemplateVariables(CreateTemplateEvent $createTemplateEvent): void

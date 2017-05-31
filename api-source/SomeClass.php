@@ -1,7 +1,9 @@
 <?php declare(strict_types=1);
 
 
-class SomeClass // extends \Nette\DI\CompilerExtension
+use Nette\DI\CompilerExtension;
+
+class SomeClass extends CompilerExtension
 {
 
 }

@@ -14,4 +14,9 @@ class ParameterMethodClass
     public function methodWithArgs($url = 1, $data = null, $headers = []): void
     {
     }
+
+    public function methodWithClassParameter(ParameterClass $parameterClass): void
+    {
+
+    }
 }

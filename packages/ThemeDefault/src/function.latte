@@ -1,64 +1,65 @@
 {layout '@layout.latte'}
 {var $activePage = 'function'}
 
-{block title}{if $function->isDeprecated()}Deprecated {/if}Function {$function->getName()}{/block}
+{block title}
+    {if $function->isDeprecated()}Deprecated {/if}Function {$function->getName()}
+{/block}
 
 {block content}
-<div id="content" class="function">
-    <h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
+    <div id="content" class="function">
+        <h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
 
-    <div class="description" n:if="$function->getDescription()">
-        {$function->getDescription()}
-    </div>
+        <div class="description" n:if="$function->getDescription()">
+            {$function|description}
+        </div>
 
-    <div class="info">
-        {if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
-        {var $filteredAnnotations = ($function->getAnnotations()|annotationFilter: ['param', 'return', 'throws'])}
-        {foreach $filteredAnnotations as $annotation => $values}
-            {foreach $values as $value}
-                <b>{$annotation}{if $value}:{/if}</b>
-                {$value|annotation:$annotation:$function|noescape}<br>
+        {*<div class="alert alert-info">*}
+        <div class="info">
+            {if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
+            {var $filteredAnnotations = ($function->getAnnotations()|annotationFilter: ['param', 'return', 'throws'])}
+            {foreach $filteredAnnotations as $annotation => $values}
+                {foreach $values as $value}
+                    <b>{$annotation}{if $value}:{/if}</b>
+                    {$value|annotation:$function|noescape}<br>
+                {/foreach}
             {/foreach}
-        {/foreach}
-        <strong>Open source code</strong> at
-        <a href="{$function|linkSource}">{$function->getFileName()|relativePath}</a><br>
+            <strong>
+                <a href="{$function|linkSource}">Open source code</a>
+            </strong>
+            <br>
+        </div>
+
+        {var $annotations = $function->getAnnotations()}
+
+        <table class="summary" id="parameters" n:if="count($function->getParameters())">
+        <caption>Parameters summary</caption>
+        <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
+            <td class="name">
+                <code>
+                    {if $parameter->getTypeHintClassOrInterfaceReflection()}
+                        {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
+                    {else}
+                        {$parameter->getTypeHint()}
+                    {/if}
+                </code>
+            </td>
+            <td class="value"><code>{block|strip}
+                <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
+                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+            {/block}</code></td>
+            <td>{$parameter|description}</td>
+        </tr>
+        </table>
+
+        {if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
+            <table class="summary" id="returns">
+                <caption>Return value summary</caption>
+                <tr>
+                    <td class="name">
+                        {$annotations['return'][0]|annotation:$function|noescape}
+                    </td>
+                </tr>
+            </table>
+        {/if}
     </div>
-
-    {var $annotations = $function->getAnnotations()}
-
-    <table class="summary" id="parameters" n:if="count($function->getParameters())">
-    <caption>Parameters summary</caption>
-    <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
-        <td class="name"><code>{$parameter->typeHint|typeLinks:$function|noescape}</code></td>
-        <td class="value"><code>{block|strip}
-            <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
-        {/block}</code></td>
-        <td>{$parameter->getDescription()|annotationDescription:$function}</td>
-    </tr>
-    </table>
-
-    <table class="summary" id="returns" n:if="isset($annotations['return']) && 'void' !== $annotations['return'][0]">
-    <caption>Return value summary</caption>
-    <tr>
-        <td class="name"><code>
-            {$annotations['return'][0]|typeLinks:$function|noescape}
-        </code></td>
-        <td>
-            {$annotations['return'][0]|annotationDescription:$function|noescape}
-        </td>
-    </tr>
-    </table>
-
-    <table class="summary" id="throws" n:ifset="$annotations['throws']">
-    <caption>Thrown exceptions summary</caption>
-    <tr n:foreach="$annotations['throws'] as $throws">
-        <td class="name"><code>
-            {$throws|typeLinks:$function|noescape}
-        </code></td>
-        <td>
-            {$throws|annotationDescription:$function|noescape}
-        </td>
-    </tr>
-    </table>
-</div>
 {/block}
