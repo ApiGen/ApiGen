@@ -4,14 +4,13 @@ namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Element\Tree\TraitUsersResolver;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -69,9 +68,8 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return trim($description);
     }
 
-
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
     public function getUsers(): array
     {
@@ -85,12 +83,12 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
     public function getNamespaceName(): string
     {
-        // TODO: Implement getNamespaceName() method.
+        return $this->betterTraitReflection->getNamespaceName();
     }
 
     public function getFileName(): string
@@ -120,8 +118,8 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
 
     public function getMethod(string $name): TraitMethodReflectionInterface
     {
-        if (! $this->hasMethod($name)) {
-            throw new \InvalidArgumentException(sprintf(
+        if (! isset($this->getMethods()[$name])) {
+            throw new InvalidArgumentException(sprintf(
                 'Method "%s" does not exist in trait "%s".',
                 $name,
                 $this->getName()
@@ -131,27 +129,17 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return $this->getMethods()[$name];
     }
 
-    public function hasMethod(string $name): bool
-    {
-        return isset($this->getMethods()[$name]);
-    }
-
     /**
      * @return TraitReflectionInterface[]
      */
     public function getTraits(): array
     {
-        return $this->transformerCollector->transformGroup(
-            $this->betterTraitReflection->getTraits()
-        );
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getOwnTraitNames(): array
-    {
-        // TODO: Implement getOwnTraitNames() method.
+        return [];
+        // fails for now, see:
+        // https://github.com/nikic/PHP-Parser/issues/73#issuecomment-24533846
+        // $this->betterTraitReflection->getTraits();
+        // and PR wit htest
+        // https://github.com/Roave/BetterReflection/pull/274
     }
 
     /**
@@ -159,7 +147,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      */
     public function getTraitAliases(): array
     {
-        // TODO: Implement getTraitAliases() method.
+        return $this->betterTraitReflection->getTraitAliases();
     }
 
     /**
@@ -182,18 +170,10 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         );
     }
 
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getUsedProperties(): array
-    {
-        // TODO: Implement getUsedProperties() method.
-    }
-
     public function getProperty(string $name): TraitPropertyReflectionInterface
     {
         if (! isset($this->getProperties()[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Property "%s" does not exist in trait "%s".',
                 $name,
                 $this->getName()
@@ -201,16 +181,6 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         }
 
         return $this->getProperties()[$name];
-    }
-
-    public function hasProperty(string $name): bool
-    {
-        // TODO: Implement hasProperty() method.
-    }
-
-    public function usesTrait(string $name): bool
-    {
-        // TODO: Implement usesTrait() method.
     }
 
     /**

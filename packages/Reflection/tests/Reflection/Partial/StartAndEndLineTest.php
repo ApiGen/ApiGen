@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Partial;
 
-use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Tests\Reflection\Partial\Source\SomeClassWithAnnotations;
 use ApiGen\Tests\AbstractParserAwareTestCase;

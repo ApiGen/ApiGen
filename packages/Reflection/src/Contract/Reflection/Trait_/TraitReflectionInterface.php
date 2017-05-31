@@ -2,17 +2,12 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 
-interface TraitReflectionInterface extends AnnotationsInterface
+interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflectionInterface
 {
-    public function getName(): string;
-
-    /**
-     * Returns the unqualified name (UQN).
-     */
     public function getShortName(): string;
 
     public function isDeprecated(): bool;
@@ -22,7 +17,7 @@ interface TraitReflectionInterface extends AnnotationsInterface
     public function getFileName(): string;
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
     public function getUsers(): array;
 
@@ -38,17 +33,10 @@ interface TraitReflectionInterface extends AnnotationsInterface
 
     public function getMethod(string $name): TraitMethodReflectionInterface;
 
-    public function hasMethod(string $name): bool;
-
     /**
      * @return TraitReflectionInterface[]
      */
     public function getTraits(): array;
-
-    /**
-     * @return string[]
-     */
-    public function getOwnTraitNames(): array;
 
     /**
      * @return string[]
@@ -65,14 +53,5 @@ interface TraitReflectionInterface extends AnnotationsInterface
      */
     public function getOwnProperties(): array;
 
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getUsedProperties(): array;
-
     public function getProperty(string $name): TraitPropertyReflectionInterface;
-
-    public function hasProperty(string $name): bool;
-
-    public function usesTrait(string $name): bool;
 }

@@ -2,12 +2,11 @@
 
 namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
-use ApiGen\Element\Tree\ClassTraitElementResolver;
+use ApiGen\Element\Tree\ParentClassElementsResolver;
 use ApiGen\Element\Tree\SubClassesResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Reflection\Class_\ClassReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
-use ApiGen\Element\Tree\ParentClassElementsResolver;
+use ApiGen\Reflection\Reflection\Class_\ClassReflection;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -24,11 +23,6 @@ final class ClassReflectionTransformer implements TransformerInterface
     private $parentClassElementsResolver;
 
     /**
-     * @var ClassTraitElementResolver
-     */
-    private $classTraitElementResolver;
-
-    /**
      * @var SubClassesResolver
      */
     private $subClassesResolver;
@@ -36,12 +30,10 @@ final class ClassReflectionTransformer implements TransformerInterface
     public function __construct(
         DocBlockFactory $docBlockFactory,
         ParentClassElementsResolver $parentClassElementsResolver,
-        ClassTraitElementResolver $classTraitElementResolver,
         SubClassesResolver $subClassesResolver
     ) {
         $this->docBlockFactory = $docBlockFactory;
         $this->parentClassElementsResolver = $parentClassElementsResolver;
-        $this->classTraitElementResolver = $classTraitElementResolver;
         $this->subClassesResolver = $subClassesResolver;
     }
 
@@ -64,7 +56,6 @@ final class ClassReflectionTransformer implements TransformerInterface
             $reflection,
             $docBlock,
             $this->parentClassElementsResolver,
-            $this->classTraitElementResolver,
             $this->subClassesResolver
         );
     }

@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Sour
 
 interface PoorInterface
 {
-    const HOPE = 'do';
+    public const HOPE = 'do';
 
-    public function riseAndShine();
+    public function riseAndShine(): void;
 }

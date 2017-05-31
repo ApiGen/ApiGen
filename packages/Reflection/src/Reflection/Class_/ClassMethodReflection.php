@@ -30,11 +30,6 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
     private $docBlock;
 
     /**
-     * @var ClassReflectionInterface
-     */
-    private $declaringClass;
-
-    /**
      * @var TransformerCollectorInterface
      */
     private $transformerCollector;
@@ -76,7 +71,8 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
             return true;
         }
 
-        // if parent is deprecated, so is this
+        return $this->getDeclaringClass()
+            ->isDeprecated();
     }
 
     /**
@@ -118,12 +114,8 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
 
     public function getDeclaringClassName(): string
     {
-        return $this->getDeclaringClass()->getName();
-    }
-
-    public function setDeclaringClass(ClassReflectionInterface $classReflection): void
-    {
-        $this->declaringClass = $classReflection;
+        return $this->getDeclaringClass()
+            ->getName();
     }
 
     public function isPrivate(): bool
@@ -161,7 +153,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
     public function getImplementedMethod(): ?InterfaceMethodReflectionInterface
     {
         foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
-            if ($interface->hasMethod($this->getName())) {
+            if (isset($interface->getMethods()[$this->getName()])) {
                 return $interface->getMethod($this->getName());
             }
         }

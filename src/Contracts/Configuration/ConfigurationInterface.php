@@ -48,8 +48,6 @@ interface ConfigurationInterface
      */
     public function getBaseUrl(): string;
 
-    public function getGoogleAnalytics(): string;
-
     /**
      * @return string[]
      */

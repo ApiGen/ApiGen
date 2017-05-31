@@ -2,9 +2,9 @@
 
 namespace ApiGen\ModularConfiguration;
 
-use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 
 final class ConfigurationResolver implements ConfigurationResolverInterface
 {

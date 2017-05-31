@@ -6,15 +6,16 @@ use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\Object_;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-final class FunctionParameterReflection implements FunctionParameterReflectionInterface, TransformerCollectorAwareInterface
+final class FunctionParameterReflection implements FunctionParameterReflectionInterface,
+    TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter
@@ -54,6 +55,7 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
 
     public function getTypeHint(): string
     {
+        // @todo: try only (string) $this->betterParameterReflection->getTypeHint()
         if ($this->betterParameterReflection->isArray()) {
             return 'array';
         }
@@ -62,9 +64,10 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
             return 'callable';
         }
 
-        $className = $this->getClassName();
-        if ($className) {
-            return $className;
+        $typeHint = $this->betterParameterReflection->getTypeHint();
+        if ($typeHint instanceof Object_) {
+            $classOrInterfaceName = (string) $typeHint->getFqsen();
+            return ltrim($classOrInterfaceName, '\\');
         }
 
         if (count($this->betterParameterReflection->getDocBlockTypes())) {
@@ -106,28 +109,18 @@ final class FunctionParameterReflection implements FunctionParameterReflectionIn
     /**
      * @return ClassReflectionInterface|InterfaceReflectionInterface|null
      */
-    public function getClass()
+    public function getTypeHintClassOrInterfaceReflection()
     {
-        if ($this->getClassName() === null) {
+        if (! class_exists($this->getTypeHint())) {
             return null;
         }
 
-        $betterClassReflection = ReflectionClass::createFromName($this->getClassName());
+        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
 
         /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
         $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
 
         return $classOrInterfaceReflection;
-    }
-
-    public function getClassName(): ?string
-    {
-        $typeHint = $this->betterParameterReflection->getTypeHint();
-        if ( ! $typeHint instanceof Object_) {
-            return null;
-        }
-
-        return $typeHint->getFqsen()->getName();
     }
 
     public function isVariadic(): bool

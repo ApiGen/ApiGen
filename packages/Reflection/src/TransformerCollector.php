@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
@@ -16,6 +17,16 @@ final class TransformerCollector implements TransformerCollectorInterface
      */
     private $transformers = [];
 
+    /**
+     * @var ReflectionCollectorCollectorInterface
+     */
+    private $reflectionCollectorCollector;
+
+    public function __construct(ReflectionCollectorCollectorInterface $reflectionCollectorCollector)
+    {
+        $this->reflectionCollectorCollector = $reflectionCollectorCollector;
+    }
+
     public function addTransformer(TransformerInterface $transformer): void
     {
         $this->transformers[] = $transformer;
@@ -29,21 +40,12 @@ final class TransformerCollector implements TransformerCollectorInterface
     {
         $elements = [];
         foreach ($reflections as $name => $reflection) {
-            // also ! $this->reflection->isInternal();, remove isDocumented()
-
             $transformedReflection = $this->transformSingle($reflection);
-            if ($transformedReflection instanceof AnnotationsInterface && $transformedReflection->hasAnnotation('internal')) {
+            if ($this->shouldSkipReflection($transformedReflection)) {
                 continue;
             }
 
-            // $this->configuration->getVisibilityLevels()
-            // @todo: here is the place to filter out public/protected etc - use service!
-            if (! $this->hasAllowedAccessLevel($transformedReflection)) {
-                continue;
-            }
-
-            $name = /*$name ?: */$transformedReflection->getName();
-            $elements[$name] = $transformedReflection;
+            $elements[$transformedReflection->getName()] = $transformedReflection;
         }
 
         // @todo: sort here!, before ElementSorter
@@ -65,13 +67,15 @@ final class TransformerCollector implements TransformerCollectorInterface
                 continue;
             }
 
-            $element = $transformer->transform($reflection);
+            $newReflection = $transformer->transform($reflection);
 
-            if ($element instanceof TransformerCollectorAwareInterface) {
-                $element->setTransformerCollector($this);
+            if ($newReflection instanceof TransformerCollectorAwareInterface) {
+                $newReflection->setTransformerCollector($this);
             }
 
-            return $element;
+            $this->reflectionCollectorCollector->processReflection($newReflection);
+
+            return $newReflection;
         }
 
         throw new UnsupportedReflectionClassException(sprintf(
@@ -81,14 +85,41 @@ final class TransformerCollector implements TransformerCollectorInterface
         ));
     }
 
+    /**
+     * @param object $transformedReflection
+     */
     private function hasAllowedAccessLevel($transformedReflection): bool
     {
-        if ( ! $transformedReflection instanceof AccessLevelInterface) {
+        if (! $transformedReflection instanceof AccessLevelInterface) {
             return true;
         }
 
         // hardcoded @todo make service-like and using ConfigurationInterface
         if ($transformedReflection->isPublic() || $transformedReflection->isProtected()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @param object $transformedReflection
+     */
+    private function shouldSkipReflection($transformedReflection): bool
+    {
+        // also ! $this->reflection->isInternal();, remove isDocumented()
+
+        // @let decide voters if element is passed?
+        // here alreay 2 conditions
+        if ($transformedReflection instanceof AnnotationsInterface
+            && $transformedReflection->hasAnnotation('internal')
+        ) {
+            return true;
+        }
+
+        // $this->configuration->getVisibilityLevels()
+        // @todo: here is the place to filter out public/protected etc - use service!
+        if (! $this->hasAllowedAccessLevel($transformedReflection)) {
             return true;
         }
 

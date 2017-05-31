@@ -38,24 +38,30 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
     /**
      * @param mixed $value
      */
-    public static function createFromNameValueAndInterface(string $name, $value, InterfaceReflectionInterface $interfaceReflection): self
-    {
+    public static function createFromNameValueAndInterface(
+        string $name,
+        $value,
+        InterfaceReflectionInterface $interfaceReflection
+    ): self {
         return new self($name, $value, $interfaceReflection);
     }
 
     public function isPrivate(): bool
     {
-        return $this->reflection->isPrivate();
+        // @todo
+        return false;
     }
 
     public function isProtected(): bool
     {
-        return $this->reflection->isProtected();
+        // @todo
+        return false;
     }
 
     public function isPublic(): bool
     {
-        return $this->reflection->isPublic();
+        // @todo
+        return false;
     }
 
     public function getName(): string
@@ -83,17 +89,14 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
     }
 
     public function getStartLine(): int
     {
-        // TODO: Implement getStartLine() method.
     }
 
     public function getEndLine(): int
     {
-        // TODO: Implement getEndLine() method.
     }
 
     public function getDeclaringInterfaceName(): string

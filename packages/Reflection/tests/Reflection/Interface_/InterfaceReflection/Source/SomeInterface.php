@@ -4,5 +4,5 @@ namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Sour
 
 interface SomeInterface extends RichInterface
 {
-    const LAST = 'live';
+    public const LAST = 'live';
 }

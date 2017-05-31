@@ -106,15 +106,4 @@ final class SingleNamespaceStorage
     {
         return $this->functionReflections;
     }
-
-    /**
-     * @return string[]
-     */
-    public function getSubNamespaces(): array
-    {
-        return array_filter($this->parentNamespaces, function ($subNamespace) {
-            $pattern = '~^' . preg_quote($this->namespace) . '\\\\[^\\\\]+$~';
-            return (bool) preg_match($pattern, $subNamespace);
-        });
-    }
 }

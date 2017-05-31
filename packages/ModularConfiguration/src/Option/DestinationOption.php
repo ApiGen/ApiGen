@@ -2,9 +2,9 @@
 
 namespace ApiGen\ModularConfiguration\Option;
 
-use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\Console\Command\GenerateCommand;
 use ApiGen\ModularConfiguration\Contract\Option\CommandOptionInterface;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\Utils\FileSystem;
 
 final class DestinationOption implements CommandOptionInterface

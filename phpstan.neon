@@ -1,15 +1,4 @@
 parameters:
     ignoreErrors:
-        - "#must implement interface PhpParser#"
-        - "#does not accept TokenReflection#"
-        - "#allIsInstanceOf#"
-        - "#PHPUnit_Framework_MockObject_MockObject::method()#"
-
-    autoload_files:
-        # possibly add to autoload-dev section
-        - %rootDir%/../../../tests/Generator/Source/SomeFunction.php
-        - %rootDir%/../../../tests/Parser/Parser/ParserSource/SomeFunction.php
-        - %rootDir%/../../../tests/Parser/Reflection/ReflectionFunctionSource/functions.php
-
-    excludes_analyse:
-        - %rootDir%/../../../tests/Parser/Parser/ErrorParseSource/ErrorClass.php
+        - "#Constant #"
+        - "#AnnotationsInterface::getName()#"

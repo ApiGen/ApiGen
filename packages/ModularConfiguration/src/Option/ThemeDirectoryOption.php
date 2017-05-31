@@ -2,8 +2,8 @@
 
 namespace ApiGen\ModularConfiguration\Option;
 
-use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\Utils\FileSystem;
 
 final class ThemeDirectoryOption implements OptionInterface

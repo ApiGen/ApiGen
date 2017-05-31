@@ -19,7 +19,6 @@ final class ReflectionTest extends AbstractParserAwareTestCase
         $this->reflection = $this->reflectionStorage->getClassReflections()[CommonReflection::class];
     }
 
-
     public function testGetName(): void
     {
         $this->assertSame(CommonReflection::class, $this->reflection->getName());

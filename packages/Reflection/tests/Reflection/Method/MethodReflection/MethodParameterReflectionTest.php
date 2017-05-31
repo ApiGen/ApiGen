@@ -1,13 +1,12 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection;
+namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
-use ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection\Source\ParameterMethodClass;
+use ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use ApiGen\Tests\Parser\Reflection\ReflectionMethodSource\SomeClassWithAnnotations;
 
 final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 {
@@ -53,12 +52,7 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testGetClass(): void
     {
-        $this->assertNull($this->parameterReflection->getClass());
-    }
-
-    public function testGetClassName(): void
-    {
-        $this->assertNull($this->parameterReflection->getClassName());
+        $this->assertNull($this->parameterReflection->getTypeHintClassOrInterfaceReflection());
     }
 
     public function testGetDeclaringFunction(): void

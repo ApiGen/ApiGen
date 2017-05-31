@@ -21,7 +21,7 @@ final class MethodTest extends AbstractParserAwareTestCase
         $this->interfaceReflection = $interfaceReflections[PoorInterface::class];
     }
 
-    public function test()
+    public function test(): void
     {
         $this->assertCount(1, $this->interfaceReflection->getMethods());
         $this->assertCount(1, $this->interfaceReflection->getOwnMethods());

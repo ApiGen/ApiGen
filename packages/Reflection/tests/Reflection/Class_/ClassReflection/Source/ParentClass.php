@@ -11,6 +11,9 @@ class ParentClass
      */
     protected $someParentProperty;
 
+    /**
+     * @return mixed
+     */
     public function getSomeParentStuff()
     {
         return $this->someParentProperty;

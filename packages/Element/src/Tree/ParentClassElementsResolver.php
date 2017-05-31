@@ -73,6 +73,7 @@ final class ParentClassElementsResolver
     /**
      * @param mixed[] $elements
      * @param mixed[] $allElements
+     * @return mixed[]
      */
     private function sortElements(array $elements, array $allElements, string $classOrInterfaceName): array
     {

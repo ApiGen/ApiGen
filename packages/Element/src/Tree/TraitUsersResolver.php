@@ -2,6 +2,7 @@
 
 namespace ApiGen\Element\Tree;
 
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
@@ -17,15 +18,27 @@ final class TraitUsersResolver
         $this->reflectionStorage = $reflectionStorage;
     }
 
-    public function getUsers(TraitReflectionInterface $traitReflection)
+    /**
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
+     */
+    public function getUsers(TraitReflectionInterface $parentTraitReflection): array
     {
         $users = [];
+
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            if (! in_array($traitReflection, $classReflection->getTraits())) {
+            if (! array_key_exists($parentTraitReflection->getName(), $classReflection->getTraits())) {
                 continue;
             }
 
-            $users[] = $classReflection;
+            $users[$classReflection->getName()] = $classReflection;
+        }
+
+        foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
+            if (! array_key_exists($parentTraitReflection->getName(), $traitReflection->getTraits())) {
+                continue;
+            }
+
+            $users[$traitReflection->getName()] = $traitReflection;
         }
 
         uksort($users, 'strcasecmp');

@@ -4,5 +4,5 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
 
 interface RichInterface
 {
-    public function getSomeStuff();
+    public function getSomeStuff(): void;
 }

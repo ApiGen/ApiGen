@@ -15,12 +15,7 @@ final class ParameterProvider implements ParameterProviderInterface
     public function __construct(Container $container)
     {
         $containerParameters = $container->getParameters();
-        unset(
-            $containerParameters['appDir'], $containerParameters['wwwDir'],
-            $containerParameters['debugMode'], $containerParameters['productionMode'],
-            $containerParameters['consoleMode'], $containerParameters['tempDir']
-        );
-        $this->parameters = $containerParameters;
+        $this->parameters = $this->unsedNetteDefaultParameters($containerParameters);
     }
 
     /**
@@ -29,5 +24,20 @@ final class ParameterProvider implements ParameterProviderInterface
     public function provide(): array
     {
         return $this->parameters;
+    }
+
+    /**
+     * @param mixed[] $containerParameters
+     * @return mixed[]
+     */
+    private function unsedNetteDefaultParameters(array $containerParameters): array
+    {
+        unset(
+            $containerParameters['appDir'], $containerParameters['wwwDir'],
+            $containerParameters['debugMode'], $containerParameters['productionMode'],
+            $containerParameters['consoleMode'], $containerParameters['tempDir']
+        );
+
+        return $containerParameters;
     }
 }

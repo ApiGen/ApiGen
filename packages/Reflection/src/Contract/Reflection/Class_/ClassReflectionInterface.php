@@ -2,17 +2,15 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
-interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface
+interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface
 {
-    public function getName(): string;
-
     public function getParentClass(): ?ClassReflectionInterface;
 
     public function getParentClassName(): ?string;
@@ -59,16 +57,9 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     /**
      * @return TraitMethodReflectionInterface[]
      */
-    public function getUsedMethods(): array;
-
-    /**
-     * @return TraitMethodReflectionInterface[]
-     */
     public function getTraitMethods(): array;
 
     public function getMethod(string $name): ClassMethodReflectionInterface;
-
-    public function hasMethod(string $name): bool;
 
     /**
      * @return ClassConstantReflectionInterface[]
@@ -113,10 +104,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
 
     public function getProperty(string $name): ClassPropertyReflectionInterface;
 
-    public function hasProperty(string $name): bool;
-
-    public function usesTrait(string $name): bool;
-
     public function isAbstract(): bool;
 
     public function isFinal(): bool;
@@ -133,9 +120,4 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function getConstants(): array;
 
     public function isDeprecated(): bool;
-
-    /**
-     * @return TraitPropertyReflectionInterface[]
-     */
-    public function getUsedProperties(): array;
 }

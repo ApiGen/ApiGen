@@ -24,7 +24,7 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
         $this->methodReflection = $classReflection->getMethod('methodWithArgs');
     }
 
-    public function testName()
+    public function testName(): void
     {
         $this->assertSame('methodWithArgs', $this->methodReflection->getName());
     }

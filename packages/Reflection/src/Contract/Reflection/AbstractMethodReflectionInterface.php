@@ -10,8 +10,15 @@ use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 
 interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
-    AccessLevelInterface
+    AccessLevelInterface, AbstractReflectionInterface
 {
+    public function getShortName(): string;
+
+    /**
+     * @return AbstractParameterReflectionInterface[]
+     */
+    public function getParameters(): array;
+
     public function isAbstract(): bool;
 
     public function isFinal(): bool;
@@ -26,18 +33,4 @@ interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, An
     public function getOverriddenMethod();
 
     public function returnsReference(): bool;
-
-    /**
-     * @return AbstractParameterReflectionInterface[]
-     */
-    public function getParameters(): array;
-
-    public function getName(): string;
-
-    /**
-     * Returns the unqualified name (UQN).
-     */
-    public function getShortName(): string;
-
-    public function isDeprecated(): bool;
 }

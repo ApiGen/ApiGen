@@ -3,11 +3,9 @@
 namespace ApiGen\Reflection\Transformer\BetterReflection\Trait_;
 
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
-use ApiGen\Reflection\Reflection\Method\MethodParameterReflection;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Reflection\Trait_\TraitPropertyReflection;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
-use Roave\BetterReflection\Reflection\ReflectionParameter;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class TraitPropertyReflectionTransformer implements TransformerInterface
@@ -40,7 +38,7 @@ final class TraitPropertyReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param ReflectionProperty $reflection
+     * @param object|ReflectionProperty $reflection
      */
     public function transform($reflection): TraitPropertyReflectionInterface
     {

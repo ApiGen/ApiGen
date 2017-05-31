@@ -3,18 +3,18 @@
 namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Element\Tree\ClassTraitElementResolver;
+use ApiGen\Element\Tree\ParentClassElementsResolver;
 use ApiGen\Element\Tree\SubClassesResolver;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
-use ApiGen\Element\Tree\ParentClassElementsResolver;
+use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -41,11 +41,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     private $parentClassElementsResolver;
 
     /**
-     * @var ClassTraitElementResolver
-     */
-    private $classTraitElementResolver;
-
-    /**
      * @var SubClassesResolver
      */
     private $subClassesResolver;
@@ -54,13 +49,11 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         ReflectionClass $betterClassReflection,
         DocBlock $docBlock,
         ParentClassElementsResolver $parentClassElementsResolver,
-        ClassTraitElementResolver $classTraitElementResolver,
         SubClassesResolver $subClassesResolver
     ) {
         $this->betterClassReflection = $betterClassReflection;
         $this->docBlock = $docBlock;
         $this->parentClassElementsResolver = $parentClassElementsResolver;
-        $this->classTraitElementResolver = $classTraitElementResolver;
         $this->subClassesResolver = $subClassesResolver;
     }
 
@@ -168,15 +161,15 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getMethod(string $name): ClassMethodReflectionInterface
     {
-        if ($this->hasMethod($name)) {
-            return $this->getMethods()[$name];
+        if (! isset($this->getMethods()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Method "%s" does not exist in "%s" class.',
+                $name,
+                $this->getName()
+            ));
         }
 
-        throw new \InvalidArgumentException(sprintf(
-            'Method "%s" does not exist in "%s" class.',
-            $name,
-            $this->getName()
-        ));
+        return $this->getMethods()[$name];
     }
 
     /**
@@ -185,22 +178,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getInheritedMethods(): array
     {
         return $this->parentClassElementsResolver->getInheritedMethods($this);
-    }
-
-    /**
-     * @return ClassMethodReflectionInterface[]
-     */
-    public function getUsedMethods(): array
-    {
-        $usedMethods = $this->classTraitElementResolver->getUsedMethods($this);
-
-        return $this->sortUsedMethods($usedMethods);
-    }
-
-
-    public function hasMethod(string $name): bool
-    {
-        return isset($this->getMethods()[$name]);
     }
 
     /**
@@ -253,7 +230,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
             return $this->getConstants()[$name];
         }
 
-        throw new \InvalidArgumentException(sprintf(
+        throw new InvalidArgumentException(sprintf(
             'Constant %s does not exist in class %s',
             $name,
             $this->getName()
@@ -263,7 +240,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getOwnConstant(string $name): ClassConstantReflectionInterface
     {
         if (! isset($this->getOwnConstants()[$name])) {
-            throw new \InvalidArgumentException(sprintf(
+            throw new InvalidArgumentException(sprintf(
                 'Constant %s does not exist in class %s',
                 $name,
                 $this->getName()
@@ -319,18 +296,10 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->parentClassElementsResolver->getInheritedProperties($this);
     }
 
-    /**
-     * @return ClassPropertyReflectionInterface[][]
-     */
-    public function getUsedProperties(): array
-    {
-        return $this->classTraitElementResolver->getUsedProperties($this);
-    }
-
     public function getProperty(string $name): ClassPropertyReflectionInterface
     {
-        if (! $this->hasProperty($name)) {
-            throw new \InvalidArgumentException(sprintf(
+        if (! isset($this->getProperties()[$name])) {
+            throw new InvalidArgumentException(sprintf(
                 'Property %s does not exist in class %s',
                 $name,
                 $this->getName()
@@ -338,16 +307,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         }
 
         return $this->getProperties()[$name];
-    }
-
-    public function hasProperty(string $name): bool
-    {
-        return isset($this->getProperties()[$name]);
-    }
-
-    public function usesTrait(string $trait): bool
-    {
-        return isset($this->getTraits()[$trait]);
     }
 
     public function isAbstract(): bool
@@ -364,7 +323,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     {
         return $this->betterClassReflection->isSubclassOf($class);
     }
-
 
     public function isDeprecated(): bool
     {
@@ -387,28 +345,6 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getFileName(): string
     {
         return $this->betterClassReflection->getFileName();
-    }
-
-
-
-    /**
-     * @param mixed[] $usedMethods
-     * @return mixed[]
-     */
-    private function sortUsedMethods(array $usedMethods): array
-    {
-        array_walk($usedMethods, function (&$methods) {
-            ksort($methods);
-            array_walk($methods, function (&$aliasedMethods) {
-                if (! isset($aliasedMethods['aliases'])) {
-                    $aliasedMethods['aliases'] = [];
-                }
-
-                ksort($aliasedMethods['aliases']);
-            });
-        });
-
-        return $usedMethods;
     }
 
     /**
@@ -453,6 +389,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         foreach ($this->getTraits() as $traitReflection) {
             $traitMethods = array_merge($traitMethods, $traitReflection->getMethods());
         }
+
         return $traitMethods;
     }
 

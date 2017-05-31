@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
 namespace ApiGen\Reflection\Reflection\Trait_;
+
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
@@ -81,10 +81,7 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
     {
     }
 
-    /**
-     * @return ClassMethodReflectionInterface|TraitMethodReflectionInterface|null
-     */
-    public function getOverriddenMethod()
+    public function getOverriddenMethod(): void
     {
     }
 
@@ -98,7 +95,9 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
      */
     public function getParameters(): array
     {
-        // TODO: Implement getParameters() method.
+        return $this->transformerCollector->transformGroup(
+            $this->betterMethodReflection->getParameters()
+        );
     }
 
     public function isDeprecated(): bool
@@ -134,12 +133,12 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
 
     public function getStartLine(): int
     {
-        // TODO: Implement getStartLine() method.
+        return $this->betterMethodReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        // TODO: Implement getEndLine() method.
+        return $this->betterMethodReflection->getEndLine();
     }
 
     public function isPublic(): bool

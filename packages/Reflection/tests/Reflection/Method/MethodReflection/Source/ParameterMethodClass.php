@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Reflection\Tests\Reflection\Method_\MethodReflection\Source;
+namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source;
 
 class ParameterMethodClass
 {
@@ -11,7 +11,12 @@ class ParameterMethodClass
      * @param mixed $data and array or a blob of data to be sent
      * @param mixed[] $headers add optional headers
      */
-    public function methodWithArgs($url = 1, $data = null, $headers = [])
+    public function methodWithArgs($url = 1, $data = null, $headers = []): void
     {
+    }
+
+    public function methodWithClassParameter(ParameterClass $parameterClass): void
+    {
+
     }
 }
