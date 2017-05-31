@@ -3,7 +3,16 @@
 namespace ApiGen\Configuration;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Templating\Filters\UrlFilters;
+use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
+use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
+use ApiGen\ModularConfiguration\Option\BaseUrlOption;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
+use ApiGen\ModularConfiguration\Option\ThemeDirectoryOption;
+use ApiGen\ModularConfiguration\Option\TitleOption;
+use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
+use ApiGen\ModularConfiguration\Parameter\ParameterProvider;
+use ApiGen\Utils\NamingHelper;
 
 final class Configuration implements ConfigurationInterface
 {
@@ -13,13 +22,21 @@ final class Configuration implements ConfigurationInterface
     private $options;
 
     /**
-     * @var ConfigurationOptionsResolver
+     * @var ParameterProvider
      */
-    private $configurationOptionsResolver;
+    private $parameterProvider;
 
-    public function __construct(ConfigurationOptionsResolver $configurationOptionsResolver)
-    {
-        $this->configurationOptionsResolver = $configurationOptionsResolver;
+    /**
+     * @var ConfigurationResolverInterface
+     */
+    private $configurationResolver;
+
+    public function __construct(
+        ParameterProvider $parameterProvider,
+        ConfigurationResolverInterface $configurationResolver
+    ) {
+        $this->parameterProvider = $parameterProvider;
+        $this->configurationResolver = $configurationResolver;
     }
 
     /**
@@ -28,7 +45,10 @@ final class Configuration implements ConfigurationInterface
      */
     public function resolveOptions(array $options): array
     {
-        return $this->options = $this->configurationOptionsResolver->resolve($options);
+        $configParameters = $this->parameterProvider->provide();
+        $options = array_merge($configParameters, $options);
+
+        return $this->options = $this->configurationResolver->resolveValuesWithDefaults($options);
     }
 
     /**
@@ -36,11 +56,7 @@ final class Configuration implements ConfigurationInterface
      */
     public function getOption(string $name)
     {
-        if (isset($this->getOptions()[$name])) {
-            return $this->getOptions()[$name];
-        }
-
-        return null;
+        return $this->getOptions()[$name] ?? null;
     }
 
     /**
@@ -55,17 +71,9 @@ final class Configuration implements ConfigurationInterface
         return $this->options;
     }
 
-    /**
-     * @param mixed[] $options
-     */
-    public function setOptions(array $options): void
-    {
-        $this->options = $options;
-    }
-
     public function getVisibilityLevels(): int
     {
-        return $this->getOptions()[ConfigurationOptions::VISIBILITY_LEVELS];
+        return $this->getOptions()[VisibilityLevelOption::NAME];
     }
 
     /**
@@ -73,56 +81,35 @@ final class Configuration implements ConfigurationInterface
      */
     public function getAnnotationGroups(): array
     {
-        return $this->getOptions()[ConfigurationOptions::ANNOTATION_GROUPS];
+        return $this->getOptions()[AnnotationGroupsOption::NAME];
     }
 
     public function getDestination(): string
     {
-        return $this->getOptions()[ConfigurationOptions::DESTINATION];
+        return $this->getOptions()[DestinationOption::NAME];
     }
 
     public function getTitle(): string
     {
-        return $this->getOptions()[ConfigurationOptions::TITLE];
+        return $this->getOptions()[TitleOption::NAME];
     }
 
     public function getBaseUrl(): string
     {
-        return $this->getOptions()[ConfigurationOptions::BASE_URL];
-    }
-
-    public function getGoogleAnalytics(): string
-    {
-        return $this->getOptions()[ConfigurationOptions::GOOGLE_ANALYTICS];
-    }
-
-    /**
-     * @return array|string[]
-     */
-    public function getSource(): array
-    {
-        return $this->getOptions()[ConfigurationOptions::SOURCE];
-    }
-
-    /**
-     * @return array|string[]
-     */
-    public function getExclude(): array
-    {
-        return $this->getOptions()[ConfigurationOptions::EXCLUDE];
+        return $this->getOptions()[BaseUrlOption::NAME];
     }
 
     /**
      * @return string[]
      */
-    public function getExtensions(): array
+    public function getSource(): array
     {
-        return $this->getOptions()[ConfigurationOptions::EXTENSIONS];
+        return $this->getOptions()[SourceOption::NAME];
     }
 
     public function getTemplatesDirectory(): string
     {
-        return $this->getOptions()[ConfigurationOptions::THEME_DIRECTORY];
+        return $this->getOptions()[ThemeDirectoryOption::NAME];
     }
 
     public function getTemplateByName(string $name): string
@@ -130,11 +117,14 @@ final class Configuration implements ConfigurationInterface
         return $this->getTemplatesDirectory() . DIRECTORY_SEPARATOR . $name . '.latte';
     }
 
-    public function getDestinationForFileMaskAndName(string $fileMask, string $elementName): string
+    public function getDestinationWithName(string $name): string
     {
-        return $this->getDestination() . DIRECTORY_SEPARATOR . sprintf(
-            $fileMask . '.html',
-            UrlFilters::urlize($elementName)
-        );
+        return $this->getDestination() . DIRECTORY_SEPARATOR . $name . '.html';
+    }
+
+    public function getDestinationWithPrefixName(string $prefix, string $name): string
+    {
+        return $this->getDestination() . DIRECTORY_SEPARATOR .
+            $prefix . NamingHelper::nameToFilePath($name) . '.html';
     }
 }

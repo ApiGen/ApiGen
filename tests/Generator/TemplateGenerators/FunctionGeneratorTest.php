@@ -1,9 +1,9 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\ApiGen\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator\TemplateGenerators;
 
-use ApiGen\Contracts\Parser\ParserInterface;
-use ApiGen\Generator\TemplateGenerators\FunctionGenerator;
+use ApiGen\Generator\FunctionGenerator;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
@@ -26,7 +26,10 @@ final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
     {
         $this->functionGenerator->generate();
         $this->assertFileExists(
-            TEMP_DIR . '/function-ApiGen.Tests.ApiGen.Generator.TemplateGenerators.Source.someFunction.html'
+            TEMP_DIR . '/function-ApiGen.Tests.Generator.TemplateGenerators.Source.someFunction.html'
+        );
+        $this->assertFileExists(
+            TEMP_DIR . '/source-function-ApiGen.Tests.Generator.TemplateGenerators.Source.someFunction.html'
         );
     }
 }

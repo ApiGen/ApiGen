@@ -21,11 +21,6 @@ interface ConfigurationInterface
     public function getOptions(): array;
 
     /**
-     * @param mixed[] $options
-     */
-    public function setOptions(array $options): void;
-
-    /**
      * Get property/method visibility level (public, protected or private, in binary code).
      */
     public function getVisibilityLevels(): int;
@@ -53,26 +48,12 @@ interface ConfigurationInterface
      */
     public function getBaseUrl(): string;
 
-    public function getGoogleAnalytics(): string;
-
     /**
      * @return string[]
      */
     public function getSource(): array;
 
-    /**
-     * Exclude masks for files/directories.
-     *
-     * @return string[]
-     */
-    public function getExclude(): array;
+    public function getDestinationWithName(string $prefix): string;
 
-    /**
-     * File extensions to be taken in account.
-     *
-     * @return string[]
-     */
-    public function getExtensions(): array;
-
-    public function getDestinationForFileMaskAndName(string $fileMask, string $elementName): string;
+    public function getDestinationWithPrefixName(string $prefix, string $name): string;
 }

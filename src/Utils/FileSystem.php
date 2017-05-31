@@ -14,7 +14,7 @@ final class FileSystem
         return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
     }
 
-    public function forceDir(string $path): string
+    public static function forceDir(string $path): string
     {
         @mkdir($path, 0755, true);
         $directory = dirname($path);
@@ -34,9 +34,7 @@ final class FileSystem
     }
 
     /**
-     * @param string $path
      * @param string[] $baseDirectories
-     * @return string
      */
     public function getAbsolutePath(string $path, array $baseDirectories = []): string
     {
@@ -69,7 +67,6 @@ final class FileSystem
 
     /**
      * @param string[]|string[][] $source
-     * @param string $destination
      */
     public function copy(array $source, string $destination): void
     {
@@ -104,6 +101,14 @@ final class FileSystem
             $destinationFile = $destinationDirectory . DIRECTORY_SEPARATOR . $fileInfo->getFilename();
 
             copy($sourceFile, $destinationFile);
+        }
+    }
+
+    public static function ensureDirectoryExists(string $destination): void
+    {
+        $directory = dirname($destination);
+        if (! is_dir($directory)) {
+            mkdir($directory, 0755, true);
         }
     }
 }

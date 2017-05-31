@@ -13,47 +13,31 @@ final class NetteFinder implements FinderInterface
      * @param string[] $extensions
      * @return SplFileInfo[]
      */
-    public function find(array $sources, array $exclude = [], array $extensions = ['php']): array
+    public function find(array $sources): array
     {
-        $fileMasks = $this->turnExtensionsToMask($extensions);
-
         $files = [];
         foreach ($sources as $source) {
-            $files = array_merge($files, $this->getFilesFromSource($source, $exclude, $fileMasks));
+            $files = array_merge($files, $this->getFilesFromSource($source));
         }
 
         return $files;
     }
 
     /**
-     * @param string $source
-     * @param string[] $exclude
-     * @param string $fileMasks
      * @return SplFileInfo[]
      */
-    private function getFilesFromSource(string $source, array $exclude, string $fileMasks): array
+    private function getFilesFromSource(string $source): array
     {
         if (is_file($source)) {
             $foundFiles[$source] = new SplFileInfo($source);
             return $foundFiles;
         }
 
-        $finder = Finder::findFiles($fileMasks)->exclude($exclude)
-            ->from($source)->exclude($exclude);
+        $finder = Finder::findFiles('*.php')
+            ->exclude('/tests*', '/Tests*')
+            ->from($source)
+            ->exclude('/tests*', '/Tests*');
         return $this->convertFinderToArray($finder);
-    }
-
-    /**
-     * @param string[] $extensions
-     */
-    private function turnExtensionsToMask(array $extensions): string
-    {
-        $mask = '';
-        foreach ($extensions as $extension) {
-            $mask .= '*.' . $extension . ',';
-        }
-
-        return rtrim($mask, ',');
     }
 
     /**

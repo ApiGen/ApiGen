@@ -2,8 +2,10 @@
 
 namespace ApiGen\Tests\Console\Command;
 
-use ApiGen\Configuration\ConfigurationOptions;
 use ApiGen\Console\Command\GenerateCommand;
+use ApiGen\ModularConfiguration\Exception\ConfigurationException;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -32,8 +34,8 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $this->assertFileNotExists(TEMP_DIR . '/api/index.html');
 
         $input = new ArrayInput([
-            ConfigurationOptions::SOURCE => [__DIR__ . '/Source'],
-            '--' . ConfigurationOptions::DESTINATION => TEMP_DIR . '/Api',
+            SourceOption::NAME => [__DIR__ . '/Source'],
+            '--' . DestinationOption::NAME => TEMP_DIR . '/Api'
         ]);
 
         $exitCode = $this->generateCommand->run($input, new NullOutput);
@@ -45,14 +47,15 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
         $this->assertFileExists(TEMP_DIR . '/Api/index.html');
     }
 
-    /**
-     * @expectedException \ApiGen\Configuration\Exceptions\ConfigurationException
-     */
     public function testExecuteWithError(): void
     {
         $input = new ArrayInput([
-            ConfigurationOptions::SOURCE => [__DIR__]
+            SourceOption::NAME => ['missing'],
+            '--' . DestinationOption::NAME => TEMP_DIR,
         ]);
+
+        $this->expectException(ConfigurationException::class);
+        $this->expectExceptionMessage('Source "missing" does not exist');
 
         $this->generateCommand->run($input, new NullOutput);
     }
