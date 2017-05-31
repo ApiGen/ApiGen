@@ -108,4 +108,14 @@ final class InterfaceMethodReflection implements InterfaceMethodReflectionInterf
     {
         return $this->docBlock->getTagsByName($name);
     }
+
+    public function getStartLine(): int
+    {
+        return $this->betterMethodReflection->getStartLine();
+    }
+
+    public function getEndLine(): int
+    {
+        return $this->betterMethodReflection->getEndLine();
+    }
 }

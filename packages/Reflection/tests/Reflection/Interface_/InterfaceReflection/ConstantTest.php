@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceConstantReflection
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use Exception;
 
 final class ConstantTest extends AbstractParserAwareTestCase
 {
@@ -51,11 +52,9 @@ final class ConstantTest extends AbstractParserAwareTestCase
         );
     }
 
-    /**
-     * @expectedException \Exception
-     */
     public function testMissingConstant(): void
     {
+        $this->expectException(Exception::class);
         $this->interfaceReflection->getConstant('missing');
     }
 }

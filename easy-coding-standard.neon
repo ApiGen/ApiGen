@@ -20,8 +20,10 @@ checkers:
     # Dev & Dead Code
     - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
     - SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
-    # SlevomatCodingStandard\Sniffs\Commenting\ForbiddenAnnotationsSniff:
-    # or general_phpdoc_annotation_remove
+    PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
+         annotations:
+            - author
+            - expectedException
 
     # Constants
     - SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff
@@ -53,7 +55,6 @@ checkers:
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         usefulAnnotations:
             - @dataProvider
-            - @expectedException
             - @deprecated
             - @todo
         enableEachParameterAndReturnInspection: true
@@ -86,10 +87,26 @@ parameters:
             - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitPropertyReflectionTransformer.php
             - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitReflectionTransformer.php
 
+            # covariant implements
+            - packages/Annotation/src/AnnotationSubscriber/ReturnAnnotationSubscriber.php
+            - packages/Annotation/src/AnnotationSubscriber/LinkAnnotationSubscriber.php
+            - packages/Annotation/src/AnnotationSubscriber/ParamAnnotationSubscriber.php
+            - packages/Annotation/src/AnnotationSubscriber/SeeUsesCoversAnnotationSubscriber.php
+            - packages/Annotation/tests/AnnotationSubscriber/SeeAnnotationSubscriberSource/SomeClassWithSeeAnnotations.php
+
             # tests
             - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php
             - packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php
             - packages/Reflection/src/Reflection/Trait_/TraitPropertyReflection.php
+
+            # tests
+            - packages/Annotation/tests/AnnotationDecoratorSource/SomeClassWithReturnTypes.php
+
+            # covariant implementers
+            - packages/StringRouting/src/Route/StaticRoute.php
+            - packages/StringRouting/src/Route/SourceCodeRoute.php
+            - packages/StringRouting/src/Route/ReflectionRoute.php
+            - packages/StringRouting/src/Route/NamespaceRoute.php
 
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php
@@ -123,12 +140,9 @@ parameters:
             - packages/ModularConfiguration/src/Option/SourceOption.php
             - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
 
-        SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff:
-            - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
-            - tests/Parser/Reflection/ReflectionConstantSource/ConstantInClass.php
-            - tests/Parser/Parser/ParserTest.php
-            - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
-            - tests/Parser/Parser/ParserSource/SomeInterface.php
-
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php
+
+        PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
+            - packages/Reflection/tests/Reflection/Partial/Source/SomeClassWithAnnotations.php
+            - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/SomeClass.php

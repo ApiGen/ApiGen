@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
+use InvalidArgumentException;
 
 final class MethodTest extends AbstractReflectionClassTestCase
 {
@@ -20,11 +21,9 @@ final class MethodTest extends AbstractReflectionClassTestCase
         );
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     */
     public function testGetMethodNonExisting(): void
     {
+        $this->expectException(InvalidArgumentException::class);
         $this->reflectionClass->getMethod('notPresentMethod');
     }
 

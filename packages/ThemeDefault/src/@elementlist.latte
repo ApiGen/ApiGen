@@ -1,26 +1,30 @@
 {define elements}
-<tr n:foreach="$elements as $element">
-	<td class="name"><a href="{$element|elementUrl}" n:class="$element->isDeprecated() ? deprecated">{if $namespace}{$element->getShortName()}{else}{$element->getName()}{/if}</a></td>
-	<td>{$element|description|noescape}</td>
-</tr>
+    <tr n:foreach="$elements as $element">
+        <td class="name">
+            <a href="{$element|linkReflection}" n:class="$element->isDeprecated() ? deprecated">
+                {if $activeNamespace}{$element->getShortName()}{else}{$element->getName()}{/if}
+            </a>
+        </td>
+        <td>{$element->getDescription()}</td>
+    </tr>
 {/define}
 
-<table class="summary" id="classes" n:if="$classes">
-<caption>Classes summary</caption>
-{include elements, elements => $classes}
+<table class="summary" id="classes" n:if="$allClasses">
+    <caption>Classes summary</caption>
+    {include elements, elements => $allClasses}
 </table>
 
-<table class="summary" id="interfaces" n:if="$interfaces">
-<caption>Interfaces summary</caption>
-{include elements, elements => $interfaces}
+<table class="summary" id="interfaces" n:if="$allInterfaces">
+    <caption>Interfaces summary</caption>
+    {include elements, elements => $allInterfaces}
 </table>
 
-<table class="summary" id="traits" n:if="$traits">
-<caption>Traits summary</caption>
-{include elements, elements => $traits}
+<table class="summary" id="traits" n:if="$allTraits">
+    <caption>Traits summary</caption>
+    {include elements, elements => $allTraits}
 </table>
 
-<table class="summary" id="functions" n:if="$functions">
-<caption>Functions summary</caption>
-{include elements, elements => $functions}
+<table class="summary" id="functions" n:if="$allFunctions">
+    <caption>Functions summary</caption>
+    {include elements, elements => $allFunctions}
 </table>

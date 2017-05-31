@@ -1,91 +1,91 @@
 {layout '@layout.latte'}
-{var $active = 'annotation-group-' . $annotation}
+{var $activePage = 'annotation-group-' . $annotation}
 
 {block title}{$annotation|firstUpper}{/block}
 
 {block content}
 <div id="content">
-	<h1>{include title}</h1>
+    <h1>{include title}</h1>
 
-	{if $hasElements}
-		<table class="summary" id="classes" n:if="$classes">
-			<caption>Classes summary</caption>
-			{include items, items => $classes}
-		</table>
+    {if $hasElements}
+        <table class="summary" id="classes" n:if="$allClasses">
+            <caption>Classes summary</caption>
+            {include items, items => $allClasses}
+        </table>
 
-		<table class="summary" id="interfaces" n:if="$interfaces">
-			<caption>Interfaces summary</caption>
-			{include items, items => $interfaces}
-		</table>
+        <table class="summary" id="interfaces" n:if="$allInterfaces">
+            <caption>Interfaces summary</caption>
+            {include items, items => $allInterfaces}
+        </table>
 
-		<table class="summary" id="traits" n:if="$traits">
-			<caption>Traits summary</caption>
-			{include items, items => $traits}
-		</table>
+        <table class="summary" id="traits" n:if="$allTraits">
+            <caption>Traits summary</caption>
+            {include items, items => $allTraits}
+        </table>
 
-		<table class="summary" id="methods" n:if="$methods">
-			<caption>Methods summary</caption>
-			<tr n:foreach="$methods as $method">
-				<td class="name"><a href="{$method->getDeclaringClassName()|classUrl}">{$method->getDeclaringClassName()}</a></td>
-				<td class="name"><code><a href="{$method|methodUrl}">{$method->getName()}()</a></code></td>
-				<td>
-					{if $method->hasAnnotation($annotation)}
-						{foreach $method->getAnnotations()[$annotation] as $description}
-							{if $description}
-								{$description|annotation:$annotation:$method|noescape}<br>
-							{/if}
-						{/foreach}
-					{/if}
-				</td>
-			</tr>
-		</table>
+        <table class="summary" id="methods" n:if="$methods">
+            <caption>Methods summary</caption>
+            <tr n:foreach="$methods as $method">
+                <td class="name"><a href="{$method->getDeclaringClass()|linkReflection}">{$method->getDeclaringClassName()}</a></td>
+                <td class="name"><code><a href="{$method|linkReflection}">{$method->getName()}()</a></code></td>
+                <td>
+                    {if $method->hasAnnotation($annotation)}
+                        {foreach $method->getAnnotations()[$annotation] as $description}
+                            {if $description}
+                                {$description|annotation:$method|noescape}<br>
+                            {/if}
+                        {/foreach}
+                    {/if}
+                </td>
+            </tr>
+        </table>
 
-		<table class="summary" id="properties" n:if="$properties">
-			<caption>Properties summary</caption>
-			<tr n:foreach="$properties as $property">
-				<td class="name"><a href="{$property->getDeclaringClassName()|classUrl}">{$property->getDeclaringClassName()}</a></td>
-				<td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
-				<td>
-					{foreach $property->getAnnotations()[$annotation] as $description}
-						{if $description}
-							{$description|annotation:$annotation:$property|noescape}<br>
-						{/if}
-					{/foreach}
-				</td>
-			</tr>
-		</table>
+        <table class="summary" id="properties" n:if="$properties">
+            <caption>Properties summary</caption>
+            <tr n:foreach="$properties as $property">
+                <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
+                <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
+                <td>
+                    {foreach $property->getAnnotations()[$annotation] as $description}
+                        {if $description}
+                            {$description|annotation:$property|noescape}<br>
+                        {/if}
+                    {/foreach}
+                </td>
+            </tr>
+        </table>
 
-		<table class="summary" id="functions" n:if="$functions">
-			<caption>Functions summary</caption>
-			<tr n:foreach="$functions as $function">
-				<td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|namespaceUrl}">{$function->getNamespaceName()}</a></td>
-				<td class="name"><code><a href="{$function|functionUrl}">{$function->getShortName()}</a></code></td>
-				<td>
-					{foreach $function->getAnnotations()[$annotation] as $description}
-						{if $description}
-							{$description|annotation:$annotation:$function|noescape}<br>
-						{/if}
-					{/foreach}
-				</td>
-			</tr>
-		</table>
+        <table class="summary" id="functions" n:if="$allFunctions">
+            <caption>Functions summary</caption>
+            <tr n:foreach="$allFunctions as $function">
+                <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
+                <td class="name"><code><a href="{$function|linkReflection}">{$function->getShortName()}</a></code></td>
+                <td>
+                    {foreach $function->getAnnotations()[$annotation] as $description}
+                        {if $description}
+                            {$description|annotation:$function|noescape}<br>
+                        {/if}
+                    {/foreach}
+                </td>
+            </tr>
+        </table>
 
-	{else}
-		<p>No elements with <code>@{$annotation}</code> annotation found.</p>
-	{/if}
+    {else}
+        <p>No elements with <code>@{$annotation}</code> annotation found.</p>
+    {/if}
 </div>
 {/block}
 
 
 {define items}
-	<tr n:foreach="$items as $class">
-		<td class="name"><a href="{$class|classUrl}">{$class->getName()}</a></td>
-		<td>
-			{foreach $class->getAnnotations()[$annotation] as $description}
-				{if $description}
-					{$description|annotation:$annotation:$class|noescape}<br>
-				{/if}
-			{/foreach}
-		</td>
-	</tr>
+    <tr n:foreach="$items as $class">
+        <td class="name"><a href="{$class|linkReflection}">{$class->getName()}</a></td>
+        <td>
+            {foreach $class->getAnnotations()[$annotation] as $description}
+                {if $description}
+                    {$description|annotation:$class|noescape}<br>
+                {/if}
+            {/foreach}
+        </td>
+    </tr>
 {/define}

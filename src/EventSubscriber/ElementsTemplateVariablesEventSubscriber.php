@@ -40,23 +40,33 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
      */
     public static function getSubscribedEvents(): array
     {
-        return [CreateTemplateEvent::class => 'loadTemplateVariables'];
+        return [
+            CreateTemplateEvent::class => 'loadTemplateVariables'
+        ];
     }
 
     public function loadTemplateVariables(CreateTemplateEvent $createTemplateEvent): void
     {
         $parameterBag = $createTemplateEvent->getParameterBag();
+        // add default empty values
         $parameterBag->addParameters([
-            'namespace' => null,
-            'class' => null,
-            'function' => null,
-            'namespaces' => $this->namespaceStorage->getNamespaces(),
-            'classes' => array_filter($this->reflectionStorage->getClassReflections()),
-            'interfaces' => array_filter($this->reflectionStorage->getInterfaceReflections()),
-            'traits' => array_filter($this->reflectionStorage->getTraitReflections()),
-            'functions' => array_filter($this->reflectionStorage->getFunctionReflections()),
-            // @todo: rename to autocompleteElements as Latte variable
-            'elements' => $this->autocompleteElements->getElements()
+            'activePage' => null,
+            'activeNamespace' => null,
+            'activeClass' => null,
+            'activeInterface' => null,
+            'activeTrait' => null,
+            'activeFunction' => null,
+        ]);
+        // add all available elements (for layout)
+        $parameterBag->addParameters([
+            'allNamespaces' => $this->namespaceStorage->getNamespaces(),
+            // @todo what is array_filter for? make it explicit!
+//            'allClasses' => array_filter($this->reflectionStorage->getClassReflections()),
+            'allClasses' => $this->reflectionStorage->getClassReflections(),
+            'allInterfaces' => $this->reflectionStorage->getInterfaceReflections(),
+            'allTraits' => $this->reflectionStorage->getTraitReflections(),
+            'allFunctions' => $this->reflectionStorage->getFunctionReflections(),
+            'autocompleteElements' => $this->autocompleteElements->getElements()
         ]);
     }
 }

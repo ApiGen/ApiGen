@@ -3,7 +3,6 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorInterface;
-use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 
 abstract class AbstractReflectionCollector implements ReflectionCollectorInterface
 {
@@ -15,12 +14,5 @@ abstract class AbstractReflectionCollector implements ReflectionCollectorInterfa
     public function hasAnyElements(): bool
     {
         return (bool) count($this->collectedReflections);
-    }
-
-    protected function getReflectionInterfaceFromReflection(AbstractReflectionInterface $reflection): string
-    {
-        $implementedInterfaces = class_implements($reflection);
-
-        return array_shift($implementedInterfaces);
     }
 }

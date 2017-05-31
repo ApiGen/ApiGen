@@ -27,10 +27,4 @@ final class TraitsTest extends AbstractReflectionClassTestCase
     {
         $this->assertCount(0, $this->reflectionClass->getTraitAliases());
     }
-
-    public function testUsesTrait(): void
-    {
-        $this->assertTrue($this->reflectionClass->usesTrait(SomeTrait::class));
-        $this->assertFalse($this->reflectionClass->usesTrait('Project\NotActiveTrait'));
-    }
 }

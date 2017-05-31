@@ -5,7 +5,6 @@ namespace ApiGen\Generator;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
@@ -59,12 +58,11 @@ final class TraitGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithPrefixName('trait-',$traitReflection->getName()),
             [
                 'trait' => $traitReflection,
-                'tree' => array_merge(array_reverse($traitReflection->getParentClasses()), [$traitReflection]),
             ]
         );
     }
 
-    private function generateSourceCodeForTrait(ClassReflectionInterface $traitReflection): void
+    private function generateSourceCodeForTrait(TraitReflectionInterface $traitReflection): void
     {
         $content = file_get_contents($traitReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);

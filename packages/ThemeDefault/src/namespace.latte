@@ -1,19 +1,21 @@
 {layout '@layout.latte'}
-{var $active = 'namespace'}
+{var $activePage = 'namespace'}
 
-{block title}{if $namespace !== 'None'}Namespace {$namespace}{else}No namespace{/if}{/block}
+{block title}{if $activeNamespace !== 'None'}Namespace {$activeNamespace}{else}No namespace{/if}{/block}
 
 {block content}
 <div id="content" class="namespace">
-	<h1>{if $namespace !== 'None'}Namespace {$namespace|namespaceLinks: false|noescape}{else}No namespace{/if}</h1>
+    <h1>{if $activeNamespace !== 'None'}Namespace {$activeNamespace|linkAllNamespaceParts|noescape}{else}No namespace{/if}</h1>
 
-	<table class="summary" id="namespaces" n:if="$parentNamespaces">
-	<caption>Namespaces summary</caption>
-	<tr n:foreach="$parentNamespaces as $subnamespace">
-		<td class="name"><a href="{$subnamespace|namespaceUrl}">{$subnamespace}</a></td>
-	</tr>
-	</table>
+    {if $parentNamespaces}
+        <table class="summary" id="namespaces">
+            <caption>Namespaces summary</caption>
+            <tr n:foreach="$parentNamespaces as $subnamespace">
+                <td class="name"><a href="{$subnamespace|linkNamespace}">{$subnamespace}</a></td>
+            </tr>
+        </table>
+    {/if}
 
-	{include '@elementlist.latte'}
+    {include '@elementlist.latte'}
 </div>
 {/block}

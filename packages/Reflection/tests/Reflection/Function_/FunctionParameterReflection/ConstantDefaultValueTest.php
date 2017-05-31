@@ -30,7 +30,6 @@ final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
     public function testType(): void
     {
         $this->assertSame('', $this->functionParameterReflection->getTypeHint());
-        $this->assertNull($this->functionParameterReflection->getClassName());
     }
 
     public function testDefaultValue(): void
