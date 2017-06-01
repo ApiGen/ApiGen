@@ -19,6 +19,11 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
      */
     private $composedClassConstantReflection;
 
+    /**
+     * @var ClassConstantReflectionInterface
+     */
+    private $arrayClassConstantReflection;
+
 //    /**
 //     * @var ClassConstantReflectionInterface
 //     */
@@ -32,6 +37,7 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
         $classReflection = $classReflections[ConstantInClass::class];
         $this->classConstantReflection = $classReflection->getConstant('CONSTANT_INSIDE');
         $this->composedClassConstantReflection = $classReflection->getConstant('COMPOSED');
+        $this->arrayClassConstantReflection = $classReflection->getConstant('ARRAY_CONSTANT');
         // waits for https://github.com/Roave/BetterReflection/pull/280
         // $this->composedWithDirConstantReflection = $classReflection->getConstant('COMPOSED_WITH_DIR');
     }
@@ -59,6 +65,8 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
         $this->assertSame('right now', $this->composedClassConstantReflection->getValue());
         // waits for https://github.com/Roave/BetterReflection/pull/280
         //        $this->assertSame(__DIR__ . '/Source/here', $this->composedWithDirConstantReflection->getValue());
+
+        $this->assertSame([1, 2], $this->arrayClassConstantReflection->getValue());
     }
 
     public function testLines(): void

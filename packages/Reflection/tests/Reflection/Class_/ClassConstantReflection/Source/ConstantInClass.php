@@ -14,7 +14,12 @@ class ConstantInClass
     /**
      * @var string
      */
-    protected const COMPOSED = 'right'. ' now';
+    protected const COMPOSED = 'right' . ' now';
+
+    /**
+     * @var string[]
+     */
+    private const ARRAY_CONSTANT = [1, 2];
 
     // waits for for https://github.com/Roave/BetterReflection/pull/280
 //    /**
