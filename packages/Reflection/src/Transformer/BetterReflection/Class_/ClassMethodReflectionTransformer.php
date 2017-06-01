@@ -31,7 +31,7 @@ final class ClassMethodReflectionTransformer implements TransformerInterface
 
         $declaringClassOrTrait = $reflection->getDeclaringClass();
 
-        return ! $declaringClassOrTrait->isTrait();
+        return ! $declaringClassOrTrait->isTrait() && ! $declaringClassOrTrait->isInterface();
     }
 
     /**

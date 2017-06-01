@@ -125,7 +125,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
 
     public function getMethod(string $name): InterfaceMethodReflectionInterface
     {
-        // TODO: Implement getMethod() method.
+        return $this->getMethods()[$name];
     }
 
     /**
