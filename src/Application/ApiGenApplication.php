@@ -5,10 +5,10 @@ namespace ApiGen\Application;
 use ApiGen\Application\Command\RunCommand;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorQueueInterface;
-use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
+use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Utils\FileSystem;
 
 final class ApiGenApplication

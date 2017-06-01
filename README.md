@@ -11,6 +11,7 @@ Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakeph
 ## Built on Shoulders of Giants
 
 - PHP 7.1
+- [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser)
 - [Roave/BetterReflection](https://github.com/Roave/BetterReflection)
 - [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver)
 

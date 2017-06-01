@@ -25,9 +25,6 @@ checkers:
             - author
             - expectedException
 
-    # Constants
-    - SlevomatCodingStandard\Sniffs\Classes\ClassConstantVisibilitySniff
-
     # Class Naming
     - Symplify\CodingStandard\Sniffs\Naming\AbstractClassNameSniff
     - Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff

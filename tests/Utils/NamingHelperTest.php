@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 final class NamingHelperTest extends TestCase
 {
-    public function test()
+    public function test(): void
     {
         $this->assertSame('ApiGen.Utils', NamingHelper::nameToFilePath('ApiGen\Utils'));
     }

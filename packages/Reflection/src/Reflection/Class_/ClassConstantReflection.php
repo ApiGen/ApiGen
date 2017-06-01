@@ -5,7 +5,8 @@ namespace ApiGen\Reflection\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use PhpParser\Node\Stmt\Class_;
+use ReflectionClass;
+use ReflectionClassConstant;
 
 final class ClassConstantReflection implements ClassConstantReflectionInterface
 {
@@ -25,6 +26,13 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
     private $classReflection;
 
     /**
+     * Note: php bug, not documented: https://bugs.php.net/bug.php?id=74261
+     *
+     * @var ReflectionClassConstant
+     */
+    private $nativeClassConstantReflection;
+
+    /**
      * @param mixed $value
      */
     private function __construct(string $name, $value, ClassReflectionInterface $classReflection)
@@ -32,6 +40,9 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         $this->name = $name;
         $this->value = $value;
         $this->classReflection = $classReflection;
+
+        $nativeClassReflection = new ReflectionClass($classReflection->getName());
+        $this->nativeClassConstantReflection = $nativeClassReflection->getReflectionConstant($name);
     }
 
     /**
@@ -42,39 +53,22 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
         $value,
         ClassReflectionInterface $classReflection
     ): self {
-// inspire from PHPStan
-//        $reflectionConstant = $this->getNativeReflection()->getReflectionConstant($name);
-//        $this->constants[$name] = new ClassConstantWithVisibilityReflection(
-//            $this->broker->getClass($reflectionConstant->getDeclaringClass()->getName()),
-//            $reflectionConstant
-//        );
-
         return new self($name, $value, $classReflection);
     }
 
-    /**
-     * @todo use PHP-Parser to get modifier
-     */
     public function isPublic(): bool
     {
-        return true;
-        // return (bool) ($this->modifier & Class_::MODIFIER_PUBLIC);
+        return $this->nativeClassConstantReflection->isPublic();
     }
 
-    /**
-     * @todo use PHP-Parser to get modifier
-     */
     public function isProtected(): bool
     {
-        return false;
+        return $this->nativeClassConstantReflection->isProtected();
     }
 
-    /**
-     * @todo use PHP-Parser to get modifier
-     */
     public function isPrivate(): bool
     {
-        return false;
+        return $this->nativeClassConstantReflection->isPrivate();
     }
 
     public function getName(): string
@@ -107,7 +101,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function getValue()
     {
-        return $this->value;
+        return $this->nativeClassConstantReflection->getValue();
     }
 
     public function isDeprecated(): bool
@@ -125,7 +119,6 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function getStartLine(): int
     {
-
         return 25;
     }
 
@@ -139,7 +132,6 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
 
     public function getDescription(): string
     {
-        // @todo
         return '';
     }
 
