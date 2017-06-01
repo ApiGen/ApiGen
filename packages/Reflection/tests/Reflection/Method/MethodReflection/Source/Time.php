@@ -7,5 +7,5 @@ class Time
     /**
      * @var string
      */
-    const TODAY = 'today';
+    public const TODAY = 'today';
 }

@@ -3,14 +3,21 @@
 namespace ApiGen\Reflection\Reflection;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-abstract class AbstractParameterReflection implements AbstractParameterReflectionInterface, TransformerCollectorAwareInterface
+abstract class AbstractParameterReflection implements AbstractParameterReflectionInterface,
+    TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter
@@ -30,7 +37,17 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     public function getTypeHint(): string
     {
         $types = (string) $this->betterParameterReflection->getTypeHint();
-        return $this->removeClassPreSlashes($types);
+        $types = $this->removeClassPreSlashes($types);
+        if ($types) {
+            return $types;
+        }
+
+        $annotation = $this->getAnnotation();
+        if ($annotation) {
+            return (string) $annotation->getType();
+        }
+
+        return '';
     }
 
     /**
@@ -91,5 +108,31 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         });
 
         return implode('|', $typesInArray);
+    }
+
+    private function getAnnotation(): ?Param
+    {
+        $declaringReflection = $this->getDeclaringReflection();
+        $annotations = $declaringReflection->getAnnotations();
+
+        if (empty($annotations[$this->betterParameterReflection->getPosition()])) {
+            return null;
+        }
+
+        return $annotations[$this->betterParameterReflection->getPosition()];
+    }
+
+    /**
+     * @return ClassMethodReflectionInterface|FunctionReflectionInterface|TraitMethodReflectionInterface
+     */
+    private function getDeclaringReflection()
+    {
+        if ($this instanceof FunctionParameterReflectionInterface) {
+            return $this->getDeclaringFunction();
+        }
+
+        if ($this instanceof MethodParameterReflectionInterface) {
+            return $this->getDeclaringMethod();
+        }
     }
 }

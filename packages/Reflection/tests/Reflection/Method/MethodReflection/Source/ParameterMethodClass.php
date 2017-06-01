@@ -7,7 +7,7 @@ class ParameterMethodClass
     /**
      * @var string
      */
-    const HERE = 'here';
+    private const HERE = 'here';
 
     /**
      * Send a POST request
