@@ -37,7 +37,7 @@ final class ParameterWithConstantDefalutValueTest extends AbstractParserAwareTes
 
     public function testType(): void
     {
-        $this->assertSame('int', $this->localConstantParameterReflection->getDefaultValueDefinition());
-//        $this->assertSame('HI', $this->localConstantParameterReflection->getDefaultValueDefinition());
+        $this->assertSame('HERE', $this->localConstantParameterReflection->getDefaultValueDefinition());
+        $this->assertSame('TODAY', $this->classConstantParameterReflection->getDefaultValueDefinition());
     }
 }
