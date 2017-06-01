@@ -19,7 +19,7 @@ class ConstantInClass
     /**
      * @var string[]
      */
-    private const ARRAY_CONSTANT = [1, 2];
+    protected const ARRAY_CONSTANT = [1, 2];
 
     // waits for for https://github.com/Roave/BetterReflection/pull/280
 //    /**

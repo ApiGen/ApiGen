@@ -17,6 +17,7 @@ function someAloneFunction(int $number, ?string $name = null, string ...$argumen
     return 'hi';
 }
 
-function add($a, $b){
+function add($a, $b)
+{
     return $a + $b;
 }
