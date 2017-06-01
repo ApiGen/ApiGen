@@ -19,12 +19,18 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
      */
     private $functionReflection;
 
+    /**
+     * @var FunctionReflectionInterface
+     */
+    private $simpleFunctionReflection;
+
     protected function setUp(): void
     {
         $this->parser->parseDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
-        $this->functionReflection = array_pop($functionReflections);
+        $this->functionReflection = $functionReflections[$this->namespacePrefix . '\someAloneFunction'];
+        $this->simpleFunctionReflection = $functionReflections[$this->namespacePrefix . '\add'];
     }
 
     public function testLines(): void
@@ -35,6 +41,8 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
 
     public function testNames(): void
     {
+        $this->assertSame('add', $this->simpleFunctionReflection->getShortName());
+
         $this->assertSame($this->namespacePrefix . '\someAloneFunction', $this->functionReflection->getName());
         $this->assertSame('someAloneFunction', $this->functionReflection->getShortName());
     }
