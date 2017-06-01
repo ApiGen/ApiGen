@@ -66,11 +66,6 @@ These annotations are supported by ApiGen:
 - all urls are clickable (@todo)
 
 
-## Deprecated Annotations and Their Replacements
-
-- `@link` was [deprecated](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated),use `@see` instead
- 
- 
 ### In Examples
 
 #### `@see`, `@covers`, `@uses`
