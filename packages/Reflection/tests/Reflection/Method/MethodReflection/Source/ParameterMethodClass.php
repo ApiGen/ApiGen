@@ -5,6 +5,11 @@ namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source;
 class ParameterMethodClass
 {
     /**
+     * @var string
+     */
+    const HERE = 'here';
+
+    /**
      * Send a POST request
      *
      * @param int|string $url the URL of the API endpoint
@@ -16,6 +21,11 @@ class ParameterMethodClass
     }
 
     public function methodWithClassParameter(ParameterClass $parameterClass): void
+    {
+
+    }
+
+    public function methodWithConstantDefaultValue(string $where = self::HERE, string $when = Time::TODAY): void
     {
 
     }

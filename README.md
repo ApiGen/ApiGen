@@ -11,6 +11,7 @@ Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakeph
 ## Built on Shoulders of Giants
 
 - PHP 7.1
+- [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser)
 - [Roave/BetterReflection](https://github.com/Roave/BetterReflection)
 - [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver)
 
@@ -55,7 +56,6 @@ parameters:
 
 These annotations are supported by ApiGen:
 
-- `@link` - website url
 - `@see`, `@uses`, `@covers` - reference to some element (Class, Function, Property, Method...)
 - `@deprecated` - element about to be removed, with replacement
 
@@ -66,6 +66,11 @@ These annotations are supported by ApiGen:
 - all urls are clickable (@todo)
 
 
+## Deprecated Annotations and Their Replacements
+
+- `@link` was [deprecated](https://github.com/phpDocumentor/fig-standards/blob/master/proposed/phpdoc.md#710-link-deprecated),use `@see` instead
+ 
+ 
 ### In Examples
 
 #### `@see`, `@covers`, `@uses`
