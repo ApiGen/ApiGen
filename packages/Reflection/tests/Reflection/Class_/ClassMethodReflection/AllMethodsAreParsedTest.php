@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection;
 
-use Api[R8Gen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source\ClassWithManyMethods;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassMethodReflection\Source\ClassWithManyMethods;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 /**

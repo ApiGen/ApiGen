@@ -56,6 +56,7 @@ parameters:
 
 These annotations are supported by ApiGen:
 
+- `@link` - website url
 - `@see`, `@uses`, `@covers` - reference to some element (Class, Function, Property, Method...)
 - `@deprecated` - element about to be removed, with replacement
 
