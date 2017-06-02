@@ -105,6 +105,8 @@ parameters:
             - packages/StringRouting/src/Route/ReflectionRoute.php
             - packages/StringRouting/src/Route/NamespaceRoute.php
 
+            - packages/Reflection/tests/Reflection/Partial/Source/InheritdocClass.php
+
             - tests/Parser/Parser/ParserSource/SomeClass.php
             - tests/Generator/Source/SomeFunction.php
             - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php

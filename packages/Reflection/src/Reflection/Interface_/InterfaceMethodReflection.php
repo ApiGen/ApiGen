@@ -4,10 +4,8 @@ namespace ApiGen\Reflection\Reflection\Interface_;
 
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use phpDocumentor\Reflection\DocBlock;

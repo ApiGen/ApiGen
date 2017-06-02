@@ -4,7 +4,6 @@ namespace ApiGen\Utils;
 
 use Nette\Utils\FileSystem as NetteFileSystem;
 use Nette\Utils\Finder;
-use Nette\Utils\Strings;
 use RecursiveDirectoryIterator;
 
 final class FileSystem

@@ -4,5 +4,5 @@ namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitReflection\ComposeTrait
 
 trait SecondTrait
 {
-    abstract public function hey();
+    abstract public function hey(): void;
 }
