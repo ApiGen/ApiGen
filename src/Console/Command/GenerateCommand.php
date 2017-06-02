@@ -5,6 +5,8 @@ namespace ApiGen\Console\Command;
 use ApiGen\Application\ApiGenApplication;
 use ApiGen\Application\Command\RunCommand;
 use ApiGen\ModularConfiguration\Contract\CommandDecoratorInterface;
+use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,14 +26,21 @@ final class GenerateCommand extends Command
     /**
      * @var CommandDecoratorInterface
      */
-    private $configurationDecorator;
+    private $commandDecorator;
+
+    /**
+     * @var ConfigurationResolverInterface
+     */
+    private $configurationResolver;
 
     public function __construct(
         ApiGenApplication $apiGenApplication,
-        CommandDecoratorInterface $configurationDecorator
+        CommandDecoratorInterface $commandDecorator,
+        ConfigurationResolverInterface $configurationResolver
     ) {
         $this->apiGenApplication = $apiGenApplication;
-        $this->configurationDecorator = $configurationDecorator;
+        $this->commandDecorator = $commandDecorator;
+        $this->configurationResolver = $configurationResolver;
 
         parent::__construct();
     }
@@ -40,15 +49,22 @@ final class GenerateCommand extends Command
     {
         $this->setName(self::NAME);
         $this->setDescription('Generate API documentation');
-        $this->configurationDecorator->decorateCommand($this);
+        $this->commandDecorator->decorateCommand($this);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $this->ensureDestinationIsSet($input);
+
         $runCommand = RunCommand::createFromInput($input);
 
         $this->apiGenApplication->runCommand($runCommand);
 
         return 0;
+    }
+
+    private function ensureDestinationIsSet(InputInterface $input): void
+    {
+        $this->configurationResolver->resolveValue(DestinationOption::NAME, $input->getOption(DestinationOption::NAME));
     }
 }

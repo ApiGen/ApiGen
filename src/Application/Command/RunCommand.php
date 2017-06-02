@@ -20,7 +20,6 @@ final class RunCommand
 
     /**
      * @param string[] $source
-     * @param string $configPath
      */
     private function __construct(array $source, string $destination)
     {
