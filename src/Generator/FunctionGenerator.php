@@ -8,6 +8,7 @@ use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterf
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Utils\RelativePathResolver;
 
 final class FunctionGenerator implements GeneratorInterface
 {
@@ -31,16 +32,23 @@ final class FunctionGenerator implements GeneratorInterface
      */
     private $templateRenderer;
 
+    /**
+     * @var RelativePathResolver
+     */
+    private $relativePathResolver;
+
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
         ConfigurationInterface $configuration,
         SourceCodeHighlighterInterface $sourceCodeHighlighter,
-        TemplateRendererInterface $templateRenderer
+        TemplateRendererInterface $templateRenderer,
+        RelativePathResolver $relativePathResolver
     ) {
         $this->reflectionStorage = $reflectionStorage;
         $this->configuration = $configuration;
         $this->sourceCodeHighlighter = $sourceCodeHighlighter;
         $this->templateRenderer = $templateRenderer;
+        $this->relativePathResolver = $relativePathResolver;
     }
 
     public function generate(): void
@@ -67,9 +75,15 @@ final class FunctionGenerator implements GeneratorInterface
         $content = file_get_contents($functionReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
+        $relativePath = $this->relativePathResolver->getRelativePath($functionReflection->getFileName());
+
         $destination = $this->configuration->getDestinationWithPrefixName(
-            'source-function-', $functionReflection->getName()
+            'source-function-', $relativePath
         );
+
+        if (file_exists($destination)) {
+            return;
+        }
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('source'),

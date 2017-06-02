@@ -13,6 +13,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\AbstractTraitElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\StringRouting\Contract\Route\RouteInterface;
 use ApiGen\Utils\NamingHelper;
+use ApiGen\Utils\RelativePathResolver;
 
 final class SourceCodeRoute implements RouteInterface
 {
@@ -20,6 +21,16 @@ final class SourceCodeRoute implements RouteInterface
      * @var string
      */
     public const NAME = 'sourceCode';
+
+    /**
+     * @var RelativePathResolver
+     */
+    private $relativePathResolver;
+
+    public function __construct(RelativePathResolver $relativePathResolver)
+    {
+        $this->relativePathResolver = $relativePathResolver;
+    }
 
     public function match(string $name): bool
     {
@@ -45,8 +56,10 @@ final class SourceCodeRoute implements RouteInterface
         }
 
         if ($reflection instanceof FunctionReflectionInterface) {
+            $relativeFileName = $this->relativePathResolver->getRelativePath($reflection->getFileName());
+
             return 'source-function-'
-                . NamingHelper::nameToFilePath($reflection->getName()) . '.html'
+                . NamingHelper::nameToFilePath($relativeFileName) . '.html'
                 . $this->buildLineAnchor($reflection);
         }
 

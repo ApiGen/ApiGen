@@ -2,6 +2,9 @@
 
 namespace ApiGen\StringRouting\Tests\Route;
 
+use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
@@ -27,6 +30,12 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         $this->stringRouter = $this->container->getByType(StringRouter::class);
+        /** @var ConfigurationInterface $configuration */
+        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        $configuration->resolveOptions([
+            SourceOption::NAME => [__DIR__],
+            DestinationOption::NAME => TEMP_DIR
+        ]);
     }
 
     public function testWebalize(): void
@@ -73,6 +82,8 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $reflectionMock = $this->createMock($reflectionInterface);
         $reflectionMock->method('getName')
             ->willReturn('SomeName');
+        $reflectionMock->method('getFileName')
+            ->willReturn(__FILE__);
         $reflectionMock->method('getStartLine')
             ->willReturn(15);
         $reflectionMock->method('getEndLine')
@@ -87,7 +98,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     public function provideDataForBuildLinedRoute(): array
     {
         return [
-            [FunctionReflectionInterface::class, 'source-function-SomeName.html#15-25']
+            [FunctionReflectionInterface::class, 'source-function-SourceCodeRouteTest.php.html#15-25']
         ];
     }
 
