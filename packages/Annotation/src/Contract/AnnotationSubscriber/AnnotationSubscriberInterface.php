@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Annotation;
+namespace ApiGen\Annotation\Contract\AnnotationSubscriber;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tag;

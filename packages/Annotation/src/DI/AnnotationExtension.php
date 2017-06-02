@@ -3,7 +3,7 @@
 namespace ApiGen\Annotation\DI;
 
 use ApiGen\Annotation\AnnotationDecorator;
-use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
+use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;

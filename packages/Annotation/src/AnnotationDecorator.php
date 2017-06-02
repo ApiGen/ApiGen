@@ -2,7 +2,7 @@
 
 namespace ApiGen\Annotation;
 
-use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
+use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
