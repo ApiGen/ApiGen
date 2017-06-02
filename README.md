@@ -14,7 +14,7 @@ Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakeph
 - [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser)
 - [Roave/BetterReflection](https://github.com/Roave/BetterReflection)
 - [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver)
-
+- [phpDocumentor/ReflectionDocBlock](https://github.com/phpDocumentor/ReflectionDocBlock)
 
 ## Install
 

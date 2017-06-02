@@ -98,6 +98,18 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
 
     public function getDescription(): string
     {
+        if ($this->docBlock->hasTag('inheritdoc')) {
+            if ($this->getImplementedMethod()) {
+                return $this->getImplementedMethod()
+                    ->getDescription();
+            }
+
+            if ($this->getOverriddenMethod()) {
+                return $this->getOverriddenMethod()
+                    ->getDescription();
+            }
+        }
+
         $description = $this->docBlock->getSummary()
             . self::EMPTY_LINE
             . $this->docBlock->getDescription();

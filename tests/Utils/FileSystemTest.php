@@ -23,24 +23,14 @@ final class FileSystemTest extends TestCase
         $this->assertSame($backslashPath, $this->fileSystem->normalizePath($backslashPath));
     }
 
-    public function testForceDir(): void
+    public function testEnsureDirectoryExists(): void
     {
         $filePath = TEMP_DIR . '/some/dir/file.txt';
         $dirPath = dirname($filePath);
-        $this->assertFalse(file_exists($dirPath));
+        $this->assertFileNotExists($dirPath);
 
-        FileSystem::forceDir($filePath);
-        $this->assertTrue(file_exists($dirPath));
-    }
-
-    public function testDeleteDir(): void
-    {
-        $dir = TEMP_DIR . '/new-dir';
-        mkdir($dir);
-        $this->assertTrue(file_exists($dir));
-
-        $this->fileSystem->deleteDir($dir);
-        $this->assertFalse(file_exists($dir));
+        FileSystem::ensureDirectoryExists($filePath);
+        $this->assertFileExists($dirPath);
     }
 
     public function testPurgeDir(): void
@@ -51,38 +41,35 @@ final class FileSystemTest extends TestCase
         file_put_contents($dir . '/file.txt', '...');
 
         @rmdir($dir);
-        $this->assertTrue(file_exists($dir));
+        $this->assertFileExists($dir);
 
         $this->fileSystem->purgeDir($dir);
-        $this->assertTrue(file_exists($dir));
+        $this->assertFileExists($dir);
 
         rmdir($dir);
-        $this->assertFalse(file_exists($dir));
+        $this->assertFileNotExists($dir);
     }
 
     public function testPurgeDirOnNonExistingDir(): void
     {
         $dir = TEMP_DIR . '/not-created-dir';
-        $this->assertFalse(file_exists($dir));
+        $this->assertFileNotExists($dir);
 
         $this->fileSystem->purgeDir($dir);
-        $this->assertTrue(file_exists($dir));
+        $this->assertFileExists($dir);
     }
 
     public function testGetAbsolutePath(): void
     {
         $absoluteDir = $this->fileSystem->normalizePath(TEMP_DIR . '/relative-dir');
         mkdir($absoluteDir);
-        $this->assertTrue(file_exists($absoluteDir));
+        $this->assertFileExists($absoluteDir);
 
         $absoluteFile = $absoluteDir . DIRECTORY_SEPARATOR . 'file.txt';
         file_put_contents($absoluteFile, '...');
-        $this->assertTrue(file_exists($absoluteFile));
+        $this->assertFileExists($absoluteFile);
 
         $this->assertSame($absoluteDir, $this->fileSystem->getAbsolutePath($absoluteDir));
-        $this->assertSame(
-            $absoluteDir . DIRECTORY_SEPARATOR . 'file.txt',
-            $this->fileSystem->getAbsolutePath('file.txt', [$absoluteDir]));
 
         $this->assertSame(
             'someFile.txt',

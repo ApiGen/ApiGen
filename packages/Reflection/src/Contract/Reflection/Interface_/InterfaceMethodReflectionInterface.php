@@ -3,8 +3,9 @@
 namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 
-interface InterfaceMethodReflectionInterface extends AbstractInterfaceElementInterface
+interface InterfaceMethodReflectionInterface extends AbstractInterfaceElementInterface, AnnotationsInterface
 {
     public function getShortName(): string;
 

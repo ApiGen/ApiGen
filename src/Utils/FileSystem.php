@@ -5,7 +5,6 @@ namespace ApiGen\Utils;
 use Nette\Utils\FileSystem as NetteFileSystem;
 use Nette\Utils\Finder;
 use RecursiveDirectoryIterator;
-use SplFileInfo;
 
 final class FileSystem
 {
@@ -14,37 +13,14 @@ final class FileSystem
         return str_replace(['\\', '/'], DIRECTORY_SEPARATOR, $path);
     }
 
-    public static function forceDir(string $path): string
-    {
-        @mkdir($path, 0755, true);
-        $directory = dirname($path);
-        @mkdir($directory, 0755, true);
-        return $path;
-    }
-
-    public function deleteDir(string $path): void
-    {
-        NetteFileSystem::delete($path);
-    }
-
     public function purgeDir(string $path): void
     {
         NetteFileSystem::delete($path);
         NetteFileSystem::createDir($path);
     }
 
-    /**
-     * @param string[] $baseDirectories
-     */
-    public function getAbsolutePath(string $path, array $baseDirectories = []): string
+    public function getAbsolutePath(string $path): string
     {
-        foreach ($baseDirectories as $directory) {
-            $fileName = $directory . '/' . $path;
-            if (is_file($fileName)) {
-                return $this->normalizePath(realpath($fileName));
-            }
-        }
-
         if (file_exists($path)) {
             $path = realpath($path);
         }
@@ -65,32 +41,9 @@ final class FileSystem
         return true;
     }
 
-    /**
-     * @param string[]|string[][] $source
-     */
-    public function copy(array $source, string $destination): void
-    {
-        foreach ($source as $resourceSource => $resourceDestination) {
-            if (is_file($resourceSource)) {
-                copy($resourceSource, FileSystem::forceDir($destination  . '/' . $resourceDestination));
-            }
-
-            if (is_dir($resourceSource)) {
-                /** @var RecursiveDirectoryIterator $iterator */
-                $iterator = Finder::findFiles('*')->from($resourceSource)->getIterator();
-                foreach ($iterator as $item) {
-                    /** @var SplFileInfo $item */
-                    copy($item->getPathname(), FileSystem::forceDir($destination
-                        . '/' . $resourceDestination
-                        . '/' . $iterator->getSubPathname()));
-                }
-            }
-        }
-    }
-
     public function copyDirectory(string $sourceDirectory, string $destinationDirectory): void
     {
-        FileSystem::forceDir($destinationDirectory);
+        FileSystem::ensureDirectoryExists($destinationDirectory);
 
         /** @var RecursiveDirectoryIterator $iterator */
         $fileInfos = Finder::findFiles('*')->from($sourceDirectory)
@@ -104,9 +57,14 @@ final class FileSystem
         }
     }
 
-    public static function ensureDirectoryExists(string $destination): void
+    public static function ensureDirectoryExistsForFile(string $file): void
     {
-        $directory = dirname($destination);
+        $directory = dirname($file);
+        self::ensureDirectoryExists($directory);
+    }
+
+    public static function ensureDirectoryExists(string $directory): void
+    {
         if (! is_dir($directory)) {
             mkdir($directory, 0755, true);
         }

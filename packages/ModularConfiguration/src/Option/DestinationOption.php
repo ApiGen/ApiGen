@@ -70,9 +70,7 @@ final class DestinationOption implements CommandOptionInterface
             );
         }
 
-        if (! is_dir($destination)) {
-            FileSystem::forceDir($destination);
-        }
+        FileSystem::ensureDirectoryExists($destination);
 
         if (! is_writable($destination)) {
             throw new ConfigurationException(sprintf(

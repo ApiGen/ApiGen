@@ -92,11 +92,38 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getDescription(): string
     {
+        if ($this->getInheritedDescription()) {
+            return $this->getInheritedDescription();
+        }
+
         $description = $this->docBlock->getSummary()
             . AnnotationList::EMPTY_LINE
             . $this->docBlock->getDescription();
 
         return trim($description);
+    }
+
+    public function getInheritedDescription(): ?string
+    {
+        if ($this->docBlock->hasTag('inheritdoc')) {
+            if ($this->getParentClasses()) {
+                foreach ($this->getParentClasses() as $parentClassReflection) {
+                    if ($parentClassReflection->getDescription()) {
+                        return $parentClassReflection->getDescription();
+                    }
+                }
+            }
+
+            if ($this->getInterfaces()) {
+                foreach ($this->getInterfaces() as $interfaceReflection) {
+                    if ($interfaceReflection->getDescription()) {
+                        return $interfaceReflection->getDescription();
+                    }
+                }
+            }
+        }
+
+        return null;
     }
 
     public function getParentClass(): ?ClassReflectionInterface

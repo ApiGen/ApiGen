@@ -2,6 +2,10 @@
 
 namespace ApiGen\Tests\Generator\TemplateGenerators\Source;
 
-function someFunction()/* breaks old parsers : void*/
+function someFunction(): void
+{
+}
+
+function someOtherFunction(): void
 {
 }

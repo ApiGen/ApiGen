@@ -40,7 +40,7 @@ final class TemplateRenderer implements TemplateRendererInterface
 
         $parametersBag->addParameters($parameters);
 
-        FileSystem::ensureDirectoryExists($destinationFile);
+        FileSystem::ensureDirectoryExistsForFile($destinationFile);
         file_put_contents(
             $destinationFile,
             $this->latteEngine->renderToString($templateFile, $parametersBag->getParameters())
