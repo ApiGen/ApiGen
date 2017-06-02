@@ -4,5 +4,4 @@ namespace ApiGen\Element\Tests\Namespaces\Source\SubNamespace;
 
 interface SubNamespacedInterface
 {
-
 }

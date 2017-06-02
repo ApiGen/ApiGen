@@ -6,5 +6,4 @@ use ApiGen\Reflection\Tests\Parser\AnotherSource\ParentClassFromAnotherSource;
 
 final class ClassWithParentFromAnotherSource extends ParentClassFromAnotherSource
 {
-
 }

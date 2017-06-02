@@ -7,5 +7,4 @@ namespace ApiGen\Element\Tests\Annotation\Annotation;
  */
 trait DeprecatedTrait
 {
-
 }

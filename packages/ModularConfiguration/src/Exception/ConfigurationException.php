@@ -6,5 +6,4 @@ use RuntimeException;
 
 final class ConfigurationException extends RuntimeException
 {
-
 }

@@ -7,5 +7,4 @@ namespace ApiGen\Element\Tests\ReflectionCollector\Source;
  */
 interface DeprecatedInterface
 {
-
 }

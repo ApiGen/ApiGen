@@ -6,5 +6,4 @@ use Symfony\Component\EventDispatcher\Event;
 
 final class GenerateProgressEvent extends Event
 {
-
 }

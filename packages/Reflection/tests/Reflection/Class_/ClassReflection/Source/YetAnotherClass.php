@@ -4,5 +4,4 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
 
 class YetAnotherClass
 {
-
 }

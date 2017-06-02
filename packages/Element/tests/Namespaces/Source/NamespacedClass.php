@@ -4,5 +4,4 @@ namespace ApiGen\Element\Tests\Namespaces\Source;
 
 final class NamespacedClass
 {
-
 }

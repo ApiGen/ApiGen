@@ -4,5 +4,4 @@ namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source;
 
 class ParameterClass
 {
-
 }

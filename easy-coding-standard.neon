@@ -12,6 +12,7 @@ checkers:
     - PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeClosingBraceSniff
     - PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer
     - PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
+    - PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
 
     # Comments
     - Symplify\CodingStandard\Sniffs\Commenting\BlockPropertyCommentSniff
