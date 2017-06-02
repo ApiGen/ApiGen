@@ -60,6 +60,11 @@ final class FileSystem
 
     public static function ensureDirectoryExists(string $destination): void
     {
+        if (! is_dir($destination)) {
+            mkdir($destination, 0755, true);
+        }
+
+        // file
         $directory = dirname($destination);
         if (! is_dir($directory)) {
             mkdir($directory, 0755, true);
