@@ -43,12 +43,10 @@ the root of your project:
 
 ```yaml
 parameters:
-    source: [src]           # 1+ directories to scan PHP classes and functions in
-    destination: docs       # directory, where API docs will be generated to
     visibilityLevels: [public, protected] # array
     annotationGroups: [todo, deprecated] # array
     title: "ApiGen Docs" # string
-    baseUrl: http://apigen.org/api # string
+    baseUrl: "http://apigen.org/api" # string
     overwrite: false # bool
 ```
 

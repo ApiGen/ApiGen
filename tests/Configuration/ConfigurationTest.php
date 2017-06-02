@@ -35,9 +35,9 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
 
         $this->assertSame([
             TitleOption::NAME => 'ApiGen It-self',
-            SourceOption::NAME => [],
             VisibilityLevelOption::NAME => 768,
             BaseUrlOption::NAME => 'http://apigen.org',
+            SourceOption::NAME => [],
             DestinationOption::NAME => TEMP_DIR,
             AnnotationGroupsOption::NAME => [],
             OverwriteOption::NAME => false,

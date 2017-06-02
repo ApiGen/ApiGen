@@ -2,6 +2,8 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Common\Source;
 
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeOtherClass;
+
 /**
  * This is some description
  */
@@ -16,5 +18,10 @@ class CommonReflection
      */
     public function methodWithArgs($url = 1, $data = null, $headers = []): void
     {
+    }
+
+    public function getClass(): string
+    {
+        return SomeOtherClass::class;
     }
 }

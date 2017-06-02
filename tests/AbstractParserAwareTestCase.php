@@ -5,6 +5,7 @@ namespace ApiGen\Tests;
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\DI\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Nette\DI\Container;
@@ -41,6 +42,7 @@ abstract class AbstractParserAwareTestCase extends TestCase
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
+            SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR
         ]);
 

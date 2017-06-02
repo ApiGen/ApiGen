@@ -28,4 +28,10 @@ final class ReflectionTest extends AbstractParserAwareTestCase
     {
         $this->assertSame(__DIR__ . '/Source/CommonReflection.php', $this->reflection->getFileName());
     }
+
+    public function testClassConstant(): void
+    {
+        $methodReflection = $this->reflection->getMethods()['getClass'];
+        $this->assertFalse($methodReflection->returnsReference());
+    }
 }
