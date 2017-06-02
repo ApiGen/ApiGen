@@ -66,7 +66,7 @@ final class DestinationOption implements CommandOptionInterface
     {
         if (! $destination) {
             throw new ConfigurationException(
-                'Destination is not set. Use "--destination <directory>" or config to set it.'
+                'Destination is not set. Use "--destination <directory>" to set it.'
             );
         }
 
