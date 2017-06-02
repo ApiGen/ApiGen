@@ -61,9 +61,7 @@ checkers:
     - SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff
 
     PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
-        - const
-        - property
-        - method
+         elements: [const, property, method]
 
     # new since PhpCsFixer 2.1/2.2
     - PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
