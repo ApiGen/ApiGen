@@ -1,76 +1,83 @@
 # Change Log
 
-All notable changes to [Apigen][0] project will be documented in this file.
+All notable changes to this project will be documented in this file.
 
-The format is based on [Keep a Changelog](http://keepachangelog.com/)
-and this project adheres to [Semantic Versioning](http://semver.org/).
+The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
-## [5.0.x-dev] - UNRELEASED
-
-### Added
-
-- TBA
-
-### Changed
-
-- TBA
-
-### Fixed
-
-- TBA
-
-### Removed
-
-- TBA
-
-### Updated
-
-
-----
+## [5.0.0-RC1] - UNRELEASED
 
 ### Added
 
-- Added `.editorconfig` to the project.
-- Added support for `static` type [#704].
-- Added bitcoin link support via `@link bitcoin:address` [#731].
+- Added `Annotation` package [#863]
+- Added `Element` package
+- Added `ModularConfiguration` package
+- Added `Reflection` package
+- Added `StringRouting` package [#858]
+- Added `.editorconfig` to the project
+- Added support for `static` type [#704]
+- Added bitcoin link support via `@link bitcoin:address` [#731]
+- Added `theme` option to load theme from directory  
+- **Added [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver) for type resolving**
+- **Added [phpDocumentor/ReflectionDocBlock](https://github.com/phpDocumentor/ReflectionDocBlock) for annotation parsing**
 
 ### Changed
 
-- Minimum PHP requirement was increased from `5.4` to `7.1`.
-- Project is now `PSR-2` compatible.
-- Changed PHP Token Reflection library from `andrewsville/php-token-reflection`
-  to `popsul/php-token-reflection`.
+- **Changed PHP Token Reflection library from `andrewsville/php-token-reflection` to `roave/better-reflection` [#827]**
+- **Minimum PHP requirement was increased from `5.4` to `7.1`**
+- Project is now `PSR-2` compatible
 - UTF-8 is now a standard/default charset. [ApiGen] will expect UTF-8 encoded
-  files by default (see [#64] for info).
-- Only relevant classes are generated in sidebar and source code pages [#771].
-- Enabled autocomplete for methods and properties.
+  files by default (see [#64] for info)
+- Only relevant classes are generated in sidebar and source code pages [#771]
+- Enabled autocomplete for methods and properties
+- `ThemeDefault` and `ThemeBootstrap` merged to one local theme, with support of Bootstrap 3 
+  and mobile-friendly design [#814, #862]
+- `@internal` annotation cannot be ignored now [#823]
+- Long and short description merged to one, since there was thin and not clear line between them [#826]
+- `Class<Generator,Reflection>` split to `Class`, `Trait` and `Interface` with own type-specific methods [#818, #827]
+- `SourceCodeGenerator` dropped and moved to particular reflection generators (ClassGenerator...) [#845]
+- Indirect and direct users/implementers/inheritors merged to one group [#855]
+- Tree and Namespace filters simplified [#858]
+- Standardize use of annotations [#862]
+- Left sidebar removed, it duplicated main content and had complicated tree structures [#860]
+- Don't fully qualify local members [#749]
 
 ### Fixed
 
-- Fixed an issue with temporary files not being removed upon exit (in cases
-  where failure happens) [#520]
+- Fixed an issue with temporary files not being removed upon exit (in cases where failure happens) [#520]
 - Fixed an issue with `generate` command throwing an error [#631]
 - Fixed tests (and hopefully compatibility) on Windows OS [#804]
 - Fixed deprecation checks when generating docs
 - Fixed issues with exception handling in low-level parser
-- Fixed generation problems when generating docs for classes using same Traits.
-- Fixed an error on generating docs for non-existent traits.
-- Fixed an issue with handling paths on different OS. The paths should now be
-  normalized and work on Windows [#668].
-- Fixed API documentation download link generation. The generated `.zip`
-  filename will now include a name of the slugified project name [#702].
-- Fixed an issue where ApiGen sometimes would incorrectly resolve return
-  typehints for functions [#740].
-- Fixed an issue when docblocks marked with `@internal` would be documented
-  [#734].
-- Fixed support of `$this` as return type hint [#750].
+- Fixed generation problems when generating docs for classes using same Traits
+- Fixed an error on generating docs for non-existent traits
+- Fixed an issue with handling paths on different OS. The paths should now be normalized and work on Windows [#668]
+- Fixed an issue where ApiGen sometimes would incorrectly resolve return typehints for functions [#740]
+- Fixed an issue when docblocks marked with `@internal` would be documented [#734]
+- Fixed support of `$this` as return type hint [#750]
+- Fixed missing methods in class [#848]
+- Fixed duplicated function source code [#717]  
+
+### PHP 5.5, 5.6 and 7 and parsing related Fixes
+
+- Fixed composed trait methods [#620]
+- Fixed default constant value and `__DIR__` constant parsing [#774]
+- Fixed broken function definition [#751]
+- Fixed `::class` parsing [#680]
 
 ### Removed
 
-- `--charset` CLI option has been dropped (expecting `UTF-8` now by default).
-- `--skip-doc-path` CLI option has ben dropped (use `--exclude` instead).
-- Removed various deprecated generators (Robots, Sitemap) which weren't used.
+- `main` option dropped [#826]
+- Magic elements dropped [#813]
+- `Tree` generator dropped [#809]
+- `--charset` CLI option has been dropped (expecting `UTF-8` now by default)
+- `--skip-doc-path` CLI option has ben dropped
+- `--template-config` and `--template-theme` dropped [#827]
+- `--exclude` and `--extensions` options dropped (use `FinderInterface` implementation instead) [#853] 
+- Removed various deprecated generators (Robots, Sitemap) which weren't used
 - Dropped PHAR support.
+- `Exception` element dropped [#827]
+- Dropped element js toggling in page, was bugged and causing page jumps. 
+- Dropped Zip generator, internet is quite fast nowadays.
 
 ## [4.1.2] - 2015-11-29
 
@@ -94,6 +101,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
   - now:
     - `--annotation-groups todo,deprecated`
     - `--annotation-groups event,api`
+- https://github.com/ApiGen/ApiGen/blob/master/CONTRIBUTING.md contributing info added
 
 ### Changed
 
@@ -111,10 +119,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - [#538] spaces from `apigen.services.neon` removed, thanks to @ramsey
 - [#575] function link fixed
 
-### Updated
-
-- https://github.com/ApiGen/ApiGen/blob/master/CONTRIBUTING.md contributing info added
-- https://github.com/ApiGen/ApiGen/blob/master/UPGRADE-4.0.md upgrade from 2.8 to 4.0 info added
 
 ## [4.0.1] - 2015-03-09
 
