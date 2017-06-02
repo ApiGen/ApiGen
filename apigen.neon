@@ -1,7 +1,4 @@
 parameters:
     title: "ApiGen It-self"
-    source:
-        - src
-        # - packages/**/src, @todo: add support
     visibilityLevels: [public, protected]
     baseUrl: http://apigen.org
