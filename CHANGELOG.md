@@ -19,14 +19,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Added `theme` option to load theme from directory  
 - **Added [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver) for type resolving**
 - **Added [phpDocumentor/ReflectionDocBlock](https://github.com/phpDocumentor/ReflectionDocBlock) for annotation parsing**
+- Added [Symplify/EasyCodingStandard](https://github.com/Symplify/EasyCodingStandard) to make coding standard powerful
+- Added [phpstan](https://github.com/phpstan/phpstan) for static analysis checks
 
 ### Changed
 
 - **Changed PHP Token Reflection library from `andrewsville/php-token-reflection` to `roave/better-reflection` [#827]**
 - **Minimum PHP requirement was increased from `5.4` to `7.1`**
 - Project is now `PSR-2` compatible
-- UTF-8 is now a standard/default charset. [ApiGen] will expect UTF-8 encoded
-  files by default (see [#64] for info)
+- UTF-8 is now a standard/default charset. [ApiGen] will expect UTF-8 encoded files by default [#64]
 - Only relevant classes are generated in sidebar and source code pages [#771]
 - Enabled autocomplete for methods and properties
 - `ThemeDefault` and `ThemeBootstrap` merged to one local theme, with support of Bootstrap 3 
@@ -48,7 +49,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Fixed tests (and hopefully compatibility) on Windows OS [#804]
 - Fixed deprecation checks when generating docs
 - Fixed issues with exception handling in low-level parser
-- Fixed generation problems when generating docs for classes using same Traits
 - Fixed an error on generating docs for non-existent traits
 - Fixed an issue with handling paths on different OS. The paths should now be normalized and work on Windows [#668]
 - Fixed an issue where ApiGen sometimes would incorrectly resolve return typehints for functions [#740]
@@ -66,18 +66,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 ### Removed
 
-- `main` option dropped [#826]
+- `--main` option dropped [#826]
 - Magic elements dropped [#813]
-- `Tree` generator dropped [#809]
 - `--charset` CLI option has been dropped (expecting `UTF-8` now by default)
 - `--skip-doc-path` CLI option has ben dropped
 - `--template-config` and `--template-theme` dropped [#827]
 - `--exclude` and `--extensions` options dropped (use `FinderInterface` implementation instead) [#853] 
 - Removed various deprecated generators (Robots, Sitemap) which weren't used
+- `Tree` generator dropped [#809]
+- Dropped Zip generator, internet is quite fast nowadays.
 - Dropped PHAR support.
 - `Exception` element dropped [#827]
 - Dropped element js toggling in page, was bugged and causing page jumps. 
-- Dropped Zip generator, internet is quite fast nowadays.
 
 ## [4.1.2] - 2015-11-29
 
