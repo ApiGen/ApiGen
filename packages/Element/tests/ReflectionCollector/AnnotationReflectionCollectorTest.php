@@ -7,6 +7,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
+use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -22,6 +23,7 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
         /** @var ConfigurationInterface $configuration */
         $configuration = $this->container->getByType(ConfigurationInterface::class);
         $configuration->resolveOptions([
+           SourceOption::NAME => [__DIR__],
            DestinationOption::NAME => TEMP_DIR,
            AnnotationGroupsOption::NAME => [AnnotationList::DEPRECATED]
         ]);

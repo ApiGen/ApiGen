@@ -21,9 +21,8 @@ class ConstantInClass
      */
     protected const ARRAY_CONSTANT = [1, 2];
 
-    // waits for for https://github.com/Roave/BetterReflection/pull/280
-//    /**
-//     * @var string
-//     */
-//    protected const COMPOSED_WITH_DIR = __DIR__ . '/here';
+    /**
+     * @var string
+     */
+    protected const COMPOSED_WITH_DIR = __DIR__ . '/here';
 }
