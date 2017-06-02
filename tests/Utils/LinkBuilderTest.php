@@ -1,8 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Templating\Filters\Helpers;
+namespace ApiGen\Tests\Utils;
 
-use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use ApiGen\Utils\LinkBuilder;
 use Nette\Utils\Html;
 use PHPUnit\Framework\TestCase;
 

@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\AbstractClassElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
-use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use ApiGen\Utils\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Types\Compound;

@@ -35,7 +35,7 @@
 - ApiGen\EventSubscriber\ElementsTemplateVariablesEventSubscriber
 
 # Template Filters
-- ApiGen\Templating\Filters\Helpers\LinkBuilder
+- ApiGen\Utils\LinkBuilder
 
 # Syntax Highlighter
 - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Templating\Filters\Helpers;
+namespace ApiGen\Utils;
 
 use Latte\Runtime\Filters;
 use Nette\Utils\Html;
