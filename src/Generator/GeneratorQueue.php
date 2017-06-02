@@ -2,10 +2,10 @@
 
 namespace ApiGen\Generator;
 
+use ApiGen\Console\Progress\StepCounter;
 use ApiGen\Contract\Console\Helper\ProgressBarInterface;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Contract\Generator\GeneratorQueueInterface;
-use ApiGen\Console\Progress\StepCounter;
 
 final class GeneratorQueue implements GeneratorQueueInterface
 {
