@@ -13,15 +13,15 @@
             {include items, items => $classes}
         </table>
 
-        {*<table class="summary" id="interfaces" n:if="$allInterfaces">*}
-            {*<caption>Interfaces summary</caption>*}
-            {*{include items, items => $allInterfaces}*}
-        {*</table>*}
+        <table class="summary" id="interfaces" n:if="$allInterfaces">
+            <caption>Interfaces summary</caption>
+            {include items, items => $allInterfaces}
+        </table>
 
-        {*<table class="summary" id="traits" n:if="$allTraits">*}
-            {*<caption>Traits summary</caption>*}
-            {*{include items, items => $allTraits}*}
-        {*</table>*}
+        <table class="summary" id="traits" n:if="$allTraits">
+            <caption>Traits summary</caption>
+            {include items, items => $allTraits}
+        </table>
 
         <table class="summary" id="methods" n:if="$methods">
             <caption>Methods summary</caption>
@@ -33,11 +33,7 @@
                     <code><a href="{$method|linkReflection}">{$method->getName()}()</a></code>
                 </td>
                 <td>
-                    {*{foreach $method->getAnnotation($annotation) as $description}*}
-                        {*{if $description}*}
-                            {*{$description|annotation:$method|noescape}<br>*}
-                        {*{/if}*}
-                    {*{/foreach}*}
+                    {include reflectionAnnotationsList, "reflection" => $method, "annotation" => $annotation}
                 </td>
             </tr>
         </table>
@@ -48,13 +44,7 @@
                 <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
                 <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
                 <td>
-                    {*{foreach $property->getAnnotation($annotation) as $description}*}
-                        {*{if $description}*}
-                            {*{$description|annotation:$property|noescape}<br>*}
-                        {*{/if}*}
-
-                    {*{/foreach}
-                    *}
+                    {include reflectionAnnotationsList, "reflection" => $property, "annotation" => $annotation}
                 </td>
             </tr>
         </table>
@@ -63,13 +53,11 @@
             <caption>Functions summary</caption>
             <tr n:foreach="$allFunctions as $function">
                 <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
-                <td class="name"><code><a href="{$function|linkReflection}">{$function->getShortName()}</a></code></td>
+                <td class="name">
+                    <code><a href="{$function|linkReflection}">{$function->getShortName()}</a></code>
+                </td>
                 <td>
-                    {*{foreach $function->getAnnotation($annotation) as $description}*}
-                        {*{if $description}*}
-                            {*{$description|annotation:$function|noescape}<br>*}
-                        {*{/if}*}
-                    {*{/foreach}*}
+                    {include reflectionAnnotationsList, "reflection" => $function, "annotation" => $annotation}
                 </td>
             </tr>
         </table>
@@ -92,4 +80,12 @@
             {/foreach}
         </td>
     </tr>
+{/define}
+
+{define reflectionAnnotationsList}
+    {foreach $reflection->getAnnotation($annotation) as $description}
+        {if $description}
+            {$description|annotation:$reflection|noescape}<br>
+        {/if}
+    {/foreach}
 {/define}
