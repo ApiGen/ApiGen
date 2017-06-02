@@ -6,6 +6,7 @@ use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Contracts\Generator\GeneratorInterface;
 use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
+use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedClass;
 
 final class AnnotationGroupsGenerator implements GeneratorInterface
 {

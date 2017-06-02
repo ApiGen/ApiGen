@@ -43,7 +43,7 @@ final class TemplateRenderer implements TemplateRendererInterface
         FileSystem::ensureDirectoryExistsForFile($destinationFile);
         file_put_contents(
             $destinationFile,
-            $this->latteEngine->renderrToString($templateFile, $parametersBag->getParameters())
+            $this->latteEngine->renderToString($templateFile, $parametersBag->getParameters())
         );
 
         $this->eventDispatcher->dispatch(GenerateProgressEvent::class);

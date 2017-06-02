@@ -61,9 +61,7 @@ final class FileSystem
     public static function ensureDirectoryExistsForFile(string $file): void
     {
         $directory = dirname($file);
-        if (! is_dir($directory) && ! file_exists($directory)) {
-            mkdir($directory, 0755, true);
-        }
+        self::ensureDirectoryExists($directory);
     }
 
     public static function ensureDirectoryExists(string $directory): void
