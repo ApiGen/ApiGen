@@ -29,13 +29,13 @@
                 <td class="name"><a href="{$method->getDeclaringClass()|linkReflection}">{$method->getDeclaringClassName()}</a></td>
                 <td class="name"><code><a href="{$method|linkReflection}">{$method->getName()}()</a></code></td>
                 <td>
-                    {if $method->hasAnnotation($annotation)}
-                        {foreach $method->getAnnotations()[$annotation] as $description}
-                            {if $description}
-                                {$description|annotation:$method|noescape}<br>
-                            {/if}
-                        {/foreach}
-                    {/if}
+                    {*{if $method->hasAnnotation($annotation)}*}
+                        {*{foreach $method->getAnnotations()[$annotation] as $description}*}
+                            {*{if $description}*}
+                                {*{$description|annotation:$method|noescape}<br>*}
+                            {*{/if}*}
+                        {*{/foreach}*}
+                    {*{/if}*}
                 </td>
             </tr>
         </table>
@@ -46,11 +46,13 @@
                 <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
                 <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
                 <td>
-                    {foreach $property->getAnnotations()[$annotation] as $description}
-                        {if $description}
-                            {$description|annotation:$property|noescape}<br>
-                        {/if}
-                    {/foreach}
+                    {*{foreach $property->getAnnotations()[$annotation] as $description}*}
+                        {*{if $description}*}
+                            {*{$description|annotation:$property|noescape}<br>*}
+                        {*{/if}*}
+
+                    {*{/foreach}
+                    *}
                 </td>
             </tr>
         </table>
@@ -61,11 +63,11 @@
                 <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
                 <td class="name"><code><a href="{$function|linkReflection}">{$function->getShortName()}</a></code></td>
                 <td>
-                    {foreach $function->getAnnotations()[$annotation] as $description}
-                        {if $description}
-                            {$description|annotation:$function|noescape}<br>
-                        {/if}
-                    {/foreach}
+                    {*{foreach $function->getAnnotations()[$annotation] as $description}*}
+                        {*{if $description}*}
+                            {*{$description|annotation:$function|noescape}<br>*}
+                        {*{/if}*}
+                    {*{/foreach}*}
                 </td>
             </tr>
         </table>
@@ -81,11 +83,11 @@
     <tr n:foreach="$items as $class">
         <td class="name"><a href="{$class|linkReflection}">{$class->getName()}</a></td>
         <td>
-            {foreach $class->getAnnotations()[$annotation] as $description}
-                {if $description}
-                    {$description|annotation:$class|noescape}<br>
-                {/if}
-            {/foreach}
+            {*{foreach $class->getAnnotations()[$annotation] as $description}*}
+                {*{if $description}*}
+                    {*{$description|annotation:$class|noescape}<br>*}
+                {*{/if}*}
+            {*{/foreach}*}
         </td>
     </tr>
 {/define}

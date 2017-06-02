@@ -4,8 +4,8 @@ namespace ApiGen\Utils;
 
 use Nette\Utils\FileSystem as NetteFileSystem;
 use Nette\Utils\Finder;
+use Nette\Utils\Strings;
 use RecursiveDirectoryIterator;
-use SplFileInfo;
 
 final class FileSystem
 {
@@ -58,14 +58,16 @@ final class FileSystem
         }
     }
 
-    public static function ensureDirectoryExists(string $destination): void
+    public static function ensureDirectoryExistsForFile(string $file): void
     {
-        if (! is_dir($destination)) {
-            mkdir($destination, 0755, true);
+        $directory = dirname($file);
+        if (! is_dir($directory) && ! file_exists($directory)) {
+            mkdir($directory, 0755, true);
         }
+    }
 
-        // file
-        $directory = dirname($destination);
+    public static function ensureDirectoryExists(string $directory): void
+    {
         if (! is_dir($directory)) {
             mkdir($directory, 0755, true);
         }
