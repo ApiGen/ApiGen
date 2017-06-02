@@ -31,7 +31,6 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Added
 
 - Added `.editorconfig` to the project.
-- Enabled PHP7 tests in Travis-CI.
 - Added support for `static` type [#704].
 - Added bitcoin link support via `@link bitcoin:address` [#731].
 
@@ -41,7 +40,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - Project is now `PSR-2` compatible.
 - Changed PHP Token Reflection library from `andrewsville/php-token-reflection`
   to `popsul/php-token-reflection`.
-- UTF-8 is now a standard/default charset. [ApiGen] will  expect UTF-8 encoded
+- UTF-8 is now a standard/default charset. [ApiGen] will expect UTF-8 encoded
   files by default (see [#64] for info).
 - Only relevant classes are generated in sidebar and source code pages [#771].
 - Enabled autocomplete for methods and properties.
@@ -71,8 +70,11 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 - `--charset` CLI option has been dropped (expecting `UTF-8` now by default).
 - `--skip-doc-path` CLI option has ben dropped (use `--exclude` instead).
 - Removed various deprecated generators (Robots, Sitemap) which weren't used.
-- Dropped PHAR support in `composer`.
-- Cleanup codebase to get rid of unused namespaces, methods or properties.
+- Dropped PHAR support.
+
+## [4.1.2] - 2015-11-29
+
+- Minor fixes.
 
 ## [4.1.1] - 2015-04-09
 
@@ -132,8 +134,6 @@ base similar to 2.8. Since then there were many BC breaks, thus major version wa
   [PHP_CodeSniffer](https://github.com/squizlabs/PHP_CodeSniffer)
 - Codebase is now unit tested with with [PHPUnit](https://github.com/sebastianbergmann/phpunit) (test coverage of ~80%).
 - Continuous integration testing enabled ([Travis CI](http://travis-ci.org)).
-- New [Release process](wiki/Release-Process) was established. Releasing minor
-  version **every 2 months**.
 
 ### Changed
 
