@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\ClassGenerator;
 use ApiGen\Reflection\Contract\ParserInterface;
@@ -27,10 +27,10 @@ final class ClassGeneratorTest extends AbstractContainerAwareTestCase
         $this->classElementGenerator->generate();
 
         $this->assertFileExists(
-            TEMP_DIR . '/class-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeClass.html'
+            TEMP_DIR . '/class-ApiGen.Tests.Generator.Source.SomeClass.html'
         );
         $this->assertFileExists(
-            TEMP_DIR . '/source-class-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeClass.html'
+            TEMP_DIR . '/source-class-ApiGen.Tests.Generator.Source.SomeClass.html'
         );
     }
 }

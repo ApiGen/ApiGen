@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\TraitGenerator;
 use ApiGen\Reflection\Contract\ParserInterface;
@@ -26,10 +26,10 @@ final class TraitGeneratorTest extends AbstractContainerAwareTestCase
     {
         $this->traitGenerator->generate();
         $this->assertFileExists(
-            TEMP_DIR . '/trait-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeTrait.html'
+            TEMP_DIR . '/trait-ApiGen.Tests.Generator.Source.SomeTrait.html'
         );
         $this->assertFileExists(
-            TEMP_DIR . '/source-trait-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeTrait.html'
+            TEMP_DIR . '/source-trait-ApiGen.Tests.Generator.Source.SomeTrait.html'
         );
     }
 }

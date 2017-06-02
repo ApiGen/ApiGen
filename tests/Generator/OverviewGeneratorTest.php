@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\IndexGenerator;
 use ApiGen\Tests\AbstractContainerAwareTestCase;

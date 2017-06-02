@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources;
+namespace ApiGen\Tests\Generator\DeprecatedSources;
 
 class DeprecatedMethod
 {

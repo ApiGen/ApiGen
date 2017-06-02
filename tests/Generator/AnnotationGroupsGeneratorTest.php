@@ -1,13 +1,13 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator;
 
 use ApiGen\Contracts\Configuration\ConfigurationInterface;
 use ApiGen\Generator\AnnotationGroupsGenerator;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedClass;
-use ApiGen\Tests\Generator\TemplateGenerators\DeprecatedSources\DeprecatedMethod;
+use ApiGen\Tests\Generator\DeprecatedSources\DeprecatedClass;
+use ApiGen\Tests\Generator\DeprecatedSources\DeprecatedMethod;
 
 final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 {

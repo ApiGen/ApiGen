@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\NamespaceGenerator;
 use ApiGen\Generator\TraitGenerator;
@@ -26,6 +26,6 @@ final class NamespaceGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         $this->namespaceGenerator->generate();
-        $this->assertFileExists(TEMP_DIR . '/namespace-ApiGen.Tests.Generator.TemplateGenerators.Source.html');
+        $this->assertFileExists(TEMP_DIR . '/namespace-ApiGen.Tests.Generator.Source.html');
     }
 }

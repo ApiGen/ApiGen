@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\TemplateGenerators;
+namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\InterfaceGenerator;
 use ApiGen\Reflection\Contract\ParserInterface;
@@ -26,10 +26,10 @@ final class InterfaceGeneratorTest extends AbstractContainerAwareTestCase
     {
         $this->interfaceGenerator->generate();
         $this->assertFileExists(
-            TEMP_DIR . '/interface-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeInterface.html'
+            TEMP_DIR . '/interface-ApiGen.Tests.Generator.Source.SomeInterface.html'
         );
         $this->assertFileExists(
-            TEMP_DIR . '/source-interface-ApiGen.Tests.Generator.TemplateGenerators.Source.SomeInterface.html'
+            TEMP_DIR . '/source-interface-ApiGen.Tests.Generator.Source.SomeInterface.html'
         );
     }
 }
