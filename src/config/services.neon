@@ -5,7 +5,7 @@
 - ApiGen\Console\Helper\ProgressBar
 - ApiGen\Console\Command\GenerateCommand
 - Symfony\Component\Console\Output\ConsoleOutput
-- ApiGen\Progress\StepCounter
+- ApiGen\Console\Progress\StepCounter
 
 # Utils
 - ApiGen\Utils\FileSystem

@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Progress;
+namespace ApiGen\Console\Progress;
 
 use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
