@@ -4,7 +4,7 @@
 namespace ApiGen\Element\Latte\Filter;
 
 use ApiGen\StringRouting\Route\NamespaceRoute;
-use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use ApiGen\Utils\LinkBuilder;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
 final class NamespaceFilter implements LatteFiltersProviderInterface

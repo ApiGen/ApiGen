@@ -2,7 +2,7 @@
 
 namespace ApiGen\Console\Helper;
 
-use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
+use ApiGen\Contract\Console\Helper\ProgressBarInterface;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 

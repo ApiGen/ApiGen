@@ -2,7 +2,7 @@
 
 namespace ApiGen\EventSubscriber;
 
-use ApiGen\Contracts\Console\Helper\ProgressBarInterface;
+use ApiGen\Contract\Console\Helper\ProgressBarInterface;
 use ApiGen\Event\GenerateProgressEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

@@ -2,9 +2,9 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\GeneratorInterface;
-use ApiGen\Contracts\Templating\TemplateRendererInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Generator\GeneratorInterface;
+use ApiGen\Templating\TemplateRenderer;
 
 final class ElementListGenerator implements GeneratorInterface
 {
@@ -14,11 +14,11 @@ final class ElementListGenerator implements GeneratorInterface
     private $configuration;
 
     /**
-     * @var TemplateRendererInterface
+     * @var TemplateRenderer
      */
     private $templateRenderer;
 
-    public function __construct(ConfigurationInterface $configuration, TemplateRendererInterface $templateRenderer)
+    public function __construct(ConfigurationInterface $configuration, TemplateRenderer $templateRenderer)
     {
         $this->configuration = $configuration;
         $this->templateRenderer = $templateRenderer;

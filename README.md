@@ -10,7 +10,7 @@ Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakeph
 
 ## Built on Shoulders of Giants
 
-- PHP 7.1
+- PHP 7.1+
 - [nikic/PHP-Parser](https://github.com/nikic/PHP-Parser)
 - [Roave/BetterReflection](https://github.com/Roave/BetterReflection)
 - [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver)
@@ -125,8 +125,7 @@ This is already mentioned on Wiki.
 
 ## Themes
 
-In order to enable a custom theme, you have to provide `themeDirectory` configuration
-option in your ApiGen configuration file:
+To enable a custom theme just provide `themeDirectory` configuration option in your `apigen.neon`:
 
 ```yaml
 parameters:

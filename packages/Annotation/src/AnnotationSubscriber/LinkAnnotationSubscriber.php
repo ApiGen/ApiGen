@@ -2,9 +2,9 @@
 
 namespace ApiGen\Annotation\AnnotationSubscriber;
 
-use ApiGen\Contracts\Annotation\AnnotationSubscriberInterface;
+use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
-use ApiGen\Templating\Filters\Helpers\LinkBuilder;
+use ApiGen\Utils\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 

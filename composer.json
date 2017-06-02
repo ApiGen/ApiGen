@@ -19,7 +19,6 @@
         "nette/bootstrap": "^2.4",
         "nette/di": "^2.4",
         "nette/neon": "^2.4",
-        "tracy/tracy": "^2.4",
 
         "contributte/console": "^0.1",
         "contributte/event-dispatcher": "^0.3",
@@ -27,6 +26,7 @@
         "symplify/modular-latte-filters": "^1.4"
     },
     "require-dev": {
+        "tracy/tracy": "^2.4",
         "phpunit/phpunit": "^6.0",
         "phpstan/phpstan": "^0.7",
         "symplify/coding-standard": "v2.0.0-RC2",

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;

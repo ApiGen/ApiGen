@@ -16,7 +16,7 @@ class SomeClass extends ParentClass
      */
     public $someProperty;
 
-    public function SomeMethod(): void/*: void - brokes old parser */
+    public function SomeMethod(): void
     {
 
     }

@@ -2,7 +2,6 @@
 
 namespace ApiGen\Templating;
 
-use ApiGen\Contracts\Templating\TemplateRendererInterface;
 use ApiGen\Event\CreateTemplateEvent;
 use ApiGen\Event\GenerateProgressEvent;
 use ApiGen\Templating\Parameters\ParameterBag;
@@ -10,7 +9,7 @@ use ApiGen\Utils\FileSystem;
 use Latte\Engine;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-final class TemplateRenderer implements TemplateRendererInterface
+final class TemplateRenderer
 {
     /**
      * @var EventDispatcherInterface

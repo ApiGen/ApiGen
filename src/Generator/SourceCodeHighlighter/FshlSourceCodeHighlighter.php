@@ -2,7 +2,7 @@
 
 namespace ApiGen\Generator\SourceCodeHighlighter;
 
-use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
+use ApiGen\Contract\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use FSHL\Highlighter;
 
 final class FshlSourceCodeHighlighter implements SourceCodeHighlighterInterface

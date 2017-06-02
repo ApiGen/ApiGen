@@ -5,11 +5,11 @@
 - ApiGen\Console\Helper\ProgressBar
 - ApiGen\Console\Command\GenerateCommand
 - Symfony\Component\Console\Output\ConsoleOutput
-- ApiGen\Progress\StepCounter
+- ApiGen\Console\Progress\StepCounter
 
 # Utils
 - ApiGen\Utils\FileSystem
-- ApiGen\Utils\Finder\NetteFinder
+- ApiGen\Utils\Finder\Finder
 - ApiGen\Utils\RelativePathResolver
 
 # Configuration
@@ -35,7 +35,7 @@
 - ApiGen\EventSubscriber\ElementsTemplateVariablesEventSubscriber
 
 # Template Filters
-- ApiGen\Templating\Filters\Helpers\LinkBuilder
+- ApiGen\Utils\LinkBuilder
 
 # Syntax Highlighter
 - ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Utils;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use InvalidArgumentException;
 
 final class RelativePathResolver

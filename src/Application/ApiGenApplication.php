@@ -3,8 +3,8 @@
 namespace ApiGen\Application;
 
 use ApiGen\Application\Command\RunCommand;
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\GeneratorQueueInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Generator\GeneratorQueueInterface;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
