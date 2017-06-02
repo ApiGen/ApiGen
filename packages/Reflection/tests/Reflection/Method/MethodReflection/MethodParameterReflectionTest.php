@@ -45,9 +45,10 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertSame('the URL of the API endpoint', $this->parameterReflection->getDescription());
     }
 
-    public function testIsArray(): void
+    public function testType(): void
     {
         $this->assertFalse($this->parameterReflection->isArray());
+        $this->assertFalse($this->parameterReflection->isVariadic());
     }
 
     public function testGetClass(): void
@@ -77,18 +78,15 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
             ClassReflectionInterface::class,
             $this->parameterReflection->getDeclaringClass()
         );
-    }
 
-    public function testGetDeclaringClassName(): void
-    {
         $this->assertSame(
             ParameterMethodClass::class,
             $this->parameterReflection->getDeclaringClassName()
         );
     }
 
-    public function testIsVariadic(): void
+    public function testIsPassedByReference(): void
     {
-        $this->assertFalse($this->parameterReflection->isVariadic());
+        $this->assertFalse($this->parameterReflection->isPassedByReference());
     }
 }

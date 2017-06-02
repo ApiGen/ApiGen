@@ -22,5 +22,7 @@ interface AbstractParameterReflectionInterface extends AbstractReflectionInterfa
 
     public function isCallable(): bool;
 
+    public function isPassedByReference(): bool;
+
     public function getDescription(): string;
 }

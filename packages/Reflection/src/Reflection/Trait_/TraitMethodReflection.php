@@ -77,14 +77,6 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
         return $this->betterMethodReflection->isStatic();
     }
 
-    public function getImplementedMethod(): ?InterfaceMethodReflectionInterface
-    {
-    }
-
-    public function getOverriddenMethod(): void
-    {
-    }
-
     public function returnsReference(): bool
     {
         return $this->betterMethodReflection->returnsReference();

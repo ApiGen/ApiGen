@@ -17,7 +17,7 @@
         <dd>
             {if $class->getParentClass()}
                 extends
-                <a href="{$class->getParentClass()|reflectionLink}">
+                <a href="{$class->getParentClass()|linkReflection}">
                     <span n:class="$class->getParentClass()->isDeprecated() ? deprecated">{$class->getParentClass()->getName()}</span>
                 </a>
             {/if}
@@ -25,7 +25,7 @@
             {if $class->getOwnInterfaces()}
                 implements
                 {foreach $class->getOwnInterfaces() as $ownInterface}
-                    <a href="{$ownInterface|reflectionLink}">
+                    <a href="{$ownInterface|linkReflection}">
                         <span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span>
                     </a>{sep}, {/sep}
                 {/foreach}
@@ -34,7 +34,7 @@
             {if $class->getTraits()}
                 uses
                 {foreach $class->getTraits() as $ownTrait}
-                    <a href="{$ownTrait|reflectionLink}">
+                    <a href="{$ownTrait|linkReflection}">
                         <span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
                     </a>{sep}, {/sep}
                 {/foreach}
@@ -72,7 +72,7 @@
     {if $class->getOwnMethods()}
         <table class="summary methods" id="methods">
             <caption>Methods summary</caption>
-            {foreach $ownMethods as $method}
+            {foreach $class->getOwnMethods() as $method}
                 {include "partial/method.latte", method => $method}
             {/foreach}
         </table>

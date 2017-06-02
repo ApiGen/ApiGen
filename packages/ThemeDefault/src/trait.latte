@@ -20,7 +20,7 @@
             {if $trait->getTraits()}
                 uses
                 {foreach $trait->getTraits() as $ownTrait}
-                <a href="{$ownTrait|reflectionLink}">
+                <a href="{$ownTrait|linkReflection}">
                     <span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
                     </a>{sep}, {/sep}
                 {/foreach}

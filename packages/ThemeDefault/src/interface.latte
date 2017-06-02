@@ -20,7 +20,7 @@
             {if $interface->getOwnInterfaces()}
                 implements
                 {foreach $interface->getOwnInterfaces() as $ownInterface}
-                <a href="{$ownInterface|reflectionLink}">
+                <a href="{$ownInterface|linkReflection}">
                     <span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span>
                     </a>{sep}, {/sep}
                 {/foreach}

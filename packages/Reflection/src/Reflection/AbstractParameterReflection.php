@@ -95,6 +95,11 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         return $this->betterParameterReflection->isArray();
     }
 
+    public function isPassedByReference(): bool
+    {
+        return $this->betterParameterReflection->isPassedByReference();
+    }
+
     public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;

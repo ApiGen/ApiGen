@@ -3,7 +3,7 @@
 
     <td class="attributes">
         <code>
-            {if !$class->isInterface() && $method->isAbstract()}abstract{elseif $method->isFinal()}final{/if} {if $method->isProtected()}protected{elseif $method->isPrivate()}private{else}public{/if} {if $method->isStatic()}static{/if}
+            {if $method->isAbstract()}abstract{elseif $method->isFinal()}final{/if} {if $method->isProtected()}protected{elseif $method->isPrivate()}private{else}public{/if} {if $method->isStatic()}static{/if}
 
             {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
             {if $method->returnsReference()}&amp;{/if}
@@ -22,7 +22,7 @@
                             {else}
                                 {$parameter->getTypeHint()}
                             {/if}
-                        <var>{if $parameter->passedByReference}&amp; {/if}${$parameter->getName()}</var>{if $parameter->defaultValueAvailable} = {$parameter->defaultValueDefinition|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
+                        <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>{if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
                     ){/block}</code>
 
@@ -85,12 +85,12 @@
                     </div>
                 {/foreach}
 
-                {if $method->getOverridenMethod()}
+                {if $method->getOverriddenMethod()}
                     <h4>Overrides</h4>
                     <div class="list">
                         <code>
-                            <a n:tag-if="$method->getOverridenMethod()->getDeclaringClass()" href="{$method->getOverridenMethod()|linkReflection}">
-                                {$method->getOverridenMethod()|prettyMethodName}
+                            <a href="{$method->getOverriddenMethod()|linkReflection}">
+                                {$method->getOverriddenMethod()|prettyMethodName}
                             </a>
                         </code>
                     </div>
@@ -100,7 +100,7 @@
                     <h4>Implementation of</h4>
                     <div class="list">
                         <code>
-                            <a n:tag-if="$method->getImplementedMethod()->getDeclaringClass()" href="{$method->getImplementedMethod()|linkReflection}">
+                            <a href="{$method->getImplementedMethod()|linkReflection}">
                                 {$method->getImplementedMethod()|prettyMethodName}
                             </a>
                         </code>

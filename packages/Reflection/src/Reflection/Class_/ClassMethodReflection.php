@@ -160,8 +160,6 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
         return $this->betterMethodReflection->isStatic();
     }
 
-    // @todo: is used?
-
     public function getImplementedMethod(): ?InterfaceMethodReflectionInterface
     {
         foreach ($this->getDeclaringClass()->getOwnInterfaces() as $interface) {
@@ -172,7 +170,6 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
 
         return null;
     }
-
     // @todo: is used?
     public function getOverriddenMethod(): ?ClassMethodReflectionInterface
     {

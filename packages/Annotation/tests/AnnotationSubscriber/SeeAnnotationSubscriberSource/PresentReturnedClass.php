@@ -9,6 +9,9 @@ final class PresentReturnedClass
      */
     public $someProperty;
 
+    /**
+     * @see $someProperty
+     */
     public function someMethod(): void
     {
     }

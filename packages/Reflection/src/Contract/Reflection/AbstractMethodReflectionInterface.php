@@ -25,12 +25,5 @@ interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, An
 
     public function isStatic(): bool;
 
-    public function getImplementedMethod(): ?InterfaceMethodReflectionInterface;
-
-    /**
-     * @return ClassMethodReflectionInterface|TraitMethodReflectionInterface|null
-     */
-    public function getOverriddenMethod();
-
     public function returnsReference(): bool;
 }
