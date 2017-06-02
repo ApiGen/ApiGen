@@ -2,7 +2,7 @@
 
 namespace ApiGen\EventSubscriber;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\Event\CreateTemplateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator\SourceCodeHighlighter;
 
-use ApiGen\Contracts\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
+use ApiGen\Contract\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 

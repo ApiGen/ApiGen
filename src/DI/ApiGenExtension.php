@@ -2,8 +2,8 @@
 
 namespace ApiGen\DI;
 
-use ApiGen\Contracts\Generator\GeneratorInterface;
-use ApiGen\Contracts\Generator\GeneratorQueueInterface;
+use ApiGen\Contract\Generator\GeneratorInterface;
+use ApiGen\Contract\Generator\GeneratorQueueInterface;
 use Latte\Engine;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;

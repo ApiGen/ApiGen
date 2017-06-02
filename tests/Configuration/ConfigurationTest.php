@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Configuration;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;

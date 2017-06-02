@@ -2,8 +2,8 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\GeneratorInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Templating\TemplateRenderer;
 
 final class IndexGenerator implements GeneratorInterface

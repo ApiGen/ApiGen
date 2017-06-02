@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Console\Helper;
+namespace ApiGen\Contract\Console\Helper;
 
 interface ProgressBarInterface
 {

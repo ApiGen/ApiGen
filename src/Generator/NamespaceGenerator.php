@@ -2,8 +2,8 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
-use ApiGen\Contracts\Generator\GeneratorInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Element\Namespaces\SingleNamespaceStorage;
 use ApiGen\Templating\TemplateRenderer;

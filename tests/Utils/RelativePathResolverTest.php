@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator\Resolvers;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\Utils\FileSystem;
 use ApiGen\Utils\RelativePathResolver;
 use InvalidArgumentException;

@@ -2,7 +2,7 @@
 
 namespace ApiGen\StringRouting\Tests\Route;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;

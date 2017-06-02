@@ -2,20 +2,19 @@
 
 namespace ApiGen\Tests\Utils\Finder;
 
-use ApiGen\Utils\Finder\FinderInterface;
-use ApiGen\Utils\Finder\NetteFinder;
+use ApiGen\Utils\Finder\Finder;
 use PHPUnit\Framework\TestCase;
 
-final class NetteFinderTest extends TestCase
+final class FinderTest extends TestCase
 {
     /**
-     * @var FinderInterface
+     * @var Finder
      */
     private $finder;
 
     protected function setUp(): void
     {
-        $this->finder = new NetteFinder;
+        $this->finder = new Finder;
     }
 
     public function testSource(): void

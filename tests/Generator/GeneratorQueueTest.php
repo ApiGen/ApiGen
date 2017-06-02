@@ -2,8 +2,8 @@
 
 namespace ApiGen\Tests\Generator;
 
-use ApiGen\Contracts\Generator\GeneratorInterface;
-use ApiGen\Contracts\Generator\GeneratorQueueInterface;
+use ApiGen\Contract\Generator\GeneratorInterface;
+use ApiGen\Contract\Generator\GeneratorQueueInterface;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Symfony\Component\Console\Output\OutputInterface;

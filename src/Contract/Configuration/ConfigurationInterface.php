@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Contracts\Configuration;
+namespace ApiGen\Contract\Configuration;
 
 interface ConfigurationInterface
 {

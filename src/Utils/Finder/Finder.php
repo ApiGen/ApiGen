@@ -2,10 +2,11 @@
 
 namespace ApiGen\Utils\Finder;
 
-use Nette\Utils\Finder;
+use ApiGen\Contract\Utils\Finder\FinderInterface;
+use Nette\Utils\Finder as NetteFinder;
 use SplFileInfo;
 
-final class NetteFinder implements FinderInterface
+final class Finder implements FinderInterface
 {
     /**
      * @param string[] $sources
@@ -33,7 +34,7 @@ final class NetteFinder implements FinderInterface
             return $foundFiles;
         }
 
-        $finder = Finder::findFiles('*.php')
+        $finder = NetteFinder::findFiles('*.php')
             ->exclude('/tests*', '/Tests*')
             ->from($source)
             ->exclude('/tests*', '/Tests*');
@@ -43,7 +44,7 @@ final class NetteFinder implements FinderInterface
     /**
      * @return SplFileInfo[]
      */
-    private function convertFinderToArray(Finder $finder): array
+    private function convertFinderToArray(NetteFinder $finder): array
     {
         return iterator_to_array($finder->getIterator());
     }

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator;
 
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\Generator\AnnotationGroupsGenerator;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;

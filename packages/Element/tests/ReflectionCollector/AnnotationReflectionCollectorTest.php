@@ -3,7 +3,7 @@
 namespace ApiGen\Element\Tests\ReflectionCollector;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contracts\Configuration\ConfigurationInterface;
+use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;

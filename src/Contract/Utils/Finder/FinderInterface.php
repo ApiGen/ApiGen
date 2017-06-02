@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Utils\Finder;
+namespace ApiGen\Contract\Utils\Finder;
 
 use SplFileInfo;
 
