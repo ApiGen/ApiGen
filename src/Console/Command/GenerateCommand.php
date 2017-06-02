@@ -4,7 +4,6 @@ namespace ApiGen\Console\Command;
 
 use ApiGen\Application\ApiGenApplication;
 use ApiGen\Application\Command\RunCommand;
-use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Contract\CommandDecoratorInterface;
 use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
