@@ -1,5 +1,5 @@
 body {
-    font: 13px/1.5 Verdana, 'Geneva CE', lucida, sans-serif;
+    font: 14px Verdana, 'Geneva CE', lucida, sans-serif;
     margin: 0;
     padding: 0;
     background: #ffffff;
@@ -98,18 +98,6 @@ code a b {
     opacity: .5;
 }
 
-.hidden {
-    display: none;
-}
-
-/* Left side */
-#left {
-    overflow: auto;
-    width: 270px;
-    height: 100%;
-    position: fixed;
-}
-
 /* Menu */
 #menu {
     padding: 10px;
@@ -203,9 +191,9 @@ code a b {
 
 /* Navigation */
 #navigation {
-    padding: 3px 8px;
+    padding: .3em .7em;
     background-color: #f6f6f4;
-    height: 26px;
+    height: 30px;
 }
 
 #navigation ul {
@@ -479,10 +467,6 @@ span.l a.l {
 span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     background: transparent;
     color: #c0c0c0 !important;
-}
-
-#navigation {
-    height: 52px;
 }
 
 /* global style */
