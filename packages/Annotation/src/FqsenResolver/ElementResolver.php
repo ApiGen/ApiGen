@@ -80,10 +80,18 @@ final class ElementResolver
             return $functionReflections[$namespacedFunctionName] ?? $namespacedFunctionName;
         }
 
+        if (isset($classReflections[$name])) {
+            return $classReflections[$name];
+        }
+
         $context = $this->contextFactory->createFromReflector(new ReflectionClass($reflectionName));
 
-        $classReflectionName = (string) $this->fqsenResolver->resolve(ltrim($name, '\\'), $context);
-        $classReflectionName = ltrim($classReflectionName, '\\');
+        if (class_exists($name)) {
+            $classReflectionName = $name;
+        } else {
+            $classReflectionName = (string) $this->fqsenResolver->resolve(ltrim($name, '\\'), $context);
+            $classReflectionName = ltrim($classReflectionName, '\\');
+        }
 
         // @todo: return only string on non resolved existing class
         $classReflections = $this->reflectionStorage->getClassReflections();
