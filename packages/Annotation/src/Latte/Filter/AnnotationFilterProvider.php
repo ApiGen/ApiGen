@@ -65,7 +65,7 @@ final class AnnotationFilterProvider implements LatteFiltersProviderInterface
     }
 
     /**
-     * @param mixed $reflection
+     * @param mixed[] $annotations
      */
     private function ensureFilterArgumentsIsTag(array $annotations, string $filterName): void
     {
