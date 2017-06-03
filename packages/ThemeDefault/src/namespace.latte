@@ -9,7 +9,7 @@
 
     {if $childNamespaces}
         <table class="summary" id="namespaces">
-            <caption>Namespaces summary</caption>
+            <tr><th>Namespaces summary</th></tr>
             <tr n:foreach="$childNamespaces as $childNamespace">
                 <td class="name"><a href="{$childNamespace|linkNamespace}">{$childNamespace}</a></td>
             </tr>

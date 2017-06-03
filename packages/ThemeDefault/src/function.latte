@@ -32,7 +32,7 @@
         {var $annotations = $function->getAnnotations()}
 
         <table class="summary" id="parameters" n:if="count($function->getParameters())">
-        <caption>Parameters summary</caption>
+        <tr><th>Parameters summary</th></tr>
         <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
             <td class="name">
                 <code>
@@ -53,7 +53,7 @@
 
         {if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
             <table class="summary" id="returns">
-                <caption>Return value summary</caption>
+                <tr><th>Return value summary</th></tr>
                 <tr>
                     <td class="name">
                         {$annotations['return'][0]|annotation:$function|noescape}

@@ -1,5 +1,5 @@
 body {
-    font: 14px Verdana, 'Geneva CE', lucida, sans-serif;
+    font: 1.4em Verdana, 'Geneva CE', lucida, sans-serif;
     margin: 0;
     padding: 0;
     background: #ffffff;
@@ -38,14 +38,12 @@ h4 {
     margin: 0;
 }
 
-caption {
+tr th {
     border: 1px solid #cccccc;
     background: #ecede5;
     font-weight: bold;
     font-size: 1.2em;
-    padding: 3px 5px;
-    text-align: left;
-    margin-bottom: 0;
+    line-height: 1.7em;
 }
 
 p {
@@ -467,12 +465,4 @@ span.l a.l {
 span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     background: transparent;
     color: #c0c0c0 !important;
-}
-
-/* global style */
-.left, .summary td.left {
-    text-align: left;
-}
-.right, .summary td.right {
-    text-align: right;
 }

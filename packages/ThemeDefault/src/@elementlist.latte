@@ -10,21 +10,21 @@
 {/define}
 
 <table class="summary" id="classes" n:if="$allClasses">
-    <caption>Classes summary</caption>
+    <tr><th colspan="2">Classes summary</th></tr>
     {include elements, elements => $allClasses}
 </table>
 
 <table class="summary" id="interfaces" n:if="$allInterfaces">
-    <caption>Interfaces summary</caption>
+    <tr><th colspan="2">Interfaces summary</th></tr>
     {include elements, elements => $allInterfaces}
 </table>
 
 <table class="summary" id="traits" n:if="$allTraits">
-    <caption>Traits summary</caption>
+    <tr><th colspan="2">Traits summary</th></tr>
     {include elements, elements => $allTraits}
 </table>
 
 <table class="summary" id="functions" n:if="$allFunctions">
-    <caption>Functions summary</caption>
+    <tr><th colspan="2">Functions summary</th></tr>
     {include elements, elements => $allFunctions}
 </table>

@@ -9,22 +9,22 @@
 
     {if $hasElements}
         <table class="summary" id="classes" n:if="$classes">
-            <caption>Classes summary</caption>
+            <tr><th colspan="2">Classes summary</th></tr>
             {include items, items => $classes}
         </table>
 
         <table class="summary" id="interfaces" n:if="$allInterfaces">
-            <caption>Interfaces summary</caption>
+            <tr><th colspan="2">Interfaces summary</th></tr>
             {include items, items => $allInterfaces}
         </table>
 
         <table class="summary" id="traits" n:if="$allTraits">
-            <caption>Traits summary</caption>
+            <tr><th colspan="2">Traits summary</th></tr>
             {include items, items => $allTraits}
         </table>
 
         <table class="summary" id="methods" n:if="$methods">
-            <caption>Methods summary</caption>
+            <tr><th colspan="3">Methods summary</th></tr>
             <tr n:foreach="$methods as $method">
                 <td class="name">
                     <a href="{$method->getDeclaringClass()|linkReflection}">{$method->getDeclaringClassName()}</a>
@@ -39,7 +39,7 @@
         </table>
 
         <table class="summary" id="properties" n:if="$properties">
-            <caption>Properties summary</caption>
+            <tr><th colspan="3">Properties summary</th></tr>
             <tr n:foreach="$properties as $property">
                 <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
                 <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
@@ -50,7 +50,7 @@
         </table>
 
         <table class="summary" id="functions" n:if="$allFunctions">
-            <caption>Functions summary</caption>
+            <tr><th colspan="3">Functions summary</th></tr>
             <tr n:foreach="$allFunctions as $function">
                 <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
                 <td class="name">
