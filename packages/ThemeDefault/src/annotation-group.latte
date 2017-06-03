@@ -42,7 +42,7 @@
             <tr><th colspan="3">Properties summary</th></tr>
             <tr n:foreach="$properties as $property">
                 <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
-                <td class="name"><a href="{$property|propertyUrl}"><var>${$property->getName()}</var></a></td>
+                <td class="name"><a href="{$property|linkReflection}"><var>${$property->getName()}</var></a></td>
                 <td>
                     {include reflectionAnnotationsList, "reflection" => $property, "annotation" => $annotation}
                 </td>

@@ -78,19 +78,20 @@
     {/if}
 
     {foreach $class->getParentClasses() as $parentClass}}
-        <table n:foreach="$parentClass->getOwnMethods() as $parentClassMethods" class="summary inherited">
-            <tr><th>
-                Methods inherited from <a href="{$parentClass|linkReflection}#methods">{$parentClass->getName()}</a>
-            </th></tr>
+        <table class="summary inherited">
+            <tr>
+                <th>
+                    Methods inherited from <a href="{$parentClass|linkReflection}#methods">{$parentClass->getName()}</a>
+                </th>
+            </tr>
             <tr>
                 <td>
-                    <code>
-                        {foreach $parentClassMethods as $parentClassMethod}
-                            <a href="{$parentClassMethod|linkReflection}" n:tag-if="$parentClass">
-                                <span n:tag-if="$parentClassMethod->isDeprecated()" class="deprecated">{$parentClassMethod->getName()}()</span>
-                            </a>{sep}, {/sep}
-                        {/foreach}
-                    </code>
+                    {foreach $parentClass->getOwnMethods() as $parentClassMethod}
+                        <code>{block|strip}
+                                <a href="{$parentClassMethod|linkReflection}" n:class="$parentClassMethod->isDeprecated() ? deprecated">
+                                    {$parentClassMethod->getName()}()</a>
+                        {/block}</code>{sep}, {/sep}
+                    {/foreach}
                 </td>
             </tr>
         </table>
@@ -113,11 +114,9 @@
         </tr>
     </table>
 
-    {var $ownConstants = $class->getOwnConstants()}
-
-    <table class="summary constants" id="constants" n:if="$ownConstants">
+    <table class="summary constants" id="constants" n:if="$class->getOwnConstants()">
         <tr><th>Constants summary</th></tr>
-        <tr n:foreach="$ownConstants as $constant" id="{$constant->getName()}">
+        <tr n:foreach="$class->getOwnConstants() as $constant" id="{$constant->getName()}">
             {include "partial/constant.latte", constant => $constant}
         </tr>
     </table>
@@ -151,10 +150,10 @@
                 <td>
                     <code>
                         {foreach $parentClass->getOwnProperties() as $parentClassProperty}
-                            <a href="{$parentClassProperty|propertyUrl}">
+                            <a href="{$parentClassProperty|linkReflection}">
                                 <var>
-                                    <span n:tag-if="$property->isDeprecated()" class="deprecated">
-                                        ${$property->getName()}
+                                    <span n:tag-if="$parentClassProperty->isDeprecated()" class="deprecated">
+                                        ${$parentClassProperty->getName()}
                                     </span>
                                 </var>
                             </a>{sep}, {/sep}
@@ -171,7 +170,7 @@
             <td>
                 <code>
                     {foreach $trait->getOwnProperties() as $property}
-                        <a href="{$property|propertyUrl: $trait}">
+                        <a href="{$property|linkReflection: $trait}">
                             <var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var>
                         </a>{sep}, {/sep}
                     {/foreach}

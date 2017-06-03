@@ -4,6 +4,7 @@ namespace ApiGen\Templating;
 
 use ApiGen\Event\CreateTemplateEvent;
 use ApiGen\Event\GenerateProgressEvent;
+use ApiGen\Exception\Templating\FailedRenderFileException;
 use ApiGen\Templating\Parameters\ParameterBag;
 use ApiGen\Utils\FileSystem;
 use Latte\Engine;
@@ -40,10 +41,22 @@ final class TemplateRenderer
         $parametersBag->addParameters($parameters);
 
         FileSystem::ensureDirectoryExistsForFile($destinationFile);
-        file_put_contents(
-            $destinationFile,
-            $this->latteEngine->renderToString($templateFile, $parametersBag->getParameters())
-        );
+
+        try {
+            file_put_contents(
+                $destinationFile,
+                $this->latteEngine->renderToString($templateFile, $parametersBag->getParameters())
+            );
+
+        } catch (\Throwable $throwable) {
+            // @todo show line in .latte file
+            throw new FailedRenderFileException(sprintf(
+                'Rendering of "%s" template to "%s" file failed due to: %s',
+                $templateFile,
+                $destinationFile,
+                $throwable->getMessage()
+            ));
+        }
 
         $this->eventDispatcher->dispatch(GenerateProgressEvent::class);
     }

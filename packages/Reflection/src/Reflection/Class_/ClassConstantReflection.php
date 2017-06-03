@@ -101,7 +101,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function getValue()
     {
-        return $this->nativeClassConstantReflection->getValue();
+        return $this->value;
     }
 
     public function isDeprecated(): bool
