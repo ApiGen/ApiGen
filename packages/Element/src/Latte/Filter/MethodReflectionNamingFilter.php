@@ -20,9 +20,11 @@ final class MethodReflectionNamingFilter implements LatteFiltersProviderInterfac
                 if ($methodReflection instanceof ClassMethodReflectionInterface) {
                     return $methodReflection->getDeclaringClassName() . '::' . $methodReflection->getName() . '()';
                 }
+
                 if ($methodReflection instanceof InterfaceMethodReflectionInterface) {
                     return $methodReflection->getDeclaringInterfaceName() . '::' . $methodReflection->getName() . '()';
                 }
+
                 if ($methodReflection instanceof TraitMethodReflectionInterface) {
                     return $methodReflection->getDeclaringTraitName() . '::' . $methodReflection->getName() . '()';
                 }

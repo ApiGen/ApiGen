@@ -170,6 +170,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
 
         return null;
     }
+
     // @todo: is used?
     public function getOverriddenMethod(): ?ClassMethodReflectionInterface
     {

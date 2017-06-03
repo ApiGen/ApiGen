@@ -2,12 +2,9 @@
 
 namespace ApiGen\Reflection\Contract\Reflection;
 
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
-use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 
 interface AbstractMethodReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
     AccessLevelInterface, AbstractReflectionInterface
