@@ -2,11 +2,10 @@
 
 namespace ApiGen\Console\Helper;
 
-use ApiGen\Contract\Console\Helper\ProgressBarInterface;
 use Symfony\Component\Console\Helper\ProgressBar as ProgressBarHelper;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class ProgressBar implements ProgressBarInterface
+final class ProgressBar
 {
     /**
      * @var string
