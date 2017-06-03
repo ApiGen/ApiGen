@@ -15,11 +15,6 @@ final class SingleNamespaceStorage
     private $namespace;
 
     /**
-     * @var string[]
-     */
-    private $parentNamespaces = [];
-
-    /**
      * @var ClassReflectionInterface[]
      */
     private $classReflections = [];
@@ -34,13 +29,13 @@ final class SingleNamespaceStorage
      */
     private $functionReflections = [];
 
+
     /**
      * @var TraitReflectionInterface[]
      */
     private $traitReflections = [];
 
     /**
-     * @param string[] $parentNamespaces
      * @param ClassReflectionInterface[] $classReflections
      * @param InterfaceReflectionInterface[] $interfaceReflections
      * @param TraitReflectionInterface[] $traitReflections
@@ -48,14 +43,12 @@ final class SingleNamespaceStorage
      */
     public function __construct(
         string $namespace,
-        array $parentNamespaces,
         array $classReflections,
         array $interfaceReflections,
         array $traitReflections,
         array $functionReflections
     ) {
         $this->namespace = $namespace;
-        $this->parentNamespaces = $parentNamespaces;
         $this->classReflections = $classReflections;
         $this->interfaceReflections = $interfaceReflections;
         $this->traitReflections = $traitReflections;
@@ -65,14 +58,6 @@ final class SingleNamespaceStorage
     public function getNamespace(): string
     {
         return $this->namespace;
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getParentNamespaces(): array
-    {
-        return $this->parentNamespaces;
     }
 
     /**

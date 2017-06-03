@@ -66,11 +66,5 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
         $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix);
 
         $this->assertSame($this->namespacePrefix, $namespacedItems->getNamespace());
-        $this->assertSame([
-            'ApiGen',
-            'ApiGen\Element',
-            'ApiGen\Element\Tests',
-            'ApiGen\Element\Tests\Namespaces'
-        ], $namespacedItems->getParentNamespaces());
     }
 }

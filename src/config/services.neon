@@ -21,8 +21,6 @@
 - ApiGen\Generator\AnnotationGroupsGenerator
 - ApiGen\Generator\ElementListGenerator
 - ApiGen\Generator\IndexGenerator
-
-# elements
 - ApiGen\Generator\NamespaceGenerator
 - ApiGen\Generator\ClassGenerator
 - ApiGen\Generator\InterfaceGenerator

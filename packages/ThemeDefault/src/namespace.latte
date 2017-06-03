@@ -7,11 +7,11 @@
 <div id="content" class="namespace">
     <h1>{if $activeNamespace !== 'None'}Namespace {$activeNamespace|linkAllNamespaceParts|noescape}{else}No namespace{/if}</h1>
 
-    {if $parentNamespaces}
+    {if $childNamespaces}
         <table class="summary" id="namespaces">
             <caption>Namespaces summary</caption>
-            <tr n:foreach="$parentNamespaces as $subnamespace">
-                <td class="name"><a href="{$subnamespace|linkNamespace}">{$subnamespace}</a></td>
+            <tr n:foreach="$childNamespaces as $childNamespace">
+                <td class="name"><a href="{$childNamespace|linkNamespace}">{$childNamespace}</a></td>
             </tr>
         </table>
     {/if}
