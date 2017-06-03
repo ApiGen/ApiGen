@@ -9,6 +9,7 @@ use ApiGen\Templating\Parameters\ParameterBag;
 use ApiGen\Utils\FileSystem;
 use Latte\Engine;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Throwable;
 
 final class TemplateRenderer
 {
@@ -47,8 +48,7 @@ final class TemplateRenderer
                 $destinationFile,
                 $this->latteEngine->renderToString($templateFile, $parametersBag->getParameters())
             );
-
-        } catch (\Throwable $throwable) {
+        } catch (Throwable $throwable) {
             // @todo show line in .latte file
             throw new FailedRenderFileException(sprintf(
                 'Rendering of "%s" template to "%s" file failed due to: %s',
