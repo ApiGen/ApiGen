@@ -32,14 +32,16 @@ final class StringRoutingFiltersProvider implements LatteFiltersProviderInterfac
             'linkNamespace' => function (string $namespace): string {
                 return $this->router->buildRoute(NamespaceRoute::NAME, $namespace);
             },
+
             // use in .latte: <a href="{$refleciton|linkReflection}">{$name}</a>
             'linkReflection' => function ($reflection): string {
-                $this->ensureArgumentsIsReflection($reflection, 'linkReflection');
+                $this->ensureFilterArgumentsIsReflection($reflection, 'linkReflection');
                 return $this->router->buildRoute(ReflectionRoute::NAME, $reflection);
             },
+
             // use in .latte: <a href="{$reflection|linkSource}">{$name}</a>
             'linkSource' => function ($reflection): string {
-                $this->ensureArgumentsIsReflection($reflection, 'linkSource');
+                $this->ensureFilterArgumentsIsReflection($reflection, 'linkSource');
                 return $this->router->buildRoute(SourceCodeRoute::NAME, $reflection);
             }
         ];
@@ -48,7 +50,7 @@ final class StringRoutingFiltersProvider implements LatteFiltersProviderInterfac
     /**
      * @param mixed $reflection
      */
-    private function ensureArgumentsIsReflection($reflection, string $filterName): void
+    private function ensureFilterArgumentsIsReflection($reflection, string $filterName): void
     {
         if (! $reflection instanceof AbstractReflectionInterface) {
             throw new InvalidArgumentException(sprintf(

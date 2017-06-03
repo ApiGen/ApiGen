@@ -3,10 +3,11 @@
 namespace ApiGen\Annotation\Latte\Filter;
 
 use ApiGen\Annotation\AnnotationDecorator;
-use ApiGen\Event\FilterAnnotationsEvent;
 use ApiGen\Event\ProcessDocTextEvent;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
+use Nette\InvalidArgumentException;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
@@ -47,17 +48,38 @@ final class AnnotationFilterProvider implements LatteFiltersProviderInterface
             },
 
             // use in .latte: {var $filteredAnnotations = ($reflection->getAnnotations()|annotationFilter: ['var'])}
-            'annotationFilter' => function (array $annotations, array $annotationsToRemove = []) {
-                $filterAnnotationsEvent = new FilterAnnotationsEvent($annotations);
-                $this->eventDispatcher->dispatch(FilterAnnotationsEvent::class, $filterAnnotationsEvent);
-                $annotations = $filterAnnotationsEvent->getAnnotations();
+            'annotationFilter' => function (array $annotations, array $excludeAnnotations) {
+                $this->ensureFilterArgumentsIsTag($annotations, 'annotationFilter');
+                /** @var Tag[] $annotations */
+                foreach ($annotations as $key => $annotation) {
+                    if (! in_array($annotation->getName(), $excludeAnnotations, true)) {
+                        continue;
+                    }
 
-                foreach ($annotationsToRemove as $annotationToRemove) {
-                    unset($annotations[$annotationToRemove]);
+                    unset($annotations[$key]);
                 }
 
                 return $annotations;
             }
         ];
+    }
+
+    /**
+     * @param mixed $reflection
+     */
+    private function ensureFilterArgumentsIsTag(array $annotations, string $filterName): void
+    {
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof Tag) {
+                continue;
+            }
+
+            throw new InvalidArgumentException(sprintf(
+                'Argument for filter "%s" has to be type of "%s". "%s" given.',
+                $filterName,
+                Tag::class,
+                is_object($annotation) ? get_class($annotation) : gettype($annotation)
+            ));
+        }
     }
 }

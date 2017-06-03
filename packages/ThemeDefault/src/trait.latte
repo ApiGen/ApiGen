@@ -43,8 +43,7 @@
     </div>
 
     <div class="info">
-        {var $filteredAnnotations = ($trait->getAnnotations()|annotationFilter)}
-        {foreach $filteredAnnotations as $annotation => $values}
+        {foreach $trait->getAnnotations() as $annotation => $values}
             {foreach $values as $value}
                 <b>{$annotation}{if $value}:{/if}</b>
                 {$value|annotation:$trait|noescape}<br>

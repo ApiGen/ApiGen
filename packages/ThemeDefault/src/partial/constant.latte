@@ -2,7 +2,7 @@
     <code>{$constant->getTypeHint()}</code>
 </td>
 <td class="name">
-    <div class="description detailed">
+    <div class="description">
         {$constant|description}
 
         {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
@@ -21,6 +21,6 @@
 <td class="value">
     <div>
         <a href="#{$constant->getName()}" class="anchor">#</a>
-        <code>{$constant->getValueDefinition()|highlightValue:$class|noescape}</code>
+        <code>{$constant->getValueDefinition()}</code>
     </div>
 </td>

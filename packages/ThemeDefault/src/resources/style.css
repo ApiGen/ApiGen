@@ -302,10 +302,6 @@ dl.tree dd {
     text-align: left;
 }
 
-.summary tr td {
-    cursor: pointer;
-}
-
 .summary tr:hover td {
     background: #f6f6f4;
 }
@@ -320,10 +316,6 @@ dl.tree dd {
 
 .summary .description p + p, .summary .description ul {
     margin: 3px 0 0 0;
-}
-
-.summary .description.detailed h4 {
-    margin-top: 3px;
 }
 
 .summary dl {
