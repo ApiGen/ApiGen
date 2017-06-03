@@ -32,10 +32,8 @@ h3 {
 }
 
 h4 {
-    font-size: 100%;
+    font-size: 1em;
     font-weight: bold;
-    padding: 0;
-    margin: 0;
 }
 
 tr th {
@@ -260,16 +258,8 @@ dl.tree dd {
     margin: 1.2em 0;
 }
 
-.summary {
-    border: 1px solid #cccccc;
-    border-collapse: collapse;
-    font-size: 1em;
-    width: 100%;
-    margin: 1.2em 0 2.4em;
-}
-
-#namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
-    text-align: left;
+.table {
+    margin-bottom: 2em;
 }
 
 .summary .description pre {
@@ -335,6 +325,7 @@ td.attributes {
     font-size: 85%;
     margin: 0;
     color: #006aeb !important;
+    padding: .6em;
 }
 
 .list {

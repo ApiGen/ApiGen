@@ -104,8 +104,8 @@
             <td>
                 <code>
                     {foreach $trait->getOwnMethods() as $traitMethod}
-                        <a href="{$traitMethod|linkReflection: $trait}">
-                            <span n:tag-if="$traitMethod->isDeprecated()" class="deprecated">{$traitMethod->getName()}()</span>
+                        <a href="{$traitMethod|linkReflection: $trait}" n:class="$traitMethod->isDeprecated() ? deprecated">
+                            {$traitMethod->getName()}()
                         </a>
                         {* @todo *}
                         {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
@@ -144,22 +144,20 @@
 
     {foreach $class->getParentClasses() as $parentClass}
         <table n:if="$parentClass->getOwnProperties()" class="summary inherited table table-bordered table-responsive table-striped">
-            <tr><th>
-                Properties inherited from <a href="{$parentClass|linkReflection}#properties" n:tag-if="$parentClass">{$parentClass->getName()}</a>
-            </th></tr>
+            <tr>
+                <th>
+                    Properties inherited from <a href="{$parentClass|linkReflection}#properties" n:tag-if="$parentClass">{$parentClass->getName()}</a>
+                </th>
+            </tr>
             <tr>
                 <td>
-                    <code>
-                        {foreach $parentClass->getOwnProperties() as $parentClassProperty}
-                            <a href="{$parentClassProperty|linkReflection}">
-                                <var>
-                                    <span n:tag-if="$parentClassProperty->isDeprecated()" class="deprecated">
-                                        ${$parentClassProperty->getName()}
-                                    </span>
-                                </var>
-                            </a>{sep}, {/sep}
-                        {/foreach}
-                    </code>
+                    {foreach $parentClass->getOwnProperties() as $parentClassProperty}
+                        <code>{block|strip}
+                            <a href="{$parentClassProperty|linkReflection}" n:class="$parentClassProperty->isDeprecated() ? deprecated">
+                                <var>${$parentClassProperty->getName()}</var>
+                            </a>
+                        {/block}</code>{sep}, {/sep}
+                    {/foreach}
                 </td>
             </tr>
         </table>
