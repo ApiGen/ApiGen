@@ -6,7 +6,7 @@ body {
     color: #333333;
 }
 
-h1, h2, h3, h4, caption {
+h1, h2, h3, h4 {
     font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
     color: #053368;
 }
@@ -39,23 +39,13 @@ h4 {
 }
 
 tr th {
-    border: 1px solid #cccccc;
     background: #ecede5;
-    font-weight: bold;
     font-size: 1.2em;
-    line-height: 1.7em;
 }
 
 p {
     margin: .7em 0 1em;
     padding: 0;
-}
-
-hr {
-    margin: 2em 0 1em;
-    border: none;
-    border-top: 1px solid #cccccc;
-    height: 0;
 }
 
 a {
@@ -278,32 +268,8 @@ dl.tree dd {
     margin: 1.2em 0 2.4em;
 }
 
-.summary caption {
-    border-width: 1px 1px 0;
-}
-
-.summary td {
-    border: 1px solid #cccccc;
-    margin: 0;
-    padding: 3px 10px;
-    font-size: 1em;
-    vertical-align: top;
-}
-
-.summary td:first-child {
-    text-align: right;
-}
-
-.summary td hr {
-    margin: 3px -10px;
-}
-
 #namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
     text-align: left;
-}
-
-.summary tr:hover td {
-    background: #f6f6f4;
 }
 
 .summary .description pre {
