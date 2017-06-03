@@ -16,11 +16,6 @@ final class NamespaceStorage
     private const NO_NAMESPACE = 'None';
 
     /**
-     * @var string
-     */
-    private const NAMESPACE_SEPARATOR = '\\';
-
-    /**
      * @var ReflectionStorageInterface
      */
     private $reflectionStorage;

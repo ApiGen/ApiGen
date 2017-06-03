@@ -63,7 +63,10 @@ final class NamespaceGenerator implements GeneratorInterface
         );
     }
 
-    private function resolveChildNamespaces(string $namespace)
+    /**
+     * @return string[]
+     */
+    private function resolveChildNamespaces(string $namespace): array
     {
         $prefix = $namespace . '\\';
         $len = strlen($prefix);
