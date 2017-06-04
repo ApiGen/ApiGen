@@ -37,7 +37,7 @@
                 {$method|description}
 
                 {if $method->isDeprecated()}
-                    <h3>Deprecated</h3>
+                    <h2>Deprecated</h2>
                     {ifset $annotations['deprecated']}
                         <div class="list">
                             {foreach $annotations['deprecated'] as $description}
@@ -50,7 +50,7 @@
                 {/if}
 
                 {if $method->getParameters() && isset($annotations['param'])}
-                    <h3>Parameters</h3>
+                    <h2>Parameters</h2>
                     <div class="list">
                         <dl>
                             {foreach $method->getParameters() as $parameter}
@@ -63,7 +63,7 @@
 
                 {* @note: is not neccessary if return typehtint is already there *}
                 {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
-                    <h3>Returns</h3>
+                    <h2>Returns</h2>
                     <div class="list">
                         {foreach $annotations['return'] as $description}
                             {$description|annotation:$method|noescape}{sep}<br>{/}
@@ -72,7 +72,7 @@
                 {/if}
 
                 {ifset $annotations['throws']}
-                    <h3>Throws</h3>
+                    <h2>Throws</h2>
                     <div class="list">
                         {foreach $annotations['throws'] as $description}
                             {$description|annotation:$method|noescape}{sep}<br>{/}
@@ -83,7 +83,7 @@
                 {var $filteredAnnotations = ($method->getAnnotations()|annotationFilter: ['deprecated', 'param', 'return', 'throws'])}
 
                 {foreach $filteredAnnotations as $annotation}
-                    <h3>{$annotation->getName()}</h3>
+                    <h2>{$annotation->getName()}</h2>
                     <div class="list">
                         {$annotation|annotation:$method|noescape}<br>
                     </div>
@@ -91,7 +91,7 @@
 
                 {if $isInterface === false}
                     {if $method->getOverriddenMethod()}
-                        <h3>Overrides</h3>
+                        <h2>Overrides</h2>
                         <div class="list">
                             <code>
                                 <a href="{$method->getOverriddenMethod()|linkReflection}">
@@ -102,7 +102,7 @@
                     {/if}
 
                     {if $method->getImplementedMethod()}
-                        <h3>Implementation of</h3>
+                        <h2>Implementation of</h2>
                         <div class="list">
                             <code>
                                 <a href="{$method->getImplementedMethod()|linkReflection}">

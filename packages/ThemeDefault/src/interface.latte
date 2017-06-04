@@ -29,7 +29,7 @@
     {if $interface->getImplementers()}
         <br>
         <div>
-            <h3>Known implementers</h3>
+            <h2>Known implementers</h2>
             <p>
                 {foreach $interface->getImplementers() as $implementer}
                     <a href="{$implementer|linkReflection}" n:class="$implementer->isDeprecated() ? deprecated">
@@ -76,7 +76,7 @@
 
                     {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
                     {foreach $filteredAnnotations as $annotation}
-                        <h3>{$annotation->getName()}</h3>
+                        <h2>{$annotation->getName()}</h2>
                         <div class="list">
                             {$annotation|annotation:$constant|noescape}<br>
                         </div>

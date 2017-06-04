@@ -15,7 +15,7 @@
 
             {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
             {foreach $filteredAnnotations as $annotation}
-                <h3>{$annotation->getName()}</h3>
+                <h2>{$annotation->getName()}</h2>
                 <div class="list">
                     {$annotation|annotation:$constant|noescape}<br>
                 </div>
