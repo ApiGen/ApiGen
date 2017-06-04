@@ -93,7 +93,7 @@
                 {if $isInterface === false}
                     {if $method->getOverriddenMethod()}
                         <h2>Overrides</h2>
-                        <div class="list">
+                        <div>
                             <code>
                                 <a href="{$method->getOverriddenMethod()|linkReflection}">
                                     {$method->getOverriddenMethod()|prettyMethodName}
@@ -104,7 +104,7 @@
 
                     {if $method->getImplementedMethod()}
                         <h2>Implementation of</h2>
-                        <div class="list">
+                        <div>
                             <code>
                                 <a href="{$method->getImplementedMethod()|linkReflection}">
                                     {$method->getImplementedMethod()|prettyMethodName}

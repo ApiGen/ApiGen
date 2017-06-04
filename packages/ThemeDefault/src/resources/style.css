@@ -50,10 +50,6 @@ pre {
     margin: 0;
 }
 
-code a b {
-    color: #000000;
-}
-
 .deprecated {
     text-decoration: line-through;
     opacity: .5;
@@ -390,6 +386,10 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     font-weight: bold;
     font-style: normal;
     color: #ca8a04;
+}
+
+p {
+    line-height: 1.3em;
 }
 
 /* Bootstrap Reset */
