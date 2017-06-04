@@ -4,7 +4,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Contract\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Templating\TemplateRenderer;
@@ -23,7 +23,7 @@ final class FunctionGenerator implements GeneratorInterface
     private $configuration;
 
     /**
-     * @var SourceCodeHighlighterInterface
+     * @var SourceCodeHighlighter
      */
     private $sourceCodeHighlighter;
 
@@ -40,7 +40,7 @@ final class FunctionGenerator implements GeneratorInterface
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
         ConfigurationInterface $configuration,
-        SourceCodeHighlighterInterface $sourceCodeHighlighter,
+        SourceCodeHighlighter $sourceCodeHighlighter,
         TemplateRenderer $templateRenderer,
         RelativePathResolver $relativePathResolver
     ) {

@@ -8,8 +8,9 @@
     <h1 n:class="$class->isDeprecated() ? deprecated">
         Class {if $class->getNamespaceName()}{$class->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}{$class->getShortName()}
     </h1>
+
     {if $class->getDescription()}
-        <div class="description" >
+        <div class="description">
             {$class|description}
         </div>
     {/if}

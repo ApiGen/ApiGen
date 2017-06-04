@@ -11,9 +11,11 @@
         {$trait->getShortName()}
     </h1>
 
-    <div class="description" n:if="$trait->getDescription()">
-        {$trait|description}
-    </div>
+    {if $trait->getDescription()}
+        <div class="description">
+            {$trait|description}
+        </div>
+    {/if}
 
     <dl class="tree" n:ifcontent>
         <dd>

@@ -9,9 +9,11 @@
     <div id="content" class="function">
         <h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
 
-        <div class="description" n:if="$function->getDescription()">
-            {$function|description}
-        </div>
+        {if $function->getDescription()}
+            <div class="description">
+                {$function|description}
+            </div>
+        {/if}
 
         <div class="info">
             {if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}

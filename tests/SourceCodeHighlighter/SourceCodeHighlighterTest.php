@@ -1,21 +1,20 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Tests\Generator\SourceCodeHighlighter;
+namespace ApiGen\Tests\SourceCodeHighlighter;
 
-use ApiGen\Contract\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
-use ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class FshlSourceCodeHighlighterTest extends AbstractContainerAwareTestCase
+final class SourceCodeHighlighterTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var FshlSourceCodeHighlighter
+     * @var SourceCodeHighlighter
      */
     private $sourceCodeHighlighter;
 
     protected function setUp(): void
     {
-        $this->sourceCodeHighlighter = $this->container->getByType(SourceCodeHighlighterInterface::class);
+        $this->sourceCodeHighlighter = $this->container->getByType(SourceCodeHighlighter::class);
     }
 
     public function testHighlight(): void

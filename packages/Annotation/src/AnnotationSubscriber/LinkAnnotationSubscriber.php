@@ -8,9 +8,6 @@ use ApiGen\Utils\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
 
-/**
- * @deprecated
- */
 final class LinkAnnotationSubscriber implements AnnotationSubscriberInterface
 {
     /**

@@ -49,7 +49,6 @@ final class TemplateRenderer
                 $this->latteEngine->renderToString($templateFile, $parametersBag->getParameters())
             );
         } catch (Throwable $throwable) {
-            // @todo show line in .latte file
             throw new FailedRenderFileException(sprintf(
                 'Rendering of "%s" template to "%s" file failed due to: %s',
                 $templateFile,

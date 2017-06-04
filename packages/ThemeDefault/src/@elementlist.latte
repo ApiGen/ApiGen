@@ -5,7 +5,7 @@
                 {if $activeNamespace}{$element->getShortName()}{else}{$element->getName()}{/if}
             </a>
         </td>
-        <td>{$element->getDescription()}</td>
+        <td>{$element|description}</td>
     </tr>
 {/define}
 

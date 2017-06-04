@@ -4,7 +4,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Contract\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Templating\TemplateRenderer;
@@ -22,7 +22,7 @@ final class ClassGenerator implements GeneratorInterface
     private $configuration;
 
     /**
-     * @var SourceCodeHighlighterInterface
+     * @var SourceCodeHighlighter
      */
     private $sourceCodeHighlighter;
 
@@ -34,7 +34,7 @@ final class ClassGenerator implements GeneratorInterface
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
         ConfigurationInterface $configuration,
-        SourceCodeHighlighterInterface $sourceCodeHighlighter,
+        SourceCodeHighlighter $sourceCodeHighlighter,
         TemplateRenderer $templateRenderer
     ) {
         $this->reflectionStorage = $reflectionStorage;

@@ -36,7 +36,7 @@
 - ApiGen\Utils\LinkBuilder
 
 # Syntax Highlighter
-- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
+- ApiGen\SourceCodeHighlighter\SourceCodeHighlighter
 - FSHL\Output\Html
 - FSHL\Lexer\Php
 -

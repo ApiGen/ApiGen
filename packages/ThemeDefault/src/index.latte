@@ -7,14 +7,16 @@
     <div id="content">
         <h1>{include title}</h1>
 
-        <table n:if="count($allNamespaces)" class="table table-responsive table-bordered table-striped" id="namespaces">
-            <tr><th>Namespaces Summary</th></tr>
-            <tr n:foreach="$allNamespaces as $namespace">
-                <td class="name">
-                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
-                </td>
-            </tr>
-        </table>
+        {if count($allNamespaces)}
+            <table class="table table-responsive table-bordered table-striped" id="namespaces">
+                <tr><th>Namespaces Summary</th></tr>
+                <tr n:foreach="$allNamespaces as $namespace">
+                    <td>
+                        <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                    </td>
+                </tr>
+            </table>
+        {/if}
 
         {include '@elementlist.latte'}
     </div>

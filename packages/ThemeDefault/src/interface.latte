@@ -11,9 +11,11 @@
         {$interface->getShortName()}
     </h1>
 
-    <div class="description" n:if="$interface->getDescription()">
-        {$interface|description}
-    </div>
+    {if $interface->getDescription()}
+        <div class="description">
+            {$interface|description}
+        </div>
+    {/if}
 
     <dl class="tree" n:ifcontent>
         <dd>
