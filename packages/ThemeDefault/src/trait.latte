@@ -20,9 +20,7 @@
             {if $trait->getTraits()}
                 uses
                 {foreach $trait->getTraits() as $ownTrait}
-                <a href="{$ownTrait|linkReflection}">
-                    <span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
-                    </a>{sep}, {/sep}
+                    <a href="{$ownTrait|linkReflection}" n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</a>{sep}, {/sep}
                 {/foreach}
             {/if}
         </dd>
@@ -30,7 +28,7 @@
 
     {define children}
         {foreach $children as $child}
-            <a href="{$child|linkReflection}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
+            <a href="{$child|linkReflection}" n:class="$child->isDeprecated() ? deprecated">{$child->getName()}</a>{sep}, {/sep}
         {/foreach}
     {/define}
 
@@ -70,11 +68,9 @@
             <td>
                 <code>
                     {foreach $usedTrait->getOwnMethods() as $usedTraitMethod}
-                        <a href="{$usedTraitMethod|linkReflection: $usedTraitMethod->getDeclaringTrait()}">
-                            <span n:tag-if="$traitMethod->isDeprecated()" class="deprecated">{$traitMethod->getName()}()</span>
-                        </a>
+                        <a href="{$usedTraitMethod|linkReflection}" n:class="$traitMethod->isDeprecated() ? deprecated">{$traitMethod->getName()}()</a>
                         {* @todo *}
-                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
+                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:class="$data['method']->isDeprecated() ? deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
                     {/foreach}
                 </code>
             </td>

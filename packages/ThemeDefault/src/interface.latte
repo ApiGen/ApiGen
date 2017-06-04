@@ -20,9 +20,7 @@
             {if $interface->getOwnInterfaces()}
                 implements
                 {foreach $interface->getOwnInterfaces() as $ownInterface}
-                <a href="{$ownInterface|linkReflection}">
-                    <span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span>
-                    </a>{sep}, {/sep}
+                    <a href="{$ownInterface|linkReflection}" n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</a>{sep}, {/sep}
                 {/foreach}
             {/if}
         </dd>
@@ -32,26 +30,26 @@
         <br>
         <div>
             <h4>Known implementers</h4>
-            {foreach $interface->getImplementers() as $implementer}
-                <a href="{$implementer|linkReflection}">
-                    <span n:tag-if="$implementer->isDeprecated()" class="deprecated">{$implementer->getName()}</span>
-                </a>{sep}, {/sep}
-            {/foreach}
+            <p>
+                {foreach $interface->getImplementers() as $implementer}
+                    <a href="{$implementer|linkReflection}" n:class="$implementer->isDeprecated() ? deprecated">
+                        {$implementer->getName()}
+                    </a>{sep}, {/sep}
+                {/foreach}
+            </p>
         </div>
     {/if}
 
-    {*<div class="info">*}
-        {*{foreach $interface->getAnnotations() as $annotation => $values}*}
-            {*{foreach $values as $value}*}
-                {*<b>{$annotation}{if $value}:{/if}</b>*}
-                {*{$value|annotation:$interface|noescape}<br>*}
-            {*{/foreach}*}
-        {*{/foreach}*}
-        {*<a href="{$interface|linkSource}">*}
-            {*<strong>Open source code</strong>*}
-        {*</a>*}
-        {*<br>*}
-    {*</div>*}
+    <div class="info">
+        {foreach $interface->getAnnotations() as $annotation}
+            {$annotation|annotation:$interface|noescape}<br>
+        {/foreach}
+
+        <a href="{$interface|linkSource}">
+            <strong>Open source code</strong>
+        </a>
+        <br>
+    </div>
 
     {if $interface->getOwnMethods()}
         <table class="summary methods table table-responsive table-bordered table-striped" id="methods">
@@ -103,12 +101,8 @@
                 <td>
                     <code>
                         {foreach $parentInterface->getOwnContants() as $parentInterfaceConstants}
-                            <a href="{$parentInterfaceConstants|constantUrl}">
-                                <strong>
-                                    <span n:tag-if="$parentInterfaceConstants->isDeprecated()" class"deprecated">
-                                        {$parentInterfaceConstants->getName()}
-                                    </span>
-                                </strong>
+                            <a href="{$parentInterfaceConstants|constantUrl}" n:class="$parentInterfaceConstants->isDeprecated() ? deprecated">
+                                <strong>{$parentInterfaceConstants->getName()}</strong>
                             </a>{sep}, {/sep}
                         {/foreach}
                     </code>

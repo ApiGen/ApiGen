@@ -18,16 +18,16 @@
         <dd>
             {if $class->getParentClass()}
                 extends
-                <a href="{$class->getParentClass()|linkReflection}">
-                    <span n:class="$class->getParentClass()->isDeprecated() ? deprecated">{$class->getParentClass()->getName()}</span>
+                <a href="{$class->getParentClass()|linkReflection}" n:class="$class->getParentClass()->isDeprecated() ? deprecated">
+                    {$class->getParentClass()->getName()}
                 </a>
             {/if}
 
             {if $class->getOwnInterfaces()}
                 implements
                 {foreach $class->getOwnInterfaces() as $ownInterface}
-                    <a href="{$ownInterface|linkReflection}">
-                        <span n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</span>
+                    <a href="{$ownInterface|linkReflection}" n:class="$ownInterface->isDeprecated() ? deprecated">
+                        {$ownInterface->getName()}
                     </a>{sep}, {/sep}
                 {/foreach}
             {/if}
@@ -35,9 +35,7 @@
             {if $class->getTraits()}
                 uses
                 {foreach $class->getTraits() as $ownTrait}
-                    <a href="{$ownTrait|linkReflection}">
-                        <span n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</span>
-                    </a>{sep}, {/sep}
+                    <a href="{$ownTrait|linkReflection}" n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</a>{sep}, {/sep}
                 {/foreach}
             {/if}
         </dd>
@@ -45,7 +43,7 @@
 
     {define children}
         {foreach $children as $child}
-            <a href="{$child|linkReflection}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->getName()}</span></a>{sep}, {/sep}
+            <a href="{$child|linkReflection}" n:class="$child->isDeprecated() ? deprecated">{$child->getName()}</a>{sep}, {/sep}
         {/foreach}
     {/define}
 
@@ -89,8 +87,7 @@
                 <td>
                     {foreach $parentClass->getOwnMethods() as $parentClassMethod}
                         <code>{block|strip}
-                                <a href="{$parentClassMethod|linkReflection}" n:class="$parentClassMethod->isDeprecated() ? deprecated">
-                                    {$parentClassMethod->getName()}()</a>
+                            <a href="{$parentClassMethod|linkReflection}" n:class="$parentClassMethod->isDeprecated() ? deprecated">1{$parentClassMethod->getName()}</a>
                         {/block}</code>{sep}, {/sep}
                     {/foreach}
                 </td>
@@ -108,7 +105,7 @@
                             {$traitMethod->getName()}()
                         </a>
                         {* @todo *}
-                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:tag-if="$data['method']->isDeprecated()" class="deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
+                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:class="$data['method']->isDeprecated() ? deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
                     {/foreach}
                 </code>
             </td>
@@ -171,8 +168,8 @@
             <td>
                 <code>
                     {foreach $trait->getOwnProperties() as $property}
-                        <a href="{$property|linkReflection: $trait}">
-                            <var><span n:tag-if="$property->isDeprecated()" class="deprecated">${$property->getName()}</span></var>
+                        <a href="{$property|linkReflection: $trait}" n:class="$property->isDeprecated() ? deprecated">
+                            <var>${$property->getName()}</var>
                         </a>{sep}, {/sep}
                     {/foreach}
                 </code>
