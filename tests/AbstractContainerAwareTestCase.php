@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\DI\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
@@ -17,16 +17,6 @@ abstract class AbstractContainerAwareTestCase extends TestCase
     protected $container;
 
     /**
-     * @var string
-     */
-    protected $sourceDir;
-
-    /**
-     * @var string
-     */
-    protected $destinationDir;
-
-    /**
      * @param mixed[] $data
      */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
@@ -35,10 +25,7 @@ abstract class AbstractContainerAwareTestCase extends TestCase
 
         $this->container = (new ContainerFactory)->create();
 
-//        $this->sourceDir = $this->container->getParameters()['appDir'] . '/Project';
-//        $this->destinationDir = $this->container->getParameters()['tempDir'] . '/api';
-
-        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        $configuration = $this->container->getByType(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR,

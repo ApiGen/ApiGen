@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Configuration;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
@@ -17,13 +17,13 @@ use ApiGen\Tests\AbstractContainerAwareTestCase;
 final class ConfigurationTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
     protected function setUp(): void
     {
-        $this->configuration = $this->container->getByType(ConfigurationInterface::class);
+        $this->configuration = $this->container->getByType(Configuration::class);
     }
 
     public function testResolve(): void

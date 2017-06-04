@@ -2,7 +2,7 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
@@ -17,7 +17,7 @@ final class TraitGenerator implements GeneratorInterface
     private $reflectionStorage;
 
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -33,7 +33,7 @@ final class TraitGenerator implements GeneratorInterface
 
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
-        ConfigurationInterface $configuration,
+        Configuration $configuration,
         SourceCodeHighlighter $sourceCodeHighlighter,
         TemplateRenderer $templateRenderer
     ) {

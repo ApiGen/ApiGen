@@ -2,7 +2,7 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 use ApiGen\Templating\TemplateRenderer;
@@ -10,7 +10,7 @@ use ApiGen\Templating\TemplateRenderer;
 final class AnnotationGroupsGenerator implements GeneratorInterface
 {
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -25,7 +25,7 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
     private $annotationReflectionCollector;
 
     public function __construct(
-        ConfigurationInterface $configuration,
+        Configuration $configuration,
         TemplateRenderer $templateRenderer,
         AnnotationReflectionCollector $annotationReflectionCollector
     ) {

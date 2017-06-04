@@ -2,18 +2,18 @@
 
 namespace ApiGen\EventSubscriber;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Event\CreateTemplateEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ConfigurationTemplateVariablesEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
-    public function __construct(ConfigurationInterface $configuration)
+    public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
     }

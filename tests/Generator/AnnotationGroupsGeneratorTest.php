@@ -2,7 +2,7 @@
 
 namespace ApiGen\Tests\Generator;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\AnnotationGroupsGenerator;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -18,8 +18,8 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var ConfigurationInterface $configuration */
-        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        /** @var Configuration $configuration */
+        $configuration = $this->container->getByType(Configuration::class);
         $configuration->resolveOptions([
             'source' => [TEMP_DIR],
             'destination' => TEMP_DIR,

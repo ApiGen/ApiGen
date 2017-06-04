@@ -3,7 +3,7 @@
 namespace ApiGen\Application;
 
 use ApiGen\Application\Command\RunCommand;
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorQueueInterface;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\OverwriteOption;
@@ -14,7 +14,7 @@ use ApiGen\Utils\FileSystem;
 final class ApiGenApplication
 {
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -34,7 +34,7 @@ final class ApiGenApplication
     private $fileSystem;
 
     public function __construct(
-        ConfigurationInterface $configuration,
+        Configuration $configuration,
         ParserInterface $parser,
         GeneratorQueueInterface $generatorQueue,
         FileSystem $fileSystem

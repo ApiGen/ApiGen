@@ -3,7 +3,7 @@
 namespace ApiGen\Element\Tests\ReflectionCollector;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
@@ -20,8 +20,8 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
 
     protected function setUp(): void
     {
-        /** @var ConfigurationInterface $configuration */
-        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        /** @var Configuration $configuration */
+        $configuration = $this->container->getByType(Configuration::class);
         $configuration->resolveOptions([
            SourceOption::NAME => [__DIR__],
            DestinationOption::NAME => TEMP_DIR,

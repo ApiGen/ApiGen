@@ -2,7 +2,7 @@
 
 namespace ApiGen\StringRouting\Tests\Route;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
@@ -30,8 +30,8 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         $this->stringRouter = $this->container->getByType(StringRouter::class);
-        /** @var ConfigurationInterface $configuration */
-        $configuration = $this->container->getByType(ConfigurationInterface::class);
+        /** @var Configuration $configuration */
+        $configuration = $this->container->getByType(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR
