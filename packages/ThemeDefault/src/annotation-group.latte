@@ -10,28 +10,28 @@
     {if $hasElements}
         {if $classes}
             <table class="summary table table-responsive table-bordered table-striped" id="classes">
-                <tr><th colspan="2">Classes summary</th></tr>
+                <tr><th colspan="2">Classes Summary</th></tr>
                 {include items, items => $classes}
             </table>
         {/if}
 
         {if $interfaces}
             <table class="summary table table-responsive table-bordered table-striped" id="interfaces">
-                <tr><th colspan="2">Interfaces summary</th></tr>
+                <tr><th colspan="2">Interfaces Summary</th></tr>
                 {include items, items => $allInterfaces}
             </table>
         {/if}
 
         {if $traits}
             <table class="summary table table-responsive table-bordered table-striped" id="traits">
-                <tr><th colspan="2">Traits summary</th></tr>
+                <tr><th colspan="2">Traits Summary</th></tr>
                 {include items, items => $traits}
             </table>
         {/if}
 
         {if $methods}
             <table class="summary table table-responsive table-bordered table-striped" id="methods">
-                <tr><th colspan="3">Methods summary</th></tr>
+                <tr><th colspan="3">Methods Summary</th></tr>
                 <tr n:foreach="$methods as $method">
                     <td class="name">
                         <a href="{$method->getDeclaringClass()|linkReflection}">{$method->getDeclaringClassName()}</a>
@@ -48,7 +48,7 @@
 
         {if $properties}
             <table class="summary table table-responsive table-bordered table-striped" id="properties">
-                <tr><th colspan="3">Properties summary</th></tr>
+                <tr><th colspan="3">Properties Summary</th></tr>
                 <tr n:foreach="$properties as $property">
                     <td class="name">
                         <a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a>
@@ -65,7 +65,7 @@
 
         {if $functions}
             <table class="summary table table-responsive table-bordered table-striped" id="functions">
-                <tr><th colspan="3">Functions summary</th></tr>
+                <tr><th colspan="3">Functions Summary</th></tr>
                 <tr n:foreach="$allFunctions as $function">
                     <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
                     <td class="name">
