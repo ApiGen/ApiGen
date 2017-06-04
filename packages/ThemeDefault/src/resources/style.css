@@ -13,14 +13,13 @@ h1, h2, h3, h4 {
 
 h1 {
     color: #1e5eb6;
-    font-size: 230%;
-    font-weight: normal;
-    margin: .3em 0;
+    font-size: 2em;
+    margin-bottom: .7em;
 }
 
 h2 {
     color: #1e5eb6;
-    font-size: 150%;
+    font-size: 1.4em;
     font-weight: normal;
     margin: -.3em 0 .3em 0;
 }
@@ -46,7 +45,7 @@ p {
     padding: 0;
 }
 
-a {
+a, td a {
     color: #006aeb;
     padding: 3px 1px;
     text-decoration: none;
@@ -323,7 +322,7 @@ td.attributes {
     right: 0;
     line-height: 1;
     font-size: 85%;
-    margin: 0;
+    margin-top: -.2em;
     color: #006aeb !important;
     padding: .6em;
 }
@@ -414,4 +413,13 @@ span.l a.l {
 span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     background: transparent;
     color: #c0c0c0 !important;
+}
+
+/* Bootstrap Reset */
+code {
+    background: none;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
 }

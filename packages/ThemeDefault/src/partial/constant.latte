@@ -1,22 +1,29 @@
-<td class="attributes">
-    <code>{$constant->getTypeHint()}</code>
-</td>
-<td class="name">
-    <div class="description">
-        {$constant|description}
+<tr id="{$constant->getName()}">
+    <td class="attributes">
+        <code>{$constant->getTypeHint()}</code>
+    </td>
+    <td class="name">
+        <code>
+            <a href="{$constant|linkSource}">
+                {$constant->getName()}
+            </a>
+        </code>
+        <div class="description">
+            {$constant|description}
 
-        {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
-        {foreach $filteredAnnotations as $annotation}
-            <h4>{$annotation->getName()}</h4>
-            <div class="list">
-                {$annotation|annotation:$constant|noescape}<br>
-            </div>
-        {/foreach}
-    </div>
-</td>
-<td class="value">
-    <div>
-        <a href="#{$constant->getName()}" class="anchor">#</a>
-        <code>{$constant->getValue()}</code>
-    </div>
-</td>
+            {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+            {foreach $filteredAnnotations as $annotation}
+                <h4>{$annotation->getName()}</h4>
+                <div class="list">
+                    {$annotation|annotation:$constant|noescape}<br>
+                </div>
+            {/foreach}
+        </div>
+    </td>
+    <td class="value">
+        <div>
+            <a href="#{$constant->getName()}" class="anchor">#</a>
+            <code>{$constant->getValue()}</code>
+        </div>
+    </td>
+</tr>

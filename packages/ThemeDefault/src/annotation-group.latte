@@ -8,22 +8,22 @@
     <h1>{include title}</h1>
 
     {if $hasElements}
-        <table class="summary" id="classes" n:if="$classes">
+        <table class="summary table table-responsive table-bordered table-striped" id="classes" n:if="$classes">
             <tr><th colspan="2">Classes summary</th></tr>
             {include items, items => $classes}
         </table>
 
-        <table class="summary" id="interfaces" n:if="$allInterfaces">
+        <table class="summary table table-responsive table-bordered table-striped" id="interfaces" n:if="$allInterfaces">
             <tr><th colspan="2">Interfaces summary</th></tr>
             {include items, items => $allInterfaces}
         </table>
 
-        <table class="summary" id="traits" n:if="$allTraits">
+        <table class="summary table table-responsive table-bordered table-striped" id="traits" n:if="$allTraits">
             <tr><th colspan="2">Traits summary</th></tr>
             {include items, items => $allTraits}
         </table>
 
-        <table class="summary" id="methods" n:if="$methods">
+        <table class="summary table table-responsive table-bordered table-striped" id="methods" n:if="$methods">
             <tr><th colspan="3">Methods summary</th></tr>
             <tr n:foreach="$methods as $method">
                 <td class="name">
@@ -38,7 +38,7 @@
             </tr>
         </table>
 
-        <table class="summary" id="properties" n:if="$properties">
+        <table class="summary table table-responsive table-bordered table-striped" id="properties" n:if="$properties">
             <tr><th colspan="3">Properties summary</th></tr>
             <tr n:foreach="$properties as $property">
                 <td class="name"><a href="{$property->getDeclaringClass()|linkReflection}">{$property->getDeclaringClassName()}</a></td>
@@ -49,7 +49,7 @@
             </tr>
         </table>
 
-        <table class="summary" id="functions" n:if="$allFunctions">
+        <table class="summary table table-responsive table-bordered table-striped" id="functions" n:if="$allFunctions">
             <tr><th colspan="3">Functions summary</th></tr>
             <tr n:foreach="$allFunctions as $function">
                 <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>

@@ -7,7 +7,7 @@
     <div id="content">
         <h1>{include title}</h1>
 
-        <table n:if="count($allNamespaces)" class="summary table table-responsive table-bordered table-striped" id="namespaces">
+        <table n:if="count($allNamespaces)" class="table table-responsive table-bordered table-striped" id="namespaces">
             <tr><th>Namespaces summary</th></tr>
             <tr n:foreach="$allNamespaces as $namespace">
                 <td class="name">

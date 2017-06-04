@@ -24,7 +24,7 @@
                     {foreach $method->getParameters() as $parameter}
                         <span>
                             {if $parameter->getTypeHintClassOrInterfaceReflection()}
-                                {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
+                                <a href="{$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}">{$parameter->getTypeHint()}</a>
                             {else}
                                 {$parameter->getTypeHint()}
                             {/if}

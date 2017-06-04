@@ -13,7 +13,6 @@
             {$function|description}
         </div>
 
-        {*<div class="alert alert-info">*}
         <div class="info">
             {if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
             {var $filteredAnnotations = ($function->getAnnotations()|annotationFilter: ['param', 'return', 'throws'])}
@@ -31,28 +30,28 @@
 
         {var $annotations = $function->getAnnotations()}
 
-        <table class="summary" id="parameters" n:if="count($function->getParameters())">
-        <tr><th>Parameters summary</th></tr>
-        <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
-            <td class="name">
-                <code>
-                    {if $parameter->getTypeHintClassOrInterfaceReflection()}
-                        {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
-                    {else}
-                        {$parameter->getTypeHint()}
-                    {/if}
-                </code>
-            </td>
-            <td class="value"><code>{block|strip}
-                <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
-                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
-            {/block}</code></td>
-            <td>{$parameter|description}</td>
-        </tr>
+        <table class="summary table table-responsive table-bordered table-striped" id="parameters" n:if="count($function->getParameters())">
+            <tr><th>Parameters summary</th></tr>
+            <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
+                <td class="name">
+                    <code>
+                        {if $parameter->getTypeHintClassOrInterfaceReflection()}
+                            {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
+                        {else}
+                            {$parameter->getTypeHint()}
+                        {/if}
+                    </code>
+                </td>
+                <td class="value"><code>{block|strip}
+                    <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
+                    {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+                {/block}</code></td>
+                <td>{$parameter|description}</td>
+            </tr>
         </table>
 
         {if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
-            <table class="summary" id="returns">
+            <table class="summary table table-responsive table-bordered table-striped" id="returns">
                 <tr><th>Return value summary</th></tr>
                 <tr>
                     <td class="name">
