@@ -4,9 +4,9 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\TemplateRenderer;
 
 final class ClassGenerator implements GeneratorInterface

@@ -4,9 +4,9 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\TemplateRenderer;
 use ApiGen\Utils\RelativePathResolver;
 
