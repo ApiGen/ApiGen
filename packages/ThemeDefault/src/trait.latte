@@ -35,7 +35,7 @@
     <div n:if="$trait->getUsers()">
         <br>
         <div>
-            <h4>Known Users</h4>
+            <h3>Known Users</h3>
             {include children, children => $trait->getUsers()}
         </div>
     </div>
@@ -70,7 +70,7 @@
                     {foreach $usedTrait->getOwnMethods() as $usedTraitMethod}
                         <a href="{$usedTraitMethod|linkReflection}" n:class="$traitMethod->isDeprecated() ? deprecated">{$traitMethod->getName()}()</a>
                         {* @todo *}
-                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:class="$data['method']->isDeprecated() ? deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
+                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:class="$data['method']->isDeprecated() ? ldeprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
                     {/foreach}
                 </code>
             </td>

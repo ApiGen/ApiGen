@@ -6,7 +6,7 @@ body {
     color: #333333;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3 {
     font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
     color: #053368;
 }
@@ -25,12 +25,6 @@ h2 {
 }
 
 h3 {
-    font-size: 1.6em;
-    font-weight: normal;
-    margin-bottom: 2px;
-}
-
-h4 {
     font-size: 1em;
     font-weight: bold;
 }

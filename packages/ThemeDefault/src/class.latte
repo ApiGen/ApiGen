@@ -48,7 +48,7 @@
     {/define}
 
     <div n:if="$class->getSubClasses()">
-        <h4>Known subclasses</h4>
+        <h3>Known subclasses</h3>
         {include children, children => $class->getSubClasses()}
     </div>
 
@@ -101,7 +101,7 @@
             <td>
                 <code>
                     {foreach $trait->getOwnMethods() as $traitMethod}
-                        <a href="{$traitMethod|linkReflection: $trait}" n:class="$traitMethod->isDeprecated() ? deprecated">
+                        <a href="{$traitMethod|linkReflection}" n:class="$traitMethod->isDeprecated() ? deprecated">
                             {$traitMethod->getName()}()
                         </a>
                         {* @todo *}
@@ -168,7 +168,7 @@
             <td>
                 <code>
                     {foreach $trait->getOwnProperties() as $property}
-                        <a href="{$property|linkReflection: $trait}" n:class="$property->isDeprecated() ? deprecated">
+                        <a href="{$property|linkReflection}" n:class="$property->isDeprecated() ? deprecated">
                             <var>${$property->getName()}</var>
                         </a>{sep}, {/sep}
                     {/foreach}

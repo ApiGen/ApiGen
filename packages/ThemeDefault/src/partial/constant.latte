@@ -4,16 +4,18 @@
     </td>
     <td class="name">
         <code>
-            <a href="{$constant|linkSource}">
-                {$constant->getName()}
-            </a>
+            <strong>
+                <a href="{$constant|linkSource}">
+                    {$constant->getName()}
+                </a>
+            </strong>
         </code>
         <div class="description">
             {$constant|description}
 
             {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
             {foreach $filteredAnnotations as $annotation}
-                <h4>{$annotation->getName()}</h4>
+                <h3>{$annotation->getName()}</h3>
                 <div class="list">
                     {$annotation|annotation:$constant|noescape}<br>
                 </div>
