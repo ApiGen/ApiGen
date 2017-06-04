@@ -6,13 +6,12 @@ body {
     color: #333333;
 }
 
-h1, h2, h3 {
+h1, h2 {
     font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
     color: #053368;
 }
 
 h1 {
-    color: #1e5eb6;
     font-size: 2em;
     margin-bottom: .7em;
 }
@@ -36,10 +35,6 @@ a, td a {
     color: #006aeb;
     padding: 3px 1px;
     text-decoration: none;
-}
-
-h1 a {
-    color: #1e5eb6;
 }
 
 a:hover, a:active, a:focus, a:hover b, a:hover var {
@@ -402,6 +397,11 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     color: #c0c0c0 !important;
 }
 
+/* Common Styling */
+.open-source-code {
+    font-weight: bold;
+}
+
 /* Bootstrap Reset */
 code {
     background: none;
@@ -410,3 +410,4 @@ code {
 a:hover, a:focus {
     text-decoration: none;
 }
+
