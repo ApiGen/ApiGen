@@ -81,7 +81,7 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
     }
 
     /**
-     * @return mixed
+     * @return mixed|null
      */
     public function getDefaultValue()
     {
@@ -170,12 +170,8 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
             ->getName();
     }
 
-    /**
-     * @todo What is this for?
-     */
-    public function getDefaultValueDefinition(): string
+    public function getDefaultValueDefinition(): ?string
     {
-        // @todo
         return $this->betterPropertyReflection->getDefaultValue();
     }
 

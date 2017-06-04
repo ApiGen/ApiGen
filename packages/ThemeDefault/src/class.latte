@@ -66,7 +66,7 @@
     </div>
 
     {if $class->getOwnMethods()}
-        <table class="summary methods table table-bordered table-responsive table-striped" id="methods">
+        <table class="summary table table-bordered table-responsive table-striped" id="methods">
             <tr><th colspan="3">Methods summary</th></tr>
             {foreach $class->getOwnMethods() as $method}
                 {include "partial/method.latte", method => $method}
@@ -110,7 +110,7 @@
         </tr>
     </table>
 
-    <table class="summary constants table table-bordered table-responsive table-striped" id="constants" n:if="$class->getOwnConstants()">
+    <table class="summary table table-bordered table-responsive table-striped" id="constants" n:if="$class->getOwnConstants()">
         <tr><th colspan="3">Constants summary</th></tr>
         {foreach $class->getOwnConstants() as $constant}
             {include "partial/constant.latte", constant => $constant}
@@ -131,7 +131,7 @@
     {/foreach}
 
     {if $class->getOwnProperties()}
-        <table class="summary properties table table-bordered table-responsive table-striped" id="properties">
+        <table class="summary table table-bordered table-responsive table-striped" id="properties">
             <tr><th colspan="3">Properties summary</th></tr>
             {foreach $class->getOwnProperties() as $property}
                 {include "partial/property.latte", property => $property}
@@ -150,8 +150,8 @@
                 <td>
                     {foreach $parentClass->getOwnProperties() as $parentClassProperty}
                         <code>{block|strip}
-                            <a href="{$parentClassProperty|linkReflection}" n:class="$parentClassProperty->isDeprecated() ? deprecated">
-                                <var>${$parentClassProperty->getName()}</var>
+                            <a href="{$parentClassProperty|linkReflection}" n:class="$parentClassProperty->isDeprecated() ? deprecated, property-name">
+                                ${$parentClassProperty->getName()}
                             </a>
                         {/block}</code>{sep}, {/sep}
                     {/foreach}
@@ -166,8 +166,8 @@
             <td>
                 <code>
                     {foreach $trait->getOwnProperties() as $property}
-                        <a href="{$property|linkReflection}" n:class="$property->isDeprecated() ? deprecated">
-                            <var>${$property->getName()}</var>
+                        <a href="{$property|linkReflection}" n:class="$property->isDeprecated() ? deprecated, property-name">
+                            ${$property->getName()}
                         </a>{sep}, {/sep}
                     {/foreach}
                 </code>

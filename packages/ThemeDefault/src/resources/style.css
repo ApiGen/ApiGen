@@ -46,12 +46,6 @@ code, var, pre {
     font-family: monospace;
 }
 
-var {
-    font-weight: bold;
-    font-style: normal;
-    color: #ca8a04;
-}
-
 pre {
     margin: 0;
 }
@@ -279,33 +273,19 @@ td.attributes {
     width: 1%;
 }
 
-.class .methods .name, .class .properties .name, .class .constants .name {
-    width: auto;
-    white-space: normal;
-}
-
-.class .methods .name > div > code {
+table .name > div > code {
     white-space: pre-wrap;
 }
 
-.class .methods .name > div > code span, .function .value > code {
+table .name > div > code span
+{
     white-space: nowrap;
     display: inline-block;
 }
 
-.class .methods td.name > div, .class td.value > div {
-    position: relative;
-    padding-right: 1em;
-}
-
 .anchor {
-    position: absolute;
-    top: 0;
-    right: 0;
-    line-height: 1;
-    font-size: 85%;
+    line-height: 1em;
     margin-top: -.2em;
-    color: #006aeb !important;
     padding: .6em;
 }
 
@@ -318,11 +298,11 @@ td.attributes {
     border-top: 1px solid #e9eeef;
     clear: both;
     color: #a7a7a7;
-    font-size: 8pt;
+    font-size: .8em;
     text-align: center;
     padding: 20px 0 0;
     margin: 3em 0 0;
-    height: 90px;
+    height: 14em;
     background: #ffffff url('footer.png') no-repeat center top;
 }
 
@@ -400,6 +380,16 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
 /* Common Styling */
 .open-source-code {
     font-weight: bold;
+}
+
+.constant-name {
+    font-weight: bold;
+}
+
+.property-name {
+    font-weight: bold;
+    font-style: normal;
+    color: #ca8a04;
 }
 
 /* Bootstrap Reset */

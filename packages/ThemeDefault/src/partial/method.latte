@@ -18,7 +18,7 @@
 
     <td class="name">
         <div>
-            <a class="anchor" href="#_{$method->getName()}">#</a>
+            <a class="anchor pull-right" href="#_{$method->getName()}">#</a>
             <code>{block|strip}
                     <a href="{$method|linkSource}">{$method->getName()}</a>(
                     {foreach $method->getParameters() as $parameter}
@@ -28,7 +28,8 @@
                             {else}
                                 {$parameter->getTypeHint()}
                             {/if}
-                            <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>{if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
+                            <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
+                        {if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
                     )
                 {/block}</code>
@@ -54,7 +55,7 @@
                     <div class="list">
                         <dl>
                             {foreach $method->getParameters() as $parameter}
-                                <dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
+                                <dt><span class="property-name">${$parameter->getName()}</span>{if $parameter->isVariadic()},…{/if}</dt>
                                 <dd>{$parameter|description}</dd>
                             {/foreach}
                         </dl>

@@ -12,6 +12,9 @@
     </td>
 
     <td class="name">
+        <code>
+            <a href="{$property|linkSource}" class="property-name">${$property->getName()}</a>
+        </code>
         <div class="description">
             {$property|description}
 
@@ -27,7 +30,7 @@
     <td class="value">
         <div>
             <a href="#${$property->getName()}" class="anchor">#</a>
-            <code>{$property->defaultValueDefinition|highlightValue: $class|noescape}</code>
+            <code>{$property->getDefaultValueDefinition()}</code>
         </div>
     </td>
 </tr>
