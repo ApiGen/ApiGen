@@ -1,7 +1,6 @@
 - ApiGen\Element\Latte\Filter\MethodReflectionNamingFilter
 
 - ApiGen\Element\AutocompleteElements
-- ApiGen\Element\Namespaces\NamespaceStorage
 - ApiGen\Element\Latte\Filter\NamespaceFilter
 
 # Class_

@@ -4,7 +4,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Element\Namespaces\NamespaceStorage;
+use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Templating\TemplateRenderer;
 
 final class NamespacesGenerator implements GeneratorInterface
@@ -23,24 +23,25 @@ final class NamespacesGenerator implements GeneratorInterface
      * @var TemplateRenderer
      */
     private $templateRenderer;
+
     /**
-     * @var NamespaceStorage
+     * @var NamespaceReflectionCollector
      */
-    private $namespaceStorage;
+    private $namespaceReflectionCollector;
 
     public function __construct(
-        NamespaceStorage $namespaceStorage,
+        NamespaceReflectionCollector $namespaceReflectionCollector,
         Configuration $configuration,
         TemplateRenderer $templateRenderer
     ) {
-        $this->namespaceStorage = $namespaceStorage;
+        $this->namespaceReflectionCollector = $namespaceReflectionCollector;
         $this->configuration = $configuration;
         $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
     {
-        if (count($this->namespaceStorage->getNamespaces()) < 1) {
+        if (count($this->namespaceReflectionCollector->getNamespaces()) < 1) {
             return;
         }
 
@@ -50,7 +51,7 @@ final class NamespacesGenerator implements GeneratorInterface
             [
                 'activePage' => self::NAME,
                 'pageTitle' => ucfirst(self::NAME),
-                self::NAME => $this->namespaceStorage->getNamespaces()
+                self::NAME => $this->namespaceReflectionCollector->getNamespaces()
             ]
         );
     }

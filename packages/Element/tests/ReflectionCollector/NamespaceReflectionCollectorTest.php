@@ -2,22 +2,16 @@
 
 namespace ApiGen\Element\Tests\Namespaces;
 
-use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
-final class NamespaceStorageTest extends AbstractContainerAwareTestCase
+final class NamespaceReflectionCollectorTest extends AbstractContainerAwareTestCase
 {
     /**
      * @var string
      */
-    private $namespacePrefix = 'ApiGen\Element\Tests\Namespaces\Source';
-
-    /**
-     * @var NamespaceStorage
-     */
-    private $namespaceStorage;
+    private $namespacePrefix = 'ApiGen\Element\Tests\ReflectionCollector\NamespaceReflectionCollectorSource';
 
     /**
      * @var NamespaceReflectionCollector
@@ -28,44 +22,25 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseDirectories([__DIR__ . '/Source']);
+        $parser->parseDirectories([__DIR__ . '/NamespaceReflectionCollectorSource']);
 
-        $this->namespaceStorage = $this->container->getByType(NamespaceStorage::class);
         $this->namespaceReflectionCollector = $this->container->getByType(NamespaceReflectionCollector::class);
     }
 
     public function testSort(): void
     {
-        $collectedNamespaces = $this->namespaceReflectionCollector->getNamespaces();
-        $this->assertCount(3, $collectedNamespaces);
-
-        $namespaces = $this->namespaceStorage->getNamespaces();
+        $namespaces = $this->namespaceReflectionCollector->getNamespaces();
         $this->assertCount(3, $namespaces);
 
         $this->assertSame([
             $this->namespacePrefix,
             $this->namespacePrefix . '\SubNamespace',
-            NamespaceStorage::NO_NAMESPACE,
+            NamespaceReflectionCollector::NO_NAMESPACE,
         ], $namespaces);
-
-        $this->assertSame($collectedNamespaces, $namespaces);
     }
 
-    public function testFindInNamespace(): void
+    public function testFetchFromNamespace(): void
     {
-        $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix);
-
-        $this->assertCount(1, $namespacedItems->getClassReflections());
-        $this->assertCount(1, $namespacedItems->getTraitReflections());
-        $this->assertCount(1, $namespacedItems->getFunctionReflections());
-        $this->assertCount(1, $namespacedItems->getInterfaceReflections());
-
-        $namespacedItems = $this->namespaceStorage->findInNamespace($this->namespacePrefix . '\SubNamespace');
-        $this->assertCount(0, $namespacedItems->getClassReflections());
-        $this->assertCount(1, $namespacedItems->getTraitReflections());
-        $this->assertCount(0, $namespacedItems->getFunctionReflections());
-        $this->assertCount(1, $namespacedItems->getInterfaceReflections());
-
         $this->namespaceReflectionCollector->setActiveNamespace($this->namespacePrefix);
         $this->assertCount(1, $this->namespaceReflectionCollector->getClassReflections());
         $this->assertCount(0, $this->namespaceReflectionCollector->getTraitReflections());
@@ -81,11 +56,7 @@ final class NamespaceStorageTest extends AbstractContainerAwareTestCase
 
     public function testNoneNamespace(): void
     {
-        $namespacedItems = $this->namespaceStorage->findInNamespace('None');
-
-        $this->assertCount(1, $namespacedItems->getClassReflections());
-
-        $this->namespaceReflectionCollector->setActiveNamespace('None');
+        $this->namespaceReflectionCollector->setActiveNamespace(NamespaceReflectionCollector::NO_NAMESPACE);
 
         $this->assertCount(1, $this->namespaceReflectionCollector->getClassReflections());
     }

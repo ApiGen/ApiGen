@@ -13,7 +13,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     /**
      * @var string
      */
-    private $namespacePrefix = 'ApiGen\Element\Tests\Namespaces\Source';
+    private $namespacePrefix = 'ApiGen\Element\Tests\ReflectionCollector\NamespaceReflectionCollectorSource';
 
     /**
      * @var AutocompleteElementsInterface
@@ -34,7 +34,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     {
         /** @var ParserInterface $parser */
         $parser = $this->container->getByType(ParserInterface::class);
-        $parser->parseDirectories([__DIR__ . '/Namespaces/Source']);
+        $parser->parseDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
 
         $this->autocompleteElements = $this->container->getByType(AutocompleteElementsInterface::class);
 

@@ -3,7 +3,6 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
-use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -15,9 +14,14 @@ use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 final class NamespaceReflectionCollector implements BasicReflectionCollectorInterface
 {
     /**
+     * @var string
+     */
+    public const NO_NAMESPACE = 'none';
+
+    /**
      * @var mixed[]
      */
-    private $collectedReflections;
+    private $collectedReflections = [];
 
     /**
      * @var string
@@ -34,7 +38,7 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
         }
 
         $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
-        $namespace = $reflection->getNamespaceName() ?: NamespaceStorage::NO_NAMESPACE;
+        $namespace = $reflection->getNamespaceName() ?: self::NO_NAMESPACE;
 
         $this->collectedReflections[$namespace][$reflectionInterface][$reflection->getName()] = $reflection;
     }

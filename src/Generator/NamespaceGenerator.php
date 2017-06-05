@@ -4,8 +4,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Element\Namespaces\NamespaceStorage;
-use ApiGen\Element\Namespaces\SingleNamespaceStorage;
+use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Templating\TemplateRenderer;
 
 final class NamespaceGenerator implements GeneratorInterface
@@ -19,47 +18,45 @@ final class NamespaceGenerator implements GeneratorInterface
      * @var TemplateRenderer
      */
     private $templateRenderer;
+
     /**
-     * @var NamespaceStorage
+     * @var NamespaceReflectionCollector
      */
-    private $namespaceStorage;
+    private $namespaceReflectionCollector;
 
     public function __construct(
-        NamespaceStorage $namespaceStorage,
+        NamespaceReflectionCollector $namespaceReflectionCollector,
         Configuration $configuration,
         TemplateRenderer $templateRenderer
     ) {
-        $this->namespaceStorage = $namespaceStorage;
+        $this->namespaceReflectionCollector = $namespaceReflectionCollector;
         $this->configuration = $configuration;
         $this->templateRenderer = $templateRenderer;
     }
 
     public function generate(): void
     {
-        foreach ($this->namespaceStorage->getNamespaces() as $namespace) {
-            $singleNamespaceStorage = $this->namespaceStorage->findInNamespace($namespace);
-            $this->generateForNamespace($singleNamespaceStorage);
+        foreach ($this->namespaceReflectionCollector->getNamespaces() as $namespace) {
+            $this->namespaceReflectionCollector->setActiveNamespace($namespace);
+            $this->generateForNamespace($namespace, $this->namespaceReflectionCollector);
         }
     }
 
-    /**
-     * @param mixed[] $elementsInNamespace
-     */
-    private function generateForNamespace(SingleNamespaceStorage $singleNamespaceStorage): void
+    private function generateForNamespace(string $namespace, NamespaceReflectionCollector $namespaceReflectionCollector): void
     {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('namespace'),
             $this->configuration->getDestinationWithPrefixName(
-                'namespace-', $singleNamespaceStorage->getNamespace()
+                'namespace-', $namespace
             ),
             [
                 'activePage' => 'namespace',
-                'activeNamespace' => $singleNamespaceStorage->getNamespace(),
-                'childNamespaces' => $this->resolveChildNamespaces($singleNamespaceStorage->getNamespace()),
-                'classes' => $singleNamespaceStorage->getClassReflections(),
-                'interfaces' => $singleNamespaceStorage->getInterfaceReflections(),
-                'traits' => $singleNamespaceStorage->getTraitReflections(),
-                'functions' => $singleNamespaceStorage->getFunctionReflections()
+                'activeNamespace' => $namespace,
+                'childNamespaces' => $this->resolveChildNamespaces($namespace),
+                'classes' => $namespaceReflectionCollector->getClassReflections(),
+                'interfaces' => $namespaceReflectionCollector->getInterfaceReflections(),
+                'traits' => $namespaceReflectionCollector->getTraitReflections(),
+                'functions' => $namespaceReflectionCollector->getFunctionReflections()
             ]
         );
     }
@@ -73,7 +70,7 @@ final class NamespaceGenerator implements GeneratorInterface
         $len = strlen($prefix);
         $namespaces = array();
 
-        foreach ($this->namespaceStorage->getNamespaces() as $sub) {
+        foreach ($this->namespaceReflectionCollector->getNamespaces() as $sub) {
             if (substr($sub, 0, $len) === $prefix
                 && strpos(substr($sub, $len), '\\') === false
             ) {
