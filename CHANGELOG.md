@@ -1,6 +1,6 @@
 # Change Log
 
-@todo - move to Releases, links do not work here and this duplicates it
+@todo - move to releases after RC1 release, links do not work here and this duplicates it
 
 All notable changes to this project will be documented in this file.
 
@@ -79,7 +79,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Dropped Zip generator, internet is quite fast nowadays.
 - Dropped PHAR support.
 - `Exception` element dropped [#827]
-- Dropped element js toggling in page, was bugged and causing page jumps. 
+- Dropped element js toggling in page, was bugged and causing page jumps.
+- Dropped support for global constant documentation, as BetterReflection doesn't support it out of the box and it is 
+  pretty old.
 
 ## [4.1.2] - 2015-11-29
 

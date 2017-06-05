@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;

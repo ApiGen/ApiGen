@@ -1,51 +1,29 @@
 body {
-    font: 13px/1.5 Verdana, 'Geneva CE', lucida, sans-serif;
+    font: 1.4em Verdana, 'Geneva CE', lucida, sans-serif;
     margin: 0;
     padding: 0;
     background: #ffffff;
     color: #333333;
 }
 
-h1, h2, h3, h4, caption {
+h1, h2 {
     font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
     color: #053368;
 }
 
 h1 {
-    color: #1e5eb6;
-    font-size: 230%;
-    font-weight: normal;
-    margin: .3em 0;
+    font-size: 2em;
+    margin-bottom: .7em;
 }
 
 h2 {
-    color: #1e5eb6;
-    font-size: 150%;
-    font-weight: normal;
-    margin: -.3em 0 .3em 0;
-}
-
-h3 {
-    font-size: 1.6em;
-    font-weight: normal;
-    margin-bottom: 2px;
-}
-
-h4 {
-    font-size: 100%;
+    font-size: 1em;
     font-weight: bold;
-    padding: 0;
-    margin: 0;
 }
 
-caption {
-    border: 1px solid #cccccc;
+tr th {
     background: #ecede5;
-    font-weight: bold;
     font-size: 1.2em;
-    padding: 3px 5px;
-    text-align: left;
-    margin-bottom: 0;
 }
 
 p {
@@ -53,21 +31,10 @@ p {
     padding: 0;
 }
 
-hr {
-    margin: 2em 0 1em;
-    border: none;
-    border-top: 1px solid #cccccc;
-    height: 0;
-}
-
-a {
+a, td a {
     color: #006aeb;
     padding: 3px 1px;
     text-decoration: none;
-}
-
-h1 a {
-    color: #1e5eb6;
 }
 
 a:hover, a:active, a:focus, a:hover b, a:hover var {
@@ -79,35 +46,13 @@ code, var, pre {
     font-family: monospace;
 }
 
-var {
-    font-weight: bold;
-    font-style: normal;
-    color: #ca8a04;
-}
-
 pre {
     margin: 0;
-}
-
-code a b {
-    color: #000000;
 }
 
 .deprecated {
     text-decoration: line-through;
     opacity: .5;
-}
-
-.hidden {
-    display: none;
-}
-
-/* Left side */
-#left {
-    overflow: auto;
-    width: 270px;
-    height: 100%;
-    position: fixed;
 }
 
 /* Menu */
@@ -203,9 +148,9 @@ code a b {
 
 /* Navigation */
 #navigation {
-    padding: 3px 8px;
+    padding: .3em .7em;
     background-color: #f6f6f4;
-    height: 26px;
+    height: 30px;
 }
 
 #navigation ul {
@@ -284,44 +229,8 @@ dl.tree dd {
     margin: 1.2em 0;
 }
 
-.summary {
-    border: 1px solid #cccccc;
-    border-collapse: collapse;
-    font-size: 1em;
-    width: 100%;
-    margin: 1.2em 0 2.4em;
-}
-
-.summary caption {
-    border-width: 1px 1px 0;
-}
-
-.summary td {
-    border: 1px solid #cccccc;
-    margin: 0;
-    padding: 3px 10px;
-    font-size: 1em;
-    vertical-align: top;
-}
-
-.summary td:first-child {
-    text-align: right;
-}
-
-.summary td hr {
-    margin: 3px -10px;
-}
-
-#namespaces.summary td:first-child, .inherited.summary td:first-child, .used.summary td:first-child {
-    text-align: left;
-}
-
-.summary tr td {
-    cursor: pointer;
-}
-
-.summary tr:hover td {
-    background: #f6f6f4;
+.table {
+    margin-bottom: 2em;
 }
 
 .summary .description pre {
@@ -334,10 +243,6 @@ dl.tree dd {
 
 .summary .description p + p, .summary .description ul {
     margin: 3px 0 0 0;
-}
-
-.summary .description.detailed h4 {
-    margin-top: 3px;
 }
 
 .summary dl {
@@ -364,33 +269,20 @@ td.attributes {
     width: 1%;
 }
 
-.class .methods .name, .class .properties .name, .class .constants .name {
-    width: auto;
-    white-space: normal;
-}
-
-.class .methods .name > div > code {
+table .name > div > code {
     white-space: pre-wrap;
 }
 
-.class .methods .name > div > code span, .function .value > code {
+table .name > div > code span
+{
     white-space: nowrap;
     display: inline-block;
 }
 
-.class .methods td.name > div, .class td.value > div {
-    position: relative;
-    padding-right: 1em;
-}
-
 .anchor {
-    position: absolute;
-    top: 0;
-    right: 0;
-    line-height: 1;
-    font-size: 85%;
-    margin: 0;
-    color: #006aeb !important;
+    line-height: 1em;
+    margin-top: -.2em;
+    padding: .6em;
 }
 
 .list {
@@ -402,11 +294,11 @@ td.attributes {
     border-top: 1px solid #e9eeef;
     clear: both;
     color: #a7a7a7;
-    font-size: 8pt;
+    font-size: .8em;
     text-align: center;
     padding: 20px 0 0;
     margin: 3em 0 0;
-    height: 90px;
+    height: 14em;
     background: #ffffff url('footer.png') no-repeat center top;
 }
 
@@ -481,14 +373,31 @@ span.l a.l:hover, span.l a.l:active, span.l a.l:focus {
     color: #c0c0c0 !important;
 }
 
-#navigation {
-    height: 52px;
+/* Common Styling */
+.open-source-code {
+    font-weight: bold;
 }
 
-/* global style */
-.left, .summary td.left {
-    text-align: left;
+.constant-name {
+    font-weight: bold;
 }
-.right, .summary td.right {
-    text-align: right;
+
+.property-name {
+    font-weight: bold;
+    font-style: normal;
+    color: #ca8a04;
 }
+
+p {
+    line-height: 1.3em;
+}
+
+/* Bootstrap Reset */
+code {
+    background: none;
+}
+
+a:hover, a:focus {
+    text-decoration: none;
+}
+

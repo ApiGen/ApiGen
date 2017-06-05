@@ -9,11 +9,12 @@
     <div id="content" class="function">
         <h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
 
-        <div class="description" n:if="$function->getDescription()">
-            {$function|description}
-        </div>
+        {if $function->getDescription()}
+            <div class="description">
+                {$function|description}
+            </div>
+        {/if}
 
-        {*<div class="alert alert-info">*}
         <div class="info">
             {if $function->getNamespaceName()}<b>Namespace:</b> {$function->getNamespaceName()|linkAllNamespaceParts|noescape}<br>{/if}
             {var $filteredAnnotations = ($function->getAnnotations()|annotationFilter: ['param', 'return', 'throws'])}
@@ -23,37 +24,35 @@
                     {$value|annotation:$function|noescape}<br>
                 {/foreach}
             {/foreach}
-            <strong>
-                <a href="{$function|linkSource}">Open source code</a>
-            </strong>
+            <a href="{$function|linkSource}" class="open-source-code">Open source code</a>
             <br>
         </div>
 
         {var $annotations = $function->getAnnotations()}
 
-        <table class="summary" id="parameters" n:if="count($function->getParameters())">
-        <caption>Parameters summary</caption>
-        <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
-            <td class="name">
-                <code>
-                    {if $parameter->getTypeHintClassOrInterfaceReflection()}
-                        {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
-                    {else}
-                        {$parameter->getTypeHint()}
-                    {/if}
-                </code>
-            </td>
-            <td class="value"><code>{block|strip}
-                <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>
-                {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
-            {/block}</code></td>
-            <td>{$parameter|description}</td>
-        </tr>
+        <table class="summary table table-responsive table-bordered table-striped" id="parameters" n:if="count($function->getParameters())">
+            <tr><th>Parameters Summary</th></tr>
+            <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
+                <td class="name">
+                    <code>
+                        {if $parameter->getTypeHintClassOrInterfaceReflection()}
+                            {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
+                        {else}
+                            {$parameter->getTypeHint()}
+                        {/if}
+                    </code>
+                </td>
+                <td class="value"><code>{block|strip}
+                    <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
+                    {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+                {/block}</code></td>
+                <td>{$parameter|description}</td>
+            </tr>
         </table>
 
         {if isset($annotations['return']) && $annotations['return'][0] !== 'void'}
-            <table class="summary" id="returns">
-                <caption>Return value summary</caption>
+            <table class="summary table table-responsive table-bordered table-striped" id="returns">
+                <tr><th>Return value Summary</th></tr>
                 <tr>
                     <td class="name">
                         {$annotations['return'][0]|annotation:$function|noescape}

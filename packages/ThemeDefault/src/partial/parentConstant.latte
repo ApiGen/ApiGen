@@ -1,12 +1,8 @@
 <td>
     <code>
         {foreach $parentClass->getOwnConstants() as $parentClassConstant}
-        <a href="{$parentClassConstant|constantUrl}">
-            <strong>
-                <span n:tag-if="$parentClassConstant->isDeprecated()" class"deprecated">
-                    {$parentClassConstant->getName()}
-                </span>
-            </strong>
+        <a href="{$parentClassConstant|constantUrl}" n:class="$parentClassConstant->isDeprecated() ? deprecated">
+            <strong>{$parentClassConstant->getName()}</strong>
             </a>{sep}, {/sep}
         {/foreach}
     </code>

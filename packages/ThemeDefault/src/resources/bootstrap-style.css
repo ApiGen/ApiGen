@@ -489,11 +489,6 @@ code.signature var {
     font-size: inherit;
 }
 
-.class .methods .name, .class .properties .name, .class .constants .name {
-    width: auto;
-    white-space: normal;
-}
-
 .class .methods .name > div > code {
     white-space: pre-wrap;
 }

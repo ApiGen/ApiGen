@@ -2,15 +2,15 @@
 
 namespace ApiGen\Generator;
 
+use ApiGen\Console\Helper\ProgressBar;
 use ApiGen\Console\Progress\StepCounter;
-use ApiGen\Contract\Console\Helper\ProgressBarInterface;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Contract\Generator\GeneratorQueueInterface;
 
 final class GeneratorQueue implements GeneratorQueueInterface
 {
     /**
-     * @var ProgressBarInterface
+     * @var ProgressBar
      */
     private $progressBar;
 
@@ -24,7 +24,7 @@ final class GeneratorQueue implements GeneratorQueueInterface
      */
     private $stepCounter;
 
-    public function __construct(ProgressBarInterface $progressBar, StepCounter $stepCounter)
+    public function __construct(ProgressBar $progressBar, StepCounter $stepCounter)
     {
         $this->progressBar = $progressBar;
         $this->stepCounter = $stepCounter;

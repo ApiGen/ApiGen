@@ -12,18 +12,17 @@
     </td>
 
     <td class="name">
-        <div class="description detailed">
+        <code>
+            <a href="{$property|linkSource}" class="property-name">${$property->getName()}</a>
+        </code>
+        <div class="description">
             {$property|description}
 
             {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
-            {foreach $filteredAnnotations as $annotation => $descriptions}
-                <h4>{$annotation}</h4>
+            {foreach $filteredAnnotations as $annotation}
+                <h2>{$annotation->getName()}</h2>
                 <div class="list">
-                    {foreach $descriptions as $description}
-                        {if $description}
-                            {$description|annotation:$property|noescape}<br>
-                        {/if}
-                    {/foreach}
+                    {$annotation|annotation:$property|noescape}<br>
                 </div>
             {/foreach}
         </div>
@@ -31,7 +30,7 @@
     <td class="value">
         <div>
             <a href="#${$property->getName()}" class="anchor">#</a>
-            <code>{$property->defaultValueDefinition|highlightValue: $class|noescape}</code>
+            <code>{$property->getDefaultValueDefinition()}</code>
         </div>
     </td>
 </tr>

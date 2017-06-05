@@ -2,18 +2,18 @@
 
 namespace ApiGen\EventSubscriber;
 
-use ApiGen\Contract\Console\Helper\ProgressBarInterface;
+use ApiGen\Console\Helper\ProgressBar;
 use ApiGen\Event\GenerateProgressEvent;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ProgressBarEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ProgressBarInterface
+     * @var ProgressBar
      */
     private $progressBar;
 
-    public function __construct(ProgressBarInterface $progressBar)
+    public function __construct(ProgressBar $progressBar)
     {
         $this->progressBar = $progressBar;
     }

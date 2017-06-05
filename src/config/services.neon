@@ -21,8 +21,6 @@
 - ApiGen\Generator\AnnotationGroupsGenerator
 - ApiGen\Generator\ElementListGenerator
 - ApiGen\Generator\IndexGenerator
-
-# elements
 - ApiGen\Generator\NamespaceGenerator
 - ApiGen\Generator\ClassGenerator
 - ApiGen\Generator\InterfaceGenerator
@@ -38,7 +36,7 @@
 - ApiGen\Utils\LinkBuilder
 
 # Syntax Highlighter
-- ApiGen\Generator\SourceCodeHighlighter\FshlSourceCodeHighlighter
+- ApiGen\SourceCodeHighlighter\SourceCodeHighlighter
 - FSHL\Output\Html
 - FSHL\Lexer\Php
 -

@@ -16,11 +16,6 @@ final class NamespaceStorage
     private const NO_NAMESPACE = 'None';
 
     /**
-     * @var string
-     */
-    private const NAMESPACE_SEPARATOR = '\\';
-
-    /**
      * @var ReflectionStorageInterface
      */
     private $reflectionStorage;
@@ -74,11 +69,10 @@ final class NamespaceStorage
 
         return new SingleNamespaceStorage(
             $namespaceToSeek,
-            $this->getParentNamespaces($namespaceToSeek),
-            array_unique($classes),
-            array_unique($interfaces),
-            array_unique($traits),
-            array_unique($functions)
+            $classes,
+            $interfaces,
+            $traits,
+            $functions
         );
     }
 
@@ -99,7 +93,6 @@ final class NamespaceStorage
             $singleNamespaceElements = $this->reflectionsCategorizedToNamespaces[$namespaceName];
             $this->singleNamespaceStorages[$namespaceName] = new SingleNamespaceStorage(
                 $namespaceName,
-                $this->getParentNamespaces($namespaceName),
                 $singleNamespaceElements['classes'] ?? [],
                 $singleNamespaceElements['interfaces'] ?? [],
                 $singleNamespaceElements['traits'] ?? [],
@@ -119,27 +112,6 @@ final class NamespaceStorage
             $namespace = $reflection->getNamespaceName() ?: self::NO_NAMESPACE;
             $this->reflectionsCategorizedToNamespaces[$namespace][$type][$reflection->getShortName()] = $reflection;
         }
-    }
-
-    /**
-     * @return string[]
-     */
-    private function getParentNamespaces(string $namespace): array
-    {
-        $parentNamespaces = [];
-        $parentNamespace = '';
-        foreach (explode(self::NAMESPACE_SEPARATOR, $namespace) as $part) {
-            $parentNamespace = ltrim($parentNamespace . self::NAMESPACE_SEPARATOR . $part, self::NAMESPACE_SEPARATOR);
-            if ($parentNamespace === $namespace) {
-                break;
-            }
-
-            $parentNamespaces[] = $parentNamespace;
-        }
-
-        sort($parentNamespaces);
-
-        return $parentNamespaces;
     }
 
     private function makeNoNamespaceLast(): void

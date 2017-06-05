@@ -1,36 +1,44 @@
+{if !isset($isInterface)}{$isInterface = false}{/if}
+
 <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
     {var $annotations = $method->getAnnotations()}
 
     <td class="attributes">
         <code>
-            {if $method->isAbstract()}abstract{elseif $method->isFinal()}final{/if} {if $method->isProtected()}protected{elseif $method->isPrivate()}private{else}public{/if} {if $method->isStatic()}static{/if}
-
-            {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
-            {if $method->returnsReference()}&amp;{/if}
+            {if $isInterface === true}
+                {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
+                public
+            {else}
+                {if $method->isAbstract()}abstract{elseif $method->isFinal()}final{/if} {if $method->isProtected()}protected{elseif $method->isPrivate()}private{else}public{/if} {if $method->isStatic()}static{/if}
+                {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
+                {if $method->returnsReference()}&amp;{/if}
+            {/if}
         </code>
     </td>
 
     <td class="name">
         <div>
-            <a class="anchor" href="#_{$method->getName()}">#</a>
+            <a class="anchor pull-right" href="#_{$method->getName()}">#</a>
             <code>{block|strip}
                     <a href="{$method|linkSource}">{$method->getName()}</a>(
                     {foreach $method->getParameters() as $parameter}
                         <span>
                             {if $parameter->getTypeHintClassOrInterfaceReflection()}
-                                {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
+                                <a href="{$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}">{$parameter->getTypeHint()}</a>
                             {else}
                                 {$parameter->getTypeHint()}
                             {/if}
-                        <var>{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</var>{if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
+                            <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
+                        {if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
-                    ){/block}</code>
+                    )
+                {/block}</code>
 
-            <div class="description detailed">
+            <div class="description">
                 {$method|description}
 
-                {if !$class->isDeprecated() && $method->isDeprecated()}
-                    <h4>Deprecated</h4>
+                {if $method->isDeprecated()}
+                    <h2>Deprecated</h2>
                     {ifset $annotations['deprecated']}
                         <div class="list">
                             {foreach $annotations['deprecated'] as $description}
@@ -43,11 +51,11 @@
                 {/if}
 
                 {if $method->getParameters() && isset($annotations['param'])}
-                    <h4>Parameters</h4>
+                    <h2>Parameters</h2>
                     <div class="list">
                         <dl>
                             {foreach $method->getParameters() as $parameter}
-                                <dt><var>${$parameter->getName()}</var>{if $parameter->isVariadic()},…{/if}</dt>
+                                <dt><span class="property-name">${$parameter->getName()}</span>{if $parameter->isVariadic()},…{/if}</dt>
                                 <dd>{$parameter|description}</dd>
                             {/foreach}
                         </dl>
@@ -56,7 +64,7 @@
 
                 {* @note: is not neccessary if return typehtint is already there *}
                 {if isset($annotations['return']) && 'void' !== $annotations['return'][0]}
-                    <h4>Returns</h4>
+                    <h2>Returns</h2>
                     <div class="list">
                         {foreach $annotations['return'] as $description}
                             {$description|annotation:$method|noescape}{sep}<br>{/}
@@ -65,7 +73,7 @@
                 {/if}
 
                 {ifset $annotations['throws']}
-                    <h4>Throws</h4>
+                    <h2>Throws</h2>
                     <div class="list">
                         {foreach $annotations['throws'] as $description}
                             {$description|annotation:$method|noescape}{sep}<br>{/}
@@ -73,38 +81,37 @@
                     </div>
                 {/ifset}
 
-                {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['deprecated', 'param', 'return', 'throws'])}
-                {foreach $filteredAnnotations as $annotation => $descriptions}
-                    <h4>{$annotation}</h4>
+                {var $filteredAnnotations = ($method->getAnnotations()|annotationFilter: ['deprecated', 'param', 'return', 'throws'])}
+
+                {foreach $filteredAnnotations as $annotation}
+                    <h2>{$annotation->getName()}</h2>
                     <div class="list">
-                        {foreach $descriptions as $description}
-                            {if $description}
-                                {$description|annotation:$method|noescape}<br>
-                            {/if}
-                        {/foreach}
+                        {$annotation|annotation:$method|noescape}<br>
                     </div>
                 {/foreach}
 
-                {if $method->getOverriddenMethod()}
-                    <h4>Overrides</h4>
-                    <div class="list">
-                        <code>
-                            <a href="{$method->getOverriddenMethod()|linkReflection}">
-                                {$method->getOverriddenMethod()|prettyMethodName}
-                            </a>
-                        </code>
-                    </div>
-                {/if}
+                {if $isInterface === false}
+                    {if $method->getOverriddenMethod()}
+                        <h2>Overrides</h2>
+                        <div>
+                            <code>
+                                <a href="{$method->getOverriddenMethod()|linkReflection}">
+                                    {$method->getOverriddenMethod()|prettyMethodName}
+                                </a>
+                            </code>
+                        </div>
+                    {/if}
 
-                {if $method->getImplementedMethod()}
-                    <h4>Implementation of</h4>
-                    <div class="list">
-                        <code>
-                            <a href="{$method->getImplementedMethod()|linkReflection}">
-                                {$method->getImplementedMethod()|prettyMethodName}
-                            </a>
-                        </code>
-                    </div>
+                    {if $method->getImplementedMethod()}
+                        <h2>Implementation of</h2>
+                        <div>
+                            <code>
+                                <a href="{$method->getImplementedMethod()|linkReflection}">
+                                    {$method->getImplementedMethod()|prettyMethodName}
+                                </a>
+                            </code>
+                        </div>
+                    {/if}
                 {/if}
             </div>
         </div>

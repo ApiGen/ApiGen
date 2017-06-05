@@ -54,12 +54,32 @@ final class NamespaceGenerator implements GeneratorInterface
             ),
             [
                 'activeNamespace' => $singleNamespaceStorage->getNamespace(),
-                'parentNamespaces' => $singleNamespaceStorage->getParentNamespaces(),
+                'childNamespaces' => $this->resolveChildNamespaces($singleNamespaceStorage->getNamespace()),
                 'classes' => $singleNamespaceStorage->getClassReflections(),
                 'interfaces' => $singleNamespaceStorage->getInterfaceReflections(),
                 'traits' => $singleNamespaceStorage->getTraitReflections(),
                 'functions' => $singleNamespaceStorage->getFunctionReflections()
             ]
         );
+    }
+
+    /**
+     * @return string[]
+     */
+    private function resolveChildNamespaces(string $namespace): array
+    {
+        $prefix = $namespace . '\\';
+        $len = strlen($prefix);
+        $namespaces = array();
+
+        foreach ($this->namespaceStorage->getNamespaces() as $sub) {
+            if (substr($sub, 0, $len) === $prefix
+                && strpos(substr($sub, $len), '\\') === false
+            ) {
+                $namespaces[] = $sub;
+            }
+        }
+
+        return $namespaces;
     }
 }

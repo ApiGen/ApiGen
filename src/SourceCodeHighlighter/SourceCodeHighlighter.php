@@ -1,11 +1,10 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Generator\SourceCodeHighlighter;
+namespace ApiGen\SourceCodeHighlighter;
 
-use ApiGen\Contract\Generator\SourceCodeHighlighter\SourceCodeHighlighterInterface;
 use FSHL\Highlighter;
 
-final class FshlSourceCodeHighlighter implements SourceCodeHighlighterInterface
+final class SourceCodeHighlighter
 {
     /**
      * @var Highlighter

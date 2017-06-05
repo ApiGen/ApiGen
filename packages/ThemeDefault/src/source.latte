@@ -5,14 +5,8 @@
 {block content}
     <div id="source">
         {var $lineCount =substr_count($source, "\n")}
-        <pre class="code"><code>{$source|noescape}</code></pre>
-
         {var $lineRegex = '~<span class="line">(\\s*(\\d+):\\s*)</span>([^\\n]*(?:\\n|$))~'}
-        <pre class="numbers"><code>
-            {for $i = 1; $i < $lineCount; ++$i}<span class="l"><a href="#{$i}">{$i}</a></span>{/for}
-            {*{$source|replaceRE:$lineRegex,'<span class="l"><a href="#$2">$1</a></span>'|noescape}*}
-        </code></pre>
-        {* {explode and foreach} *}
+        <pre class="numbers"><code>{$source|replaceRE:$lineRegex,'<span class="l"><a href="#$2">$1</a></span>'|noescape}</code></pre>
         <pre class="code"><code>{$source|replaceRE:$lineRegex,'<span id="$2" class="l">$3</span>'|noescape}<br></code></pre>
     </div>
 {/block}
