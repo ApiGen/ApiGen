@@ -4,6 +4,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
+use ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Templating\TemplateRenderer;
 
@@ -23,24 +24,31 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
      * @var NamespaceReflectionCollector
      */
     private $namespaceReflectionCollector;
+    /**
+     * @var ParentEmptyNamespacesResolver
+     */
+    private $parentEmptyNamespacesResolver;
 
     public function __construct(
         NamespaceReflectionCollector $namespaceReflectionCollector,
         Configuration $configuration,
-        TemplateRenderer $templateRenderer
+        TemplateRenderer $templateRenderer,
+        ParentEmptyNamespacesResolver $parentEmptyNamespacesResolver
     ) {
         $this->namespaceReflectionCollector = $namespaceReflectionCollector;
         $this->configuration = $configuration;
         $this->templateRenderer = $templateRenderer;
+        $this->parentEmptyNamespacesResolver = $parentEmptyNamespacesResolver;
     }
 
     public function generate(): void
     {
-        $activeNamespaces = $this->namespaceReflectionCollector->getNamespaces();
-        dump($activeNamespaces);
-        die;
+        $parentEmptyNamespaces = $this->parentEmptyNamespacesResolver->resolve(
+            $this->namespaceReflectionCollector->getNamespaces()
+        );
 
-        foreach ($this->namespaceReflectionCollector->getNamespaces() as $namespace) {
+
+        foreach ($parentEmptyNamespaces as $namespace) {
             $this->generateForNamespace($namespace);
         }
     }
@@ -55,7 +63,11 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
             [
                 'activePage' => 'namespace',
                 'activeNamespace' => $namespace,
-                'childNamespaces' => $this->resolveChildNamespaces($namespace)
+                'childNamespaces' => $this->resolveChildNamespaces($namespace),
+                'classes' => [],
+                'interfaces' => [],
+                'traits' => [],
+                'functions' => [],
             ]
         );
     }
