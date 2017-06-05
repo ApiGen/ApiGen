@@ -41,8 +41,6 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
         $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
         $namespace = $reflection->getNamespaceName() ?: self::NO_NAMESPACE;
 
-        dump($namespace);
-
         $this->collectedReflections[$namespace][$reflectionInterface][$reflection->getName()] = $reflection;
     }
 
