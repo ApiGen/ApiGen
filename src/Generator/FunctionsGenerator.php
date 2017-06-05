@@ -41,6 +41,10 @@ final class FunctionsGenerator implements GeneratorInterface
 
     public function generate(): void
     {
+        if (count($this->reflectionStorage->getFunctionReflections()) < 1) {
+            return;
+        }
+
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName(self::NAME),
             $this->configuration->getDestinationWithName(self::NAME),

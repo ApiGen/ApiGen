@@ -41,6 +41,10 @@ final class InterfacesGenerator implements GeneratorInterface
 
     public function generate(): void
     {
+        if (count($this->reflectionStorage->getInterfaceReflections()) < 1) {
+            return;
+        }
+
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName(self::NAME),
             $this->configuration->getDestinationWithName(self::NAME),
