@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Element\Tests\Namespaces;
+namespace ApiGen\Element\Tests\ReflectionCollector;
 
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Reflection\Contract\ParserInterface;
