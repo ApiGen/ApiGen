@@ -24,6 +24,7 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
      * @var NamespaceReflectionCollector
      */
     private $namespaceReflectionCollector;
+
     /**
      * @var ParentEmptyNamespacesResolver
      */
