@@ -10,7 +10,7 @@ final class NamespaceStorage
     /**
      * @var string
      */
-    private const NO_NAMESPACE = 'None';
+    public const NO_NAMESPACE = 'None';
 
     /**
      * @var ReflectionStorageInterface
@@ -41,7 +41,9 @@ final class NamespaceStorage
 
         $namespaceNames = array_keys($this->reflectionsCategorizedToNamespaces);
 
-        return $this->makeNoNamespaceNameLast($namespaceNames);
+        sort($namespaceNames);
+
+        return $namespaceNames;
     }
 
     public function findInNamespace(string $namespaceToSeek): SingleNamespaceStorage
@@ -96,8 +98,7 @@ final class NamespaceStorage
                 $singleNamespaceElements['functions'] ?? []
             );
         }
-
-        $this->makeNoNamespaceLast();
+//        $this->makeNoNamespaceLast();
     }
 
     /**
@@ -122,18 +123,18 @@ final class NamespaceStorage
         $this->singleNamespaceStorages[self::NO_NAMESPACE] = $noNamespace;
     }
 
-    /**
-     * @param string[] $namespaceNames
-     * @return string[]
-     */
-    private function makeNoNamespaceNameLast(array $namespaceNames): array
-    {
-        if (in_array(self::NO_NAMESPACE, $namespaceNames)) {
-            $noNamespaceKey = array_search(self::NO_NAMESPACE, $namespaceNames);
-            unset($namespaceNames[$noNamespaceKey]);
-            $namespaceNames[] = self::NO_NAMESPACE;
-        }
-
-        return array_values($namespaceNames);
-    }
+//    /**
+//     * @param string[] $namespaceNames
+//     * @return string[]
+//     */
+//    private function makeNoNamespaceNameLast(array $namespaceNames): array
+//    {
+//        if (in_array(self::NO_NAMESPACE, $namespaceNames)) {
+//            $noNamespaceKey = array_search(self::NO_NAMESPACE, $namespaceNames);
+//            unset($namespaceNames[$noNamespaceKey]);
+//            $namespaceNames[] = self::NO_NAMESPACE;
+//        }
+//
+//        return array_values($namespaceNames);
+//    }
 }

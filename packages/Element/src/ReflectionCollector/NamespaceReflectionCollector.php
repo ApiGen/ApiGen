@@ -3,6 +3,7 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
+use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -14,15 +15,18 @@ use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 final class NamespaceReflectionCollector implements BasicReflectionCollectorInterface
 {
     /**
+     * @var mixed[]
+     */
+    private $collectedReflections;
+
+    /**
      * @var string
      */
     private $activeNamespace;
 
     /**
-     * @var mixed[]
+     * @param InNamespaceInterface|AbstractReflectionInterface $reflection
      */
-    private $collectedReflections;
-
     public function processReflection(AbstractReflectionInterface $reflection): void
     {
         if (! is_a($reflection, InNamespaceInterface::class)) {
@@ -30,11 +34,14 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
         }
 
         $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
+        $namespace = $reflection->getNamespaceName() ?: NamespaceStorage::NO_NAMESPACE;
 
-        /** @var InNamespaceInterface $reflection */
-        $namespace = $reflection->getNamespaceName();
+        $this->collectedReflections[$namespace][$reflectionInterface][$reflection->getName()] = $reflection;
+    }
 
-        $this->collectedReflections[$reflectionInterface][$namespace][$reflection->getName()] = $reflection;
+    public function setActiveNamespace(string $activeNamespace): void
+    {
+        $this->activeNamespace = $activeNamespace;
     }
 
     /**
@@ -42,7 +49,7 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
      */
     public function getClassReflections(): array
     {
-        return $this->collectedReflections[ClassReflectionInterface::class][$this->activeNamespace] ?? [];
+        return $this->collectedReflections[$this->activeNamespace][ClassReflectionInterface::class] ?? [];
     }
 
     /**
@@ -50,7 +57,7 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
      */
     public function getInterfaceReflections(): array
     {
-        return $this->collectedReflections[InterfaceReflectionInterface::class][$this->activeNamespace] ?? [];
+        return $this->collectedReflections[$this->activeNamespace][InterfaceReflectionInterface::class] ?? [];
     }
 
     /**
@@ -58,7 +65,7 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
      */
     public function getTraitReflections(): array
     {
-        return $this->collectedReflections[TraitReflectionInterface::class][$this->activeNamespace] ?? [];
+        return $this->collectedReflections[$this->activeNamespace][TraitReflectionInterface::class] ?? [];
     }
 
     /**
@@ -66,11 +73,23 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
      */
     public function getFunctionReflections(): array
     {
-        return $this->collectedReflections[FunctionReflectionInterface::class][$this->activeNamespace] ?? [];
+        return $this->collectedReflections[$this->activeNamespace][FunctionReflectionInterface::class] ?? [];
     }
 
     public function hasAnyElements(): bool
     {
         return (bool) count($this->collectedReflections);
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getNamespaces(): array
+    {
+        // todo: complete all parents!
+        $namespaceNames = array_keys($this->collectedReflections);
+        sort($namespaceNames);
+
+        return $namespaceNames;
     }
 }
