@@ -6,10 +6,10 @@
     <h1>{$title}</h1>
 
     <table class="summary table table-bordered table-responsive table-striped">
-        {foreach $namespaces as $namespace}
+        {foreach $functions as $function}
             <tr>
                 <td class="name">
-                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                    <a href="{$function|linkReflection}">{$function->getName()}</a>
                 </td>
             </tr>
         {/foreach}

@@ -1,10 +1,9 @@
 {layout '@layout.latte'}
-{var $activePage = 'interfaces'}
 
-{block title}Interfaces{/block}
+{block title}{$title}{/block}
 
 {block content}
-    <h1>Interfaces</h1>
+    <h1>{$title}</h1>
 
     <table class="summary table table-bordered table-responsive table-striped">
         {foreach $interfaces as $interface}

@@ -1,10 +1,9 @@
 {layout '@layout.latte'}
-{var $activePage = 'classes'}
 
-{block title}Classes{/block}
+{block title}{$title}{/block}
 
 {block content}
-    <h1>Classes</h1>
+    <h1>{$title}</h1>
 
     <table class="summary table table-bordered table-responsive table-striped">
         {foreach $classes as $class}
