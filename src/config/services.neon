@@ -26,7 +26,10 @@
 - ApiGen\Generator\InterfaceGenerator
 - ApiGen\Generator\TraitGenerator
 - ApiGen\Generator\FunctionGenerator
+
 - ApiGen\Generator\InterfacesGenerator
+- ApiGen\Generator\FunctionsGenerator
+- ApiGen\Generator\TraitsGenerator
 - ApiGen\Generator\ClassesGenerator
 - ApiGen\Generator\NamespacesGenerator
 
