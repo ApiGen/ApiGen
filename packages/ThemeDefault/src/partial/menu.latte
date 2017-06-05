@@ -22,7 +22,7 @@
 
                 {if count($allInterfaces)}
                     <li>
-                        <a n:class="$activePage === functions ? active" href="interfaces.html">Interfaces</a>
+                        <a n:class="$activePage === interfaces ? active" href="interfaces.html">Interfaces</a>
                     </li>
                 {/if}
 
@@ -47,6 +47,10 @@
                     </li>
                 {/foreach}
             </ul>
+
+            <form id="search" class="pull-right">
+                <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace" autofocus>
+            </form>
         </div>
     </div>
 </div>

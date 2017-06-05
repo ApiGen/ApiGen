@@ -7,12 +7,12 @@ use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\Templating\TemplateRenderer;
 
-final class ClassesGenerator implements GeneratorInterface
+final class InterfacesGenerator implements GeneratorInterface
 {
     /**
      * @var string
      */
-    private const NAME = 'classes';
+    private const NAME = 'interfaces';
 
     /**
      * @var Configuration
@@ -45,7 +45,7 @@ final class ClassesGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName(self::NAME),
             $this->configuration->getDestinationWithName(self::NAME),
             [
-                self::NAME => $this->reflectionStorage->getClassReflections()
+                self::NAME => $this->reflectionStorage->getInterfaceReflections()
             ]
         );
     }

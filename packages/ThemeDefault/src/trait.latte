@@ -4,7 +4,6 @@
 {block title}Trait {$trait->getName()}{/block}
 
 {block content}
-<div id="content" class="class">
     <h1 n:class="$trait->isDeprecated() ? deprecated">
         Trait
         {if $trait->getNamespaceName()}{$trait->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
@@ -62,7 +61,7 @@
         </table>
     {/if}
 
-    <table n:foreach="$trait->getTraits() as $usedTrait" class="summary used table table-responsive table-bordered table-striped">
+    <table n:foreach="$trait->getTraits() as $usedTrait" class="summary table table-responsive table-bordered table-striped">
         <tr><th>Methods used from <a href="{$usedTrait->getName()|linkReflection}#methods">{$usedTrait->getName()}</a> trait</th></tr>
         <tr>
             <td>
@@ -85,5 +84,4 @@
             {/foreach}
         </table>
     {/if}
-</div>
 {/block}

@@ -4,20 +4,18 @@
 {block title}{$title ?: 'Overview'}{/block}
 
 {block content}
-    <div id="content">
-        <h1>{include title}</h1>
+    <h1>{include title}</h1>
 
-        {if count($allNamespaces)}
-            <table class="table table-responsive table-bordered table-striped" id="namespaces">
-                <tr><th>Namespaces Summary</th></tr>
-                <tr n:foreach="$allNamespaces as $namespace">
-                    <td>
-                        <a href="{$namespace|linkNamespace}">{$namespace}</a>
-                    </td>
-                </tr>
-            </table>
-        {/if}
+    {if count($allNamespaces)}
+        <table class="table table-responsive table-bordered table-striped" id="namespaces">
+            <tr><th>Namespaces Summary</th></tr>
+            <tr n:foreach="$allNamespaces as $namespace">
+                <td>
+                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                </td>
+            </tr>
+        </table>
+    {/if}
 
-        {include '@elementlist.latte'}
-    </div>
+    {include '@elementlist.latte'}
 {/block}

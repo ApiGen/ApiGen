@@ -10,6 +10,11 @@ use ApiGen\Templating\TemplateRenderer;
 final class NamespacesGenerator implements GeneratorInterface
 {
     /**
+     * @var string
+     */
+    private const NAME = 'namespaces';
+
+    /**
      * @var Configuration
      */
     private $configuration;
@@ -36,10 +41,10 @@ final class NamespacesGenerator implements GeneratorInterface
     public function generate(): void
     {
         $this->templateRenderer->renderToFile(
-            $this->configuration->getTemplateByName('namespaces'),
-            $this->configuration->getDestinationWithName('namespaces'),
+            $this->configuration->getTemplateByName(self::NAME),
+            $this->configuration->getDestinationWithName(self::NAME),
             [
-                'namespaces' => $this->namespaceStorage->getNamespaces()
+                self::NAME => $this->namespaceStorage->getNamespaces()
             ]
         );
     }

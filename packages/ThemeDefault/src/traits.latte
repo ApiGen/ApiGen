@@ -1,16 +1,16 @@
 {layout '@layout.latte'}
-{var $activePage = 'namespaces'}
+{var $activePage = 'traits'}
 
-{block title}Namespaces{/block}
+{block title}Traits{/block}
 
 {block content}
-    <h1>Namespaces</h1>
+    <h1>Traits</h1>
 
     <table class="summary table table-bordered table-responsive table-striped">
-        {foreach $namespaces as $namespace}
+        {foreach $traits as $trait}
             <tr>
                 <td class="name">
-                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                    <a href="{$trait|linkReflection}">{$trait->getName()}</a>
                 </td>
             </tr>
         {/foreach}

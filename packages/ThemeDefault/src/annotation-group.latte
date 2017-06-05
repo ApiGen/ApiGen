@@ -4,7 +4,6 @@
 {block title}{$annotation|firstUpper}{/block}
 
 {block content}
-<div id="content">
     <h1>{include title}</h1>
 
     {if $hasElements}
@@ -81,7 +80,6 @@
     {else}
         <p>No elements with <code>@{$annotation}</code> annotation found.</p>
     {/if}
-</div>
 {/block}
 
 

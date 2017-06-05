@@ -4,7 +4,6 @@
 {block title}Interface {$interface->getName()}{/block}
 
 {block content}
-<div id="content" class="class">
     <h1 n:class="$interface->isDeprecated() ? deprecated">
         Interface
         {if $interface->getNamespaceName()}{$interface->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
@@ -110,5 +109,4 @@
             </tr>
         </table>
     {/foreach}
-</div>
 {/block}
