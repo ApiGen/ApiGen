@@ -26,6 +26,8 @@
 - ApiGen\Generator\InterfaceGenerator
 - ApiGen\Generator\TraitGenerator
 - ApiGen\Generator\FunctionGenerator
+- ApiGen\Generator\ClassesGenerator
+- ApiGen\Generator\NamespacesGenerator
 
 # Templating
 - ApiGen\Templating\TemplateRenderer

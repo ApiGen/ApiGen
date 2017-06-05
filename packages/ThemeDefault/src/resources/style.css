@@ -190,24 +190,24 @@ pre {
 
 
 
-/* Content */
-#content {
-    clear: both;
-    padding: 5px 15px;
-}
+/*!* Content *!*/
+/*#content {*/
+    /*clear: both;*/
+    /*padding: 5px 15px;*/
+/*}*/
 
 .description pre {
     padding: .6em;
     background: #fcfcf7;
 }
 
-#content > .description {
+.description {
     background: #ecede5;
     padding: 1px 8px;
     margin: 1.2em 0;
 }
 
-#content > .description pre {
+.description pre {
     margin: .5em 0;
 }
 

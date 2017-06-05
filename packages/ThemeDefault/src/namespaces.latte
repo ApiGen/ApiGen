@@ -4,16 +4,17 @@
 {block title}Namespaces{/block}
 
 {block content}
-    <div id="content" class="namespace">
-        <h1>Namespace Overview</h1>
+    <div id="content">
+        <h1>Namespaces</h1>
 
         <table class="summary table table-bordered table-responsive table-striped">
-            <tr><th>Namespaces Summary</th></tr>
-            <tr n:foreach="$namespaces as $namespace">
-                <td class="name">
-                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
-                </td>
-            </tr>
+            {foreach $namespaces as $namespace}
+                <tr>
+                    <td class="name">
+                        <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                    </td>
+                </tr>
+            {/foreach}
         </table>
     </div>
 {/block}

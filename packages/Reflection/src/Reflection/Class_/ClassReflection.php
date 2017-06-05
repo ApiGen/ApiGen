@@ -128,12 +128,13 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getParentClass(): ?ClassReflectionInterface
     {
-        if (! $this->betterClassReflection->getParentClass()) {
+        $parentClassName = get_parent_class($this->getName());
+        if ($parentClassName === false) {
             return null;
         }
 
         return $this->transformerCollector->transformSingle(
-            $this->betterClassReflection->getParentClass()
+            ReflectionClass::createFromName($parentClassName)
         );
     }
 

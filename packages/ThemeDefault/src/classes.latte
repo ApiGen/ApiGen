@@ -1,0 +1,18 @@
+{layout '@layout.latte'}
+{var $activePage = 'classes'}
+
+{block title}Classes{/block}
+
+{block content}
+    <h1>Classes</h1>
+
+    <table class="summary table table-bordered table-responsive table-striped">
+        {foreach $classes as $class}
+            <tr>
+                <td class="name">
+                    <a href="{$class|linkReflection}">{$class->getName()}</a>
+                </td>
+            </tr>
+        {/foreach}
+    </table>
+{/block}

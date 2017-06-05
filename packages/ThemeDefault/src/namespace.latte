@@ -4,7 +4,7 @@
 {block title}{if $activeNamespace !== 'None'}Namespace {$activeNamespace}{else}No namespace{/if}{/block}
 
 {block content}
-<div id="content" class="namespace">
+<div id="content">
     <h1>{if $activeNamespace !== 'None'}Namespace {$activeNamespace|linkAllNamespaceParts|noescape}{else}No namespace{/if}</h1>
 
     {if $childNamespaces}
