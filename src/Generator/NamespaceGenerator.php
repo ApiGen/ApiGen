@@ -45,7 +45,7 @@ final class NamespaceGenerator implements GeneratorInterface
         string $namespace,
         NamespaceReflectionCollector $namespaceReflectionCollector
     ): void {
-        $this->namespaceReflectionCollector->setActiveNamespace($namespace);
+//        $this->namespaceReflectionCollector->setActiveNamespace($namespace);
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('namespace'),
@@ -56,10 +56,10 @@ final class NamespaceGenerator implements GeneratorInterface
                 'activePage' => 'namespace',
                 'activeNamespace' => $namespace,
                 'childNamespaces' => $this->resolveChildNamespaces($namespace),
-                'classes' => $namespaceReflectionCollector->getClassReflections(),
-                'interfaces' => $namespaceReflectionCollector->getInterfaceReflections(),
-                'traits' => $namespaceReflectionCollector->getTraitReflections(),
-                'functions' => $namespaceReflectionCollector->getFunctionReflections()
+                'classes' => $namespaceReflectionCollector->getClassReflections($namespace),
+                'interfaces' => $namespaceReflectionCollector->getInterfaceReflections($namespace),
+                'traits' => $namespaceReflectionCollector->getTraitReflections($namespace),
+                'functions' => $namespaceReflectionCollector->getFunctionReflections($namespace)
             ]
         );
     }

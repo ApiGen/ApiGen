@@ -14,15 +14,15 @@ interface AdvancedReflectionCollectorInterface extends BasicReflectionCollectorI
     /**
      * @return ClassMethodReflectionInterface[]|TraitMethodReflectionInterface[]
      */
-    public function getClassOrTraitMethodReflections(): array;
+    public function getClassOrTraitMethodReflections(string $filter): array;
 
     /**
      * @return ClassPropertyReflectionInterface[]|TraitPropertyReflectionInterface[]
      */
-    public function getClassOrTraitPropertyReflections(): array;
+    public function getClassOrTraitPropertyReflections(string $filter): array;
 
     /**
      * @return ClassConstantReflectionInterface[]|InterfaceConstantReflectionInterface[]
      */
-    public function getClassOrInterfaceConstantReflections(): array;
+    public function getClassOrInterfaceConstantReflections(string $filter): array;
 }

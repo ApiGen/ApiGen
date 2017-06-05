@@ -15,22 +15,22 @@ interface BasicReflectionCollectorInterface
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getClassReflections(): array;
+    public function getClassReflections(string $filter): array;
 
     /**
      * @return InterfaceReflectionInterface[]
      */
-    public function getInterfaceReflections(): array;
+    public function getInterfaceReflections(string $filter): array;
 
     /**
      * @return TraitReflectionInterface[]
      */
-    public function getTraitReflections(): array;
+    public function getTraitReflections(string $filter): array;
 
     /**
      * @return FunctionReflectionInterface[]
      */
-    public function getFunctionReflections(): array;
+    public function getFunctionReflections(string $filter): array;
 
     public function hasAnyElements(): bool;
 }

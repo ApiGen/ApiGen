@@ -16,5 +16,7 @@
         </table>
     {/if}
 
-    {include '@elementlist.latte'}
+    {if count($allNamespaces) <= 1}
+        {include '@elementlist.latte'}
+    {/if}
 {/block}

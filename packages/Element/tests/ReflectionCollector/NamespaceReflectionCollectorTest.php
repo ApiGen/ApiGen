@@ -41,23 +41,23 @@ final class NamespaceReflectionCollectorTest extends AbstractContainerAwareTestC
 
     public function testFetchFromNamespace(): void
     {
-        $this->namespaceReflectionCollector->setActiveNamespace($this->namespacePrefix);
-        $this->assertCount(1, $this->namespaceReflectionCollector->getClassReflections());
-        $this->assertCount(0, $this->namespaceReflectionCollector->getTraitReflections());
-        $this->assertCount(1, $this->namespaceReflectionCollector->getFunctionReflections());
-        $this->assertCount(0, $this->namespaceReflectionCollector->getInterfaceReflections());
+        $this->assertCount(1, $this->namespaceReflectionCollector->getClassReflections($this->namespacePrefix));
+        $this->assertCount(0, $this->namespaceReflectionCollector->getTraitReflections($this->namespacePrefix));
+        $this->assertCount(1, $this->namespaceReflectionCollector->getFunctionReflections($this->namespacePrefix));
+        $this->assertCount(0, $this->namespaceReflectionCollector->getInterfaceReflections($this->namespacePrefix));
 
-        $this->namespaceReflectionCollector->setActiveNamespace($this->namespacePrefix . '\SubNamespace');
-        $this->assertCount(0, $this->namespaceReflectionCollector->getClassReflections());
-        $this->assertCount(1, $this->namespaceReflectionCollector->getTraitReflections());
-        $this->assertCount(0, $this->namespaceReflectionCollector->getFunctionReflections());
-        $this->assertCount(1, $this->namespaceReflectionCollector->getInterfaceReflections());
+        $desiredNamespace = $this->namespacePrefix . '\SubNamespace';
+        $this->assertCount(0, $this->namespaceReflectionCollector->getClassReflections($desiredNamespace));
+        $this->assertCount(1, $this->namespaceReflectionCollector->getTraitReflections($desiredNamespace));
+        $this->assertCount(0, $this->namespaceReflectionCollector->getFunctionReflections($desiredNamespace));
+        $this->assertCount(1, $this->namespaceReflectionCollector->getInterfaceReflections($desiredNamespace));
     }
 
     public function testNoneNamespace(): void
     {
-        $this->namespaceReflectionCollector->setActiveNamespace(NamespaceReflectionCollector::NO_NAMESPACE);
-
-        $this->assertCount(1, $this->namespaceReflectionCollector->getClassReflections());
+        $this->assertCount(
+            1,
+            $this->namespaceReflectionCollector->getClassReflections(NamespaceReflectionCollector::NO_NAMESPACE)
+        );
     }
 }

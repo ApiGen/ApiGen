@@ -24,11 +24,6 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
     private $collectedReflections = [];
 
     /**
-     * @var string
-     */
-    private $activeNamespace;
-
-    /**
      * @param InNamespaceInterface|AbstractReflectionInterface $reflection
      */
     public function processReflection(AbstractReflectionInterface $reflection): void
@@ -43,41 +38,36 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
         $this->collectedReflections[$namespace][$reflectionInterface][$reflection->getName()] = $reflection;
     }
 
-    public function setActiveNamespace(string $activeNamespace): void
-    {
-        $this->activeNamespace = $activeNamespace;
-    }
-
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getClassReflections(): array
+    public function getClassReflections(string $namespace): array
     {
-        return $this->collectedReflections[$this->activeNamespace][ClassReflectionInterface::class] ?? [];
+        return $this->collectedReflections[$namespace][ClassReflectionInterface::class] ?? [];
     }
 
     /**
      * @return InterfaceReflectionInterface[]
      */
-    public function getInterfaceReflections(): array
+    public function getInterfaceReflections(string $namespace): array
     {
-        return $this->collectedReflections[$this->activeNamespace][InterfaceReflectionInterface::class] ?? [];
+        return $this->collectedReflections[$namespace][InterfaceReflectionInterface::class] ?? [];
     }
 
     /**
      * @return TraitReflectionInterface[]
      */
-    public function getTraitReflections(): array
+    public function getTraitReflections(string $namespace): array
     {
-        return $this->collectedReflections[$this->activeNamespace][TraitReflectionInterface::class] ?? [];
+        return $this->collectedReflections[$namespace][TraitReflectionInterface::class] ?? [];
     }
 
     /**
      * @return FunctionReflectionInterface[]
      */
-    public function getFunctionReflections(): array
+    public function getFunctionReflections(string $namespace): array
     {
-        return $this->collectedReflections[$this->activeNamespace][FunctionReflectionInterface::class] ?? [];
+        return $this->collectedReflections[$namespace][FunctionReflectionInterface::class] ?? [];
     }
 
     public function hasAnyElements(): bool
