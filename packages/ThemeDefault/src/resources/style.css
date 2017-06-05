@@ -40,6 +40,7 @@ a, td a {
 a:hover, a:active, a:focus, a:hover b, a:hover var {
     background-color: #006aeb;
     color: #ffffff !important;
+    text-decoration: none;
 }
 
 code, var, pre {
@@ -53,41 +54,6 @@ pre {
 .deprecated {
     text-decoration: line-through;
     opacity: .5;
-}
-
-/* Menu */
-#menu {
-    padding: 10px;
-}
-
-#menu ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-#menu ul ul {
-    padding-left: 10px;
-}
-
-#menu li {
-    white-space: nowrap;
-    position: relative;
-}
-
-#menu a {
-    display: block;
-    padding: 0 2px;
-}
-
-#menu .active > a, #menu > span {
-    color: #333333;
-    background: none;
-    font-weight: bold;
-}
-
-#menu .active > a:hover, #menu .active > a:active, #menu .active > a:focus {
-    background-color: #006aeb;
 }
 
 /* Search */
@@ -170,22 +136,17 @@ pre {
     margin: 2px;
     padding: 0 .2em;
     font-family: Verdana, 'Geneva CE', lucida, sans-serif;
-    color: #808080;
 }
 
 #navigation ul li a {
     color: #000000;
-    padding: .4em;
+    padding: .5em;
+    font-weight: bold;
 }
 
 #navigation ul li a.active {
-    font-weight: bold;
     color: white;
     background: #053368;
-}
-
-#navigation ul li a:hover span, #navigation ul li a:active span, #navigation ul li a:focus span {
-    background-color: #006aeb;
 }
 
 .description pre {
@@ -383,8 +344,3 @@ p {
 code {
     background: none;
 }
-
-a:hover, a:focus {
-    text-decoration: none;
-}
-

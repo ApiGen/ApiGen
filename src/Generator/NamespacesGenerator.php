@@ -49,7 +49,7 @@ final class NamespacesGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithName(self::NAME),
             [
                 'activePage' => self::NAME,
-                'title' => ucfirst(self::NAME),
+                'pageTitle' => ucfirst(self::NAME),
                 self::NAME => $this->namespaceStorage->getNamespaces()
             ]
         );

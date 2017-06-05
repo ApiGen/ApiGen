@@ -50,7 +50,7 @@ final class ClassesGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithName(self::NAME),
             [
                 'activePage' => self::NAME,
-                'title' => ucfirst(self::NAME),
+                'pageTitle' => ucfirst(self::NAME),
                 self::NAME => $this->reflectionStorage->getClassReflections()
             ]
         );

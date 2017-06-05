@@ -1,9 +1,9 @@
 {layout '@layout.latte'}
 
-{block title}{$title}{/block}
+{block title}{$pageTitle}{/block}
 
 {block content}
-    <h1>{$title}</h1>
+    <h1>{$pageTitle}</h1>
 
     <table class="summary table table-bordered table-responsive table-striped">
         {foreach $functions as $function}

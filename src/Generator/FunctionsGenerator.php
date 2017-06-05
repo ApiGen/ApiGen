@@ -50,7 +50,7 @@ final class FunctionsGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithName(self::NAME),
             [
                 'activePage' => self::NAME,
-                'title' => ucfirst(self::NAME),
+                'pageTitle' => ucfirst(self::NAME),
                 self::NAME => $this->reflectionStorage->getFunctionReflections()
             ]
         );
