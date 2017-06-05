@@ -2,11 +2,11 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\TemplateRenderer;
 use ApiGen\Utils\RelativePathResolver;
 
@@ -18,7 +18,7 @@ final class FunctionGenerator implements GeneratorInterface
     private $reflectionStorage;
 
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -39,7 +39,7 @@ final class FunctionGenerator implements GeneratorInterface
 
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
-        ConfigurationInterface $configuration,
+        Configuration $configuration,
         SourceCodeHighlighter $sourceCodeHighlighter,
         TemplateRenderer $templateRenderer,
         RelativePathResolver $relativePathResolver
@@ -65,6 +65,7 @@ final class FunctionGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('function'),
             $this->configuration->getDestinationWithPrefixName('function-', $reflectionFunction->getName()),
             [
+                'activePage' => 'function',
                 'function' => $reflectionFunction
             ]
         );
@@ -89,6 +90,7 @@ final class FunctionGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $destination,
             [
+                'activePage' => 'function',
                 'fileName' => $functionReflection->getFileName(),
                 'source' => $highlightedContent,
             ]

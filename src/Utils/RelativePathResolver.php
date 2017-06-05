@@ -2,13 +2,13 @@
 
 namespace ApiGen\Utils;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use InvalidArgumentException;
 
 final class RelativePathResolver
 {
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -17,7 +17,7 @@ final class RelativePathResolver
      */
     private $fileSystem;
 
-    public function __construct(ConfigurationInterface $configuration, FileSystem $fileSystem)
+    public function __construct(Configuration $configuration, FileSystem $fileSystem)
     {
         $this->configuration = $configuration;
         $this->fileSystem = $fileSystem;

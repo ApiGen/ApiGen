@@ -2,7 +2,7 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Element\Namespaces\SingleNamespaceStorage;
@@ -11,7 +11,7 @@ use ApiGen\Templating\TemplateRenderer;
 final class NamespaceGenerator implements GeneratorInterface
 {
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -26,7 +26,7 @@ final class NamespaceGenerator implements GeneratorInterface
 
     public function __construct(
         NamespaceStorage $namespaceStorage,
-        ConfigurationInterface $configuration,
+        Configuration $configuration,
         TemplateRenderer $templateRenderer
     ) {
         $this->namespaceStorage = $namespaceStorage;
@@ -53,6 +53,7 @@ final class NamespaceGenerator implements GeneratorInterface
                 'namespace-', $singleNamespaceStorage->getNamespace()
             ),
             [
+                'activePage' => 'namespace',
                 'activeNamespace' => $singleNamespaceStorage->getNamespace(),
                 'childNamespaces' => $this->resolveChildNamespaces($singleNamespaceStorage->getNamespace()),
                 'classes' => $singleNamespaceStorage->getClassReflections(),

@@ -6,8 +6,9 @@ use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterfac
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use phpDocumentor\Reflection\DocBlock\Tag;
 
-# see: https://github.com/phpDocumentor/TypeResolver#resolving-an-fqsen
-
+/**
+ * @link https://github.com/phpDocumentor/TypeResolver#resolving-an-fqsen
+ */
 final class AnnotationDecorator
 {
     /**

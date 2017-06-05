@@ -2,11 +2,11 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\TemplateRenderer;
 
 final class ClassGenerator implements GeneratorInterface
@@ -17,7 +17,7 @@ final class ClassGenerator implements GeneratorInterface
     private $reflectionStorage;
 
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -33,7 +33,7 @@ final class ClassGenerator implements GeneratorInterface
 
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
-        ConfigurationInterface $configuration,
+        Configuration $configuration,
         SourceCodeHighlighter $sourceCodeHighlighter,
         TemplateRenderer $templateRenderer
     ) {
@@ -57,6 +57,7 @@ final class ClassGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('class'),
             $this->configuration->getDestinationWithPrefixName('class-', $classReflection->getName()),
             [
+                'activePage' => 'class',
                 'class' => $classReflection,
             ]
         );
@@ -71,6 +72,7 @@ final class ClassGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $this->configuration->getDestinationWithPrefixName('source-class-', $classReflection->getName()),
             [
+                'activePage' => 'class',
                 'activeClass' => $classReflection,
                 'fileName' => $classReflection->getFileName(),
                 'source' => $highlightedContent

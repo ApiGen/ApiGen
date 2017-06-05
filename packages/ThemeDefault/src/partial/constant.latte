@@ -6,21 +6,25 @@
         <code>
             <a href="{$constant|linkSource}" class="constant-name">{$constant->getName()}</a>
         </code>
-        <div class="description">
-            {$constant|description}
 
-            {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
-            {foreach $filteredAnnotations as $annotation}
-                <h2>{$annotation->getName()}</h2>
-                <div class="list">
-                    {$annotation|annotation:$constant|noescape}<br>
-                </div>
-            {/foreach}
-        </div>
+        {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+
+        {if $constant->getDescription() || count($filteredAnnotations)}
+            <div class="description">
+                {$constant|description}
+
+                {foreach $filteredAnnotations as $annotation}
+                    <h2>{$annotation->getName()}</h2>
+                    <div class="list">
+                        {$annotation|annotation:$constant|noescape}<br>
+                    </div>
+                {/foreach}
+            </div>
+        {/if}
     </td>
     <td class="value">
         <div>
-            <a href="#{$constant->getName()}" class="anchor">#</a>
+            <a href="#{$constant->getName()}" class="anchor pull-right">#</a>
             <code>{$constant->getValue()}</code>
         </div>
     </td>

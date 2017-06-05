@@ -1,10 +1,8 @@
 {layout '@layout.latte'}
-{var $activePage = 'interface'}
 
 {block title}Interface {$interface->getName()}{/block}
 
 {block content}
-<div id="content" class="class">
     <h1 n:class="$interface->isDeprecated() ? deprecated">
         Interface
         {if $interface->getNamespaceName()}{$interface->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
@@ -85,7 +83,7 @@
             </td>
             <td class="value">
                 <div>
-                    <a href="#{$constant->getName()}" class="anchor">#</a>
+                    <a href="#{$constant->getName()}" class="anchor pull-right">#</a>
                     <code>{$constant->getValueDefinition()|highlightValue:$interface|noescape}</code>
                 </div>
             </td>
@@ -110,5 +108,4 @@
             </tr>
         </table>
     {/foreach}
-</div>
 {/block}

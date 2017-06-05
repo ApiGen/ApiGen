@@ -2,11 +2,11 @@
 
 namespace ApiGen\Generator;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\TemplateRenderer;
 
 final class TraitGenerator implements GeneratorInterface
@@ -17,7 +17,7 @@ final class TraitGenerator implements GeneratorInterface
     private $reflectionStorage;
 
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -33,7 +33,7 @@ final class TraitGenerator implements GeneratorInterface
 
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
-        ConfigurationInterface $configuration,
+        Configuration $configuration,
         SourceCodeHighlighter $sourceCodeHighlighter,
         TemplateRenderer $templateRenderer
     ) {
@@ -57,6 +57,7 @@ final class TraitGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('trait'),
             $this->configuration->getDestinationWithPrefixName('trait-',$traitReflection->getName()),
             [
+                'activePage' => 'trait',
                 'trait' => $traitReflection,
             ]
         );
@@ -73,6 +74,7 @@ final class TraitGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $destination,
             [
+                'activePage' => 'trait',
                 'fileName' => $traitReflection->getFileName(),
                 'source' => $highlightedContent,
             ]

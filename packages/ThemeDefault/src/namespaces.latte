@@ -1,0 +1,17 @@
+{layout '@layout.latte'}
+
+{block title}{$pageTitle}{/block}
+
+{block content}
+    <h1>{$pageTitle}</h1>
+
+    <table class="summary table table-bordered table-responsive table-striped">
+        {foreach $namespaces as $namespace}
+            <tr>
+                <td class="name">
+                    <a href="{$namespace|linkNamespace}">{$namespace}</a>
+                </td>
+            </tr>
+        {/foreach}
+    </table>
+{/block}

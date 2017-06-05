@@ -2,7 +2,6 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
 use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
@@ -14,7 +13,7 @@ use ApiGen\ModularConfiguration\Option\VisibilityLevelOption;
 use ApiGen\ModularConfiguration\Parameter\ParameterProvider;
 use ApiGen\Utils\NamingHelper;
 
-final class Configuration implements ConfigurationInterface
+final class Configuration
 {
     /**
      * @var mixed[]

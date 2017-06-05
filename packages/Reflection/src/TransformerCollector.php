@@ -94,7 +94,7 @@ final class TransformerCollector implements TransformerCollectorInterface
             return true;
         }
 
-        // hardcoded @todo make service-like and using ConfigurationInterface
+        // hardcoded @todo make service-like and using Configuration
         if ($transformedReflection->isPublic() || $transformedReflection->isProtected()) {
             return true;
         }

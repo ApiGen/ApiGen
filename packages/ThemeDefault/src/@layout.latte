@@ -16,11 +16,11 @@
     </head>
 
     <body>
+        {include "partial/menu.latte"}
+
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    {include searchForm}
-                    {include "partial/menu.latte"}
                     {include content}
                     {include footer}
                 </div>
@@ -35,13 +35,6 @@
         <script src="/elementlist.js"></script>
     </body>
 </html>
-
-
-{define searchForm}
-    <form id="search">
-        <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace" autofocus>
-    </form>
-{/define}
 
 
 {define footer}

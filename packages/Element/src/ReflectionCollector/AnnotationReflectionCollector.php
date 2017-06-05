@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element\ReflectionCollector;
 
-use ApiGen\Contract\Configuration\ConfigurationInterface;
+use ApiGen\Configuration\Configuration;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
@@ -20,7 +20,7 @@ use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 final class AnnotationReflectionCollector extends AbstractReflectionCollector
 {
     /**
-     * @var ConfigurationInterface
+     * @var Configuration
      */
     private $configuration;
 
@@ -29,7 +29,7 @@ final class AnnotationReflectionCollector extends AbstractReflectionCollector
      */
     private $activeAnnotation;
 
-    public function __construct(ConfigurationInterface $configuration)
+    public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
     }

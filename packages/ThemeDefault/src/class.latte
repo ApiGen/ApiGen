@@ -1,10 +1,8 @@
 {layout '@layout.latte'}
-{var $activePage = 'class'}
 
 {block title}Class {$class->getName()}{/block}
 
 {block content}
-<div id="content" class="class">
     <h1 n:class="$class->isDeprecated() ? deprecated">
         Class {if $class->getNamespaceName()}{$class->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}{$class->getShortName()}
     </h1>
@@ -15,32 +13,34 @@
         </div>
     {/if}
 
-    <dl class="tree" n:ifcontent>
-        <dd>
-            {if $class->getParentClass()}
-                extends
-                <a href="{$class->getParentClass()|linkReflection}" n:class="$class->getParentClass()->isDeprecated() ? deprecated">
-                    {$class->getParentClass()->getName()}
-                </a>
-            {/if}
+    {if $class->getParentClass() || $class->getOwnInterfaces() || $class->getTraits()}
+        <dl class="tree">
+            <dd>
+                {if $class->getParentClass()}
+                    extends
+                    <a href="{$class->getParentClass()|linkReflection}" n:class="$class->getParentClass()->isDeprecated() ? deprecated">
+                        {$class->getParentClass()->getName()}
+                    </a>
+                {/if}
 
-            {if $class->getOwnInterfaces()}
-                implements
-                {foreach $class->getOwnInterfaces() as $ownInterface}
-                    <a href="{$ownInterface|linkReflection}" n:class="$ownInterface->isDeprecated() ? deprecated">
-                        {$ownInterface->getName()}
-                    </a>{sep}, {/sep}
-                {/foreach}
-            {/if}
+                {if $class->getOwnInterfaces()}
+                    implements
+                    {foreach $class->getOwnInterfaces() as $ownInterface}
+                        <a href="{$ownInterface|linkReflection}" n:class="$ownInterface->isDeprecated() ? deprecated">
+                            {$ownInterface->getName()}
+                        </a>{sep}, {/sep}
+                    {/foreach}
+                {/if}
 
-            {if $class->getTraits()}
-                uses
-                {foreach $class->getTraits() as $ownTrait}
-                    <a href="{$ownTrait|linkReflection}" n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</a>{sep}, {/sep}
-                {/foreach}
-            {/if}
-        </dd>
-    </dl>
+                {if $class->getTraits()}
+                    uses
+                    {foreach $class->getTraits() as $ownTrait}
+                        <a href="{$ownTrait|linkReflection}" n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</a>{sep}, {/sep}
+                    {/foreach}
+                {/if}
+            </dd>
+        </dl>
+    {/if}
 
     {define children}
         {foreach $children as $child}
@@ -92,7 +92,7 @@
         </table>
     {/foreach}
 
-    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary used table table-bordered table-responsive table-striped">
+    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary table table-bordered table-responsive table-striped">
         <tr><th>Methods used from <a href="{$traitName|linkReflection}#methods">{$traitName}</a> trait</th></tr>
         <tr>
             <td>
@@ -156,7 +156,7 @@
         </table>
     {/foreach}
 
-    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary used table table-bordered table-responsive table-striped">
+    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary table table-bordered table-responsive table-striped">
         <tr><th>Properties used from <a href="{$traitName|linkReflection}#properties">{$traitName}</a></th></tr>
         <tr>
             <td>
@@ -170,5 +170,4 @@
             </td>
         </tr>
     </table>
-</div>
 {/block}
