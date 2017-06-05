@@ -28,7 +28,10 @@ final class IndexGenerator implements GeneratorInterface
     {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('index'),
-            $this->configuration->getDestinationWithName('index')
+            $this->configuration->getDestinationWithName('index'),
+            [
+                'activePage' => 'overview'
+            ]
         );
     }
 }

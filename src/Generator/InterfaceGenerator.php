@@ -57,6 +57,7 @@ final class InterfaceGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('interface'),
             $this->configuration->getDestinationWithPrefixName('interface-', $interfaceReflection->getName()),
             [
+                'activePage' => 'interface',
                 'interface' => $interfaceReflection,
             ]
         );
@@ -75,6 +76,7 @@ final class InterfaceGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $destination,
             [
+                'activePage' => 'interface',
                 'fileName' => $interfaceReflection->getFileName(),
                 'source' => $highlightedContent,
             ]

@@ -65,6 +65,7 @@ final class FunctionGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('function'),
             $this->configuration->getDestinationWithPrefixName('function-', $reflectionFunction->getName()),
             [
+                'activePage' => 'function',
                 'function' => $reflectionFunction
             ]
         );
@@ -89,6 +90,7 @@ final class FunctionGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $destination,
             [
+                'activePage' => 'function',
                 'fileName' => $functionReflection->getFileName(),
                 'source' => $highlightedContent,
             ]

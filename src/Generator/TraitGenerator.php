@@ -57,6 +57,7 @@ final class TraitGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('trait'),
             $this->configuration->getDestinationWithPrefixName('trait-',$traitReflection->getName()),
             [
+                'activePage' => 'trait',
                 'trait' => $traitReflection,
             ]
         );
@@ -73,6 +74,7 @@ final class TraitGenerator implements GeneratorInterface
             $this->configuration->getTemplateByName('source'),
             $destination,
             [
+                'activePage' => 'trait',
                 'fileName' => $traitReflection->getFileName(),
                 'source' => $highlightedContent,
             ]

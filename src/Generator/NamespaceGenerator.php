@@ -53,6 +53,7 @@ final class NamespaceGenerator implements GeneratorInterface
                 'namespace-', $singleNamespaceStorage->getNamespace()
             ),
             [
+                'activePage' => 'namespace',
                 'activeNamespace' => $singleNamespaceStorage->getNamespace(),
                 'childNamespaces' => $this->resolveChildNamespaces($singleNamespaceStorage->getNamespace()),
                 'classes' => $singleNamespaceStorage->getClassReflections(),
