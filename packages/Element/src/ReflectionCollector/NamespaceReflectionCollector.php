@@ -10,7 +10,6 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Helper\ReflectionAnalyzer;
-use Nette\Utils\Strings;
 
 final class NamespaceReflectionCollector implements BasicReflectionCollectorInterface
 {
