@@ -10,6 +10,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Helper\ReflectionAnalyzer;
+use Nette\Utils\Strings;
 
 final class NamespaceReflectionCollector implements BasicReflectionCollectorInterface
 {
@@ -24,6 +25,11 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
     private $collectedReflections = [];
 
     /**
+     * @var string[]
+     */
+    private $cachedNamespaceKeys = [];
+
+    /**
      * @param InNamespaceInterface|AbstractReflectionInterface $reflection
      */
     public function processReflection(AbstractReflectionInterface $reflection): void
@@ -34,6 +40,8 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
 
         $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
         $namespace = $reflection->getNamespaceName() ?: self::NO_NAMESPACE;
+
+        dump($namespace);
 
         $this->collectedReflections[$namespace][$reflectionInterface][$reflection->getName()] = $reflection;
     }
@@ -80,10 +88,15 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
      */
     public function getNamespaces(): array
     {
-        // todo: complete all parents!
+        if ($this->cachedNamespaceKeys) {
+            return $this->cachedNamespaceKeys;
+        }
+
         $namespaceNames = array_keys($this->collectedReflections);
         sort($namespaceNames);
 
-        return $namespaceNames;
+        $this->cachedNamespaceKeys = $namespaceNames;
+
+        return $this->cachedNamespaceKeys;
     }
 }
