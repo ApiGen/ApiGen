@@ -3,6 +3,7 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Element\Contract\ReflectionCollector\AdvancedReflectionCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
@@ -17,7 +18,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 
-final class AnnotationReflectionCollector extends AbstractReflectionCollector
+final class AnnotationReflectionCollector implements AdvancedReflectionCollectorInterface
 {
     /**
      * @var Configuration
@@ -28,6 +29,11 @@ final class AnnotationReflectionCollector extends AbstractReflectionCollector
      * @var string
      */
     private $activeAnnotation;
+
+    /**
+     * @var mixed[]
+     */
+    private $collectedReflections = [];
 
     public function __construct(Configuration $configuration)
     {
@@ -117,5 +123,10 @@ final class AnnotationReflectionCollector extends AbstractReflectionCollector
     {
         return ($this->collectedReflections[ClassConstantReflectionInterface::class][$this->activeAnnotation] ?? [])
             + ($this->collectedReflections[InterfaceConstantReflectionInterface::class][$this->activeAnnotation] ?? []);
+    }
+
+    public function hasAnyElements(): bool
+    {
+        return (bool) count($this->collectedReflections);
     }
 }

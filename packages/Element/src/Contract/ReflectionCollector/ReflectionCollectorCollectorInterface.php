@@ -6,7 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 
 interface ReflectionCollectorCollectorInterface
 {
-    public function addReflectionCollector(ReflectionCollectorInterface $reflectionCollector): void;
+    public function addReflectionCollector(AdvancedReflectionCollectorInterface $reflectionCollector): void;
 
     public function processReflection(AbstractReflectionInterface $reflection): void;
 }

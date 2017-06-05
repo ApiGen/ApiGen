@@ -5,9 +5,6 @@ namespace ApiGen\Element\Namespaces;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Nette\Utils\Strings;
 
-/**
- * @todo consider refactoring to ReflectionCollector, where key => namespace
- */
 final class NamespaceStorage
 {
     /**

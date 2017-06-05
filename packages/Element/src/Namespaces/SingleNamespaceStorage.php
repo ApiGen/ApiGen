@@ -29,7 +29,6 @@ final class SingleNamespaceStorage
      */
     private $functionReflections = [];
 
-
     /**
      * @var TraitReflectionInterface[]
      */

@@ -3,17 +3,17 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorCollectorInterface;
-use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorInterface;
+use ApiGen\Element\Contract\ReflectionCollector\AdvancedReflectionCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 
 final class ReflectionCollectorCollector implements ReflectionCollectorCollectorInterface
 {
     /**
-     * @var ReflectionCollectorInterface[]
+     * @var AdvancedReflectionCollectorInterface[]
      */
     private $reflectionCollectors;
 
-    public function addReflectionCollector(ReflectionCollectorInterface $reflectionCollector): void
+    public function addReflectionCollector(AdvancedReflectionCollectorInterface $reflectionCollector): void
     {
         $this->reflectionCollectors[] = $reflectionCollector;
     }
