@@ -98,7 +98,6 @@ final class NamespaceStorage
                 $singleNamespaceElements['functions'] ?? []
             );
         }
-//        $this->makeNoNamespaceLast();
     }
 
     /**
@@ -111,30 +110,4 @@ final class NamespaceStorage
             $this->reflectionsCategorizedToNamespaces[$namespace][$type][$reflection->getShortName()] = $reflection;
         }
     }
-
-    private function makeNoNamespaceLast(): void
-    {
-        if (! isset($this->singleNamespaceStorages[self::NO_NAMESPACE])) {
-            return;
-        }
-
-        $noNamespace = $this->singleNamespaceStorages[self::NO_NAMESPACE];
-        unset($this->singleNamespaceStorages[self::NO_NAMESPACE]);
-        $this->singleNamespaceStorages[self::NO_NAMESPACE] = $noNamespace;
-    }
-
-//    /**
-//     * @param string[] $namespaceNames
-//     * @return string[]
-//     */
-//    private function makeNoNamespaceNameLast(array $namespaceNames): array
-//    {
-//        if (in_array(self::NO_NAMESPACE, $namespaceNames)) {
-//            $noNamespaceKey = array_search(self::NO_NAMESPACE, $namespaceNames);
-//            unset($namespaceNames[$noNamespaceKey]);
-//            $namespaceNames[] = self::NO_NAMESPACE;
-//        }
-//
-//        return array_values($namespaceNames);
-//    }
 }

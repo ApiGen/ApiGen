@@ -6,7 +6,6 @@ use ApiGen\Element\Namespaces\NamespaceStorage;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
-use PhpParser\NodeVisitor\NameResolver;
 
 final class NamespaceStorageTest extends AbstractContainerAwareTestCase
 {
