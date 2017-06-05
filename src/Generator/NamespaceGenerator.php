@@ -45,8 +45,6 @@ final class NamespaceGenerator implements GeneratorInterface
         string $namespace,
         NamespaceReflectionCollector $namespaceReflectionCollector
     ): void {
-//        $this->namespaceReflectionCollector->setActiveNamespace($namespace);
-
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('namespace'),
             $this->configuration->getDestinationWithPrefixName(

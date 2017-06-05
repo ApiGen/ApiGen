@@ -17,6 +17,11 @@
     {/if}
 
     {if count($allNamespaces) <= 1}
-        {include '@elementlist.latte'}
+        {include '@elementlist.latte',
+            "classes" => $allClasses,
+            "intefaces" => $allInterfaces,
+            "traits" => $allTraits,
+            "functions" => $allFunctions
+        }
     {/if}
 {/block}

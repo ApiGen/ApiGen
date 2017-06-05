@@ -14,5 +14,10 @@
         </table>
     {/if}
 
-    {include '@elementlist.latte'}
+    {include '@elementlist.latte',
+        "classes" => $classes,
+        "intefaces" => $interfaces,
+        "traits" => $traits,
+        "functions" => $functions
+    }
 {/block}

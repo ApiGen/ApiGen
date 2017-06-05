@@ -9,22 +9,30 @@
     </tr>
 {/define}
 
-<table class="summary table table-responsive table-bordered table-striped" id="classes" n:if="$allClasses">
-    <tr><th colspan="2">Classes Summary</th></tr>
-    {include elements, elements => $allClasses}
-</table>
+{if $classes}
+    <table class="summary table table-responsive table-bordered table-striped" id="classes">
+        <tr><th colspan="2">Classes Summary</th></tr>
+        {include elements, elements => $classes}
+    </table>
+{/if}
 
-<table class="summary table table-responsive table-bordered table-striped" id="interfaces" n:if="$allInterfaces">
-    <tr><th colspan="2">Interfaces Summary</th></tr>
-    {include elements, elements => $allInterfaces}
-</table>
+{if $interfaces}
+    <table class="summary table table-responsive table-bordered table-striped" id="interfaces">
+        <tr><th colspan="2">Interfaces Summary</th></tr>
+        {include elements, elements => $interfaces}
+    </table>
+{/if}
 
-<table class="summary table table-responsive table-bordered table-striped" id="traits" n:if="$allTraits">
-    <tr><th colspan="2">Traits Summary</th></tr>
-    {include elements, elements => $allTraits}
-</table>
+{if $traits}
+    <table class="summary table table-responsive table-bordered table-striped" id="traits">
+        <tr><th colspan="2">Traits Summary</th></tr>
+        {include elements, elements => $traits}
+    </table>
+{/if}
 
-<table class="summary table table-responsive table-bordered table-striped" id="functions" n:if="$allFunctions">
-    <tr><th colspan="2">Functions Summary</th></tr>
-    {include elements, elements => $allFunctions}
-</table>
+{if $functions}
+    <table class="summary table table-responsive table-bordered table-striped" id="functions">
+        <tr><th colspan="2">Functions Summary</th></tr>
+        {include elements, elements => $allFunctions}
+    </table>
+{/if}
