@@ -2,8 +2,8 @@
 
 namespace ApiGen\Element\DI;
 
-use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorCollectorInterface;
-use ApiGen\Element\Contract\ReflectionCollector\AdvancedReflectionCollectorInterface;
+use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
+use ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;
@@ -22,8 +22,8 @@ final class ElementExtension extends CompilerExtension
     {
         DefinitionCollector::loadCollectorWithType(
             $this->getContainerBuilder(),
-            ReflectionCollectorCollectorInterface::class,
-            AdvancedReflectionCollectorInterface::class,
+            ReflectionCollectorCollector::class,
+            BasicReflectionCollectorInterface::class,
             'addReflectionCollector'
         );
     }

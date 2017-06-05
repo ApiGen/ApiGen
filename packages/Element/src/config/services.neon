@@ -17,4 +17,5 @@
 # Reflection Collector
 - ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector
 - ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector
+- ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector
 - ApiGen\Element\Cache\ReflectionWarmUpper

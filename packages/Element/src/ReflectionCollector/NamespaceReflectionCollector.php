@@ -2,54 +2,39 @@
 
 namespace ApiGen\Element\ReflectionCollector;
 
-use ApiGen\Configuration\Configuration;
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 
 final class NamespaceReflectionCollector implements BasicReflectionCollectorInterface
 {
     /**
-     * @var Configuration
-     */
-    private $configuration;
-
-    /**
      * @var string
      */
     private $activeNamespace;
 
     /**
-     * @var
+     * @var mixed[]
      */
     private $collectedReflections;
 
-    public function __construct(Configuration $configuration)
-    {
-        $this->configuration = $configuration;
-    }
-
-    public function setActiveNamespace(string $activeNamespace): void
-    {
-        $this->activeNamespace = $activeNamespace;
-    }
-
     public function processReflection(AbstractReflectionInterface $reflection): void
     {
-        // namespaced reflection
-
-        dump($reflection);
-        die;
-
-        foreach ($this->configuration->getAnnotationGroups() as $annotation) {
-
-            $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
-            $this->collectedReflections[$reflectionInterface][$namespace][$reflection->getName()] = $reflection;
+        if (! is_a($reflection, InNamespaceInterface::class)) {
+            return;
         }
+
+        $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
+
+        /** @var InNamespaceInterface $reflection */
+        $namespace = $reflection->getNamespaceName();
+
+        $this->collectedReflections[$reflectionInterface][$namespace][$reflection->getName()] = $reflection;
     }
 
     /**
@@ -86,6 +71,6 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
 
     public function hasAnyElements(): bool
     {
-        // TODO: Implement hasAnyElements() method.
+        return (bool) count($this->collectedReflections);
     }
 }

@@ -2,18 +2,18 @@
 
 namespace ApiGen\Element\ReflectionCollector;
 
-use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorCollectorInterface;
 use ApiGen\Element\Contract\ReflectionCollector\AdvancedReflectionCollectorInterface;
+use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 
-final class ReflectionCollectorCollector implements ReflectionCollectorCollectorInterface
+final class ReflectionCollectorCollector
 {
     /**
-     * @var AdvancedReflectionCollectorInterface[]
+     * @var BasicReflectionCollectorInterface[]|AdvancedReflectionCollectorInterface[]
      */
     private $reflectionCollectors;
 
-    public function addReflectionCollector(AdvancedReflectionCollectorInterface $reflectionCollector): void
+    public function addReflectionCollector(BasicReflectionCollectorInterface $reflectionCollector): void
     {
         $this->reflectionCollectors[] = $reflectionCollector;
     }
