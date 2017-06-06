@@ -3,7 +3,7 @@
 namespace ApiGen\DI;
 
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Contract\Generator\GeneratorQueueInterface;
+use ApiGen\Generator\GeneratorQueue;
 use Latte\Engine;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
@@ -28,7 +28,6 @@ final class ApiGenExtension extends CompilerExtension
 
     private function setupTemplating(): void
     {
-        // @todo: create and use Symplify package - FlatWhite
         $containerBuilder = $this->getContainerBuilder();
         $containerBuilder->addDefinition($this->prefix('latteFactory'))
             ->setClass(Engine::class)
@@ -39,7 +38,7 @@ final class ApiGenExtension extends CompilerExtension
     {
         DefinitionCollector::loadCollectorWithType(
             $this->getContainerBuilder(),
-            GeneratorQueueInterface::class,
+            GeneratorQueue::class,
             GeneratorInterface::class,
             'addGenerator'
         );

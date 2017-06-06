@@ -3,7 +3,6 @@
 namespace ApiGen\Tests\Generator;
 
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Contract\Generator\GeneratorQueueInterface;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -11,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class GeneratorQueueTest extends AbstractContainerAwareTestCase
 {
     /**
-     * @var GeneratorQueueInterface
+     * @var GeneratorQueue
      */
     private $generatorQueue;
 

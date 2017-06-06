@@ -5,9 +5,8 @@ namespace ApiGen\Generator;
 use ApiGen\Console\Helper\ProgressBar;
 use ApiGen\Console\Progress\StepCounter;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Contract\Generator\GeneratorQueueInterface;
 
-final class GeneratorQueue implements GeneratorQueueInterface
+final class GeneratorQueue
 {
     /**
      * @var ProgressBar
