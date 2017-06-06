@@ -1,9 +1,20 @@
 {layout '@layout.latte'}
 
-{block title}{if $activeNamespace !== 'None'}Namespace {$activeNamespace}{else}No namespace{/if}{/block}
+{block title}
+    {if $activeNamespace !== 'None'}Namespace {$activeNamespace}{else}No namespace{/if}
+{/block}
+
+
+{block breadcrumbs}
+    {include "partial/breadcrumbs.latte",
+        "type" => "Namespace",
+        "namespace" => $activeNamespace
+    }
+{/block}
+
 
 {block content}
-    <h1>{if $activeNamespace !== 'None'}Namespace {$activeNamespace|linkAllNamespaceParts|noescape}{else}No namespace{/if}</h1>
+    <h1>{if $activeNamespace !== 'None'}{$activeNamespace}{else}No namespace{/if}</h1>
 
     {if $childNamespaces}
         <table class="summary table table-bordered table-responsive table-striped" id="namespaces">

@@ -1,11 +1,19 @@
 {layout '@layout.latte'}
 
-{block title}
-    {if $function->isDeprecated()}Deprecated {/if}Function {$function->getName()}
+{block title}Function {$function->getName()}{/block}
+
+
+{block breadcrumbs}
+    {include "partial/breadcrumbs.latte",
+        "type" => "Function",
+        "namespace" => $function->getNamespaceName(),
+        "name" => $function->getShortName()
+    }
 {/block}
 
+
 {block content}
-    <h1 n:class="$function->isDeprecated() ? deprecated">Function {$function->getShortName()}</h1>
+    <h1 n:class="$function->isDeprecated() ? deprecated">{$function->getShortName()}</h1>
 
     {if $function->getDescription()}
         <div class="description">

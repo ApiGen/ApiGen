@@ -2,12 +2,18 @@
 
 {block title}Interface {$interface->getName()}{/block}
 
+
+{block breadcrumbs}
+    {include "partial/breadcrumbs.latte",
+        "type" => "Interface",
+        "namespace" => $interface->getNamespaceName(),
+        "name" => $interface->getShortName()
+    }
+{/block}
+
+
 {block content}
-    <h1 n:class="$interface->isDeprecated() ? deprecated">
-        Interface
-        {if $interface->getNamespaceName()}{$interface->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
-        {$interface->getShortName()}
-    </h1>
+    <h1 n:class="$interface->isDeprecated() ? deprecated">{$interface->getShortName()}</h1>
 
     {if $interface->getDescription()}
         <div class="description">
@@ -15,19 +21,18 @@
         </div>
     {/if}
 
-    <dl class="tree" n:ifcontent>
-        <dd>
-            {if $interface->getOwnInterfaces()}
+    {if $interface->getOwnInterfaces()}
+        <dl class="tree">
+            <dd>
                 implements
                 {foreach $interface->getOwnInterfaces() as $ownInterface}
                     <a href="{$ownInterface|linkReflection}" n:class="$ownInterface->isDeprecated() ? deprecated">{$ownInterface->getName()}</a>{sep}, {/sep}
                 {/foreach}
-            {/if}
-        </dd>
-    </dl>
+            </dd>
+        </dl>
+    {/if}
 
     {if $interface->getImplementers()}
-        <br>
         <div>
             <h2>Known implementers</h2>
             <p>

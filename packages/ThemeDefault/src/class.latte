@@ -2,10 +2,19 @@
 
 {block title}Class {$class->getName()}{/block}
 
+
+{block breadcrumbs}
+    {include "partial/breadcrumbs.latte",
+        "type" => "Class",
+        "namespace" => $class->getNamespaceName(),
+        "name" => $class->getShortName(),
+    }
+{/block}
+
+
+
 {block content}
-    <h1 n:class="$class->isDeprecated() ? deprecated">
-        Class {if $class->getNamespaceName()}{$class->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}{$class->getShortName()}
-    </h1>
+    <h1 n:class="$class->isDeprecated() ? deprecated">{$class->getShortName()}</h1>
 
     {if $class->getDescription()}
         <div class="description">
@@ -48,10 +57,12 @@
         {/foreach}
     {/define}
 
-    <div n:if="$class->getSubClasses()">
-        <h2>Known subclasses</h2>
-        {include children, children => $class->getSubClasses()}
-    </div>
+    {if $class->getSubClasses()}
+        <div>
+            <h2>Known subclasses</h2>
+            {include children, children => $class->getSubClasses()}
+        </div>
+    {/if}
 
     <div class="info">
         {if $class->isAbstract() || $class->isFinal()}<b>{if $class->isAbstract()}Abstract{else}Final{/if}</b><br>{/if}

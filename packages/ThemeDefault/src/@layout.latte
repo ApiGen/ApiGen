@@ -17,6 +17,17 @@
 
     <body>
         {include "partial/menu.latte"}
+        {ifset breadcrumbs}
+            <div id="breadcrumbs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            {include breadcrumbs}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {/ifset}
 
         <div class="container">
             <div class="row">
