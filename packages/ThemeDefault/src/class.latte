@@ -12,7 +12,6 @@
 {/block}
 
 
-
 {block content}
     <h1 n:class="$class->isDeprecated() ? deprecated">{$class->getShortName()}</h1>
 
@@ -65,13 +64,10 @@
     {/if}
 
     <div class="info">
-        {if $class->isAbstract() || $class->isFinal()}<b>{if $class->isAbstract()}Abstract{else}Final{/if}</b><br>{/if}
+        {if $class->isAbstract() || $class->isFinal()}<strong>{if $class->isAbstract()}Abstract{else}Final{/if}</strong><br>{/if}
 
-        {foreach $class->getAnnotations() as $annotation => $values}
-            {foreach $values as $value}
-                <b>{$annotation}{if $value}:{/if}</b>
-                {$value|annotation:$class|noescape}<br>
-            {/foreach}
+        {foreach $class->getAnnotations() as $annotation}
+            {$annotation|annotation: $class|noescape}<br>
         {/foreach}
         <a href="{$class|linkSource}" class="open-source-code">Open source code</a>
         <br>
@@ -120,24 +116,28 @@
         </tr>
     </table>
 
-    <table class="summary table table-bordered table-responsive table-striped" id="constants" n:if="$class->getOwnConstants()">
-        <tr><th colspan="3">Constants Summary</th></tr>
-        {foreach $class->getOwnConstants() as $constant}
-            {include "partial/constant.latte", constant => $constant}
-        {/foreach}
-    </table>
+    {if $class->getOwnConstants()}
+        <table class="summary table table-bordered table-responsive table-striped" id="constants">
+            <tr><th colspan="3">Constants Summary</th></tr>
+            {foreach $class->getOwnConstants() as $constant}
+                {include "partial/constant.latte", constant => $constant}
+            {/foreach}
+        </table>
+    {/if}
 
     {foreach $class->getParentClasses() as $parentClass}
-        <table n:if="$parentClass->getOwnConstants()" class="summary inherited table table-bordered table-responsive table-striped">
-            <tr>
-                <th>
-                    Constants inherited from <a href="{$parentClass|linkReflection}#constants">{$parentClass->getName}</a>
-                </th>
-            </tr>
-            <tr>
-                {include "partial/parentConstant.latte", parentClass => $parentClass}
-            </tr>
-        </table>
+        {if $parentClass->getOwnConstants()}
+            <table class="summary inherited table table-bordered table-responsive table-striped">
+                <tr>
+                    <th>
+                        Constants inherited from <a href="{$parentClass|linkReflection}#constants">{$parentClass->getName()}</a>
+                    </th>
+                </tr>
+                <tr>
+                    {include "partial/parentConstant.latte", parentClass => $parentClass}
+                </tr>
+            </table>
+        {/if}
     {/foreach}
 
     {if $class->getOwnProperties()}
@@ -150,35 +150,41 @@
     {/if}
 
     {foreach $class->getParentClasses() as $parentClass}
-        <table n:if="$parentClass->getOwnProperties()" class="summary inherited table table-bordered table-responsive table-striped">
+        {if $parentClass->getOwnProperties()}
+            <table class="summary inherited table table-bordered table-responsive table-striped">
+                <tr>
+                    <th>
+                        Properties inherited from <a href="{$parentClass|linkReflection}#properties">{$parentClass->getName()}</a>
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        {foreach $parentClass->getOwnProperties() as $parentClassProperty}
+                            <code>{block|trim}
+                                <a href="{$parentClassProperty|linkReflection}" n:class="$parentClassProperty->isDeprecated() ? deprecated, property-name">${$parentClassProperty->getName()}</a>{/block}</code>{sep}, {/sep}
+                        {/foreach}
+                    </td>
+                </tr>
+            </table>
+        {/if}
+    {/foreach}
+
+    {foreach $class->getTraits() as $trait}
+        <table class="summary table table-bordered table-responsive table-striped">
             <tr>
-                <th>
-                    Properties inherited from <a href="{$parentClass|linkReflection}#properties">{$parentClass->getName()}</a>
-                </th>
+                <th>Properties used from <a href="{$trait|linkReflection}#properties">{$trait->getName()}</a></th>
             </tr>
             <tr>
                 <td>
-                    {foreach $parentClass->getOwnProperties() as $parentClassProperty}
-                        <code>{block|trim}
-                            <a href="{$parentClassProperty|linkReflection}" n:class="$parentClassProperty->isDeprecated() ? deprecated, property-name">${$parentClassProperty->getName()}</a>{/block}</code>{sep}, {/sep}
-                    {/foreach}
+                    <code>
+                        {foreach $trait->getOwnProperties() as $property}
+                            <a href="{$property|linkReflection}" n:class="property-name, $property->isDeprecated() ? deprecated">
+                                ${$property->getName()}
+                            </a>{sep}, {/sep}
+                        {/foreach}
+                    </code>
                 </td>
             </tr>
         </table>
     {/foreach}
-
-    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary table table-bordered table-responsive table-striped">
-        <tr><th>Properties used from <a href="{$traitName|linkReflection}#properties">{$traitName}</a></th></tr>
-        <tr>
-            <td>
-                <code>
-                    {foreach $trait->getOwnProperties() as $property}
-                        <a href="{$property|linkReflection}" n:class="$property->isDeprecated() ? deprecated, property-name">
-                            ${$property->getName()}
-                        </a>{sep}, {/sep}
-                    {/foreach}
-                </code>
-            </td>
-        </tr>
-    </table>
 {/block}

@@ -63,54 +63,58 @@
         </table>
     {/if}
 
-    <table n:if="$interface->getOwnConstants()" class="summary table table-responsive table-bordered table-striped" id="constants">
-        <tr><th>Constants Summary</th></tr>
-        <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
-            <td class="attributes">
-                <code>{$constant->getTypeHint()}</code>
-            </td>
-            <td class="name">
-                <code>
-                    <a href="{$constant|linkSource}" class="constant-name">{$constant->getName()}</a>
-                </code>
-
-                <div class="description">
-                    {$constant|description}
-
-                    {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
-                    {foreach $filteredAnnotations as $annotation}
-                        <h2>{$annotation->getName()}</h2>
-                        <div class="list">
-                            {$annotation|annotation:$constant|noescape}<br>
-                        </div>
-                    {/foreach}
-                </div>
-            </td>
-            <td class="value">
-                <div>
-                    <a href="#{$constant->getName()}" class="anchor pull-right">#</a>
-                    <code>{$constant->getValueDefinition()|highlightValue:$interface|noescape}</code>
-                </div>
-            </td>
-        </tr>
-    </table>
-
-    {foreach $interface->getInterfaces() as $parentInterface}
-        <table n:if="$parentInterface->getOwnConstants()" class="summary inherited table table-responsive table-bordered table-striped">
-            <tr><th>
-                Constants inherited from <a href="{$parentInterface|linkReflection}#constants">{$parentInterface->getName()}</a>
-            </th></tr>
-            <tr>
-                <td>
+    {if $interface->getOwnConstants()}
+        <table class="summary table table-responsive table-bordered table-striped" id="constants">
+            <tr><th>Constants Summary</th></tr>
+            <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
+                <td class="attributes">
+                    <code>{$constant->getTypeHint()}</code>
+                </td>
+                <td class="name">
                     <code>
-                        {foreach $parentInterface->getOwnContants() as $parentInterfaceConstants}
-                            <a href="{$parentInterfaceConstants|constantUrl}" n:class="$parentInterfaceConstants->isDeprecated() ? deprecated">
-                                <strong>{$parentInterfaceConstants->getName()}</strong>
-                            </a>{sep}, {/sep}
-                        {/foreach}
+                        <a href="{$constant|linkSource}" class="constant-name">{$constant->getName()}</a>
                     </code>
+
+                    <div class="description">
+                        {$constant|description}
+
+                        {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+                        {foreach $filteredAnnotations as $annotation}
+                            <h2>{$annotation->getName()}</h2>
+                            <div class="list">
+                                {$annotation|annotation:$constant|noescape}<br>
+                            </div>
+                        {/foreach}
+                    </div>
+                </td>
+                <td class="value">
+                    <div>
+                        <a href="#{$constant->getName()}" class="anchor pull-right">#</a>
+                        <code>{$constant->getValueDefinition()|highlightValue:$interface|noescape}</code>
+                    </div>
                 </td>
             </tr>
         </table>
+    {/if}
+
+    {foreach $interface->getInterfaces() as $parentInterface}
+        {if $parentInterface->getOwnConstants()}
+            <table class="summary inherited table table-responsive table-bordered table-striped">
+                <tr><th>
+                    Constants inherited from <a href="{$parentInterface|linkReflection}#constants">{$parentInterface->getName()}</a>
+                </th></tr>
+                <tr>
+                    <td>
+                        <code>
+                            {foreach $parentInterface->getOwnContants() as $parentInterfaceConstants}
+                                <a href="{$parentInterfaceConstants|constantUrl}" n:class="$parentInterfaceConstants->isDeprecated() ? deprecated">
+                                    <strong>{$parentInterfaceConstants->getName()}</strong>
+                                </a>{sep}, {/sep}
+                            {/foreach}
+                        </code>
+                    </td>
+                </tr>
+            </table>
+        {/if}
     {/foreach}
 {/block}
