@@ -1,7 +1,6 @@
 - ApiGen\Element\Latte\Filter\MethodReflectionNamingFilter
 
 - ApiGen\Element\AutocompleteElements
-- ApiGen\Element\Latte\Filter\NamespaceFilter
 - ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver
 
 # Class_
