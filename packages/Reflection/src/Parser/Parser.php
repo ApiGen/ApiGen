@@ -15,6 +15,7 @@ use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 final class Parser implements ParserInterface
@@ -127,7 +128,8 @@ final class Parser implements ParserInterface
         // such service scan be replaced in config by own with custom finder implementation
         return new AggregateSourceLocator([
             new DirectoriesSourceLocator($directories),
-            new AutoloadSourceLocator()
+            new AutoloadSourceLocator(),
+            new PhpInternalSourceLocator()
         ]);
     }
 }
