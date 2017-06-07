@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\AnnotationGroupsGenerator;
-use ApiGen\Reflection\Contract\ParserInterface;
+use ApiGen\Reflection\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Generator\DeprecatedSources\DeprecatedClass;
 use ApiGen\Tests\Generator\DeprecatedSources\DeprecatedMethod;
@@ -26,8 +26,8 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
             'annotationGroups' => ['deprecated']
         ]);
 
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
+        /** @var Parser $parser */
+        $parser = $this->container->getByType(Parser::class);
         $parser->parseDirectories([__DIR__ . '/DeprecatedSources']);
         $this->annotationGroupsGenerator = $this->container->getByType(AnnotationGroupsGenerator::class);
     }

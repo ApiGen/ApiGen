@@ -8,7 +8,7 @@ use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Reflection\Contract\ParserInterface;
+use ApiGen\Reflection\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTestCase
@@ -28,8 +28,8 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
            AnnotationGroupsOption::NAME => [AnnotationList::DEPRECATED]
         ]);
 
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
+        /** @var Parser $parser */
+        $parser = $this->container->getByType(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
         $this->annotationReflectionCollector = $this->container->getByType(AnnotationReflectionCollector::class);

@@ -8,7 +8,7 @@ use ApiGen\Generator\GeneratorQueue;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Reflection\Contract\ParserInterface;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Utils\FileSystem;
 
 final class ApiGenApplication
@@ -19,7 +19,7 @@ final class ApiGenApplication
     private $configuration;
 
     /**
-     * @var ParserInterface
+     * @var Parser
      */
     private $parser;
 
@@ -35,7 +35,7 @@ final class ApiGenApplication
 
     public function __construct(
         Configuration $configuration,
-        ParserInterface $parser,
+        Parser $parser,
         GeneratorQueue $generatorQueue,
         FileSystem $fileSystem
     ) {

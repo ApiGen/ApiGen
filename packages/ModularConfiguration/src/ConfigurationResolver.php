@@ -2,11 +2,10 @@
 
 namespace ApiGen\ModularConfiguration;
 
-use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 use ApiGen\ModularConfiguration\Exception\ConfigurationException;
 
-final class ConfigurationResolver implements ConfigurationResolverInterface
+final class ConfigurationResolver
 {
     /**
      * @var OptionInterface[]

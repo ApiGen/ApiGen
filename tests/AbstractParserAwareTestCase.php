@@ -6,8 +6,8 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\DI\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Reflection\Contract\ParserInterface;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\Parser\Parser;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
 
@@ -19,7 +19,7 @@ abstract class AbstractParserAwareTestCase extends TestCase
     protected $container;
 
     /**
-     * @var ParserInterface
+     * @var Parser
      */
     protected $parser;
 
@@ -44,7 +44,7 @@ abstract class AbstractParserAwareTestCase extends TestCase
             DestinationOption::NAME => TEMP_DIR
         ]);
 
-        $this->parser = $this->container->getByType(ParserInterface::class);
+        $this->parser = $this->container->getByType(Parser::class);
         $this->reflectionStorage = $this->container->getByType(ReflectionStorageInterface::class);
     }
 }

@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Parser;
 
 use ApiGen\Element\Cache\ReflectionWarmUpper;
-use ApiGen\Reflection\Contract\ParserInterface;
+
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
@@ -18,7 +18,7 @@ use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
-final class Parser implements ParserInterface
+final class Parser
 {
     /**
      * @var TransformerCollectorInterface

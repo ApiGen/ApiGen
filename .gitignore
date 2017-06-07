@@ -1,3 +1,7 @@
 /api
 /vendor
 composer.lock
+
+# Symfony
+src/DependencyInjection/cache/
+src/DependencyInjection/logs/

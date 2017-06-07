@@ -3,7 +3,7 @@
 namespace ApiGen\Element\Tests;
 
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
-use ApiGen\Reflection\Contract\ParserInterface;
+use ApiGen\Reflection\Parser;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
@@ -32,8 +32,8 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
+        /** @var Parser $parser */
+        $parser = $this->container->getByType(Parser::class);
         $parser->parseDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
 
         $this->autocompleteElements = $this->container->getByType(AutocompleteElementsInterface::class);

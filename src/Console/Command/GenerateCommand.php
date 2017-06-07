@@ -4,8 +4,8 @@ namespace ApiGen\Console\Command;
 
 use ApiGen\Application\ApiGenApplication;
 use ApiGen\Application\Command\RunCommand;
+use ApiGen\ModularConfiguration\ConfigurationResolver;
 use ApiGen\ModularConfiguration\Contract\CommandDecoratorInterface;
-use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -29,14 +29,14 @@ final class GenerateCommand extends Command
     private $commandDecorator;
 
     /**
-     * @var ConfigurationResolverInterface
+     * @var ConfigurationResolver
      */
     private $configurationResolver;
 
     public function __construct(
         ApiGenApplication $apiGenApplication,
         CommandDecoratorInterface $commandDecorator,
-        ConfigurationResolverInterface $configurationResolver
+        ConfigurationResolver $configurationResolver
     ) {
         $this->apiGenApplication = $apiGenApplication;
         $this->commandDecorator = $commandDecorator;

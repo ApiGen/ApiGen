@@ -1,0 +1,7 @@
+services:
+    _defaults:
+        autowire: true
+
+    ApiGen\ModularConfiguration\Parameter\ParameterProvider:
+        arguments: ["@kernel"]
+    ApiGen\Application\ApiGenApplication: ~

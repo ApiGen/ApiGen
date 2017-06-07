@@ -23,7 +23,11 @@
         "contributte/console": "^0.1",
         "contributte/event-dispatcher": "^0.3",
         "symplify/package-builder": "^1.4",
-        "symplify/modular-latte-filters": "^1.4"
+        "symplify/modular-latte-filters": "^1.4",
+        "symfony/dependency-injection": "^3.3",
+        "symfony/http-kernel": "^3.3",
+        "symfony/config": "^3.3",
+        "symfony/yaml": "^3.3"
     },
     "require-dev": {
         "tracy/tracy": "^2.4",

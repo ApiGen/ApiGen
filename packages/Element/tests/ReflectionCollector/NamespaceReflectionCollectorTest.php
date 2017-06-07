@@ -3,7 +3,7 @@
 namespace ApiGen\Element\Tests\ReflectionCollector;
 
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
-use ApiGen\Reflection\Contract\ParserInterface;
+use ApiGen\Reflection\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class NamespaceReflectionCollectorTest extends AbstractContainerAwareTestCase
@@ -20,8 +20,8 @@ final class NamespaceReflectionCollectorTest extends AbstractContainerAwareTestC
 
     protected function setUp(): void
     {
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
+        /** @var Parser $parser */
+        $parser = $this->container->getByType(Parser::class);
         $parser->parseDirectories([__DIR__ . '/NamespaceReflectionCollectorSource']);
 
         $this->namespaceReflectionCollector = $this->container->getByType(NamespaceReflectionCollector::class);
