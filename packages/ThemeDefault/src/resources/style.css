@@ -8,22 +8,25 @@ body {
 
 h1, h2 {
     font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
-    color: #053368;
 }
 
 h1 {
+    color: #1e5eb6;
     font-size: 2em;
-    margin-bottom: .7em;
+    margin-bottom: 1em;
 }
 
 h2 {
+    color: #053368;
     font-size: 1.2em;
     font-weight: bold;
 }
 
-tr th {
+.table > tbody > tr > th {
     background: #ecede5;
     font-size: 1.2em;
+    padding-top: .3em;
+    padding-bottom: .3em;
 }
 
 p {
@@ -114,6 +117,7 @@ pre {
 /* Navigation */
 #navigation {
     background: #f6f6f4;
+    border-bottom: 1px solid #e7e7e7;
 }
 
 .navbar {
@@ -145,6 +149,26 @@ pre {
 #navigation ul li a.active {
     color: white;
     background: #053368;
+}
+
+/* Breadcrumbs */
+#breadcrumbs {
+    background: rgba(0, 106, 235, 0.05);
+}
+
+#breadcrumbs .type {
+    margin: .5em 0 0 0;
+}
+
+#breadcrumbs .breadcrumb {
+    background: none;
+    margin-bottom: 0;
+    padding-bottom: .7em;
+}
+
+#breadcrumbs .backslash {
+    color: #ccc;
+    padding: 0 .2em;
 }
 
 .description pre {
@@ -347,4 +371,9 @@ code {
     border-radius: 0;
     margin-bottom: 0;
     height: 2.3em;
+}
+
+.breadcrumb>li+li:before {
+    padding: 0;
+    content: "";
 }

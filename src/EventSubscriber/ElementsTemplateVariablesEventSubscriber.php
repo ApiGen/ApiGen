@@ -3,7 +3,7 @@
 namespace ApiGen\EventSubscriber;
 
 use ApiGen\Element\AutocompleteElements;
-use ApiGen\Element\Namespaces\NamespaceStorage;
+use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Event\CreateTemplateEvent;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -21,18 +21,18 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
     private $autocompleteElements;
 
     /**
-     * @var NamespaceStorage
+     * @var NamespaceReflectionCollector
      */
-    private $namespaceStorage;
+    private $namespaceReflectionCollector;
 
     public function __construct(
         ReflectionStorageInterface $reflectionStorage,
-        NamespaceStorage $namespaceStorage,
+        NamespaceReflectionCollector $namespaceReflectionCollector,
         AutocompleteElements $autocompleteElements
     ) {
         $this->reflectionStorage = $reflectionStorage;
         $this->autocompleteElements = $autocompleteElements;
-        $this->namespaceStorage = $namespaceStorage;
+        $this->namespaceReflectionCollector = $namespaceReflectionCollector;
     }
 
     /**
@@ -59,7 +59,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
         ]);
         // add all available elements (for layout)
         $parameterBag->addParameters([
-            'allNamespaces' => $this->namespaceStorage->getNamespaces(),
+            'allNamespaces' => $this->namespaceReflectionCollector->getNamespaces(),
             // @todo what is array_filter for? make it explicit!
 //            'allClasses' => array_filter($this->reflectionStorage->getClassReflections()),
             'allClasses' => $this->reflectionStorage->getClassReflections(),

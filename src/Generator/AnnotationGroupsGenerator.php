@@ -43,8 +43,6 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
 
     private function generateForAnnotation(string $annotation): void
     {
-        $this->annotationReflectionCollector->setActiveAnnotation($annotation);
-
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('annotation-group'),
             $this->configuration->getDestinationWithPrefixName('annotation-group-', $annotation),
@@ -52,12 +50,12 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
                 'annotation' => $annotation,
                 'activePage' => 'annotation-group-' . $annotation,
                 'hasElements' =>  $this->annotationReflectionCollector->hasAnyElements(),
-                'classes' => $this->annotationReflectionCollector->getClassReflections(),
-                'interfaces' => $this->annotationReflectionCollector->getInterfaceReflections(),
-                'traits' => $this->annotationReflectionCollector->getTraitReflections(),
-                'methods' => $this->annotationReflectionCollector->getClassOrTraitMethodReflections(),
-                'functions' => $this->annotationReflectionCollector->getFunctionReflections(),
-                'properties' => $this->annotationReflectionCollector->getClassOrTraitPropertyReflections()
+                'classes' => $this->annotationReflectionCollector->getClassReflections($annotation),
+                'interfaces' => $this->annotationReflectionCollector->getInterfaceReflections($annotation),
+                'traits' => $this->annotationReflectionCollector->getTraitReflections($annotation),
+                'methods' => $this->annotationReflectionCollector->getClassOrTraitMethodReflections($annotation),
+                'functions' => $this->annotationReflectionCollector->getFunctionReflections($annotation),
+                'properties' => $this->annotationReflectionCollector->getClassOrTraitPropertyReflections($annotation)
             ]
         );
     }

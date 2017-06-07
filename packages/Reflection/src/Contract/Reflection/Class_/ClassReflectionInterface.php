@@ -5,11 +5,13 @@ namespace ApiGen\Reflection\Contract\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
+use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
-interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface
+interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface,
+    InNamespaceInterface
 {
     public function getParentClass(): ?ClassReflectionInterface;
 
@@ -111,8 +113,6 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
     public function isSubclassOf(string $class): bool;
 
     public function getShortName(): string;
-
-    public function getNamespaceName(): string;
 
     /**
      * @return ClassConstantReflectionInterface[]

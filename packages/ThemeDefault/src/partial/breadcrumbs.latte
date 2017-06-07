@@ -1,0 +1,34 @@
+{var $currentNamespace = ''}
+
+{var $namespaceParts = explode('\\', $namespace)}
+
+<div class="pull-left type">
+    <span n:class="label,
+        $type == 'Namespace' ? 'label-danger',
+        $type == 'Trait' ? 'label-warning',
+        $type == 'Interface' ? 'label-info',
+        $type == 'Class' ? 'label-success',
+        $type == 'Function' ? 'label-primary'
+    ">{$type}</span>
+</div>
+
+<ol class="breadcrumb pull-left">
+    {foreach $namespaceParts as $namespacePart}
+        {if $currentNamespace}
+            {var $currentNamespace = $currentNamespace . '\\' . $namespacePart}
+        {else}
+            {var $currentNamespace = $namespacePart}
+        {/if}
+        <li>
+            <a href="{$currentNamespace|linkNamespace}">{$namespacePart}</a>
+        </li>
+        {sep}
+            <li class="backslash">\</li>
+        {/sep}
+    {/foreach}
+
+    {ifset $name}
+        <li class="backslash">\</li>
+        <li class="active">{$name}</li>
+    {/ifset}
+</ol>

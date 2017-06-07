@@ -1,8 +1,7 @@
 - ApiGen\Element\Latte\Filter\MethodReflectionNamingFilter
 
 - ApiGen\Element\AutocompleteElements
-- ApiGen\Element\Namespaces\NamespaceStorage
-- ApiGen\Element\Latte\Filter\NamespaceFilter
+- ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver
 
 # Class_
 - ApiGen\Element\Tree\ParentClassElementsResolver
@@ -17,4 +16,5 @@
 # Reflection Collector
 - ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector
 - ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector
+- ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector
 - ApiGen\Element\Cache\ReflectionWarmUpper

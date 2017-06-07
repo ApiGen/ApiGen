@@ -2,7 +2,7 @@
 
 namespace ApiGen\Console\Progress;
 
-use ApiGen\Element\Namespaces\NamespaceStorage;
+use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
 final class StepCounter
@@ -13,20 +13,22 @@ final class StepCounter
     private $reflectionStorage;
 
     /**
-     * @var NamespaceStorage
+     * @var NamespaceReflectionCollector
      */
-    private $namespaceStorage;
+    private $namespaceReflectionCollector;
 
-    public function __construct(ReflectionStorageInterface $reflectionStorage, NamespaceStorage $namespaceStorage)
-    {
+    public function __construct(
+        ReflectionStorageInterface $reflectionStorage,
+        NamespaceReflectionCollector $namespaceReflectionCollector
+    ) {
         $this->reflectionStorage = $reflectionStorage;
-        $this->namespaceStorage = $namespaceStorage;
+        $this->namespaceReflectionCollector = $namespaceReflectionCollector;
     }
 
     public function getStepCount(): int
     {
         return $this->getSourceCodeStepCount()
-            + count($this->namespaceStorage->getNamespaces())
+            + count($this->namespaceReflectionCollector->getNamespaces())
             + count($this->reflectionStorage->getClassReflections())
             + count($this->reflectionStorage->getTraitReflections())
             + count($this->reflectionStorage->getInterfaceReflections())

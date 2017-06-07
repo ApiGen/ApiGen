@@ -37,17 +37,11 @@
             <div class="description">
                 {$method|description}
 
-                {if $method->isDeprecated()}
+                {if $method->getAnnotation('deprecated')}
                     <h2>Deprecated</h2>
-                    {ifset $annotations['deprecated']}
-                        <div class="list">
-                            {foreach $annotations['deprecated'] as $description}
-                                {if $description}
-                                    {$description|annotation:$method|noescape}<br>
-                                {/if}
-                            {/foreach}
-                        </div>
-                    {/ifset}
+                    {foreach $method->getAnnotation('deprecated') as $annotation}
+                        {$annotation|annotation:$method|noescape}<br>
+                    {/foreach}
                 {/if}
 
                 {if $method->getParameters() && isset($annotations['param'])}

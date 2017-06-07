@@ -3,6 +3,7 @@
 namespace ApiGen\Element\ReflectionCollector;
 
 use ApiGen\Configuration\Configuration;
+use ApiGen\Element\Contract\ReflectionCollector\AdvancedReflectionCollectorInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
@@ -17,7 +18,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Helper\ReflectionAnalyzer;
 
-final class AnnotationReflectionCollector extends AbstractReflectionCollector
+final class AnnotationReflectionCollector implements AdvancedReflectionCollectorInterface
 {
     /**
      * @var Configuration
@@ -25,18 +26,13 @@ final class AnnotationReflectionCollector extends AbstractReflectionCollector
     private $configuration;
 
     /**
-     * @var string
+     * @var mixed[]
      */
-    private $activeAnnotation;
+    private $collectedReflections = [];
 
     public function __construct(Configuration $configuration)
     {
         $this->configuration = $configuration;
-    }
-
-    public function setActiveAnnotation(string $activeAnnotation): void
-    {
-        $this->activeAnnotation = $activeAnnotation;
     }
 
     public function processReflection(AbstractReflectionInterface $reflection): void
@@ -63,59 +59,64 @@ final class AnnotationReflectionCollector extends AbstractReflectionCollector
     /**
      * @return ClassReflectionInterface[]
      */
-    public function getClassReflections(): array
+    public function getClassReflections(string $activeAnnotation): array
     {
-        return $this->collectedReflections[ClassReflectionInterface::class][$this->activeAnnotation] ?? [];
+        return $this->collectedReflections[ClassReflectionInterface::class][$activeAnnotation] ?? [];
     }
 
     /**
      * @return InterfaceReflectionInterface[]
      */
-    public function getInterfaceReflections(): array
+    public function getInterfaceReflections(string $activeAnnotation): array
     {
-        return $this->collectedReflections[InterfaceReflectionInterface::class][$this->activeAnnotation] ?? [];
+        return $this->collectedReflections[InterfaceReflectionInterface::class][$activeAnnotation] ?? [];
     }
 
     /**
      * @return TraitReflectionInterface[]
      */
-    public function getTraitReflections(): array
+    public function getTraitReflections(string $activeAnnotation): array
     {
-        return $this->collectedReflections[TraitReflectionInterface::class][$this->activeAnnotation] ?? [];
+        return $this->collectedReflections[TraitReflectionInterface::class][$activeAnnotation] ?? [];
     }
 
     /**
      * @return FunctionReflectionInterface[]
      */
-    public function getFunctionReflections(): array
+    public function getFunctionReflections(string $activeAnnotation): array
     {
-        return $this->collectedReflections[FunctionReflectionInterface::class][$this->activeAnnotation] ?? [];
+        return $this->collectedReflections[FunctionReflectionInterface::class][$activeAnnotation] ?? [];
     }
 
     /**
      * @return ClassMethodReflectionInterface[]|TraitMethodReflectionInterface[]
      */
-    public function getClassOrTraitMethodReflections(): array
+    public function getClassOrTraitMethodReflections(string $activeAnnotation): array
     {
-        return ($this->collectedReflections[ClassMethodReflectionInterface::class][$this->activeAnnotation] ?? [])
-            + ($this->collectedReflections[TraitMethodReflectionInterface::class][$this->activeAnnotation] ?? []);
+        return ($this->collectedReflections[ClassMethodReflectionInterface::class][$activeAnnotation] ?? [])
+            + ($this->collectedReflections[TraitMethodReflectionInterface::class][$activeAnnotation] ?? []);
     }
 
     /**
      * @return ClassPropertyReflectionInterface[]|TraitPropertyReflectionInterface[]
      */
-    public function getClassOrTraitPropertyReflections(): array
+    public function getClassOrTraitPropertyReflections(string $activeAnnotation): array
     {
-        return ($this->collectedReflections[ClassPropertyReflectionInterface::class][$this->activeAnnotation] ?? [])
-            + ($this->collectedReflections[TraitPropertyReflectionInterface::class][$this->activeAnnotation] ?? []);
+        return ($this->collectedReflections[ClassPropertyReflectionInterface::class][$activeAnnotation] ?? [])
+            + ($this->collectedReflections[TraitPropertyReflectionInterface::class][$activeAnnotation] ?? []);
     }
 
     /**
      * @return ClassConstantReflectionInterface[]|InterfaceConstantReflectionInterface[]
      */
-    public function getClassOrInterfaceConstantReflections(): array
+    public function getClassOrInterfaceConstantReflections(string $activeAnnotation): array
     {
-        return ($this->collectedReflections[ClassConstantReflectionInterface::class][$this->activeAnnotation] ?? [])
-            + ($this->collectedReflections[InterfaceConstantReflectionInterface::class][$this->activeAnnotation] ?? []);
+        return ($this->collectedReflections[ClassConstantReflectionInterface::class][$activeAnnotation] ?? [])
+            + ($this->collectedReflections[InterfaceConstantReflectionInterface::class][$activeAnnotation] ?? []);
+    }
+
+    public function hasAnyElements(): bool
+    {
+        return (bool) count($this->collectedReflections);
     }
 }

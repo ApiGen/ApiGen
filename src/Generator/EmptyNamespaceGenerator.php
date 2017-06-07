@@ -4,10 +4,11 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
+use ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Templating\TemplateRenderer;
 
-final class NamespaceGenerator implements GeneratorInterface
+final class EmptyNamespaceGenerator implements GeneratorInterface
 {
     /**
      * @var Configuration
@@ -24,27 +25,37 @@ final class NamespaceGenerator implements GeneratorInterface
      */
     private $namespaceReflectionCollector;
 
+    /**
+     * @var ParentEmptyNamespacesResolver
+     */
+    private $parentEmptyNamespacesResolver;
+
     public function __construct(
         NamespaceReflectionCollector $namespaceReflectionCollector,
         Configuration $configuration,
-        TemplateRenderer $templateRenderer
+        TemplateRenderer $templateRenderer,
+        ParentEmptyNamespacesResolver $parentEmptyNamespacesResolver
     ) {
         $this->namespaceReflectionCollector = $namespaceReflectionCollector;
         $this->configuration = $configuration;
         $this->templateRenderer = $templateRenderer;
+        $this->parentEmptyNamespacesResolver = $parentEmptyNamespacesResolver;
     }
 
     public function generate(): void
     {
-        foreach ($this->namespaceReflectionCollector->getNamespaces() as $namespace) {
-            $this->generateForNamespace($namespace, $this->namespaceReflectionCollector);
+        $parentEmptyNamespaces = $this->parentEmptyNamespacesResolver->resolve(
+            $this->namespaceReflectionCollector->getNamespaces()
+        );
+
+
+        foreach ($parentEmptyNamespaces as $namespace) {
+            $this->generateForNamespace($namespace);
         }
     }
 
-    private function generateForNamespace(
-        string $namespace,
-        NamespaceReflectionCollector $namespaceReflectionCollector
-    ): void {
+    private function generateForNamespace(string $namespace): void
+    {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('namespace'),
             $this->configuration->getDestinationWithPrefixName(
@@ -54,15 +65,16 @@ final class NamespaceGenerator implements GeneratorInterface
                 'activePage' => 'namespace',
                 'activeNamespace' => $namespace,
                 'childNamespaces' => $this->resolveChildNamespaces($namespace),
-                'classes' => $namespaceReflectionCollector->getClassReflections($namespace),
-                'interfaces' => $namespaceReflectionCollector->getInterfaceReflections($namespace),
-                'traits' => $namespaceReflectionCollector->getTraitReflections($namespace),
-                'functions' => $namespaceReflectionCollector->getFunctionReflections($namespace)
+                'classes' => [],
+                'interfaces' => [],
+                'traits' => [],
+                'functions' => [],
             ]
         );
     }
 
     /**
+     * @todo: move to service!
      * @return string[]
      */
     private function resolveChildNamespaces(string $namespace): array

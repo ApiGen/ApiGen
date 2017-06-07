@@ -37,15 +37,34 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
 
     public function test(): void
     {
-        $this->annotationReflectionCollector->setActiveAnnotation(AnnotationList::DEPRECATED);
-
-        $this->assertCount(1, $this->annotationReflectionCollector->getClassReflections());
-        $this->assertCount(1, $this->annotationReflectionCollector->getInterfaceReflections());
-        $this->assertCount(1, $this->annotationReflectionCollector->getTraitReflections());
-        $this->assertCount(1, $this->annotationReflectionCollector->getFunctionReflections());
-        $this->assertCount(1, $this->annotationReflectionCollector->getClassOrTraitMethodReflections());
-        $this->assertCount(1, $this->annotationReflectionCollector->getClassOrTraitPropertyReflections());
+        $this->assertCount(
+            1,
+            $this->annotationReflectionCollector->getClassReflections(AnnotationList::DEPRECATED)
+        );
+        $this->assertCount(
+            1,
+            $this->annotationReflectionCollector->getInterfaceReflections(AnnotationList::DEPRECATED)
+        );
+        $this->assertCount(
+            1,
+            $this->annotationReflectionCollector->getTraitReflections(AnnotationList::DEPRECATED)
+        );
+        $this->assertCount(
+            1,
+            $this->annotationReflectionCollector->getFunctionReflections(AnnotationList::DEPRECATED)
+        );
+        $this->assertCount(
+            1,
+            $this->annotationReflectionCollector->getClassOrTraitMethodReflections(AnnotationList::DEPRECATED)
+        );
+        $this->assertCount(
+            1,
+            $this->annotationReflectionCollector->getClassOrTraitPropertyReflections(AnnotationList::DEPRECATED)
+        );
         // @todo 1
-        $this->assertCount(0, $this->annotationReflectionCollector->getClassOrInterfaceConstantReflections());
+        $this->assertCount(
+            0,
+            $this->annotationReflectionCollector->getClassOrInterfaceConstantReflections(AnnotationList::DEPRECATED)
+        );
     }
 }

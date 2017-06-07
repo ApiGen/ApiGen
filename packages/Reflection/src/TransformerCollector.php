@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Element\Contract\ReflectionCollector\ReflectionCollectorCollectorInterface;
+use ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
@@ -18,11 +18,11 @@ final class TransformerCollector implements TransformerCollectorInterface
     private $transformers = [];
 
     /**
-     * @var ReflectionCollectorCollectorInterface
+     * @var ReflectionCollectorCollector
      */
     private $reflectionCollectorCollector;
 
-    public function __construct(ReflectionCollectorCollectorInterface $reflectionCollectorCollector)
+    public function __construct(ReflectionCollectorCollector $reflectionCollectorCollector)
     {
         $this->reflectionCollectorCollector = $reflectionCollectorCollector;
     }

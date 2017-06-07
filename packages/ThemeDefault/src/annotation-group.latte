@@ -63,11 +63,10 @@
 
         {if $functions}
             <table class="summary table table-responsive table-bordered table-striped" id="functions">
-                <tr><th colspan="3">Functions Summary</th></tr>
+                <tr><th colspan="2">Functions Summary</th></tr>
                 <tr n:foreach="$allFunctions as $function">
-                    <td class="name" n:if="$namespaces"><a n:if="$function->getNamespaceName()" href="{$function->getNamespaceName()|linkNamespace}">{$function->getNamespaceName()}</a></td>
                     <td class="name">
-                        <code><a href="{$function|linkReflection}">{$function->getShortName()}</a></code>
+                        <code><a href="{$function|linkReflection}">{$function->getName()}</a></code>
                     </td>
                     <td>
                         {include reflectionAnnotationsList, "reflection" => $function, "annotation" => $annotation}
@@ -86,19 +85,15 @@
     <tr n:foreach="$items as $class">
         <td class="name"><a href="{$class|linkReflection}">{$class->getName()}</a></td>
         <td>
-            {foreach $class->getAnnotations($annotation) as $description}
-                {if $description}
-                    {$description|annotation:$class|noescape}<br>
-                {/if}
+            {foreach $class->getAnnotations($annotation) as $annotation}
+                {$annotation|annotation:$class|noescape}<br>
             {/foreach}
         </td>
     </tr>
 {/define}
 
 {define reflectionAnnotationsList}
-    {foreach $reflection->getAnnotation($annotation) as $description}
-        {if $description}
-            {$description|annotation:$reflection|noescape}<br>
-        {/if}
+    {foreach $reflection->getAnnotation($annotation) as $annotation}
+        {$annotation|annotation:$reflection|noescape}<br>
     {/foreach}
 {/define}

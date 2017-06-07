@@ -53,8 +53,8 @@
             "ApiGen\\StringRouting\\Tests\\": "packages/StringRouting/tests"
         },
         "files": [
-            "packages/Element/tests/Namespaces/Source/namespacedFunction.php",
-            "packages/Element/tests/Namespaces/Source/NoneNamespacedClass.php",
+            "packages/Element/tests/ReflectionCollector/NamespaceReflectionCollectorSource/namespacedFunction.php",
+            "packages/Element/tests/ReflectionCollector/NamespaceReflectionCollectorSource/NoneNamespacedClass.php",
             "packages/Element/tests/ReflectionCollector/Source/deprecatedFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",

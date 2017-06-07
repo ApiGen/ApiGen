@@ -2,12 +2,18 @@
 
 {block title}Trait {$trait->getName()}{/block}
 
+
+{block breadcrumbs}
+    {include "partial/breadcrumbs.latte",
+        "type" => "Trait",
+        "namespace" => $trait->getNamespaceName(),
+        "name" => $trait->getShortName()
+    }
+{/block}
+
+
 {block content}
-    <h1 n:class="$trait->isDeprecated() ? deprecated">
-        Trait
-        {if $trait->getNamespaceName()}{$trait->getNamespaceName()|linkAllNamespaceParts|noescape}\{/if}
-        {$trait->getShortName()}
-    </h1>
+    <h1 n:class="$trait->isDeprecated() ? deprecated">{$trait->getShortName()}</h1>
 
     {if $trait->getDescription()}
         <div class="description">
@@ -15,16 +21,16 @@
         </div>
     {/if}
 
-    <dl class="tree" n:ifcontent>
-        <dd>
-            {if $trait->getTraits()}
+    {if $trait->getTraits()}
+        <dl class="tree">
+            <dd>
                 uses
                 {foreach $trait->getTraits() as $ownTrait}
                     <a href="{$ownTrait|linkReflection}" n:class="$ownTrait->isDeprecated() ? deprecated">{$ownTrait->getName()}</a>{sep}, {/sep}
                 {/foreach}
-            {/if}
-        </dd>
-    </dl>
+            </dd>
+        </dl>
+    {/if}
 
     {define children}
         {foreach $children as $child}
@@ -32,20 +38,16 @@
         {/foreach}
     {/define}
 
-    <div n:if="$trait->getUsers()">
-        <br>
+    {if $trait->getUsers()}
         <div>
             <h2>Known Users</h2>
             {include children, children => $trait->getUsers()}
         </div>
-    </div>
+    {/if}
 
     <div class="info">
-        {foreach $trait->getAnnotations() as $annotation => $values}
-            {foreach $values as $value}
-                <b>{$annotation}{if $value}:{/if}</b>
-                {$value|annotation:$trait|noescape}<br>
-            {/foreach}
+        {foreach $trait->getAnnotations() as $annotation}
+            {$annotation|annotation: $trait|noescape}<br>
         {/foreach}
         <a href="{$trait|linkSource}" class="open-source-code">Open source code</a>
         <br>
