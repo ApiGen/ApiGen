@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Generator\AnnotationGroupsGenerator;
-use ApiGen\Reflection\Parser;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use ApiGen\Tests\Generator\DeprecatedSources\DeprecatedClass;
 use ApiGen\Tests\Generator\DeprecatedSources\DeprecatedMethod;

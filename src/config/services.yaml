@@ -4,4 +4,5 @@ services:
 
     ApiGen\ModularConfiguration\Parameter\ParameterProvider:
         arguments: ["@kernel"]
+        autowire: false
     ApiGen\Application\ApiGenApplication: ~

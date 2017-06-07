@@ -13,10 +13,12 @@ final class ParameterProvider implements ParameterProviderInterface
      */
     private $parameters = [];
 
-    public function __construct(Kernel $kernel, Container $container = null)
+    public function __construct(Kernel $kernel = null, Container $container = null)
     {
-        dump($kernel->getContainer()->getParameterBag());
-        die;
+        if ($kernel) {
+            dump($kernel->getContainer()->getParameterBag());
+            die;
+        }
 
         $containerParameters = $container->getParameters();
         $this->parameters = $this->unsedNetteDefaultParameters($containerParameters);

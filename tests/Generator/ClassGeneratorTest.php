@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\ClassGenerator;
-use ApiGen\Reflection\Parser;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ClassGeneratorTest extends AbstractContainerAwareTestCase

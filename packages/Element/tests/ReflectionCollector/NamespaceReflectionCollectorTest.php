@@ -3,7 +3,7 @@
 namespace ApiGen\Element\Tests\ReflectionCollector;
 
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
-use ApiGen\Reflection\Parser;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class NamespaceReflectionCollectorTest extends AbstractContainerAwareTestCase

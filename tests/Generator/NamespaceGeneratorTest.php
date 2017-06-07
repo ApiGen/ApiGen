@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\NamespaceGenerator;
 use ApiGen\Generator\TraitGenerator;
-use ApiGen\Reflection\Parser;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class NamespaceGeneratorTest extends AbstractContainerAwareTestCase

@@ -3,7 +3,7 @@
 namespace ApiGen\Element\Tests;
 
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
-use ApiGen\Reflection\Parser;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
