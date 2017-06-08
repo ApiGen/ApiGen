@@ -6,7 +6,7 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\DI\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Parser\Parser;
 use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
@@ -24,7 +24,7 @@ abstract class AbstractParserAwareTestCase extends TestCase
     protected $parser;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     protected $reflectionStorage;
 
@@ -45,6 +45,6 @@ abstract class AbstractParserAwareTestCase extends TestCase
         ]);
 
         $this->parser = $this->container->getByType(Parser::class);
-        $this->reflectionStorage = $this->container->getByType(ReflectionStorageInterface::class);
+        $this->reflectionStorage = $this->container->getByType(ReflectionStorage::class);
     }
 }

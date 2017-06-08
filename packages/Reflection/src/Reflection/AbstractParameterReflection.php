@@ -11,7 +11,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
@@ -25,7 +25,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     protected $betterParameterReflection;
 
     /**
-     * @var TransformerCollectorInterface
+     * @var TransformerCollector
      */
     protected $transformerCollector;
 
@@ -100,7 +100,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         return $this->betterParameterReflection->isPassedByReference();
     }
 
-    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    public function setTransformerCollector(TransformerCollector $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
     }

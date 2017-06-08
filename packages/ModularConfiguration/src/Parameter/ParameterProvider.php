@@ -4,7 +4,7 @@ namespace ApiGen\ModularConfiguration\Parameter;
 
 use ApiGen\ModularConfiguration\Contract\Parameter\ParameterProviderInterface;
 use Nette\DI\Container;
-use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
 
 final class ParameterProvider implements ParameterProviderInterface
 {
@@ -13,15 +13,14 @@ final class ParameterProvider implements ParameterProviderInterface
      */
     private $parameters = [];
 
-    public function __construct(Kernel $kernel = null, Container $container = null)
+    public function __construct(SymfonyContainer $symfonyContainer = null, Container $netteContainer = null)
     {
-        if ($kernel) {
-            dump($kernel->getContainer()->getParameterBag());
-            die;
+        if ($symfonyContainer) {
+            $this->parameters = $symfonyContainer->getParameterBag();
+        } elseif ($netteContainer) {
+            $containerParameters = $netteContainer->getParameters();
+            $this->parameters = $this->unsedNetteDefaultParameters($containerParameters);
         }
-
-        $containerParameters = $container->getParameters();
-        $this->parameters = $this->unsedNetteDefaultParameters($containerParameters);
     }
 
     /**

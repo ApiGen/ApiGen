@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Types\Object_;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -26,7 +26,7 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
     private $docBlock;
 
     /**
-     * @var TransformerCollectorInterface
+     * @var TransformerCollector
      */
     private $transformerCollector;
 
@@ -180,7 +180,7 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
-    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    public function setTransformerCollector(TransformerCollector $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
     }

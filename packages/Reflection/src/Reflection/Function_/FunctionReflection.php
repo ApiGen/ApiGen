@@ -6,7 +6,7 @@ use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionFunction;
 
@@ -23,7 +23,7 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
     private $docBlock;
 
     /**
-     * @var TransformerCollectorInterface
+     * @var TransformerCollector
      */
     private $transformerCollector;
 
@@ -113,7 +113,7 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
         return $this->betterFunctionReflection->getFileName();
     }
 
-    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    public function setTransformerCollector(TransformerCollector $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
     }

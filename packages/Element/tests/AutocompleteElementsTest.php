@@ -4,7 +4,7 @@ namespace ApiGen\Element\Tests;
 
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
 use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -26,7 +26,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     private $reflectionRoute;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
@@ -38,7 +38,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 
         $this->autocompleteElements = $this->container->getByType(AutocompleteElementsInterface::class);
 
-        $this->reflectionStorage = $this->container->getByType(ReflectionStorageInterface::class);
+        $this->reflectionStorage = $this->container->getByType(ReflectionStorage::class);
         $this->reflectionRoute = $this->container->getByType(ReflectionRoute::class);
     }
 

@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element\Cache;
 
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 
 /**
  * Invoke all old reflection conversions, so they can be collected.
@@ -10,11 +10,11 @@ use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 final class ReflectionWarmUpper
 {
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
-    public function __construct(ReflectionStorageInterface $reflectionStorage)
+    public function __construct(ReflectionStorage $reflectionStorage)
     {
         $this->reflectionStorage = $reflectionStorage;
     }

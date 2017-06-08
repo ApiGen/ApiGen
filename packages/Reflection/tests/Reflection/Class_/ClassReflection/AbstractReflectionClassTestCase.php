@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
@@ -39,8 +39,8 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
         $parser = $this->container->getByType(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        /** @var ReflectionStorageInterface $reflectionStorage */
-        $reflectionStorage = $this->container->getByType(ReflectionStorageInterface::class);
+        /** @var ReflectionStorage $reflectionStorage */
+        $reflectionStorage = $this->container->getByType(ReflectionStorage::class);
 
         $classReflections = $reflectionStorage->getClassReflections();
         $this->reflectionClass = $classReflections[AccessLevels::class];

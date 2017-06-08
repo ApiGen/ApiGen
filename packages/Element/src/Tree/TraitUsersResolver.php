@@ -4,16 +4,16 @@ namespace ApiGen\Element\Tree;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 
 final class TraitUsersResolver
 {
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
-    public function __construct(ReflectionStorageInterface $reflectionStorage)
+    public function __construct(ReflectionStorage $reflectionStorage)
     {
         $this->reflectionStorage = $reflectionStorage;
     }

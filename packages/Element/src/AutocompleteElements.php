@@ -3,13 +3,13 @@
 namespace ApiGen\Element;
 
 use ApiGen\Element\Contract\AutocompleteElementsInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 
 final class AutocompleteElements implements AutocompleteElementsInterface
 {
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
@@ -18,7 +18,7 @@ final class AutocompleteElements implements AutocompleteElementsInterface
      */
     private $reflectionRoute;
 
-    public function __construct(ReflectionStorageInterface $reflectionStorage, ReflectionRoute $reflectionRoute)
+    public function __construct(ReflectionStorage $reflectionStorage, ReflectionRoute $reflectionRoute)
     {
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionRoute = $reflectionRoute;

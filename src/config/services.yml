@@ -1,0 +1,9 @@
+services:
+    _defaults:
+        autowire: true
+
+    # main application entrance (cannot be autowired)
+    ApiGen\Application\ApiGenApplication: ~
+
+    # 3rd party services (cannot be autowired)
+    Symfony\Component\Console\Output\ConsoleOutput: ~

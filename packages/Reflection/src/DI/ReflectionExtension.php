@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\DI;
 
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\TransformerCollector;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;
@@ -22,7 +22,7 @@ final class ReflectionExtension extends CompilerExtension
     {
         DefinitionCollector::loadCollectorWithType(
             $this->getContainerBuilder(),
-            TransformerCollectorInterface::class,
+            TransformerCollector::class,
             TransformerInterface::class,
             'addTransformer'
         );

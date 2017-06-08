@@ -20,7 +20,7 @@ final class AppKernel extends Kernel
 
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
-        $loader->load(__DIR__ . '/../config/services.yaml');
+        $loader->load(__DIR__ . '/../config/services.yml');
     }
 
     protected function build(ContainerBuilder $container): void

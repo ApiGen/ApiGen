@@ -8,8 +8,8 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\ReflectionStorage;
+use ApiGen\Reflection\TransformerCollector;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
@@ -21,12 +21,12 @@ use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 final class Parser
 {
     /**
-     * @var TransformerCollectorInterface
+     * @var TransformerCollector
      */
     private $transformerCollector;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
@@ -36,8 +36,8 @@ final class Parser
     private $reflectionWarmUpper;
 
     public function __construct(
-        TransformerCollectorInterface $transformerCollector,
-        ReflectionStorageInterface $reflectionStorage,
+        TransformerCollector $transformerCollector,
+        ReflectionStorage $reflectionStorage,
         ReflectionWarmUpper $reflectionWarmUpper
     ) {
         $this->transformerCollector = $transformerCollector;

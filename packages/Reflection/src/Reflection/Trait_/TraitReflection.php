@@ -9,7 +9,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\TransformerCollector;
 use InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
@@ -27,7 +27,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     private $docBlock;
 
     /**
-     * @var TransformerCollectorInterface
+     * @var TransformerCollector
      */
     private $transformerCollector;
 
@@ -196,7 +196,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return $this->docBlock->hasTag($name);
     }
 
-    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    public function setTransformerCollector(TransformerCollector $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
     }
