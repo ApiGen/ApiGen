@@ -14,6 +14,9 @@ final class AppKernel extends Kernel
         parent::__construct('dev',true);
     }
 
+    /**
+     * @return string[]
+     */
     public function registerBundles(): array
     {
         return [];
@@ -22,6 +25,11 @@ final class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/../config/services.yml');
+    }
+
+    public function getCacheDir(): string
+    {
+        return sys_get_temp_dir();
     }
 
     protected function build(ContainerBuilder $container): void

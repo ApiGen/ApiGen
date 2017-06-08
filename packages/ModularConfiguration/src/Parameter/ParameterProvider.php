@@ -5,26 +5,27 @@ namespace ApiGen\ModularConfiguration\Parameter;
 use ApiGen\ModularConfiguration\Contract\Parameter\ParameterProviderInterface;
 use Nette\DI\Container;
 use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class ParameterProvider implements ParameterProviderInterface
 {
     /**
-     * @var mixed[]
+     * @var mixed[]|ParameterBagInterface
      */
     private $parameters = [];
 
-    public function __construct(SymfonyContainer $symfonyContainer = null, Container $netteContainer = null)
+    public function __construct(?SymfonyContainer $symfonyContainer = null, ?Container $netteContainer = null)
     {
-        if ($symfonyContainer) {
+        if ($symfonyContainer !== null) {
             $this->parameters = $symfonyContainer->getParameterBag();
-        } elseif ($netteContainer) {
+        } elseif ($netteContainer !== null) {
             $containerParameters = $netteContainer->getParameters();
             $this->parameters = $this->unsedNetteDefaultParameters($containerParameters);
         }
     }
 
     /**
-     * @return mixed[]
+     * @return mixed[]|ParameterBagInterface
      */
     public function provide(): array
     {

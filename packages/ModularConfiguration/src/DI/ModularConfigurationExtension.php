@@ -4,7 +4,6 @@ namespace ApiGen\ModularConfiguration\DI;
 
 use ApiGen\ModularConfiguration\CommandDecorator;
 use ApiGen\ModularConfiguration\ConfigurationResolver;
-use ApiGen\ModularConfiguration\Contract\CommandDecoratorInterface;
 use ApiGen\ModularConfiguration\Contract\Option\CommandBoundInterface;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 use Nette\DI\Compiler;

@@ -4,8 +4,8 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
-use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Parser\Parser;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\RichInterface;

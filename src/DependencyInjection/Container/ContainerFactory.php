@@ -3,14 +3,11 @@
 namespace ApiGen\DependencyInjection\Container;
 
 use ApiGen\DependencyInjection\AppKernel;
-use Symfony\Component\DependencyInjection\Container;
+use Psr\Container\ContainerInterface;
 
 final class ContainerFactory
 {
-    /**
-     * @return PsrContainerInterface
-     */
-    public function create(): Container
+    public function create(): ContainerInterface
     {
         $kernel = new AppKernel;
         $kernel->boot();
