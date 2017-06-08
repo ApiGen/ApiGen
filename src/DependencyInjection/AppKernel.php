@@ -2,7 +2,7 @@
 
 namespace ApiGen\DependencyInjection;
 
-use ApiGen\DependencyInjection\CompilerPass\CollectCommandCompilerPass;
+use ApiGen\DependencyInjection\CompilerPass\CollectorCompilerPass;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
@@ -26,6 +26,6 @@ final class AppKernel extends Kernel
 
     protected function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new CollectCommandCompilerPass());
+        $container->addCompilerPass(new CollectorCompilerPass());
     }
 }

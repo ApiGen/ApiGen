@@ -2,7 +2,7 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector;
+use ApiGen\Element\ReflectionCollectorCollector;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;

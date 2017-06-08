@@ -3,7 +3,7 @@
 namespace ApiGen\Element\DI;
 
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
-use ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector;
+use ApiGen\Element\ReflectionCollectorCollector;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Symplify\PackageBuilder\Adapter\Nette\DI\DefinitionCollector;

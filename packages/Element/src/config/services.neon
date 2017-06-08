@@ -14,7 +14,7 @@
 - ApiGen\Element\Tree\TraitUsersResolver
 
 # Reflection Collector
-- ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector
+- ApiGen\Element\ReflectionCollectorCollector
 - ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector
 - ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector
 - ApiGen\Element\Cache\ReflectionWarmUpper

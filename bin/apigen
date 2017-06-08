@@ -17,8 +17,7 @@ $container = (new ContainerFactory)->create();
 //$application = $container->getByType(Application::class);
 //$application->run();
 
-/** @var \Symfony\Component\DependencyInjection\Container $container */
-$container = (new SymfonyContainerFactory())->create();
+$symfonyContainer = (new SymfonyContainerFactory())->create();
 /** @var Application $application */
-$application = $container->get(Application::class);
+$application = $symfonyContainer->get(Application::class);
 $application->run();

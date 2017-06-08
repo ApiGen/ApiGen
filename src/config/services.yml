@@ -9,7 +9,19 @@ services:
 
     # 3rd party services (cannot be autowired)
     Symfony\Component\Console\Output\ConsoleOutput: ~
+    phpDocumentor\Reflection\DocBlockFactory: ~
+    phpDocumentor\Reflection\DocBlock\StandardTagFactory: ~
 
     # PSR-4 autodiscovery
     ApiGen\Console\:
         resource: '../../src/Console'
+    ApiGen\ModularConfiguration\Option\:
+        resource: '../../packages/ModularConfiguration/src/Option'
+    ApiGen\Reflection\Transformer\:
+        resource: '../../packages/Reflection/src/Transformer'
+
+    # root collectors (move to package builder?)
+    ApiGen\ModularConfiguration\CommandDecorator: ~
+    ApiGen\ModularConfiguration\ConfigurationResolver: ~
+    ApiGen\Reflection\TransformerCollector: ~
+    ApiGen\Element\ReflectionCollectorCollector: ~
