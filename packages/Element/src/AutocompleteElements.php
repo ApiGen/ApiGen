@@ -2,11 +2,10 @@
 
 namespace ApiGen\Element;
 
-use ApiGen\Element\Contract\AutocompleteElementsInterface;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 
-final class AutocompleteElements implements AutocompleteElementsInterface
+final class AutocompleteElements
 {
     /**
      * @var ReflectionStorage

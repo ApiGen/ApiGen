@@ -2,6 +2,7 @@
 
 namespace ApiGen\ModularConfiguration\DI;
 
+use ApiGen\ModularConfiguration\CommandDecorator;
 use ApiGen\ModularConfiguration\ConfigurationResolver;
 use ApiGen\ModularConfiguration\Contract\CommandDecoratorInterface;
 use ApiGen\ModularConfiguration\Contract\Option\CommandBoundInterface;
@@ -24,7 +25,7 @@ final class ModularConfigurationExtension extends CompilerExtension
     {
         DefinitionCollector::loadCollectorWithType(
             $this->getContainerBuilder(),
-            CommandDecoratorInterface::class,
+            CommandDecorator::class,
             CommandBoundInterface::class,
             'addOption'
         );

@@ -1,9 +1,15 @@
 services:
     _defaults:
         autowire: true
+        autoconfigure: true
 
     # main application entrance (cannot be autowired)
+    Symfony\Component\Console\Application: ~
     ApiGen\Application\ApiGenApplication: ~
 
     # 3rd party services (cannot be autowired)
     Symfony\Component\Console\Output\ConsoleOutput: ~
+
+    # PSR-4 autodiscovery
+    ApiGen\Console\:
+        resource: '../../src/Console'

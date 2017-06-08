@@ -2,7 +2,7 @@
 
 namespace ApiGen\Element\Tests;
 
-use ApiGen\Element\Contract\AutocompleteElementsInterface;
+use ApiGen\Element\AutocompleteElements;
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\ReflectionRoute;
@@ -16,7 +16,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     private $namespacePrefix = 'ApiGen\Element\Tests\ReflectionCollector\NamespaceReflectionCollectorSource';
 
     /**
-     * @var AutocompleteElementsInterface
+     * @var AutocompleteElements
      */
     private $autocompleteElements;
 
@@ -36,8 +36,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
         $parser = $this->container->getByType(Parser::class);
         $parser->parseDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
 
-        $this->autocompleteElements = $this->container->getByType(AutocompleteElementsInterface::class);
-
+        $this->autocompleteElements = $this->container->getByType(AutocompleteElements::class);
         $this->reflectionStorage = $this->container->getByType(ReflectionStorage::class);
         $this->reflectionRoute = $this->container->getByType(ReflectionRoute::class);
     }

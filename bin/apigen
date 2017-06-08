@@ -12,6 +12,12 @@ require_once getcwd() . '/vendor/autoload.php';
 
 $container = (new ContainerFactory)->create();
 
-/** @var Application $application */
-$application = $container->getByType(Application::class);
+///** @var Application $application */
+//$application = $container->getByType(Application::class);
+//$application->run();
+
+/** @var \Symfony\Component\DependencyInjection\Container $container */
+$container = (new \ApiGen\DependencyInjection\Container\ContainerFactory())->create();
+///** @var Application $application */
+$application = $container->get(Application::class);
 $application->run();
