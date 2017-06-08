@@ -1,6 +1,7 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 
+use ApiGen\DependencyInjection\Container\ContainerFactory as SymfonyContainerFactory;
 use ApiGen\DI\Container\ContainerFactory;
 use Symfony\Component\Console\Application;
 
@@ -17,7 +18,7 @@ $container = (new ContainerFactory)->create();
 //$application->run();
 
 /** @var \Symfony\Component\DependencyInjection\Container $container */
-$container = (new \ApiGen\DependencyInjection\Container\ContainerFactory())->create();
-///** @var Application $application */
+$container = (new SymfonyContainerFactory())->create();
+/** @var Application $application */
 $application = $container->get(Application::class);
 $application->run();
