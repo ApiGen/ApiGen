@@ -16,10 +16,10 @@ final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->functionGenerator = $this->container->getByType(FunctionGenerator::class);
+        $this->functionGenerator = $this->container->get(FunctionGenerator::class);
     }
 
     public function test(): void

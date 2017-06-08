@@ -36,11 +36,11 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
         /** @var ReflectionStorage $reflectionStorage */
-        $reflectionStorage = $this->container->getByType(ReflectionStorage::class);
+        $reflectionStorage = $this->container->get(ReflectionStorage::class);
 
         $classReflections = $reflectionStorage->getClassReflections();
         $this->reflectionClass = $classReflections[AccessLevels::class];

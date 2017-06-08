@@ -14,7 +14,7 @@ final class ParentEmptyNamespacesResolverTest extends AbstractContainerAwareTest
 
     protected function setUp(): void
     {
-        $this->parentEmptyNamespacesResolver = $this->container->getByType(ParentEmptyNamespacesResolver::class);
+        $this->parentEmptyNamespacesResolver = $this->container->get(ParentEmptyNamespacesResolver::class);
     }
 
     /**

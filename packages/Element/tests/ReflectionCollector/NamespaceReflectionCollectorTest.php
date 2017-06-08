@@ -21,10 +21,10 @@ final class NamespaceReflectionCollectorTest extends AbstractContainerAwareTestC
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/NamespaceReflectionCollectorSource']);
 
-        $this->namespaceReflectionCollector = $this->container->getByType(NamespaceReflectionCollector::class);
+        $this->namespaceReflectionCollector = $this->container->get(NamespaceReflectionCollector::class);
     }
 
     public function testSort(): void

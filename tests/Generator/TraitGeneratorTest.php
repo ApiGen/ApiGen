@@ -16,10 +16,10 @@ final class TraitGeneratorTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->traitGenerator = $this->container->getByType(TraitGenerator::class);
+        $this->traitGenerator = $this->container->get(TraitGenerator::class);
     }
 
     public function test(): void

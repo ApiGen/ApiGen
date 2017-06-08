@@ -14,7 +14,7 @@ final class SourceCodeHighlighterTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $this->sourceCodeHighlighter = $this->container->getByType(SourceCodeHighlighter::class);
+        $this->sourceCodeHighlighter = $this->container->get(SourceCodeHighlighter::class);
     }
 
     public function testHighlight(): void

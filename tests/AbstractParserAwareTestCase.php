@@ -3,7 +3,7 @@
 namespace ApiGen\Tests;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\DI\Container\ContainerFactory;
+use ApiGen\DependencyInjection\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\ReflectionStorage;
@@ -38,13 +38,13 @@ abstract class AbstractParserAwareTestCase extends TestCase
         $this->container = (new ContainerFactory)->create();
 
         /** @var Configuration $configuration */
-        $configuration = $this->container->getByType(Configuration::class);
+        $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR
         ]);
 
-        $this->parser = $this->container->getByType(Parser::class);
-        $this->reflectionStorage = $this->container->getByType(ReflectionStorage::class);
+        $this->parser = $this->container->get(Parser::class);
+        $this->reflectionStorage = $this->container->get(ReflectionStorage::class);
     }
 }

@@ -18,7 +18,7 @@ final class GeneratorQueueTest extends AbstractContainerAwareTestCase
     {
         $this->disableOutputForProgressBar();
 
-        $this->generatorQueue = $this->container->getByType(GeneratorQueue::class);
+        $this->generatorQueue = $this->container->get(GeneratorQueue::class);
     }
 
     public function testRun(): void
@@ -37,7 +37,7 @@ final class GeneratorQueueTest extends AbstractContainerAwareTestCase
     protected function disableOutputForProgressBar(): void
     {
         /** @var OutputInterface $output */
-        $output = $this->container->getByType(OutputInterface::class);
+        $output = $this->container->get(OutputInterface::class);
         $output->setVerbosity(0);
     }
 }

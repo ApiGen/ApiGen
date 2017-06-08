@@ -21,7 +21,7 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
     protected function setUp(): void
     {
         /** @var Configuration $configuration */
-        $configuration = $this->container->getByType(Configuration::class);
+        $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
            SourceOption::NAME => [__DIR__],
            DestinationOption::NAME => TEMP_DIR,
@@ -29,10 +29,10 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
         ]);
 
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->annotationReflectionCollector = $this->container->getByType(AnnotationReflectionCollector::class);
+        $this->annotationReflectionCollector = $this->container->get(AnnotationReflectionCollector::class);
     }
 
     public function test(): void

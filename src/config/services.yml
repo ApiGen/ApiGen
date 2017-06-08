@@ -12,16 +12,32 @@ services:
     phpDocumentor\Reflection\DocBlockFactory: ~
     phpDocumentor\Reflection\DocBlock\StandardTagFactory: ~
 
+    FSHL\Highlighter: ~
+    FSHL\Output\Html: ~
+
+    Latte\Engine: ~
+    Symfony\Component\EventDispatcher\EventDispatcher: ~
+
     # PSR-4 autodiscovery
-    ApiGen\Console\:
-        resource: '../../src/Console'
+    ApiGen\:
+        resource: '../../src'
+        exclude: '../../src/{Application/Command,Event,Exception}'
+#    ApiGen\Console\:
+#        resource: '../../src/Console'
     ApiGen\ModularConfiguration\Option\:
         resource: '../../packages/ModularConfiguration/src/Option'
-    ApiGen\Reflection\Transformer\:
-        resource: '../../packages/Reflection/src/Transformer'
+    ApiGen\Reflection\:
+        resource: '../../packages/Reflection/src'
+        exclude: "../../packages/Reflection/src/{Exception,Reflection}"
 
     # root collectors (move to package builder?)
     ApiGen\ModularConfiguration\CommandDecorator: ~
     ApiGen\ModularConfiguration\ConfigurationResolver: ~
     ApiGen\Reflection\TransformerCollector: ~
     ApiGen\Element\ReflectionCollectorCollector: ~
+
+    # services (might be removed, when reflection container aware)
+    ApiGen\Configuration\Configuration: ~
+    ApiGen\Reflection\Parser\Parser: ~
+    ApiGen\Reflection\ReflectionStorage: ~
+    ApiGen\Utils\RelativePathResolver: ~

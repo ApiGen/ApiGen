@@ -23,7 +23,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $this->configuration = $this->container->getByType(Configuration::class);
+        $this->configuration = $this->container->get(Configuration::class);
     }
 
     public function testResolve(): void

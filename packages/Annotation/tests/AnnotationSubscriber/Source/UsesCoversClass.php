@@ -6,7 +6,7 @@ use Nette\DI\ContainerBuilder;
 
 /**
  * @uses ContainerBuilder And the description
- * @covers ContainerBuilder::getByType()
+ * @covers ContainerBuilder::get()
  *
  * @uses UsedClass Not in link
  */

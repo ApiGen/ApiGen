@@ -23,8 +23,8 @@ final class RelativePathResolverTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $this->configuration = $this->container->getByType(Configuration::class);
-        $this->relativePathResolver = $this->container->getByType(RelativePathResolver::class);
+        $this->configuration = $this->container->get(Configuration::class);
+        $this->relativePathResolver = $this->container->get(RelativePathResolver::class);
     }
 
     public function testGetRelativePath(): void

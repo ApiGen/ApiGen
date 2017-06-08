@@ -16,10 +16,10 @@ final class InterfaceGeneratorTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->interfaceGenerator = $this->container->getByType(InterfaceGenerator::class);
+        $this->interfaceGenerator = $this->container->get(InterfaceGenerator::class);
     }
 
     public function test(): void

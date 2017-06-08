@@ -10,7 +10,7 @@ final class OverviewGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         /** @var IndexGenerator $overviewGenerator */
-        $overviewGenerator = $this->container->getByType(IndexGenerator::class);
+        $overviewGenerator = $this->container->get(IndexGenerator::class);
         $overviewGenerator->generate();
 
         $this->assertFileExists(TEMP_DIR . '/index.html');

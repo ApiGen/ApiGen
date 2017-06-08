@@ -19,7 +19,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         /** @var Configuration $configuration */
-        $configuration = $this->container->getByType(Configuration::class);
+        $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             'source' => [TEMP_DIR],
             'destination' => TEMP_DIR,
@@ -27,9 +27,9 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
         ]);
 
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/DeprecatedSources']);
-        $this->annotationGroupsGenerator = $this->container->getByType(AnnotationGroupsGenerator::class);
+        $this->annotationGroupsGenerator = $this->container->get(AnnotationGroupsGenerator::class);
     }
 
     public function testGenerate(): void

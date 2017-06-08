@@ -11,11 +11,11 @@ final class ClassesGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
         /** @var ClassesGenerator $classesGenerator */
-        $classesGenerator = $this->container->getByType(ClassesGenerator::class);
+        $classesGenerator = $this->container->get(ClassesGenerator::class);
         $classesGenerator->generate();
 
         $this->assertFileExists(TEMP_DIR . '/classes.html');

@@ -33,12 +33,12 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
 
-        $this->autocompleteElements = $this->container->getByType(AutocompleteElements::class);
-        $this->reflectionStorage = $this->container->getByType(ReflectionStorage::class);
-        $this->reflectionRoute = $this->container->getByType(ReflectionRoute::class);
+        $this->autocompleteElements = $this->container->get(AutocompleteElements::class);
+        $this->reflectionStorage = $this->container->get(ReflectionStorage::class);
+        $this->reflectionRoute = $this->container->get(ReflectionRoute::class);
     }
 
     public function testGetElementsClasses(): void

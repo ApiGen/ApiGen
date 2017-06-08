@@ -17,10 +17,10 @@ final class NamespaceGeneratorTest extends AbstractContainerAwareTestCase
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $parser = $this->container->getByType(Parser::class);
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->namespaceGenerator = $this->container->getByType(NamespaceGenerator::class);
+        $this->namespaceGenerator = $this->container->get(NamespaceGenerator::class);
     }
 
     public function test(): void
