@@ -6,7 +6,6 @@ use ApiGen\ModularConfiguration\Contract\Parameter\ParameterProviderInterface;
 use Nette\DI\Container;
 use Nette\Utils\Strings;
 use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
-use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class ParameterProvider implements ParameterProviderInterface
 {
@@ -14,7 +13,6 @@ final class ParameterProvider implements ParameterProviderInterface
      * @var mixed[]
      */
     private $parameters = [];
-
 
     public function __construct(SymfonyContainer $symfonyContainer, ?Container $netteContainer = null)
     {
@@ -61,6 +59,7 @@ final class ParameterProvider implements ParameterProviderInterface
                 unset ($containerParameters[$name]);
             }
         }
+
         return $containerParameters;
     }
 }
