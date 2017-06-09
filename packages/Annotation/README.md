@@ -76,12 +76,15 @@ final class MarkdownDescriptionSubscriber implements EventSubscriberInterface
 }
 ```
 
-2. Register subscriber and everything else you need as service in `apigen.neon`:
+2. Register subscriber and everything else you need as service in `apigen.yml`:
 
 ```yaml
 services:
-  - App\ApiGen\EventSubscriber\MarkdownDescriptionSubscriber
-  - Parsedown
+    _defaults:
+        autowire: true
+   
+    App\ApiGen\EventSubscriber\MarkdownDescriptionSubscriber: ~ 
+    Parsedown: ~
 ```
 
 That's it!
@@ -136,11 +139,14 @@ final class ThrowsAnnotationSubscriber implements AnnotationSubscriberInterface
 }
 ```
 
-2. Register it as a services in `apigen.neon`
+2. Register it as a services in `apigen.yml`
 
 ```yaml
 services:
-  - App\ApiGen\AnnotationSubscriber\ThrowsAnnotationSubscriber
+    _defaults:
+        autowire: true
+    
+    App\ApiGen\AnnotationSubscriber\ThrowsAnnotationSubscriber: ~
 ```
 
 That's it!
