@@ -18,6 +18,8 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symplify\PackageBuilder\Adapter\Symfony\DependencyInjection\DefinitionCollector;
 
 final class CollectorCompilerPass implements CompilerPassInterface
@@ -31,6 +33,7 @@ final class CollectorCompilerPass implements CompilerPassInterface
         $this->collectReflectionCollectorsToReflectionCollectorCollector($containerBuilder);
         $this->collectAnnotationSubscribersToAnnotationDecorator($containerBuilder);
         $this->collectRoutesToStringRouter($containerBuilder);
+        $this->collectEventSubscribersToDispatcher($containerBuilder);
     }
 
     private function collectCommandsToApplication(ContainerBuilder $containerBuilder): void
@@ -100,6 +103,16 @@ final class CollectorCompilerPass implements CompilerPassInterface
             StringRouter::class,
             RouteInterface::class,
             'addRoute'
+        );
+    }
+
+    private function collectEventSubscribersToDispatcher(ContainerBuilder $containerBuilder): void
+    {
+        DefinitionCollector::loadCollectorWithType(
+            $containerBuilder,
+            EventDispatcher::class,
+            EventSubscriberInterface::class,
+            'addSubscriber'
         );
     }
 }

@@ -85,15 +85,15 @@
     <tr n:foreach="$items as $class">
         <td class="name"><a href="{$class|linkReflection}">{$class->getName()}</a></td>
         <td>
-            {foreach $class->getAnnotations($annotation) as $annotation}
-                {$annotation|annotation:$class|noescape}<br>
+            {foreach $class->getAnnotations($annotation) as $classAnnotation}
+                {$classAnnotation|annotation:$class|noescape}<br>
             {/foreach}
         </td>
     </tr>
 {/define}
 
 {define reflectionAnnotationsList}
-    {foreach $reflection->getAnnotation($annotation) as $annotation}
-        {$annotation|annotation:$reflection|noescape}<br>
+    {foreach $reflection->getAnnotation($annotation) as $reflectionAnnotation}
+        {$reflectionAnnotation|annotation:$reflection|noescape}<br>
     {/foreach}
 {/define}

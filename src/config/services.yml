@@ -17,8 +17,12 @@ services:
     phpDocumentor\Reflection\DocBlockFactory:
         factory: phpDocumentor\Reflection\DocBlockFactory::createInstance
 
-    FSHL\Highlighter: ~
+    # Source Code Highlighter
     FSHL\Output\Html: ~
+    FSHL\Lexer\Php: ~
+    FSHL\Highlighter:
+        calls:
+            - [setLexer, ['@FSHL\Lexer\Php']]
 
     Symfony\Component\EventDispatcher\EventDispatcher: ~
     phpDocumentor\Reflection\Types\ContextFactory: ~

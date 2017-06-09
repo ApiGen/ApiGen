@@ -24,8 +24,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
     {
         $this->generateCommand = $this->container->get(GenerateCommand::class);
 
-        /** @var ConsoleOutput $output */
-        $output = $this->container->get(OutputInterface::class);
+        $output = $this->container->get(ConsoleOutput::class);
         $output->setVerbosity(Output::VERBOSITY_QUIET);
     }
 
