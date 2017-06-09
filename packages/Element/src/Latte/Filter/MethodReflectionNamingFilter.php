@@ -2,12 +2,12 @@
 
 namespace ApiGen\Element\Latte\Filter;
 
+use ApiGen\Contract\Templating\FilterProviderInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
-use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class MethodReflectionNamingFilter implements LatteFiltersProviderInterface
+final class MethodReflectionNamingFilter implements FilterProviderInterface
 {
     /**
      * @return callable[]

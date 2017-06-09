@@ -41,7 +41,7 @@ vendor/bin/apigen generate src tests --destination docs
 
 ## Configuration
 
-Below is a minimal example configuration. Save it as a `apigen.neon` file in
+Below is a minimal example configuration. Save it as a `apigen.yml` file in
 the root of your project:
 
 ```yaml
@@ -110,7 +110,7 @@ This is already mentioned on Wiki.
 
 ## Themes
 
-To enable a custom theme just provide `themeDirectory` configuration option in your `apigen.neon`:
+To enable a custom theme just provide `themeDirectory` configuration option in your `apigen.yml`:
 
 ```yaml
 parameters:

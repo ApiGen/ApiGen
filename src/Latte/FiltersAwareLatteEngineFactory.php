@@ -2,17 +2,17 @@
 
 namespace ApiGen\Latte;
 
+use ApiGen\Contract\Templating\FilterProviderInterface;
 use Latte\Engine;
-use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
 final class FiltersAwareLatteEngineFactory
 {
     /**
-     * @var LatteFiltersProviderInterface[]
+     * @var FilterProviderInterface[]
      */
     private $filtersProviders = [];
 
-    public function addFiltersProvider(LatteFiltersProviderInterface $filtersProvider): void
+    public function addFiltersProvider(FilterProviderInterface $filtersProvider): void
     {
         $this->filtersProviders[] = $filtersProvider;
     }
@@ -20,6 +20,8 @@ final class FiltersAwareLatteEngineFactory
     public function create(): Engine
     {
         $latteEngine = new Engine;
+        $latteEngine->setTempDirectory(sys_get_temp_dir() . '/_latte_cache');
+
         foreach ($this->filtersProviders as $filtersProvider) {
             foreach ($filtersProvider->getFilters() as $name => $callback) {
                 $latteEngine->addFilter($name, $callback);

@@ -2,15 +2,15 @@
 
 namespace ApiGen\StringRouting\Latte\Filter;
 
+use ApiGen\Contract\Templating\FilterProviderInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\StringRouting\Route\NamespaceRoute;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\StringRouting\Route\SourceCodeRoute;
 use ApiGen\StringRouting\StringRouter;
 use Nette\InvalidArgumentException;
-use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class StringRoutingFiltersProvider implements LatteFiltersProviderInterface
+final class StringRoutingFiltersProvider implements FilterProviderInterface
 {
     /**
      * @var StringRouter

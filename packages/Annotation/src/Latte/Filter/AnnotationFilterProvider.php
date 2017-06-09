@@ -3,15 +3,15 @@
 namespace ApiGen\Annotation\Latte\Filter;
 
 use ApiGen\Annotation\AnnotationDecorator;
+use ApiGen\Contract\Templating\FilterProviderInterface;
 use ApiGen\Event\ProcessDocTextEvent;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use Nette\InvalidArgumentException;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symplify\ModularLatteFilters\Contract\DI\LatteFiltersProviderInterface;
 
-final class AnnotationFilterProvider implements LatteFiltersProviderInterface
+final class AnnotationFilterProvider implements FilterProviderInterface
 {
     /**
      * @var EventDispatcherInterface

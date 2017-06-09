@@ -1,4 +1,0 @@
-parameters:
-    title: "ApiGen It-self"
-    visibilityLevels: [public, protected]
-    baseUrl: http://apigen.org
