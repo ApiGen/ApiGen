@@ -8,13 +8,13 @@ use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Parser\Parser;
-use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 abstract class AbstractParserAwareTestCase extends TestCase
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
