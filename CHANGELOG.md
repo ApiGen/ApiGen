@@ -28,6 +28,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 
 - **Changed PHP Token Reflection library from `andrewsville/php-token-reflection` to `roave/better-reflection` [#827]**
 - **Minimum PHP requirement was increased from `5.4` to `7.1`**
+- Change DI library from `Nette\DI` to [Symfony\DependencyInjection](http://symfony.com/doc/current/components/dependency_injection) due to [Symfony 3.3 new features](http://symfony.com/blog/the-new-symfony-3-3-service-configuration-changes-explained) and **PSR-11** [#880]
 - Project is now `PSR-2` compatible
 - UTF-8 is now a standard/default charset. [ApiGen] will expect UTF-8 encoded files by default [#64]
 - Only relevant classes are generated in sidebar and source code pages [#771]
