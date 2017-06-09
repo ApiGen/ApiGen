@@ -4,8 +4,10 @@ namespace ApiGen\DependencyInjection\CompilerPass;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
+use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
 use ApiGen\Element\ReflectionCollectorCollector;
+use ApiGen\Generator\GeneratorQueue;
 use ApiGen\ModularConfiguration\CommandDecorator;
 use ApiGen\ModularConfiguration\ConfigurationResolver;
 use ApiGen\ModularConfiguration\Contract\Option\CommandBoundInterface;
@@ -34,6 +36,7 @@ final class CollectorCompilerPass implements CompilerPassInterface
         $this->collectAnnotationSubscribersToAnnotationDecorator($containerBuilder);
         $this->collectRoutesToStringRouter($containerBuilder);
         $this->collectEventSubscribersToDispatcher($containerBuilder);
+        $this->collectGeneratorsToGeneratorQueue($containerBuilder);
     }
 
     private function collectCommandsToApplication(ContainerBuilder $containerBuilder): void
@@ -113,6 +116,16 @@ final class CollectorCompilerPass implements CompilerPassInterface
             EventDispatcher::class,
             EventSubscriberInterface::class,
             'addSubscriber'
+        );
+    }
+
+    private function collectGeneratorsToGeneratorQueue(ContainerBuilder $containerBuilder): void
+    {
+        DefinitionCollector::loadCollectorWithType(
+            $containerBuilder,
+            GeneratorQueue::class,
+            GeneratorInterface::class,
+            'addGenerator'
         );
     }
 }
