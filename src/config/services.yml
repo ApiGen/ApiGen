@@ -17,6 +17,8 @@ services:
 
     Latte\Engine: ~
     Symfony\Component\EventDispatcher\EventDispatcher: ~
+    phpDocumentor\Reflection\Types\ContextFactory: ~
+    phpDocumentor\Reflection\FqsenResolver: ~
 
     # PSR-4 autodiscovery
     ApiGen\:
@@ -26,6 +28,12 @@ services:
 #        resource: '../../src/Console'
     ApiGen\ModularConfiguration\Option\:
         resource: '../../packages/ModularConfiguration/src/Option'
+    ApiGen\Element\:
+        resource: '../../packages/Element/src'
+    ApiGen\StringRouting\:
+        resource: '../../packages/StringRouting/src'
+    ApiGen\Annotation\:
+        resource: '../../packages/Annotation/src'
     ApiGen\Reflection\:
         resource: '../../packages/Reflection/src'
         exclude: "../../packages/Reflection/src/{Exception,Reflection}"

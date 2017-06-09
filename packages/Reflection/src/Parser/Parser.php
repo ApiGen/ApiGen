@@ -50,16 +50,10 @@ final class Parser
      */
     public function parseDirectories(array $directories): void
     {
-        // @legacy allowed to specify extensions and exclude, removed for now
         $directoriesSourceLocator = $this->createDirectoriesSource($directories);
 
         $this->parseClassElements($directoriesSourceLocator);
         $this->parseFunctions($directoriesSourceLocator);
-
-        // @legacy
-        // Add classes from @param, @var, @return, @throws annotations as well
-        // as parent classes to the overall class list.
-        // @see \ApiGen\Parser\Broker\Backend: https://github.com/ApiGen/ApiGen/blob/fa603928b656a9e7c826e001f5295200d23f9712/src/Parser/Broker/Backend.php#L174
 
         $this->reflectionWarmUpper->warmUp();
     }
@@ -124,8 +118,6 @@ final class Parser
      */
     private function createDirectoriesSource(array $directories): SourceLocator
     {
-        // @todo: use FileIteratorSourceLocator and FinderInterface
-        // such service scan be replaced in config by own with custom finder implementation
         return new AggregateSourceLocator([
             new DirectoriesSourceLocator($directories),
             new AutoloadSourceLocator(),

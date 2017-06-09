@@ -3,7 +3,6 @@
 namespace ApiGen\Tests;
 
 use ApiGen\Configuration\Configuration;
-//use ApiGen\DependencyInjection\Container\ContainerFactory;
 use ApiGen\DependencyInjection\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
