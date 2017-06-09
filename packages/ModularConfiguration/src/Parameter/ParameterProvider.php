@@ -4,28 +4,31 @@ namespace ApiGen\ModularConfiguration\Parameter;
 
 use ApiGen\ModularConfiguration\Contract\Parameter\ParameterProviderInterface;
 use Nette\DI\Container;
+use Nette\Utils\Strings;
 use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 final class ParameterProvider implements ParameterProviderInterface
 {
     /**
-     * @var mixed[]|ParameterBagInterface
+     * @var mixed[]
      */
     private $parameters = [];
 
-    public function __construct(?SymfonyContainer $symfonyContainer = null, ?Container $netteContainer = null)
+
+    public function __construct(SymfonyContainer $symfonyContainer, ?Container $netteContainer = null)
     {
         if ($symfonyContainer !== null) {
-            $this->parameters = $symfonyContainer->getParameterBag();
+            $containerParameters = $symfonyContainer->getParameterBag()->all();
+            $this->parameters = $this->unsetSymfonyDefaultParameters($containerParameters);
         } elseif ($netteContainer !== null) {
             $containerParameters = $netteContainer->getParameters();
-            $this->parameters = $this->unsedNetteDefaultParameters($containerParameters);
+            $this->parameters = $this->unsetNetteDefaultParameters($containerParameters);
         }
     }
 
     /**
-     * @return mixed[]|ParameterBagInterface
+     * @return mixed[]
      */
     public function provide(): array
     {
@@ -36,7 +39,7 @@ final class ParameterProvider implements ParameterProviderInterface
      * @param mixed[] $containerParameters
      * @return mixed[]
      */
-    private function unsedNetteDefaultParameters(array $containerParameters): array
+    private function unsetNetteDefaultParameters(array $containerParameters): array
     {
         unset(
             $containerParameters['appDir'], $containerParameters['wwwDir'],
@@ -44,6 +47,20 @@ final class ParameterProvider implements ParameterProviderInterface
             $containerParameters['consoleMode'], $containerParameters['tempDir']
         );
 
+        return $containerParameters;
+    }
+
+    /**
+     * @param mixed[] $containerParameters
+     * @return mixed[]
+     */
+    private function unsetSymfonyDefaultParameters(array $containerParameters): array
+    {
+        foreach ($containerParameters as $name => $value) {
+            if (Strings::startsWith($name, 'kernel')) {
+                unset ($containerParameters[$name]);
+            }
+        }
         return $containerParameters;
     }
 }

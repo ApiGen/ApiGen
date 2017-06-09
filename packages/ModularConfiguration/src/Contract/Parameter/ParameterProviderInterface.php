@@ -7,5 +7,5 @@ interface ParameterProviderInterface
     /**
      * @return mixed[]
      */
-    public function provide(): array;
+    public function provide();
 }

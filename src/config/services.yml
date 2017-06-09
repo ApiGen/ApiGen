@@ -7,6 +7,9 @@ services:
     Symfony\Component\Console\Application: ~
     ApiGen\Application\ApiGenApplication: ~
 
+    ApiGen\ModularConfiguration\Parameter\ParameterProvider:
+        arguments: ['@service_container']
+
     # 3rd party services (cannot be autowired)
     Symfony\Component\Console\Output\ConsoleOutput: ~
 

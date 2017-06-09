@@ -10,6 +10,11 @@ use Symfony\Component\HttpKernel\Kernel;
 
 final class AppKernel extends Kernel
 {
+    /**
+     * @var string
+     */
+    private const CONFIG_NAME = 'apigen.yml';
+
     public function __construct()
     {
         parent::__construct('dev',true);
@@ -18,6 +23,11 @@ final class AppKernel extends Kernel
     public function registerContainerConfiguration(LoaderInterface $loader): void
     {
         $loader->load(__DIR__ . '/../config/services.yml');
+
+        $localConfig = getcwd() . '/' . self::CONFIG_NAME;
+        if (file_exists($localConfig)) {
+            $loader->load($localConfig);
+        }
     }
 
     /**

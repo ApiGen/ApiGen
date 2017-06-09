@@ -47,7 +47,14 @@ final class Configuration
         $configParameters = $this->parameterProvider->provide();
         $options = array_merge($configParameters, $options);
 
-        return $this->options = $this->configurationResolver->resolveValuesWithDefaults($options);
+        $resolvedOptions = $this->configurationResolver->resolveValuesWithDefaults($options);
+
+        // hack to remove duplicated lowercased value
+        unset ($resolvedOptions[strtolower(VisibilityLevelOption::NAME)]);
+        $resolvedOptions[BaseUrlOption::NAME] = $resolvedOptions[strtolower(BaseUrlOption::NAME)];
+        unset ($resolvedOptions[strtolower(BaseUrlOption::NAME)]);
+
+        return $this->options = $resolvedOptions;
     }
 
     /**

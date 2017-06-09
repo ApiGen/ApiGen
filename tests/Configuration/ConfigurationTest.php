@@ -33,15 +33,17 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
             DestinationOption::NAME => TEMP_DIR
         ]);
 
+        $this->assertCount(8, $options);
+
         $this->assertSame([
             TitleOption::NAME => 'ApiGen It-self',
-            VisibilityLevelOption::NAME => 768,
-            BaseUrlOption::NAME => 'http://apigen.org',
             SourceOption::NAME => [],
             DestinationOption::NAME => TEMP_DIR,
             AnnotationGroupsOption::NAME => [],
+            BaseUrlOption::NAME => 'http://apigen.org',
             OverwriteOption::NAME => false,
             ThemeDirectoryOption::NAME => realpath(__DIR__ . '/../../packages/ThemeDefault/src'),
+            VisibilityLevelOption::NAME => 768,
         ], $options);
     }
 
