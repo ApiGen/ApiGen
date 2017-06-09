@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
@@ -19,7 +19,7 @@ final class InterfaceMethodReflection implements InterfaceMethodReflectionInterf
     private $betterMethodReflection;
 
     /**
-     * @var TransformerCollectorInterface
+     * @var TransformerCollector
      */
     private $transformerCollector;
 
@@ -67,7 +67,7 @@ final class InterfaceMethodReflection implements InterfaceMethodReflectionInterf
             ->getName();
     }
 
-    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void
+    public function setTransformerCollector(TransformerCollector $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
     }

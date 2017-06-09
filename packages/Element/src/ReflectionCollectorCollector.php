@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace ApiGen\Element\ReflectionCollector;
+namespace ApiGen\Element;
 
 use ApiGen\Element\Contract\ReflectionCollector\AdvancedReflectionCollectorInterface;
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
@@ -11,7 +11,7 @@ final class ReflectionCollectorCollector
     /**
      * @var BasicReflectionCollectorInterface[]|AdvancedReflectionCollectorInterface[]
      */
-    private $reflectionCollectors;
+    private $reflectionCollectors = [];
 
     public function addReflectionCollector(BasicReflectionCollectorInterface $reflectionCollector): void
     {

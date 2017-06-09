@@ -7,7 +7,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use Nette\Utils\Strings;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\ContextFactory;
@@ -26,14 +26,14 @@ final class ElementResolver
     private $fqsenResolver;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
     public function __construct(
         ContextFactory $contextFactory,
         FqsenResolver $fqsenResolver,
-        ReflectionStorageInterface $reflectionStorage
+        ReflectionStorage $reflectionStorage
     ) {
         $this->contextFactory = $contextFactory;
         $this->fqsenResolver = $fqsenResolver;

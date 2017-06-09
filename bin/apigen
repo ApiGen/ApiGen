@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 
-use ApiGen\DI\Container\ContainerFactory;
+use ApiGen\DependencyInjection\Container\ContainerFactory;
 use Symfony\Component\Console\Application;
 
 // Performance boost
@@ -10,8 +10,7 @@ gc_disable();
 // Require Composer autoload
 require_once getcwd() . '/vendor/autoload.php';
 
-$container = (new ContainerFactory)->create();
-
+$container = (new ContainerFactory())->create();
 /** @var Application $application */
-$application = $container->getByType(Application::class);
+$application = $container->get(Application::class);
 $application->run();

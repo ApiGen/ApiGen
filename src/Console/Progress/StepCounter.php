@@ -3,12 +3,12 @@
 namespace ApiGen\Console\Progress;
 
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 
 final class StepCounter
 {
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
@@ -18,7 +18,7 @@ final class StepCounter
     private $namespaceReflectionCollector;
 
     public function __construct(
-        ReflectionStorageInterface $reflectionStorage,
+        ReflectionStorage $reflectionStorage,
         NamespaceReflectionCollector $namespaceReflectionCollector
     ) {
         $this->reflectionStorage = $reflectionStorage;

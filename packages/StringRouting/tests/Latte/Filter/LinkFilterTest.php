@@ -15,7 +15,7 @@ final class LinkFilterTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $this->latte = $this->container->getByType(Engine::class);
+        $this->latte = $this->container->get(Engine::class);
     }
 
     public function testInvalidArgument(): void

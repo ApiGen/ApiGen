@@ -3,7 +3,9 @@
 namespace ApiGen\ModularConfiguration\Parameter;
 
 use ApiGen\ModularConfiguration\Contract\Parameter\ParameterProviderInterface;
-use Nette\DI\Container;
+use Nette\Utils\Strings;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ParameterProvider implements ParameterProviderInterface
 {
@@ -12,10 +14,13 @@ final class ParameterProvider implements ParameterProviderInterface
      */
     private $parameters = [];
 
-    public function __construct(Container $container)
+    /**
+     * @param Container|ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
     {
-        $containerParameters = $container->getParameters();
-        $this->parameters = $this->unsedNetteDefaultParameters($containerParameters);
+        $containerParameters = $container->getParameterBag()->all();
+        $this->parameters = $this->unsetSymfonyDefaultParameters($containerParameters);
     }
 
     /**
@@ -30,13 +35,13 @@ final class ParameterProvider implements ParameterProviderInterface
      * @param mixed[] $containerParameters
      * @return mixed[]
      */
-    private function unsedNetteDefaultParameters(array $containerParameters): array
+    private function unsetSymfonyDefaultParameters(array $containerParameters): array
     {
-        unset(
-            $containerParameters['appDir'], $containerParameters['wwwDir'],
-            $containerParameters['debugMode'], $containerParameters['productionMode'],
-            $containerParameters['consoleMode'], $containerParameters['tempDir']
-        );
+        foreach ($containerParameters as $name => $value) {
+            if (Strings::startsWith($name, 'kernel')) {
+                unset ($containerParameters[$name]);
+            }
+        }
 
         return $containerParameters;
     }

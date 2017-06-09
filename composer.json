@@ -16,14 +16,14 @@
         "kukulich/fshl": "^2.1",
 
         "latte/latte": "^2.4",
-        "nette/bootstrap": "^2.4",
-        "nette/di": "^2.4",
         "nette/neon": "^2.4",
 
-        "contributte/console": "^0.1",
-        "contributte/event-dispatcher": "^0.3",
-        "symplify/package-builder": "^1.4",
-        "symplify/modular-latte-filters": "^1.4"
+        "symplify/package-builder": "dev-master as 1.4",
+        "symfony/dependency-injection": "^3.3",
+        "symfony/http-kernel": "^3.3",
+        "symfony/config": "^3.3",
+        "symfony/yaml": "^3.3",
+        "psr/container": "^1.0"
     },
     "require-dev": {
         "tracy/tracy": "^2.4",

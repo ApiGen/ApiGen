@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Contract;
 
+use ApiGen\Reflection\TransformerCollector;
+
 interface TransformerCollectorAwareInterface
 {
-    public function setTransformerCollector(TransformerCollectorInterface $transformerCollector): void;
+    public function setTransformerCollector(TransformerCollector $transformerCollector): void;
 }

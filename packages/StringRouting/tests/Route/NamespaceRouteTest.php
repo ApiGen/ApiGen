@@ -15,7 +15,7 @@ final class NamespaceRouteTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $this->stringRouter = $this->container->getByType(StringRouter::class);
+        $this->stringRouter = $this->container->get(StringRouter::class);
     }
 
     public function test(): void

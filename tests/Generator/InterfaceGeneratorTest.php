@@ -3,7 +3,7 @@
 namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\InterfaceGenerator;
-use ApiGen\Reflection\Contract\ParserInterface;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class InterfaceGeneratorTest extends AbstractContainerAwareTestCase
@@ -15,11 +15,11 @@ final class InterfaceGeneratorTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
+        /** @var Parser $parser */
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->interfaceGenerator = $this->container->getByType(InterfaceGenerator::class);
+        $this->interfaceGenerator = $this->container->get(InterfaceGenerator::class);
     }
 
     public function test(): void

@@ -3,29 +3,30 @@
 namespace ApiGen\Reflection\Parser;
 
 use ApiGen\Element\Cache\ReflectionWarmUpper;
-use ApiGen\Reflection\Contract\ParserInterface;
+
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
+use ApiGen\Reflection\ReflectionStorage;
+use ApiGen\Reflection\TransformerCollector;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
-final class Parser implements ParserInterface
+final class Parser
 {
     /**
-     * @var TransformerCollectorInterface
+     * @var TransformerCollector
      */
     private $transformerCollector;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
@@ -35,8 +36,8 @@ final class Parser implements ParserInterface
     private $reflectionWarmUpper;
 
     public function __construct(
-        TransformerCollectorInterface $transformerCollector,
-        ReflectionStorageInterface $reflectionStorage,
+        TransformerCollector $transformerCollector,
+        ReflectionStorage $reflectionStorage,
         ReflectionWarmUpper $reflectionWarmUpper
     ) {
         $this->transformerCollector = $transformerCollector;
@@ -49,16 +50,10 @@ final class Parser implements ParserInterface
      */
     public function parseDirectories(array $directories): void
     {
-        // @legacy allowed to specify extensions and exclude, removed for now
         $directoriesSourceLocator = $this->createDirectoriesSource($directories);
 
         $this->parseClassElements($directoriesSourceLocator);
         $this->parseFunctions($directoriesSourceLocator);
-
-        // @legacy
-        // Add classes from @param, @var, @return, @throws annotations as well
-        // as parent classes to the overall class list.
-        // @see \ApiGen\Parser\Broker\Backend: https://github.com/ApiGen/ApiGen/blob/fa603928b656a9e7c826e001f5295200d23f9712/src/Parser/Broker/Backend.php#L174
 
         $this->reflectionWarmUpper->warmUp();
     }
@@ -123,11 +118,10 @@ final class Parser implements ParserInterface
      */
     private function createDirectoriesSource(array $directories): SourceLocator
     {
-        // @todo: use FileIteratorSourceLocator and FinderInterface
-        // such service scan be replaced in config by own with custom finder implementation
         return new AggregateSourceLocator([
             new DirectoriesSourceLocator($directories),
-            new AutoloadSourceLocator()
+            new AutoloadSourceLocator(),
+            new PhpInternalSourceLocator()
         ]);
     }
 }

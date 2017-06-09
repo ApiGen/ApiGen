@@ -29,7 +29,7 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
     protected function setUp(): void
     {
         $this->parser->parseDirectories([__DIR__ . '/SeeAnnotationSubscriberSource']);
-        $this->annotationDecorator = $this->container->getByType(AnnotationDecorator::class);
+        $this->annotationDecorator = $this->container->get(AnnotationDecorator::class);
 
         $this->classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithSeeAnnotations::class];
         $this->methodReflection = $this->classReflection->getMethod('returnArray');

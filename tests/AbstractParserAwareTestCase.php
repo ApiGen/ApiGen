@@ -3,28 +3,28 @@
 namespace ApiGen\Tests;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\DI\Container\ContainerFactory;
+use ApiGen\DependencyInjection\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Reflection\Contract\ParserInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
-use Nette\DI\Container;
+use ApiGen\Reflection\ReflectionStorage;
+use ApiGen\Reflection\Parser\Parser;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 abstract class AbstractParserAwareTestCase extends TestCase
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
     /**
-     * @var ParserInterface
+     * @var Parser
      */
     protected $parser;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     protected $reflectionStorage;
 
@@ -38,13 +38,13 @@ abstract class AbstractParserAwareTestCase extends TestCase
         $this->container = (new ContainerFactory)->create();
 
         /** @var Configuration $configuration */
-        $configuration = $this->container->getByType(Configuration::class);
+        $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR
         ]);
 
-        $this->parser = $this->container->getByType(ParserInterface::class);
-        $this->reflectionStorage = $this->container->getByType(ReflectionStorageInterface::class);
+        $this->parser = $this->container->get(Parser::class);
+        $this->reflectionStorage = $this->container->get(ReflectionStorage::class);
     }
 }

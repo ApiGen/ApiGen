@@ -1,0 +1,43 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # PSR-4 autodiscovery
+    ApiGen\:
+        resource: '../../src'
+        exclude: '../../src/{Application/Command,Event,Exception}'
+    ApiGen\Annotation\:
+        resource: '../../packages/Annotation/src'
+    ApiGen\Element\:
+        resource: '../../packages/Element/src'
+    ApiGen\ModularConfiguration\:
+        resource: '../../packages/ModularConfiguration/src'
+        exclude: '../../packages/ModularConfiguration/src/{Exception}'
+    ApiGen\Reflection\:
+        resource: '../../packages/Reflection/src'
+        exclude: '../../packages/Reflection/src/{Exception,Reflection}'
+    ApiGen\StringRouting\:
+        resource: '../../packages/StringRouting/src'
+
+    # Filter Aware Latte Engine
+    Latte\Engine:
+        factory: 'ApiGen\Latte\FiltersAwareLatteEngineFactory:create'
+
+    # PHP Documentor
+    phpDocumentor\Reflection\DocBlockFactory:
+        factory: phpDocumentor\Reflection\DocBlockFactory::createInstance
+    phpDocumentor\Reflection\Types\ContextFactory: ~
+    phpDocumentor\Reflection\FqsenResolver: ~
+
+    # Source Code Highlighter
+    FSHL\Output\Html: ~
+    FSHL\Lexer\Php: ~
+    FSHL\Highlighter:
+        calls:
+            - [setLexer, ['@FSHL\Lexer\Php']]
+
+    # 3rd party services
+    Symfony\Component\Console\Application: ~
+    Symfony\Component\Console\Output\ConsoleOutput: ~
+    Symfony\Component\EventDispatcher\EventDispatcher: ~

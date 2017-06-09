@@ -2,7 +2,7 @@
 
 namespace ApiGen\Configuration;
 
-use ApiGen\ModularConfiguration\Contract\ConfigurationResolverInterface;
+use ApiGen\ModularConfiguration\ConfigurationResolver;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\BaseUrlOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
@@ -26,13 +26,13 @@ final class Configuration
     private $parameterProvider;
 
     /**
-     * @var ConfigurationResolverInterface
+     * @var ConfigurationResolver
      */
     private $configurationResolver;
 
     public function __construct(
         ParameterProvider $parameterProvider,
-        ConfigurationResolverInterface $configurationResolver
+        ConfigurationResolver $configurationResolver
     ) {
         $this->parameterProvider = $parameterProvider;
         $this->configurationResolver = $configurationResolver;
@@ -47,7 +47,14 @@ final class Configuration
         $configParameters = $this->parameterProvider->provide();
         $options = array_merge($configParameters, $options);
 
-        return $this->options = $this->configurationResolver->resolveValuesWithDefaults($options);
+        $resolvedOptions = $this->configurationResolver->resolveValuesWithDefaults($options);
+
+        // hack to remove duplicated lowercased value
+        unset ($resolvedOptions[strtolower(VisibilityLevelOption::NAME)]);
+        $resolvedOptions[BaseUrlOption::NAME] = $resolvedOptions[strtolower(BaseUrlOption::NAME)];
+        unset ($resolvedOptions[strtolower(BaseUrlOption::NAME)]);
+
+        return $this->options = $resolvedOptions;
     }
 
     /**

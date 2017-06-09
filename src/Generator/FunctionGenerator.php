@@ -5,7 +5,7 @@ namespace ApiGen\Generator;
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 use ApiGen\Templating\TemplateRenderer;
 use ApiGen\Utils\RelativePathResolver;
@@ -13,7 +13,7 @@ use ApiGen\Utils\RelativePathResolver;
 final class FunctionGenerator implements GeneratorInterface
 {
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
@@ -38,7 +38,7 @@ final class FunctionGenerator implements GeneratorInterface
     private $relativePathResolver;
 
     public function __construct(
-        ReflectionStorageInterface $reflectionStorage,
+        ReflectionStorage $reflectionStorage,
         Configuration $configuration,
         SourceCodeHighlighter $sourceCodeHighlighter,
         TemplateRenderer $templateRenderer,

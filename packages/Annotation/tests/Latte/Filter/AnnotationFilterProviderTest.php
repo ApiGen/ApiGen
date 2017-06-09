@@ -21,7 +21,7 @@ final class AnnotationFilterProviderTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->annotationFilterProvider = $this->container->getByType(AnnotationFilterProvider::class);
+        $this->annotationFilterProvider = $this->container->get(AnnotationFilterProvider::class);
         $this->parser->parseDirectories([__DIR__ . '/AnnotationFilterProviderSource']);
         $this->classReflection = $this->reflectionStorage->getClassReflections()[ClassWithAnnotations::class];
     }

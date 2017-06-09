@@ -4,7 +4,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Templating\TemplateRenderer;
 
 final class InterfacesGenerator implements GeneratorInterface
@@ -25,12 +25,12 @@ final class InterfacesGenerator implements GeneratorInterface
     private $templateRenderer;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
     public function __construct(
-        ReflectionStorageInterface $reflectionStorage,
+        ReflectionStorage $reflectionStorage,
         Configuration $configuration,
         TemplateRenderer $templateRenderer
     ) {

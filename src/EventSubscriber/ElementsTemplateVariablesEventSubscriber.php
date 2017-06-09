@@ -5,13 +5,13 @@ namespace ApiGen\EventSubscriber;
 use ApiGen\Element\AutocompleteElements;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Event\CreateTemplateEvent;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
@@ -26,7 +26,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
     private $namespaceReflectionCollector;
 
     public function __construct(
-        ReflectionStorageInterface $reflectionStorage,
+        ReflectionStorage $reflectionStorage,
         NamespaceReflectionCollector $namespaceReflectionCollector,
         AutocompleteElements $autocompleteElements
     ) {

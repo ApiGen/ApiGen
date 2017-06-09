@@ -4,7 +4,7 @@ namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\NamespaceGenerator;
 use ApiGen\Generator\TraitGenerator;
-use ApiGen\Reflection\Contract\ParserInterface;
+use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class NamespaceGeneratorTest extends AbstractContainerAwareTestCase
@@ -16,11 +16,11 @@ final class NamespaceGeneratorTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
+        /** @var Parser $parser */
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/Source']);
 
-        $this->namespaceGenerator = $this->container->getByType(NamespaceGenerator::class);
+        $this->namespaceGenerator = $this->container->get(NamespaceGenerator::class);
     }
 
     public function test(): void

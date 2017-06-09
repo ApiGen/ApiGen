@@ -2,9 +2,9 @@
 
 namespace ApiGen\Element\Tests;
 
-use ApiGen\Element\Contract\AutocompleteElementsInterface;
-use ApiGen\Reflection\Contract\ParserInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
+use ApiGen\Element\AutocompleteElements;
+use ApiGen\Reflection\Parser\Parser;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -16,7 +16,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     private $namespacePrefix = 'ApiGen\Element\Tests\ReflectionCollector\NamespaceReflectionCollectorSource';
 
     /**
-     * @var AutocompleteElementsInterface
+     * @var AutocompleteElements
      */
     private $autocompleteElements;
 
@@ -26,20 +26,19 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     private $reflectionRoute;
 
     /**
-     * @var ReflectionStorageInterface
+     * @var ReflectionStorage
      */
     private $reflectionStorage;
 
     protected function setUp(): void
     {
-        /** @var ParserInterface $parser */
-        $parser = $this->container->getByType(ParserInterface::class);
+        /** @var Parser $parser */
+        $parser = $this->container->get(Parser::class);
         $parser->parseDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
 
-        $this->autocompleteElements = $this->container->getByType(AutocompleteElementsInterface::class);
-
-        $this->reflectionStorage = $this->container->getByType(ReflectionStorageInterface::class);
-        $this->reflectionRoute = $this->container->getByType(ReflectionRoute::class);
+        $this->autocompleteElements = $this->container->get(AutocompleteElements::class);
+        $this->reflectionStorage = $this->container->get(ReflectionStorage::class);
+        $this->reflectionRoute = $this->container->get(ReflectionRoute::class);
     }
 
     public function testGetElementsClasses(): void

@@ -2,15 +2,14 @@
 
 namespace ApiGen\Reflection;
 
-use ApiGen\Element\ReflectionCollector\ReflectionCollectorCollector;
+use ApiGen\Element\ReflectionCollectorCollector;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
-use ApiGen\Reflection\Contract\TransformerCollectorInterface;
 use ApiGen\Reflection\Exception\UnsupportedReflectionClassException;
 
-final class TransformerCollector implements TransformerCollectorInterface
+final class TransformerCollector
 {
     /**
      * @var TransformerInterface[]

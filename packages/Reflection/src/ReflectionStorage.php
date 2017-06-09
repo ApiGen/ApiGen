@@ -6,9 +6,8 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
-use ApiGen\Reflection\Contract\ReflectionStorageInterface;
 
-final class ReflectionStorage implements ReflectionStorageInterface
+final class ReflectionStorage
 {
     /**
      * @var ClassReflectionInterface[]

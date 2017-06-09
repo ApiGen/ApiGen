@@ -3,16 +3,16 @@
 namespace ApiGen\Tests;
 
 use ApiGen\Configuration\Configuration;
-use ApiGen\DI\Container\ContainerFactory;
+use ApiGen\DependencyInjection\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use Nette\DI\Container;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 
 abstract class AbstractContainerAwareTestCase extends TestCase
 {
     /**
-     * @var Container
+     * @var ContainerInterface
      */
     protected $container;
 
@@ -25,7 +25,8 @@ abstract class AbstractContainerAwareTestCase extends TestCase
 
         $this->container = (new ContainerFactory)->create();
 
-        $configuration = $this->container->getByType(Configuration::class);
+        /** @var Configuration $configuration */
+        $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR,

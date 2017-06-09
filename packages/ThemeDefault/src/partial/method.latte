@@ -29,7 +29,8 @@
                                 {$parameter->getTypeHint()}
                             {/if}
                             <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
-                        {if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|highlightPHP:$class|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
+
+                        {if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
                     )
                 {/block}</code>

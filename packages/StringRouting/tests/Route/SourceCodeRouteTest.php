@@ -29,9 +29,9 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        $this->stringRouter = $this->container->getByType(StringRouter::class);
+        $this->stringRouter = $this->container->get(StringRouter::class);
         /** @var Configuration $configuration */
-        $configuration = $this->container->getByType(Configuration::class);
+        $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR

@@ -5,6 +5,7 @@ namespace ApiGen\Tests\Generator;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Generator\GeneratorQueue;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class GeneratorQueueTest extends AbstractContainerAwareTestCase
@@ -18,7 +19,7 @@ final class GeneratorQueueTest extends AbstractContainerAwareTestCase
     {
         $this->disableOutputForProgressBar();
 
-        $this->generatorQueue = $this->container->getByType(GeneratorQueue::class);
+        $this->generatorQueue = $this->container->get(GeneratorQueue::class);
     }
 
     public function testRun(): void
@@ -37,7 +38,7 @@ final class GeneratorQueueTest extends AbstractContainerAwareTestCase
     protected function disableOutputForProgressBar(): void
     {
         /** @var OutputInterface $output */
-        $output = $this->container->getByType(OutputInterface::class);
+        $output = $this->container->get(ConsoleOutput::class);
         $output->setVerbosity(0);
     }
 }
