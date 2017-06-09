@@ -5,9 +5,11 @@ namespace ApiGen\DependencyInjection\CompilerPass;
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
 use ApiGen\Contract\Generator\GeneratorInterface;
+use ApiGen\Contract\Templating\FilterProviderInterface;
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
 use ApiGen\Element\ReflectionCollectorCollector;
 use ApiGen\Generator\GeneratorQueue;
+use ApiGen\Latte\FiltersAwareLatteEngineFactory;
 use ApiGen\ModularConfiguration\CommandDecorator;
 use ApiGen\ModularConfiguration\ConfigurationResolver;
 use ApiGen\ModularConfiguration\Contract\Option\CommandBoundInterface;
@@ -37,6 +39,7 @@ final class CollectorCompilerPass implements CompilerPassInterface
         $this->collectRoutesToStringRouter($containerBuilder);
         $this->collectEventSubscribersToDispatcher($containerBuilder);
         $this->collectGeneratorsToGeneratorQueue($containerBuilder);
+        $this->collectFilterProvidersToLatteEngine($containerBuilder);
     }
 
     private function collectCommandsToApplication(ContainerBuilder $containerBuilder): void
@@ -126,6 +129,16 @@ final class CollectorCompilerPass implements CompilerPassInterface
             GeneratorQueue::class,
             GeneratorInterface::class,
             'addGenerator'
+        );
+    }
+
+    private function collectFilterProvidersToLatteEngine(ContainerBuilder $containerBuilder): void
+    {
+        DefinitionCollector::loadCollectorWithType(
+            $containerBuilder,
+            FiltersAwareLatteEngineFactory::class,
+            FilterProviderInterface::class,
+            'addFilterProvider'
         );
     }
 }

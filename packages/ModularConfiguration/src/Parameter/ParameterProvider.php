@@ -3,9 +3,9 @@
 namespace ApiGen\ModularConfiguration\Parameter;
 
 use ApiGen\ModularConfiguration\Contract\Parameter\ParameterProviderInterface;
-use Nette\DI\Container;
 use Nette\Utils\Strings;
-use Symfony\Component\DependencyInjection\Container as SymfonyContainer;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 final class ParameterProvider implements ParameterProviderInterface
 {
@@ -14,15 +14,13 @@ final class ParameterProvider implements ParameterProviderInterface
      */
     private $parameters = [];
 
-    public function __construct(SymfonyContainer $symfonyContainer, ?Container $netteContainer = null)
+    /**
+     * @param Container|ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
     {
-        if ($symfonyContainer !== null) {
-            $containerParameters = $symfonyContainer->getParameterBag()->all();
-            $this->parameters = $this->unsetSymfonyDefaultParameters($containerParameters);
-        } elseif ($netteContainer !== null) {
-            $containerParameters = $netteContainer->getParameters();
-            $this->parameters = $this->unsetNetteDefaultParameters($containerParameters);
-        }
+        $containerParameters = $container->getParameterBag()->all();
+        $this->parameters = $this->unsetSymfonyDefaultParameters($containerParameters);
     }
 
     /**
@@ -31,21 +29,6 @@ final class ParameterProvider implements ParameterProviderInterface
     public function provide(): array
     {
         return $this->parameters;
-    }
-
-    /**
-     * @param mixed[] $containerParameters
-     * @return mixed[]
-     */
-    private function unsetNetteDefaultParameters(array $containerParameters): array
-    {
-        unset(
-            $containerParameters['appDir'], $containerParameters['wwwDir'],
-            $containerParameters['debugMode'], $containerParameters['productionMode'],
-            $containerParameters['consoleMode'], $containerParameters['tempDir']
-        );
-
-        return $containerParameters;
     }
 
     /**

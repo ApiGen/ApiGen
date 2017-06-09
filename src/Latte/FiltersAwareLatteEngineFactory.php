@@ -10,11 +10,11 @@ final class FiltersAwareLatteEngineFactory
     /**
      * @var FilterProviderInterface[]
      */
-    private $filtersProviders = [];
+    private $filterProviders = [];
 
-    public function addFiltersProvider(FilterProviderInterface $filtersProvider): void
+    public function addFilterProvider(FilterProviderInterface $filtersProvider): void
     {
-        $this->filtersProviders[] = $filtersProvider;
+        $this->filterProviders[] = $filtersProvider;
     }
 
     public function create(): Engine
@@ -22,8 +22,8 @@ final class FiltersAwareLatteEngineFactory
         $latteEngine = new Engine;
         $latteEngine->setTempDirectory(sys_get_temp_dir() . '/_latte_cache');
 
-        foreach ($this->filtersProviders as $filtersProvider) {
-            foreach ($filtersProvider->getFilters() as $name => $callback) {
+        foreach ($this->filterProviders as $filterProvider) {
+            foreach ($filterProvider->getFilters() as $name => $callback) {
                 $latteEngine->addFilter($name, $callback);
             }
         }
