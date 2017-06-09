@@ -3,6 +3,7 @@
 namespace ApiGen\DependencyInjection;
 
 use ApiGen\DependencyInjection\CompilerPass\CollectorCompilerPass;
+use ApiGen\DependencyInjection\CompilerPass\LatteFiltersCollectorCompilerPass;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
@@ -14,6 +15,11 @@ final class AppKernel extends Kernel
         parent::__construct('dev',true);
     }
 
+    public function registerContainerConfiguration(LoaderInterface $loader): void
+    {
+        $loader->load(__DIR__ . '/../config/services.yml');
+    }
+
     /**
      * @return string[]
      */
@@ -22,18 +28,19 @@ final class AppKernel extends Kernel
         return [];
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader): void
-    {
-        $loader->load(__DIR__ . '/../config/services.yml');
-    }
-
     public function getCacheDir(): string
     {
-        return sys_get_temp_dir();
+        return sys_get_temp_dir() . '/_apigen_kernel_cache';
+    }
+
+    public function getLogDir(): string
+    {
+        return sys_get_temp_dir() . '/_apigen_kernel_log';
     }
 
     protected function build(ContainerBuilder $container): void
     {
-        $container->addCompilerPass(new CollectorCompilerPass());
+        $container->addCompilerPass(new CollectorCompilerPass);
+        $container->addCompilerPass(new LatteFiltersCollectorCompilerPass);
     }
 }

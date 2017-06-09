@@ -9,13 +9,14 @@ services:
 
     # 3rd party services (cannot be autowired)
     Symfony\Component\Console\Output\ConsoleOutput: ~
-    phpDocumentor\Reflection\DocBlockFactory: ~
-    phpDocumentor\Reflection\DocBlock\StandardTagFactory: ~
+
+    # DocBlock
+    phpDocumentor\Reflection\DocBlockFactory:
+        factory: phpDocumentor\Reflection\DocBlockFactory::createInstance
 
     FSHL\Highlighter: ~
     FSHL\Output\Html: ~
 
-    Latte\Engine: ~
     Symfony\Component\EventDispatcher\EventDispatcher: ~
     phpDocumentor\Reflection\Types\ContextFactory: ~
     phpDocumentor\Reflection\FqsenResolver: ~
@@ -24,8 +25,6 @@ services:
     ApiGen\:
         resource: '../../src'
         exclude: '../../src/{Application/Command,Event,Exception}'
-#    ApiGen\Console\:
-#        resource: '../../src/Console'
     ApiGen\ModularConfiguration\Option\:
         resource: '../../packages/ModularConfiguration/src/Option'
     ApiGen\Element\:
@@ -36,7 +35,7 @@ services:
         resource: '../../packages/Annotation/src'
     ApiGen\Reflection\:
         resource: '../../packages/Reflection/src'
-        exclude: "../../packages/Reflection/src/{Exception,Reflection}"
+        exclude: '../../packages/Reflection/src/{Exception,Reflection}'
 
     # root collectors (move to package builder?)
     ApiGen\ModularConfiguration\CommandDecorator: ~
@@ -49,3 +48,8 @@ services:
     ApiGen\Reflection\Parser\Parser: ~
     ApiGen\Reflection\ReflectionStorage: ~
     ApiGen\Utils\RelativePathResolver: ~
+
+    # Filter Aware Latte Engine
+    ApiGen\Latte\FiltersAwareLatteEngineFactory: ~
+    Latte\Engine:
+        factory: 'ApiGen\Latte\FiltersAwareLatteEngineFactory:create'

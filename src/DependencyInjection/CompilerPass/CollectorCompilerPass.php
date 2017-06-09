@@ -2,6 +2,8 @@
 
 namespace ApiGen\DependencyInjection\CompilerPass;
 
+use ApiGen\Annotation\AnnotationDecorator;
+use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
 use ApiGen\Element\Contract\ReflectionCollector\BasicReflectionCollectorInterface;
 use ApiGen\Element\ReflectionCollectorCollector;
 use ApiGen\ModularConfiguration\CommandDecorator;
@@ -10,6 +12,8 @@ use ApiGen\ModularConfiguration\Contract\Option\CommandBoundInterface;
 use ApiGen\ModularConfiguration\Contract\Option\OptionInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\TransformerCollector;
+use ApiGen\StringRouting\Contract\Route\RouteInterface;
+use ApiGen\StringRouting\StringRouter;
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -25,6 +29,8 @@ final class CollectorCompilerPass implements CompilerPassInterface
         $this->collectOptionsToConfigurationResolver($containerBuilder);
         $this->collectTransformersToTransformerCollector($containerBuilder);
         $this->collectReflectionCollectorsToReflectionCollectorCollector($containerBuilder);
+        $this->collectAnnotationSubscribersToAnnotationDecorator($containerBuilder);
+        $this->collectRoutesToStringRouter($containerBuilder);
     }
 
     private function collectCommandsToApplication(ContainerBuilder $containerBuilder): void
@@ -74,6 +80,26 @@ final class CollectorCompilerPass implements CompilerPassInterface
             ReflectionCollectorCollector::class,
             BasicReflectionCollectorInterface::class,
             'addReflectionCollector'
+        );
+    }
+
+    private function collectAnnotationSubscribersToAnnotationDecorator(ContainerBuilder $containerBuilder): void
+    {
+        DefinitionCollector::loadCollectorWithType(
+            $containerBuilder,
+            AnnotationDecorator::class,
+            AnnotationSubscriberInterface::class,
+            'addAnnotationSubscriber'
+        );
+    }
+
+    private function collectRoutesToStringRouter(ContainerBuilder $containerBuilder): void
+    {
+        DefinitionCollector::loadCollectorWithType(
+            $containerBuilder,
+            StringRouter::class,
+            RouteInterface::class,
+            'addRoute'
         );
     }
 }
