@@ -54,7 +54,10 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 
         $this->assertArrayHasKey($this->namespacePrefix . '\namespacedFunction()', $autocompleteElements);
         $this->assertArrayHasKey($this->namespacePrefix . '\NamespacedClass', $autocompleteElements);
-        $this->assertArrayHasKey($this->namespacePrefix . '\SubNamespace\SubNamespacedInterface', $autocompleteElements);
+        $this->assertArrayHasKey(
+            $this->namespacePrefix . '\SubNamespace\SubNamespacedInterface',
+            $autocompleteElements
+        );
         $this->assertArrayHasKey($this->namespacePrefix . '\SubNamespace\SubNamespacedTrait', $autocompleteElements);
 
         $classReflections = $this->reflectionStorage->getClassReflections();
