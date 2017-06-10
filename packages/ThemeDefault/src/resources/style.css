@@ -171,21 +171,6 @@ pre {
     padding: 0 .2em;
 }
 
-.description pre {
-    padding: .6em;
-    background: #fcfcf7;
-}
-
-.description {
-    background: #ecede5;
-    padding: 1px 8px;
-    margin: 1.2em 0;
-}
-
-.description pre {
-    margin: .5em 0;
-}
-
 dl.tree {
     margin: 1.2em 0;
 }
@@ -376,4 +361,19 @@ code {
 .breadcrumb>li+li:before {
     padding: 0;
     content: "";
+}
+
+.panel {
+    border-radius: 0;
+    margin-bottom: 2em;
+}
+
+.panel pre {
+    padding: .6em;
+    background: #fcfcf7;
+    margin: .5em 0;
+}
+
+.panel-default {
+    background-color: #ecede5;
 }

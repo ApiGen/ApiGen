@@ -16,8 +16,10 @@
     <h1 n:class="$function->isDeprecated() ? deprecated">{$function->getShortName()}</h1>
 
     {if $function->getDescription()}
-        <div class="description">
-            {$function|description}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {$function|description}
+            </div>
         </div>
     {/if}
 

@@ -16,8 +16,10 @@
     <h1 n:class="$interface->isDeprecated() ? deprecated">{$interface->getShortName()}</h1>
 
     {if $interface->getDescription()}
-        <div class="description">
-            {$interface|description}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {$interface|description}
+            </div>
         </div>
     {/if}
 
