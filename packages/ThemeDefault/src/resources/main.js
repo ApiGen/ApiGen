@@ -1,7 +1,6 @@
 // $( function() {
-ěě$(window).load(function() {
+$(window).load(function() {
     var $document = $(document);
-    var $groups = $('#groups');
 
     // Content
 
@@ -11,7 +10,7 @@
     ];
 
     $('#search input[name=q]').autocomplete({
-        source: availableTags
+        source: availableTags // ApiGen.elements
     });
 
     // Search autocompletion
