@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Parser;
 
 use ApiGen\Element\Cache\ReflectionWarmUpper;
-
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;

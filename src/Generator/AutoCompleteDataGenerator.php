@@ -6,7 +6,7 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
 use ApiGen\Templating\TemplateRenderer;
 
-final class ElementListGenerator implements GeneratorInterface
+final class AutoCompleteDataGenerator implements GeneratorInterface
 {
     /**
      * @var Configuration
