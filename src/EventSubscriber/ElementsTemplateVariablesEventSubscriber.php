@@ -2,7 +2,6 @@
 
 namespace ApiGen\EventSubscriber;
 
-use ApiGen\Element\AutocompleteElements;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Event\CreateTemplateEvent;
 use ApiGen\Reflection\ReflectionStorage;
@@ -16,22 +15,15 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
     private $reflectionStorage;
 
     /**
-     * @var AutocompleteElements
-     */
-    private $autocompleteElements;
-
-    /**
      * @var NamespaceReflectionCollector
      */
     private $namespaceReflectionCollector;
 
     public function __construct(
         ReflectionStorage $reflectionStorage,
-        NamespaceReflectionCollector $namespaceReflectionCollector,
-        AutocompleteElements $autocompleteElements
+        NamespaceReflectionCollector $namespaceReflectionCollector
     ) {
         $this->reflectionStorage = $reflectionStorage;
-        $this->autocompleteElements = $autocompleteElements;
         $this->namespaceReflectionCollector = $namespaceReflectionCollector;
     }
 
@@ -60,13 +52,10 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
         // add all available elements (for layout)
         $parameterBag->addParameters([
             'allNamespaces' => $this->namespaceReflectionCollector->getNamespaces(),
-            // @todo what is array_filter for? make it explicit!
-//            'allClasses' => array_filter($this->reflectionStorage->getClassReflections()),
             'allClasses' => $this->reflectionStorage->getClassReflections(),
             'allInterfaces' => $this->reflectionStorage->getInterfaceReflections(),
             'allTraits' => $this->reflectionStorage->getTraitReflections(),
-            'allFunctions' => $this->reflectionStorage->getFunctionReflections(),
-            'autocompleteElements' => $this->autocompleteElements->getElements()
+            'allFunctions' => $this->reflectionStorage->getFunctionReflections()
         ]);
     }
 }
