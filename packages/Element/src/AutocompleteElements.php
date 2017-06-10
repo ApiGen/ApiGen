@@ -2,7 +2,9 @@
 
 namespace ApiGen\Element;
 
+use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Reflection\ReflectionStorage;
+use ApiGen\StringRouting\Route\NamespaceRoute;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 
 final class AutocompleteElements
@@ -17,10 +19,26 @@ final class AutocompleteElements
      */
     private $reflectionRoute;
 
-    public function __construct(ReflectionStorage $reflectionStorage, ReflectionRoute $reflectionRoute)
-    {
+    /**
+     * @var NamespaceReflectionCollector
+     */
+    private $namespaceReflectionCollector;
+
+    /**
+     * @var NamespaceRoute
+     */
+    private $namespaceRoute;
+
+    public function __construct(
+        ReflectionStorage $reflectionStorage,
+        ReflectionRoute $reflectionRoute,
+        NamespaceRoute $namespaceRoute,
+        NamespaceReflectionCollector $namespaceReflectionCollector
+    ) {
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionRoute = $reflectionRoute;
+        $this->namespaceReflectionCollector = $namespaceReflectionCollector;
+        $this->namespaceRoute = $namespaceRoute;
     }
 
     /**
@@ -28,27 +46,37 @@ final class AutocompleteElements
      */
     public function getElements(): array
     {
-        // @todo: add support for namespace search: type "console" => show Symfony\Console
-
         $elements = [];
+
+        foreach ($this->namespaceReflectionCollector->getNamespaces() as $namespace) {
+            $elements[$namespace] = $this->namespaceRoute->constructUrl($namespace);
+        }
+
+        return $this->addReflections($elements);
+    }
+
+    /**
+     * @param string[] $elements
+     * @return string[]
+     */
+    private function addReflections(array $elements): array
+    {
         foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
+            $name = $functionReflection->getName() . '()';
             $path = $this->reflectionRoute->constructUrl($functionReflection);
-            $elements[$path] = $functionReflection->getName() . '()';
+            $elements[$name] = $path;
         }
 
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            $path = $this->reflectionRoute->constructUrl($classReflection);
-            $elements[$path] = $classReflection->getName();
+            $elements[$classReflection->getName()] = $this->reflectionRoute->constructUrl($classReflection);
         }
 
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
-            $path = $this->reflectionRoute->constructUrl($interfaceReflection);
-            $elements[$path] = $interfaceReflection->getName();
+            $elements[$interfaceReflection->getName()] = $this->reflectionRoute->constructUrl($interfaceReflection);
         }
 
         foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
-            $path = $this->reflectionRoute->constructUrl($traitReflection);
-            $elements[$path] = $traitReflection->getName();
+            $elements[$traitReflection->getName()] = $this->reflectionRoute->constructUrl($traitReflection);
         }
 
         return $elements;
