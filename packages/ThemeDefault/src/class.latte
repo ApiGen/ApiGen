@@ -16,8 +16,10 @@
     <h1 n:class="$class->isDeprecated() ? deprecated">{$class->getShortName()}</h1>
 
     {if $class->getDescription()}
-        <div class="description">
-            {$class|description}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {$class|description}
+            </div>
         </div>
     {/if}
 

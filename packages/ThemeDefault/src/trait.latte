@@ -16,8 +16,10 @@
     <h1 n:class="$trait->isDeprecated() ? deprecated">{$trait->getShortName()}</h1>
 
     {if $trait->getDescription()}
-        <div class="description">
-            {$trait|description}
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {$trait|description}
+            </div>
         </div>
     {/if}
 

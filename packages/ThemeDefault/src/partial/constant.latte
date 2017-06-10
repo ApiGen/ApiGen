@@ -10,12 +10,14 @@
         {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
 
         {if $constant->getDescription() || count($filteredAnnotations)}
-            <div class="description">
-                {$constant|description}
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {$constant|description}
 
-                {foreach $filteredAnnotations as $annotation}
-                    {$annotation|annotation: $constant|noescape}<br>
-                {/foreach}
+                    {foreach $filteredAnnotations as $annotation}
+                        {$annotation|annotation: $constant|noescape}<br>
+                    {/foreach}
+                </div>
             </div>
         {/if}
     </td>
