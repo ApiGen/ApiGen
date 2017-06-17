@@ -71,18 +71,6 @@ checkers:
 parameters:
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
-            # covariant implementers
-            - packages/Reflection/src/Transformer/BetterReflection/Class_/ClassMethodReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Class_/ClassPropertyReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Function_/FunctionParameterReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Function_/FunctionReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Interface_/InterfaceMethodReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Interface_/InterfaceReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Method/MethodParameterReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitMethodReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitPropertyReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterReflection/Trait_/TraitReflectionTransformer.php
-
             # covariant implements
             - packages/Annotation/src/AnnotationSubscriber/ReturnAnnotationSubscriber.php
             - packages/Annotation/src/AnnotationSubscriber/LinkAnnotationSubscriber.php
@@ -99,42 +87,10 @@ parameters:
             - packages/Annotation/tests/AnnotationDecoratorSource/SomeClassWithReturnTypes.php
 
             # covariant implementers
-            - packages/StringRouting/src/Route/StaticRoute.php
             - packages/StringRouting/src/Route/SourceCodeRoute.php
             - packages/StringRouting/src/Route/ReflectionRoute.php
             - packages/StringRouting/src/Route/NamespaceRoute.php
-
             - packages/Reflection/tests/Reflection/Partial/Source/InheritdocClass.php
-
-            - tests/Parser/Parser/ParserSource/SomeClass.php
-            - tests/Generator/Source/SomeFunction.php
-            - tests/Parser/Reflection/ReflectionMethodSource/ReflectionMethod.php
-            - tests/Parser/Reflection/ReflectionFunctionSource/functions.php
-            - tests/Parser/Reflection/ReflectionClassSource/SomeTrait.php
-            - tests/Parser/Reflection/ReflectionClassSource/ParentClass.php
-            - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
-            - tests/Generator/DeprecatedSources/DeprecatedMethod.php
-            - tests/Generator/DeprecatedSources/DeprecatedClass.php
-            - tests/Parser/Reflection/ReflectionClassSource/AccessLevels.php
-            - src/Console/Input/LiberalFormatArgvInput.php
-            - src/Console/Command/AbstractCommand.php
-            - tests/Parser/Reflection/ReflectionClassSource/RichInterface.php
-            - tests/Parser/Parser/ParserSource/SomeFunction.php
-            - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterClassReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterFunctionReflectionTransformer.php
-            - packages/Reflection/src/Transformer/InterfaceReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterParameterReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterTraitReflectionTransformer.php
-            - packages/Reflection/src/Transformer/TokenClassReflectionTransformer.php
-            - packages/Reflection/src/Transformer/TokenConstantReflectionTransformer.php
-            - packages/Reflection/src/Transformer/TokenMethodReflectionTransformer.php
-            - packages/Reflection/src/Transformer/TokenParameterReflectionTransformer.php
-            - packages/Reflection/src/Transformer/TokenPropertyReflectionTransformer.php
-            - packages/Reflection/src/Reflection/ClassReflection.php
-            - packages/Reflection/src/Reflection/ClassPropertyReflection.php
-            - packages/Reflection/src/Transformer/TokenFunctionReflectionTransformer.php
-            - packages/Reflection/src/Transformer/BetterPropertyReflectionTransformer.php
             - packages/ModularConfiguration/src/Option/SourceOption.php
             - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
 

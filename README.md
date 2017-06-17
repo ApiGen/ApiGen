@@ -11,7 +11,7 @@ easy to extend with own Finder, Annotation Subscriber or even Generator.
 Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakephp.org/3.4/) or [Doctrine API](http://www.doctrine-project.org/api/orm/2.5/).
 
 
-## :love: Your Help is Needed to Finish 5.x Release 
+## Your Help is Needed to Finish 5.x Release  :love: 
 
 We need your help to test new version of ApiGen.
 
