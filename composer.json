@@ -16,13 +16,16 @@
         "kukulich/fshl": "^2.1",
 
         "latte/latte": "^2.4",
+        "nette/utils": "^2.4",
+        "nette/finder": "^2.4",
         "nette/neon": "^2.4",
 
-        "symplify/package-builder": "^2.0",
+        "symfony/config": "^3.3",
+        "symfony/console": "^3.3",
         "symfony/dependency-injection": "^3.3",
         "symfony/http-kernel": "^3.3",
-        "symfony/config": "^3.3",
         "symfony/yaml": "^3.3",
+        "symplify/package-builder": "^2.0",
         "psr/container": "^1.0"
     },
     "require-dev": {
