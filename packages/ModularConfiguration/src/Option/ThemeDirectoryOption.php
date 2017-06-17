@@ -40,7 +40,18 @@ final class ThemeDirectoryOption implements OptionInterface
             return $value;
         }
 
-        return getcwd() . '/packages/ThemeDefault/src';
+        $candidates = [
+            getcwd() . '/packages/ThemeDefault/src',
+            __DIR__ . '/../../../../packages/ThemeDefault/src'
+        ];
+
+        foreach ($candidates as $candidate) {
+            if (is_dir($candidate)) {
+                return $candidate;
+            }
+        }
+
+        return '';
     }
 
     private function validateDirectory(string $value): void
