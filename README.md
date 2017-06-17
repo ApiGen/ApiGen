@@ -11,6 +11,34 @@ easy to extend with own Finder, Annotation Subscriber or even Generator.
 Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakephp.org/3.4/) or [Doctrine API](http://www.doctrine-project.org/api/orm/2.5/).
 
 
+## :love: Your Help is Needed to Finish 5.x Release 
+
+We need your help to test new version of ApiGen.
+
+### How to install it?
+
+Add to your `composer.json`:
+
+```json
+{
+    "require": {
+    	"apigen/apigen": "5.0.0-RC1",
+    	"roave/better-reflection": "@dev"
+    }
+}
+```
+
+then update:
+
+```bash
+composer update
+```
+
+Test it, report issues, send PRs and see the [ApiGen 5.x release plan](https://github.com/ApiGen/ApiGen/projects/3).
+
+ :skull:  **Version 4.x is not supported**, since there was huge change of Reflection library and the code was almost completely rewritten.
+
+
 ## Built on Shoulders of Giants
 
 - PHP 7.1+
@@ -19,11 +47,13 @@ Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakeph
 - [phpDocumentor/TypeResolver](https://github.com/phpDocumentor/TypeResolver)
 - [phpDocumentor/ReflectionDocBlock](https://github.com/phpDocumentor/ReflectionDocBlock)
 
+
 ## Install
 
 ```bash
 composer require apigen/apigen --dev
 ```
+
 
 ## Usage
 
@@ -39,6 +69,7 @@ Or generate API docs for multiple directories:
 vendor/bin/apigen generate src tests --destination docs
 ```
 
+
 ## Configuration
 
 Below is a minimal example configuration. Save it as a `apigen.yml` file in
@@ -52,6 +83,7 @@ parameters:
     baseUrl: "http://apigen.org/api" # string
     overwrite: false # bool
 ```
+
 
 ## DocBlock Annotations
 
