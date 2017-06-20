@@ -13,14 +13,15 @@ $possibleAutoloadPaths = [
     __DIR__ . '/../../../autoload.php'
 ];
 
-foreach( $possibleAutoloadPaths as $possibleAutoloadPath ) {
-
-     if( stream_resolve_include_path( $possibleAutoloadPath ) !== FALSE ) {
-        require_once( $possibleAutoloadPath ); break;
-     }
+foreach ($possibleAutoloadPaths as $possibleAutoloadPath) {
+    if (file_exists($possibleAutoloadPath)) {
+        require_once $possibleAutoloadPath;
+        break;
+    }
 }
 
 $container = (new ContainerFactory())->create();
+
 /** @var Application $application */
 $application = $container->get(Application::class);
 $application->run();
