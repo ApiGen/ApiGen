@@ -56,6 +56,7 @@ final class Configuration
         if (isset($resolvedOptions[$baseUrlKeyLowered])) {
             $resolvedOptions[BaseUrlOption::NAME] = $resolvedOptions[$baseUrlKeyLowered];
         }
+
         unset ($resolvedOptions[$baseUrlKeyLowered]);
 
         return $this->options = $resolvedOptions;
