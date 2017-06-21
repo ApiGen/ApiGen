@@ -101,22 +101,24 @@
         </table>
     {/foreach}
 
-    <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary table table-bordered table-responsive table-striped">
-        <tr><th>Methods used from <a href="{$trait|linkReflection}#methods">{$traitName}</a> trait</th></tr>
-        <tr>
-            <td>
-                <code>
-                    {foreach $trait->getOwnMethods() as $traitMethod}
-                        <a href="{$traitMethod|linkReflection}" n:class="$traitMethod->isDeprecated() ? deprecated">
-                            {$traitMethod->getName()}()
-                        </a>
-                        {* @todo *}
-                        {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:class="$data['method']->isDeprecated() ? deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
-                    {/foreach}
-                </code>
-            </td>
-        </tr>
-    </table>
+    {foreach $class->getTraits() as $trait}
+        <table class="summary table table-bordered table-responsive table-striped">
+            <tr><th>Methods used from <a href="{$trait|linkReflection}#methods">{$trait->getName()}</a> trait</th></tr>
+            <tr>
+                <td>
+                    <code>
+                        {foreach $trait->getOwnMethods() as $traitMethod}
+                            <a href="{$traitMethod|linkReflection}" n:class="$traitMethod->isDeprecated() ? deprecated">
+                                {$traitMethod->getName()}()
+                            </a>
+                            {* @todo *}
+                            {*{if $data['aliases']}(as {foreach $data['aliases'] as $alias}<span n:class="$data['method']->isDeprecated() ? deprecated">{$alias->getName()}()</span>{sep}, {/sep}{/foreach}){/if}{sep}, {/sep}*}
+                        {/foreach}
+                    </code>
+                </td>
+            </tr>
+        </table>
+    {/foreach}
 
     {if $class->getOwnConstants()}
         <table class="summary table table-bordered table-responsive table-striped" id="constants">
