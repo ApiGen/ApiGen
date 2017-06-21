@@ -37,6 +37,7 @@ services:
             - [setLexer, ['@FSHL\Lexer\Php']]
 
     # 3rd party services
-    Symfony\Component\Console\Application: ~
+    Symfony\Component\Console\Application:
+        arguments: ["ApiGen", "Unknown Version"]
     Symfony\Component\Console\Output\ConsoleOutput: ~
     Symfony\Component\EventDispatcher\EventDispatcher: ~
