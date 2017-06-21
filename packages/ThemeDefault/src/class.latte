@@ -102,7 +102,7 @@
     {/foreach}
 
     <table n:foreach="$class->getTraits() as $traitName => $trait" class="summary table table-bordered table-responsive table-striped">
-        <tr><th>Methods used from <a href="{$traitName|linkReflection}#methods">{$traitName}</a> trait</th></tr>
+        <tr><th>Methods used from <a href="{$trait|linkReflection}#methods">{$traitName}</a> trait</th></tr>
         <tr>
             <td>
                 <code>
