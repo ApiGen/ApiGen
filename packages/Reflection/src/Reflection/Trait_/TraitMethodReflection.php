@@ -93,7 +93,12 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
 
     public function isDeprecated(): bool
     {
-        // TODO: Implement isDeprecated() method.
+        if ($this->betterMethodReflection->isDeprecated()) {
+            return true;
+        }
+
+        return $this->getDeclaringTrait()
+            ->isDeprecated();
     }
 
     public function getDescription(): string
