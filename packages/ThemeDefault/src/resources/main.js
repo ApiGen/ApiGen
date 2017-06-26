@@ -81,7 +81,7 @@ $(document).ready(function() {
             lines[0] = parseInt(lines[0]);
             lines[1] = parseInt(lines[1] || lines[0]);
             for (var j = lines[0]; j <= lines[1]; j++) {
-                $('#' + j).addClass('selected');
+                $('#' + j + ', #line-' + j).addClass('selected');
             }
         }
 
@@ -93,37 +93,30 @@ $(document).ready(function() {
 
     // Save selected lines
     var lastLine;
-    $('.l a').click(function(event) {
+    $('.numbers .l a').click(function(event) {
         event.preventDefault();
 
         var selectedLine = $(this).parent().index() + 1;
-        var $selectedLine = $('pre.code .l').eq(selectedLine - 1);
 
         if (event.shiftKey) {
             if (lastLine) {
                 for (var i = Math.min(selectedLine, lastLine); i <= Math.max(selectedLine, lastLine); i++) {
-                    $('#' + i).addClass('selected');
+                    $('#' + i + ', #line-' + i).addClass('selected');
                 }
             } else {
-                $selectedLine.addClass('selected');
+                 $('#' + selectedLine + ', #line-' + selectedLine).addClass('selected');
             }
         } else if (event.ctrlKey) {
-            $selectedLine.toggleClass('selected');
+              $('#' + selectedLine + ', #line-' + selectedLine).toggleClass('selected');
         } else {
-            var $selected = $('.l.selected')
-                .not($selectedLine)
-                .removeClass('selected');
-            if ($selected.length > 0) {
-                $selectedLine.addClass('selected');
-            } else {
-                $selectedLine.toggleClass('selected');
-            }
+           var selected = $('.l.selected').not('#' + selectedLine + ', #line-' + selectedLine).removeClass('selected');
+           $('#' + selectedLine + ', #line-' + selectedLine).addClass('selected');
         }
 
-        lastLine = $selectedLine.hasClass('selected') ? selectedLine : null;
+        lastLine = $('#' + selectedLine).hasClass('selected') ? selectedLine : null;
 
         // Update hash
-        var lines = $('.l.selected')
+        var lines = $('.numbers .l.selected')
             .map(function() {
                 return parseInt($(this).attr('id'));
             })
@@ -154,8 +147,6 @@ $(document).ready(function() {
         }
 
         hash = hash.join(',');
-        $backup = $('#' + hash).removeAttr('id');
-        window.location.hash = hash;
-        $backup.attr('id', hash);
+        history.pushState(null, null, hash);
     });
 });
