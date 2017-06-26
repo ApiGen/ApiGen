@@ -258,6 +258,21 @@ table .name > div > code span
 }
 
 /* Source code */
+#source pre {
+    background: none;
+    border: 0;
+}
+#source pre.numbers {
+    padding-right: 0;
+}
+#source pre.numbers a {
+    background: transparent;
+    color: #929292 !important;
+}
+#source pre.code {
+    padding-left: 0;
+}
+
 .php-keyword1 {
     color: #e71818;
     font-weight: bold;
