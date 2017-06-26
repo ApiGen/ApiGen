@@ -1,9 +1,9 @@
 // $( function() {
-$(window).load(function() {
+$(document).ready(function() {
     var $document = $(document);
 
     // Content
-
+/*
     var availableTags = [
         "ActionScript",
         "Able"
@@ -69,6 +69,8 @@ $(window).load(function() {
                 }
                 return !autocompleteFound && '' !== $('#search input[name=cx]').val();
             });
+*/
+
 
     // Select selected lines
     var matches = window.location.hash.substr(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/);
