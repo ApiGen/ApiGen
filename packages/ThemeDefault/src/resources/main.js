@@ -146,7 +146,7 @@ $(document).ready(function() {
             }
         }
 
-        hash = hash.join(',');
+        hash = '#' + hash.join(',');
         history.pushState(null, null, hash);
     });
 });
