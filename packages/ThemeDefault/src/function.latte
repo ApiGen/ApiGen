@@ -51,7 +51,7 @@
                     <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
                     {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
                 {/block}</code></td>
-                <td>{$parameter|description}</td>
+                <td>{if $parameter instanceof \ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface}{$parameter|description}{/if}</td>
             </tr>
         </table>
     {/if}

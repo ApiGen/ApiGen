@@ -79,7 +79,7 @@
         <table class="summary table table-bordered table-responsive table-striped" id="methods">
             <tr><th colspan="3">Methods Summary</th></tr>
             {foreach $class->getOwnMethods() as $method}
-                {include "partial/method.latte", method => $method}
+                {include "partial/method.latte", method => $method, "isClass" => true}
             {/foreach}
         </table>
     {/if}

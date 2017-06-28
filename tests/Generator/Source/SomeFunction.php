@@ -6,6 +6,10 @@ function someFunction(): void
 {
 }
 
-function someOtherFunction(): void
+/**
+ * Do not add param annotations here!
+ * @return void
+ */
+function someOtherFunction($paramWithoutTypeHint)
 {
 }

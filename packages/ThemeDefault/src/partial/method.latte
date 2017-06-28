@@ -1,4 +1,5 @@
 {if !isset($isInterface)}{$isInterface = false}{/if}
+{if !isset($isClass)}{$isClass = false}{/if}
 
 <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
     {var $annotations = $method->getAnnotations()}
@@ -85,7 +86,7 @@
                     </div>
                 {/foreach}
 
-                {if $isInterface === false}
+                {if $isClass === true}
                     {if $method->getOverriddenMethod()}
                         <h2>Overrides</h2>
                         <div>
