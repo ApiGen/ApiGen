@@ -32,7 +32,8 @@ final class StepCounter
             + count($this->reflectionStorage->getClassReflections())
             + count($this->reflectionStorage->getTraitReflections())
             + count($this->reflectionStorage->getInterfaceReflections())
-            + count($this->reflectionStorage->getFunctionReflections());
+            + count($this->reflectionStorage->getFunctionReflections())
+            + $this->getOverviewPagesCount();
     }
 
     private function getSourceCodeStepCount(): int
@@ -41,5 +42,23 @@ final class StepCounter
             + count($this->reflectionStorage->getInterfaceReflections())
             + count($this->reflectionStorage->getTraitReflections())
             + count($this->reflectionStorage->getFunctionReflections());
+    }
+
+    private function getOverviewPagesCount(): int
+    {
+        $count = 2; // index.html + elementlist.js
+        if (count($this->reflectionStorage->getClassReflections())) {
+            $count++; // classes.html
+        }
+        if (count($this->reflectionStorage->getInterfaceReflections())) {
+            $count++; // interfaces.html
+        }
+        if (count($this->reflectionStorage->getTraitReflections())) {
+            $count++; // traits.html
+        }
+        if (count($this->reflectionStorage->getFunctionReflections())) {
+            $count++; // functions.html
+        }
+        return $count;
     }
 }
