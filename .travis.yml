@@ -11,6 +11,7 @@ matrix:
 before_install:
     # Prevents global install of dev dependecies failing
     - composer global config minimum-stability dev
+    - composer global config prefer-stable true
 
 install:
     # install composer dependencies
