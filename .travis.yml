@@ -8,9 +8,16 @@ matrix:
           # add variables to enable coverage, coding standard check and static analysis
           env: PHPUNIT_FLAGS="--coverage-clover coverage.xml"
 
+before_install:
+    # Prevents global install of dev dependecies failing
+    - composer global config minimum-stability dev
+
 install:
     # install composer dependencies
     - composer install
+    # Create composer global installs
+    - composer create-project apigen/apigen:dev-master temp/apigen-project
+    - composer global require apigen/apigen:dev-master
 
 script:
     # run tests
@@ -19,6 +26,9 @@ script:
     - composer check-cs
     # check with phpstan (defined in composer.json "scripts" section)
     - composer phpstan
+    # Global install checks
+    - temp/apigen-project/bin/apigen generate -h
+    - ~/.composer/vendor/bin/apigen generate -h
 
 after_script:
     # upload coverage.xml file to Scrutinizer to analyze it
