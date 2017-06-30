@@ -66,15 +66,17 @@ final class TransformerCollector
                 continue;
             }
 
-            $newReflection = $transformer->transform($reflection);
+            $transformedReflection = $transformer->transform($reflection);
 
-            if ($newReflection instanceof TransformerCollectorAwareInterface) {
-                $newReflection->setTransformerCollector($this);
+            if ($transformedReflection instanceof TransformerCollectorAwareInterface) {
+                $transformedReflection->setTransformerCollector($this);
             }
 
-            $this->reflectionCollectorCollector->processReflection($newReflection);
+            if (! $this->shouldSkipReflection($transformedReflection)) {
+                $this->reflectionCollectorCollector->processReflection($transformedReflection);
+            }
 
-            return $newReflection;
+            return $transformedReflection;
         }
 
         throw new UnsupportedReflectionClassException(sprintf(
