@@ -13,6 +13,7 @@ use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
@@ -117,10 +118,19 @@ final class Parser
      */
     private function createDirectoriesSource(array $directories): SourceLocator
     {
-        return new AggregateSourceLocator([
+        $locators = [
             new DirectoriesSourceLocator($directories),
             new AutoloadSourceLocator(),
             new PhpInternalSourceLocator()
-        ]);
+        ];
+
+        foreach ($directories as $directory) {
+            $autoload = dirname($directory) . '/vendor/autoload.php';
+            if (is_file($autoload)) {
+                $locators[] = new ComposerSourceLocator(include $autoload);
+            }
+        }
+
+        return new AggregateSourceLocator($locators);
     }
 }
