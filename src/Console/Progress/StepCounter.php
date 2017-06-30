@@ -50,15 +50,19 @@ final class StepCounter
         if (count($this->reflectionStorage->getClassReflections())) {
             $count++; // classes.html
         }
+
         if (count($this->reflectionStorage->getInterfaceReflections())) {
             $count++; // interfaces.html
         }
+
         if (count($this->reflectionStorage->getTraitReflections())) {
             $count++; // traits.html
         }
+
         if (count($this->reflectionStorage->getFunctionReflections())) {
             $count++; // functions.html
         }
+
         return $count;
     }
 }
