@@ -66,6 +66,7 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
                 'activeNamespace' => $namespace,
                 'childNamespaces' => $this->resolveChildNamespaces($namespace),
                 'classes' => [],
+                'exceptions' => [],
                 'interfaces' => [],
                 'traits' => [],
                 'functions' => [],

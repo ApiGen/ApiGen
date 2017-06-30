@@ -53,6 +53,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
         $parameterBag->addParameters([
             'allNamespaces' => $this->namespaceReflectionCollector->getNamespaces(),
             'allClasses' => $this->reflectionStorage->getClassReflections(),
+            'allExceptions' => $this->reflectionStorage->getExceptionReflections(),
             'allInterfaces' => $this->reflectionStorage->getInterfaceReflections(),
             'allTraits' => $this->reflectionStorage->getTraitReflections(),
             'allFunctions' => $this->reflectionStorage->getFunctionReflections()

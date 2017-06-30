@@ -17,6 +17,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\StringRouting\Contract\Route\RouteInterface;
 use ApiGen\Utils\NamingHelper;
+use Throwable;
 
 final class ReflectionRoute implements RouteInterface
 {
@@ -35,6 +36,10 @@ final class ReflectionRoute implements RouteInterface
      */
     public function constructUrl($reflection): string
     {
+        if ($reflection instanceof ClassReflectionInterface && $reflection->implementsInterface(Throwable::class)) {
+            return 'exception-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
+        }
+
         if ($reflection instanceof ClassReflectionInterface) {
             return 'class-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }

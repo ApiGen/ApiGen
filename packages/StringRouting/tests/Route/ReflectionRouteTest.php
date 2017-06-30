@@ -16,6 +16,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\StringRouting\StringRouter;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use Throwable;
 
 final class ReflectionRouteTest extends AbstractContainerAwareTestCase
 {
@@ -66,6 +67,21 @@ final class ReflectionRouteTest extends AbstractContainerAwareTestCase
             [InterfaceReflectionInterface::class, 'interface-SomeName.html'],
             [TraitReflectionInterface::class, 'trait-SomeName.html'],
         ];
+    }
+
+    public function testExceptionReflection(): void
+    {
+        $reflectionExceptionMock = $this->createMock(ClassReflectionInterface::class);
+        $reflectionExceptionMock->method('implementsInterface')
+            ->with(Throwable::class)
+            ->willReturn(true);
+        $reflectionExceptionMock->method('getName')
+            ->willReturn('SomeException');
+
+        $this->assertSame(
+            'exception-SomeException.html',
+            $this->stringRouter->buildRoute(ReflectionRoute::NAME, $reflectionExceptionMock)
+        );
     }
 
     public function testFunctionUrl(): void

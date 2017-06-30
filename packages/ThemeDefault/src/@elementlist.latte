@@ -36,3 +36,10 @@
         {include elements, elements => $allFunctions}
     </table>
 {/if}
+
+{if $exceptions}
+    <table class="summary table table-responsive table-bordered table-striped" id="exceptions">
+        <tr><th colspan="2">Exceptions Summary</th></tr>
+        {include elements, elements => $exceptions}
+    </table>
+{/if}

@@ -55,6 +55,7 @@ final class NamespaceGenerator implements GeneratorInterface
                 'activeNamespace' => $namespace,
                 'childNamespaces' => $this->resolveChildNamespaces($namespace),
                 'classes' => $namespaceReflectionCollector->getClassReflections($namespace),
+                'exceptions' => $namespaceReflectionCollector->getExceptionReflections($namespace),
                 'interfaces' => $namespaceReflectionCollector->getInterfaceReflections($namespace),
                 'traits' => $namespaceReflectionCollector->getTraitReflections($namespace),
                 'functions' => $namespaceReflectionCollector->getFunctionReflections($namespace)
