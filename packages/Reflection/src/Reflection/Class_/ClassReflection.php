@@ -357,6 +357,11 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
+    public function isInternal(): bool
+    {
+        return $this->hasAnnotation(AnnotationList::INTERNAL);
+    }
+
     /**
      * @return mixed[]
      */

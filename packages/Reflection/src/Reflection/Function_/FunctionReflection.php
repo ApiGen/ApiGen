@@ -63,6 +63,11 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
         return $this->betterFunctionReflection->isDeprecated();
     }
 
+    public function isInternal(): bool
+    {
+        return $this->hasAnnotation(AnnotationList::INTERNAL);
+    }
+
     public function getNamespaceName(): string
     {
         return $this->betterFunctionReflection->getNamespaceName();

@@ -86,6 +86,11 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
+    public function isInternal(): bool
+    {
+        return $this->hasAnnotation(AnnotationList::INTERNAL);
+    }
+
     public function getNamespaceName(): string
     {
         return $this->betterTraitReflection->getNamespaceName();

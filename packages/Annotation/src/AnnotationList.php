@@ -12,6 +12,11 @@ final class AnnotationList
     /**
      * @var string
      */
+    public const INTERNAL = 'internal';
+
+    /**
+     * @var string
+     */
     public const PARAM = 'param';
 
     /**
