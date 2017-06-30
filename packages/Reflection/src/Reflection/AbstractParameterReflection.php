@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Reflection;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\AbstractParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
@@ -67,6 +68,11 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         return $classOrInterfaceReflection;
     }
 
+    public function isDefaultValueAvailable(): bool
+    {
+        return $this->betterParameterReflection->isDefaultValueAvailable();
+    }
+
     public function getDefaultValueDefinition(): ?string
     {
         if ($this->betterParameterReflection->isDefaultValueAvailable()) {
@@ -118,7 +124,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     private function getAnnotation(): ?Param
     {
         $declaringReflection = $this->getDeclaringReflection();
-        $annotations = $declaringReflection->getAnnotations();
+        $annotations = $declaringReflection->getAnnotation(AnnotationList::PARAM);
 
         if (empty($annotations[$this->betterParameterReflection->getPosition()])) {
             return null;

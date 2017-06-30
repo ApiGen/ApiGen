@@ -8,7 +8,6 @@ use Symfony\Component\Console\Application;
 gc_disable();
 
 $possibleAutoloadPaths = [
-    getcwd() . '/vendor/autoload.php',
     __DIR__ . '/../vendor/autoload.php',
     __DIR__ . '/../../../autoload.php'
 ];

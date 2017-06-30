@@ -4,5 +4,10 @@ namespace ApiGen\Tests\Generator\UsingTraitsSources;
 
 trait SomeTrait
 {
+	private $property;
+
+	public function method()
+	{
+	}
 
 }

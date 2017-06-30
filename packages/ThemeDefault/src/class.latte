@@ -79,13 +79,13 @@
         <table class="summary table table-bordered table-responsive table-striped" id="methods">
             <tr><th colspan="3">Methods Summary</th></tr>
             {foreach $class->getOwnMethods() as $method}
-                {include "partial/method.latte", method => $method}
+                {include "partial/method.latte", method => $method, "isClass" => true}
             {/foreach}
         </table>
     {/if}
 
     {foreach $class->getParentClasses() as $parentClass}
-        <table class="summary inherited table table-bordered table-responsive table-striped">
+        <table class="summary table table-bordered table-responsive table-striped">
             <tr>
                 <th>
                     Methods inherited from <a href="{$parentClass|linkReflection}#methods">{$parentClass->getName()}</a>
@@ -131,14 +131,14 @@
 
     {foreach $class->getParentClasses() as $parentClass}
         {if $parentClass->getOwnConstants()}
-            <table class="summary inherited table table-bordered table-responsive table-striped">
+            <table class="summary table table-bordered table-responsive table-striped">
                 <tr>
                     <th>
                         Constants inherited from <a href="{$parentClass|linkReflection}#constants">{$parentClass->getName()}</a>
                     </th>
                 </tr>
                 <tr>
-                    {include "partial/parentConstant.latte", parentClass => $parentClass}
+                    {include "partial/parentConstant.latte", parentClassOrInterface => $parentClass}
                 </tr>
             </table>
         {/if}
@@ -155,7 +155,7 @@
 
     {foreach $class->getParentClasses() as $parentClass}
         {if $parentClass->getOwnProperties()}
-            <table class="summary inherited table table-bordered table-responsive table-striped">
+            <table class="summary table table-bordered table-responsive table-striped">
                 <tr>
                     <th>
                         Properties inherited from <a href="{$parentClass|linkReflection}#properties">{$parentClass->getName()}</a>
