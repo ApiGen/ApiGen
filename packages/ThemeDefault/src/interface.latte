@@ -98,20 +98,12 @@
 
     {foreach $interface->getInterfaces() as $parentInterface}
         {if $parentInterface->getOwnConstants()}
-            <table class="summary inherited table table-responsive table-bordered table-striped">
+            <table class="summary table table-responsive table-bordered table-striped">
                 <tr><th>
                     Constants inherited from <a href="{$parentInterface|linkReflection}#constants">{$parentInterface->getName()}</a>
                 </th></tr>
                 <tr>
-                    <td>
-                        <code>
-                            {foreach $parentInterface->getOwnContants() as $parentInterfaceConstants}
-                                <a href="{$parentInterfaceConstants|constantUrl}" n:class="$parentInterfaceConstants->isDeprecated() ? deprecated">
-                                    <strong>{$parentInterfaceConstants->getName()}</strong>
-                                </a>{sep}, {/sep}
-                            {/foreach}
-                        </code>
-                    </td>
+                    {include "partial/parentConstant.latte", parentClassOrInterface => $parentInterface}
                 </tr>
             </table>
         {/if}

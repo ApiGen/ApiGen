@@ -1,8 +1,8 @@
 <td>
     <code>
-        {foreach $parentClass->getOwnConstants() as $parentClassConstant}
-        <a href="{$parentClassConstant|constantUrl}" n:class="$parentClassConstant->isDeprecated() ? deprecated">
-            <strong>{$parentClassConstant->getName()}</strong>
+        {foreach $parentClassOrInterface->getOwnConstants() as $parentClassOrInterfaceConstant}
+            <a href="{$parentClassOrInterfaceConstant|linkReflection}" n:class="$parentClassOrInterfaceConstant->isDeprecated() ? deprecated, constant-name">
+                {$parentClassOrInterfaceConstant->getName()}
             </a>{sep}, {/sep}
         {/foreach}
     </code>
