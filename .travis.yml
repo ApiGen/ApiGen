@@ -32,11 +32,11 @@ script:
     - ~/.composer/vendor/bin/apigen generate -h
 
 after_script:
-    # upload coverage.xml file to Scrutinizer to analyze it
+    # upload coverage.xml file to Coveralls.io to analyze it
     - |
         if [[ $PHPUNIT_FLAGS != "" ]]; then
-            wget https://scrutinizer-ci.com/ocular.phar
-            php ocular.phar code-coverage:upload --format=php-clover coverage.xml
+            wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+            php coveralls.phar --verbose
         fi
     - ./generate-api.sh
 
