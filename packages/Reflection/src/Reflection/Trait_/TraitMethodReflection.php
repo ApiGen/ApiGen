@@ -13,6 +13,11 @@ use Roave\BetterReflection\Reflection\ReflectionMethod;
 final class TraitMethodReflection implements TraitMethodReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
+     * @var string
+     */
+    private const EMPTY_LINE = PHP_EOL . PHP_EOL;
+
+    /**
      * @var ReflectionMethod
      */
     private $betterMethodReflection;
@@ -103,7 +108,16 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
 
     public function getDescription(): string
     {
-        // TODO: Implement getDescription() method.
+        $description = $this->docBlock->getSummary()
+            . self::EMPTY_LINE
+            . $this->docBlock->getDescription();
+
+        return trim($description);
+    }
+
+    public function getOverriddenMethod(): ?TraitMethodReflectionInterface
+    {
+        return null;
     }
 
     /**

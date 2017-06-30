@@ -14,6 +14,8 @@ interface AbstractParameterReflectionInterface extends AbstractReflectionInterfa
      */
     public function getTypeHintClassOrInterfaceReflection();
 
+    public function isDefaultValueAvailable(): bool;
+
     public function getDefaultValueDefinition(): ?string;
 
     public function isArray(): bool;
