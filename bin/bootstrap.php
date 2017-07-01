@@ -23,7 +23,10 @@ if ($local_autoloader) {
     $cli_autoloader = null;
     define('APIGEN_CLI_CONTEXT', null);
 
-    throw new RuntimeException('Error! Unable to find ApiGen autoloader.');
+    throw new RuntimeException(
+        'Error! ApiGen was unable to find its autoloader. '.
+        'Did you forget to run "composer update"?'
+    );
 }
 
 require_once $cli_autoloader;
