@@ -85,21 +85,11 @@ parameters:
 ```
 
 
-## DocBlock Annotations
+## What Annotations Have Extra Care?
 
-These annotations are supported by ApiGen:
+### `@see`, `@covers`, `@uses`
 
-- `@link` - website url
-- `@see`, `@uses`, `@covers` - reference to some element (Class, Function, Property, Method...)
-
-- `@param` - an argument of a method or function 
-- `@return` - the return value of method or function 
-- `@internal` - denotes that the associated elements is internal to this application or library and hides it by default
-
-
-### In Examples
-
-#### `@see`, `@covers`, `@uses`
+Reference to Class, Function, Property, Method etc. element.
 
 **In Code**
 
@@ -121,7 +111,9 @@ These annotations are supported by ApiGen:
 
 ---
 
-#### `@link`
+### `@link`
+
+A website url.
 
 **In Code**
 
@@ -138,6 +130,10 @@ These annotations are supported by ApiGen:
 This is already mentioned on Wiki.
 @link <a href="https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall">Click to see a cool quote</a> 
 ```
+
+### `@internal` 
+
+Associated element is internal, so ApiGen hides it.
 
 
 ## Themes
