@@ -22,8 +22,8 @@ Add to your `composer.json`:
 ```json
 {
     "require": {
-    	"apigen/apigen": "5.0.0-RC1",
-    	"roave/better-reflection": "@dev"
+        "apigen/apigen": "5.0.0-RC2",
+        "roave/better-reflection": "@dev"
     }
 }
 ```
