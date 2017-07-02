@@ -41,8 +41,18 @@ final class ProgressBar
         }
 
         $this->bar->advance($increment);
-        if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
-            $this->output->writeln(' - Finished!');
+    }
+
+    public function __destruct()
+    {
+        if ($this->bar) {
+            if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
+                $msg = '<info>Done! API generation was successfully completed.</info> ';
+            } else {
+                $msg = '<error>Failed! API generation was interrupted.</error> ';
+            }
+
+            $this->output->writeln(['', $msg]);
         }
     }
 }
