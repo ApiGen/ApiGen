@@ -10,6 +10,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Helper\ReflectionAnalyzer;
+use Throwable;
 
 final class NamespaceReflectionCollector implements BasicReflectionCollectorInterface
 {
@@ -40,6 +41,10 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
         $reflectionInterface = ReflectionAnalyzer::getReflectionInterfaceFromReflection($reflection);
         $namespace = $reflection->getNamespaceName() ?: self::NO_NAMESPACE;
 
+        if ($reflectionInterface === ClassReflectionInterface::class) {
+            $reflectionInterface = ($reflection->implementsInterface(Throwable::class)) ? 'exception' : 'class';
+        }
+
         $this->collectedReflections[$namespace][$reflectionInterface][$reflection->getName()] = $reflection;
     }
 
@@ -48,7 +53,15 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
      */
     public function getClassReflections(string $namespace): array
     {
-        return $this->collectedReflections[$namespace][ClassReflectionInterface::class] ?? [];
+        return $this->collectedReflections[$namespace]['class'] ?? [];
+    }
+
+    /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getExceptionReflections(string $namespace): array
+    {
+        return $this->collectedReflections[$namespace]['exception'] ?? [];
     }
 
     /**

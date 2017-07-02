@@ -19,6 +19,7 @@
     {if count($allNamespaces) <= 1}
         {include '@elementlist.latte',
             "classes" => $allClasses,
+            "exceptions" => $allExceptions,
             "interfaces" => $allInterfaces,
             "traits" => $allTraits,
             "functions" => $allFunctions

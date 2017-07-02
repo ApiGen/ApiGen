@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use Throwable;
 
 final class ReflectionStorage
 {
@@ -13,6 +14,11 @@ final class ReflectionStorage
      * @var ClassReflectionInterface[]
      */
     private $classReflections = [];
+
+    /**
+     * @var ClassReflectionInterface[]
+     */
+    private $exceptionReflections = [];
 
     /**
      * @var InterfaceReflectionInterface[]
@@ -38,6 +44,14 @@ final class ReflectionStorage
     }
 
     /**
+     * @return ClassReflectionInterface[]
+     */
+    public function getExceptionReflections(): array
+    {
+        return $this->exceptionReflections;
+    }
+
+    /**
      * @param ClassReflectionInterface[] $classReflections
      */
     public function addClassReflections(array $classReflections): void
@@ -46,7 +60,11 @@ final class ReflectionStorage
         });
         sort($classReflections);
         foreach ($classReflections as $classReflection) {
-            $this->classReflections[$classReflection->getName()] = $classReflection;
+            if ($classReflection->implementsInterface(Throwable::class)) {
+                $this->exceptionReflections[$classReflection->getName()] = $classReflection;
+            } else {
+                $this->classReflections[$classReflection->getName()] = $classReflection;
+            }
         }
     }
 

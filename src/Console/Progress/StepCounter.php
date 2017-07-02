@@ -30,6 +30,7 @@ final class StepCounter
         return $this->getSourceCodeStepCount()
             + count($this->namespaceReflectionCollector->getNamespaces())
             + count($this->reflectionStorage->getClassReflections())
+            + count($this->reflectionStorage->getExceptionReflections())
             + count($this->reflectionStorage->getTraitReflections())
             + count($this->reflectionStorage->getInterfaceReflections())
             + count($this->reflectionStorage->getFunctionReflections())
@@ -39,6 +40,7 @@ final class StepCounter
     private function getSourceCodeStepCount(): int
     {
         return count($this->reflectionStorage->getClassReflections())
+            + count($this->reflectionStorage->getExceptionReflections())
             + count($this->reflectionStorage->getInterfaceReflections())
             + count($this->reflectionStorage->getTraitReflections())
             + count($this->reflectionStorage->getFunctionReflections());
@@ -49,6 +51,10 @@ final class StepCounter
         $count = 2; // index.html + elementlist.js
         if (count($this->reflectionStorage->getClassReflections())) {
             $count++; // classes.html
+        }
+
+        if (count($this->reflectionStorage->getExceptionReflections())) {
+            $count++; // exceptions.html
         }
 
         if (count($this->reflectionStorage->getInterfaceReflections())) {

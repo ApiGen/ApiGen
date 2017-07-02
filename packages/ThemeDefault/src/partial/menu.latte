@@ -34,6 +34,12 @@
                             </li>
                         {/if}
 
+                        {if count($allExceptions)}
+                            <li>
+                                <a n:class="$activePage === exceptions ? active" href="exceptions.html">Exceptions</a>
+                            </li>
+                        {/if}
+
                         {foreach $annotationGroups as $annotationGroup}
                             <li class="separator"></li>
                             <li>

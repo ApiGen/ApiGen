@@ -14,6 +14,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\StringRouting\Contract\Route\RouteInterface;
 use ApiGen\Utils\NamingHelper;
 use ApiGen\Utils\RelativePathResolver;
+use Throwable;
 
 final class SourceCodeRoute implements RouteInterface
 {
@@ -43,6 +44,10 @@ final class SourceCodeRoute implements RouteInterface
     public function constructUrl($reflection): string
     {
         # todo: allow Github links, based on configuration
+        if ($reflection instanceof ClassReflectionInterface && $reflection->implementsInterface(Throwable::class)) {
+            return 'source-exception-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
+        }
+
         if ($reflection instanceof ClassReflectionInterface) {
             return 'source-class-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
