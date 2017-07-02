@@ -1,10 +1,8 @@
-<?php
-
-declare(strict_types=1);
+<?php declare(strict_types=1);
 
 $rootDir = realpath(__DIR__.'/../');
 
-// Autoloader in a standalone install (not installed via `composer [global] require`)
+// Autoloader for standalone install (installed via `composer create-project` or cloned locally)
 $autoloader = realpath($rootDir.'/vendor/autoload.php');
 
 if (!$autoloader) {
@@ -14,7 +12,7 @@ if (!$autoloader) {
 
 if (!$autoloader) {
     throw new RuntimeException(
-        'Error! ApiGen was unable to find its autoloader. '.
+        'ApiGen was unable to find its autoloader. '.
         'Did you forget to run "composer update"?'
     );
 }
