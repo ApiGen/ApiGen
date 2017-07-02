@@ -216,14 +216,6 @@ dl.tree dd {
     white-space: pre-wrap;
 }
 
-td.name, td.attributes {
-    width: 1%;
-}
-
-td.attributes {
-    width: 1%;
-}
-
 table .name > div > code {
     white-space: pre-wrap;
 }
@@ -232,6 +224,10 @@ table .name > div > code span
 {
     white-space: nowrap;
     display: inline-block;
+}
+table .name > div > .description
+{
+    white-space: normal;
 }
 
 .anchor {
