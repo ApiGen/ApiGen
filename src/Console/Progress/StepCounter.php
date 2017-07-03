@@ -2,6 +2,7 @@
 
 namespace ApiGen\Console\Progress;
 
+use ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Reflection\ReflectionStorage;
 
@@ -17,17 +18,29 @@ final class StepCounter
      */
     private $namespaceReflectionCollector;
 
+    /**
+     * @var ParentEmptyNamespacesResolver
+     */
+    private $parentEmptyNamespacesResolver;
+
     public function __construct(
         ReflectionStorage $reflectionStorage,
-        NamespaceReflectionCollector $namespaceReflectionCollector
+        NamespaceReflectionCollector $namespaceReflectionCollector,
+        ParentEmptyNamespacesResolver $parentEmptyNamespacesResolver
     ) {
         $this->reflectionStorage = $reflectionStorage;
         $this->namespaceReflectionCollector = $namespaceReflectionCollector;
+        $this->parentEmptyNamespacesResolver = $parentEmptyNamespacesResolver;
     }
 
     public function getStepCount(): int
     {
+        $parentEmptyNamespaces = $this->parentEmptyNamespacesResolver->resolve(
+            $this->namespaceReflectionCollector->getNamespaces()
+        );
+
         return $this->getSourceCodeStepCount()
+            + count($parentEmptyNamespaces)
             + count($this->namespaceReflectionCollector->getNamespaces())
             + count($this->reflectionStorage->getClassReflections())
             + count($this->reflectionStorage->getExceptionReflections())
