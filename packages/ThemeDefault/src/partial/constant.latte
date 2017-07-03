@@ -1,6 +1,11 @@
 <tr id="{$constant->getName()}">
     <td class="attributes">
-        <code>{$constant->getTypeHint()}</code>
+        <code>
+        {if $constant->isPublic()}public{/if}
+        {if $constant->isProtected()}protected{/if}
+        {if $constant->isPrivate()}private{/if}
+        {$constant->getTypeHint()}
+        </code>
     </td>
     <td class="name">
         <code>

@@ -4,81 +4,65 @@ namespace ApiGen\Reflection\Reflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
+use ApiGen\Reflection\TransformerCollector;
+use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use ReflectionClass;
-use ReflectionClassConstant;
+use Roave\BetterReflection\Reflection\ReflectionClassConstant;
 
-final class ClassConstantReflection implements ClassConstantReflectionInterface
+final class ClassConstantReflection implements ClassConstantReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    /**
-     * @var ClassReflectionInterface
-     */
-    private $classReflection;
-
-    /**
-     * Note: php bug, not documented: https://bugs.php.net/bug.php?id=74261
-     *
      * @var ReflectionClassConstant
      */
-    private $nativeClassConstantReflection;
+    private $constant;
 
     /**
-     * @param mixed $value
+     * @var DocBlock
      */
-    private function __construct(string $name, $value, ClassReflectionInterface $classReflection)
+    private $docBlock;
+
+    /**
+     * @var TransformerCollector
+     */
+    private $transformerCollector;
+
+
+    /**
+     * @param string $name
+     * @param mixed $value
+     * @param string $visibility
+     * @param ClassReflectionInterface $classReflection
+     */
+    public function __construct(ReflectionClassConstant $constant, DocBlock $docBlock)
     {
-        $this->name = $name;
-        $this->value = $value;
-        $this->classReflection = $classReflection;
-
-        $nativeClassReflection = new ReflectionClass($classReflection->getName());
-        $this->nativeClassConstantReflection = $nativeClassReflection->getReflectionConstant($name);
-    }
-
-    /**
-     * @param mixed $value
-     */
-    public static function createFromNameValueAndClass(
-        string $name,
-        $value,
-        ClassReflectionInterface $classReflection
-    ): self {
-        return new self($name, $value, $classReflection);
+        $this->constant = $constant;
+        $this->docBlock = $docBlock;
     }
 
     public function isPublic(): bool
     {
-        return $this->nativeClassConstantReflection->isPublic();
+        return $this->constant->isPublic();
     }
 
     public function isProtected(): bool
     {
-        return $this->nativeClassConstantReflection->isProtected();
+        return $this->constant->isProtected();
     }
 
     public function isPrivate(): bool
     {
-        return $this->nativeClassConstantReflection->isPrivate();
+        return $this->constant->isPrivate();
     }
 
     public function getName(): string
     {
-        return $this->name;
+        return $this->constant->getName();
     }
 
     public function getTypeHint(): string
     {
-        $valueType = gettype($this->value);
+        $valueType = gettype($this->constant->getValue());
         if ($valueType === 'integer') {
             return 'int';
         }
@@ -88,12 +72,14 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
 
     public function getDeclaringClass(): ClassReflectionInterface
     {
-        return $this->classReflection;
+        return $this->transformerCollector->transformSingle(
+            $this->constant->getDeclaringClass()
+        );
     }
 
     public function getDeclaringClassName(): string
     {
-        return $this->classReflection->getName();
+        return $this->constant->getDeclaringClass()->getName();
     }
 
     /**
@@ -101,12 +87,12 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
      */
     public function getValue()
     {
-        return $this->value;
+        return $this->constant->getValue();
     }
 
     public function isDeprecated(): bool
     {
-        if ($this->classReflection->isDeprecated()) {
+        if ($this->getDeclaringClass()->isDeprecated()) {
             return true;
         }
 
@@ -157,5 +143,10 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface
     {
         // @todo
         return [];
+    }
+
+    public function setTransformerCollector(TransformerCollector $transformerCollector): void
+    {
+        $this->transformerCollector = $transformerCollector;
     }
 }
