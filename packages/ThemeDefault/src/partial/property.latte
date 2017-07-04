@@ -27,7 +27,7 @@
     <td class="value">
         <div>
             <a href="#${$property->getName()}" class="anchor pull-right">#</a>
-            <code>{$property->getDefaultValueDefinition()}</code>
+            <code class="php-code">{$property->getDefaultValueDefinition()|phpHighlight|noescape}</code>
         </div>
     </td>
 </tr>
