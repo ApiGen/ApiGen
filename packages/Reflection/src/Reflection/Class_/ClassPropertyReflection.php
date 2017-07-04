@@ -172,7 +172,7 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function getDefaultValueDefinition(): ?string
     {
-        return $this->betterPropertyReflection->getDefaultValue();
+        return $this->betterPropertyReflection->getDefaultValueAsString();
     }
 
     public function isDeprecated(): bool
