@@ -4,5 +4,4 @@ namespace DifferentVendor;
 
 class DifferentClass
 {
-
 }

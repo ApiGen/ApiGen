@@ -6,5 +6,4 @@ use DifferentVendor;
 
 class MyClass extends DifferentVendor\DifferentClass
 {
-
 }

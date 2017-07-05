@@ -57,6 +57,8 @@
             "packages/Element/tests/ReflectionCollector/NamespaceReflectionCollectorSource/namespacedFunction.php",
             "packages/Element/tests/ReflectionCollector/NamespaceReflectionCollectorSource/NoneNamespacedClass.php",
             "packages/Element/tests/ReflectionCollector/Source/deprecatedFunction.php",
+            "packages/Reflection/tests/Parser/DifferentVendorSources/vendor/DifferentVendor/DifferentClass.php",  
+            "packages/Reflection/tests/Parser/DifferentVendorSources/src/MyVendor/MyClass.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php",
