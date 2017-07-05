@@ -4,7 +4,7 @@
 <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
     {var $annotations = $method->getAnnotations()}
 
-    <td class="attributes">
+    <td class="attributes col-md-1">
         <code>
             {if $isInterface === true}
                 {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
