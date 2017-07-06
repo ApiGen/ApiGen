@@ -70,7 +70,7 @@ pre {
 }
 
 /* Autocomplete */
-.ac_results {
+.ui-autocomplete {
     padding: 0;
     border: 1px solid #cccccc;
     background-color: #ffffff;
@@ -78,40 +78,30 @@ pre {
     z-index: 99999;
 }
 
-.ac_results ul {
-    width: 100%;
-    list-style-position: outside;
-    list-style: none;
-    padding: 0;
+.ui-autocomplete li {
     margin: 0;
-}
-
-.ac_results li {
-    margin: 0;
-    padding: 2px 5px;
     cursor: default;
-    display: block;
     font: 12px 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
     line-height: 16px;
     overflow: hidden;
     white-space: nowrap;
 }
 
-.ac_results li strong {
+.ui-autocomplete .ui-menu-item-wrapper {
+    display: block;
+    padding: 4px 5px;
+}
+
+.ui-autocomplete .ui-state-active, .ui-autocomplete .ui-state-hover {
+    background: #ececec;
+}
+
+.ui-autocomplete li strong {
     color: #000000;
 }
 
-.ac_odd {
-    background-color: #eeeeee;
-}
-
-.ac_over {
-    background-color: #006aeb;
-    color: #ffffff;
-}
-
-.ac_results li.ac_over strong {
-    color: #ffffff;
+.ui-helper-hidden-accessible {
+    display: none;
 }
 
 /* Navigation */
