@@ -82,7 +82,6 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
 
     public function testAnnotations(): void
     {
-        // @todo: complete
-        $this->assertSame('', $this->classConstantReflection->getDescription());
+        $this->assertSame('Nice description.', $this->classConstantReflection->getDescription());
     }
 }
