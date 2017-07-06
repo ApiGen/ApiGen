@@ -1,4 +1,4 @@
-<tr id="{$constant->getName()}">
+<tr id="{$constant->getName()}" n:class="$constant->isDeprecated() ? deprecated">
     <td class="attributes">
         <code>
         {if $constant->isPublic()}public{/if}
@@ -14,17 +14,14 @@
 
         {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
 
-        {if $constant->getDescription() || count($filteredAnnotations)}
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {$constant|description}
+        <div class="description">
+            {$constant|description}
 
-                    {foreach $filteredAnnotations as $annotation}
-                        {$annotation|annotation: $constant|noescape}<br>
-                    {/foreach}
-                </div>
-            </div>
-        {/if}
+            {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+            {foreach $filteredAnnotations as $annotation}
+                {$annotation|annotation:$property|noescape}<br>
+            {/foreach}
+        </div>
     </td>
     <td class="value">
         <div>

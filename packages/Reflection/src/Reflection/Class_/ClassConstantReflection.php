@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Reflection\Class_;
 
+use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassConstantReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
@@ -96,7 +97,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
             return true;
         }
 
-        return false;
+        return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
     /**
@@ -118,13 +119,16 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
 
     public function getDescription(): string
     {
-        return '';
+        $description = $this->docBlock->getSummary()
+            . AnnotationList::EMPTY_LINE
+            . $this->docBlock->getDescription();
+
+        return trim($description);
     }
 
     public function hasAnnotation(string $name): bool
     {
-        // @todo
-        return false;
+        return $this->docBlock->hasTag($name);
     }
 
     /**
@@ -132,8 +136,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
      */
     public function getAnnotation(string $name): array
     {
-        // @todo
-        return [];
+        $this->docBlock->getTagsByName($name);
     }
 
     /**
