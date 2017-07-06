@@ -2,75 +2,51 @@
 $(document).ready(function() {
     var $document = $(document);
 
-    // Content
-/*
-    var availableTags = [
-        "ActionScript",
-        "Able"
-    ];
-
-    $('#search input[name=q]').autocomplete({
-        source: availableTags // ApiGen.elements
-    });
-
     // Search autocompletion
     var autocompleteFound = false;
+    var fuzzySet = FuzzySet();
+    var searchable = Object.keys(ApiGen.elements);
+    for (var i = 0; i < searchable.length; i++) {
+        fuzzySet.add(searchable[i]);
+    }
     var $search = $('#search input[name=q]');
     $search
-        .autocomplete(ApiGen.elements, {
+        .autocomplete({
+            source: function(req, responseFn) {
+                var result = fuzzySet.get(req.term, undefined, 0.1).sort(function (a, b) {
+                    if (a[0] < b[0]) {
+                        return 1;
+                    } else if (a[0] > b[0]) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                }).reduce(function (a, b) {
+                    a.push(b[1]);
+                    return a;
+                }, []);
+                responseFn(result);
+            },
             matchContains: true,
             scrollHeight: 200,
             max: 5,
             noRecord: '',
-            highlight: function(value, term) {
-                var term = term.toUpperCase().replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1").replace(/[A-Z0-9]/g, function(m, offset) {
-                    return offset === 0 ? '(?:' + m + '|^' + m.toLowerCase() + ')' : '(?:(?:[^<>]|<[^<>]*>)*' + m + '|' + m.toLowerCase() + ')';
-                });
-                return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term + ")(?![^<>]*>)(?![^&;]+;)"), "<strong>$1</strong>");
-            },
-            formatItem: function(data) {
-                return data.length > 1 ? data[1].replace(/^(.+\\)(.+)$/, '<span><small>$1</small>$2</span>') : data[0];
-            },
-            formatMatch: function(data) {
-                return data[1];
-            },
-            formatResult: function(data) {
-                return data[1];
-            },
-            show: function($list) {
-                var $items = $('li span', $list);
-                var maxWidth = Math.max.apply(null, $items.map(function() {
-                    return $(this).width();
-                }));
-                // 10px padding
-                $list
-                    .width(Math.max(maxWidth + 10, $search.innerWidth()))
-                    .css('left', $search.offset().left + $search.outerWidth() - $list.outerWidth());
+            select: function(event, data) {
+                autocompleteFound = true;
+                var location = window.location.href.split('/');
+                location.pop();
+                var file = ApiGen.elements[data.item.value];
+                location.push(file);
+                window.location = location.join('/');
             }
-        }).result(function(event, data) {
-            autocompleteFound = true;
-            var location = window.location.href.split('/');
-            location.pop();
-            // var parts = data[1].split(/::|$/);
-            var file = data[0];
-
-            console.log(file);
-
-            // if (parts[1]) {
-            //     file = data[0];
-            // }
-            location.push(file);
-            window.location = location.join('/');
         }).closest('form')
-            .submit(function() {
-                var query = $search.val();
-                if ('' === query) {
-                    return false;
-                }
-                return !autocompleteFound && '' !== $('#search input[name=cx]').val();
-            });
-*/
-
+        .submit(function() {
+            var query = $search.val();
+            if ('' === query) {
+                return false;
+            }
+            return !autocompleteFound && '' !== $('#search input[name=cx]').val();
+        });
 
     // Select selected lines
     var matches = window.location.hash.substr(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/);
