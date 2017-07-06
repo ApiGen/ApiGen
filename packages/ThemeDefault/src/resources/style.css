@@ -70,49 +70,43 @@ pre {
 }
 
 /* Autocomplete */
-.ac_results {
-    padding: 0;
-    border: 1px solid #cccccc;
-    background-color: #ffffff;
-    overflow: hidden;
-    z-index: 99999;
-}
-
-.ac_results ul {
-    width: 100%;
-    list-style-position: outside;
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-.ac_results li {
-    margin: 0;
-    padding: 2px 5px;
+.ui-autocomplete {
+    position: absolute;
+    z-index: 1000;
     cursor: default;
+    padding: 0;
+    margin-top: 2px;
+    list-style: none;
+    background-color: #ffffff;
+    border: 1px solid #ccc
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.ui-autocomplete > li {
+    padding: 0;
+}
+
+.ui-autocomplete > li a {
+    color: #555;
     display: block;
-    font: 12px 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
-    line-height: 16px;
-    overflow: hidden;
-    white-space: nowrap;
+    padding-left: 10px;
 }
 
-.ac_results li strong {
-    color: #000000;
+.ui-autocomplete > li b {
+    font-weight: bold;
 }
 
-.ac_odd {
-    background-color: #eeeeee;
+.ui-autocomplete .ui-state-hover,
+.ui-autocomplete .ui-state-active {
+    background: #006aeb;
+    color: white;
 }
 
-.ac_over {
-    background-color: #006aeb;
-    color: #ffffff;
+.ui-helper-hidden-accessible {
+    display: none;
 }
 
-.ac_results li.ac_over strong {
-    color: #ffffff;
-}
 
 /* Navigation */
 #navigation {
