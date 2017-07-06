@@ -55,6 +55,7 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
         $parameters = $this->methodReflection->getParameters();
         $this->assertCount(3, $parameters);
         $this->assertInstanceOf(MethodParameterReflectionInterface::class, $parameters['url']);
+        $this->assertSame(['url', 'data', 'headers'], array_keys($parameters));
     }
 
     public function testReturnReference(): void

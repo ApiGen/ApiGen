@@ -29,4 +29,11 @@ final class TraitMethodReflectionTest extends AbstractParserAwareTestCase
         $this->assertInstanceOf(TraitReflectionInterface::class, $this->traitMethodReflection->getDeclaringTrait());
         $this->assertSame(TraitMethodTrait::class, $this->traitMethodReflection->getDeclaringTraitName());
     }
+
+    public function testGetParameters(): void
+    {
+        $parameters = $this->traitMethodReflection->getParameters();
+        $this->assertCount(3, $parameters);
+        $this->assertSame(['url', 'data', 'headers'], array_keys($parameters));
+    }
 }
