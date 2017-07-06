@@ -104,7 +104,7 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
     public function getParameters(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->betterFunctionReflection->getParameters()
+            $this->betterFunctionReflection->getParameters(), false
         );
     }
 

@@ -35,7 +35,7 @@ final class TransformerCollector
      * @param object[] $reflections
      * @return object[]
      */
-    public function transformGroup(array $reflections): array
+    public function transformGroup(array $reflections, bool $sort = true): array
     {
         $elements = [];
         foreach ($reflections as $name => $reflection) {
@@ -48,9 +48,11 @@ final class TransformerCollector
         }
 
         // @todo: sort here!, before ElementSorter
-        uasort($elements, function ($firstElement, $secondElement) {
-           return strcmp($firstElement->getName(), $secondElement->getName());
-        });
+        if ($sort) {
+            uasort($elements, function ($firstElement, $secondElement) {
+               return strcmp($firstElement->getName(), $secondElement->getName());
+            });
+        }
 
         return $elements;
     }

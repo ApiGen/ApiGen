@@ -198,7 +198,7 @@ final class ClassMethodReflection implements ClassMethodReflectionInterface, Tra
     public function getParameters(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->betterMethodReflection->getParameters()
+            $this->betterMethodReflection->getParameters(), false
         );
     }
 
