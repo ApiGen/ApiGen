@@ -4,11 +4,11 @@ $(document).ready(function() {
 
     // Autocomplete search
     $.ui.autocomplete.prototype._renderItem = function (ul, item) {
-        var re = new RegExp('(' + this.term.replace(/\\/g, '\\\\') + ')', 'i');
-        var t = item.label.replace(re, "<b>$1</b>");
+        var highlightPattern = new RegExp('(' + this.term.replace(/\\/g, '\\\\') + ')', 'i');
+        var highligthed = item.label.replace(highlightPattern, "<b>$1</b>");
         return $("<li></li>")
             .data("item.autocomplete", item)
-            .append('<a>' + t + '</a>')
+            .append('<a>' + highligthed + '</a>')
             .appendTo(ul);
     };
 

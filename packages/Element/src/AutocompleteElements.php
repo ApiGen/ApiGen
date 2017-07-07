@@ -49,7 +49,10 @@ final class AutocompleteElements
         $elements = [];
 
         foreach ($this->namespaceReflectionCollector->getNamespaces() as $namespace) {
-            $elements[] = ['file' => $this->namespaceRoute->constructUrl($namespace), 'label' => $namespace];
+            $elements[] = [
+                'file' => $this->namespaceRoute->constructUrl($namespace),
+                'label' => $namespace
+            ];
         }
 
         return $this->addReflections($elements);
@@ -64,19 +67,31 @@ final class AutocompleteElements
         foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
             $name = $functionReflection->getName() . '()';
             $path = $this->reflectionRoute->constructUrl($functionReflection);
-            $elements[] = ['file' => $path, 'label' => $name];
+            $elements[] = [
+               'file' => $path,
+               'label' => $name
+            ];
         }
 
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
-            $elements[] = ['file' => $this->reflectionRoute->constructUrl($classReflection), 'label' => $classReflection->getName()];
+            $elements[] = [
+                'file' => $this->reflectionRoute->constructUrl($classReflection),
+                'label' => $classReflection->getName()
+            ];
         }
 
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
-            $elements[] = ['file' => $this->reflectionRoute->constructUrl($interfaceReflection), 'label' => $interfaceReflection->getName()];
+            $elements[] = [
+                'file' => $this->reflectionRoute->constructUrl($interfaceReflection),
+                'label' => $interfaceReflection->getName()
+            ];
         }
 
         foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
-            $elements[] = ['file' => $this->reflectionRoute->constructUrl($traitReflection), 'label' => $traitReflection->getName()];
+            $elements[] = [
+                'file' => $this->reflectionRoute->constructUrl($traitReflection),
+                'label' => $traitReflection->getName()
+            ];
         }
 
         return $elements;
