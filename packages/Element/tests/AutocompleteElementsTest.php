@@ -41,30 +41,68 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
         $this->reflectionRoute = $this->container->get(ReflectionRoute::class);
     }
 
+    /**
+     * @param string[][]  $items
+     */
+    private function autocompleteHasItem(string $pattern, array $items, string $what = 'label'): bool
+    {
+        foreach ($items as $item) {
+            if ($item[$what] === $pattern) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public function testGetElementsClasses(): void
     {
         $autocompleteElements = $this->autocompleteElements->getElements();
         $this->assertCount(8, $autocompleteElements);
 
-        $this->assertArrayHasKey($this->namespacePrefix, $autocompleteElements);
-        $this->assertArrayHasKey($this->namespacePrefix . '\SubNamespace', $autocompleteElements);
+        $this->assertTrue($this->autocompleteHasItem(
+            $this->namespacePrefix,
+            $autocompleteElements
+        ));
+        $this->assertTrue($this->autocompleteHasItem(
+            $this->namespacePrefix . '\SubNamespace',
+            $autocompleteElements
+        ));
 
-        $this->assertArrayHasKey('none', $autocompleteElements);
-        $this->assertArrayHasKey('NoneNamespacedClass', $autocompleteElements);
+        $this->assertTrue($this->autocompleteHasItem(
+            'none',
+            $autocompleteElements
+        ));
+        $this->assertTrue($this->autocompleteHasItem(
+            'NoneNamespacedClass',
+            $autocompleteElements
+        ));
 
-        $this->assertArrayHasKey($this->namespacePrefix . '\namespacedFunction()', $autocompleteElements);
-        $this->assertArrayHasKey($this->namespacePrefix . '\NamespacedClass', $autocompleteElements);
-        $this->assertArrayHasKey(
+        $this->assertTrue($this->autocompleteHasItem(
+            $this->namespacePrefix . '\namespacedFunction()',
+            $autocompleteElements
+        ));
+        $this->assertTrue($this->autocompleteHasItem(
+            $this->namespacePrefix . '\NamespacedClass',
+            $autocompleteElements
+        ));
+        $this->assertTrue($this->autocompleteHasItem(
             $this->namespacePrefix . '\SubNamespace\SubNamespacedInterface',
             $autocompleteElements
-        );
-        $this->assertArrayHasKey($this->namespacePrefix . '\SubNamespace\SubNamespacedTrait', $autocompleteElements);
+        ));
+        $this->assertTrue($this->autocompleteHasItem(
+            $this->namespacePrefix . '\SubNamespace\SubNamespacedTrait',
+            $autocompleteElements
+        ));
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertCount(2, $classReflections);
 
         foreach ($classReflections as $classReflection) {
-            $this->assertContains($this->reflectionRoute->constructUrl($classReflection), $autocompleteElements);
+            $this->assertTrue($this->autocompleteHasItem(
+                $this->reflectionRoute->constructUrl($classReflection),
+                $autocompleteElements, 'file'
+            ));
         }
     }
 }

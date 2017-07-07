@@ -42,7 +42,7 @@ final class AutocompleteElements
     }
 
     /**
-     * @return string[]
+     * @return string[][]
      */
     public function getElements(): array
     {
@@ -59,8 +59,8 @@ final class AutocompleteElements
     }
 
     /**
-     * @param string[] $elements
-     * @return string[]
+     * @param string[][] $elements
+     * @return string[][]
      */
     private function addReflections(array $elements): array
     {
