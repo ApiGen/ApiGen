@@ -2,74 +2,22 @@
 $(document).ready(function() {
     var $document = $(document);
 
-    // Content
-/*
-    var availableTags = [
-        "ActionScript",
-        "Able"
-    ];
+    // Autocomplete search
+    $.ui.autocomplete.prototype._renderItem = function (ul, item) {
+        var highlightPattern = new RegExp('(' + this.term.replace(/\\/g, '\\\\') + ')', 'i');
+        var highligthed = item.label.replace(highlightPattern, "<b>$1</b>");
+        return $("<li></li>")
+            .data("item.autocomplete", item)
+            .append('<a>' + highligthed + '</a>')
+            .appendTo(ul);
+    };
 
-    $('#search input[name=q]').autocomplete({
-        source: availableTags // ApiGen.elements
+    $("#search input[name=q]").autocomplete({
+        source: ApiGen.elements,
+        select: function (event, ui) {
+            window.location.href = ui.item.file;
+        }
     });
-
-    // Search autocompletion
-    var autocompleteFound = false;
-    var $search = $('#search input[name=q]');
-    $search
-        .autocomplete(ApiGen.elements, {
-            matchContains: true,
-            scrollHeight: 200,
-            max: 5,
-            noRecord: '',
-            highlight: function(value, term) {
-                var term = term.toUpperCase().replace(/([\^\$\(\)\[\]\{\}\*\.\+\?\|\\])/gi, "\\$1").replace(/[A-Z0-9]/g, function(m, offset) {
-                    return offset === 0 ? '(?:' + m + '|^' + m.toLowerCase() + ')' : '(?:(?:[^<>]|<[^<>]*>)*' + m + '|' + m.toLowerCase() + ')';
-                });
-                return value.replace(new RegExp("(?![^&;]+;)(?!<[^<>]*)(" + term + ")(?![^<>]*>)(?![^&;]+;)"), "<strong>$1</strong>");
-            },
-            formatItem: function(data) {
-                return data.length > 1 ? data[1].replace(/^(.+\\)(.+)$/, '<span><small>$1</small>$2</span>') : data[0];
-            },
-            formatMatch: function(data) {
-                return data[1];
-            },
-            formatResult: function(data) {
-                return data[1];
-            },
-            show: function($list) {
-                var $items = $('li span', $list);
-                var maxWidth = Math.max.apply(null, $items.map(function() {
-                    return $(this).width();
-                }));
-                // 10px padding
-                $list
-                    .width(Math.max(maxWidth + 10, $search.innerWidth()))
-                    .css('left', $search.offset().left + $search.outerWidth() - $list.outerWidth());
-            }
-        }).result(function(event, data) {
-            autocompleteFound = true;
-            var location = window.location.href.split('/');
-            location.pop();
-            // var parts = data[1].split(/::|$/);
-            var file = data[0];
-
-            console.log(file);
-
-            // if (parts[1]) {
-            //     file = data[0];
-            // }
-            location.push(file);
-            window.location = location.join('/');
-        }).closest('form')
-            .submit(function() {
-                var query = $search.val();
-                if ('' === query) {
-                    return false;
-                }
-                return !autocompleteFound && '' !== $('#search input[name=cx]').val();
-            });
-*/
 
 
     // Select selected lines
