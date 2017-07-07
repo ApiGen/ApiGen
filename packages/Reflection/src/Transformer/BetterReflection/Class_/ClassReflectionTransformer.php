@@ -5,12 +5,13 @@ namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 use ApiGen\Element\Tree\ParentClassElementsResolver;
 use ApiGen\Element\Tree\SubClassesResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Reflection\Class_\ClassReflection;
 use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
-final class ClassReflectionTransformer implements TransformerInterface
+final class ClassReflectionTransformer implements TransformerInterface, SortableTransformerInterface
 {
     /**
      * @var DocBlockFactory
