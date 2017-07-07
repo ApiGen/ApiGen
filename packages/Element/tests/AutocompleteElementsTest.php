@@ -41,68 +41,64 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
         $this->reflectionRoute = $this->container->get(ReflectionRoute::class);
     }
 
-    /**
-     * @param string[][]  $items
-     */
-    private function autocompleteHasItem(string $pattern, array $items, string $what = 'label'): bool
-    {
-        foreach ($items as $item) {
-            if ($item[$what] === $pattern) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    public function testGetElementsClasses(): void
+    public function testCounts(): void
     {
         $autocompleteElements = $this->autocompleteElements->getElements();
         $this->assertCount(8, $autocompleteElements);
 
-        $this->assertTrue($this->autocompleteHasItem(
-            $this->namespacePrefix,
-            $autocompleteElements
-        ));
-        $this->assertTrue($this->autocompleteHasItem(
-            $this->namespacePrefix . '\SubNamespace',
-            $autocompleteElements
-        ));
-
-        $this->assertTrue($this->autocompleteHasItem(
-            'none',
-            $autocompleteElements
-        ));
-        $this->assertTrue($this->autocompleteHasItem(
-            'NoneNamespacedClass',
-            $autocompleteElements
-        ));
-
-        $this->assertTrue($this->autocompleteHasItem(
-            $this->namespacePrefix . '\namespacedFunction()',
-            $autocompleteElements
-        ));
-        $this->assertTrue($this->autocompleteHasItem(
-            $this->namespacePrefix . '\NamespacedClass',
-            $autocompleteElements
-        ));
-        $this->assertTrue($this->autocompleteHasItem(
-            $this->namespacePrefix . '\SubNamespace\SubNamespacedInterface',
-            $autocompleteElements
-        ));
-        $this->assertTrue($this->autocompleteHasItem(
-            $this->namespacePrefix . '\SubNamespace\SubNamespacedTrait',
-            $autocompleteElements
-        ));
-
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertCount(2, $classReflections);
+    }
+
+    /**
+     * @dataProvider provideDataForLabelsTest
+     */
+    public function testLabels(string $label): void
+    {
+        $autocompleteElements = $this->autocompleteElements->getElements();
+
+        $hasLabel = false;
+        foreach ($autocompleteElements as $item) {
+            if ($item['label'] === $label) {
+                $hasLabel = true;
+            }
+        }
+
+        $this->assertTrue($hasLabel);
+    }
+
+    /**
+     * @return string[][]
+     */
+    public function provideDataForLabelsTest(): array
+    {
+        return [
+            [$this->namespacePrefix],
+            [$this->namespacePrefix . '\SubNamespace'],
+            ['none'],
+            ['NoneNamespacedClass'],
+            [$this->namespacePrefix . '\namespacedFunction()'],
+            [$this->namespacePrefix . '\NamespacedClass'],
+            [$this->namespacePrefix . '\SubNamespace\SubNamespacedInterface'],
+            [$this->namespacePrefix . '\SubNamespace\SubNamespacedTrait'],
+        ];
+    }
+
+    public function testFilePaths(): void
+    {
+        $classReflections = $this->reflectionStorage->getClassReflections();
+        $autocompleteElements = $this->autocompleteElements->getElements();
 
         foreach ($classReflections as $classReflection) {
-            $this->assertTrue($this->autocompleteHasItem(
-                $this->reflectionRoute->constructUrl($classReflection),
-                $autocompleteElements, 'file'
-            ));
+            $found = false;
+            $file = $this->reflectionRoute->constructUrl($classReflection);
+            foreach ($autocompleteElements as $item) {
+                if ($item['file'] === $file) {
+                    $found = true;
+                }
+            }
+
+            $this->assertTrue($found);
         }
     }
 }
