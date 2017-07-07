@@ -92,7 +92,7 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
     public function getParameters(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->betterMethodReflection->getParameters(), false
+            $this->betterMethodReflection->getParameters()
         );
     }
 

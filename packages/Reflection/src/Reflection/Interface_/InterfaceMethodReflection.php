@@ -50,7 +50,7 @@ final class InterfaceMethodReflection implements InterfaceMethodReflectionInterf
     public function getParameters(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->betterMethodReflection->getParameters(), false
+            $this->betterMethodReflection->getParameters()
         );
     }
 
