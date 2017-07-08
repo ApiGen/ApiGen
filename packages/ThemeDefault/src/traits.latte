@@ -9,7 +9,7 @@
         {foreach $traits as $trait}
             <tr>
                 <td class="name">
-                    <a href="{$trait|linkReflection}">{$trait->getName()}</a>
+                    <a href="{$trait|linkReflection}" n:class="$trait->isDeprecated() ? deprecated">{$trait->getName()}</a>
                 </td>
             </tr>
         {/foreach}

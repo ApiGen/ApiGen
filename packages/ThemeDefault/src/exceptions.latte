@@ -9,7 +9,7 @@
         {foreach $exceptions as $exception}
             <tr>
                 <td class="name">
-                    <a href="{$exception|linkReflection}">{$exception->getName()}</a>
+                    <a href="{$exception|linkReflection}" n:class="$exception->isDeprecated() ? deprecated">{$exception->getName()}</a>
                 </td>
             </tr>
         {/foreach}

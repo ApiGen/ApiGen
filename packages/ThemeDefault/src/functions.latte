@@ -9,7 +9,7 @@
         {foreach $functions as $function}
             <tr>
                 <td class="name">
-                    <a href="{$function|linkReflection}">{$function->getName()}</a>
+                    <a href="{$function|linkReflection}" n:class="$function->isDeprecated() ? deprecated">{$function->getName()}</a>
                 </td>
             </tr>
         {/foreach}

@@ -9,7 +9,7 @@
         {foreach $interfaces as $interface}
             <tr>
                 <td class="name">
-                    <a href="{$interface|linkReflection}">{$interface->getName()}</a>
+                    <a href="{$interface|linkReflection}" n:class="$interface->isDeprecated() ? deprecated">{$interface->getName()}</a>
                 </td>
             </tr>
         {/foreach}
