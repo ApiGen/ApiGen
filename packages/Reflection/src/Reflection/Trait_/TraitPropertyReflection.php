@@ -156,13 +156,9 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
         return $this->betterPropertyReflection->isPublic();
     }
 
-    /**
-     * @todo What is this for?
-     */
     public function getDefaultValueDefinition(): string
     {
-        // @todo
-        return $this->betterPropertyReflection->getDefaultValue();
+        return $this->betterPropertyReflection->getDefaultValueAsString();
     }
 
     public function isDeprecated(): bool
