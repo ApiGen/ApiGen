@@ -18,7 +18,7 @@
         <div class="description">
             {$property|description}
 
-            {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
+            {var $filteredAnnotations = ($classOrTrait->getAnnotations()|annotationFilter: ['var'])}
             {foreach $filteredAnnotations as $annotation}
                 {$annotation|annotation:$property|noescape}<br>
             {/foreach}
