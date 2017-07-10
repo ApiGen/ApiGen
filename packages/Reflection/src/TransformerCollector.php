@@ -64,7 +64,6 @@ final class TransformerCollector
             $elements[$transformedReflection->getName()] = $transformedReflection;
         }
 
-        // @todo: sort here!, before ElementSorter
         $matchingTransformer = $this->detectMatchingTransformer($reflections);
 
         if ($matchingTransformer instanceof SortableTransformerInterface) {
