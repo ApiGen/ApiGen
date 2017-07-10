@@ -81,5 +81,7 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
         foreach ($parameters as $parameter) {
             $this->assertInstanceOf(FunctionParameterReflectionInterface::class, $parameter);
         }
+
+        $this->assertSame(['number', 'name', 'arguments'], array_keys($parameters));
     }
 }
