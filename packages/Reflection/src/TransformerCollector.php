@@ -32,6 +32,9 @@ final class TransformerCollector
         $this->transformers[] = $transformer;
     }
 
+    /**
+     * @param object[] $reflections
+     */
     private function detectMatchingTransformer(array $reflections): ?TransformerInterface
     {
         $reflection = array_shift($reflections);

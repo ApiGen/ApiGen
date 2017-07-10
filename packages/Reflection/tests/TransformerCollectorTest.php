@@ -2,13 +2,15 @@
 
 namespace ApiGen\Reflection\Tests;
 
-use Roave\BetterReflection\Reflection\ReflectionClass;
-use Roave\BetterReflection\Reflection\ReflectionMethod;
 use ApiGen\Reflection\TransformerCollector;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 
 final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 {
+    /**
+     * @return object
+     */
     private function createClassReflectionMock(string $name)
     {
         $reflection = $this->createMock(ReflectionClass::class);
@@ -33,5 +35,4 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 
         $this->assertSame(['ClassA', 'ClassB', 'ClassX', 'ClassZ'], array_keys($elements));
     }
-
 }
