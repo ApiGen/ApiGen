@@ -34,7 +34,7 @@ final class MethodTest extends AbstractReflectionClassTestCase
 
         $methodsNames = array_keys($methods);
         $this->assertSame([
-            'getSomeStuff', 'protectedMethod', 'publicMethod', 'publicTraitMethod', 'getSomeParentStuff'
+            'publicMethod', 'protectedMethod', 'getSomeStuff', 'publicTraitMethod', 'getSomeParentStuff'
         ], $methodsNames);
     }
 
