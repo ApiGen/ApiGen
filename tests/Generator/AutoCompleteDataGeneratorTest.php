@@ -11,7 +11,7 @@ final class AutoCompleteDataGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/Source']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $autoCompleteDataGenerator = $this->container->get(AutoCompleteDataGenerator::class);
         $autoCompleteDataGenerator->generate();

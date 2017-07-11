@@ -17,7 +17,7 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
         $this->interfaceReflection = $interfaceReflections[SomeInterface::class];

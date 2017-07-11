@@ -18,7 +18,7 @@ final class AnnotationTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
         $this->reflection = $this->reflectionStorage->getClassReflections()[SomeClassWithAnnotations::class];
     }
 

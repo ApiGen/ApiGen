@@ -22,7 +22,7 @@ final class ParentsTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->classReflection = $this->reflectionStorage->getClassReflections()[AccessLevels::class];
         $this->classReflectionOfParentClass = $classReflections[ParentClass::class];

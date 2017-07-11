@@ -22,7 +22,7 @@ final class NamespaceReflectionCollectorTest extends AbstractContainerAwareTestC
     {
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/NamespaceReflectionCollectorSource']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/NamespaceReflectionCollectorSource']);
 
         $this->namespaceReflectionCollector = $this->container->get(NamespaceReflectionCollector::class);
     }

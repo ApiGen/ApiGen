@@ -15,7 +15,7 @@ final class ComposedTraitTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/ComposeTraitSource']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/ComposeTraitSource']);
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->classReflection = $classReflections[BaseClass::class];
     }

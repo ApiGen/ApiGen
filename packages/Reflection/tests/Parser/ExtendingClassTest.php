@@ -11,7 +11,7 @@ final class ExtendingClassTest extends AbstractContainerAwareTestCase
     {
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/ExtendingSources']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/ExtendingSources']);
 
         $this->assertTrue(class_exists('\ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingClass'));
     }

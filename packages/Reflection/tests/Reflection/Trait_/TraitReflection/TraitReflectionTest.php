@@ -17,7 +17,7 @@ final class TraitReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
         $traitReflections = $this->reflectionStorage->getTraitReflections();
         $this->traitReflection = $traitReflections[SimpleTrait::class];
     }
