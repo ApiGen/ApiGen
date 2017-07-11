@@ -51,7 +51,8 @@ final class Parser
      */
     public function parseFilesAndDirectories(array $sources): void
     {
-        $files = $directories = [];
+        $files = [];
+        $directories = [];
         foreach ($sources as $source) {
             if (is_dir($source)) {
                 $directories[] = $source;
