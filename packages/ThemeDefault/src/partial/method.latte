@@ -5,7 +5,7 @@
     {var $annotations = $method->getAnnotations()}
 
     <td class="attributes col-md-1">
-        <code>
+        <code class="keyword">
             {if $isInterface === true}
                 {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
                 public
