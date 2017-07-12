@@ -355,6 +355,10 @@ p {
 /* Bootstrap Reset */
 code {
     background: none;
+    color: inherit;
+}
+code.keyword {
+    color: #c7254e;
 }
 
 .form-control {
