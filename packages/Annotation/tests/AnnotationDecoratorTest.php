@@ -32,7 +32,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/AnnotationDecoratorSource']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/AnnotationDecoratorSource']);
         $this->annotationDecorator = $this->container->get(AnnotationDecorator::class);
 
         $classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithReturnTypes::class];

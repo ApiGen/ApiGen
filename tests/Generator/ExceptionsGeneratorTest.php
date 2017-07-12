@@ -12,7 +12,7 @@ final class ExceptionsGeneratorTest extends AbstractContainerAwareTestCase
     {
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/Source']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         /** @var ExceptionsGenerator $exceptionsGenerator */
         $exceptionsGenerator = $this->container->get(ExceptionsGenerator::class);

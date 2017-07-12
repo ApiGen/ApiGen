@@ -34,7 +34,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
     {
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
 
         $this->autocompleteElements = $this->container->get(AutocompleteElements::class);
         $this->reflectionStorage = $this->container->get(ReflectionStorage::class);

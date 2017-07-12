@@ -20,7 +20,7 @@ final class ParameterWithConstantDefalutValueTest extends AbstractParserAwareTes
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $classReflection = $this->reflectionStorage->getClassReflections()[ParameterMethodClass::class];
 

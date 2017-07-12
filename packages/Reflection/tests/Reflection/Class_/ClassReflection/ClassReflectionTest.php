@@ -23,7 +23,7 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
     protected function setUp(): void
     {
         /** @var Parser $parser */
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->classReflection = $classReflections[SomeClass::class];

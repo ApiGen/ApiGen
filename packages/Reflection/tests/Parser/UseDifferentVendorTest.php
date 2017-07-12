@@ -11,7 +11,7 @@ final class UseDifferentVendorTest extends AbstractContainerAwareTestCase
     {
         $parser = $this->container->get(Parser::class);
 
-        $parser->parseDirectories([__DIR__ . '/DifferentVendorSources/src']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/DifferentVendorSources/src']);
 
         $this->assertTrue(class_exists('\MyVendor\MyClass'));
         $this->assertTrue(class_exists('\DifferentVendor\DifferentClass'));
