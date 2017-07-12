@@ -1,6 +1,6 @@
 <tr id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
     <td class="attributes">
-        <code>
+        <code class="keyword">
             {if $property->isProtected()}protected{elseif $property->isPrivate()}private{else}public{/if} {if $property->isStatic()}static{/if}
 
             {if $property->getTypeHintClassOrInterfaceReflection()}
@@ -27,7 +27,7 @@
     <td class="value">
         <div>
             <a href="#${$property->getName()}" class="anchor pull-right">#</a>
-            <code class="php-code">{$property->getDefaultValueDefinition()|phpHighlight|noescape}</code>
+            <code>{$property->getDefaultValueDefinition()|phpHighlight|noescape}</code>
         </div>
     </td>
 </tr>

@@ -262,9 +262,6 @@ table .name > div > .description
 #source pre.code {
     padding-left: 0;
 }
-code.php-code {
-    color: inherit;
-}
 
 .php-keyword1 {
     color: #e71818;
@@ -358,6 +355,10 @@ p {
 /* Bootstrap Reset */
 code {
     background: none;
+    color: inherit;
+}
+code.keyword {
+    color: #c7254e;
 }
 
 .form-control {
