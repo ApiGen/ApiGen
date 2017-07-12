@@ -262,9 +262,6 @@ table .name > div > .description
 #source pre.code {
     padding-left: 0;
 }
-code.php-code {
-    color: inherit;
-}
 
 .php-keyword1 {
     color: #e71818;
