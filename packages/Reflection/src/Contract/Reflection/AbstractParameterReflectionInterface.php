@@ -9,11 +9,6 @@ interface AbstractParameterReflectionInterface extends AbstractReflectionInterfa
 {
     public function getTypeHint(): string;
 
-    /**
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getTypeHintClassOrInterfaceReflection();
-
     public function isDefaultValueAvailable(): bool;
 
     public function getDefaultValueDefinition(): ?string;

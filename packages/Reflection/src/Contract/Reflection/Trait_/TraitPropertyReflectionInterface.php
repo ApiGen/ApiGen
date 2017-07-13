@@ -23,9 +23,4 @@ interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
     public function getTypeHint(): string;
 
     public function getNamespaceName(): string;
-
-    /**
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getTypeHintClassOrInterfaceReflection();
 }

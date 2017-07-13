@@ -51,23 +51,6 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         return '';
     }
 
-    /**
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getTypeHintClassOrInterfaceReflection()
-    {
-        if (! class_exists($this->getTypeHint())) {
-            return null;
-        }
-
-        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
-
-        /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
-        $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
-
-        return $classOrInterfaceReflection;
-    }
-
     public function isDefaultValueAvailable(): bool
     {
         return $this->betterParameterReflection->isDefaultValueAvailable();

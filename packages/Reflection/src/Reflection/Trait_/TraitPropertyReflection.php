@@ -170,21 +170,4 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
     {
         $this->transformerCollector = $transformerCollector;
     }
-
-    /**
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getTypeHintClassOrInterfaceReflection()
-    {
-        if (! class_exists($this->getTypeHint())) {
-            return null;
-        }
-
-        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
-
-        /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
-        $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
-
-        return $classOrInterfaceReflection;
-    }
 }

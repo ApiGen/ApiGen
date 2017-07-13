@@ -25,9 +25,4 @@ interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
     public function getName(): string;
 
     public function isDeprecated(): bool;
-
-    /**
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getTypeHintClassOrInterfaceReflection();
 }
