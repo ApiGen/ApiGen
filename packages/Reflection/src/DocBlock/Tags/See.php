@@ -27,12 +27,12 @@ final class See extends BaseTag implements StaticMethod
     /**
      * @var string
      */
-    private $url;
+    private $link;
 
-    public function __construct(?Fqsen $refers = null, ?string $url = null, ?Description $description = null)
+    public function __construct(?Fqsen $refers = null, ?string $link = null, ?Description $description = null)
     {
         $this->refers = $refers;
-        $this->url = $url;
+        $this->link = $link;
         $this->description = $description;
     }
 
@@ -50,17 +50,17 @@ final class See extends BaseTag implements StaticMethod
 
         $parts = preg_split('/\s+/Su', $body, 2);
 
-        if (! Validators::isUri($parts[0])) {
+        if (! Validators::isUrl($parts[0])) {
             $fqsen = $resolver->resolve($parts[0], $context);
-            $url = null;
+            $link = null;
         } else {
-            $url = $parts[0];
+            $link = $parts[0];
             $fqsen = null;
         }
 
         $description = isset($parts[1]) ? $descriptionFactory->create($parts[1], $context) : null;
 
-        return new static($fqsen, $url, $description);
+        return new static($fqsen, $link, $description);
     }
 
     public function getReference(): ?Fqsen
@@ -68,13 +68,13 @@ final class See extends BaseTag implements StaticMethod
         return $this->refers;
     }
 
-    public function getUrl(): ?string
+    public function getLink(): ?string
     {
-        return $this->url;
+        return $this->link;
     }
 
     public function __toString(): string
     {
-        return ($this->refers ?: $this->url) . ($this->description ? ' ' . $this->description->render() : '');
+        return ($this->refers ?: $this->link) . ($this->description ? ' ' . $this->description->render() : '');
     }
 }

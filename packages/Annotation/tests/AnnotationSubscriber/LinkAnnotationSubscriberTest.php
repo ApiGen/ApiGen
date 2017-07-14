@@ -41,6 +41,17 @@ final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
         );
     }
 
+    public function testSeeUrlAnnotation(): void
+    {
+        $seeUrlAnnotation = $this->classReflection->getAnnotation(AnnotationList::SEE)[0];
+        $decoratedAnnotation = $this->annotationDecorator->decorate($seeUrlAnnotation, $this->classReflection);
+
+        $this->assertSame(
+            '<a href="https://github.com/apigen/apigen">https://github.com/apigen/apigen</a>',
+            $decoratedAnnotation
+        );
+    }
+
     /**
      * @dataProvider getLinkAnnotationData()
      */
