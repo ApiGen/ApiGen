@@ -29,6 +29,7 @@ services:
     phpDocumentor\Reflection\FqsenResolver: ~
     phpDocumentor\Reflection\DocBlock\StandardTagFactory: ~
     phpDocumentor\Reflection\DocBlock\DescriptionFactory: ~
+    phpDocumentor\Reflection\TypeResolver: ~
 
     # Source Code Highlighter
     FSHL\Output\Html: ~

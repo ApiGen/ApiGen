@@ -58,7 +58,7 @@ final class See extends BaseTag implements StaticMethod
             $fqsen = null;
         }
 
-        $description =  isset($parts[1]) ? $descriptionFactory->create($parts[1], $context) : null;
+        $description = isset($parts[1]) ? $descriptionFactory->create($parts[1], $context) : null;
 
         return new static($fqsen, $url, $description);
     }

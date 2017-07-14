@@ -7,8 +7,10 @@ use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
 use phpDocumentor\Reflection\DocBlock\TagFactory;
 use phpDocumentor\Reflection\DocBlockFactory as PhpDocumentorDocBlockFactory;
+use phpDocumentor\Reflection\TypeResolver;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
+use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class DocBlockFactory
 {
@@ -20,13 +22,15 @@ final class DocBlockFactory
     public function __construct(
         TagFactory $tagFactory,
         PhpDocumentorDocBlockFactory $docBlockFactory,
-        DescriptionFactory $descriptionFactory
+        DescriptionFactory $descriptionFactory,
+        TypeResolver $typeResolver
     ) {
         $this->phpDocumentorDocBlockFactory = $docBlockFactory;
 
         // cannot move to services.yml, because it would cause circular dependency exception
         $tagFactory->registerTagHandler('see', See::class);
         $tagFactory->addService($descriptionFactory);
+        $tagFactory->addService($typeResolver);
     }
 
     /**

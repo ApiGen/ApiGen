@@ -30,5 +30,6 @@ final class DocBlockFactoryTest extends AbstractContainerAwareTestCase
 
         $this->assertCount(1, $docBlock->getTagsByName('see'));
         $this->assertCount(0, $docBlock->getTagsByName('link'));
+        $this->assertCount(1, $docBlock->getTagsByName('param'));
     }
 }
