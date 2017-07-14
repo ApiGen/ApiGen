@@ -29,37 +29,37 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
         $this->assertSame('methodWithArgs', $this->methodReflection->getName());
     }
 
-//    public function testInstance(): void
-//    {
-//        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->methodReflection);
-//    }
-//
-//    public function testGetDeclaringClass(): void
-//    {
-//        $this->assertInstanceOf(ClassReflectionInterface::class, $this->methodReflection->getDeclaringClass());
-//        $this->assertSame(ClassMethod::class, $this->methodReflection->getDeclaringClassName());
-//    }
+    public function testInstance(): void
+    {
+        $this->assertInstanceOf(ClassMethodReflectionInterface::class, $this->methodReflection);
+    }
 
-//    public function testModificators(): void
-//    {
-//        $this->assertFalse($this->methodReflection->isAbstract());
-//        $this->assertFalse($this->methodReflection->isFinal());
-//        $this->assertFalse($this->methodReflection->isPrivate());
-//        $this->assertFalse($this->methodReflection->isProtected());
-//        $this->assertTrue($this->methodReflection->isPublic());
-//        $this->assertFalse($this->methodReflection->isStatic());
-//    }
-//
-//    public function testGetParameters(): void
-//    {
-//        $parameters = $this->methodReflection->getParameters();
-//        $this->assertCount(3, $parameters);
-//        $this->assertInstanceOf(MethodParameterReflectionInterface::class, $parameters['url']);
-//        $this->assertSame(['url', 'data', 'headers'], array_keys($parameters));
-//    }
+    public function testGetDeclaringClass(): void
+    {
+        $this->assertInstanceOf(ClassReflectionInterface::class, $this->methodReflection->getDeclaringClass());
+        $this->assertSame(ClassMethod::class, $this->methodReflection->getDeclaringClassName());
+    }
 
-//    public function testReturnReference(): void
-//    {
-//        $this->assertFalse($this->methodReflection->returnsReference());
-//    }
+    public function testModificators(): void
+    {
+        $this->assertFalse($this->methodReflection->isAbstract());
+        $this->assertFalse($this->methodReflection->isFinal());
+        $this->assertFalse($this->methodReflection->isPrivate());
+        $this->assertFalse($this->methodReflection->isProtected());
+        $this->assertTrue($this->methodReflection->isPublic());
+        $this->assertFalse($this->methodReflection->isStatic());
+    }
+
+    public function testGetParameters(): void
+    {
+        $parameters = $this->methodReflection->getParameters();
+        $this->assertCount(3, $parameters);
+        $this->assertInstanceOf(MethodParameterReflectionInterface::class, $parameters['url']);
+        $this->assertSame(['url', 'data', 'headers'], array_keys($parameters));
+    }
+
+    public function testReturnReference(): void
+    {
+        $this->assertFalse($this->methodReflection->returnsReference());
+    }
 }
