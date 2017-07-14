@@ -8,6 +8,7 @@ use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
 use phpDocumentor\Reflection\DocBlock\TagFactory;
 use phpDocumentor\Reflection\DocBlockFactory as PhpDocumentorDocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 final class DocBlockFactory
 {
@@ -28,7 +29,10 @@ final class DocBlockFactory
         $tagFactory->addService($descriptionFactory);
     }
 
-    public function createFromBetterReflection(ReflectionClass $classReflection): DocBlock
+    /**
+     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $classReflection
+     */
+    public function createFromBetterReflection($classReflection): DocBlock
     {
         return $this->phpDocumentorDocBlockFactory->create($classReflection->getDocComment() ?: ' ');
     }
