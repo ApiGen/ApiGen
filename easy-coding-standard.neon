@@ -16,7 +16,6 @@ checkers:
 
     # Comments
     - Symplify\CodingStandard\Sniffs\Commenting\BlockPropertyCommentSniff
-    - Symplify\CodingStandard\Sniffs\Commenting\VarPropertyCommentSniff
 
     # Dev & Dead Code
     - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
