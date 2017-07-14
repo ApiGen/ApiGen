@@ -7,5 +7,4 @@ namespace ApiGen\Reflection\Tests\DocBlock\DocBlockFactorySource;
  */
 final class ClassWithSeeAnnotation
 {
-
 }

@@ -93,6 +93,9 @@ parameters:
             - packages/ModularConfiguration/src/Option/SourceOption.php
             - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
 
+            # extending messy 3rd party code
+            - packages/Reflection/src/DocBlock/Tags/See.php
+
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php
 

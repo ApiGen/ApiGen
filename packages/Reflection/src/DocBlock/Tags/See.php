@@ -29,18 +29,16 @@ final class See extends BaseTag implements StaticMethod
      */
     private $url;
 
-    /**
-     * @var DescriptionFactory
-     */
-    private $descriptionFactory;
-
-    public function __construct(Fqsen $refers = null, string $url = null, Description $description = null)
+    public function __construct(?Fqsen $refers = null, ?string $url = null, ?Description $description = null)
     {
         $this->refers = $refers;
         $this->url = $url;
         $this->description = $description;
     }
 
+    /**
+     * @param string $body
+     */
     public static function create(
         $body,
         FqsenResolver $resolver = null,
