@@ -5,11 +5,11 @@ namespace ApiGen\Annotation\AnnotationSubscriber;
 use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
 use ApiGen\Annotation\FqsenResolver\ElementResolver;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\DocBlock\Tags\See;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Utils\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Covers;
-use phpDocumentor\Reflection\DocBlock\Tags\See;
 use phpDocumentor\Reflection\DocBlock\Tags\Uses;
 use phpDocumentor\Reflection\Fqsen;
 
@@ -44,7 +44,8 @@ final class SeeUsesCoversAnnotationSubscriber implements AnnotationSubscriberInt
      */
     public function matches($content): bool
     {
-        return $content instanceof See || $content instanceof Covers || $content instanceof Uses;
+        return ($content instanceof See && $content->getReference())
+            || $content instanceof Covers || $content instanceof Uses;
     }
 
     /**
