@@ -63,6 +63,7 @@
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithVariadic.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithClass.php",
+            "packages/StringRouting/tests/Latte/Filter/Source/TestClass.php",
             "packages/Annotation/tests/AnnotationSubscriber/SeeAnnotationSubscriberSource/SomeClassWithSeeAnnotations.php"
         ]
     },
