@@ -58,6 +58,9 @@ pre {
     text-decoration: line-through;
     opacity: .5;
 }
+.deprecated span, .deprecated a {
+    text-decoration: line-through;
+}
 
 /* Search */
 #search {
