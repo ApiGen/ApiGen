@@ -36,7 +36,6 @@ checkers:
 
     # Namespaces
     - PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
-    - Symplify\CodingStandard\Sniffs\Namespaces\ClassNamesWithoutPreSlashSniff
     - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
     - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
     - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff

@@ -25,15 +25,15 @@
         "symfony/dependency-injection": "^3.3",
         "symfony/http-kernel": "^3.3",
         "symfony/yaml": "^3.3",
-        "symplify/package-builder": "^2.0",
+        "symplify/package-builder": "^2.1",
         "psr/container": "^1.0"
     },
     "require-dev": {
         "tracy/tracy": "^2.4",
         "phpunit/phpunit": "^6.0",
         "phpstan/phpstan": "^0.7",
-        "symplify/coding-standard": "^2.0",
-        "symplify/easy-coding-standard": "^2.0"
+        "symplify/coding-standard": "^2.1",
+        "symplify/easy-coding-standard": "^2.1"
     },
     "autoload": {
         "psr-4": {
