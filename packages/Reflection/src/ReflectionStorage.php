@@ -131,4 +131,23 @@ final class ReflectionStorage
             $this->functionReflections[$functionReflection->getName()] = $functionReflection;
         }
     }
+
+    public function getClass(string $name): ?ClassReflectionInterface
+    {
+        return $this->classReflections[$name] ?? $this->exceptionReflections[$name] ?? null;
+    }
+
+    public function getInterface(string $name): ?InterfaceReflectionInterface
+    {
+        return $this->interfaceReflections[$name] ?? null;
+    }
+
+    /**
+     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
+     */
+    public function getClassOrInterface(string $name)
+    {
+        $class = $this->getClass($name);
+        return $class ?: $this->getInterface($name);
+    }
 }
