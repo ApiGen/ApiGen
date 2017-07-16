@@ -4,11 +4,13 @@ namespace ApiGen\StringRouting\Latte\Filter;
 
 use ApiGen\Contract\Templating\FilterProviderInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\NamespaceRoute;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\StringRouting\Route\SourceCodeRoute;
 use ApiGen\StringRouting\StringRouter;
 use Nette\InvalidArgumentException;
+use Nette\Utils\Html;
 
 final class StringRoutingFiltersProvider implements FilterProviderInterface
 {
@@ -17,9 +19,15 @@ final class StringRoutingFiltersProvider implements FilterProviderInterface
      */
     private $router;
 
-    public function __construct(StringRouter $router)
+    /**
+     * @var ReflectionStorage
+     */
+    private $reflectionStorage;
+
+    public function __construct(StringRouter $router, ReflectionStorage $reflectionStorage)
     {
         $this->router = $router;
+        $this->reflectionStorage = $reflectionStorage;
     }
 
     /**
@@ -43,6 +51,19 @@ final class StringRoutingFiltersProvider implements FilterProviderInterface
             'linkSource' => function ($reflection): string {
                 $this->ensureFilterArgumentsIsReflection($reflection, 'linkSource');
                 return $this->router->buildRoute(SourceCodeRoute::NAME, $reflection);
+            },
+
+            // use in .latte: {$className|buildLinkIfReflectionFound}
+            'buildLinkIfReflectionFound' => function (string $className) {
+                $reflection = $this->reflectionStorage->getClassOrInterface($className);
+                if ($reflection) {
+                    $link = Html::el('a');
+                    $link->setAttribute('href', $this->router->buildRoute(ReflectionRoute::NAME, $reflection));
+                    $link->setText($className);
+                    return $link;
+                } else {
+                    return $className;
+                }
             }
         ];
     }

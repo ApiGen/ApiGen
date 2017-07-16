@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Class_;
 
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
@@ -25,9 +24,4 @@ interface ClassPropertyReflectionInterface extends AbstractClassElementInterface
     public function getName(): string;
 
     public function isDeprecated(): bool;
-
-    /**
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getTypeHintClassOrInterfaceReflection();
 }
