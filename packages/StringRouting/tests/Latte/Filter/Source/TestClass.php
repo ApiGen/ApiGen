@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace TestNamespace;
+namespace ApiGen\StringRouting\Tests\Latte\Filter\Source;
 
 class TestClass
 {

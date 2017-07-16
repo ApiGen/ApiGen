@@ -4,6 +4,7 @@ namespace ApiGen\StringRouting\Tests\Latte\Filter;
 
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\ReflectionStorage;
+use ApiGen\StringRouting\Tests\Latte\Filter\Source\TestClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Latte\Engine;
 use Nette\InvalidArgumentException;
@@ -40,9 +41,12 @@ final class LinkFilterTest extends AbstractContainerAwareTestCase
         $reflectionStorage = $this->container->get(ReflectionStorage::class);
 
         $html = $this->latte->renderToString(__DIR__ . '/Source/buildLinkIfReflectionFound-template.latte', [
-            'className' => 'TestNamespace\TestClass',
+            'className' => TestClass::class,
         ]);
-        $this->assertSame('<a href="class-TestNamespace.TestClass.html">TestNamespace\TestClass</a>', trim($html));
+        $this->assertSame(
+            '<a href="class-ApiGen.StringRouting.Tests.Latte.Filter.Source.TestClass.html">'. TestClass::class . '</a>',
+            trim($html)
+        );
 
         $html = $this->latte->renderToString(__DIR__ . '/Source/buildLinkIfReflectionFound-template.latte', [
             'className' => 'string',
