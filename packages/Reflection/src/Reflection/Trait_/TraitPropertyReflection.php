@@ -3,8 +3,6 @@
 namespace ApiGen\Reflection\Reflection\Trait_;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
@@ -12,7 +10,6 @@ use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\Types\Object_;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class TraitPropertyReflection implements TraitPropertyReflectionInterface, TransformerCollectorAwareInterface

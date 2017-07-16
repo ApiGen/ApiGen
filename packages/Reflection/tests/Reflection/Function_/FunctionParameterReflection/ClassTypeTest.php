@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflection;
 
-use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
@@ -31,9 +30,5 @@ final class ClassTypeTest extends AbstractParserAwareTestCase
     public function testType(): void
     {
         $this->assertSame('SplFileInfo', $this->functionParameterReflection->getTypeHint());
-        $this->assertInstanceOf(
-            ClassReflectionInterface::class,
-            $this->functionParameterReflection->getTypeHintClassOrInterfaceReflection()
-        );
     }
 }

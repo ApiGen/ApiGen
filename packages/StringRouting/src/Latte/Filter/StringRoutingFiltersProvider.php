@@ -58,7 +58,7 @@ final class StringRoutingFiltersProvider implements FilterProviderInterface
                 $reflection = $this->reflectionStorage->getClassOrInterface($className);
                 if ($reflection) {
                     $link = Html::el('a');
-                    $link->href = $this->router->buildRoute(ReflectionRoute::NAME, $reflection);
+                    $link->setAttribute('href', $this->router->buildRoute(ReflectionRoute::NAME, $reflection));
                     $link->setText($className);
                     return $link;
                 } else {

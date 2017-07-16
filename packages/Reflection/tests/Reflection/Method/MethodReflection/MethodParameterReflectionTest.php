@@ -51,11 +51,6 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertFalse($this->parameterReflection->isVariadic());
     }
 
-    public function testGetClass(): void
-    {
-        $this->assertNull($this->parameterReflection->getTypeHintClassOrInterfaceReflection());
-    }
-
     public function testGetDeclaringFunction(): void
     {
         $this->assertInstanceOf(
