@@ -74,7 +74,12 @@ final class InterfaceMethodReflection implements InterfaceMethodReflectionInterf
 
     public function isDeprecated(): bool
     {
-        return $this->hasAnnotation(AnnotationList::DEPRECATED);
+        if ($this->betterMethodReflection->isDeprecated()) {
+            return true;
+        }
+
+        return $this->getDeclaringInterface()
+            ->isDeprecated();
     }
 
     public function getDescription(): string
