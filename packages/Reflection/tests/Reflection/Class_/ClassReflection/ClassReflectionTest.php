@@ -5,8 +5,10 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass;
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SuccessorOfInternalClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
+use Directory;
 
 final class ClassReflectionTest extends AbstractParserAwareTestCase
 {
@@ -20,6 +22,11 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
      */
     private $classReflection;
 
+    /**
+     * @var ClassReflectionInterface
+     */
+    private $internalClassSuccessorClassReflection;
+
     protected function setUp(): void
     {
         /** @var Parser $parser */
@@ -27,6 +34,7 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->classReflection = $classReflections[SomeClass::class];
+        $this->internalClassSuccessorClassReflection = $classReflections[SuccessorOfInternalClass::class];
     }
 
     public function testInterface(): void
@@ -71,5 +79,8 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
     public function testFileName(): void
     {
         $this->assertSame(__DIR__ . '/Source/SomeClass.php', $this->classReflection->getFileName());
+
+        $parents = $this->internalClassSuccessorClassReflection->getParentClasses();
+        $this->assertNull($parents[Directory::class]->getFileName());
     }
 }

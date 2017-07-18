@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source;
 
-final class SomeClass implements SomeInterface
+use Countable;
+
+final class SomeClass implements SomeInterface, Countable
 {
     public function getSomeStuff(): void
     {
@@ -10,5 +12,10 @@ final class SomeClass implements SomeInterface
 
     public function riseAndShine(): void
     {
+    }
+
+    public function count(): int
+    {
+        return 11;
     }
 }

@@ -5,8 +5,10 @@ namespace ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\PoorInterface;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\RichInterface;
+use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeClass;
 use ApiGen\Reflection\Tests\Reflection\Interface_\InterfaceReflection\Source\SomeInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use Countable;
 
 final class InterfaceReflectionTest extends AbstractParserAwareTestCase
 {
@@ -15,12 +17,20 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
      */
     private $interfaceReflection;
 
+    /**
+     * @var ClassReflectionInterface
+     */
+    private $classReflection;
+
     protected function setUp(): void
     {
         $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
         $this->interfaceReflection = $interfaceReflections[SomeInterface::class];
+
+        $classReflections = $this->reflectionStorage->getClassReflections();
+        $this->classReflection = $classReflections[SomeClass::class];
     }
 
     public function testNames(): void
@@ -54,5 +64,8 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
     public function testFileName(): void
     {
         $this->assertSame(__DIR__ . '/Source/SomeInterface.php', $this->interfaceReflection->getFileName());
+
+        $interfaces = $this->classReflection->getInterfaces();
+        $this->assertNull($interfaces[Countable::class]->getFileName());
     }
 }
