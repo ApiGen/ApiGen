@@ -6,6 +6,7 @@ use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Tests\Parser\AnotherSource\ParentClassFromAnotherSource;
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeClass;
+use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeCountableClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ParserTest extends AbstractContainerAwareTestCase
@@ -23,5 +24,18 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $classReflections = $reflectionStorage->getClassReflections();
         $this->assertArrayHasKey(SomeClass::class, $classReflections);
         $this->assertArrayHasKey(ParentClassFromAnotherSource::class, $classReflections);
+    }
+
+    public function testFiles(): void
+    {
+        $parser = $this->container->get(Parser::class);
+        $reflectionStorage = $this->container->get(ReflectionStorage::class);
+
+        $parser->parseFilesAndDirectories([
+            __DIR__ . '/NotLoadedSources/SomeCountableClass.php',
+        ]);
+
+        $classReflections = $reflectionStorage->getClassReflections();
+        $this->assertArrayHasKey(SomeCountableClass::class, $classReflections);
     }
 }

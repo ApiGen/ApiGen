@@ -172,7 +172,11 @@ final class Parser
      */
     private function createFilesSource(array $files): SourceLocator
     {
-        $locators = [];
+        $locators = [
+            new AutoloadSourceLocator(),
+            new PhpInternalSourceLocator()
+        ];
+
         foreach ($files as $file) {
             $locators[] = new SingleFileSourceLocator($file);
         }
