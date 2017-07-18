@@ -45,4 +45,9 @@ final class TraitReflectionTest extends AbstractParserAwareTestCase
             'renamedMethod' => ToBeAliasedTrait::class . '::aliasedParentMethod',
         ], $this->traitReflection->getTraitAliases());
     }
+
+    public function testFileName(): void
+    {
+        $this->assertSame(__DIR__ . '/Source/SimpleTrait.php', $this->traitReflection->getFileName());
+    }
 }

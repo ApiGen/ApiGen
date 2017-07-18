@@ -84,4 +84,9 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
 
         $this->assertSame(['number', 'name', 'arguments'], array_keys($parameters));
     }
+
+    public function testFileName(): void
+    {
+        $this->assertSame(__DIR__ . '/Source/SomeFunction.php', $this->functionReflection->getFileName());
+    }
 }

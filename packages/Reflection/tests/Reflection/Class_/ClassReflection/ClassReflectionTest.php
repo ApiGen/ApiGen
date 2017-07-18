@@ -67,4 +67,9 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
         $this->assertFalse($this->classReflection->isAbstract());
         $this->assertFalse($this->classReflection->isFinal());
     }
+
+    public function testFileName(): void
+    {
+        $this->assertSame(__DIR__ . '/Source/SomeClass.php', $this->classReflection->getFileName());
+    }
 }
