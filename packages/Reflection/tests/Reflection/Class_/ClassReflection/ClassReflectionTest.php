@@ -7,8 +7,8 @@ use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SuccessorOfInternalClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
-use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use Directory;
+use phpDocumentor\Reflection\DocBlock\Tags\Author;
 
 final class ClassReflectionTest extends AbstractParserAwareTestCase
 {
