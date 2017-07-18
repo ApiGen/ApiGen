@@ -44,6 +44,10 @@ final class RelativePathResolver
         $directory = $this->fileSystem->normalizePath($directory);
         $fileName = $this->fileSystem->normalizePath($fileName);
 
+        if (is_file($directory)) {
+            $directory = dirname($directory);
+        }
+
         return substr($fileName, strlen($directory) + 1);
     }
 }
