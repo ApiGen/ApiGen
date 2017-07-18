@@ -47,7 +47,9 @@ final class TraitGenerator implements GeneratorInterface
     {
         foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
             $this->generateForTrait($traitReflection);
-            $this->generateSourceCodeForTrait($traitReflection);
+            if ($traitReflection->getFileName()) {
+                $this->generateSourceCodeForTrait($traitReflection);
+            }
         }
     }
 

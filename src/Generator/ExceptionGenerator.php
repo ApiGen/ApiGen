@@ -47,7 +47,9 @@ final class ExceptionGenerator implements GeneratorInterface
     {
         foreach ($this->reflectionStorage->getExceptionReflections() as $exceptionReflection) {
             $this->generateForException($exceptionReflection);
-            $this->generateSourceCodeForException($exceptionReflection);
+            if ($exceptionReflection->getFileName()) {
+                $this->generateSourceCodeForException($exceptionReflection);
+            }
         }
     }
 
