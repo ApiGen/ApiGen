@@ -17,7 +17,7 @@ interface ClassReflectionInterface extends StartAndEndLineInterface, Annotations
 
     public function getParentClassName(): ?string;
 
-    public function getFileName(): string;
+    public function getFileName(): ?string;
 
     /**
      * @return ClassReflectionInterface[]

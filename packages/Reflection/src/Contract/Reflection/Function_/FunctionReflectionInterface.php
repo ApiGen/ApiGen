@@ -19,5 +19,5 @@ interface FunctionReflectionInterface extends StartAndEndLineInterface, Annotati
 
     public function getShortName(): string;
 
-    public function getFileName(): string;
+    public function getFileName(): ?string;
 }

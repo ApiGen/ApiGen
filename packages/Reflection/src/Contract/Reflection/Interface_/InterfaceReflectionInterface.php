@@ -11,7 +11,7 @@ use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
     AbstractReflectionInterface, InNamespaceInterface
 {
-    public function getFileName(): string;
+    public function getFileName(): ?string;
 
     /**
      * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]

@@ -91,7 +91,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
         return $this->betterTraitReflection->getNamespaceName();
     }
 
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
         return $this->betterTraitReflection->getFileName();
     }

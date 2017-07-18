@@ -13,7 +13,7 @@ interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflect
 
     public function isDeprecated(): bool;
 
-    public function getFileName(): string;
+    public function getFileName(): ?string;
 
     /**
      * @return ClassReflectionInterface[]|TraitReflectionInterface[]
