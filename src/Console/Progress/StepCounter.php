@@ -4,7 +4,7 @@ namespace ApiGen\Console\Progress;
 
 use ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
-use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FileNameAwareReflectionInterface;
 use ApiGen\Reflection\ReflectionStorage;
 
 final class StepCounter
@@ -51,8 +51,17 @@ final class StepCounter
             + $this->getOverviewPagesCount();
     }
 
+    private function getSourceCodeStepCount(): int
+    {
+        return $this->getSourceCodeCountForReflections($this->reflectionStorage->getClassReflections())
+            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getExceptionReflections())
+            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getInterfaceReflections())
+            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getTraitReflections())
+            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getFunctionReflections());
+    }
+
     /**
-     * @param AbstractReflectionInterface[]
+     * @param FileNameAwareReflectionInterface[]
      */
     private function getSourceCodeCountForReflections(array $reflections): int
     {
@@ -64,15 +73,6 @@ final class StepCounter
         }
 
         return $count;
-    }
-
-    private function getSourceCodeStepCount(): int
-    {
-        return $this->getSourceCodeCountForReflections($this->reflectionStorage->getClassReflections())
-            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getExceptionReflections())
-            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getInterfaceReflections())
-            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getTraitReflections())
-            + $this->getSourceCodeCountForReflections($this->reflectionStorage->getFunctionReflections());
     }
 
     private function getOverviewPagesCount(): int
