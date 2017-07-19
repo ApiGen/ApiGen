@@ -4,16 +4,16 @@ namespace ApiGen\Reflection\Contract\Reflection\Trait_;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FileNameAwareReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 
-interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflectionInterface, InNamespaceInterface
+interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflectionInterface, InNamespaceInterface,
+    FileNameAwareReflectionInterface
 {
     public function getShortName(): string;
 
     public function isDeprecated(): bool;
-
-    public function getFileName(): ?string;
 
     /**
      * @return ClassReflectionInterface[]|TraitReflectionInterface[]
