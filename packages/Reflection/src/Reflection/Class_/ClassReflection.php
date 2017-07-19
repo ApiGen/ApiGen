@@ -370,7 +370,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->docBlock->hasTag($name);
     }
 
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
         return $this->betterClassReflection->getFileName();
     }

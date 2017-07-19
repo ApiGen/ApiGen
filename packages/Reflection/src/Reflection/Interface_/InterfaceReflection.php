@@ -88,7 +88,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
         return $this->implementersResolver->getImplementers($this);
     }
 
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
         return $this->betterInterfaceReflection->getFileName();
     }

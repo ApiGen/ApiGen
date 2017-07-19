@@ -47,7 +47,9 @@ final class InterfaceGenerator implements GeneratorInterface
     {
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
             $this->generateForInterface($interfaceReflection);
-            $this->generateSourceCodeForInterface($interfaceReflection);
+            if ($interfaceReflection->getFileName()) {
+                $this->generateSourceCodeForInterface($interfaceReflection);
+            }
         }
     }
 
