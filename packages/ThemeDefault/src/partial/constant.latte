@@ -12,14 +12,12 @@
             <a href="{$constant|linkSource}" class="constant-name">{$constant->getName()}</a>
         </code>
 
-        {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
-
         <div class="description">
             {$constant|description}
 
             {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
             {foreach $filteredAnnotations as $annotation}
-                {$annotation|annotation:$property|noescape}<br>
+                {$annotation|annotation:$constant|noescape}<br>
             {/foreach}
         </div>
     </td>

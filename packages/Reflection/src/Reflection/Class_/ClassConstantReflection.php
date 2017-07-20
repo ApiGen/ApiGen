@@ -28,12 +28,6 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
      */
     private $transformerCollector;
 
-    /**
-     * ClassConstantReflection constructor.
-     *
-     * @param ReflectionClassConstant $constant
-     * @param DocBlock $docBlock
-     */
     public function __construct(ReflectionClassConstant $constant, DocBlock $docBlock)
     {
         $this->constant = $constant;
