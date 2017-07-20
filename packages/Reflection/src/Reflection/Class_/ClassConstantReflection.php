@@ -28,12 +28,11 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
      */
     private $transformerCollector;
 
-
     /**
-     * @param string $name
-     * @param mixed $value
-     * @param string $visibility
-     * @param ClassReflectionInterface $classReflection
+     * ClassConstantReflection constructor.
+     *
+     * @param ReflectionClassConstant $constant
+     * @param DocBlock $docBlock
      */
     public function __construct(ReflectionClassConstant $constant, DocBlock $docBlock)
     {
@@ -136,7 +135,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
      */
     public function getAnnotation(string $name): array
     {
-        $this->docBlock->getTagsByName($name);
+        return $this->docBlock->getTagsByName($name);
     }
 
     /**
@@ -144,8 +143,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
      */
     public function getAnnotations(): array
     {
-        // @todo
-        return [];
+        return $this->docBlock->getTags();
     }
 
     public function setTransformerCollector(TransformerCollector $transformerCollector): void
