@@ -93,21 +93,14 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
-    /**
-     * @todo Complete, probably from tokenizer.
-     * Inspiration https://github.com/POPSuL/PHP-Token-Reflection/blob/8883ecd6f63a2ac8e97a3f7ef4529484a8e57ddf/TokenReflection/ReflectionElement.php#L291-L305
-     */
     public function getStartLine(): int
     {
-        return 25;
+        return $this->constant->getStartLine();
     }
 
-    /**
-     * @todo Complete
-     */
     public function getEndLine(): int
     {
-        return 35;
+        return $this->constant->getEndLine();
     }
 
     public function getDescription(): string

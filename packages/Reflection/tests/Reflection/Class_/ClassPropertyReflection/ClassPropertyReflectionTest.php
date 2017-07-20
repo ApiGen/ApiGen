@@ -58,4 +58,10 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
     {
         $this->assertFalse($this->propertyReflection->isStatic());
     }
+
+    public function testLines(): void
+    {
+        $this->assertSame(10, $this->propertyReflection->getStartLine());
+        $this->assertSame(10, $this->propertyReflection->getEndLine());
+    }
 }
