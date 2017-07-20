@@ -13,8 +13,10 @@ use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
+use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 final class Parser
@@ -45,14 +47,46 @@ final class Parser
     }
 
     /**
+     * @param string[] $sources
+     */
+    public function parseFilesAndDirectories(array $sources): void
+    {
+        $files = [];
+        $directories = [];
+        foreach ($sources as $source) {
+            if (is_dir($source)) {
+                $directories[] = $source;
+            } else {
+                $files[] = $source;
+            }
+        }
+
+        $this->parseDirectories($directories);
+        $this->parseFiles($files);
+    }
+
+    /**
      * @param string[] $directories
      */
-    public function parseDirectories(array $directories): void
+    private function parseDirectories(array $directories): void
     {
         $directoriesSourceLocator = $this->createDirectoriesSource($directories);
 
         $this->parseClassElements($directoriesSourceLocator);
         $this->parseFunctions($directoriesSourceLocator);
+
+        $this->reflectionWarmUpper->warmUp();
+    }
+
+    /**
+     * @param string[] $files
+     */
+    private function parseFiles(array $files): void
+    {
+        $filesSourceLocator = $this->createFilesSource($files);
+
+        $this->parseClassElements($filesSourceLocator);
+        $this->parseFunctions($filesSourceLocator);
 
         $this->reflectionWarmUpper->warmUp();
     }
@@ -117,10 +151,36 @@ final class Parser
      */
     private function createDirectoriesSource(array $directories): SourceLocator
     {
-        return new AggregateSourceLocator([
+        $locators = [
             new DirectoriesSourceLocator($directories),
             new AutoloadSourceLocator(),
             new PhpInternalSourceLocator()
-        ]);
+        ];
+
+        foreach ($directories as $directory) {
+            $autoload = dirname($directory) . '/vendor/autoload.php';
+            if (is_file($autoload)) {
+                $locators[] = new ComposerSourceLocator(include $autoload);
+            }
+        }
+
+        return new AggregateSourceLocator($locators);
+    }
+
+    /**
+     * @param string[] $files
+     */
+    private function createFilesSource(array $files): SourceLocator
+    {
+        $locators = [
+            new AutoloadSourceLocator(),
+            new PhpInternalSourceLocator()
+        ];
+
+        foreach ($files as $file) {
+            $locators[] = new SingleFileSourceLocator($file);
+        }
+
+        return new AggregateSourceLocator($locators);
     }
 }

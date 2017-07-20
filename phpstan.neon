@@ -1,4 +1,4 @@
 parameters:
     ignoreErrors:
-        - "#Constant #"
-        - "#AnnotationsInterface::getName()#"
+        - "#Constant TEMP_DIR not found#"
+        - '#Call to an undefined method ApiGen\\Reflection\\Contract\\Reflection\\Partial\\AnnotationsInterface::getName\(\)#'

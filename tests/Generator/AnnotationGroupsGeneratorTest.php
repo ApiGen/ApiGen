@@ -28,7 +28,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
 
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/DeprecatedSources']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/DeprecatedSources']);
         $this->annotationGroupsGenerator = $this->container->get(AnnotationGroupsGenerator::class);
     }
 

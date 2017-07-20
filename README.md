@@ -3,7 +3,7 @@
 [![Build Status](https://img.shields.io/travis/ApiGen/ApiGen/master.svg?style=flat-square)](https://travis-ci.org/ApiGen/ApiGen)
 [![Coverage Status](https://img.shields.io/coveralls/ApiGen/ApiGen/master.svg?style=flat-square)](https://coveralls.io/github/ApiGen/ApiGen?branch=master)
 [![Downloads](https://img.shields.io/packagist/dt/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen/stats)
-[![Latest stable](https://img.shields.io/packagist/v/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
+[![Latest stable](https://img.shields.io/packagist/vpre/apigen/apigen.svg?style=flat-square)](https://packagist.org/packages/apigen/apigen)
 
 ApiGen is the simplest, the easiest to use and the most modern api doc generator. It is **all PHP 7.1 features ready**
 easy to extend with own Finder, Annotation Subscriber or even Generator.
@@ -22,7 +22,7 @@ Add to your `composer.json`:
 ```json
 {
     "require": {
-        "apigen/apigen": "5.0.0-RC2",
+        "apigen/apigen": "5.0.0-RC3",
         "roave/better-reflection": "@dev"
     }
 }

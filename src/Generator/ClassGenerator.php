@@ -47,7 +47,9 @@ final class ClassGenerator implements GeneratorInterface
     {
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
             $this->generateForClass($classReflection);
-            $this->generateSourceCodeForClass($classReflection);
+            if ($classReflection->getFileName()) {
+                $this->generateSourceCodeForClass($classReflection);
+            }
         }
     }
 

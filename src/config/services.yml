@@ -15,7 +15,7 @@ services:
         exclude: '../../packages/ModularConfiguration/src/{Exception}'
     ApiGen\Reflection\:
         resource: '../../packages/Reflection/src'
-        exclude: '../../packages/Reflection/src/{Exception,Reflection}'
+        exclude: '../../packages/Reflection/src/{Exception,Reflection,DocBlock/Tags}'
     ApiGen\StringRouting\:
         resource: '../../packages/StringRouting/src'
 
@@ -24,10 +24,12 @@ services:
         factory: 'ApiGen\Latte\FiltersAwareLatteEngineFactory:create'
 
     # PHP Documentor
-    phpDocumentor\Reflection\DocBlockFactory:
-        factory: phpDocumentor\Reflection\DocBlockFactory::createInstance
+    phpDocumentor\Reflection\DocBlockFactory: ~
     phpDocumentor\Reflection\Types\ContextFactory: ~
     phpDocumentor\Reflection\FqsenResolver: ~
+    phpDocumentor\Reflection\DocBlock\StandardTagFactory: ~
+    phpDocumentor\Reflection\DocBlock\DescriptionFactory: ~
+    phpDocumentor\Reflection\TypeResolver: ~
 
     # Source Code Highlighter
     FSHL\Output\Html: ~

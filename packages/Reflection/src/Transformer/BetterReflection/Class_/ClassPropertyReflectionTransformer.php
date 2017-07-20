@@ -4,18 +4,18 @@ namespace ApiGen\Reflection\Transformer\BetterReflection\Class_;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\DocBlock\DocBlockFactory;
 use ApiGen\Reflection\Reflection\Class_\ClassPropertyReflection;
-use phpDocumentor\Reflection\DocBlockFactoryInterface;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class ClassPropertyReflectionTransformer implements TransformerInterface
 {
     /**
-     * @var DocBlockFactoryInterface
+     * @var DocBlockFactory
      */
     private $docBlockFactory;
 
-    public function __construct(DocBlockFactoryInterface $docBlockFactory)
+    public function __construct(DocBlockFactory $docBlockFactory)
     {
         $this->docBlockFactory = $docBlockFactory;
     }
@@ -42,8 +42,9 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
      */
     public function transform($reflection): ClassPropertyReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
-
-        return new ClassPropertyReflection($reflection, $docBlock);
+        return new ClassPropertyReflection(
+            $reflection,
+            $this->docBlockFactory->createFromBetterReflection($reflection)
+        );
     }
 }

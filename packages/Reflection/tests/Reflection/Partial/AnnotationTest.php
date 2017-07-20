@@ -3,11 +3,11 @@
 namespace ApiGen\Reflection\Tests\Reflection\Partial;
 
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
+use ApiGen\Reflection\DocBlock\Tags\See;
 use ApiGen\Reflection\Tests\Reflection\Partial\Source\SomeClassWithAnnotations;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 use phpDocumentor\Reflection\DocBlock\Tags\Author;
 use phpDocumentor\Reflection\DocBlock\Tags\Generic;
-use phpDocumentor\Reflection\DocBlock\Tags\See;
 
 final class AnnotationTest extends AbstractParserAwareTestCase
 {
@@ -18,7 +18,7 @@ final class AnnotationTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
         $this->reflection = $this->reflectionStorage->getClassReflections()[SomeClassWithAnnotations::class];
     }
 

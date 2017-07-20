@@ -36,20 +36,16 @@
 
     {if count($function->getParameters())}
         <table class="summary table table-responsive table-bordered table-striped" id="parameters">
-            <tr><th>Parameters Summary</th></tr>
+            <tr><th colspan="3">Parameters Summary</th></tr>
             <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
                 <td class="name">
                     <code>
-                        {if $parameter->getTypeHintClassOrInterfaceReflection()}
-                            {$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}
-                        {else}
-                            {$parameter->getTypeHint()}
-                        {/if}
+                        {$parameter->getTypeHint()|buildLinkIfReflectionFound}
                     </code>
                 </td>
                 <td class="value"><code>{block|strip}
                     <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
-                    {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|highlightValue:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+                    {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|phpHighlight:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
                 {/block}</code></td>
                 <td>{if $parameter instanceof \ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface}{$parameter|description}{/if}</td>
             </tr>

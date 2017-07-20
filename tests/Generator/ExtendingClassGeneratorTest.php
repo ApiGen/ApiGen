@@ -17,7 +17,7 @@ final class ExtendingClassGeneratorTest extends AbstractContainerAwareTestCase
     {
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/ExtendingSources']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/ExtendingSources']);
 
         $this->classElementGenerator = $this->container->get(ClassGenerator::class);
     }

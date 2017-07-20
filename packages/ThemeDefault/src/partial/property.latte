@@ -1,13 +1,9 @@
 <tr id="${$property->getName()}" n:class="$property->isDeprecated() ? deprecated">
     <td class="attributes">
-        <code>
+        <code class="keyword">
             {if $property->isProtected()}protected{elseif $property->isPrivate()}private{else}public{/if} {if $property->isStatic()}static{/if}
 
-            {if $property->getTypeHintClassOrInterfaceReflection()}
-                {$property->getTypeHintClassOrInterfaceReflection()|linkReflection}
-            {else}
-                {$property->getTypeHint()}
-            {/if}
+            {$property->getTypeHint()|buildLinkIfReflectionFound}
         </code>
     </td>
 
@@ -18,7 +14,7 @@
         <div class="description">
             {$property|description}
 
-            {var $filteredAnnotations = ($class->getAnnotations()|annotationFilter: ['var'])}
+            {var $filteredAnnotations = ($classOrTrait->getAnnotations()|annotationFilter: ['var'])}
             {foreach $filteredAnnotations as $annotation}
                 {$annotation|annotation:$property|noescape}<br>
             {/foreach}
@@ -27,7 +23,7 @@
     <td class="value">
         <div>
             <a href="#${$property->getName()}" class="anchor pull-right">#</a>
-            <code>{$property->getDefaultValueDefinition()}</code>
+            <code>{$property->getDefaultValueDefinition()|phpHighlight|noescape}</code>
         </div>
     </td>
 </tr>

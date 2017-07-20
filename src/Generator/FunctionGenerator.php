@@ -53,9 +53,11 @@ final class FunctionGenerator implements GeneratorInterface
 
     public function generate(): void
     {
-        foreach ($this->reflectionStorage->getFunctionReflections() as $reflectionFunction) {
-            $this->generateForFunction($reflectionFunction);
-            $this->generateSourceCodeForFunction($reflectionFunction);
+        foreach ($this->reflectionStorage->getFunctionReflections() as $functionReflection) {
+            $this->generateForFunction($functionReflection);
+            if ($functionReflection->getFileName()) {
+                $this->generateSourceCodeForFunction($functionReflection);
+            }
         }
     }
 

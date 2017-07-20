@@ -30,7 +30,7 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
 
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/Source']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $this->annotationReflectionCollector = $this->container->get(AnnotationReflectionCollector::class);
     }

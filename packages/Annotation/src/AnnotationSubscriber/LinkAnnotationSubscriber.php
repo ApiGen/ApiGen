@@ -4,6 +4,7 @@ namespace ApiGen\Annotation\AnnotationSubscriber;
 
 use ApiGen\Annotation\Contract\AnnotationSubscriber\AnnotationSubscriberInterface;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\DocBlock\Tags\See;
 use ApiGen\Utils\LinkBuilder;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Link;
@@ -25,11 +26,11 @@ final class LinkAnnotationSubscriber implements AnnotationSubscriberInterface
      */
     public function matches($content): bool
     {
-        return $content instanceof Link;
+        return $content instanceof Link || ($content instanceof See && $content->getLink());
     }
 
     /**
-     * @param Link $content
+     * @param Link|See $content
      */
     public function process($content, AbstractReflectionInterface $reflection): string
     {

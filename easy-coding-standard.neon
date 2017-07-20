@@ -16,7 +16,6 @@ checkers:
 
     # Comments
     - Symplify\CodingStandard\Sniffs\Commenting\BlockPropertyCommentSniff
-    - Symplify\CodingStandard\Sniffs\Commenting\VarPropertyCommentSniff
 
     # Dev & Dead Code
     - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
@@ -37,7 +36,6 @@ checkers:
 
     # Namespaces
     - PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
-    - Symplify\CodingStandard\Sniffs\Namespaces\ClassNamesWithoutPreSlashSniff
     - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
     - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
     - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff
@@ -93,6 +91,9 @@ parameters:
             - packages/Reflection/tests/Reflection/Partial/Source/InheritdocClass.php
             - packages/ModularConfiguration/src/Option/SourceOption.php
             - packages/ModularConfiguration/src/Option/ThemeDirectoryOption.php
+
+            # extending messy 3rd party code
+            - packages/Reflection/src/DocBlock/Tags/See.php
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php

@@ -4,8 +4,8 @@
 <tr id="_{$method->getName()}" n:class="$method->isDeprecated() ? deprecated">
     {var $annotations = $method->getAnnotations()}
 
-    <td class="attributes">
-        <code>
+    <td class="attributes col-md-1">
+        <code class="keyword">
             {if $isInterface === true}
                 {ifset $annotations['return']}{$annotations['return'][0]|annotation:$method|noescape}{/ifset}
                 public
@@ -24,14 +24,10 @@
                     <a href="{$method|linkSource}">{$method->getName()}</a>(
                     {foreach $method->getParameters() as $parameter}
                         <span>
-                            {if $parameter->getTypeHintClassOrInterfaceReflection()}
-                                <a href="{$parameter->getTypeHintClassOrInterfaceReflection()|linkReflection}">{$parameter->getTypeHint()}</a>
-                            {else}
-                                {$parameter->getTypeHint()}
-                            {/if}
+                            {$parameter->getTypeHint()|buildLinkIfReflectionFound}
                             <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
 
-                        {if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
+                        {if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|phpHighlight|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
                     )
                 {/block}</code>

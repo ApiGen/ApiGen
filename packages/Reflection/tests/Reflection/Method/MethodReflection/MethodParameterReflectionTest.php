@@ -22,7 +22,7 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $this->classReflection = $this->reflectionStorage->getClassReflections()[ParameterMethodClass::class];
 
@@ -49,11 +49,6 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
     {
         $this->assertFalse($this->parameterReflection->isArray());
         $this->assertFalse($this->parameterReflection->isVariadic());
-    }
-
-    public function testGetClass(): void
-    {
-        $this->assertNull($this->parameterReflection->getTypeHintClassOrInterfaceReflection());
     }
 
     public function testGetDeclaringFunction(): void

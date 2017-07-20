@@ -5,12 +5,10 @@ namespace ApiGen\Reflection\Reflection\Class_;
 use ApiGen\Annotation\AnnotationList;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Types\Object_;
-use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class ClassPropertyReflection implements ClassPropertyReflectionInterface, TransformerCollectorAwareInterface
@@ -105,23 +103,6 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
     }
 
     /**
-     * @return ClassReflectionInterface|InterfaceReflectionInterface|null
-     */
-    public function getTypeHintClassOrInterfaceReflection()
-    {
-        if (! class_exists($this->getTypeHint())) {
-            return null;
-        }
-
-        $betterClassReflection = ReflectionClass::createFromName($this->getTypeHint());
-
-        /** @var ClassReflectionInterface|InterfaceReflectionInterface $classOrInterfaceReflection */
-        $classOrInterfaceReflection = $this->transformerCollector->transformSingle($betterClassReflection);
-
-        return $classOrInterfaceReflection;
-    }
-
-    /**
      * @return mixed[]
      */
     public function getAnnotations(): array
@@ -172,7 +153,7 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function getDefaultValueDefinition(): ?string
     {
-        return $this->betterPropertyReflection->getDefaultValue();
+        return $this->betterPropertyReflection->getDefaultValueAsString();
     }
 
     public function isDeprecated(): bool

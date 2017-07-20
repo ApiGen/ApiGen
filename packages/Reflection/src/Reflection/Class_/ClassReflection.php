@@ -128,13 +128,13 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getParentClass(): ?ClassReflectionInterface
     {
-        $parentClassName = get_parent_class($this->getName());
-        if ($parentClassName === false) {
+        $parentClassName = $this->getParentClassName();
+        if ($parentClassName === '') {
             return null;
         }
 
         return $this->transformerCollector->transformSingle(
-            ReflectionClass::createFromName($parentClassName)
+            $this->betterClassReflection->getParentClass()
         );
     }
 
@@ -367,7 +367,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         return $this->docBlock->hasTag($name);
     }
 
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
         return $this->betterClassReflection->getFileName();
     }

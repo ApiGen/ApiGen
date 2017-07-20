@@ -22,7 +22,7 @@ final class UsesCoversAnnotationSubscriberTest extends AbstractParserAwareTestCa
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
         $this->annotationDecorator = $this->container->get(AnnotationDecorator::class);
 
         $this->classReflection = $this->reflectionStorage->getClassReflections()[UsesCoversClass::class];

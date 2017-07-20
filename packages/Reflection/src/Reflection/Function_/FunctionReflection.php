@@ -108,7 +108,7 @@ final class FunctionReflection implements FunctionReflectionInterface, Transform
         );
     }
 
-    public function getFileName(): string
+    public function getFileName(): ?string
     {
         return $this->betterFunctionReflection->getFileName();
     }

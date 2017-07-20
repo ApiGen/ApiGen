@@ -17,7 +17,7 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $classReflection = $classReflections[ClassMethod::class];
@@ -55,6 +55,7 @@ final class ClassMethodReflectionTest extends AbstractParserAwareTestCase
         $parameters = $this->methodReflection->getParameters();
         $this->assertCount(3, $parameters);
         $this->assertInstanceOf(MethodParameterReflectionInterface::class, $parameters['url']);
+        $this->assertSame(['url', 'data', 'headers'], array_keys($parameters));
     }
 
     public function testReturnReference(): void

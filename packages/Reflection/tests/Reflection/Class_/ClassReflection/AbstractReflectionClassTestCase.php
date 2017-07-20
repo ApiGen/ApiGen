@@ -37,7 +37,7 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
     {
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseDirectories([__DIR__ . '/Source']);
+        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         /** @var ReflectionStorage $reflectionStorage */
         $reflectionStorage = $this->container->get(ReflectionStorage::class);

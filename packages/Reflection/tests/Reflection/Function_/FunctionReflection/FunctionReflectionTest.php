@@ -26,7 +26,7 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseDirectories([__DIR__ . '/Source']);
+        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
         $this->functionReflection = $functionReflections[$this->namespacePrefix . '\someAloneFunction'];
@@ -81,5 +81,12 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
         foreach ($parameters as $parameter) {
             $this->assertInstanceOf(FunctionParameterReflectionInterface::class, $parameter);
         }
+
+        $this->assertSame(['number', 'name', 'arguments'], array_keys($parameters));
+    }
+
+    public function testFileName(): void
+    {
+        $this->assertSame(__DIR__ . '/Source/SomeFunction.php', $this->functionReflection->getFileName());
     }
 }

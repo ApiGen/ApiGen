@@ -4,15 +4,14 @@ namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\FileNameAwareReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
 interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
-    AbstractReflectionInterface, InNamespaceInterface
+    AbstractReflectionInterface, InNamespaceInterface, FileNameAwareReflectionInterface
 {
-    public function getFileName(): string;
-
     /**
      * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */

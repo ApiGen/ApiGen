@@ -83,7 +83,7 @@
         <table class="summary table table-responsive table-bordered table-striped" id="properties">
             <tr><th colspan="3">Properties Summary</th></tr>
             {foreach $trait->getOwnProperties() as $property}
-                {include property, property => $property}
+                {include "partial/property.latte", property => $property, classOrTrait => $trait}
             {/foreach}
         </table>
     {/if}

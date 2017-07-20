@@ -5,6 +5,7 @@ namespace ApiGen\Reflection;
 use ApiGen\Element\ReflectionCollectorCollector;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
+use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Exception\UnsupportedReflectionClassException;
@@ -33,6 +34,22 @@ final class TransformerCollector
 
     /**
      * @param object[] $reflections
+     */
+    private function detectMatchingTransformer(array $reflections): ?TransformerInterface
+    {
+        $reflection = array_shift($reflections);
+
+        foreach ($this->transformers as $transformer) {
+            if ($transformer->matches($reflection)) {
+                return $transformer;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * @param object[] $reflections
      * @return object[]
      */
     public function transformGroup(array $reflections): array
@@ -47,10 +64,13 @@ final class TransformerCollector
             $elements[$transformedReflection->getName()] = $transformedReflection;
         }
 
-        // @todo: sort here!, before ElementSorter
-        uasort($elements, function ($firstElement, $secondElement) {
-           return strcmp($firstElement->getName(), $secondElement->getName());
-        });
+        $matchingTransformer = $this->detectMatchingTransformer($reflections);
+
+        if ($matchingTransformer instanceof SortableTransformerInterface) {
+            uasort($elements, function ($firstElement, $secondElement) {
+               return strcmp($firstElement->getName(), $secondElement->getName());
+            });
+        }
 
         return $elements;
     }
