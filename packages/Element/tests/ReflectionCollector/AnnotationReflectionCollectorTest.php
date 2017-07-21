@@ -61,9 +61,8 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
             1,
             $this->annotationReflectionCollector->getClassOrTraitPropertyReflections(AnnotationList::DEPRECATED)
         );
-        // @todo 1
         $this->assertCount(
-            0,
+            1,
             $this->annotationReflectionCollector->getClassOrInterfaceConstantReflections(AnnotationList::DEPRECATED)
         );
     }

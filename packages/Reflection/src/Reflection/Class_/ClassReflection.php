@@ -221,12 +221,9 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
      */
     public function getOwnConstants(): array
     {
-        $constants = [];
-        foreach ($this->betterClassReflection->getConstants() as $name => $value) {
-            $constants[$name] = ClassConstantReflection::createFromNameValueAndClass($name, $value, $this);
-        }
-
-        return $constants;
+        return $this->transformerCollector->transformGroup(
+            $this->betterClassReflection->getReflectionConstants()
+        );
     }
 
     /**

@@ -69,8 +69,8 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
 
     public function testLines(): void
     {
-        $this->assertSame(25, $this->classConstantReflection->getStartLine());
-        $this->assertSame(35, $this->classConstantReflection->getEndLine());
+        $this->assertSame(12, $this->classConstantReflection->getStartLine());
+        $this->assertSame(12, $this->classConstantReflection->getEndLine());
     }
 
     public function testVisibility(): void
@@ -82,7 +82,6 @@ final class ClassConstantReflectionTest extends AbstractParserAwareTestCase
 
     public function testAnnotations(): void
     {
-        // @todo: complete
-        $this->assertSame('', $this->classConstantReflection->getDescription());
+        $this->assertSame('Nice description.', $this->classConstantReflection->getDescription());
     }
 }

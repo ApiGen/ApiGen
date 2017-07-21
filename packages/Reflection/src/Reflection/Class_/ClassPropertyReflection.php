@@ -53,14 +53,12 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function getStartLine(): int
     {
-        // @todo
-        return 5;
+        return $this->betterPropertyReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        // @todo
-        return 5;
+        return $this->betterPropertyReflection->getEndLine();
     }
 
     public function getName(): string

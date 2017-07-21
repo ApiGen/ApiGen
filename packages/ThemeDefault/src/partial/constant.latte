@@ -1,25 +1,25 @@
-<tr id="{$constant->getName()}">
+<tr id="{$constant->getName()}" n:class="$constant->isDeprecated() ? deprecated">
     <td class="attributes">
-        <code>{$constant->getTypeHint()}</code>
+        <code>
+        {if $constant->isPublic()}public{/if}
+        {if $constant->isProtected()}protected{/if}
+        {if $constant->isPrivate()}private{/if}
+        {$constant->getTypeHint()}
+        </code>
     </td>
     <td class="name">
         <code>
             <a href="{$constant|linkSource}" class="constant-name">{$constant->getName()}</a>
         </code>
 
-        {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+        <div class="description">
+            {$constant|description}
 
-        {if $constant->getDescription() || count($filteredAnnotations)}
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {$constant|description}
-
-                    {foreach $filteredAnnotations as $annotation}
-                        {$annotation|annotation: $constant|noescape}<br>
-                    {/foreach}
-                </div>
-            </div>
-        {/if}
+            {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
+            {foreach $filteredAnnotations as $annotation}
+                {$annotation|annotation:$constant|noescape}<br>
+            {/foreach}
+        </div>
     </td>
     <td class="value">
         <div>
