@@ -27,11 +27,11 @@ final class ConstantTest extends AbstractParserAwareTestCase
     {
         $ownConstants = $this->interfaceReflection->getOwnConstants();
         $this->assertCount(1, $ownConstants);
-        $this->assertInstanceOf(InterfaceConstantReflectionInterface::class, $ownConstants[0]);
+        $this->assertInstanceOf(InterfaceConstantReflectionInterface::class, $ownConstants['LAST']);
 
         $inheritedConstants = $this->interfaceReflection->getInheritedConstants();
         $this->assertCount(1, $inheritedConstants);
-        $this->assertInstanceOf(InterfaceConstantReflectionInterface::class, $inheritedConstants[0]);
+        $this->assertInstanceOf(InterfaceConstantReflectionInterface::class, $inheritedConstants['HOPE']);
 
         $this->assertNotSame($ownConstants, $inheritedConstants);
     }

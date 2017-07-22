@@ -1,6 +1,6 @@
 <tr id="{$constant->getName()}" n:class="$constant->isDeprecated() ? deprecated">
     <td class="attributes">
-        <code>
+        <code class="keyword">
         {if $constant->isPublic()}public{/if}
         {if $constant->isProtected()}protected{/if}
         {if $constant->isPrivate()}private{/if}
@@ -24,7 +24,7 @@
     <td class="value">
         <div>
             <a href="#{$constant->getName()}" class="anchor pull-right">#</a>
-            <code>{$constant->getValue()}</code>
+            <code>{$constant->getValueDefinition()}</code>
         </div>
     </td>
 </tr>

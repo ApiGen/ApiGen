@@ -67,10 +67,10 @@
 
     {if $interface->getOwnConstants()}
         <table class="summary table table-responsive table-bordered table-striped" id="constants">
-            <tr><th>Constants Summary</th></tr>
+            <tr><th colspan="3">Constants Summary</th></tr>
             <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
                 <td class="attributes">
-                    <code>{$constant->getTypeHint()}</code>
+                    <code class="keyword">{$constant->getTypeHint()}</code>
                 </td>
                 <td class="name">
                     <code>
@@ -78,7 +78,7 @@
                     </code>
 
                     <div class="description">
-                        {$constant|description}
+                        {if $constant instanceof \ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface}{$constant|description}{/if}
 
                         {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
                         {foreach $filteredAnnotations as $annotation}
