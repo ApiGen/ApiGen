@@ -16,7 +16,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
     /**
      * @var ReflectionClassConstant
      */
-    private $constant;
+    private $betterConstantReflection;
 
     /**
      * @var DocBlock
@@ -28,35 +28,35 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
      */
     private $transformerCollector;
 
-    public function __construct(ReflectionClassConstant $constant, DocBlock $docBlock)
+    public function __construct(ReflectionClassConstant $betterConstantReflection, DocBlock $docBlock)
     {
-        $this->constant = $constant;
+        $this->betterConstantReflection = $betterConstantReflection;
         $this->docBlock = $docBlock;
     }
 
     public function isPublic(): bool
     {
-        return $this->constant->isPublic();
+        return $this->betterConstantReflection->isPublic();
     }
 
     public function isProtected(): bool
     {
-        return $this->constant->isProtected();
+        return $this->betterConstantReflection->isProtected();
     }
 
     public function isPrivate(): bool
     {
-        return $this->constant->isPrivate();
+        return $this->betterConstantReflection->isPrivate();
     }
 
     public function getName(): string
     {
-        return $this->constant->getName();
+        return $this->betterConstantReflection->getName();
     }
 
     public function getTypeHint(): string
     {
-        $valueType = gettype($this->constant->getValue());
+        $valueType = gettype($this->betterConstantReflection->getValue());
         if ($valueType === 'integer') {
             return 'int';
         }
@@ -67,13 +67,13 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
     public function getDeclaringClass(): ClassReflectionInterface
     {
         return $this->transformerCollector->transformSingle(
-            $this->constant->getDeclaringClass()
+            $this->betterConstantReflection->getDeclaringClass()
         );
     }
 
     public function getDeclaringClassName(): string
     {
-        return $this->constant->getDeclaringClass()->getName();
+        return $this->betterConstantReflection->getDeclaringClass()->getName();
     }
 
     /**
@@ -81,7 +81,7 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
      */
     public function getValue()
     {
-        return $this->constant->getValue();
+        return $this->betterConstantReflection->getValue();
     }
 
     public function isDeprecated(): bool
@@ -95,12 +95,12 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
 
     public function getStartLine(): int
     {
-        return $this->constant->getStartLine();
+        return $this->betterConstantReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        return $this->constant->getEndLine();
+        return $this->betterConstantReflection->getEndLine();
     }
 
     public function getDescription(): string
