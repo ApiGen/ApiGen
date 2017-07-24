@@ -8,7 +8,10 @@ interface AbstractParameterReflectionInterface extends AbstractReflectionInterfa
 
     public function isDefaultValueAvailable(): bool;
 
-    public function getDefaultValueDefinition(): ?string;
+    /**
+     * @return mixed
+     */
+    public function getDefaultValue();
 
     public function isArray(): bool;
 

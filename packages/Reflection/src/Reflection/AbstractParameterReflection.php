@@ -53,14 +53,18 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         return $this->betterParameterReflection->isDefaultValueAvailable();
     }
 
-    public function getDefaultValueDefinition(): ?string
+    /**
+     * @return mixed
+     */
+    public function getDefaultValue()
     {
         if ($this->betterParameterReflection->isDefaultValueAvailable()) {
+            /* FIXME
             if ($this->betterParameterReflection->isDefaultValueConstant()) {
                 return $this->betterParameterReflection->getDefaultValueConstantName();
             }
-
-            return $this->betterParameterReflection->getDefaultValueAsString();
+            */
+            return $this->betterParameterReflection->getDefaultValue();
         }
 
         return null;

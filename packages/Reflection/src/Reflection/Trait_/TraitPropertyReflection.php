@@ -153,11 +153,6 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
         return $this->betterPropertyReflection->isPublic();
     }
 
-    public function getDefaultValueDefinition(): string
-    {
-        return $this->betterPropertyReflection->getDefaultValueAsString();
-    }
-
     public function isDeprecated(): bool
     {
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
