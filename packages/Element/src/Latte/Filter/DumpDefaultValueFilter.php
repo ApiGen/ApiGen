@@ -3,7 +3,6 @@
 namespace ApiGen\Element\Latte\Filter;
 
 use ApiGen\Contract\Templating\FilterProviderInterface;
-use ApiGen\SourceCodeHighlighter\SourceCodeHighlighter;
 
 final class DumpDefaultValueFilter implements FilterProviderInterface
 {

@@ -56,6 +56,6 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testDefaults(): void
     {
-        $this->assertNull($this->functionParameterReflection->getDefaultValueDefinition());
+        $this->assertNull($this->functionParameterReflection->getDefaultValue());
     }
 }
