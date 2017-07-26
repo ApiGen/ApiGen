@@ -2,13 +2,10 @@
 
 namespace ApiGen\Utils;
 
-use Latte\Runtime\Filters;
-use Nette\Utils\Html;
-
 final class DefaultValueDumper
 {
     /**
-     * @param mixedt
+     * @param mixed
      */
     public function dumpValue($value): string
     {

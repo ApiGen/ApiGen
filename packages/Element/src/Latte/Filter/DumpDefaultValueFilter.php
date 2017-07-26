@@ -7,7 +7,9 @@ use ApiGen\Utils\DefaultValueDumper;
 
 final class DumpDefaultValueFilter implements FilterProviderInterface
 {
-    /** @var DefaultValueDumper */
+    /**
+     * @var DefaultValueDumper
+     */
     private $defaultValueDumper;
 
     public function __construct(DefaultValueDumper $defaultValueDumper)
