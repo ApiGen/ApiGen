@@ -22,6 +22,7 @@
 
         "symfony/config": "^3.3",
         "symfony/console": "^3.3",
+        "symfony/finder": "^3.3",
         "symfony/dependency-injection": "^3.3",
         "symfony/http-kernel": "^3.3",
         "symfony/yaml": "^3.3",
