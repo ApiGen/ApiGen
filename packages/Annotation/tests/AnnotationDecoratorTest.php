@@ -74,7 +74,7 @@ final class AnnotationDecoratorTest extends AbstractParserAwareTestCase
     {
         $param2Annotation = $this->methodReflection->getAnnotation(AnnotationList::PARAM)[1];
 
-        // @todo: it doesn't make sense to link itself here, since it's the same page
+        // @todo it doesn't make sense to link itself here, since it's the same page
         $this->assertSame(
             'string|<code><a href="class-ApiGen.Annotation.Tests.AnnotationDecoratorSource.'
             . 'SomeClassWithReturnTypes.html">$this</a></code>',

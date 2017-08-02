@@ -139,7 +139,7 @@ final class TransformerCollector
         }
 
         // $this->configuration->getVisibilityLevels()
-        // @todo: here is the place to filter out public/protected etc - use service!
+        // @todo here is the place to filter out public/protected etc - use service!
         if (! $this->hasAllowedAccessLevel($transformedReflection)) {
             return true;
         }
