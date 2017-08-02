@@ -8,6 +8,12 @@ matrix:
           # add variables to enable coverage, coding standard check and static analysis
           env: PHPUNIT_FLAGS="--coverage-clover coverage.xml"
 
+env:
+    global:
+        # Token for generate-api.sh, so Travis is able to push to "apigen/Api repository
+
+        secure: "iCCArUsNw1hGlXTGIezlk5bayFBFDfCeV86FJn0/zKXRj3QSu+XoteUzxaZ7xuGFirn4zbhE+6TWNXo14segCL+jzgw+Kis9DC9PnOiqi76kktDObLQo/ElpaE2c7XY32otMbGMpP20TKsmefLp7kuTqnr318klxV5L2aSM37u0="
+
 before_install:
     # Prevents global install of dev dependecies failing
     - composer global config minimum-stability dev
@@ -32,9 +38,6 @@ script:
     - temp/apigen-project/bin/apigen generate -h
     - ~/.composer/vendor/bin/apigen generate -h
 
-    # Local Generate command
-    - bin/apigen generate src --destination api
-
 after_script:
     # upload coverage.xml file to Coveralls.io to analyze it
     - |
@@ -42,6 +45,9 @@ after_script:
             wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
             php coveralls.phar --verbose
         fi
+
+    # Generate ApiGen's api a push it to https://github.com/apigen/api,
+    # available at http://www.apigen.org/api/
     - ./generate-api.sh
 
 # do not send success emails, they don't need any action
