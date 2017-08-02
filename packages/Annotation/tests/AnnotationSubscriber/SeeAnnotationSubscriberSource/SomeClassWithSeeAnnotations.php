@@ -6,7 +6,6 @@ use ApiGen\Annotation\Tests\AnnotationDecoratorSource\ReturnedClass;
 
 function someExistingFunction()
 {
-
 }
 
 final class SomeClassWithSeeAnnotations

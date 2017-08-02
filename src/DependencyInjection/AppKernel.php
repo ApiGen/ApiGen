@@ -16,7 +16,7 @@ final class AppKernel extends Kernel
 
     public function __construct()
     {
-        parent::__construct('dev',true);
+        parent::__construct('dev', true);
     }
 
     public function registerContainerConfiguration(LoaderInterface $loader): void

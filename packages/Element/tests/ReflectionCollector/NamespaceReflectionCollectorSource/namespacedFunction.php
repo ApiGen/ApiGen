@@ -4,5 +4,4 @@ namespace ApiGen\Element\Tests\ReflectionCollector\NamespaceReflectionCollectorS
 
 function namespacedFunction(): void
 {
-
 }

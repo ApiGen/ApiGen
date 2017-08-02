@@ -52,7 +52,7 @@ final class ElementResolver
 
         $isProperty = false;
         $propertyName = '';
-        if (Strings::contains( $name, '::$')) {
+        if (Strings::contains($name, '::$')) {
             [$name, $propertyName] = explode('::$', $name);
             $isProperty = true;
         }

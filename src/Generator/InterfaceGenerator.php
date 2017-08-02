@@ -71,7 +71,8 @@ final class InterfaceGenerator implements GeneratorInterface
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
         $destination = $this->configuration->getDestinationWithPrefixName(
-            'source-interface-', $interfaceReflection->getName()
+            'source-interface-',
+            $interfaceReflection->getName()
         );
 
         $this->templateRenderer->renderToFile(

@@ -39,7 +39,7 @@ final class ParameterProvider implements ParameterProviderInterface
     {
         foreach ($containerParameters as $name => $value) {
             if (Strings::startsWith($name, 'kernel')) {
-                unset ($containerParameters[$name]);
+                unset($containerParameters[$name]);
             }
         }
 

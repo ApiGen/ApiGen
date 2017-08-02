@@ -50,14 +50,14 @@ final class Configuration
         $resolvedOptions = $this->configurationResolver->resolveValuesWithDefaults($options);
 
         // hack to remove duplicated lowercased value
-        unset ($resolvedOptions[strtolower(VisibilityLevelOption::NAME)]);
+        unset($resolvedOptions[strtolower(VisibilityLevelOption::NAME)]);
 
         $baseUrlKeyLowered = strtolower(BaseUrlOption::NAME);
         if (isset($resolvedOptions[$baseUrlKeyLowered])) {
             $resolvedOptions[BaseUrlOption::NAME] = $resolvedOptions[$baseUrlKeyLowered];
         }
 
-        unset ($resolvedOptions[$baseUrlKeyLowered]);
+        unset($resolvedOptions[$baseUrlKeyLowered]);
 
         return $this->options = $resolvedOptions;
     }
