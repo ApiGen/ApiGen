@@ -29,6 +29,10 @@ install:
 script:
     # run tests
     - vendor/bin/phpunit $PHPUNIT_FLAGS
+
+    # turn off XDebug
+    - phpenv config-rm xdebug.ini || return 0
+
     # check coding standard (defined in composer.json "scripts" section)
     - composer check-cs
     # check with phpstan (defined in composer.json "scripts" section)
