@@ -11,7 +11,7 @@
     "bin": ["bin/apigen"],
     "require": {
         "php": "^7.1",
-        "roave/better-reflection": "dev-master",
+        "roave/better-reflection": "dev-master#a83ef24",
         "phpdocumentor/reflection-docblock": "^3.1",
         "kukulich/fshl": "^2.1",
 
@@ -26,15 +26,14 @@
         "symfony/dependency-injection": "^3.3",
         "symfony/http-kernel": "^3.3",
         "symfony/yaml": "^3.3",
-        "symplify/package-builder": "^2.1",
+        "symplify/package-builder": "^2.2",
         "psr/container": "^1.0"
     },
     "require-dev": {
         "tracy/tracy": "^2.4",
         "phpunit/phpunit": "^6.0",
         "phpstan/phpstan": "^0.7",
-        "symplify/coding-standard": "^2.1",
-        "symplify/easy-coding-standard": "^2.1"
+        "symplify/easy-coding-standard": "^2.2.3"
     },
     "autoload": {
         "psr-4": {
