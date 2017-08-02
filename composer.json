@@ -69,8 +69,8 @@
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],
         "phpstan": "phpstan analyse packages src bin --level 4 -c phpstan.neon",
-        "check-cs": "easy-coding-standard check packages src bin",
-        "fix-cs": "easy-coding-standard check packages src bin --fix"
+        "check-cs": "easy-coding-standard check packages bin src tests",
+        "fix-cs": "easy-coding-standard check packages bin src tests --fix"
     },
     "config": {
         "sort-packages": true
