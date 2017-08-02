@@ -4,6 +4,7 @@ namespace ApiGen\Generator;
 
 use ApiGen\Configuration\Configuration;
 use ApiGen\Contract\Generator\GeneratorInterface;
+use ApiGen\Element\Namespace_\ChildNamespacesResolver;
 use ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
 use ApiGen\Templating\TemplateRenderer;
@@ -30,16 +31,23 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
      */
     private $parentEmptyNamespacesResolver;
 
+    /**
+     * @var ChildNamespacesResolver
+     */
+    private $childNamespacesResolver;
+
     public function __construct(
         NamespaceReflectionCollector $namespaceReflectionCollector,
         Configuration $configuration,
         TemplateRenderer $templateRenderer,
-        ParentEmptyNamespacesResolver $parentEmptyNamespacesResolver
+        ParentEmptyNamespacesResolver $parentEmptyNamespacesResolver,
+        ChildNamespacesResolver $childNamespacesResolver
     ) {
         $this->namespaceReflectionCollector = $namespaceReflectionCollector;
         $this->configuration = $configuration;
         $this->templateRenderer = $templateRenderer;
         $this->parentEmptyNamespacesResolver = $parentEmptyNamespacesResolver;
+        $this->childNamespacesResolver = $childNamespacesResolver;
     }
 
     public function generate(): void
@@ -47,7 +55,6 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
         $parentEmptyNamespaces = $this->parentEmptyNamespacesResolver->resolve(
             $this->namespaceReflectionCollector->getNamespaces()
         );
-
 
         foreach ($parentEmptyNamespaces as $namespace) {
             $this->generateForNamespace($namespace);
@@ -62,7 +69,7 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
             [
                 'activePage' => 'namespace',
                 'activeNamespace' => $namespace,
-                'childNamespaces' => $this->resolveChildNamespaces($namespace),
+                'childNamespaces' => $this->childNamespacesResolver->resolve($namespace),
                 'classes' => [],
                 'exceptions' => [],
                 'interfaces' => [],
@@ -70,26 +77,5 @@ final class EmptyNamespaceGenerator implements GeneratorInterface
                 'functions' => [],
             ]
         );
-    }
-
-    /**
-     * @todo: move to service!
-     * @return string[]
-     */
-    private function resolveChildNamespaces(string $namespace): array
-    {
-        $prefix = $namespace . '\\';
-        $len = strlen($prefix);
-        $namespaces = array();
-
-        foreach ($this->namespaceReflectionCollector->getNamespaces() as $sub) {
-            if (substr($sub, 0, $len) === $prefix
-                && strpos(substr($sub, $len), '\\') === false
-            ) {
-                $namespaces[] = $sub;
-            }
-        }
-
-        return $namespaces;
     }
 }
