@@ -32,7 +32,7 @@
     "require-dev": {
         "tracy/tracy": "^2.4",
         "phpunit/phpunit": "^6.0",
-        "phpstan/phpstan": "^0.7",
+        "phpstan/phpstan": "^0.8",
         "symplify/easy-coding-standard": "^2.2.3"
     },
     "autoload": {
