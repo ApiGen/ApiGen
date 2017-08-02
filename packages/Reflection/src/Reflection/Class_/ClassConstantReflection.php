@@ -84,6 +84,11 @@ final class ClassConstantReflection implements ClassConstantReflectionInterface,
         return $this->betterConstantReflection->getValue();
     }
 
+    public function getValueDefinition(): string
+    {
+        return 'TODO'; // $this->constant->getValueAsString(); FIXME
+    }
+
     public function isDeprecated(): bool
     {
         if ($this->getDeclaringClass()->isDeprecated()) {
