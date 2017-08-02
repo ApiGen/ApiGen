@@ -108,5 +108,6 @@ parameters:
         PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
             - packages/Reflection/src/Reflection/AbstractParameterReflection.php
             - packages/Reflection/src/Reflection/Function_/FunctionParameterReflection.php
+            - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
             - packages/Reflection/src/Contract/Reflection/AbstractMethodReflectionInterface.php
             - *packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php

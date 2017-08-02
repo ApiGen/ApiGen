@@ -13,8 +13,7 @@ use Roave\BetterReflection\Reflection\ReflectionClassConstant;
 /**
  * @inspiration https://github.com/POPSuL/PHP-Token-Reflection/blob/develop/TokenReflection/Php/ReflectionConstant.php
  */
-final class InterfaceConstantReflection implements InterfaceConstantReflectionInterface,
-    TransformerCollectorAwareInterface
+final class InterfaceConstantReflection implements InterfaceConstantReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionClassConstant
