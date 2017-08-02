@@ -2,7 +2,8 @@
 
 namespace ApiGen\Tests\Generator\Source;
 
-class SomeException extends \Exception
-{
+use Exception;
 
+class SomeException extends Exception
+{
 }

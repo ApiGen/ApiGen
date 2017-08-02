@@ -43,7 +43,7 @@ final class ReflectionWarmUpper
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
             $interfaceReflection->getOwnConstants();
             foreach ($interfaceReflection->getOwnMethods() as $methodReflection) {
-                 $methodReflection->getParameters();
+                $methodReflection->getParameters();
             }
         }
     }

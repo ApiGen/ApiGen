@@ -8,8 +8,7 @@ use ApiGen\Reflection\Contract\Reflection\FileNameAwareReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 
-interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflectionInterface, InNamespaceInterface,
-    FileNameAwareReflectionInterface
+interface TraitReflectionInterface extends AnnotationsInterface, AbstractReflectionInterface, InNamespaceInterface, FileNameAwareReflectionInterface
 {
     public function getShortName(): string;
 

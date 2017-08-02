@@ -6,8 +6,8 @@ use ApiGen\Configuration\Configuration;
 use ApiGen\DependencyInjection\Container\ContainerFactory;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Parser\Parser;
+use ApiGen\Reflection\ReflectionStorage;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 

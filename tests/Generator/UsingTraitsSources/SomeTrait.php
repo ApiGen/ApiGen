@@ -4,10 +4,12 @@ namespace ApiGen\Tests\Generator\UsingTraitsSources;
 
 trait SomeTrait
 {
-	private $property;
+    /**
+     * @var string
+     */
+    private $property;
 
-	public function method()
-	{
-	}
-
+    public function method(): void
+    {
+    }
 }

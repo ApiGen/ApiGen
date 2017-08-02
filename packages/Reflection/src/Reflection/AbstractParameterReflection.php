@@ -14,8 +14,7 @@ use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-abstract class AbstractParameterReflection implements AbstractParameterReflectionInterface,
-    TransformerCollectorAwareInterface
+abstract class AbstractParameterReflection implements AbstractParameterReflectionInterface, TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter

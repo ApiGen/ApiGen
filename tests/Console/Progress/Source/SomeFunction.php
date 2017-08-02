@@ -2,7 +2,6 @@
 
 namespace EmptyNamespace\MyNamespace;
 
-function SomeFunction()
+function SomeFunction(): void
 {
-
 }

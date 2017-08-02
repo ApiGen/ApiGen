@@ -8,8 +8,7 @@ use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Reflection\AbstractParameterReflection;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 
-final class FunctionParameterReflection extends AbstractParameterReflection implements
-    FunctionParameterReflectionInterface
+final class FunctionParameterReflection extends AbstractParameterReflection implements FunctionParameterReflectionInterface
 {
     public function getName(): string
     {

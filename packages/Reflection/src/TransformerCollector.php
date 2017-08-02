@@ -68,7 +68,7 @@ final class TransformerCollector
 
         if ($matchingTransformer instanceof SortableTransformerInterface) {
             uasort($elements, function ($firstElement, $secondElement) {
-               return strcmp($firstElement->getName(), $secondElement->getName());
+                return strcmp($firstElement->getName(), $secondElement->getName());
             });
         }
 

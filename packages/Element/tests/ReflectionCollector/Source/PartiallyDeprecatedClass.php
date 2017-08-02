@@ -20,6 +20,5 @@ final class PartiallyDeprecatedClass
      */
     public function daily(): void
     {
-
     }
 }

@@ -1,3 +1,6 @@
+includes:
+    - vendor/symplify/easy-coding-standard/config/psr2-checkers.neon
+
 checkers:
     # Solid
     - Symplify\CodingStandard\Sniffs\Classes\FinalInterfaceSniff
@@ -5,13 +8,7 @@ checkers:
     # PSR2
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
         absoluteLineLimit: 120
-    - PHP_CodeSniffer\Standards\PSR2\Sniffs\Files\EndFileNewlineSniff
-    - PHP_CodeSniffer\Standards\Squiz\Sniffs\WhiteSpace\ControlStructureSpacingSniff
-    - PHP_CodeSniffer\Standards\PSR2\Sniffs\Namespaces\UseDeclarationSniff
-    - PHP_CodeSniffer\Standards\Squiz\Sniffs\Functions\MultiLineFunctionDeclarationSniff
     - PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeClosingBraceSniff
-    - PhpCsFixer\Fixer\Casing\LowercaseConstantsFixer
-    - PhpCsFixer\Fixer\Casing\LowercaseKeywordsFixer
     - PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
 
     # Comments
@@ -35,7 +32,6 @@ checkers:
     - SlevomatCodingStandard\Sniffs\ControlStructures\YodaComparisonSniff
 
     # Namespaces
-    - PhpCsFixer\Fixer\NamespaceNotation\BlankLineAfterNamespaceFixer
     - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
     - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
     - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff
@@ -83,6 +79,9 @@ parameters:
 
             # tests
             - packages/Annotation/tests/AnnotationDecoratorSource/SomeClassWithReturnTypes.php
+            - tests/Generator/Source/SomeClass.php
+            - tests/Generator/Source/SomeTrait.php
+            - tests/Generator/Source/SomeFunction.php
 
             # covariant implementers
             - packages/StringRouting/src/Route/SourceCodeRoute.php
@@ -97,7 +96,17 @@ parameters:
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php
+            - tests/Generator/Source/SomeClass.php
+
+        PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
+            - tests/Generator/Source/SomeClass.php
 
         PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
             - packages/Reflection/tests/Reflection/Partial/Source/SomeClassWithAnnotations.php
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/SomeClass.php
+
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
+            - packages/Reflection/src/Reflection/AbstractParameterReflection.php
+            - packages/Reflection/src/Reflection/Function_/FunctionParameterReflection.php
+            - packages/Reflection/src/Contract/Reflection/AbstractMethodReflectionInterface.php
+            - *packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php

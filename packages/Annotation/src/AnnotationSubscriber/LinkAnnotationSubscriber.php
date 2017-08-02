@@ -35,7 +35,8 @@ final class LinkAnnotationSubscriber implements AnnotationSubscriberInterface
     public function process($content, AbstractReflectionInterface $reflection): string
     {
         return $this->linkBuilder->build(
-            $content->getLink(), $content->getDescription() ?: $content->getLink()
+            $content->getLink(),
+            $content->getDescription() ?: $content->getLink()
         );
     }
 }

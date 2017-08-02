@@ -4,5 +4,4 @@ namespace ApiGen\Tests\Utils\Finder\NetteFinderSrouce\SomeDir;
 
 class SomeClass
 {
-
 }

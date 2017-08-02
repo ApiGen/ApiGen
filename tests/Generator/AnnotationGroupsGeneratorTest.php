@@ -39,7 +39,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
         $this->assertFileExists(TEMP_DIR . '/annotation-group-deprecated.html');
         $this->assertContains(
             DeprecatedClass::class,
-                file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
+            file_get_contents(TEMP_DIR . '/annotation-group-deprecated.html')
         );
         $this->assertContains(
             DeprecatedMethod::class,

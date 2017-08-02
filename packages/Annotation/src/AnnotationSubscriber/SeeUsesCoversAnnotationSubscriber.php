@@ -58,7 +58,8 @@ final class SeeUsesCoversAnnotationSubscriber implements AnnotationSubscriberInt
             $reference = ltrim($reference, '\\');
 
             $resolvedReflection = $this->elementResolver->resolveReflectionFromNameAndReflection(
-                $reference, $reflection
+                $reference,
+                $reflection
             );
 
             if ($resolvedReflection instanceof AbstractReflectionInterface) {

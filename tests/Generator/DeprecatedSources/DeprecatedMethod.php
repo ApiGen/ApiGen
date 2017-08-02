@@ -6,9 +6,8 @@ class DeprecatedMethod
 {
     /**
      * @deprecated
-     * @return string
      */
-    public function getDrink()
+    public function getDrink(): string
     {
         return 'water';
     }

@@ -47,9 +47,7 @@ final class NamespaceGenerator implements GeneratorInterface
     ): void {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('namespace'),
-            $this->configuration->getDestinationWithPrefixName(
-                'namespace-', $namespace
-            ),
+            $this->configuration->getDestinationWithPrefixName('namespace-', $namespace),
             [
                 'activePage' => 'namespace',
                 'activeNamespace' => $namespace,

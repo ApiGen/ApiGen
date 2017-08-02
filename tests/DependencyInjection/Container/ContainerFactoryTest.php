@@ -22,8 +22,6 @@ final class ContainerFactoryTest extends TestCase
     public function test(): void
     {
         $this->assertInstanceOf(Container::class, $this->container);
-        $this->assertInstanceOf(
-            ApiGenApplication::class, $this->container->get(ApiGenApplication::class)
-        );
+        $this->assertInstanceOf(ApiGenApplication::class, $this->container->get(ApiGenApplication::class));
     }
 }

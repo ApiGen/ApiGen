@@ -76,7 +76,7 @@ final class StringRoutingFiltersProvider implements FilterProviderInterface
         if (! $reflection instanceof AbstractReflectionInterface) {
             throw new InvalidArgumentException(sprintf(
                 'Argument for filter "%s" has to be type of "%s". "%s" given.',
-                 $filterName,
+                $filterName,
                 AbstractReflectionInterface::class,
                 is_object($reflection) ? get_class($reflection) : gettype($reflection)
             ));

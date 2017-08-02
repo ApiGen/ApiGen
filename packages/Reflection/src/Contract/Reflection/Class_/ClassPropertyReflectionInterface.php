@@ -5,8 +5,7 @@ namespace ApiGen\Reflection\Contract\Reflection\Class_;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface ClassPropertyReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface,
-    AnnotationsInterface
+interface ClassPropertyReflectionInterface extends AbstractClassElementInterface, StartAndEndLineInterface, AnnotationsInterface
 {
     public function isDefault(): bool;
 

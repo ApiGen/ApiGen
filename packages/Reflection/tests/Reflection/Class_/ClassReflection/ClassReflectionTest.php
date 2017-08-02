@@ -67,7 +67,7 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
     public function testLines(): void
     {
         $this->assertSame(12, $this->classReflection->getStartLine());
-        $this->assertSame(23, $this->classReflection->getEndLine());
+        $this->assertSame(22, $this->classReflection->getEndLine());
     }
 
     public function testModifiers(): void

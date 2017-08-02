@@ -7,10 +7,7 @@ namespace ApiGen\Tests\Generator\DeprecatedSources;
  */
 class DeprecatedClass
 {
-    /**
-     * @return string
-     */
-    public function getDrink()
+    public function getDrink(): string
     {
         return 'Mojito';
     }
