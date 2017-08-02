@@ -43,8 +43,7 @@ final class SourceCodeRoute implements RouteInterface
      */
     public function constructUrl($reflection): string
     {
-        # todo: allow Github links, based on configuration
-        if ($reflection instanceof ClassReflectionInterface && $reflection->implementsInterface(Throwable::class)) {
+        if ($this->isException($reflection)) {
             return 'source-exception-' . NamingHelper::nameToFilePath($reflection->getName()) . '.html';
         }
 
@@ -99,5 +98,10 @@ final class SourceCodeRoute implements RouteInterface
         }
 
         return $anchor;
+    }
+
+    private function isException(AbstractReflectionInterface $reflection): bool
+    {
+        return $reflection instanceof ClassReflectionInterface && $reflection->implementsInterface(Throwable::class);
     }
 }
