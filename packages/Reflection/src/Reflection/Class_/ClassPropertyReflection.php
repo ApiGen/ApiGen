@@ -149,11 +149,6 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
             ->getName();
     }
 
-    public function getDefaultValueDefinition(): ?string
-    {
-        return var_export($this->betterPropertyReflection->getDefaultValue(), true);
-    }
-
     public function isDeprecated(): bool
     {
         return $this->hasAnnotation(AnnotationList::DEPRECATED);

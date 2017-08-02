@@ -45,7 +45,7 @@
                 </td>
                 <td class="value"><code>{block|strip}
                     <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
-                    {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValueDefinition()|phpHighlight:$function|noescape}{elseif $parameter->isVariadic()},…{/if}
+                    {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValue()|dumpDefaultValue|phpHighlight|noescape}{elseif $parameter->isVariadic()},…{/if}
                 {/block}</code></td>
                 <td>{if $parameter instanceof \ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface}{$parameter|description}{/if}</td>
             </tr>

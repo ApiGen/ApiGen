@@ -27,7 +27,7 @@
                             {$parameter->getTypeHint()|buildLinkIfReflectionFound}
                             <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
 
-                        {if $parameter->getDefaultValueDefinition()} = {$parameter->getDefaultValueDefinition()|phpHighlight|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
+                        {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValue()|dumpDefaultValue|phpHighlight|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}
                     {/foreach}
                     )
                 {/block}</code>

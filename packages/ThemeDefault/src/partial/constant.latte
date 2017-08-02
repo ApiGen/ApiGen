@@ -24,7 +24,7 @@
     <td class="value">
         <div>
             <a href="#{$constant->getName()}" class="anchor pull-right">#</a>
-            <code>{$constant->getValueDefinition()}</code>
+            <code>{$constant->getValue()|dumpDefaultValue|phpHighlight|noescape}</code>
         </div>
     </td>
 </tr>
