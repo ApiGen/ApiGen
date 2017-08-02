@@ -11,7 +11,7 @@ matrix:
 env:
     global:
         # Token for generate-api.sh, so Travis is able to push to "apigen/Api repository
-
+        # See manual how to set it up: https://github.com/TomasVotruba/tomasvotruba.cz/blob/08f0df06674c6bc9db224a69250b8e95060cdc96/.travis.yml#L6-L15
         secure: "iCCArUsNw1hGlXTGIezlk5bayFBFDfCeV86FJn0/zKXRj3QSu+XoteUzxaZ7xuGFirn4zbhE+6TWNXo14segCL+jzgw+Kis9DC9PnOiqi76kktDObLQo/ElpaE2c7XY32otMbGMpP20TKsmefLp7kuTqnr318klxV5L2aSM37u0="
 
 before_install:
