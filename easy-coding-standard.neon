@@ -79,6 +79,9 @@ parameters:
 
             # tests
             - packages/Annotation/tests/AnnotationDecoratorSource/SomeClassWithReturnTypes.php
+            - tests/Generator/Source/SomeClass.php
+            - tests/Generator/Source/SomeTrait.php
+            - tests/Generator/Source/SomeFunction.php
 
             # covariant implementers
             - packages/StringRouting/src/Route/SourceCodeRoute.php
@@ -93,6 +96,10 @@ parameters:
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php
+            - tests/Generator/Source/SomeClass.php
+
+        PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
+            - tests/Generator/Source/SomeClass.php
 
         PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
             - packages/Reflection/tests/Reflection/Partial/Source/SomeClassWithAnnotations.php

@@ -17,17 +17,25 @@ class SomeClass
      */
     public const DEPRECATED_CONST = 5;
 
+    /**
+     * @var string
+     */
     public $stringProperty = 'string';
 
+    /**
+     * @var string[]
+     */
     public $arrayProperty = ['cat', 'dog'];
 
+    /**
+     * @var int
+     */
     public $integerProperty = 11;
     
     /**
      * Do not add param annotations here!
-     * @return void
      */
-    public function functionWithoutParamAnnotations($paramWithoutTypeHint)
+    public function functionWithoutParamAnnotations($paramWithoutTypeHint): void
     {
     }
 }

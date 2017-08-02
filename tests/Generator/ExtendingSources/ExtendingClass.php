@@ -6,5 +6,4 @@ use ApiGen\Tests\Generator\NotLoadedSources;
 
 class ExtendingClass extends NotLoadedSources\SomeClass
 {
-
 }

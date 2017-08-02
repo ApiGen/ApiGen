@@ -4,13 +4,15 @@ namespace ApiGen\Tests\Generator\Source;
 
 trait SomeTrait
 {
-    public $prop;
+    /**
+     * @var string
+     */
+    public $property;
 
     /**
      * Do not add param annotations here!
-     * @return void
      */
-    public function functionWithoutParamAnnotations($paramWithoutTypeHint)
+    public function functionWithoutParamAnnotations($paramWithoutTypeHint): void
     {
     }
 }

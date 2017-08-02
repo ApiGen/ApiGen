@@ -4,5 +4,4 @@ namespace EmptyNamespace\MyNamespace;
 
 class SomeClass
 {
-
 }

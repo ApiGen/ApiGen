@@ -4,5 +4,4 @@ namespace ApiGen\Tests\Generator\Source;
 
 interface SomeInterface
 {
-
 }

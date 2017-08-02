@@ -4,6 +4,5 @@ namespace ApiGen\Tests\Generator\UsingTraitsSources;
 
 class SomeClassWithTrait
 {
-	use SomeTrait;
-
+    use SomeTrait;
 }

@@ -4,5 +4,4 @@ namespace ApiGen\Tests\Generator\NotLoadedSources;
 
 class SomeClass
 {
-
 }

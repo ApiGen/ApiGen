@@ -5,7 +5,6 @@ namespace ApiGen\Tests\Console\Helper;
 use ApiGen\Console\Progress\StepCounter;
 use ApiGen\Element\Namespace_\ParentEmptyNamespacesResolver;
 use ApiGen\Element\ReflectionCollector\NamespaceReflectionCollector;
-use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractParserAwareTestCase;
 
 final class StepCounterTest extends AbstractParserAwareTestCase

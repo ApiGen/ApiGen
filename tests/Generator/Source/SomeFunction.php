@@ -8,8 +8,7 @@ function someFunction(): void
 
 /**
  * Do not add param annotations here!
- * @return void
  */
-function someOtherFunction($paramWithoutTypeHint)
+function someOtherFunction($paramWithoutTypeHint): void
 {
 }
