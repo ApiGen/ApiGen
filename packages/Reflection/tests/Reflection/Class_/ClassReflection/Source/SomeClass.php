@@ -18,6 +18,5 @@ class SomeClass extends ParentClass
 
     public function SomeMethod(): void
     {
-
     }
 }

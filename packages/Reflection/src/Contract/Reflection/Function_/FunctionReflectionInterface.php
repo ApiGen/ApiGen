@@ -8,8 +8,7 @@ use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface FunctionReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
-    AbstractReflectionInterface, InNamespaceInterface, FileNameAwareReflectionInterface
+interface FunctionReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface, InNamespaceInterface, FileNameAwareReflectionInterface
 {
     public function returnsReference(): bool;
 

@@ -22,11 +22,9 @@ class ParameterMethodClass
 
     public function methodWithClassParameter(ParameterClass $parameterClass): void
     {
-
     }
 
     public function methodWithConstantDefaultValue(string $where = self::HERE, string $when = Time::TODAY): void
     {
-
     }
 }

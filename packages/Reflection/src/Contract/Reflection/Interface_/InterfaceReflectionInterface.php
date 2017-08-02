@@ -9,8 +9,7 @@ use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\InNamespaceInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface,
-    AbstractReflectionInterface, InNamespaceInterface, FileNameAwareReflectionInterface
+interface InterfaceReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface, InNamespaceInterface, FileNameAwareReflectionInterface
 {
     /**
      * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]

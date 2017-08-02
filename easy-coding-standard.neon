@@ -97,3 +97,9 @@ parameters:
         PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
             - packages/Reflection/tests/Reflection/Partial/Source/SomeClassWithAnnotations.php
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/SomeClass.php
+
+        PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
+            - packages/Reflection/src/Reflection/AbstractParameterReflection.php
+            - packages/Reflection/src/Reflection/Function_/FunctionParameterReflection.php
+            - packages/Reflection/src/Contract/Reflection/AbstractMethodReflectionInterface.php
+            - *packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php

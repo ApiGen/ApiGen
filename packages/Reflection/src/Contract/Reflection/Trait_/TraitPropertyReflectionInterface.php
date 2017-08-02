@@ -6,8 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\StartAndEndLineInterface;
 
-interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface, StartAndEndLineInterface,
-    AnnotationsInterface, AccessLevelInterface
+interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface, StartAndEndLineInterface, AnnotationsInterface, AccessLevelInterface
 {
     public function isDefault(): bool;
 

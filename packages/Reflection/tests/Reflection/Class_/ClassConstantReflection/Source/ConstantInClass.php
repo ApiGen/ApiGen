@@ -9,7 +9,7 @@ class ConstantInClass
      *
      * @var int
      */
-   public const CONSTANT_INSIDE = 55;
+    public const CONSTANT_INSIDE = 55;
 
     /**
      * @var string
