@@ -27,9 +27,13 @@ script:
     - composer check-cs
     # check with phpstan (defined in composer.json "scripts" section)
     - composer phpstan
+
     # Global install checks
     - temp/apigen-project/bin/apigen generate -h
     - ~/.composer/vendor/bin/apigen generate -h
+
+    # Local Generate command
+    - bin/apigen generate src --destination api
 
 after_script:
     # upload coverage.xml file to Coveralls.io to analyze it
