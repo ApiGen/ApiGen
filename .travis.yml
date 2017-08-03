@@ -2,58 +2,72 @@ language: php
 
 sudo: false
 
-matrix:
-    include:
-        - php: 7.1
-          # add variables to enable coverage, coding standard check and static analysis
-          env: PHPUNIT_FLAGS="--coverage-clover coverage.xml"
+php: 7.1
 
 env:
     global:
         # Token for generate-api.sh, so Travis is able to push to "apigen/Api repository
         # It must be encrypted in https://github.com/ApiGen/api local repository
         # See manual how to set it up: https://github.com/TomasVotruba/tomasvotruba.cz/blob/08f0df06674c6bc9db224a69250b8e95060cdc96/.travis.yml#L6-L15
-        secure: "CGBmakC27c6di4COrLgC+J7ODX7u7SPqmf7+4nv0ITaZMKm9J/JE8/ohOGpXdaNvEhytxvbRF+vYA9rDgJSRM9jZh94bh8bH8CtFgIZP4i81vgxkZvUl7+dynjz1G/I5XVsMtg3zKTgAkLY7yX8HXcyXEfGTcSjvMh8HlILMPrI="
+        - secure: jJuaecVvLaHk9/kQabIcCn3pZ5KaqC5VZQUnvU5UWzAJmUxoDBVCAkdAz1/F3VyWhBtiiYiTo2D+DFsIXiNYXRNMIHp5AE+tz4XgSiZUhqV81BvRtCgJSJIBsiyVmbKE5WAoHt/ovMKZY7StVVejmK3OfsbXOf1ewhpWsmNTI30=
 
 before_install:
-    # Prevents global install of dev dependecies failing
-    - composer global config minimum-stability dev
-    - composer global config prefer-stable true
+    # Prevents global install of dev dependecies failing (due to Roave\BetterReflection:@dev)
+    # - composer global config minimum-stability dev
+    # - composer global config prefer-stable true
 
 install:
     # install composer dependencies
     - composer install
     # Create composer global installs
-    - composer create-project apigen/apigen:dev-master temp/apigen-project
-    - composer global require apigen/apigen:dev-master
+    # - composer create-project apigen/apigen:dev-master temp/apigen-project
+    # - composer global require apigen/apigen:dev-master
 
 script:
     # run tests
-    - vendor/bin/phpunit $PHPUNIT_FLAGS
+    # - vendor/bin/phpunit --coverage-clover coverage.xml
 
-    # turn off XDebug
+    # Turn off XDebug to make the rest faster
     - phpenv config-rm xdebug.ini || return 0
 
     # check coding standard (defined in composer.json "scripts" section)
-    - composer check-cs
+#    - composer check-cs
     # check with phpstan (defined in composer.json "scripts" section)
-    - composer phpstan
+#    - composer phpstan
 
     # Global install checks
-    - temp/apigen-project/bin/apigen generate -h
-    - ~/.composer/vendor/bin/apigen generate -h
+#    - temp/apigen-project/bin/apigen generate -h
+#    - ~/.composer/vendor/bin/apigen generate -h
 
 after_script:
     # upload coverage.xml file to Coveralls.io to analyze it
-    - |
-        if [[ $PHPUNIT_FLAGS != "" ]]; then
-            wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
-            php coveralls.phar --verbose
-        fi
+#    - |
+#        if [[ $PHPUNIT_FLAGS != "" ]]; then
+#            wget https://github.com/satooshi/php-coveralls/releases/download/v1.0.1/coveralls.phar
+#            php coveralls.phar --verbose
+#        fi
 
-    # Generate ApiGen's api a push it to https://github.com/apigen/api,
-    # available at http://www.apigen.org/api/
-    - ./generate-api.sh
+    # Generate ApiGen's api a push it to https://github.com/apigen/apigen, gh-pages branch
+
+    # Generate API for ApiGen
+    - bin/apigen generate src --destination temp/api
+    - cd temp/api
+
+    # Add this repository as remote
+    - git init
+    - git remote add origin https://${GH_TOKEN}@github.com/ApiGen/ApiGen.git
+
+    # Set Travis to Git Identity
+    - git config --global user.email "travis@travis-ci.org"
+    - git config --global user.name "Travis"
+
+    # Add generated API
+    - git add .
+    - git commit -m "API Regenerated"
+
+    # Push current content to gh-pages branch
+    - git push origin master:gh-pages
+
 
 # do not send success emails, they don't need any action
 notifications:
