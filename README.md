@@ -8,8 +8,9 @@
 ApiGen is the simplest, the easiest to use and the most modern api doc generator. It is **all PHP 7.1 features ready**
 easy to extend with own Finder, Annotation Subscriber or even Generator.
 
-Just look at [Nette API](http://api.nette.org/), [CakePHP API](http://api.cakephp.org/3.4/) or [Doctrine API](http://www.doctrine-project.org/api/orm/2.5/).
+Just look at [**ApiGen API**](https://apigen.github.io/ApiGen):
 
+![ApiGen Preview](docs/preview.png)
 
 ## Your Help is Needed to Finish 5.x Release  
 
