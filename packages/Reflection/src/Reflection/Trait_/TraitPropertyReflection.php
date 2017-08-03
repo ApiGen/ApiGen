@@ -81,7 +81,7 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
     }
 
     /**
-     * @todo: what does this mean? better naming?
+     * @todo what does this mean? better naming?
      */
     public function isDefault(): bool
     {

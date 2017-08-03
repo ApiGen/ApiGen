@@ -85,7 +85,7 @@ final class ElementResolver
         $classReflectionName = (string) $this->fqsenResolver->resolve(ltrim($name, '\\'), $context);
         $classReflectionName = ltrim($classReflectionName, '\\');
 
-        // @todo: return only string on non resolved existing class
+        // @todo return only string on non resolved existing class
         $classReflections = $this->reflectionStorage->getClassReflections();
 
         if (! isset($classReflections[$classReflectionName])) {

@@ -381,13 +381,13 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
         $allMethods += $this->getOwnMethods();
 
         foreach ($this->getTraits() as $traitReflection) {
-            // @todo: check override from the left
+            // @todo check override from the left
             // keep already existing
             $allMethods += $traitReflection->getMethods();
         }
 
         if ($this->getParentClass()) {
-            // @todo: check override from the left
+            // @todo check override from the left
             // keep already existing
             $allMethods += $this->getParentClass()->getMethods();
         }
