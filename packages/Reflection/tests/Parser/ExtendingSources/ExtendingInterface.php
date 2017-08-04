@@ -4,7 +4,6 @@ namespace ApiGen\Reflection\Tests\Parser\ExtendingSources;
 
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources;
 
-class ExtendingClass extends NotLoadedSources\SomeClass
+interface ExtendingInterface extends NotLoadedSources\SomeInterface
 {
-    use NotLoadedSources\SomeTrait;
 }
