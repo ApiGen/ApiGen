@@ -22,9 +22,14 @@ final class StepCounterTest extends AbstractParserAwareTestCase
 
         $count = 2;    // index.html + elementlist.js
         $count += 5;   // classes.html + exceptions.html + interfaces.html + traits.html + functions.html
-        $count += 10;  // class, exception, interface, trait and function + their sources
-        $count ++;     // EmptyNamespace
-        $count ++;     // MyNamespace
+
+        $count += 3;   // Namespace: none, EmptyNamespace, EmptyNamespace\MyNamespace
+
+        $count += 2;   // EmptyNamespace\MyNamespace\SomeClass + source
+        $count += 4;   // EmptyNamespace\MyNamespace\SomeException + source, \Exception, \Throwable
+        $count += 2;   // EmptyNamespace\MyNamespace\SomeFunction() + source
+        $count += 2;   // EmptyNamespace\MyNamespace\SomeInterface + source
+        $count += 2;   // EmptyNamespace\MyNamespace\SomeTrait + source
 
         $this->assertSame($count, $stepCounter->getStepCount());
     }
