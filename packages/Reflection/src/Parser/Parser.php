@@ -128,8 +128,82 @@ final class Parser
     private function transformBetterClassInterfaceAndTraitReflections(ClassReflector $classReflector): array
     {
         $betterClassReflections = $classReflector->getAllClasses();
+        $allReflections = $this->resolveParentClassesInterfacesAndTraits($betterClassReflections);
 
-        return $this->transformerCollector->transformGroup($betterClassReflections);
+        return $this->transformerCollector->transformGroup($allReflections);
+    }
+
+    /**
+     * @param ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]
+     */
+    private function resolveParentClassesInterfacesAndTraits(array $betterClassReflections): array
+    {
+        $reflections = [];
+
+        foreach ($betterClassReflections as $reflection) {
+            $reflections[$reflection->getName()] = $reflection;
+        }
+
+        $reflections = $this->resolveParentClasses($reflections);
+        $reflections = $this->resolveParentInterfaces($reflections);
+        $reflections = $this->resolveParentTraits($reflections);
+
+        return $reflections;
+    }
+
+    /**
+     * @param ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]
+     */
+    private function resolveParentClasses(array $reflections): array
+    {
+        foreach ($reflections as $reflection) {
+            $class = $reflection;
+            while ($parentClass = $class->getParentClass()) {
+                if (!isset($reflections[$parentClass->getName()])) {
+                    $reflections[$parentClass->getName()] = $parentClass;
+                }
+
+                $class = $parentClass;
+            }
+        }
+
+        return $reflections;
+    }
+
+    /**
+     * @param ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]
+     */
+    private function resolveParentInterfaces(array $reflections): array
+    {
+        foreach ($reflections as $reflection) {
+            foreach ($reflection->getInterfaces() as $interface) {
+                if (!isset($reflections[$interface->getName()])) {
+                    $reflections[$interface->getName()] = $interface;
+                }
+            }
+        }
+
+        return $reflections;
+    }
+
+    /**
+     * @param ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]
+     */
+    private function resolveParentTraits(array $reflections): array
+    {
+        foreach ($reflections as $reflection) {
+            foreach ($reflection->getTraits() as $trait) {
+                if (!isset($reflections[$trait->getName()])) {
+                    $reflections[$trait->getName()] = $trait;
+                }
+            }
+        }
+
+        return $reflections;
     }
 
     private function parseClassElements(SourceLocator $sourceLocator): void
