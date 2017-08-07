@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Trait_\TraitReflection\Source;
 
 trait SimpleTrait
 {
-    use ParentTrait;
+    //use ParentTrait;
     use ToBeAliasedTrait {
         ToBeAliasedTrait::aliasedParentMethod as renamedMethod;
     }
