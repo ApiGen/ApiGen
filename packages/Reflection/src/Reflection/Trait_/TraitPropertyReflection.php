@@ -155,6 +155,10 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
 
     public function isDeprecated(): bool
     {
+        if ($this->getDeclaringTrait()->isDeprecated()) {
+            return true;
+        }
+
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
