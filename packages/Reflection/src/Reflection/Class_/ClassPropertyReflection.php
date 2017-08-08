@@ -151,6 +151,10 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
 
     public function isDeprecated(): bool
     {
+        if ($this->getDeclaringClass()->isDeprecated()) {
+            return true;
+        }
+
         return $this->hasAnnotation(AnnotationList::DEPRECATED);
     }
 
