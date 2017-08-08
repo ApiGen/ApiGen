@@ -13,7 +13,7 @@
         </code>
 
         <div class="description">
-            {$constant|description}
+            {if $constant instanceof \ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface}{$constant|description}{/if}
 
             {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
             {foreach $filteredAnnotations as $annotation}

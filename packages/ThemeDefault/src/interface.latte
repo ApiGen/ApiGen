@@ -66,33 +66,11 @@
     {/if}
 
     {if $interface->getOwnConstants()}
-        <table class="summary table table-responsive table-bordered table-striped" id="constants">
+        <table class="summary table table-bordered table-responsive table-striped" id="constants">
             <tr><th colspan="3">Constants Summary</th></tr>
-            <tr n:foreach="$interface->getOwnConstants() as $constant" id="{$constant->getName()}">
-                <td class="attributes">
-                    <code class="keyword">{$constant->getTypeHint()}</code>
-                </td>
-                <td class="name">
-                    <code>
-                        <a href="{$constant|linkSource}" class="constant-name">{$constant->getName()}</a>
-                    </code>
-
-                    <div class="description">
-                        {if $constant instanceof \ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface}{$constant|description}{/if}
-
-                        {var $filteredAnnotations = ($constant->getAnnotations()|annotationFilter: ['var'])}
-                        {foreach $filteredAnnotations as $annotation}
-                            {$annotation|annotation:$constant|noescape}<br>
-                        {/foreach}
-                    </div>
-                </td>
-                <td class="value">
-                    <div>
-                        <a href="#{$constant->getName()}" class="anchor pull-right">#</a>
-                        <code>{$constant->getValueDefinition()|phpHighlight:$interface|noescape}</code>
-                    </div>
-                </td>
-            </tr>
+            {foreach $interface->getOwnConstants() as $constant}
+                {include "partial/constant.latte", constant => $constant}
+            {/foreach}
         </table>
     {/if}
 
