@@ -51,8 +51,9 @@
         {foreach $interface->getAnnotations() as $annotation}
             {$annotation|annotation:$interface|noescape}<br>
         {/foreach}
-
-        <a href="{$interface|linkSource}" class="open-source-code">Open source code</a>
+        {if $interface->getFilename()}
+            <a href="{$interface|linkSource}" class="open-source-code">Open source code</a>
+        {/if}
         <br>
     </div>
 
