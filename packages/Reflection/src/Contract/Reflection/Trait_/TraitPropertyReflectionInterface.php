@@ -17,7 +17,10 @@ interface TraitPropertyReflectionInterface extends AbstractTraitElementInterface
      */
     public function getDefaultValue();
 
-    public function getTypeHint(): string;
+    /**
+     * @return string[]
+     */
+    public function getTypeHints(): array;
 
     public function getNamespaceName(): string;
 }
