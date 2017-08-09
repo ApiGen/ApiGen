@@ -24,7 +24,9 @@
                     <a href="{$method|linkSource}">{$method->getName()}</a>(
                     {foreach $method->getParameters() as $parameter}
                         <span>
-                            {$parameter->getTypeHint()|buildLinkIfReflectionFound}
+                            {if $parameter->getTypeHints()}
+                                {foreach $parameter->getTypeHints() as $typeHint}{$typeHint|buildLinkIfReflectionFound}{sep}|{/sep}{/foreach}
+                            {/if}
                             <span class="property-name">{if $parameter->isPassedByReference()}&amp; {/if}${$parameter->getName()}</span>
 
                         {if $parameter->isDefaultValueAvailable()} = {$parameter->getDefaultValue()|dumpDefaultValue|phpHighlight|noescape}{elseif $parameter->isVariadic()},…{/if}</span>{sep}, {/sep}

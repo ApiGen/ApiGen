@@ -4,7 +4,7 @@ namespace ApiGen\Reflection\Contract\Reflection;
 
 interface AbstractParameterReflectionInterface extends AbstractReflectionInterface
 {
-    public function getTypeHint(): string;
+    public function getTypeHints(): array;
 
     public function isDefaultValueAvailable(): bool;
 

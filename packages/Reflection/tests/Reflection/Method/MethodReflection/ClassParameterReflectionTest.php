@@ -32,6 +32,6 @@ final class ClassParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testGetTypeHint(): void
     {
-        $this->assertSame(ParameterClass::class, $this->parameterReflection->getTypeHint());
+        $this->assertSame([ParameterClass::class], $this->parameterReflection->getTypeHints());
     }
 }

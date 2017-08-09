@@ -31,20 +31,21 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         $this->betterParameterReflection = $betterParameterReflection;
     }
 
-    public function getTypeHint(): string
+    public function getTypeHints(): array
     {
-        $types = (string) $this->betterParameterReflection->getTypeHint();
-        $types = $this->removeClassPreSlashes($types);
-        if ($types) {
-            return $types;
+        $typeHint = $this->betterParameterReflection->getTypeHint();
+
+        if ($typeHint) {
+            $typeHint = ltrim((string) $typeHint, '\\');
+            return [$typeHint];
         }
 
-        $annotation = $this->getAnnotation();
-        if ($annotation) {
-            return (string) $annotation->getType();
+        $typeHints = [];
+        foreach ($this->betterParameterReflection->getDocBlockTypeStrings() as $typeHint) {
+            $typeHints[] = ltrim($typeHint, '\\');
         }
 
-        return '';
+        return $typeHints;
     }
 
     public function isDefaultValueAvailable(): bool
@@ -92,16 +93,6 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     public function setTransformerCollector(TransformerCollector $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
-    }
-
-    private function removeClassPreSlashes(string $types): string
-    {
-        $typesInArray = explode('|', $types);
-        array_walk($typesInArray, function (&$value) {
-            $value = ltrim($value, '\\');
-        });
-
-        return implode('|', $typesInArray);
     }
 
     private function getAnnotation(): ?Param

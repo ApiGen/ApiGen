@@ -31,8 +31,8 @@ final class ParameterWithConstantDefalutValueTest extends AbstractParserAwareTes
 
     public function testGetTypeHint(): void
     {
-        $this->assertSame('string', $this->localConstantParameterReflection->getTypeHint());
-        $this->assertSame('string', $this->classConstantParameterReflection->getTypeHint());
+        $this->assertSame(['string'], $this->localConstantParameterReflection->getTypeHints());
+        $this->assertSame(['string'], $this->classConstantParameterReflection->getTypeHints());
     }
 
     // @todo - fix after constant dump is fixed

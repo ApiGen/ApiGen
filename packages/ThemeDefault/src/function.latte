@@ -40,7 +40,9 @@
             <tr n:foreach="$function->getParameters() as $parameter" id="${$parameter->getName()}">
                 <td class="name">
                     <code>
-                        {$parameter->getTypeHint()|buildLinkIfReflectionFound}
+                        {if $parameter->getTypeHints()}
+                            {foreach $parameter->getTypeHints() as $typeHint}{$typeHint|buildLinkIfReflectionFound}{sep}|{/sep}{/foreach}
+                        {/if}
                     </code>
                 </td>
                 <td class="value"><code>{block|strip}

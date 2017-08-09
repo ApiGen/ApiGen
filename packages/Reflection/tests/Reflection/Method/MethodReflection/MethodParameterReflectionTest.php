@@ -37,7 +37,7 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testGetTypeHint(): void
     {
-        $this->assertSame('int|string', $this->parameterReflection->getTypeHint());
+        $this->assertSame(['int', 'string'], $this->parameterReflection->getTypeHints());
     }
 
     public function testGetDescription(): void
