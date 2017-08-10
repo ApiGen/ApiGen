@@ -35,6 +35,7 @@ parameters:
         - PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
         - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
         - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
+        - PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
         # possibly bugged: doesn't report errors, only fixes
         - Symplify\CodingStandard\Fixer\Php\ClassStringToClassConstantFixer
 
@@ -92,6 +93,8 @@ parameters:
             - *packages/Annotation/src/AnnotationSubscriber/*Subscriber.php
             - packages/Reflection/tests/Reflection/Method/MethodReflection/ParameterWithConstantDefalutValueTest.php
             - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/ConstantDefaultValueTest.php
+            - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
+            - packages/Reflection/src/Reflection/Class_/ClassConstantReflection.php
 
         PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer:
             # test
@@ -102,8 +105,11 @@ parameters:
             - packages/Element/tests/ReflectionCollector/Source/PartiallyDeprecatedClass.php
 
         Symplify\CodingStandard\Sniffs\Classes\EqualInterfaceImplementationSniff:
-            # todo: implement new interface
+            # todo: fix, add methods to parent interface or implement new interface
             - packages/Element/src/ReflectionCollector/NamespaceReflectionCollector.php
+            - packages/Reflection/src/Reflection/Class_/ClassConstantReflection.php
+            - packages/Reflection/src/Reflection/Class_/ClassReflection.php
+            - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
 
         Symplify\CodingStandard\Sniffs\Commenting\VarConstantCommentSniff:
             - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php

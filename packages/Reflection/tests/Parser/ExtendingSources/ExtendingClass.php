@@ -6,5 +6,4 @@ use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeClass;
 
 class ExtendingClass extends SomeClass
 {
-    // use SomeTrait;
 }

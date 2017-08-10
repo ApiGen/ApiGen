@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Tests\Parser;
 
 use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Reflection\Reflection\Class_\ClassReflection;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
@@ -13,11 +12,6 @@ final class ParentResolvingTest extends AbstractContainerAwareTestCase
      * @var ReflectionStorage
      */
     private $reflectionStorage;
-
-    /**
-     * @var ClassReflection[]
-     */
-    private $allClasses;
 
     protected function setUp(): void
     {
@@ -36,7 +30,7 @@ final class ParentResolvingTest extends AbstractContainerAwareTestCase
         $this->assertArrayHasKey('ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingClass', $allClasses);
     }
 
-    public function testInterfaces()
+    public function testInterfaces(): void
     {
         $allInterfaces = $this->reflectionStorage->getInterfaceReflections();
         $this->assertArrayHasKey('ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeInterface', $allInterfaces);
@@ -44,7 +38,7 @@ final class ParentResolvingTest extends AbstractContainerAwareTestCase
         $this->assertCount(2, $allInterfaces);
     }
 
-    public function testTraits()
+    public function testTraits(): void
     {
         $allTraits = $this->reflectionStorage->getTraitReflections();
         $this->assertArrayHasKey('ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingTrait', $allTraits);

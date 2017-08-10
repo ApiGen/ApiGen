@@ -134,7 +134,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
      * https://github.com/nikic/PHP-Parser/issues/73#issuecomment-24533846
      * $this->betterTraitReflection->getTraits();
      * and PR with test
-     * https://github.com/Roave/BetterReflection/pull/274
+     * https://github.com/Roave/BetterReflection/pull/274.
      *
      * @return TraitReflectionInterface[]
      */
