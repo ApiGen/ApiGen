@@ -33,7 +33,7 @@
         "tracy/tracy": "^2.4",
         "phpunit/phpunit": "^6.0",
         "phpstan/phpstan": "^0.8",
-        "symplify/easy-coding-standard": "^2.2.3"
+        "symplify/easy-coding-standard": "^2.2"
     },
     "autoload": {
         "psr-4": {
@@ -69,8 +69,8 @@
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],
         "phpstan": "phpstan analyse packages src bin --level 4 -c phpstan.neon",
-        "check-cs": "easy-coding-standard check packages bin src tests",
-        "fix-cs": "easy-coding-standard check packages bin src tests --fix"
+        "check-cs": "ecs check packages bin src tests",
+        "fix-cs": "ecs check packages bin src tests --fix"
     },
     "config": {
         "sort-packages": true
