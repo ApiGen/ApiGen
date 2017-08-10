@@ -40,12 +40,49 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
             return [$typeHint];
         }
 
-        $typeHints = [];
-        foreach ($this->betterParameterReflection->getDocBlockTypeStrings() as $typeHint) {
-            $typeHints[] = ltrim($typeHint, '\\');
+        $annotation = $this->getAnnotation();
+        if ($annotation) {
+            $types = explode('|', (string) $annotation->getType());
+            return $this->resolveTypes($types);
         }
 
-        return $typeHints;
+        return [];
+    }
+
+    /**
+     * Resolves fully-qualified class names in type hints.
+     *
+     * In BetterReflection library, there is no support (and shall not be)
+     * for unnamed `@param` annotations being defined by their index. For
+     * that reason, we need to process the annotations on our own. However,
+     * using the indexed `@param` annotations is not allowed by PSR-5, so
+     * it is possible to deprecate this function in the future.
+     *
+     * @param string[] $types
+     * @return string[]
+     */
+    private function resolveTypes(array $types): array
+    {
+        array_walk($types, function (&$value) {
+           $value = ltrim($value, '\\');
+        });
+
+        $function = $this->betterParameterReflection->getDeclaringFunction();
+        if ($function instanceof \Roave\BetterReflection\Reflection\ReflectionMethod) {
+            $function = $function->getDeclaringClass();
+        }
+
+        $context = (new \phpDocumentor\Reflection\Types\ContextFactory())->createForNamespace(
+            $function->getNamespaceName(),
+            $function->getLocatedSource()->getSource()
+        );
+
+        $types = (new \Roave\BetterReflection\TypesFinder\ResolveTypes())->__invoke($types, $context);
+        array_walk($types, function (&$value) {
+           $value = ltrim((string) $value, '\\');
+        });
+
+        return $types;
     }
 
     public function isDefaultValueAvailable(): bool
