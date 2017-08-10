@@ -59,12 +59,14 @@ final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
                 /** @var Object_ $objectValueType */
                 $objectValueType = $arrayType->getValueType();
                 $link = $this->createLinkFromObject($reflection, $objectValueType);
+
                 return '<code>' . $link . '[]</code>';
             }
         } elseif ($content->getType() instanceof Object_) {
             /** @var Object_ $objectValueType */
             $objectValueType = $content->getType();
             $link = $this->createLinkFromObject($reflection, $objectValueType);
+
             return '<code>' . $link . '</code>';
         }
 

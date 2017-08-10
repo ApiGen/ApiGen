@@ -34,7 +34,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
-            DestinationOption::NAME => TEMP_DIR
+            DestinationOption::NAME => TEMP_DIR,
         ]);
     }
 
@@ -42,7 +42,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $reflectionClassMock->method('getName')
-            ->willReturn('SomeNamespace\SomeName');
+            ->willReturn(\SomeNamespace\SomeName::class);
 
         $this->assertSame(
             'source-class-SomeNamespace.SomeName.html',
@@ -98,7 +98,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     public function provideDataForBuildLinedRoute(): array
     {
         return [
-            [FunctionReflectionInterface::class, 'source-function-SourceCodeRouteTest.php.html#15-25']
+            [FunctionReflectionInterface::class, 'source-function-SourceCodeRouteTest.php.html#15-25'],
         ];
     }
 
@@ -126,7 +126,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
         return [
             [ClassConstantReflectionInterface::class, 'source-class-someClass.html#20-30'],
             [ClassMethodReflectionInterface::class, 'source-class-someClass.html#20-30'],
-            [ClassPropertyReflectionInterface::class, 'source-class-someClass.html#20-30']
+            [ClassPropertyReflectionInterface::class, 'source-class-someClass.html#20-30'],
         ];
     }
 

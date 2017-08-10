@@ -39,6 +39,7 @@ final class AnnotationFilterProvider implements FilterProviderInterface
             'description' => function (AnnotationsInterface $reflection) {
                 $processDocTextEvent = new ProcessDocTextEvent($reflection->getDescription(), $reflection);
                 $this->eventDispatcher->dispatch(ProcessDocTextEvent::class, $processDocTextEvent);
+
                 return $processDocTextEvent->getText();
             },
 
@@ -60,7 +61,7 @@ final class AnnotationFilterProvider implements FilterProviderInterface
                 }
 
                 return $annotations;
-            }
+            },
         ];
     }
 
