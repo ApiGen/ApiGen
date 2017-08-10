@@ -8,14 +8,14 @@ class SomeClass
 
     public const PUBLIC_CONST = 2;
 
-    protected const PROTECTED_CONST = 3;
-
-    private const PRIVATE_CONST = 4;
-
     /**
      * @deprecated
      */
     public const DEPRECATED_CONST = 5;
+
+    protected const PROTECTED_CONST = 3;
+
+    private const PRIVATE_CONST = 4;
 
     /**
      * @var string
@@ -31,7 +31,7 @@ class SomeClass
      * @var int
      */
     public $integerProperty = 11;
-    
+
     /**
      * Do not add param annotations here!
      */

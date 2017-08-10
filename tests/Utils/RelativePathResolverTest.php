@@ -31,12 +31,12 @@ final class RelativePathResolverTest extends AbstractContainerAwareTestCase
     {
         $this->configuration->resolveOptions([
             DestinationOption::NAME => TEMP_DIR,
-            SourceOption::NAME => [TEMP_DIR]
+            SourceOption::NAME => [TEMP_DIR],
         ]);
 
         $this->assertSame('some-file.txt', $this->relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
 
-        $testPath = 'some' .DIRECTORY_SEPARATOR. 'dir' .DIRECTORY_SEPARATOR. 'file.txt';
+        $testPath = 'some' . DIRECTORY_SEPARATOR . 'dir' . DIRECTORY_SEPARATOR . 'file.txt';
         $this->assertSame(
             $testPath,
             $this->relativePathResolver->getRelativePath(TEMP_DIR . DIRECTORY_SEPARATOR . $testPath)
@@ -47,7 +47,7 @@ final class RelativePathResolverTest extends AbstractContainerAwareTestCase
     {
         $this->configuration->resolveOptions([
             DestinationOption::NAME => TEMP_DIR,
-            SourceOption::NAME => [TEMP_DIR]
+            SourceOption::NAME => [TEMP_DIR],
         ]);
 
         $this->expectException(InvalidArgumentException::class);

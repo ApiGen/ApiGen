@@ -38,7 +38,7 @@ final class DefaultValueDumperTest extends TestCase
             [['cat', 'dog'], "array (\n" .
                 "  0 => 'cat',\n" .
                 "  1 => 'dog',\n" .
-                ')']
+                ')', ],
         ];
     }
 }

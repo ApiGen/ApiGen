@@ -15,6 +15,6 @@ final class FileSystemCopyTest extends TestCase
             TEMP_DIR . DIRECTORY_SEPARATOR . 'NewDir'
         );
 
-        $this->assertFileExists(TEMP_DIR . DIRECTORY_SEPARATOR .  'NewDir');
+        $this->assertFileExists(TEMP_DIR . DIRECTORY_SEPARATOR . 'NewDir');
     }
 }
