@@ -74,12 +74,12 @@ final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
             [
                 'http://php.net/session_set_save_handler',
                 '',
-                '<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>'
+                '<a href="http://php.net/session_set_save_handler">http://php.net/session_set_save_handler</a>',
             ],
             [
                 'bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK',
                 'Donations',
-                '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>'
+                '<a href="bitcoin:1335STSwu9hST4vcMRppEPgENMHD2r1REK">Donations</a>',
             ],
             ['http://licence.com', 'MIT', '<a href="http://licence.com">MIT</a>'],
             ['https://apigen.org', 'Description', '<a href="https://apigen.org">Description</a>'],

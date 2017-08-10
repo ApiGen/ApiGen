@@ -34,6 +34,8 @@ parameters:
         - PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
         - PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
         - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
+        # possibly bugged: doesn't report errors, only fixes
+        - Symplify\CodingStandard\Fixer\Php\ClassStringToClassConstantFixer
 
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
@@ -86,3 +88,7 @@ parameters:
 
         Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff:
             - *packages/Annotation/src/AnnotationSubscriber/*Subscriber.php
+
+        PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer:
+            # test
+            - packages/Annotation/tests/AnnotationSubscriber/LinkAnnotationSubscriberSource/SomeClassWithLinkAnnotations.php

@@ -4,7 +4,7 @@ namespace ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSo
 
 use ApiGen\Annotation\Tests\AnnotationDecoratorSource\ReturnedClass;
 
-function someExistingFunction()
+function someExistingFunction(): void
 {
 }
 
