@@ -6,5 +6,5 @@ use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeTrait;
 
 trait ExtendingTrait
 {
-    use SomeTrait;
+    // use SomeTrait;
 }
