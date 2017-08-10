@@ -71,7 +71,9 @@
         {foreach $class->getAnnotations() as $annotation}
             {$annotation|annotation: $class|noescape}<br>
         {/foreach}
-        <a href="{$class|linkSource}" class="open-source-code">Open source code</a>
+        {if $class->getFilename()}
+            <a href="{$class|linkSource}" class="open-source-code">Open source code</a>
+        {/if}
         <br>
     </div>
 
