@@ -24,7 +24,7 @@ final class ConfigurationTemplateVariablesEventSubscriber implements EventSubscr
     public static function getSubscribedEvents(): array
     {
         return [
-            CreateTemplateEvent::class => 'loadTemplateVariables'
+            CreateTemplateEvent::class => 'loadTemplateVariables',
         ];
     }
 
@@ -33,7 +33,7 @@ final class ConfigurationTemplateVariablesEventSubscriber implements EventSubscr
         $parameterBag = $createTemplateEvent->getParameterBag();
         $parameterBag->addParameters([
             'title' => $this->configuration->getTitle(),
-            'annotationGroups' => $this->configuration->getAnnotationGroups()
+            'annotationGroups' => $this->configuration->getAnnotationGroups(),
         ]);
     }
 }

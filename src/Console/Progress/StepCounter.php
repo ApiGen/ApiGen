@@ -68,7 +68,7 @@ final class StepCounter
         $count = 0;
         foreach ($reflections as $reflection) {
             if ($reflection->getFileName()) {
-                $count++;
+                ++$count;
             }
         }
 
@@ -79,23 +79,23 @@ final class StepCounter
     {
         $count = 2; // index.html + elementlist.js
         if (count($this->reflectionStorage->getClassReflections())) {
-            $count++; // classes.html
+            ++$count; // classes.html
         }
 
         if (count($this->reflectionStorage->getExceptionReflections())) {
-            $count++; // exceptions.html
+            ++$count; // exceptions.html
         }
 
         if (count($this->reflectionStorage->getInterfaceReflections())) {
-            $count++; // interfaces.html
+            ++$count; // interfaces.html
         }
 
         if (count($this->reflectionStorage->getTraitReflections())) {
-            $count++; // traits.html
+            ++$count; // traits.html
         }
 
         if (count($this->reflectionStorage->getFunctionReflections())) {
-            $count++; // functions.html
+            ++$count; // functions.html
         }
 
         return $count;

@@ -33,7 +33,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
     public static function getSubscribedEvents(): array
     {
         return [
-            CreateTemplateEvent::class => 'loadTemplateVariables'
+            CreateTemplateEvent::class => 'loadTemplateVariables',
         ];
     }
 
@@ -56,7 +56,7 @@ final class ElementsTemplateVariablesEventSubscriber implements EventSubscriberI
             'allExceptions' => $this->reflectionStorage->getExceptionReflections(),
             'allInterfaces' => $this->reflectionStorage->getInterfaceReflections(),
             'allTraits' => $this->reflectionStorage->getTraitReflections(),
-            'allFunctions' => $this->reflectionStorage->getFunctionReflections()
+            'allFunctions' => $this->reflectionStorage->getFunctionReflections(),
         ]);
     }
 }

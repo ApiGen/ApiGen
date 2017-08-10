@@ -68,7 +68,7 @@ final class FunctionGenerator implements GeneratorInterface
             $this->configuration->getDestinationWithPrefixName('function-', $reflectionFunction->getName()),
             [
                 'activePage' => 'function',
-                'function' => $reflectionFunction
+                'function' => $reflectionFunction,
             ]
         );
     }

@@ -49,13 +49,13 @@ final class AnnotationGroupsGenerator implements GeneratorInterface
             [
                 'annotation' => $annotation,
                 'activePage' => 'annotation-group-' . $annotation,
-                'hasElements' =>  $this->annotationReflectionCollector->hasAnyElements(),
+                'hasElements' => $this->annotationReflectionCollector->hasAnyElements(),
                 'classes' => $this->annotationReflectionCollector->getClassReflections($annotation),
                 'interfaces' => $this->annotationReflectionCollector->getInterfaceReflections($annotation),
                 'traits' => $this->annotationReflectionCollector->getTraitReflections($annotation),
                 'methods' => $this->annotationReflectionCollector->getClassOrTraitMethodReflections($annotation),
                 'functions' => $this->annotationReflectionCollector->getFunctionReflections($annotation),
-                'properties' => $this->annotationReflectionCollector->getClassOrTraitPropertyReflections($annotation)
+                'properties' => $this->annotationReflectionCollector->getClassOrTraitPropertyReflections($annotation),
             ]
         );
     }

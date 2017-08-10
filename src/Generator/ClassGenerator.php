@@ -77,7 +77,7 @@ final class ClassGenerator implements GeneratorInterface
                 'activePage' => 'class',
                 'activeClass' => $classReflection,
                 'fileName' => $classReflection->getFileName(),
-                'source' => $highlightedContent
+                'source' => $highlightedContent,
             ]
         );
     }

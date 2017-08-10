@@ -77,7 +77,7 @@ final class ExceptionGenerator implements GeneratorInterface
                 'activePage' => 'class',
                 'activeClass' => $exceptionReflection,
                 'fileName' => $exceptionReflection->getFileName(),
-                'source' => $highlightedContent
+                'source' => $highlightedContent,
             ]
         );
     }

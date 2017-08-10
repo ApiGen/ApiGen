@@ -51,7 +51,7 @@ final class ExceptionsGenerator implements GeneratorInterface
             [
                 'activePage' => self::NAME,
                 'pageTitle' => ucfirst(self::NAME),
-                self::NAME => $this->reflectionStorage->getExceptionReflections()
+                self::NAME => $this->reflectionStorage->getExceptionReflections(),
             ]
         );
     }

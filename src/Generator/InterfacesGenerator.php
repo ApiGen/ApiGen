@@ -51,7 +51,7 @@ final class InterfacesGenerator implements GeneratorInterface
             [
                 'activePage' => self::NAME,
                 'pageTitle' => ucfirst(self::NAME),
-                self::NAME => $this->reflectionStorage->getInterfaceReflections()
+                self::NAME => $this->reflectionStorage->getInterfaceReflections(),
             ]
         );
     }
