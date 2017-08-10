@@ -44,7 +44,8 @@ final class LinkFilterTest extends AbstractContainerAwareTestCase
             'className' => TestClass::class,
         ]);
         $this->assertSame(
-            '<a href="class-ApiGen.StringRouting.Tests.Latte.Filter.Source.TestClass.html">' . TestClass::class . '</a>',
+            '<a href="class-ApiGen.StringRouting.Tests.Latte.Filter.Source.TestClass.html">'
+            . TestClass::class . '</a>',
             trim($html)
         );
 

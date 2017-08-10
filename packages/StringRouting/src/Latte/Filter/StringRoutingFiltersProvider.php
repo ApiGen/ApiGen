@@ -44,12 +44,14 @@ final class StringRoutingFiltersProvider implements FilterProviderInterface
             // use in .latte: <a href="{$refleciton|linkReflection}">{$name}</a>
             'linkReflection' => function ($reflection): string {
                 $this->ensureFilterArgumentsIsReflection($reflection, 'linkReflection');
+
                 return $this->router->buildRoute(ReflectionRoute::NAME, $reflection);
             },
 
             // use in .latte: <a href="{$reflection|linkSource}">{$name}</a>
             'linkSource' => function ($reflection): string {
                 $this->ensureFilterArgumentsIsReflection($reflection, 'linkSource');
+
                 return $this->router->buildRoute(SourceCodeRoute::NAME, $reflection);
             },
 
@@ -60,11 +62,12 @@ final class StringRoutingFiltersProvider implements FilterProviderInterface
                     $link = Html::el('a');
                     $link->setAttribute('href', $this->router->buildRoute(ReflectionRoute::NAME, $reflection));
                     $link->setText($className);
+
                     return $link;
-                } else {
-                    return $className;
                 }
-            }
+
+                return $className;
+            },
         ];
     }
 
