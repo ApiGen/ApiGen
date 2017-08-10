@@ -30,9 +30,10 @@ checkers:
     - PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
 
 parameters:
-    excluded_checkers:
+    exclude_checkers:
         - PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
         - PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
+        - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
 
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
@@ -82,3 +83,6 @@ parameters:
             - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
             - packages/Reflection/src/Contract/Reflection/AbstractMethodReflectionInterface.php
             - *packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php
+
+        Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff:
+            - *packages/Annotation/src/AnnotationSubscriber/*Subscriber.php
