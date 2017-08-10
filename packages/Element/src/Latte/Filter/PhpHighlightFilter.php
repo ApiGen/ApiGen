@@ -26,7 +26,7 @@ final class PhpHighlightFilter implements FilterProviderInterface
             // use in .latte: {$method|phpHighlight}
             'phpHighlight' => function ($code) {
                 return $this->highlighter->highlight($code);
-            }
+            },
         ];
     }
 }

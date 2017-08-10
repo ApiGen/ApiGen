@@ -51,7 +51,7 @@ final class AutocompleteElements
         foreach ($this->namespaceReflectionCollector->getNamespaces() as $namespace) {
             $elements[] = [
                 'file' => $this->namespaceRoute->constructUrl($namespace),
-                'label' => $namespace
+                'label' => $namespace,
             ];
         }
 
@@ -69,28 +69,28 @@ final class AutocompleteElements
             $path = $this->reflectionRoute->constructUrl($functionReflection);
             $elements[] = [
                'file' => $path,
-               'label' => $name
+               'label' => $name,
             ];
         }
 
         foreach ($this->reflectionStorage->getClassReflections() as $classReflection) {
             $elements[] = [
                 'file' => $this->reflectionRoute->constructUrl($classReflection),
-                'label' => $classReflection->getName()
+                'label' => $classReflection->getName(),
             ];
         }
 
         foreach ($this->reflectionStorage->getInterfaceReflections() as $interfaceReflection) {
             $elements[] = [
                 'file' => $this->reflectionRoute->constructUrl($interfaceReflection),
-                'label' => $interfaceReflection->getName()
+                'label' => $interfaceReflection->getName(),
             ];
         }
 
         foreach ($this->reflectionStorage->getTraitReflections() as $traitReflection) {
             $elements[] = [
                 'file' => $this->reflectionRoute->constructUrl($traitReflection),
-                'label' => $traitReflection->getName()
+                'label' => $traitReflection->getName(),
             ];
         }
 

@@ -92,3 +92,11 @@ parameters:
         PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer:
             # test
             - packages/Annotation/tests/AnnotationSubscriber/LinkAnnotationSubscriberSource/SomeClassWithLinkAnnotations.php
+
+        PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer:
+            # test
+            - packages/Element/tests/ReflectionCollector/Source/PartiallyDeprecatedClass.php
+
+        Symplify\CodingStandard\Sniffs\Classes\EqualInterfaceImplementationSniff:
+            # todo: implement new interface
+            - packages/Element/src/ReflectionCollector/NamespaceReflectionCollector.php
