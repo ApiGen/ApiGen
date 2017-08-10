@@ -42,7 +42,7 @@ final class SourceCodeRouteTest extends AbstractContainerAwareTestCase
     {
         $reflectionClassMock = $this->createMock(ClassReflectionInterface::class);
         $reflectionClassMock->method('getName')
-            ->willReturn(\SomeNamespace\SomeName::class);
+            ->willReturn('SomeNamespace\SomeName');
 
         $this->assertSame(
             'source-class-SomeNamespace.SomeName.html',
