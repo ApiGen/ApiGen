@@ -2,8 +2,8 @@
 
 namespace ApiGen\Tests\Generator\ExtendingSources;
 
-use ApiGen\Tests\Generator\NotLoadedSources;
+use ApiGen\Tests\Generator\NotLoadedSources\SomeClass;
 
-class ExtendingClass extends NotLoadedSources\SomeClass
+class ExtendingClass extends SomeClass
 {
 }
