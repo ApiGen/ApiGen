@@ -34,22 +34,6 @@ final class TransformerCollector
 
     /**
      * @param object[] $reflections
-     */
-    private function detectMatchingTransformer(array $reflections): ?TransformerInterface
-    {
-        $reflection = array_shift($reflections);
-
-        foreach ($this->transformers as $transformer) {
-            if ($transformer->matches($reflection)) {
-                return $transformer;
-            }
-        }
-
-        return null;
-    }
-
-    /**
-     * @param object[] $reflections
      * @return object[]
      */
     public function transformGroup(array $reflections): array
@@ -107,6 +91,22 @@ final class TransformerCollector
     }
 
     /**
+     * @param object[] $reflections
+     */
+    private function detectMatchingTransformer(array $reflections): ?TransformerInterface
+    {
+        $reflection = array_shift($reflections);
+
+        foreach ($this->transformers as $transformer) {
+            if ($transformer->matches($reflection)) {
+                return $transformer;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param object $transformedReflection
      */
     private function hasAllowedAccessLevel($transformedReflection): bool
@@ -128,18 +128,12 @@ final class TransformerCollector
      */
     private function shouldSkipReflection($transformedReflection): bool
     {
-        // also ! $this->reflection->isInternal();, remove isDocumented()
-
-        // @let decide voters if element is passed?
-        // here alreay 2 conditions
         if ($transformedReflection instanceof AnnotationsInterface
             && $transformedReflection->hasAnnotation('internal')
         ) {
             return true;
         }
 
-        // $this->configuration->getVisibilityLevels()
-        // @todo here is the place to filter out public/protected etc - use service!
         if (! $this->hasAllowedAccessLevel($transformedReflection)) {
             return true;
         }

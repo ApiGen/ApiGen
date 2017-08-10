@@ -161,7 +161,7 @@ final class Parser
         foreach ($reflections as $reflection) {
             $class = $reflection;
             while ($parentClass = $class->getParentClass()) {
-                if (!isset($reflections[$parentClass->getName()])) {
+                if (! isset($reflections[$parentClass->getName()])) {
                     $reflections[$parentClass->getName()] = $parentClass;
                 }
 
@@ -180,7 +180,7 @@ final class Parser
     {
         foreach ($reflections as $reflection) {
             foreach ($reflection->getInterfaces() as $interface) {
-                if (!isset($reflections[$interface->getName()])) {
+                if (! isset($reflections[$interface->getName()])) {
                     $reflections[$interface->getName()] = $interface;
                 }
             }
@@ -197,7 +197,7 @@ final class Parser
     {
         foreach ($reflections as $reflection) {
             foreach ($reflection->getTraits() as $trait) {
-                if (!isset($reflections[$trait->getName()])) {
+                if (! isset($reflections[$trait->getName()])) {
                     $reflections[$trait->getName()] = $trait;
                 }
             }
@@ -227,8 +227,8 @@ final class Parser
     {
         $locators = [
             new DirectoriesSourceLocator($directories),
-            new AutoloadSourceLocator(),
-            new PhpInternalSourceLocator()
+            new AutoloadSourceLocator,
+            new PhpInternalSourceLocator,
         ];
 
         foreach ($directories as $directory) {
@@ -247,8 +247,8 @@ final class Parser
     private function createFilesSource(array $files): SourceLocator
     {
         $locators = [
-            new AutoloadSourceLocator(),
-            new PhpInternalSourceLocator()
+            new AutoloadSourceLocator,
+            new PhpInternalSourceLocator,
         ];
 
         foreach ($files as $file) {

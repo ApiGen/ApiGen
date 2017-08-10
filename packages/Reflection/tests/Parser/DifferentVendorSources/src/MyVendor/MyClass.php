@@ -2,8 +2,8 @@
 
 namespace MyVendor;
 
-use DifferentVendor;
+use DifferentVendor\DifferentClass;
 
-class MyClass extends DifferentVendor\DifferentClass
+class MyClass extends DifferentClass
 {
 }

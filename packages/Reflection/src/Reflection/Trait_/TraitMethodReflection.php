@@ -61,11 +61,6 @@ final class TraitMethodReflection implements TraitMethodReflectionInterface, Tra
             ->getName();
     }
 
-    public function getNamespaceName(): string
-    {
-        // TODO: Implement getNamespaceName() method.
-    }
-
     public function isAbstract(): bool
     {
         return $this->betterMethodReflection->isAbstract();

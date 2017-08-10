@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Tests\Reflection\Partial\Source;
 
 /**
- * This is some description
+ * This is some description.
  *
  * @see \ApiGen\Application\ApiGenApplication
  * @author Everyone.
@@ -12,7 +12,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Partial\Source;
 class SomeClassWithAnnotations
 {
     /**
-     * Send a POST request
+     * Send a POST request.
      *
      * @param int|string $url the URL of the API endpoint
      * @param mixed $data and array or a blob of data to be sent

@@ -97,7 +97,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     private function removeClassPreSlashes(string $types): string
     {
         $typesInArray = explode('|', $types);
-        array_walk($typesInArray, function (&$value) {
+        array_walk($typesInArray, function (&$value): void {
             $value = ltrim($value, '\\');
         });
 

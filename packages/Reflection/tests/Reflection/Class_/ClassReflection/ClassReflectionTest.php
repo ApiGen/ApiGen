@@ -29,7 +29,7 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var Parser $parser */
+        // @var Parser $parser
         $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
 
         $classReflections = $this->reflectionStorage->getClassReflections();
@@ -52,7 +52,7 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
     public function testAnnotations(): void
     {
         $this->assertSame(
-            'Huge and small' . PHP_EOL . PHP_EOL . 'description.',
+            'Huge and small.' . PHP_EOL . PHP_EOL . 'description.',
             $this->classReflection->getDescription()
         );
 

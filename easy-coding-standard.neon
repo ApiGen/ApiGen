@@ -34,6 +34,7 @@ parameters:
         - PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
         - PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
         - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
+        - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
         # possibly bugged: doesn't report errors, only fixes
         - Symplify\CodingStandard\Fixer\Php\ClassStringToClassConstantFixer
 
@@ -87,7 +88,10 @@ parameters:
             - *packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php
 
         Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff:
+            # todos, remove after they are fixed
             - *packages/Annotation/src/AnnotationSubscriber/*Subscriber.php
+            - packages/Reflection/tests/Reflection/Method/MethodReflection/ParameterWithConstantDefalutValueTest.php
+            - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/ConstantDefaultValueTest.php
 
         PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer:
             # test
@@ -100,3 +104,9 @@ parameters:
         Symplify\CodingStandard\Sniffs\Classes\EqualInterfaceImplementationSniff:
             # todo: implement new interface
             - packages/Element/src/ReflectionCollector/NamespaceReflectionCollector.php
+
+        Symplify\CodingStandard\Sniffs\Commenting\VarConstantCommentSniff:
+            - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php
+
+        SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff:
+            - packages/Reflection/tests/Parser/DifferentVendorSources/vendor/autoload.php

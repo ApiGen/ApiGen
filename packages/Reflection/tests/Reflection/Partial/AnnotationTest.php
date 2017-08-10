@@ -29,7 +29,7 @@ final class AnnotationTest extends AbstractParserAwareTestCase
 
     public function testGetDescription(): void
     {
-        $this->assertSame('This is some description', $this->reflection->getDescription());
+        $this->assertSame('This is some description.', $this->reflection->getDescription());
     }
 
     public function testGetAnnotations(): void

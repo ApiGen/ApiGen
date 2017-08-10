@@ -56,7 +56,7 @@ final class ReflectionStorage
      */
     public function addClassReflections(array $classReflections): void
     {
-        array_walk($classReflections, function (ClassReflectionInterface $classReflection) {
+        array_walk($classReflections, function (ClassReflectionInterface $classReflection): void {
         });
         sort($classReflections);
         foreach ($classReflections as $classReflection) {
@@ -81,7 +81,7 @@ final class ReflectionStorage
      */
     public function addInterfaceReflections(array $interfaceReflections): void
     {
-        array_walk($interfaceReflections, function (InterfaceReflectionInterface $interfaceReflection) {
+        array_walk($interfaceReflections, function (InterfaceReflectionInterface $interfaceReflection): void {
         });
         sort($interfaceReflections);
         foreach ($interfaceReflections as $interfaceReflection) {
@@ -102,7 +102,7 @@ final class ReflectionStorage
      */
     public function addTraitReflections(array $traitReflections): void
     {
-        array_walk($traitReflections, function (TraitReflectionInterface $traitReflection) {
+        array_walk($traitReflections, function (TraitReflectionInterface $traitReflection): void {
         });
         sort($traitReflections);
         foreach ($traitReflections as $traitReflection) {
@@ -123,7 +123,7 @@ final class ReflectionStorage
      */
     public function setFunctionReflections(array $functionReflections): void
     {
-        array_walk($functionReflections, function (FunctionReflectionInterface $functionReflection) {
+        array_walk($functionReflections, function (FunctionReflectionInterface $functionReflection): void {
         });
         sort($functionReflections);
 
@@ -148,6 +148,7 @@ final class ReflectionStorage
     public function getClassOrInterface(string $name)
     {
         $class = $this->getClass($name);
+
         return $class ?: $this->getInterface($name);
     }
 }

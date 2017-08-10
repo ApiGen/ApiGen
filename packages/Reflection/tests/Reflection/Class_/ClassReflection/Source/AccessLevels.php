@@ -5,8 +5,10 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
 final class AccessLevels extends ParentClass implements RichInterface
 {
     use SomeTrait;
-    // use SomeTraitNotPresentHere;
 
+    /**
+     * @var int
+     */
     public const LEVEL = 5;
 
     /**
@@ -14,12 +16,10 @@ final class AccessLevels extends ParentClass implements RichInterface
      */
     public $publicProperty;
 
-
     /**
      * @var mixed
      */
     protected $protectedProperty;
-
 
     /**
      * @var mixed
@@ -30,15 +30,15 @@ final class AccessLevels extends ParentClass implements RichInterface
     {
     }
 
+    public function getSomeStuff(): void
+    {
+    }
+
     protected function protectedMethod(): void
     {
     }
 
     private function privateMethod(): void
-    {
-    }
-
-    public function getSomeStuff(): void
     {
     }
 }

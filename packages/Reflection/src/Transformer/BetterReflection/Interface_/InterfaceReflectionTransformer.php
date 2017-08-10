@@ -41,6 +41,7 @@ final class InterfaceReflectionTransformer implements TransformerInterface, Sort
     public function transform($reflection): InterfaceReflection
     {
         $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
+
         return new InterfaceReflection($reflection, $docBlock, $this->implementersResolver);
     }
 }

@@ -18,7 +18,7 @@ final class ParserTest extends AbstractContainerAwareTestCase
 
         $parser->parseFilesAndDirectories([
             __DIR__ . '/NotLoadedSources/SomeClass.php',
-            __DIR__ . '/AnotherSource'
+            __DIR__ . '/AnotherSource',
         ]);
 
         $classReflections = $reflectionStorage->getClassReflections();

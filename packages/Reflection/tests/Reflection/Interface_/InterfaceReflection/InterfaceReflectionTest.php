@@ -59,7 +59,7 @@ final class InterfaceReflectionTest extends AbstractParserAwareTestCase
     public function testLines(): void
     {
         $this->assertSame(5, $this->interfaceReflection->getStartLine());
-        $this->assertSame(8, $this->interfaceReflection->getEndLine());
+        $this->assertSame(11, $this->interfaceReflection->getEndLine());
     }
 
     public function testFileName(): void
