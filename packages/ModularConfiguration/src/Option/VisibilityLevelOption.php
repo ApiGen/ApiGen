@@ -27,19 +27,19 @@ final class VisibilityLevelOption implements OptionInterface
      */
     public const PRIVATE = 'private';
 
-    public function getName(): string
-    {
-        return self::NAME;
-    }
-
     /**
      * @var int[]
      */
     private $nameToModificatorMap = [
         self::PUBLIC => ReflectionProperty::IS_PUBLIC,
         self::PROTECTED => ReflectionProperty::IS_PROTECTED,
-        self::PRIVATE => ReflectionProperty::IS_PRIVATE
+        self::PRIVATE => ReflectionProperty::IS_PRIVATE,
     ];
+
+    public function getName(): string
+    {
+        return self::NAME;
+    }
 
     /**
      * @param mixed $value
