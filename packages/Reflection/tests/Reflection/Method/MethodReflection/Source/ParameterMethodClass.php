@@ -27,7 +27,7 @@ class ParameterMethodClass
      * @param SomeClass
      * @param ParameterMethodClass
      */
-    public function methodWithIndexedTypeHints($param1, $param2, $param3)
+    public function methodWithIndexedTypeHints($param1, $param2, $param3): void
     {
     }
 

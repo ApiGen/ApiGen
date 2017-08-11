@@ -31,6 +31,9 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         $this->betterParameterReflection = $betterParameterReflection;
     }
 
+    /**
+     * @return string[]
+     */
     public function getTypeHints(): array
     {
         $typeHint = $this->betterParameterReflection->getTypeHint();
@@ -64,7 +67,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     private function resolveTypes(array $types): array
     {
         array_walk($types, function (&$value) {
-           $value = ltrim($value, '\\');
+            $value = ltrim($value, '\\');
         });
 
         $function = $this->betterParameterReflection->getDeclaringFunction();
@@ -79,7 +82,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
 
         $types = (new \Roave\BetterReflection\TypesFinder\ResolveTypes())->__invoke($types, $context);
         array_walk($types, function (&$value) {
-           $value = ltrim((string) $value, '\\');
+            $value = ltrim((string) $value, '\\');
         });
 
         return $types;

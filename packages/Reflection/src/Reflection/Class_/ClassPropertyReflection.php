@@ -8,7 +8,6 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Reflection\Types\Object_;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class ClassPropertyReflection implements ClassPropertyReflectionInterface, TransformerCollectorAwareInterface

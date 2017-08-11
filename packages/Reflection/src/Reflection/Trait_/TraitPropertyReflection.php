@@ -9,7 +9,6 @@ use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\Types\Object_;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class TraitPropertyReflection implements TraitPropertyReflectionInterface, TransformerCollectorAwareInterface
