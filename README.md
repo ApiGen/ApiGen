@@ -35,7 +35,7 @@ then update:
 composer update
 ```
 
-Test it, report issues, send PRs and see the [ApiGen 5.x release plan](https://github.com/ApiGen/ApiGen/projects/3).
+Test it, report issues or send PRs.
 
  :skull:  **Version 4.x is not supported**, since there was huge change of Reflection library and the code was almost completely rewritten.
 
