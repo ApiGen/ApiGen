@@ -25,9 +25,6 @@ final class ClassTypeHintPropertyTest extends AbstractParserAwareTestCase
 
     public function testGetTypeHint(): void
     {
-        $this->assertSame(PropertyOfClassType::class, $this->propertyReflection->getTypeHint());
-
-        $typeHint = $this->propertyReflection->getTypeHint();
-        $this->assertSame(PropertyOfClassType::class, $typeHint);
+        $this->assertSame([PropertyOfClassType::class], $this->propertyReflection->getTypeHints());
     }
 }

@@ -35,9 +35,32 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertInstanceOf(MethodParameterReflectionInterface::class, $this->parameterReflection);
     }
 
-    public function testGetTypeHint(): void
+    public function testGetTypeHints(): void
     {
-        $this->assertSame('int|string', $this->parameterReflection->getTypeHint());
+        $this->assertSame(['int', 'string'], $this->parameterReflection->getTypeHints());
+    }
+
+    public function testGetIndexedTypeHints(): void
+    {
+        $methodReflection = $this->classReflection->getMethod('methodWithIndexedTypeHints');
+
+        $parameter = $methodReflection->getParameters()['param1'];
+        $this->assertSame(['int', 'string'], $parameter->getTypeHints());
+
+        $parameter = $methodReflection->getParameters()['param2'];
+        $this->assertSame([
+            'ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass'
+        ], $parameter->getTypeHints());
+
+        $parameter = $methodReflection->getParameters()['param3'];
+        $this->assertSame([
+            'ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass'
+        ], $parameter->getTypeHints());
+
+        $parameter = $methodReflection->getParameters()['param4'];
+        $this->assertSame([
+            'stdClass'
+        ], $parameter->getTypeHints());
     }
 
     public function testGetDescription(): void

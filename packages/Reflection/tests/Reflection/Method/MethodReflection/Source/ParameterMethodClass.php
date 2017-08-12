@@ -2,6 +2,8 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source;
 
+use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass;
+
 class ParameterMethodClass
 {
     /**
@@ -17,6 +19,16 @@ class ParameterMethodClass
      * @param mixed[] $headers add optional headers
      */
     public function methodWithArgs($url = 1, $data = null, $headers = []): void
+    {
+    }
+
+    /**
+     * @param int|string
+     * @param SomeClass
+     * @param ParameterMethodClass
+     * @param \stdClass
+     */
+    public function methodWithIndexedTypeHints($param1, $param2, $param3, $param4): void
     {
     }
 

@@ -37,9 +37,9 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
         $this->assertInstanceOf(ClassPropertyReflectionInterface::class, $this->propertyReflection);
     }
 
-    public function testGetTypeHint(): void
+    public function testGetTypeHints(): void
     {
-        $this->assertSame('int', $this->propertyReflection->getTypeHint());
+        $this->assertSame(['int'], $this->propertyReflection->getTypeHints());
     }
 
     public function testGetDeclaringClass(): void

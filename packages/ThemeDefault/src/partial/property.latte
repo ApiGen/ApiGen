@@ -3,7 +3,7 @@
         <code class="keyword">
             {if $property->isProtected()}protected{elseif $property->isPrivate()}private{else}public{/if} {if $property->isStatic()}static{/if}
 
-            {$property->getTypeHint()|buildLinkIfReflectionFound}
+            {foreach $property->getTypeHints() as $typehint}{$typehint|buildLinkIfReflectionFound}{sep}|{/sep}{/foreach}
         </code>
     </td>
 

@@ -43,7 +43,7 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testType(): void
     {
-        $this->assertSame('string', $this->functionParameterReflection->getTypeHint());
+        $this->assertSame(['string'], $this->functionParameterReflection->getTypeHints());
         $this->assertTrue($this->functionParameterReflection->isVariadic());
         $this->assertFalse($this->functionParameterReflection->isArray());
         $this->assertFalse($this->functionParameterReflection->isCallable());

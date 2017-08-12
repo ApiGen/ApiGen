@@ -29,6 +29,6 @@ final class ClassTypeTest extends AbstractParserAwareTestCase
 
     public function testType(): void
     {
-        $this->assertSame('SplFileInfo', $this->functionParameterReflection->getTypeHint());
+        $this->assertSame(['SplFileInfo'], $this->functionParameterReflection->getTypeHints());
     }
 }

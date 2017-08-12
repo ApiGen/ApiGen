@@ -9,7 +9,6 @@ use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\DocBlock\Tag;
-use phpDocumentor\Reflection\Types\Object_;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
 final class TraitPropertyReflection implements TraitPropertyReflectionInterface, TransformerCollectorAwareInterface
@@ -101,20 +100,17 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
         return $this->betterPropertyReflection->getDefaultValue();
     }
 
-    public function getTypeHint(): string
+    /**
+     * @return string[]
+     */
+    public function getTypeHints(): array
     {
-        $typeHints = $this->betterPropertyReflection->getDocBlockTypes();
-        if (! count($typeHints)) {
-            return '';
+        $typeHints = $this->betterPropertyReflection->getDocBlockTypeStrings();
+        foreach ($typeHints as $k => $typeHint) {
+            $typeHints[$k] = ltrim($typeHint, '\\');
         }
 
-        $typeHint = $typeHints[0];
-        if ($typeHint instanceof Object_) {
-            $classOrInterfaceName = (string) $typeHint->getFqsen();
-            return ltrim($classOrInterfaceName, '\\');
-        }
-
-        return implode('|', $this->betterPropertyReflection->getDocBlockTypeStrings());
+        return $typeHints;
     }
 
     /**
