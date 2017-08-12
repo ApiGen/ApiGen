@@ -5,8 +5,8 @@ namespace ApiGen\Reflection\Transformer\BetterReflection\Interface_;
 use ApiGen\Element\Tree\ImplementersResolver;
 use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\DocBlock\DocBlockFactory;
 use ApiGen\Reflection\Reflection\Interface_\InterfaceReflection;
-use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
 final class InterfaceReflectionTransformer implements TransformerInterface, SortableTransformerInterface
@@ -40,7 +40,7 @@ final class InterfaceReflectionTransformer implements TransformerInterface, Sort
      */
     public function transform($reflection): InterfaceReflection
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
+        $docBlock = $this->docBlockFactory->createFromBetterReflection($reflection);
         return new InterfaceReflection($reflection, $docBlock, $this->implementersResolver);
     }
 }

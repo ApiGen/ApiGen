@@ -6,8 +6,8 @@ use ApiGen\Element\Tree\TraitUsersResolver;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\DocBlock\DocBlockFactory;
 use ApiGen\Reflection\Reflection\Trait_\TraitReflection;
-use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
 final class TraitReflectionTransformer implements TransformerInterface, SortableTransformerInterface
@@ -41,7 +41,7 @@ final class TraitReflectionTransformer implements TransformerInterface, Sortable
      */
     public function transform($reflection): TraitReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
+        $docBlock = $this->docBlockFactory->createFromBetterReflection($reflection);
 
         return new TraitReflection($reflection, $docBlock, $this->traitUsersResolver);
     }

@@ -45,7 +45,9 @@ final class DocBlockFactory
     }
 
     /**
-     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     * Creates a context for proper type resolving.
+     *
+     * @param ReflectionClass|ReflectionMethod|ReflectionProperty|ReflectionFunction $reflection
      */
     private function createDocBlockContext($reflection): ?Context
     {

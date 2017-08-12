@@ -7,8 +7,8 @@ use ApiGen\Element\Tree\SubClassesResolver;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\DocBlock\DocBlockFactory;
 use ApiGen\Reflection\Reflection\Class_\ClassReflection;
-use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
 final class ClassReflectionTransformer implements TransformerInterface, SortableTransformerInterface
@@ -51,7 +51,7 @@ final class ClassReflectionTransformer implements TransformerInterface, Sortable
      */
     public function transform($reflection): ClassReflectionInterface
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
+        $docBlock = $this->docBlockFactory->createFromBetterReflection($reflection);
 
         return new ClassReflection(
             $reflection,

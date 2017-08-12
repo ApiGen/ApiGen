@@ -4,8 +4,8 @@ namespace ApiGen\Reflection\Transformer\BetterReflection\Function_;
 
 use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
+use ApiGen\Reflection\DocBlock\DocBlockFactory;
 use ApiGen\Reflection\Reflection\Function_\FunctionReflection;
-use phpDocumentor\Reflection\DocBlockFactory;
 use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 
 final class FunctionReflectionTransformer implements TransformerInterface, SortableTransformerInterface
@@ -33,7 +33,7 @@ final class FunctionReflectionTransformer implements TransformerInterface, Sorta
      */
     public function transform($reflection): FunctionReflection
     {
-        $docBlock = $this->docBlockFactory->create($reflection->getDocComment() ?: ' ');
+        $docBlock = $this->docBlockFactory->createFromBetterReflection($reflection);
 
         return new FunctionReflection($reflection, $docBlock);
     }
