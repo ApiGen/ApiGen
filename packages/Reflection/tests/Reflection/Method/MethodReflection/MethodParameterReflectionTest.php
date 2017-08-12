@@ -56,6 +56,11 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
         $this->assertSame([
             'ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass'
         ], $parameter->getTypeHints());
+
+        $parameter = $methodReflection->getParameters()['param4'];
+        $this->assertSame([
+            'stdClass'
+        ], $parameter->getTypeHints());
     }
 
     public function testGetDescription(): void

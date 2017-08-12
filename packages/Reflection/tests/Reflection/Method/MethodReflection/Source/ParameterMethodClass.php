@@ -26,8 +26,9 @@ class ParameterMethodClass
      * @param int|string
      * @param SomeClass
      * @param ParameterMethodClass
+     * @param \stdClass
      */
-    public function methodWithIndexedTypeHints($param1, $param2, $param3): void
+    public function methodWithIndexedTypeHints($param1, $param2, $param3, $param4): void
     {
     }
 
