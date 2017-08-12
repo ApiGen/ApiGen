@@ -8,7 +8,9 @@ use phpDocumentor\Reflection\DocBlock\DescriptionFactory;
 use phpDocumentor\Reflection\DocBlock\TagFactory;
 use phpDocumentor\Reflection\DocBlockFactory as PhpDocumentorDocBlockFactory;
 use phpDocumentor\Reflection\TypeResolver;
+use phpDocumentor\Reflection\Types\Context;
 use Roave\BetterReflection\Reflection\ReflectionClass;
+use Roave\BetterReflection\Reflection\ReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
 
@@ -38,6 +40,22 @@ final class DocBlockFactory
      */
     public function createFromBetterReflection($classReflection): DocBlock
     {
-        return $this->phpDocumentorDocBlockFactory->create($classReflection->getDocComment() ?: ' ');
+        $context = $this->createDocBlockContext($classReflection);
+        return $this->phpDocumentorDocBlockFactory->create($classReflection->getDocComment() ?: ' ', $context);
+    }
+
+    /**
+     * @param ReflectionClass|ReflectionMethod|ReflectionProperty $reflection
+     */
+    private function createDocBlockContext($reflection): ?Context
+    {
+        if (! $reflection instanceof ReflectionClass && ! $reflection instanceof ReflectionFunction) {
+            $reflection = $reflection->getDeclaringClass();
+        }
+
+        return (new \phpDocumentor\Reflection\Types\ContextFactory())->createForNamespace(
+            $reflection->getNamespaceName(),
+            $reflection->getLocatedSource()->getSource()
+        );
     }
 }
