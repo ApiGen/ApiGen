@@ -25,7 +25,7 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
         $configuration->resolveOptions([
            SourceOption::NAME => [__DIR__],
            DestinationOption::NAME => TEMP_DIR,
-           AnnotationGroupsOption::NAME => [AnnotationList::DEPRECATED]
+           AnnotationGroupsOption::NAME => [AnnotationList::DEPRECATED],
         ]);
 
         /** @var Parser $parser */

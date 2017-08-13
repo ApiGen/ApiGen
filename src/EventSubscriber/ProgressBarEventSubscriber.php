@@ -24,7 +24,7 @@ final class ProgressBarEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            GenerateProgressEvent::class => 'generateProgress'
+            GenerateProgressEvent::class => 'generateProgress',
         ];
     }
 

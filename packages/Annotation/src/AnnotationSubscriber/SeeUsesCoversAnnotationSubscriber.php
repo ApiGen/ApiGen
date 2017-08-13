@@ -64,6 +64,7 @@ final class SeeUsesCoversAnnotationSubscriber implements AnnotationSubscriberInt
 
             if ($resolvedReflection instanceof AbstractReflectionInterface) {
                 $url = $this->reflectionRoute->constructUrl($resolvedReflection);
+
                 return '<code>' . $this->linkBuilder->build($url, ltrim($reference, '\\')) . '</code>';
             }
 

@@ -43,7 +43,7 @@ final class FileSystem
 
     public function copyDirectory(string $sourceDirectory, string $destinationDirectory): void
     {
-        FileSystem::ensureDirectoryExists($destinationDirectory);
+        self::ensureDirectoryExists($destinationDirectory);
 
         /** @var RecursiveDirectoryIterator $iterator */
         $fileInfos = Finder::findFiles('*')->from($sourceDirectory)

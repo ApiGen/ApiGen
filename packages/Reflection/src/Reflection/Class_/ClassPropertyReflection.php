@@ -94,6 +94,7 @@ final class ClassPropertyReflection implements ClassPropertyReflectionInterface,
         $typeHint = $typeHints[0];
         if ($typeHint instanceof Object_) {
             $classOrInterfaceName = (string) $typeHint->getFqsen();
+
             return ltrim($classOrInterfaceName, '\\');
         }
 

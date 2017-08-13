@@ -36,6 +36,11 @@ final class See extends BaseTag implements StaticMethod
         $this->description = $description;
     }
 
+    public function __toString(): string
+    {
+        return ($this->refers ?: $this->link) . ($this->description ? ' ' . $this->description->render() : '');
+    }
+
     /**
      * @param string $body
      */
@@ -71,10 +76,5 @@ final class See extends BaseTag implements StaticMethod
     public function getLink(): ?string
     {
         return $this->link;
-    }
-
-    public function __toString(): string
-    {
-        return ($this->refers ?: $this->link) . ($this->description ? ' ' . $this->description->render() : '');
     }
 }

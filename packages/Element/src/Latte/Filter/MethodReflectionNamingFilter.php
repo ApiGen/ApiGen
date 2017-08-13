@@ -28,7 +28,7 @@ final class MethodReflectionNamingFilter implements FilterProviderInterface
                 if ($methodReflection instanceof TraitMethodReflectionInterface) {
                     return $methodReflection->getDeclaringTraitName() . '::' . $methodReflection->getName() . '()';
                 }
-            }
+            },
         ];
     }
 }

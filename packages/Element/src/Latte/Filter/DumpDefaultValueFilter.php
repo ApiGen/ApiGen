@@ -26,7 +26,7 @@ final class DumpDefaultValueFilter implements FilterProviderInterface
             // use in .latte: {$property->getDefaultValue()|dumpDefaultValue}
             'dumpDefaultValue' => function ($value) {
                 return $this->defaultValueDumper->dumpValue($value);
-            }
+            },
         ];
     }
 }

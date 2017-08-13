@@ -77,6 +77,7 @@ final class ElementResolver
             $functionReflections = $this->reflectionStorage->getFunctionReflections();
 
             $namespacedFunctionName = $namespace . '\\' . $functionName;
+
             return $functionReflections[$namespacedFunctionName] ?? $namespacedFunctionName;
         }
 

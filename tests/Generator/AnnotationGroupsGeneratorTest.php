@@ -23,7 +23,7 @@ final class AnnotationGroupsGeneratorTest extends AbstractContainerAwareTestCase
         $configuration->resolveOptions([
             'source' => [TEMP_DIR],
             'destination' => TEMP_DIR,
-            'annotationGroups' => ['deprecated']
+            'annotationGroups' => ['deprecated'],
         ]);
 
         /** @var Parser $parser */

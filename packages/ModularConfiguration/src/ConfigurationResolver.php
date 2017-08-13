@@ -28,17 +28,6 @@ final class ConfigurationResolver
         return $this->options[$name]->resolveValue($value);
     }
 
-    private function ensureOptionExists(string $name): void
-    {
-        if (! isset($this->options[$name])) {
-            throw new ConfigurationException(sprintf(
-                'Option "%s" was not found. Available options are: %s.',
-                $name,
-                array_keys($this->options)
-            ));
-        }
-    }
-
     /**
      * @param mixed[] $values
      * @return mixed[]
@@ -50,6 +39,17 @@ final class ConfigurationResolver
         }
 
         return $values;
+    }
+
+    private function ensureOptionExists(string $name): void
+    {
+        if (! isset($this->options[$name])) {
+            throw new ConfigurationException(sprintf(
+                'Option "%s" was not found. Available options are: %s.',
+                $name,
+                array_keys($this->options)
+            ));
+        }
     }
 
     /**

@@ -17,7 +17,7 @@ final class StepCounterTest extends AbstractParserAwareTestCase
         $stepCounter = new StepCounter(
             $this->reflectionStorage,
             $namespaceReflectionCollector,
-            new ParentEmptyNamespacesResolver()
+            new ParentEmptyNamespacesResolver
         );
 
         $count = 2;    // index.html + elementlist.js

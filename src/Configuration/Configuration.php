@@ -18,7 +18,7 @@ final class Configuration
     /**
      * @var mixed[]
      */
-    private $options;
+    private $options = [];
 
     /**
      * @var ParameterProvider

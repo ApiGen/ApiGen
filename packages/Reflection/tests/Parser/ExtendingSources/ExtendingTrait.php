@@ -2,9 +2,6 @@
 
 namespace ApiGen\Reflection\Tests\Parser\ExtendingSources;
 
-use ApiGen\Reflection\Tests\Parser\NotLoadedSources;
-
 trait ExtendingTrait
 {
-    use NotLoadedSources\SomeTrait;
 }

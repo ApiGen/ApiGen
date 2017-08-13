@@ -2,7 +2,9 @@
 
 namespace ApiGen\Reflection\Contract\Reflection\Interface_;
 
-interface InterfaceConstantReflectionInterface extends AbstractInterfaceElementInterface
+use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
+
+interface InterfaceConstantReflectionInterface extends AbstractInterfaceElementInterface, AnnotationsInterface
 {
     /**
      * @return mixed
@@ -10,4 +12,10 @@ interface InterfaceConstantReflectionInterface extends AbstractInterfaceElementI
     public function getValue();
 
     public function getTypeHint(): string;
+
+    public function isPublic(): bool;
+
+    public function isProtected(): bool;
+
+    public function isPrivate(): bool;
 }

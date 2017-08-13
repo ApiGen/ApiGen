@@ -3,7 +3,7 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source;
 
 /**
- * Huge and small
+ * Huge and small.
  *
  * description.
  *
@@ -16,7 +16,7 @@ class SomeClass extends ParentClass
      */
     public $someProperty;
 
-    public function SomeMethod(): void
+    public function someMethod(): void
     {
     }
 }

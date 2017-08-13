@@ -51,7 +51,7 @@ final class FunctionsGenerator implements GeneratorInterface
             [
                 'activePage' => self::NAME,
                 'pageTitle' => ucfirst(self::NAME),
-                self::NAME => $this->reflectionStorage->getFunctionReflections()
+                self::NAME => $this->reflectionStorage->getFunctionReflections(),
             ]
         );
     }

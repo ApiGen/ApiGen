@@ -41,7 +41,7 @@ abstract class AbstractParserAwareTestCase extends TestCase
         $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
-            DestinationOption::NAME => TEMP_DIR
+            DestinationOption::NAME => TEMP_DIR,
         ]);
 
         $this->parser = $this->container->get(Parser::class);

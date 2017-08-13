@@ -121,7 +121,7 @@ final class ReflectionRouteTest extends AbstractContainerAwareTestCase
         return [
             [ClassConstantReflectionInterface::class, 'class-SomeClass.html#SomeName'],
             [ClassMethodReflectionInterface::class, 'class-SomeClass.html#_SomeName'],
-            [ClassPropertyReflectionInterface::class, 'class-SomeClass.html#$SomeName']
+            [ClassPropertyReflectionInterface::class, 'class-SomeClass.html#$SomeName'],
         ];
     }
 

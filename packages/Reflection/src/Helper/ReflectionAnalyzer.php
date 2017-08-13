@@ -9,6 +9,7 @@ final class ReflectionAnalyzer
     public static function getReflectionInterfaceFromReflection(AbstractReflectionInterface $reflection): string
     {
         $implementedInterfaces = class_implements($reflection);
+
         return array_shift($implementedInterfaces);
     }
 }

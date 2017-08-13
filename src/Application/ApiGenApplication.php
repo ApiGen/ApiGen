@@ -49,7 +49,7 @@ final class ApiGenApplication
     {
         $options = $this->configuration->resolveOptions([
             SourceOption::NAME => $runCommand->getSource(),
-            DestinationOption::NAME => $runCommand->getDestination()
+            DestinationOption::NAME => $runCommand->getDestination(),
         ]);
 
         $this->parser->parseFilesAndDirectories($options[SourceOption::NAME]);

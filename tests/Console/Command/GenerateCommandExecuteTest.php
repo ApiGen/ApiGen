@@ -33,7 +33,7 @@ final class GenerateCommandExecuteTest extends AbstractContainerAwareTestCase
 
         $input = new ArrayInput([
             SourceOption::NAME => [__DIR__ . '/Source'],
-            '--' . DestinationOption::NAME => TEMP_DIR . '/Api'
+            '--' . DestinationOption::NAME => TEMP_DIR . '/Api',
         ]);
 
         $exitCode = $this->generateCommand->run($input, new NullOutput);

@@ -30,7 +30,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     {
         $options = $this->configuration->resolveOptions([
             SourceOption::NAME => [],
-            DestinationOption::NAME => TEMP_DIR
+            DestinationOption::NAME => TEMP_DIR,
         ]);
 
         $this->assertCount(8, $options);
@@ -57,7 +57,7 @@ final class ConfigurationTest extends AbstractContainerAwareTestCase
     {
         $configAndDestinationOptions = [
             DestinationOption::NAME => TEMP_DIR . '/api',
-            SourceOption::NAME => [__DIR__]
+            SourceOption::NAME => [__DIR__],
         ];
 
         $options = $this->configuration->resolveOptions($configAndDestinationOptions);

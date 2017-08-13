@@ -4,18 +4,31 @@ namespace ApiGen\Tests\Generator\Source;
 
 class SomeClass
 {
+    /**
+     * @var int
+     */
     const SOME_CONST = 1;
 
+    /**
+     * @var int
+     */
     public const PUBLIC_CONST = 2;
-
-    protected const PROTECTED_CONST = 3;
-
-    private const PRIVATE_CONST = 4;
 
     /**
      * @deprecated
+     * @var int
      */
     public const DEPRECATED_CONST = 5;
+
+    /**
+     * @var int
+     */
+    protected const PROTECTED_CONST = 3;
+
+    /**
+     * @var int
+     */
+    private const PRIVATE_CONST = 4;
 
     /**
      * @var string
@@ -31,7 +44,7 @@ class SomeClass
      * @var int
      */
     public $integerProperty = 11;
-    
+
     /**
      * Do not add param annotations here!
      */

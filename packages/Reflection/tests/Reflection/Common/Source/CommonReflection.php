@@ -5,12 +5,12 @@ namespace ApiGen\Reflection\Tests\Reflection\Common\Source;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeOtherClass;
 
 /**
- * This is some description
+ * This is some description.
  */
 class CommonReflection
 {
     /**
-     * Send a POST request
+     * Send a POST request.
      *
      * @param int|string $url the URL of the API endpoint
      * @param mixed $data and array or a blob of data to be sent

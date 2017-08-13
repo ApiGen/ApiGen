@@ -1,68 +1,44 @@
 includes:
-    - vendor/symplify/easy-coding-standard/config/psr2-checkers.neon
+    - vendor/symplify/easy-coding-standard/config/php70-checkers.neon
+    - vendor/symplify/easy-coding-standard/config/php71-checkers.neon
+    - vendor/symplify/easy-coding-standard/config/symfony-checkers.neon
+    - vendor/symplify/easy-coding-standard/config/symplify-checkers.neon
+    - vendor/symplify/easy-coding-standard/config/common.neon
+    - vendor/symplify/easy-coding-standard/config/spaces.neon
 
 checkers:
-    # Solid
-    - Symplify\CodingStandard\Sniffs\Classes\FinalInterfaceSniff
-
     # PSR2
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
         absoluteLineLimit: 120
-    - PHP_CodeSniffer\Standards\PEAR\Sniffs\WhiteSpace\ScopeClosingBraceSniff
-    - PhpCsFixer\Fixer\ClassNotation\NoBlankLinesAfterClassOpeningFixer
-
-    # Comments
-    - Symplify\CodingStandard\Sniffs\Commenting\BlockPropertyCommentSniff
-
-    # Dev & Dead Code
-    - Symplify\CodingStandard\Sniffs\Debug\DebugFunctionCallSniff
-    - SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff
-    PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
-         annotations:
-            - author
-            - expectedException
-
-    # Class Naming
-    - Symplify\CodingStandard\Sniffs\Naming\AbstractClassNameSniff
-    - Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff
-    - Symplify\CodingStandard\Sniffs\Naming\TraitNameSniff
 
     # Code Structures
     - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
-    - SlevomatCodingStandard\Sniffs\ControlStructures\YodaComparisonSniff
 
     # Namespaces
-    - PhpCsFixer\Fixer\Import\NoUnusedImportsFixer
-    - SlevomatCodingStandard\Sniffs\Namespaces\UseFromSameNamespaceSniff
-    - SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff
-    - SlevomatCodingStandard\Sniffs\Namespaces\MultipleUsesPerLineSniff
-    - SlevomatCodingStandard\Sniffs\Namespaces\DisallowGroupUseSniff
-    - PhpCsFixer\Fixer\Import\OrderedImportsFixer
-
-    # Spacing
-    - PhpCsFixer\Fixer\ClassNotation\MethodSeparationFixer
+    SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff:
+        allowPartialUses: false
 
     # Strict and Scalar types
-    - PhpCsFixer\Fixer\Strict\DeclareStrictTypesFixer
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         usefulAnnotations:
             - @dataProvider
             - @deprecated
             - @todo
         enableEachParameterAndReturnInspection: true
-    - SlevomatCodingStandard\Sniffs\TypeHints\NullableTypeForNullDefaultValueSniff
-    - SlevomatCodingStandard\Sniffs\TypeHints\ParameterTypeHintSpacingSniff
-    - SlevomatCodingStandard\Sniffs\TypeHints\ReturnTypeHintSpacingSniff
-    - SlevomatCodingStandard\Sniffs\TypeHints\LongTypeHintsSniff
-
-    PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
-         elements: [const, property, method]
 
     # new since PhpCsFixer 2.1/2.2
     - PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
-    - PhpCsFixer\Fixer\Basic\NonPrintableCharacterFixer
 
 parameters:
+    exclude_checkers:
+        - PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
+        - PhpCsFixer\Fixer\Operator\UnaryOperatorSpacesFixer
+        - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
+        - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
+        - PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
+        # possibly bugged: doesn't report errors, only fixes
+        - Symplify\CodingStandard\Fixer\Php\ClassStringToClassConstantFixer
+
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
             # covariant implements
@@ -101,13 +77,42 @@ parameters:
         PhpCsFixer\Fixer\ClassNotation\VisibilityRequiredFixer:
             - tests/Generator/Source/SomeClass.php
 
-        PhpCsFixer\Fixer\Phpdoc\GeneralPhpdocAnnotationRemoveFixer:
-            - packages/Reflection/tests/Reflection/Partial/Source/SomeClassWithAnnotations.php
-            - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/SomeClass.php
-
         PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
             - packages/Reflection/src/Reflection/AbstractParameterReflection.php
             - packages/Reflection/src/Reflection/Function_/FunctionParameterReflection.php
             - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
             - packages/Reflection/src/Contract/Reflection/AbstractMethodReflectionInterface.php
             - *packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php
+
+        Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff:
+            # todos, remove after they are fixed
+            - *packages/Annotation/src/AnnotationSubscriber/*Subscriber.php
+            - packages/Reflection/tests/Reflection/Method/MethodReflection/ParameterWithConstantDefalutValueTest.php
+            - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/ConstantDefaultValueTest.php
+            - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
+            - packages/Reflection/src/Reflection/Class_/ClassConstantReflection.php
+            # useful notes
+            - src/Console/Progress/StepCounter.php
+            - tests/Console/Progress/StepCounterTest.php
+
+        PhpCsFixer\Fixer\Phpdoc\PhpdocNoAliasTagFixer:
+            # test
+            - packages/Annotation/tests/AnnotationSubscriber/LinkAnnotationSubscriberSource/SomeClassWithLinkAnnotations.php
+
+        PhpCsFixer\Fixer\ClassNotation\ProtectedToPrivateFixer:
+            # test
+            - packages/Element/tests/ReflectionCollector/Source/PartiallyDeprecatedClass.php
+
+        Symplify\CodingStandard\Sniffs\Classes\EqualInterfaceImplementationSniff:
+            # todo: fix, add methods to parent interface or implement new interface
+            - packages/Element/src/ReflectionCollector/NamespaceReflectionCollector.php
+            - packages/Reflection/src/Reflection/Class_/ClassConstantReflection.php
+            - packages/Reflection/src/Reflection/Class_/ClassReflection.php
+            - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
+
+        Symplify\CodingStandard\Sniffs\Commenting\VarConstantCommentSniff:
+            - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php
+
+        SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff:
+            - packages/Reflection/tests/Parser/DifferentVendorSources/vendor/autoload.php
+            - tests/bootstrap.php

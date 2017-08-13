@@ -40,7 +40,7 @@ final class AutoCompleteDataGenerator implements GeneratorInterface
             $this->configuration->getTemplatesDirectory() . DIRECTORY_SEPARATOR . 'elementlist.js.latte',
             $this->configuration->getDestination() . DIRECTORY_SEPARATOR . 'elementlist.js',
             [
-                'autocompleteElements' => $this->autocompleteElements->getElements()
+                'autocompleteElements' => $this->autocompleteElements->getElements(),
             ]
         );
     }

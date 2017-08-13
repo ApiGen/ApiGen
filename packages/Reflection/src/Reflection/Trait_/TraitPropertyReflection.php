@@ -65,14 +65,12 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
 
     public function getStartLine(): int
     {
-        // @todo
-        return 5;
+        return $this->betterPropertyReflection->getStartLine();
     }
 
     public function getEndLine(): int
     {
-        // @todo
-        return 5;
+        return $this->betterPropertyReflection->getEndLine();
     }
 
     public function getName(): string
@@ -111,6 +109,7 @@ final class TraitPropertyReflection implements TraitPropertyReflectionInterface,
         $typeHint = $typeHints[0];
         if ($typeHint instanceof Object_) {
             $classOrInterfaceName = (string) $typeHint->getFqsen();
+
             return ltrim($classOrInterfaceName, '\\');
         }
 

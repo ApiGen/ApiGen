@@ -38,7 +38,7 @@ final class ParentEmptyNamespacesResolverTest extends AbstractContainerAwareTest
         return [
             [['Parent', 'Parent\Namespace'], ['Parent\Namespace\SubNamespace']],
             [['Parent'], ['Parent\Namespace\SubNamespace', 'Parent\Namespace']],
-            [[], ['Parent', 'Parent\Namespace\SubNamespace', 'Parent\Namespace']]
+            [[], ['Parent', 'Parent\Namespace\SubNamespace', 'Parent\Namespace']],
         ];
     }
 }

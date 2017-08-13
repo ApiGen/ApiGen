@@ -42,7 +42,7 @@ final class ThemeDirectoryOption implements OptionInterface
 
         $candidates = [
             getcwd() . '/packages/ThemeDefault/src',
-            __DIR__ . '/../../../../packages/ThemeDefault/src'
+            __DIR__ . '/../../../../packages/ThemeDefault/src',
         ];
 
         foreach ($candidates as $candidate) {

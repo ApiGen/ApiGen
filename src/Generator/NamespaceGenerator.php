@@ -56,7 +56,7 @@ final class NamespaceGenerator implements GeneratorInterface
                 'exceptions' => $namespaceReflectionCollector->getExceptionReflections($namespace),
                 'interfaces' => $namespaceReflectionCollector->getInterfaceReflections($namespace),
                 'traits' => $namespaceReflectionCollector->getTraitReflections($namespace),
-                'functions' => $namespaceReflectionCollector->getFunctionReflections($namespace)
+                'functions' => $namespaceReflectionCollector->getFunctionReflections($namespace),
             ]
         );
     }

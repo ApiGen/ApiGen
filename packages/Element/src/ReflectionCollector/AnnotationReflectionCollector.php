@@ -42,11 +42,6 @@ final class AnnotationReflectionCollector implements AdvancedReflectionCollector
         }
 
         foreach ($this->configuration->getAnnotationGroups() as $annotation) {
-            // @todo allow value as well?
-            // $reflection->hasAnnotation($annotation, $value);
-            // $reflection->hasAnnotation('@author', 'Tomas Votruba');
-            // url: annotation-author-tomasvotruba.html
-
             if (! $reflection->hasAnnotation($annotation)) {
                 continue;
             }

@@ -8,6 +8,21 @@ use Roave\BetterReflection\Reflection\ReflectionClass;
 
 final class TransformerCollectorTest extends AbstractContainerAwareTestCase
 {
+    public function testClassSorting(): void
+    {
+        $reflections = [
+            $this->createClassReflectionMock('ClassZ'),
+            $this->createClassReflectionMock('ClassA'),
+            $this->createClassReflectionMock('ClassX'),
+            $this->createClassReflectionMock('ClassB'),
+        ];
+
+        $transformerCollector = $this->container->get(TransformerCollector::class);
+        $elements = $transformerCollector->transformGroup($reflections);
+
+        $this->assertSame(['ClassA', 'ClassB', 'ClassX', 'ClassZ'], array_keys($elements));
+    }
+
     /**
      * @return object
      */
@@ -19,20 +34,5 @@ final class TransformerCollectorTest extends AbstractContainerAwareTestCase
         $reflection->method('isInterface')->willReturn(false);
 
         return $reflection;
-    }
-
-    public function testClassSorting(): void
-    {
-        $reflections = [
-            $this->createClassReflectionMock('ClassZ'),
-            $this->createClassReflectionMock('ClassA'),
-            $this->createClassReflectionMock('ClassX'),
-            $this->createClassReflectionMock('ClassB')
-        ];
-
-        $transformerCollector = $this->container->get(TransformerCollector::class);
-        $elements = $transformerCollector->transformGroup($reflections);
-
-        $this->assertSame(['ClassA', 'ClassB', 'ClassX', 'ClassZ'], array_keys($elements));
     }
 }

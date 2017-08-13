@@ -19,8 +19,6 @@ final class TraitsTest extends AbstractReflectionClassTestCase
         $this->assertCount(1, $traits);
 
         $this->assertInstanceOf(TraitReflectionInterface::class, $traits[SomeTrait::class]);
-        // temporary disabled due to phpstan autoloading, might not be needed
-        // $this->assertSame('Project\SomeTraitNotPresentHere', $traits['Project\SomeTraitNotPresentHere']);
     }
 
     public function testGetTraitAliases(): void

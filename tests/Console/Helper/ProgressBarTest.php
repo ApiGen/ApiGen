@@ -17,7 +17,7 @@ final class ProgressBarTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->progressBar = new ProgressBar(new NullOutput());
+        $this->progressBar = new ProgressBar(new NullOutput);
     }
 
     public function testInit(): void
@@ -40,7 +40,7 @@ final class ProgressBarTest extends TestCase
         $this->progressBar->increment(20);
 
         /** @var SymfonyProgressBar $bar */
-        $bar =  Assert::readAttribute($this->progressBar, 'bar');
+        $bar = Assert::readAttribute($this->progressBar, 'bar');
         $this->assertSame(20, $bar->getProgress());
 
         $this->progressBar->increment(30);

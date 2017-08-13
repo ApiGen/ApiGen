@@ -6,6 +6,7 @@ final class PartiallyDeprecatedClass
 {
     /**
      * @deprecated
+     * @var int
      */
     public const LEVEL = 0;
 

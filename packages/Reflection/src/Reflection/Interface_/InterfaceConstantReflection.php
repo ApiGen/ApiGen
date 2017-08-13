@@ -136,4 +136,9 @@ final class InterfaceConstantReflection implements InterfaceConstantReflectionIn
     {
         $this->transformerCollector = $transformerCollector;
     }
+
+    public function getDescription(): string
+    {
+        return (string) $this->docBlock->getDescription();
+    }
 }
