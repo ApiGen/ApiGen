@@ -8,6 +8,9 @@ use ApiGen\StringRouting\Tests\Latte\Filter\Source\TestClass;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 use Latte\Engine;
 use Nette\InvalidArgumentException;
+use phpDocumentor\Reflection\Fqsen;
+use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\String_;
 
 final class LinkFilterTest extends AbstractContainerAwareTestCase
 {
@@ -41,7 +44,7 @@ final class LinkFilterTest extends AbstractContainerAwareTestCase
         $reflectionStorage = $this->container->get(ReflectionStorage::class);
 
         $html = $this->latte->renderToString(__DIR__ . '/Source/buildLinkIfReflectionFound-template.latte', [
-            'className' => TestClass::class,
+            'type' => new Object_(new Fqsen('\\' . TestClass::class)),
         ]);
         $this->assertSame(
             '<a href="class-ApiGen.StringRouting.Tests.Latte.Filter.Source.TestClass.html">'. TestClass::class . '</a>',
@@ -49,7 +52,7 @@ final class LinkFilterTest extends AbstractContainerAwareTestCase
         );
 
         $html = $this->latte->renderToString(__DIR__ . '/Source/buildLinkIfReflectionFound-template.latte', [
-            'className' => 'string',
+            'type' => new String_,
         ]);
         $this->assertSame('string', trim($html));
     }

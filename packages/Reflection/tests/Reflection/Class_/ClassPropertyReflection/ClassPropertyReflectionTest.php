@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassPropertyReflection\Source\ReflectionProperty;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use phpDocumentor\Reflection\Types\Integer;
 
 final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
 {
@@ -39,7 +40,9 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
 
     public function testGetTypeHints(): void
     {
-        $this->assertSame(['int'], $this->propertyReflection->getTypeHints());
+        $typeHints = $this->propertyReflection->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(Integer::class, $typeHints[0]);
     }
 
     public function testGetDeclaringClass(): void

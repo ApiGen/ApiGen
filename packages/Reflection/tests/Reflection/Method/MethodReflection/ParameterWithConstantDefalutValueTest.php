@@ -5,6 +5,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Method\MethodReflection;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use phpDocumentor\Reflection\Types\String_;
 
 final class ParameterWithConstantDefalutValueTest extends AbstractParserAwareTestCase
 {
@@ -31,8 +32,13 @@ final class ParameterWithConstantDefalutValueTest extends AbstractParserAwareTes
 
     public function testGetTypeHint(): void
     {
-        $this->assertSame(['string'], $this->localConstantParameterReflection->getTypeHints());
-        $this->assertSame(['string'], $this->classConstantParameterReflection->getTypeHints());
+        $typeHints = $this->localConstantParameterReflection->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(String_::class, $typeHints[0]);
+
+        $typeHints = $this->classConstantParameterReflection->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(String_::class, $typeHints[0]);
     }
 
     // @todo - fix after constant dump is fixed

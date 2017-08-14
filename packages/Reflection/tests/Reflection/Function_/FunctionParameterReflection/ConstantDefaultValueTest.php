@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflecti
 
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use phpDocumentor\Reflection\Types\Integer;
 
 final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
 {
@@ -29,7 +30,10 @@ final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
 
     public function testType(): void
     {
-        $this->assertSame(['int'], $this->functionParameterReflection->getTypeHints());
+        $typeHints = $this->functionParameterReflection->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(Integer::class, $typeHints[0]);
+
         // @todo - fix it after constant dump is fixed
         // $this->assertSame('HI', $this->functionParameterReflection->getDefaultValueDefinition());
     }

@@ -5,6 +5,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflecti
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use phpDocumentor\Reflection\Types\String_;
 
 final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
 {
@@ -43,7 +44,10 @@ final class FunctionParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testType(): void
     {
-        $this->assertSame(['string'], $this->functionParameterReflection->getTypeHints());
+        $typeHints = $this->functionParameterReflection->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(String_::class, $typeHints[0]);
+
         $this->assertTrue($this->functionParameterReflection->isVariadic());
         $this->assertFalse($this->functionParameterReflection->isArray());
         $this->assertFalse($this->functionParameterReflection->isCallable());

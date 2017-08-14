@@ -7,6 +7,9 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterface;
 use ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use phpDocumentor\Reflection\Types\Integer;
+use phpDocumentor\Reflection\Types\Object_;
+use phpDocumentor\Reflection\Types\String_;
 
 final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 {
@@ -37,7 +40,9 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 
     public function testGetTypeHints(): void
     {
-        $this->assertSame(['int', 'string'], $this->parameterReflection->getTypeHints());
+        $typeHints = $this->parameterReflection->getTypeHints();
+        $this->assertInstanceOf(Integer::class, $typeHints[0]);
+        $this->assertInstanceOf(String_::class, $typeHints[1]);
     }
 
     public function testGetIndexedTypeHints(): void
@@ -45,22 +50,33 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
         $methodReflection = $this->classReflection->getMethod('methodWithIndexedTypeHints');
 
         $parameter = $methodReflection->getParameters()['param1'];
-        $this->assertSame(['int', 'string'], $parameter->getTypeHints());
+        $typeHints = $parameter->getTypeHints();
+        $this->assertInstanceOf(Integer::class, $typeHints[0]);
+        $this->assertInstanceOf(String_::class, $typeHints[1]);
 
         $parameter = $methodReflection->getParameters()['param2'];
-        $this->assertSame([
-            'ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass'
-        ], $parameter->getTypeHints());
+        $typeHints = $parameter->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(Object_::class, $typeHints[0]);
+        $this->assertSame('\ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass', (string) $typeHints[0]->getFqsen());
 
         $parameter = $methodReflection->getParameters()['param3'];
-        $this->assertSame([
-            'ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass'
-        ], $parameter->getTypeHints());
+        $typeHints = $parameter->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(Object_::class, $typeHints[0]);
+        $this->assertSame(
+            '\ApiGen\Reflection\Tests\Reflection\Method\MethodReflection\Source\ParameterMethodClass',
+            (string) $typeHints[0]->getFqsen()
+        );
 
         $parameter = $methodReflection->getParameters()['param4'];
-        $this->assertSame([
-            'stdClass'
-        ], $parameter->getTypeHints());
+        $typeHints = $parameter->getTypeHints();
+        $this->assertCount(1, $typeHints);
+        $this->assertInstanceOf(Object_::class, $typeHints[0]);
+        $this->assertSame(
+            '\stdClass',
+            (string) $typeHints[0]->getFqsen()
+        );
     }
 
     public function testGetDescription(): void
