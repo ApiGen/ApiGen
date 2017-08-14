@@ -12,6 +12,8 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
+use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Compound;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
 abstract class AbstractParameterReflection implements AbstractParameterReflectionInterface, TransformerCollectorAwareInterface
@@ -32,26 +34,23 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     }
 
     /**
-     * @return string[]
+     * @return Type[]
      */
     public function getTypeHints(): array
     {
         $typeHint = $this->betterParameterReflection->getTypeHint();
-
         if ($typeHint) {
-            $typeHint = ltrim((string) $typeHint, '\\');
-            return [$typeHint];
+            return ($typeHint instanceof Compound)
+                ? iterator_to_array($typeHint->getIterator())
+                : [$typeHint];
         }
 
         $annotation = $this->getAnnotation();
         if ($annotation) {
-            $types = explode('|', (string) $annotation->getType());
-
-            array_walk($types, function (&$value) {
-                $value = ltrim((string) $value, '\\');
-            });
-
-            return $types;
+            $typeHint = $annotation->getType();
+            return ($typeHint instanceof Compound)
+                ? iterator_to_array($typeHint->getIterator())
+                : [$typeHint];
         }
 
         return [];

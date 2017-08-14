@@ -11,6 +11,8 @@ use ApiGen\StringRouting\Route\SourceCodeRoute;
 use ApiGen\StringRouting\StringRouter;
 use Nette\InvalidArgumentException;
 use Nette\Utils\Html;
+use phpDocumentor\Reflection\Type;
+use phpDocumentor\Reflection\Types\Object_;
 
 final class StringRoutingFiltersProvider implements FilterProviderInterface
 {
@@ -53,17 +55,22 @@ final class StringRoutingFiltersProvider implements FilterProviderInterface
                 return $this->router->buildRoute(SourceCodeRoute::NAME, $reflection);
             },
 
-            // use in .latte: {$className|buildLinkIfReflectionFound}
-            'buildLinkIfReflectionFound' => function (string $className) {
-                $reflection = $this->reflectionStorage->getClassOrInterface($className);
-                if ($reflection) {
-                    $link = Html::el('a');
-                    $link->setAttribute('href', $this->router->buildRoute(ReflectionRoute::NAME, $reflection));
-                    $link->setText($className);
-                    return $link;
-                } else {
-                    return $className;
+            // use in .latte: {$type|buildLinkIfReflectionFound}
+            'buildLinkIfReflectionFound' => function (Type $type) {
+                if ($type instanceof Object_) {
+                    $className = (string) $type->getFqsen();
+                    $className = ltrim($className, "\\");
+                    $reflection = $this->reflectionStorage->getClassOrInterface($className);
+
+                    if ($reflection) {
+                        $link = Html::el('a');
+                        $link->setAttribute('href', $this->router->buildRoute(ReflectionRoute::NAME, $reflection));
+                        $link->setText($type->getFqsen()->getName());
+                        return $link;
+                    }
                 }
+
+                return (string) $type;
             }
         ];
     }
