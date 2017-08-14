@@ -19,12 +19,14 @@ final class SourceCodeHighlighter
     public function highlight(string $sourceCode): string
     {
         $this->highlighter->setOptions(Highlighter::OPTION_TAB_INDENT);
+
         return $this->highlighter->highlight($sourceCode);
     }
 
     public function highlightAndAddLineNumbers(string $sourceCode): string
     {
         $this->highlighter->setOptions(Highlighter::OPTION_TAB_INDENT | Highlighter::OPTION_LINE_COUNTER);
+
         return $this->highlighter->highlight($sourceCode);
     }
 }

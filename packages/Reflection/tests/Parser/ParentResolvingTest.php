@@ -4,12 +4,12 @@ namespace ApiGen\Reflection\Tests\Parser;
 
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\ReflectionStorage;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
-use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeClass;
 use ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingClass;
-use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeInterface;
 use ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingInterface;
 use ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingTrait;
+use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeClass;
+use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeInterface;
+use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ParentResolvingTest extends AbstractContainerAwareTestCase
 {

@@ -30,6 +30,7 @@ final class SubClassesResolver
         }
 
         uksort($subClasses, 'strcasecmp');
+
         return $subClasses;
     }
 }
