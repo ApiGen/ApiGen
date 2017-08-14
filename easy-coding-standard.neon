@@ -26,9 +26,6 @@ checkers:
             - @todo
         enableEachParameterAndReturnInspection: true
 
-    # new since PhpCsFixer 2.1/2.2
-    - PhpCsFixer\Fixer\LanguageConstruct\IsNullFixer
-
 parameters:
     exclude_checkers:
         - PhpCsFixer\Fixer\PhpTag\BlankLineAfterOpeningTagFixer
@@ -36,8 +33,6 @@ parameters:
         - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
         - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
         - PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
-        # possibly bugged: doesn't report errors, only fixes
-        - Symplify\CodingStandard\Fixer\Php\ClassStringToClassConstantFixer
 
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
@@ -71,6 +66,7 @@ parameters:
             - packages/Reflection/src/DocBlock/Tags/See.php
 
         SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff:
+            # test
             - packages/Reflection/tests/Reflection/Class_/ClassReflection/Source/AccessLevels.php
             - tests/Generator/Source/SomeClass.php
 
