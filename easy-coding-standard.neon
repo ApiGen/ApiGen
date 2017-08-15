@@ -33,6 +33,7 @@ parameters:
         - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
         - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
         - PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
+        - Symplify\CodingStandard\Fixer\Php\ClassStringToClassConstantFixer
 
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
