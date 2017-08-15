@@ -42,6 +42,7 @@ final class TraitUsersResolver
         }
 
         uksort($users, 'strcasecmp');
+
         return $users;
     }
 }

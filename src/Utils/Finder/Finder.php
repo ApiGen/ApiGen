@@ -31,6 +31,7 @@ final class Finder implements FinderInterface
     {
         if (is_file($source)) {
             $foundFiles[$source] = new SplFileInfo($source);
+
             return $foundFiles;
         }
 
@@ -38,6 +39,7 @@ final class Finder implements FinderInterface
             ->exclude('/tests*', '/Tests*')
             ->from($source)
             ->exclude('/tests*', '/Tests*');
+
         return $this->convertFinderToArray($finder);
     }
 
