@@ -10,6 +10,16 @@ use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeOtherCl
 class CommonReflection
 {
     /**
+     * @var string
+     */
+    public const THIS_CLASS_METHOD = __CLASS__ . '::methodWithArgs';
+
+    /**
+     * @var string
+     */
+    public const THIS_DIRECTORY = __DIR__;
+
+    /**
      * Send a POST request.
      *
      * @param int|string $url the URL of the API endpoint
