@@ -34,4 +34,16 @@ final class ReflectionTest extends AbstractParserAwareTestCase
         $methodReflection = $this->reflection->getMethods()['getClass'];
         $this->assertFalse($methodReflection->returnsReference());
     }
+
+    public function testBetterReflectionsConstantsParsing(): void
+    {
+        $constants = $this->reflection->getConstants();
+        $this->assertCount(2, $constants);
+
+        $thisDirectoryConstant = $constants['THIS_DIRECTORY'];
+        $this->assertSame(__DIR__ . '/Source', $thisDirectoryConstant->getValue());
+
+        $thisClassConstant = $constants['THIS_CLASS_METHOD'];
+        $this->assertSame(CommonReflection::class . '::methodWithArgs', $thisClassConstant->getValue());
+    }
 }
