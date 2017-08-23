@@ -265,7 +265,9 @@ table .name > div > .description
 #source pre.code {
     padding-left: 0;
 }
-
+#source pre.code span {
+	white-space: pre;
+}
 .php-keyword1 {
     color: #e71818;
     font-weight: bold;
