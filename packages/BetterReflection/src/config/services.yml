@@ -5,8 +5,10 @@ services:
     ApiGen\BetterReflection\:
         resource: '..'
 
-    Roave\BetterReflection\SourceLocator\Ast\FindReflectionsInTree: ~
-    Roave\BetterReflection\SourceLocator\Ast\Strategy\AstConversionStrategy: ~
+    # cached AST Locator
+    Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator: ~
+    Roave\BetterReflection\SourceLocator\Ast\Locator:
+        alias: Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator
 
     # nikic\PHP-Parser
     PhpParser\Parser:
