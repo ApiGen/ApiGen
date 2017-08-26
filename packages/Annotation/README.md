@@ -19,7 +19,7 @@ Here are you options:
 
 ## How to Modify Description
 
-Sometimes you need to modify your description: decorate HTML, Markdown or anyhting else:
+Sometimes you need to modify your description: decorate HTML, Markdown or anything else:
 
 ```php
 /** 
