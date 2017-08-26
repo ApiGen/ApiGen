@@ -1,3 +1,11 @@
+imports:
+    - { resource: '../../packages/Annotation/src/config/services.yml' }
+#    - { resource: '../../packages/BetterReflection/src/config/services.yml' }
+    - { resource: '../../packages/Element/src/config/services.yml' }
+    - { resource: '../../packages/ModularConfiguration/src/config/services.yml' }
+    - { resource: '../../packages/Reflection/src/config/services.yml' }
+    - { resource: '../../packages/StringRouting/src/config/services.yml' }
+
 services:
     _defaults:
         autowire: true
@@ -6,18 +14,6 @@ services:
     ApiGen\:
         resource: '../../src'
         exclude: '../../src/{Application/Command,Event,Exception}'
-    ApiGen\Annotation\:
-        resource: '../../packages/Annotation/src'
-    ApiGen\Element\:
-        resource: '../../packages/Element/src'
-    ApiGen\ModularConfiguration\:
-        resource: '../../packages/ModularConfiguration/src'
-        exclude: '../../packages/ModularConfiguration/src/{Exception}'
-    ApiGen\Reflection\:
-        resource: '../../packages/Reflection/src'
-        exclude: '../../packages/Reflection/src/{Exception,Reflection,DocBlock/Tags}'
-    ApiGen\StringRouting\:
-        resource: '../../packages/StringRouting/src'
 
     # Filter Aware Latte Engine
     Latte\Engine:
