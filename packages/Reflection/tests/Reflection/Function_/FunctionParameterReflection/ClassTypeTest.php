@@ -4,6 +4,7 @@ namespace ApiGen\Reflection\Tests\Reflection\Function_\FunctionParameterReflecti
 
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionParameterReflectionInterface;
 use ApiGen\Tests\AbstractParserAwareTestCase;
+use SplFileInfo;
 
 final class ClassTypeTest extends AbstractParserAwareTestCase
 {
@@ -29,6 +30,6 @@ final class ClassTypeTest extends AbstractParserAwareTestCase
 
     public function testType(): void
     {
-        $this->assertSame('SplFileInfo', $this->functionParameterReflection->getTypeHint());
+        $this->assertSame(SplFileInfo::class, $this->functionParameterReflection->getTypeHint());
     }
 }

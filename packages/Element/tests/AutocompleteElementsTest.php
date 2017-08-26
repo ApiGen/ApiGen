@@ -7,6 +7,7 @@ use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use NoneNamespacedClass;
 
 final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
 {
@@ -76,7 +77,7 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
             [$this->namespacePrefix],
             [$this->namespacePrefix . '\SubNamespace'],
             ['none'],
-            ['NoneNamespacedClass'],
+            [NoneNamespacedClass::class],
             [$this->namespacePrefix . '\namespacedFunction()'],
             [$this->namespacePrefix . '\NamespacedClass'],
             [$this->namespacePrefix . '\SubNamespace\SubNamespacedInterface'],
