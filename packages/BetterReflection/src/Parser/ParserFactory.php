@@ -3,8 +3,9 @@
 namespace ApiGen\BetterReflection\Parser;
 
 use PhpParser\Lexer;
-use PhpParser\Parser as NikicParser;
+use PhpParser\Parser;
 use PhpParser\ParserFactory as NikicParserFactory;
+use Roave\BetterReflection\SourceLocator\Ast\Parser\MemoizingParser;
 
 final class ParserFactory
 {
@@ -24,8 +25,10 @@ final class ParserFactory
         $this->nikicParserFactory = $nikicParserFactory;
     }
 
-    public function create(): NikicParser
+    public function create(): Parser
     {
-        return $this->nikicParserFactory->create(NikicParserFactory::PREFER_PHP7, $this->lexer);
+        $nativeParser = $this->nikicParserFactory->create(NikicParserFactory::PREFER_PHP7, $this->lexer);
+
+        return new MemoizingParser($nativeParser);
     }
 }
