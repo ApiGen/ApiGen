@@ -12,7 +12,7 @@ use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Located\LocatedSource;
 
 /**
- * Based on https://github.com/Roave/BetterReflection/pull/312
+ * Based on https://github.com/Roave/BetterReflection/pull/312.
  */
 final class CachedAstLocator implements Locator
 {
