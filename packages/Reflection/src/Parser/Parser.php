@@ -2,6 +2,8 @@
 
 namespace ApiGen\Reflection\Parser;
 
+use ApiGen\BetterReflection\SourceLocator\DirectorySourceLocatorFactory;
+use ApiGen\BetterReflection\SourceLocator\FileSourceLocatorFactory;
 use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -11,12 +13,6 @@ use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\TransformerCollector;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
-use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 final class Parser
@@ -35,15 +31,27 @@ final class Parser
      * @var ReflectionWarmUpper
      */
     private $reflectionWarmUpper;
+    /**
+     * @var DirectorySourceLocatorFactory
+     */
+    private $directorySourceLocatorFactory;
+    /**
+     * @var FileSourceLocatorFactory
+     */
+    private $fileSourceLocatorFactory;
 
     public function __construct(
         TransformerCollector $transformerCollector,
         ReflectionStorage $reflectionStorage,
-        ReflectionWarmUpper $reflectionWarmUpper
+        ReflectionWarmUpper $reflectionWarmUpper,
+        DirectorySourceLocatorFactory $directorySourceLocatorFactory,
+        FileSourceLocatorFactory $fileSourceLocatorFactory
     ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionWarmUpper = $reflectionWarmUpper;
+        $this->directorySourceLocatorFactory = $directorySourceLocatorFactory;
+        $this->fileSourceLocatorFactory = $fileSourceLocatorFactory;
     }
 
     /**
@@ -70,7 +78,7 @@ final class Parser
      */
     private function parseDirectories(array $directories): void
     {
-        $directoriesSourceLocator = $this->createDirectoriesSource($directories);
+        $directoriesSourceLocator = $this->directorySourceLocatorFactory->createFromDirectories($directories);
 
         $this->parseClassElements($directoriesSourceLocator);
         $this->parseFunctions($directoriesSourceLocator);
@@ -83,7 +91,7 @@ final class Parser
      */
     private function parseFiles(array $files): void
     {
-        $filesSourceLocator = $this->createFilesSource($files);
+        $filesSourceLocator = $this->fileSourceLocatorFactory->createFromFiles($files);
 
         $this->parseClassElements($filesSourceLocator);
         $this->parseFunctions($filesSourceLocator);
@@ -218,43 +226,5 @@ final class Parser
         $functionReflector = new FunctionReflector($sourceLocator);
         $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
         $this->reflectionStorage->setFunctionReflections($functionReflections);
-    }
-
-    /**
-     * @param string[] $directories
-     */
-    private function createDirectoriesSource(array $directories): SourceLocator
-    {
-        $locators = [
-            new DirectoriesSourceLocator($directories),
-            new AutoloadSourceLocator,
-            new PhpInternalSourceLocator,
-        ];
-
-        foreach ($directories as $directory) {
-            $autoload = dirname($directory) . '/vendor/autoload.php';
-            if (is_file($autoload)) {
-                $locators[] = new ComposerSourceLocator(include $autoload);
-            }
-        }
-
-        return new AggregateSourceLocator($locators);
-    }
-
-    /**
-     * @param string[] $files
-     */
-    private function createFilesSource(array $files): SourceLocator
-    {
-        $locators = [
-            new AutoloadSourceLocator,
-            new PhpInternalSourceLocator,
-        ];
-
-        foreach ($files as $file) {
-            $locators[] = new SingleFileSourceLocator($file);
-        }
-
-        return new AggregateSourceLocator($locators);
     }
 }

@@ -1,6 +1,6 @@
 imports:
     - { resource: '../../packages/Annotation/src/config/services.yml' }
-#    - { resource: '../../packages/BetterReflection/src/config/services.yml' }
+    - { resource: '../../packages/BetterReflection/src/config/services.yml' }
     - { resource: '../../packages/Element/src/config/services.yml' }
     - { resource: '../../packages/ModularConfiguration/src/config/services.yml' }
     - { resource: '../../packages/Reflection/src/config/services.yml' }
@@ -17,7 +17,7 @@ services:
 
     # Filter Aware Latte Engine
     Latte\Engine:
-        factory: 'ApiGen\Latte\FiltersAwareLatteEngineFactory:create'
+        factory: ['@ApiGen\Latte\FiltersAwareLatteEngineFactory', 'create']
 
     # PHP Documentor
     phpDocumentor\Reflection\DocBlockFactory: ~

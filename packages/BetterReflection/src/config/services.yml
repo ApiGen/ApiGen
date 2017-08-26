@@ -4,3 +4,12 @@ services:
 
     ApiGen\BetterReflection\:
         resource: '..'
+
+    Roave\BetterReflection\SourceLocator\Ast\FindReflectionsInTree: ~
+    Roave\BetterReflection\SourceLocator\Ast\Strategy\AstConversionStrategy: ~
+
+    # nikic\PHP-Parser
+    PhpParser\Parser:
+        factory: ['@ApiGen\BetterReflection\Parser\ParserFactory', 'create']
+    PhpParser\Lexer: ~
+    PhpParser\ParserFactory: ~
