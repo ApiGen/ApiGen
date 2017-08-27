@@ -2,8 +2,7 @@
 
 namespace ApiGen\Reflection\Parser;
 
-use ApiGen\BetterReflection\SourceLocator\DirectorySourceLocatorFactory;
-use ApiGen\BetterReflection\SourceLocator\FileSourceLocatorFactory;
+use ApiGen\BetterReflection\SourceLocator\SourceLocatorsFactory;
 use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -31,27 +30,22 @@ final class Parser
      * @var ReflectionWarmUpper
      */
     private $reflectionWarmUpper;
+
     /**
-     * @var DirectorySourceLocatorFactory
+     * @var SourceLocatorsFactory
      */
-    private $directorySourceLocatorFactory;
-    /**
-     * @var FileSourceLocatorFactory
-     */
-    private $fileSourceLocatorFactory;
+    private $sourceLocatorsFactory;
 
     public function __construct(
         TransformerCollector $transformerCollector,
         ReflectionStorage $reflectionStorage,
         ReflectionWarmUpper $reflectionWarmUpper,
-        DirectorySourceLocatorFactory $directorySourceLocatorFactory,
-        FileSourceLocatorFactory $fileSourceLocatorFactory
+        SourceLocatorsFactory $sourceLocatorsFactory
     ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionWarmUpper = $reflectionWarmUpper;
-        $this->directorySourceLocatorFactory = $directorySourceLocatorFactory;
-        $this->fileSourceLocatorFactory = $fileSourceLocatorFactory;
+        $this->sourceLocatorsFactory = $sourceLocatorsFactory;
     }
 
     /**
@@ -59,42 +53,17 @@ final class Parser
      */
     public function parseFilesAndDirectories(array $sources): void
     {
-        $files = [];
-        $directories = [];
-        foreach ($sources as $source) {
-            if (is_dir($source)) {
-                $directories[] = $source;
-            } else {
-                $files[] = $source;
-            }
-        }
+        [$files, $directories] = $this->splitSourcesToDirectoriesAndFiles($sources);
 
-        $this->parseDirectories($directories);
-        $this->parseFiles($files);
+        $sourceLocator = $this->sourceLocatorsFactory->createFromDirectoriesAndFiles($directories, $files);
+
+        $this->parseSourceLocator($sourceLocator);
     }
 
-    /**
-     * @param string[] $directories
-     */
-    private function parseDirectories(array $directories): void
+    private function parseSourceLocator(SourceLocator $sourceLocator): void
     {
-        $directoriesSourceLocator = $this->directorySourceLocatorFactory->createFromDirectories($directories);
-
-        $this->parseClassElements($directoriesSourceLocator);
-        $this->parseFunctions($directoriesSourceLocator);
-
-        $this->reflectionWarmUpper->warmUp();
-    }
-
-    /**
-     * @param string[] $files
-     */
-    private function parseFiles(array $files): void
-    {
-        $filesSourceLocator = $this->fileSourceLocatorFactory->createFromFiles($files);
-
-        $this->parseClassElements($filesSourceLocator);
-        $this->parseFunctions($filesSourceLocator);
+        $this->parseClassElements($sourceLocator);
+        $this->parseFunctions($sourceLocator);
 
         $this->reflectionWarmUpper->warmUp();
     }
@@ -226,5 +195,25 @@ final class Parser
         $functionReflector = new FunctionReflector($sourceLocator);
         $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
         $this->reflectionStorage->setFunctionReflections($functionReflections);
+    }
+
+    /**
+     * @param string[] $sources
+     * @return string[][]
+     */
+    private function splitSourcesToDirectoriesAndFiles(array $sources): array
+    {
+        $files = [];
+        $directories = [];
+
+        foreach ($sources as $source) {
+            if (is_dir($source)) {
+                $directories[] = $source;
+            } else {
+                $files[] = $source;
+            }
+        }
+
+        return [$files, $directories];
     }
 }
