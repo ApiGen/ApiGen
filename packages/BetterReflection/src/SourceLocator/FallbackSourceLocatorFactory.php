@@ -33,13 +33,10 @@ final class FallbackSourceLocatorFactory
      */
     public function createFromDirecotires(array $directories): SourceLocator
     {
-        $locators = [
+        return new AggregateSourceLocator([
             new AutoloadSourceLocator($this->astLocator),
             new PhpInternalSourceLocator($this->astLocator),
-        ];
-
-        $locators[] = $this->projectVendorSourceLocatorFactory->createFromDirectories($directories);
-
-        return new AggregateSourceLocator($locators);
+            $this->projectVendorSourceLocatorFactory->createFromDirectories($directories),
+        ]);
     }
 }

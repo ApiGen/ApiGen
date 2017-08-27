@@ -31,10 +31,9 @@ final class DirectorySourceLocatorFactory
      */
     public function createFromDirectories(array $directories): SourceLocator
     {
-        $locators = [];
-        $locators[] = new DirectoriesSourceLocator($directories, $this->astLocator);
-        $locators[] = $this->projectVendorSourceLocatorFactory->createFromDirectories($directories);
-
-        return new AggregateSourceLocator($locators);
+        return new AggregateSourceLocator([
+            new DirectoriesSourceLocator($directories, $this->astLocator),
+            $this->projectVendorSourceLocatorFactory->createFromDirectories($directories),
+        ]);
     }
 }
