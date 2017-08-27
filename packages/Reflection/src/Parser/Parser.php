@@ -56,12 +56,6 @@ final class Parser
         [$files, $directories] = $this->splitSourcesToDirectoriesAndFiles($sources);
 
         $sourceLocator = $this->sourceLocatorsFactory->createFromDirectoriesAndFiles($directories, $files);
-
-        $this->parseSourceLocator($sourceLocator);
-    }
-
-    private function parseSourceLocator(SourceLocator $sourceLocator): void
-    {
         $this->parseClassElements($sourceLocator);
         $this->parseFunctions($sourceLocator);
 
@@ -111,7 +105,7 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[]
+     * @param ClassReflectionInterface[] $betterClassReflections
      * @return ClassReflectionInterface[]
      */
     private function resolveParentClassesInterfacesAndTraits(array $betterClassReflections): array
@@ -130,27 +124,28 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[]
+     * @param ClassReflectionInterface[] $classReflections
      * @return ClassReflectionInterface[]
      */
-    private function resolveParentClasses(array $reflections): array
+    private function resolveParentClasses(array $classReflections): array
     {
-        foreach ($reflections as $reflection) {
+        foreach ($classReflections as $reflection) {
             $class = $reflection;
             while ($parentClass = $class->getParentClass()) {
-                if (! isset($reflections[$parentClass->getName()])) {
-                    $reflections[$parentClass->getName()] = $parentClass;
+                /** @var ClassReflectionInterface $parentClass */
+                if (! isset($classReflections[$parentClass->getName()])) {
+                    $classReflections[$parentClass->getName()] = $parentClass;
                 }
 
                 $class = $parentClass;
             }
         }
 
-        return $reflections;
+        return $classReflections;
     }
 
     /**
-     * @param ClassReflectionInterface[]
+     * @param ClassReflectionInterface[] $reflections
      * @return ClassReflectionInterface[]
      */
     private function resolveParentInterfaces(array $reflections): array
@@ -167,7 +162,7 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[]
+     * @param ClassReflectionInterface[] $reflections
      * @return ClassReflectionInterface[]
      */
     private function resolveParentTraits(array $reflections): array
