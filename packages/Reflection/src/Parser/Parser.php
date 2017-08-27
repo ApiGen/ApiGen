@@ -132,12 +132,14 @@ final class Parser
         foreach ($classReflections as $reflection) {
             $class = $reflection;
             while ($parentClass = $class->getParentClass()) {
+                $class = $parentClass;
+
                 /** @var ClassReflectionInterface $parentClass */
-                if (! isset($classReflections[$parentClass->getName()])) {
-                    $classReflections[$parentClass->getName()] = $parentClass;
+                if (isset($classReflections[$parentClass->getName()])) {
+                    continue;
                 }
 
-                $class = $parentClass;
+                $classReflections[$parentClass->getName()] = $parentClass;
             }
         }
 
@@ -145,16 +147,18 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[] $reflections
-     * @return ClassReflectionInterface[]
+     * @param ClassReflectionInterface[]|InterfaceReflectionInterface[] $reflections
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
     private function resolveParentInterfaces(array $reflections): array
     {
         foreach ($reflections as $reflection) {
             foreach ($reflection->getInterfaces() as $interface) {
-                if (! isset($reflections[$interface->getName()])) {
-                    $reflections[$interface->getName()] = $interface;
+                if (isset($reflections[$interface->getName()])) {
+                    continue;
                 }
+
+                $reflections[$interface->getName()] = $interface;
             }
         }
 
@@ -162,16 +166,18 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[] $reflections
-     * @return ClassReflectionInterface[]
+     * @param ClassReflectionInterface[]|TraitReflectionInterface[] $reflections
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
     private function resolveParentTraits(array $reflections): array
     {
         foreach ($reflections as $reflection) {
             foreach ($reflection->getTraits() as $trait) {
-                if (! isset($reflections[$trait->getName()])) {
-                    $reflections[$trait->getName()] = $trait;
+                if (isset($reflections[$trait->getName()])) {
+                    continue;
                 }
+
+                $reflections[$trait->getName()] = $trait;
             }
         }
 
