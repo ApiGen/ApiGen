@@ -4,8 +4,6 @@ namespace ApiGen\BetterReflection\SourceLocator;
 
 use Roave\BetterReflection\SourceLocator\Ast\Locator as AstLocator;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
@@ -26,10 +24,7 @@ final class FileSourceLocatorFactory
      */
     public function createFromFiles(array $files): SourceLocator
     {
-        $locators = [
-            new AutoloadSourceLocator($this->astLocator),
-            new PhpInternalSourceLocator($this->astLocator),
-        ];
+        $locators = [];
 
         foreach ($files as $file) {
             $locators[] = new SingleFileSourceLocator($file, $this->astLocator);
