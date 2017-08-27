@@ -222,7 +222,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function getOwnConstants(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->betterClassReflection->getReflectionConstants()
+            $this->betterClassReflection->getImmediateReflectionConstants()
         );
     }
 
