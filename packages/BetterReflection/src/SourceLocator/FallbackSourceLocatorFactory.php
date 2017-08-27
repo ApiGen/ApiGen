@@ -11,6 +11,11 @@ use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 final class FallbackSourceLocatorFactory
 {
     /**
+     * @var AstLocator
+     */
+    private $astLocator;
+
+    /**
      * @var ProjectVendorSourceLocatorFactory
      */
     private $projectVendorSourceLocatorFactory;

@@ -22,21 +22,14 @@ final class SourceLocatorsFactory
      */
     private $fallbackSourceLocatorFactory;
 
-    /**
-     * @var ProjectVendorSourceLocatorFactory
-     */
-    private $projectVendorSourceLocatorFactory;
-
     public function __construct(
         DirectorySourceLocatorFactory $directorySourceLocatorFactory,
         FileSourceLocatorFactory $fileSourceLocatorFactory,
-        FallbackSourceLocatorFactory $fallbackSourceLocatorFactory,
-        ProjectVendorSourceLocatorFactory $projectVendorSourceLocatorFactory
+        FallbackSourceLocatorFactory $fallbackSourceLocatorFactory
     ) {
         $this->directorySourceLocatorFactory = $directorySourceLocatorFactory;
         $this->fileSourceLocatorFactory = $fileSourceLocatorFactory;
         $this->fallbackSourceLocatorFactory = $fallbackSourceLocatorFactory;
-        $this->projectVendorSourceLocatorFactory = $projectVendorSourceLocatorFactory;
     }
 
     /**

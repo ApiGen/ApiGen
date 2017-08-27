@@ -18,7 +18,8 @@ final class ProjectVendorSourceLocatorFactory
      */
     public function createFromDirectories(array $directories): SourceLocator
     {
-        if ($composerSourceLocator = $this->tryToFindProjectAutoload($directories)) {
+        $composerSourceLocator = $this->tryToFindProjectAutoload($directories);
+        if ($composerSourceLocator !== null) {
             return $composerSourceLocator;
         }
 
