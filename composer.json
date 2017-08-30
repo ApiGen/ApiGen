@@ -11,7 +11,7 @@
     "bin": ["bin/apigen"],
     "require": {
         "php": "^7.1",
-        "roave/better-reflection": "dev-master#d9a0d26",
+        "roave/better-reflection": "dev-master#a402048",
         "phpdocumentor/reflection-docblock": "^3.1",
         "kukulich/fshl": "^2.1",
 
@@ -39,6 +39,7 @@
         "psr-4": {
             "ApiGen\\": "src",
             "ApiGen\\Annotation\\": "packages/Annotation/src",
+            "ApiGen\\BetterReflection\\": "packages/BetterReflection/src",
             "ApiGen\\Element\\": "packages/Element/src",
             "ApiGen\\ModularConfiguration\\": "packages/ModularConfiguration/src",
             "ApiGen\\Reflection\\": "packages/Reflection/src",
@@ -57,7 +58,7 @@
             "packages/Element/tests/ReflectionCollector/NamespaceReflectionCollectorSource/namespacedFunction.php",
             "packages/Element/tests/ReflectionCollector/NamespaceReflectionCollectorSource/NoneNamespacedClass.php",
             "packages/Element/tests/ReflectionCollector/Source/deprecatedFunction.php",
-            "packages/Reflection/tests/Parser/DifferentVendorSources/vendor/DifferentVendor/DifferentClass.php",  
+            "packages/Reflection/tests/Parser/DifferentVendorSources/vendor/DifferentVendor/DifferentClass.php",
             "packages/Reflection/tests/Parser/DifferentVendorSources/src/MyVendor/MyClass.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionReflection/Source/SomeFunction.php",
             "packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/Source/functionWithConstant.php",

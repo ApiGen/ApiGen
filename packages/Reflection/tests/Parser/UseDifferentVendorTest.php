@@ -4,6 +4,8 @@ namespace ApiGen\Reflection\Tests\Parser;
 
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
+use DifferentVendor\DifferentClass;
+use MyVendor\MyClass;
 
 final class UseDifferentVendorTest extends AbstractContainerAwareTestCase
 {
@@ -13,7 +15,7 @@ final class UseDifferentVendorTest extends AbstractContainerAwareTestCase
 
         $parser->parseFilesAndDirectories([__DIR__ . '/DifferentVendorSources/src']);
 
-        $this->assertTrue(class_exists('\MyVendor\MyClass'));
-        $this->assertTrue(class_exists('\DifferentVendor\DifferentClass'));
+        $this->assertTrue(class_exists(MyClass::class));
+        $this->assertTrue(class_exists(DifferentClass::class));
     }
 }

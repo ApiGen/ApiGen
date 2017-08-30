@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Parser;
 
+use ApiGen\BetterReflection\SourceLocator\SourceLocatorsFactory;
 use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -11,12 +12,6 @@ use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\TransformerCollector;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
-use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\AutoloadSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\PhpInternalSourceLocator;
-use Roave\BetterReflection\SourceLocator\Type\SingleFileSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 final class Parser
@@ -36,14 +31,21 @@ final class Parser
      */
     private $reflectionWarmUpper;
 
+    /**
+     * @var SourceLocatorsFactory
+     */
+    private $sourceLocatorsFactory;
+
     public function __construct(
         TransformerCollector $transformerCollector,
         ReflectionStorage $reflectionStorage,
-        ReflectionWarmUpper $reflectionWarmUpper
+        ReflectionWarmUpper $reflectionWarmUpper,
+        SourceLocatorsFactory $sourceLocatorsFactory
     ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionWarmUpper = $reflectionWarmUpper;
+        $this->sourceLocatorsFactory = $sourceLocatorsFactory;
     }
 
     /**
@@ -51,42 +53,11 @@ final class Parser
      */
     public function parseFilesAndDirectories(array $sources): void
     {
-        $files = [];
-        $directories = [];
-        foreach ($sources as $source) {
-            if (is_dir($source)) {
-                $directories[] = $source;
-            } else {
-                $files[] = $source;
-            }
-        }
+        [$files, $directories] = $this->splitSourcesToDirectoriesAndFiles($sources);
 
-        $this->parseDirectories($directories);
-        $this->parseFiles($files);
-    }
-
-    /**
-     * @param string[] $directories
-     */
-    private function parseDirectories(array $directories): void
-    {
-        $directoriesSourceLocator = $this->createDirectoriesSource($directories);
-
-        $this->parseClassElements($directoriesSourceLocator);
-        $this->parseFunctions($directoriesSourceLocator);
-
-        $this->reflectionWarmUpper->warmUp();
-    }
-
-    /**
-     * @param string[] $files
-     */
-    private function parseFiles(array $files): void
-    {
-        $filesSourceLocator = $this->createFilesSource($files);
-
-        $this->parseClassElements($filesSourceLocator);
-        $this->parseFunctions($filesSourceLocator);
+        $sourceLocator = $this->sourceLocatorsFactory->createFromDirectoriesAndFiles($directories, $files);
+        $this->parseClassElements($sourceLocator);
+        $this->parseFunctions($sourceLocator);
 
         $this->reflectionWarmUpper->warmUp();
     }
@@ -134,7 +105,7 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[]
+     * @param ClassReflectionInterface[] $betterClassReflections
      * @return ClassReflectionInterface[]
      */
     private function resolveParentClassesInterfacesAndTraits(array $betterClassReflections): array
@@ -153,36 +124,41 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[]
+     * @param ClassReflectionInterface[] $classReflections
      * @return ClassReflectionInterface[]
      */
-    private function resolveParentClasses(array $reflections): array
+    private function resolveParentClasses(array $classReflections): array
     {
-        foreach ($reflections as $reflection) {
+        foreach ($classReflections as $reflection) {
             $class = $reflection;
             while ($parentClass = $class->getParentClass()) {
-                if (! isset($reflections[$parentClass->getName()])) {
-                    $reflections[$parentClass->getName()] = $parentClass;
+                $class = $parentClass;
+
+                /** @var ClassReflectionInterface $parentClass */
+                if (isset($classReflections[$parentClass->getName()])) {
+                    continue;
                 }
 
-                $class = $parentClass;
+                $classReflections[$parentClass->getName()] = $parentClass;
             }
         }
 
-        return $reflections;
+        return $classReflections;
     }
 
     /**
-     * @param ClassReflectionInterface[]
-     * @return ClassReflectionInterface[]
+     * @param ClassReflectionInterface[]|InterfaceReflectionInterface[] $reflections
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
     private function resolveParentInterfaces(array $reflections): array
     {
         foreach ($reflections as $reflection) {
             foreach ($reflection->getInterfaces() as $interface) {
-                if (! isset($reflections[$interface->getName()])) {
-                    $reflections[$interface->getName()] = $interface;
+                if (isset($reflections[$interface->getName()])) {
+                    continue;
                 }
+
+                $reflections[$interface->getName()] = $interface;
             }
         }
 
@@ -190,16 +166,18 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[]
-     * @return ClassReflectionInterface[]
+     * @param ClassReflectionInterface[]|TraitReflectionInterface[] $reflections
+     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
      */
     private function resolveParentTraits(array $reflections): array
     {
         foreach ($reflections as $reflection) {
             foreach ($reflection->getTraits() as $trait) {
-                if (! isset($reflections[$trait->getName()])) {
-                    $reflections[$trait->getName()] = $trait;
+                if (isset($reflections[$trait->getName()])) {
+                    continue;
                 }
+
+                $reflections[$trait->getName()] = $trait;
             }
         }
 
@@ -221,40 +199,22 @@ final class Parser
     }
 
     /**
-     * @param string[] $directories
+     * @param string[] $sources
+     * @return string[][]
      */
-    private function createDirectoriesSource(array $directories): SourceLocator
+    private function splitSourcesToDirectoriesAndFiles(array $sources): array
     {
-        $locators = [
-            new DirectoriesSourceLocator($directories),
-            new AutoloadSourceLocator,
-            new PhpInternalSourceLocator,
-        ];
+        $files = [];
+        $directories = [];
 
-        foreach ($directories as $directory) {
-            $autoload = dirname($directory) . '/vendor/autoload.php';
-            if (is_file($autoload)) {
-                $locators[] = new ComposerSourceLocator(include $autoload);
+        foreach ($sources as $source) {
+            if (is_dir($source)) {
+                $directories[] = $source;
+            } else {
+                $files[] = $source;
             }
         }
 
-        return new AggregateSourceLocator($locators);
-    }
-
-    /**
-     * @param string[] $files
-     */
-    private function createFilesSource(array $files): SourceLocator
-    {
-        $locators = [
-            new AutoloadSourceLocator,
-            new PhpInternalSourceLocator,
-        ];
-
-        foreach ($files as $file) {
-            $locators[] = new SingleFileSourceLocator($file);
-        }
-
-        return new AggregateSourceLocator($locators);
+        return [$files, $directories];
     }
 }

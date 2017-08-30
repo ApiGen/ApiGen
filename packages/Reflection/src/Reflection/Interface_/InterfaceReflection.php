@@ -134,7 +134,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     public function getOwnConstants(): array
     {
         return $this->transformerCollector->transformGroup(
-            $this->betterInterfaceReflection->getReflectionConstants()
+            $this->betterInterfaceReflection->getImmediateReflectionConstants()
         );
     }
 

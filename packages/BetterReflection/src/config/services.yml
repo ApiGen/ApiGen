@@ -1,0 +1,17 @@
+services:
+    _defaults:
+        autowire: true
+
+    ApiGen\BetterReflection\:
+        resource: '..'
+
+    # cached AST Locator
+    Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator: ~
+    Roave\BetterReflection\SourceLocator\Ast\Locator:
+        alias: Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator
+
+    # nikic\PHP-Parser
+    PhpParser\Parser:
+        factory: ['@ApiGen\BetterReflection\Parser\ParserFactory', 'create']
+    PhpParser\Lexer: ~
+    PhpParser\ParserFactory: ~
