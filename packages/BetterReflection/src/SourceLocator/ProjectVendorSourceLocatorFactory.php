@@ -14,6 +14,12 @@ use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 final class ProjectVendorSourceLocatorFactory
 {
     /**
+     * Location, where an autoload is searched in.
+     * @var string
+     */
+    private const STANDARD_AUTOLOAD_LOCATION = '/vendor/autoload.php';
+
+    /**
      * @param string[] $directories
      */
     public function createFromDirectories(array $directories): SourceLocator
@@ -32,12 +38,26 @@ final class ProjectVendorSourceLocatorFactory
     private function tryToFindProjectAutoload(array $directories): ?ComposerSourceLocator
     {
         foreach ($directories as $directory) {
-            $autoload = dirname($directory) . '/vendor/autoload.php';
-            if (is_file($autoload)) {
-                return new ComposerSourceLocator(include $autoload);
+            $autoloadPath = $this->createAutoloadPath(dirname($directory));
+            if (is_file($autoloadPath)) {
+                return $this->createComposerSourceLocator($autoloadPath);
             }
         }
 
         return null;
+    }
+
+    private function createAutoloadPath(string $directory): string
+    {
+        return $directory . self::STANDARD_AUTOLOAD_LOCATION;
+    }
+
+    /**
+     * $autoloadPath is expected to be composer autoload file path
+     * It is also assumed that this php file will return \Composer\Autoload\ClassLoader after evaluation.
+     */
+    private function createComposerSourceLocator(string $autoloadPath): ComposerSourceLocator
+    {
+        return new ComposerSourceLocator(include $autoloadPath);
     }
 }
