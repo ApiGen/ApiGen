@@ -32,6 +32,8 @@ parameters:
         - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
         - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
         - PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
+        # resolve later
+        - Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff
 
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
