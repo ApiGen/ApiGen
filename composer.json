@@ -27,7 +27,8 @@
         "symfony/http-kernel": "^3.3",
         "symfony/yaml": "^3.3",
         "symplify/package-builder": "^2.2",
-        "psr/container": "^1.0"
+        "psr/container": "^1.0",
+        "zendframework/zend-code": "^3.1"
     },
     "require-dev": {
         "tracy/tracy": "^2.4",
