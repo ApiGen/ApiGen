@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Parser\Parser;
@@ -30,9 +31,15 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
 
     protected function setUp(): void
     {
+        /** @var Configuration $configuration */
+        $configuration = $this->container->get(Configuration::class);
+        $configuration->resolveOptions([
+            'source' => [__DIR__ . '/Source']
+        ]);
+
         /** @var Parser $parser */
         $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $parser->parse();
 
         /** @var ReflectionStorage $reflectionStorage */
         $reflectionStorage = $this->container->get(ReflectionStorage::class);

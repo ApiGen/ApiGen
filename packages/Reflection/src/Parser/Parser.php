@@ -2,7 +2,6 @@
 
 namespace ApiGen\Reflection\Parser;
 
-use ApiGen\BetterReflection\SourceLocator\SourceLocatorsFactory;
 use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -12,7 +11,6 @@ use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\TransformerCollector;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
-//use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 final class Parser
 {
@@ -30,11 +28,6 @@ final class Parser
      * @var ReflectionWarmUpper
      */
     private $reflectionWarmUpper;
-//
-//    /**
-//     * @var SourceLocatorsFactory
-//     */
-//    private $sourceLocatorsFactory;
 
     /**
      * @var FunctionReflector
@@ -50,27 +43,18 @@ final class Parser
         TransformerCollector $transformerCollector,
         ReflectionStorage $reflectionStorage,
         ReflectionWarmUpper $reflectionWarmUpper,
-//        SourceLocatorsFactory $sourceLocatorsFactory,
         FunctionReflector $functionReflector,
         ClassReflector $classReflector
     ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionWarmUpper = $reflectionWarmUpper;
-//        $this->sourceLocatorsFactory = $sourceLocatorsFactory;
         $this->functionReflector = $functionReflector;
         $this->classReflector = $classReflector;
     }
 
-    /**
-     * @param string[] $sources
-     */
-    public function parseFilesAndDirectories(array $sources): void
+    public function parse(): void
     {
-//        [$files, $directories] = $this->splitSourcesToDirectoriesAndFiles($sources);
-
-//        $sourceLocator = $this->sourceLocatorsFactory->createFromDirectoriesAndFiles($directories, $files);
-
         $this->parseClassElements();
         $this->parseFunctions();
 
@@ -210,24 +194,4 @@ final class Parser
         $functionReflections = $this->transformBetterFunctionReflections();
         $this->reflectionStorage->setFunctionReflections($functionReflections);
     }
-
-//    /**
-//     * @param string[] $sources
-//     * @return string[][]
-//     */
-//    private function splitSourcesToDirectoriesAndFiles(array $sources): array
-//    {
-//        $files = [];
-//        $directories = [];
-//
-//        foreach ($sources as $source) {
-//            if (is_dir($source)) {
-//                $directories[] = $source;
-//            } else {
-//                $files[] = $source;
-//            }
-//        }
-//
-//        return [$files, $directories];
-//    }
 }

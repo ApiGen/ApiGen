@@ -52,7 +52,7 @@ final class ApiGenApplication
             DestinationOption::NAME => $runCommand->getDestination(),
         ]);
 
-        $this->parser->parseFilesAndDirectories($options[SourceOption::NAME]);
+        $this->parser->parse();
         $this->prepareDestination($options[DestinationOption::NAME], (bool) $options[OverwriteOption::NAME]);
         $this->generatorQueue->run();
     }
