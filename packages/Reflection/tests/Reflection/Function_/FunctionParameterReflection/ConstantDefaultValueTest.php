@@ -19,7 +19,10 @@ final class ConstantDefaultValueTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->configuration->resolveOptions([
+            'source' => __DIR__ . '/Source',
+        ]);
+        $this->parser->parse();
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
         $functionReflection = $functionReflections[$this->namespacePrefix . '\functionWithConstant'];

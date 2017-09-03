@@ -3,10 +3,9 @@
 namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\TraitGenerator;
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class TraitGeneratorTest extends AbstractContainerAwareTestCase
+final class TraitGeneratorTest extends AbstractParserAwareTestCase
 {
     /**
      * @var TraitGenerator
@@ -15,9 +14,10 @@ final class TraitGeneratorTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var Parser $parser */
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->configuration->resolveOptions([
+            'source' => __DIR__ . '/Source',
+        ]);
+        $this->parser->parse();
 
         $this->traitGenerator = $this->container->get(TraitGenerator::class);
     }

@@ -15,7 +15,10 @@ final class MethodTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->configuration->resolveOptions([
+            'source' => __DIR__ . '/Source',
+        ]);
+        $this->parser->parse();
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
         $this->interfaceReflection = $interfaceReflections[PoorInterface::class];

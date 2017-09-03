@@ -34,7 +34,7 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
         /** @var Configuration $configuration */
         $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
-            'source' => [__DIR__ . '/Source']
+            'source' => [__DIR__ . '/Source'],
         ]);
 
         /** @var Parser $parser */

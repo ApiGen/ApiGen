@@ -3,13 +3,12 @@
 namespace ApiGen\Element\Tests;
 
 use ApiGen\Element\AutocompleteElements;
-use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Route\ReflectionRoute;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 use NoneNamespacedClass;
 
-final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
+final class AutocompleteElementsTest extends AbstractParserAwareTestCase
 {
     /**
      * @var string
@@ -26,16 +25,10 @@ final class AutocompleteElementsTest extends AbstractContainerAwareTestCase
      */
     private $reflectionRoute;
 
-    /**
-     * @var ReflectionStorage
-     */
-    private $reflectionStorage;
-
     protected function setUp(): void
     {
-        /** @var Parser $parser */
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
+        $this->resolveConfigurationBySource([__DIR__ . '/ReflectionCollector/NamespaceReflectionCollectorSource']);
+        $this->parser->parse();
 
         $this->autocompleteElements = $this->container->get(AutocompleteElements::class);
         $this->reflectionStorage = $this->container->get(ReflectionStorage::class);

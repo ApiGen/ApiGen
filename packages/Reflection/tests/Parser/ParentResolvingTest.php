@@ -2,29 +2,19 @@
 
 namespace ApiGen\Reflection\Tests\Parser;
 
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingClass;
 use ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingInterface;
 use ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingTrait;
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeClass;
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeInterface;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class ParentResolvingTest extends AbstractContainerAwareTestCase
+final class ParentResolvingTest extends AbstractParserAwareTestCase
 {
-    /**
-     * @var ReflectionStorage
-     */
-    private $reflectionStorage;
-
     protected function setUp(): void
     {
-        /** @var Parser $parser */
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/ExtendingSources']);
-
-        $this->reflectionStorage = $this->container->get(ReflectionStorage::class);
+        $this->configuration->resolveOptions([__DIR__ . '/ExtendingSources']);
+        $this->parser->parse();
     }
 
     public function testClasses(): void

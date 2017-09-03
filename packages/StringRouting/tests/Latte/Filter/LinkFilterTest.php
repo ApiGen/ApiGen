@@ -2,14 +2,12 @@
 
 namespace ApiGen\StringRouting\Tests\Latte\Filter;
 
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\StringRouting\Tests\Latte\Filter\Source\TestClass;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 use Latte\Engine;
 use Nette\InvalidArgumentException;
 
-final class LinkFilterTest extends AbstractContainerAwareTestCase
+final class LinkFilterTest extends AbstractParserAwareTestCase
 {
     /**
      * @var Engine
@@ -36,9 +34,8 @@ final class LinkFilterTest extends AbstractContainerAwareTestCase
 
     public function testBuildLinkIfReflectionFoundFilter(): void
     {
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/Source/TestClass.php']);
-        $reflectionStorage = $this->container->get(ReflectionStorage::class);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source/TestClass.php']);
+        $this->parser->parse();
 
         $html = $this->latte->renderToString(__DIR__ . '/Source/buildLinkIfReflectionFound-template.latte', [
             'className' => TestClass::class,

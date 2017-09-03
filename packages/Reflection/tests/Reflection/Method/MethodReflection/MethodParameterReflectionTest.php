@@ -22,7 +22,10 @@ final class MethodParameterReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->configuration->resolveOptions([
+            'source' => __DIR__ . '/Source',
+        ]);
+        $this->parser->parse();
 
         $this->classReflection = $this->reflectionStorage->getClassReflections()[ParameterMethodClass::class];
 

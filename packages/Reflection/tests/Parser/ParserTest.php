@@ -34,7 +34,6 @@ final class ParserTest extends AbstractContainerAwareTestCase
         $this->parser = $this->container->get(Parser::class);
     }
 
-
     public function testFilesAndDirectorySource(): void
     {
         $this->configuration->resolveOptions([
@@ -42,10 +41,10 @@ final class ParserTest extends AbstractContainerAwareTestCase
                 __DIR__ . '/NotLoadedSources/SomeClass.php',
                 __DIR__ . '/AnotherSource',
             ],
-            'destination' => TEMP_DIR
+            'destination' => TEMP_DIR,
         ]);
 
-        /** @var Parser $parser */
+        // @var Parser $parser
         $this->parser = $this->container->get(Parser::class);
         $parser->parse();
 
@@ -60,7 +59,7 @@ final class ParserTest extends AbstractContainerAwareTestCase
             'source' => [
                 __DIR__ . '/NotLoadedSources/SomeCountableClass.php',
             ],
-            'destination' => TEMP_DIR
+            'destination' => TEMP_DIR,
         ]);
 
         $this->parser->parse();

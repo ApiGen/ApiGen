@@ -29,6 +29,11 @@ abstract class AbstractParserAwareTestCase extends TestCase
     protected $reflectionStorage;
 
     /**
+     * @var Configuration
+     */
+    protected $configuration;
+
+    /**
      * @param mixed[] $data
      */
     public function __construct(?string $name = null, array $data = [], string $dataName = '')
@@ -37,14 +42,24 @@ abstract class AbstractParserAwareTestCase extends TestCase
 
         $this->container = (new ContainerFactory)->create();
 
-        /** @var Configuration $configuration */
-        $configuration = $this->container->get(Configuration::class);
-        $configuration->resolveOptions([
+        $this->configuration = $this->container->get(Configuration::class);
+        $this->configuration->resolveOptions([
             SourceOption::NAME => [__DIR__],
             DestinationOption::NAME => TEMP_DIR,
         ]);
 
         $this->parser = $this->container->get(Parser::class);
         $this->reflectionStorage = $this->container->get(ReflectionStorage::class);
+    }
+
+    /**
+     * @param string[] $source
+     */
+    protected function resolveConfigurationBySource(array $source): void
+    {
+        $this->configuration->resolveOptions([
+            SourceOption::NAME => $source,
+            DestinationOption::NAME => TEMP_DIR,
+        ]);
     }
 }

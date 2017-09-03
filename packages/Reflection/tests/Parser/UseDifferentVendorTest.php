@@ -16,7 +16,7 @@ final class UseDifferentVendorTest extends AbstractContainerAwareTestCase
         $configuration = $this->container->get(Configuration::class);
         $configuration->resolveOptions([
             'source' => [__DIR__ . '/DifferentVendorSources/src'],
-            'destination' => TEMP_DIR
+            'destination' => TEMP_DIR,
         ]);
 
         /** @var Parser $parser */

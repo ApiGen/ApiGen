@@ -24,7 +24,9 @@ final class LinkAnnotationSubscriberTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/LinkAnnotationSubscriberSource']);
+        $this->configuration->resolveOptions([__DIR__ . '/LinkAnnotationSubscriberSource']);
+        $this->parser->parse();
+
         $this->annotationDecorator = $this->container->get(AnnotationDecorator::class);
 
         $this->classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithLinkAnnotations::class];
