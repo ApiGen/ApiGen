@@ -6,9 +6,12 @@ services:
         resource: '..'
 
     # cached AST Locator
-#    Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator: ~
     Roave\BetterReflection\SourceLocator\Ast\Locator: ~
-#        alias: Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator
+    Roave\BetterReflection\Reflector\ClassReflector: ~
+    Roave\BetterReflection\Reflector\FunctionReflector: ~
+
+    Roave\BetterReflection\SourceLocator\Type\SourceLocator:
+        factory: ['@ApiGen\BetterReflection\SourceLocator\SourceLocatorsFactory', 'create']
 
     # nikic\PHP-Parser
     PhpParser\Parser:

@@ -2,6 +2,7 @@
 
 namespace ApiGen\BetterReflection\SourceLocator;
 
+use ApiGen\Configuration\Configuration;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
@@ -21,23 +22,28 @@ final class SourceLocatorsFactory
      * @var FallbackSourceLocatorFactory
      */
     private $fallbackSourceLocatorFactory;
+    /**
+     * @var Configuration
+     */
+    private $configuration;
 
     public function __construct(
         DirectorySourceLocatorFactory $directorySourceLocatorFactory,
         FileSourceLocatorFactory $fileSourceLocatorFactory,
-        FallbackSourceLocatorFactory $fallbackSourceLocatorFactory
+        FallbackSourceLocatorFactory $fallbackSourceLocatorFactory,
+        Configuration $configuration
     ) {
         $this->directorySourceLocatorFactory = $directorySourceLocatorFactory;
         $this->fileSourceLocatorFactory = $fileSourceLocatorFactory;
         $this->fallbackSourceLocatorFactory = $fallbackSourceLocatorFactory;
+        $this->configuration = $configuration;
     }
 
-    /**
-     * @param string[] $directories
-     * @param string[] $files
-     */
-    public function createFromDirectoriesAndFiles(array $directories, array $files): SourceLocator
+    public function create(): SourceLocator
     {
+        $sources = $this->configuration->getSource();
+        [$files, $directories] = $this->splitSourcesToDirectoriesAndFiles($sources);
+
         $locators = [];
         if ($directories) {
             $locators[] = $this->directorySourceLocatorFactory->createFromDirectories($directories);
@@ -50,5 +56,25 @@ final class SourceLocatorsFactory
         $locators[] = $this->fallbackSourceLocatorFactory->createFromDirecotires($directories);
 
         return new AggregateSourceLocator($locators);
+    }
+
+    /**
+     * @param string[] $sources
+     * @return string[][]
+     */
+    private function splitSourcesToDirectoriesAndFiles(array $sources): array
+    {
+        $files = [];
+        $directories = [];
+
+        foreach ($sources as $source) {
+            if (is_dir($source)) {
+                $directories[] = $source;
+            } else {
+                $files[] = $source;
+            }
+        }
+
+        return [$files, $directories];
     }
 }
