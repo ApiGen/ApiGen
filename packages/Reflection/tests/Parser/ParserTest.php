@@ -8,9 +8,9 @@ use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Tests\Parser\AnotherSource\ParentClassFromAnotherSource;
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeClass;
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeCountableClass;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class ParserTest extends AbstractContainerAwareTestCase
+final class ParserTest extends AbstractParserAwareTestCase
 {
     /**
      * @var Configuration
@@ -27,26 +27,13 @@ final class ParserTest extends AbstractContainerAwareTestCase
      */
     private $parser;
 
-    protected function setUp(): void
-    {
-        $this->reflectionStorage = $this->container->get(ReflectionStorage::class);
-        $this->configuration = $this->container->get(Configuration::class);
-        $this->parser = $this->container->get(Parser::class);
-    }
-
     public function testFilesAndDirectorySource(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => [
-                __DIR__ . '/NotLoadedSources/SomeClass.php',
-                __DIR__ . '/AnotherSource',
-            ],
-            'destination' => TEMP_DIR,
+        $this->resolveConfigurationBySource([
+            __DIR__ . '/NotLoadedSources/SomeClass.php',
+            __DIR__ . '/AnotherSource',
         ]);
-
-        // @var Parser $parser
-        $this->parser = $this->container->get(Parser::class);
-        $parser->parse();
+        $this->parser->parse();
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertArrayHasKey(SomeClass::class, $classReflections);
