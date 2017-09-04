@@ -11,11 +11,9 @@ final class ParseClassWithParentFromAnotherSourceTest extends AbstractParserAwar
 {
     public function test(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => [__DIR__ . '/Source'],
-            'destination' => TEMP_DIR,
-        ]);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
         $this->parser->parse();
+
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertCount(2, $classReflections);

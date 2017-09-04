@@ -17,9 +17,7 @@ final class ConstantTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/Source',
-        ]);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
         $this->parser->parse();
 
         $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();

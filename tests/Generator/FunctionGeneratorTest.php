@@ -14,9 +14,7 @@ final class FunctionGeneratorTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/Source',
-        ]);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
         $this->parser->parse();
 
         $this->functionGenerator = $this->container->get(FunctionGenerator::class);

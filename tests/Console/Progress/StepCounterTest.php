@@ -11,9 +11,7 @@ final class StepCounterTest extends AbstractParserAwareTestCase
 {
     public function testStepCount(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/Source',
-        ]);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
         $this->parser->parse();
         $namespaceReflectionCollector = $this->container->get(NamespaceReflectionCollector::class);
 

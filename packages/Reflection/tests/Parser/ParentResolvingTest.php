@@ -13,7 +13,7 @@ final class ParentResolvingTest extends AbstractParserAwareTestCase
 {
     protected function setUp(): void
     {
-        $this->configuration->resolveOptions([__DIR__ . '/ExtendingSources']);
+        $this->resolveConfigurationBySource([__DIR__ . '/ExtendingSources']);
         $this->parser->parse();
     }
 

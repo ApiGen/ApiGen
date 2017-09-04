@@ -24,13 +24,7 @@ final class ParserTest extends AbstractParserAwareTestCase
 
     public function testFiles(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => [
-                __DIR__ . '/NotLoadedSources/SomeCountableClass.php',
-            ],
-            'destination' => TEMP_DIR,
-        ]);
-
+        $this->resolveConfigurationBySource([__DIR__ . '/NotLoadedSources/SomeCountableClass.php']);
         $this->parser->parse();
 
         $classReflections = $this->reflectionStorage->getClassReflections();

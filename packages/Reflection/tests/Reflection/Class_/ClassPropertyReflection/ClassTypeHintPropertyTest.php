@@ -16,9 +16,7 @@ final class ClassTypeHintPropertyTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/Source',
-        ]);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
         $this->parser->parse();
 
         $classReflections = $this->reflectionStorage->getClassReflections();

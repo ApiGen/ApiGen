@@ -9,9 +9,7 @@ final class InterfacesGeneratorTest extends AbstractParserAwareTestCase
 {
     public function test(): void
     {
-        $this->configuration->resolveOptions([
-            'source' => __DIR__ . '/Source',
-        ]);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
         $this->parser->parse();
 
         /** @var InterfacesGenerator $interfacesGenerator */
