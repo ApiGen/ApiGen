@@ -2,6 +2,8 @@
 
 namespace ApiGen\Reflection\Parser;
 
+use ApiGen\BetterReflection\Reflector\ClassReflectorFactory;
+use ApiGen\BetterReflection\Reflector\FunctionReflectorFactory;
 use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -39,18 +41,28 @@ final class Parser
      */
     private $classReflector;
 
+    /**
+     * @var FunctionReflectorFactory
+     */
+    private $functionReflectorFactory;
+
+    /**
+     * @var ClassReflectorFactory
+     */
+    private $classReflectorFactory;
+
     public function __construct(
         TransformerCollector $transformerCollector,
         ReflectionStorage $reflectionStorage,
         ReflectionWarmUpper $reflectionWarmUpper,
-        FunctionReflector $functionReflector,
-        ClassReflector $classReflector
+        FunctionReflectorFactory $functionReflectorFactory,
+        ClassReflectorFactory $classReflectorFactory
     ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionWarmUpper = $reflectionWarmUpper;
-        $this->functionReflector = $functionReflector;
-        $this->classReflector = $classReflector;
+        $this->functionReflectorFactory = $functionReflectorFactory;
+        $this->classReflectorFactory = $classReflectorFactory;
     }
 
     public function parse(): void
@@ -87,7 +99,7 @@ final class Parser
      */
     private function transformBetterFunctionReflections(): array
     {
-        $betterFunctionReflections = $this->functionReflector->getAllFunctions();
+        $betterFunctionReflections = $this->getFunctionReflector()->getAllFunctions();
 
         return $this->transformerCollector->transformGroup($betterFunctionReflections);
     }
@@ -97,7 +109,7 @@ final class Parser
      */
     private function transformBetterClassInterfaceAndTraitReflections(): array
     {
-        $betterClassReflections = $this->classReflector->getAllClasses();
+        $betterClassReflections = $this->getClassReflector()->getAllClasses();
         $allReflections = $this->resolveParentClassesInterfacesAndTraits($betterClassReflections);
 
         return $this->transformerCollector->transformGroup($allReflections);
@@ -193,5 +205,15 @@ final class Parser
     {
         $functionReflections = $this->transformBetterFunctionReflections();
         $this->reflectionStorage->setFunctionReflections($functionReflections);
+    }
+
+    private function getClassReflector(): ClassReflector
+    {
+        return $this->classReflector ?? $this->classReflector = $this->classReflectorFactory->create();
+    }
+
+    private function getFunctionReflector(): FunctionReflector
+    {
+        return $this->functionReflector ?? $this->functionReflector = $this->functionReflectorFactory->create();
     }
 }

@@ -7,11 +7,6 @@ services:
 
     # cached AST Locator
     Roave\BetterReflection\SourceLocator\Ast\Locator: ~
-    Roave\BetterReflection\Reflector\ClassReflector: ~
-    Roave\BetterReflection\Reflector\FunctionReflector: ~
-
-    Roave\BetterReflection\SourceLocator\Type\SourceLocator:
-        factory: ['@ApiGen\BetterReflection\SourceLocator\SourceLocatorsFactory', 'create']
 
     # nikic\PHP-Parser
     PhpParser\Parser:

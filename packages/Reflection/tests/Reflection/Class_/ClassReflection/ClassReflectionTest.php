@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SuccessorOfInternalClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
