@@ -22,6 +22,7 @@ final class SourceLocatorsFactory
      * @var FallbackSourceLocatorFactory
      */
     private $fallbackSourceLocatorFactory;
+
     /**
      * @var Configuration
      */
