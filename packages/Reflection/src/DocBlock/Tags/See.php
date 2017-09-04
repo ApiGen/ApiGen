@@ -20,12 +20,12 @@ final class See extends BaseTag implements StaticMethod
     protected $name = 'see';
 
     /**
-     * @var Fqsen
+     * @var Fqsen|null
      */
     protected $refers;
 
     /**
-     * @var string
+     * @var string|null
      */
     private $link;
 

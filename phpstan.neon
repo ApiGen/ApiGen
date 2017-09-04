@@ -5,8 +5,14 @@ parameters:
         - '#Class Symfony\\Component\\ExpressionLanguage\\ExpressionLanguage not found and could not be autoloaded#'
         # bug
         - '#Parameter \#1 \$reflection of static method ApiGen\\Reflection\\Helper\\ReflectionAnalyzer::getReflectionInterfaceFromReflection\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface, ApiGen\\Reflection\\Contract\\Reflection\\Partial\\AnnotationsInterface given#'
-        # misstype
+        # bug: miss type
         - '#Parameter \#2 \$array of method PHPUnit\\Framework\\Assert::assertArrayHasKey\(\) expects mixed\[\]\|ArrayAccess#'
         - '#Parameter \#1 \$reflection of method ApiGen\\StringRouting\\Route\\SourceCodeRoute::buildLineAnchor\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\Partial\\StartAndEndLineInterface#'
         - '#Parameter \#1 \$reflection of static method ApiGen\\Reflection\\Helper\\ReflectionAnalyzer::getReflectionInterfaceFromReflection\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface, ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface#'
         - '#Parameter \#1 \$reflection of method ApiGen\\Element\\ReflectionCollectorCollector::processReflection\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface, ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface\|ApiGen\\Reflection\\Contract\\TransformerCollectorAwareInterface given#'
+        - '#Parameter \#1 \$fileName of method ApiGen\\Utils\\RelativePathResolver::getRelativePath\(\) expects string, string\|null given#'
+        # bug: not null are checks before
+        - '#Calling method getName\(\) on possibly null value of type Roave\\BetterReflection\\Reflection\\ReflectionClass\|null#'
+        - '#Calling method getName\(\) on possibly null value of type ApiGen\\Reflection\\Contract\\Reflection\\Class_\\ClassReflectionInterface\|null#'
+        - '#Calling method resolve\(\) on possibly null value of type phpDocumentor\\Reflection\\FqsenResolver\|null#'
+        - '#Calling method create\(\) on possibly null value of type phpDocumentor\\Reflection\\DocBlock\\DescriptionFactory\|null#'

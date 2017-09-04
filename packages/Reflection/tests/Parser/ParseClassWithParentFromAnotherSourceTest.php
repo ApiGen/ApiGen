@@ -20,6 +20,7 @@ final class ParseClassWithParentFromAnotherSourceTest extends AbstractParserAwar
         $classReflection = $classReflections[ClassWithParentFromAnotherSource::class];
 
         $parentClassReflection = $classReflection->getParentClass();
+        $this->assertNotNull($parentClassReflection);
         $this->assertInstanceOf(ClassReflectionInterface::class, $parentClassReflection);
         $this->assertSame(ParentClassFromAnotherSource::class, $parentClassReflection->getName());
     }
