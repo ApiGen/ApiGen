@@ -166,8 +166,7 @@
                 <tr>
                     <td>
                         {foreach $parentClass->getOwnProperties() as $parentClassProperty}
-                            <code>{block|trim}
-                                <a href="{$parentClassProperty|linkReflection}" n:class="$parentClassProperty->isDeprecated() ? deprecated, property-name">${$parentClassProperty->getName()}</a>{/block}</code>{sep}, {/sep}
+                            <code><a href="{$parentClassProperty|linkReflection}" n:class="$parentClassProperty->isDeprecated() ? deprecated, property-name">${$parentClassProperty->getName()}</a></code>{sep}, {/sep}
                         {/foreach}
                     </td>
                 </tr>
