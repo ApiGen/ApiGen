@@ -3,7 +3,6 @@
 namespace ApiGen\BetterReflection\SourceLocator;
 
 use Roave\BetterReflection\SourceLocator\Ast\Locator as AstLocator;
-use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\DirectoriesSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
@@ -13,17 +12,10 @@ final class DirectorySourceLocatorFactory
      * @var AstLocator
      */
     private $astLocator;
-    /**
-     * @var ProjectVendorSourceLocatorFactory
-     */
-    private $projectVendorSourceLocatorFactory;
 
-    public function __construct(
-        AstLocator $astLocator,
-        ProjectVendorSourceLocatorFactory $projectVendorSourceLocatorFactory
-    ) {
+    public function __construct(AstLocator $astLocator)
+    {
         $this->astLocator = $astLocator;
-        $this->projectVendorSourceLocatorFactory = $projectVendorSourceLocatorFactory;
     }
 
     /**
@@ -31,9 +23,6 @@ final class DirectorySourceLocatorFactory
      */
     public function createFromDirectories(array $directories): SourceLocator
     {
-        return new AggregateSourceLocator([
-            new DirectoriesSourceLocator($directories, $this->astLocator),
-            $this->projectVendorSourceLocatorFactory->createFromDirectories($directories),
-        ]);
+        return new DirectoriesSourceLocator($directories, $this->astLocator);
     }
 }

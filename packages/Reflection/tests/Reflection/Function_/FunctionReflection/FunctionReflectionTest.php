@@ -26,7 +26,8 @@ final class FunctionReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
 
         $functionReflections = $this->reflectionStorage->getFunctionReflections();
         $this->functionReflection = $functionReflections[$this->namespacePrefix . '\someAloneFunction'];

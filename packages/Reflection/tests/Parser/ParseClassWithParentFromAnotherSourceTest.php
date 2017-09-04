@@ -11,7 +11,8 @@ final class ParseClassWithParentFromAnotherSourceTest extends AbstractParserAwar
 {
     public function test(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertCount(2, $classReflections);
@@ -19,6 +20,7 @@ final class ParseClassWithParentFromAnotherSourceTest extends AbstractParserAwar
         $classReflection = $classReflections[ClassWithParentFromAnotherSource::class];
 
         $parentClassReflection = $classReflection->getParentClass();
+        $this->assertNotNull($parentClassReflection);
         $this->assertInstanceOf(ClassReflectionInterface::class, $parentClassReflection);
         $this->assertSame(ParentClassFromAnotherSource::class, $parentClassReflection->getName());
     }

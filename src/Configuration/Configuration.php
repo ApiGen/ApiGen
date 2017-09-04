@@ -75,7 +75,7 @@ final class Configuration
      */
     public function getOptions(): array
     {
-        if ($this->options === null) {
+        if ($this->options === []) {
             $this->resolveOptions([]);
         }
 

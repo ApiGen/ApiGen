@@ -16,7 +16,8 @@ final class InheritTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
         $this->classReflection = $this->reflectionStorage->getClassReflections()[InheritdocClass::class];
     }
 

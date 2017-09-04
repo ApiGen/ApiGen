@@ -3,10 +3,9 @@
 namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\FunctionGenerator;
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
+final class FunctionGeneratorTest extends AbstractParserAwareTestCase
 {
     /**
      * @var FunctionGenerator
@@ -15,9 +14,8 @@ final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
 
     protected function setUp(): void
     {
-        /** @var Parser $parser */
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
 
         $this->functionGenerator = $this->container->get(FunctionGenerator::class);
     }
@@ -25,6 +23,7 @@ final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         $this->functionGenerator->generate();
+
         $this->assertFileExists(
             TEMP_DIR . '/function-ApiGen.Tests.Generator.Source.someFunction.html'
         );
@@ -33,7 +32,7 @@ final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
         );
 
         $this->assertFileExists(
-            TEMP_DIR . '/source-function-Generator.Source.SomeFunction.php.html'
+            TEMP_DIR . '/source-function-Generator.Source.someFunction.php.html'
         );
     }
 }

@@ -2,40 +2,32 @@
 
 namespace ApiGen\Reflection\Tests\Parser;
 
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Tests\Parser\AnotherSource\ParentClassFromAnotherSource;
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeClass;
 use ApiGen\Reflection\Tests\Parser\NotLoadedSources\SomeCountableClass;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class ParserTest extends AbstractContainerAwareTestCase
+final class ParserTest extends AbstractParserAwareTestCase
 {
     public function testFilesAndDirectorySource(): void
     {
-        $parser = $this->container->get(Parser::class);
-        $reflectionStorage = $this->container->get(ReflectionStorage::class);
-
-        $parser->parseFilesAndDirectories([
+        $this->resolveConfigurationBySource([
             __DIR__ . '/NotLoadedSources/SomeClass.php',
             __DIR__ . '/AnotherSource',
         ]);
+        $this->parser->parse();
 
-        $classReflections = $reflectionStorage->getClassReflections();
+        $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertArrayHasKey(SomeClass::class, $classReflections);
         $this->assertArrayHasKey(ParentClassFromAnotherSource::class, $classReflections);
     }
 
     public function testFiles(): void
     {
-        $parser = $this->container->get(Parser::class);
-        $reflectionStorage = $this->container->get(ReflectionStorage::class);
+        $this->resolveConfigurationBySource([__DIR__ . '/NotLoadedSources/SomeCountableClass.php']);
+        $this->parser->parse();
 
-        $parser->parseFilesAndDirectories([
-            __DIR__ . '/NotLoadedSources/SomeCountableClass.php',
-        ]);
-
-        $classReflections = $reflectionStorage->getClassReflections();
+        $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertArrayHasKey(SomeCountableClass::class, $classReflections);
     }
 }

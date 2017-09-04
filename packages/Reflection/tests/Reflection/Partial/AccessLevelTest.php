@@ -15,7 +15,11 @@ final class AccessLevelTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
+
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
         $classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithAnnotations::class];
         $this->reflection = $classReflection->getMethod('methodWithArgs');
     }

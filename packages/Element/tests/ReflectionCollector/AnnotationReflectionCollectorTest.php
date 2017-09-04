@@ -3,15 +3,13 @@
 namespace ApiGen\Element\Tests\ReflectionCollector;
 
 use ApiGen\Annotation\AnnotationList;
-use ApiGen\Configuration\Configuration;
 use ApiGen\Element\ReflectionCollector\AnnotationReflectionCollector;
 use ApiGen\ModularConfiguration\Option\AnnotationGroupsOption;
 use ApiGen\ModularConfiguration\Option\DestinationOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTestCase
+final class AnnotationReflectionCollectorTest extends AbstractParserAwareTestCase
 {
     /**
      * @var AnnotationReflectionCollector
@@ -20,17 +18,13 @@ final class AnnotationReflectionCollectorTest extends AbstractContainerAwareTest
 
     protected function setUp(): void
     {
-        /** @var Configuration $configuration */
-        $configuration = $this->container->get(Configuration::class);
-        $configuration->resolveOptions([
-           SourceOption::NAME => [__DIR__],
+        $this->configuration->resolveOptions([
+           SourceOption::NAME => [__DIR__ . '/Source'],
            DestinationOption::NAME => TEMP_DIR,
            AnnotationGroupsOption::NAME => [AnnotationList::DEPRECATED],
         ]);
 
-        /** @var Parser $parser */
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->parser->parse();
 
         $this->annotationReflectionCollector = $this->container->get(AnnotationReflectionCollector::class);
     }

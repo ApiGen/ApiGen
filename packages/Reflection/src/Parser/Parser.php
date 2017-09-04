@@ -2,7 +2,8 @@
 
 namespace ApiGen\Reflection\Parser;
 
-use ApiGen\BetterReflection\SourceLocator\SourceLocatorsFactory;
+use ApiGen\BetterReflection\Reflector\ClassReflectorFactory;
+use ApiGen\BetterReflection\Reflector\FunctionReflectorFactory;
 use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -10,9 +11,9 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\TransformerCollector;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
-use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
 
 final class Parser
 {
@@ -32,32 +33,43 @@ final class Parser
     private $reflectionWarmUpper;
 
     /**
-     * @var SourceLocatorsFactory
+     * @var FunctionReflector
      */
-    private $sourceLocatorsFactory;
+    private $functionReflector;
+
+    /**
+     * @var ClassReflector
+     */
+    private $classReflector;
+
+    /**
+     * @var FunctionReflectorFactory
+     */
+    private $functionReflectorFactory;
+
+    /**
+     * @var ClassReflectorFactory
+     */
+    private $classReflectorFactory;
 
     public function __construct(
         TransformerCollector $transformerCollector,
         ReflectionStorage $reflectionStorage,
         ReflectionWarmUpper $reflectionWarmUpper,
-        SourceLocatorsFactory $sourceLocatorsFactory
+        FunctionReflectorFactory $functionReflectorFactory,
+        ClassReflectorFactory $classReflectorFactory
     ) {
         $this->transformerCollector = $transformerCollector;
         $this->reflectionStorage = $reflectionStorage;
         $this->reflectionWarmUpper = $reflectionWarmUpper;
-        $this->sourceLocatorsFactory = $sourceLocatorsFactory;
+        $this->functionReflectorFactory = $functionReflectorFactory;
+        $this->classReflectorFactory = $classReflectorFactory;
     }
 
-    /**
-     * @param string[] $sources
-     */
-    public function parseFilesAndDirectories(array $sources): void
+    public function parse(): void
     {
-        [$files, $directories] = $this->splitSourcesToDirectoriesAndFiles($sources);
-
-        $sourceLocator = $this->sourceLocatorsFactory->createFromDirectoriesAndFiles($directories, $files);
-        $this->parseClassElements($sourceLocator);
-        $this->parseFunctions($sourceLocator);
+        $this->parseClassElements();
+        $this->parseFunctions();
 
         $this->reflectionWarmUpper->warmUp();
     }
@@ -86,9 +98,9 @@ final class Parser
     /**
      * @return FunctionReflectionInterface[]
      */
-    private function transformBetterFunctionReflections(FunctionReflector $functionReflector): array
+    private function transformBetterFunctionReflections(): array
     {
-        $betterFunctionReflections = $functionReflector->getAllFunctions();
+        $betterFunctionReflections = $this->getFunctionReflector()->getAllFunctions();
 
         return $this->transformerCollector->transformGroup($betterFunctionReflections);
     }
@@ -96,17 +108,17 @@ final class Parser
     /**
      * @return ClassReflectionInterface[]
      */
-    private function transformBetterClassInterfaceAndTraitReflections(ClassReflector $classReflector): array
+    private function transformBetterClassInterfaceAndTraitReflections(): array
     {
-        $betterClassReflections = $classReflector->getAllClasses();
+        $betterClassReflections = $this->getClassReflector()->getAllClasses();
         $allReflections = $this->resolveParentClassesInterfacesAndTraits($betterClassReflections);
 
         return $this->transformerCollector->transformGroup($allReflections);
     }
 
     /**
-     * @param ClassReflectionInterface[] $betterClassReflections
-     * @return ClassReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
     private function resolveParentClassesInterfacesAndTraits(array $betterClassReflections): array
     {
@@ -124,97 +136,85 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[] $classReflections
-     * @return ClassReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
-    private function resolveParentClasses(array $classReflections): array
+    private function resolveParentClasses(array $betterClassReflections): array
     {
-        foreach ($classReflections as $reflection) {
+        foreach ($betterClassReflections as $reflection) {
             $class = $reflection;
             while ($parentClass = $class->getParentClass()) {
                 $class = $parentClass;
 
                 /** @var ClassReflectionInterface $parentClass */
-                if (isset($classReflections[$parentClass->getName()])) {
+                if (isset($betterClassReflections[$parentClass->getName()])) {
                     continue;
                 }
 
-                $classReflections[$parentClass->getName()] = $parentClass;
+                $betterClassReflections[$parentClass->getName()] = $parentClass;
             }
         }
 
-        return $classReflections;
+        return $betterClassReflections;
     }
 
     /**
-     * @param ClassReflectionInterface[]|InterfaceReflectionInterface[] $reflections
-     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
-    private function resolveParentInterfaces(array $reflections): array
+    private function resolveParentInterfaces(array $betterClassReflections): array
     {
-        foreach ($reflections as $reflection) {
-            foreach ($reflection->getInterfaces() as $interface) {
-                if (isset($reflections[$interface->getName()])) {
+        foreach ($betterClassReflections as $betterClassReflection) {
+            foreach ($betterClassReflection->getInterfaces() as $interface) {
+                if (isset($betterClassReflections[$interface->getName()])) {
                     continue;
                 }
 
-                $reflections[$interface->getName()] = $interface;
+                $betterClassReflections[$interface->getName()] = $interface;
             }
         }
 
-        return $reflections;
+        return $betterClassReflections;
     }
 
     /**
-     * @param ClassReflectionInterface[]|TraitReflectionInterface[] $reflections
-     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
-    private function resolveParentTraits(array $reflections): array
+    private function resolveParentTraits(array $betterClassReflections): array
     {
-        foreach ($reflections as $reflection) {
-            foreach ($reflection->getTraits() as $trait) {
-                if (isset($reflections[$trait->getName()])) {
+        foreach ($betterClassReflections as $betterClassReflection) {
+            foreach ($betterClassReflection->getTraits() as $trait) {
+                if (isset($betterClassReflections[$trait->getName()])) {
                     continue;
                 }
 
-                $reflections[$trait->getName()] = $trait;
+                $betterClassReflections[$trait->getName()] = $trait;
             }
         }
 
-        return $reflections;
+        return $betterClassReflections;
     }
 
-    private function parseClassElements(SourceLocator $sourceLocator): void
+    private function parseClassElements(): void
     {
-        $classReflector = new ClassReflector($sourceLocator);
-        $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections($classReflector);
+        $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections();
         $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
     }
 
-    private function parseFunctions(SourceLocator $sourceLocator): void
+    private function parseFunctions(): void
     {
-        $functionReflector = new FunctionReflector($sourceLocator);
-        $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
+        $functionReflections = $this->transformBetterFunctionReflections();
         $this->reflectionStorage->setFunctionReflections($functionReflections);
     }
 
-    /**
-     * @param string[] $sources
-     * @return string[][]
-     */
-    private function splitSourcesToDirectoriesAndFiles(array $sources): array
+    private function getClassReflector(): ClassReflector
     {
-        $files = [];
-        $directories = [];
+        return $this->classReflector ?? $this->classReflector = $this->classReflectorFactory->create();
+    }
 
-        foreach ($sources as $source) {
-            if (is_dir($source)) {
-                $directories[] = $source;
-            } else {
-                $files[] = $source;
-            }
-        }
-
-        return [$files, $directories];
+    private function getFunctionReflector(): FunctionReflector
+    {
+        return $this->functionReflector ?? $this->functionReflector = $this->functionReflectorFactory->create();
     }
 }

@@ -2,17 +2,15 @@
 
 namespace ApiGen\Reflection\Tests\Parser;
 
-use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Tests\Parser\ExtendingSources\ExtendingClass;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class ExtendingClassTest extends AbstractContainerAwareTestCase
+final class ExtendingClassTest extends AbstractParserAwareTestCase
 {
     public function test(): void
     {
-        /** @var Parser $parser */
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/ExtendingSources']);
+        $this->resolveConfigurationBySource([__DIR__ . '/ExtendingSources']);
+        $this->parser->parse();
 
         $this->assertTrue(class_exists(ExtendingClass::class));
     }

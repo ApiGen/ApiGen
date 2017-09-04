@@ -81,7 +81,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
     }
 
     /**
-     * @return ClassReflectionInterface[]
+     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
      */
     public function getImplementers(): array
     {

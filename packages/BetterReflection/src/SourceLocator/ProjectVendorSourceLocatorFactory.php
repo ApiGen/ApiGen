@@ -2,6 +2,7 @@
 
 namespace ApiGen\BetterReflection\SourceLocator;
 
+use Roave\BetterReflection\SourceLocator\Ast\Locator;
 use Roave\BetterReflection\SourceLocator\Type\AggregateSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\ComposerSourceLocator;
 use Roave\BetterReflection\SourceLocator\Type\SourceLocator;
@@ -18,6 +19,16 @@ final class ProjectVendorSourceLocatorFactory
      * @var string
      */
     private const STANDARD_AUTOLOAD_LOCATION = '/vendor/autoload.php';
+
+    /**
+     * @var Locator
+     */
+    private $astLocator;
+
+    public function __construct(Locator $astLocator)
+    {
+        $this->astLocator = $astLocator;
+    }
 
     /**
      * @param string[] $directories
@@ -58,6 +69,6 @@ final class ProjectVendorSourceLocatorFactory
      */
     private function createComposerSourceLocator(string $autoloadPath): ComposerSourceLocator
     {
-        return new ComposerSourceLocator(include $autoloadPath);
+        return new ComposerSourceLocator(include $autoloadPath, $this->astLocator);
     }
 }

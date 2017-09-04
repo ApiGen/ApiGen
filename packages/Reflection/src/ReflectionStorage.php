@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
+use Nette\Utils\Strings;
 use Throwable;
 
 final class ReflectionStorage
@@ -59,8 +60,9 @@ final class ReflectionStorage
         array_walk($classReflections, function (ClassReflectionInterface $classReflection): void {
         });
         sort($classReflections);
+
         foreach ($classReflections as $classReflection) {
-            if ($classReflection->implementsInterface(Throwable::class)) {
+            if ($this->isException($classReflection)) {
                 $this->exceptionReflections[$classReflection->getName()] = $classReflection;
             } else {
                 $this->classReflections[$classReflection->getName()] = $classReflection;
@@ -150,5 +152,17 @@ final class ReflectionStorage
         $class = $this->getClass($name);
 
         return $class ?: $this->getInterface($name);
+    }
+
+    /**
+     * This is hotfix method for broken BetterReflection.
+     */
+    private function isException(ClassReflectionInterface $classReflection): bool
+    {
+        if ($classReflection->implementsInterface(Throwable::class)) {
+            return true;
+        }
+
+        return Strings::endsWith($classReflection->getParentClassName(), 'Exception');
     }
 }

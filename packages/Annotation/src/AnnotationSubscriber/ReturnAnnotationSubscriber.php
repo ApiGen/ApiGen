@@ -7,6 +7,7 @@ use ApiGen\Annotation\FqsenResolver\ElementResolver;
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\StringRouting\Route\ReflectionRoute;
 use ApiGen\Utils\LinkBuilder;
+use Exception;
 use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Return_;
 use phpDocumentor\Reflection\Types\Array_;
@@ -77,8 +78,15 @@ final class ReturnAnnotationSubscriber implements AnnotationSubscriberInterface
 
     private function createLinkFromObject(AbstractReflectionInterface $reflection, Object_ $objectValueType): string
     {
-        $type = $objectValueType->getFqsen()
-            ->getName();
+        $fqsen = $objectValueType->getFqsen();
+        if ($fqsen === null) {
+            throw new Exception(sprintf(
+                'Missing type on %s reflection.',
+                $reflection->getName()
+            ));
+        }
+
+        $type = $fqsen->getName();
 
         $singleClassReflection = $this->elementResolver->resolveReflectionFromNameAndReflection($type, $reflection);
         $classUrl = $this->reflectionRoute->constructUrl($singleClassReflection);

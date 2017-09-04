@@ -11,7 +11,7 @@
     "bin": ["bin/apigen"],
     "require": {
         "php": "^7.1",
-        "roave/better-reflection": "dev-master#a402048",
+        "roave/better-reflection": "dev-master#d9b54df",
         "phpdocumentor/reflection-docblock": "^3.1",
         "kukulich/fshl": "^2.1",
 
@@ -70,7 +70,7 @@
     },
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],
-        "phpstan": "phpstan analyse packages src bin --level 4 -c phpstan.neon",
+        "phpstan": "phpstan analyse packages src bin --level max --configuration phpstan.neon",
         "check-cs": "ecs check packages bin src tests",
         "fix-cs": "ecs check packages bin src tests --fix"
     },

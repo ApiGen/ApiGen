@@ -3,7 +3,6 @@
 namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SomeClass;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\SuccessorOfInternalClass;
 use ApiGen\Tests\AbstractParserAwareTestCase;
@@ -29,8 +28,8 @@ final class ClassReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        // @var Parser $parser
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->classReflection = $classReflections[SomeClass::class];

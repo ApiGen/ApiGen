@@ -16,7 +16,8 @@ final class ClassPropertyReflectionTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
 
         $classReflections = $this->reflectionStorage->getClassReflections();
         $classReflection = $classReflections[ReflectionProperty::class];

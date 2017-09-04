@@ -4,14 +4,12 @@ namespace ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection;
 
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\AccessLevels;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\ParentClass;
 use ApiGen\Reflection\Tests\Reflection\Class_\ClassReflection\Source\RichInterface;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTestCase
+abstract class AbstractReflectionClassTestCase extends AbstractParserAwareTestCase
 {
     /**
      * @var ClassReflectionInterface
@@ -30,18 +28,14 @@ abstract class AbstractReflectionClassTestCase extends AbstractContainerAwareTes
 
     protected function setUp(): void
     {
-        /** @var Parser $parser */
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
 
-        /** @var ReflectionStorage $reflectionStorage */
-        $reflectionStorage = $this->container->get(ReflectionStorage::class);
-
-        $classReflections = $reflectionStorage->getClassReflections();
+        $classReflections = $this->reflectionStorage->getClassReflections();
         $this->reflectionClass = $classReflections[AccessLevels::class];
         $this->reflectionClassOfParent = $classReflections[ParentClass::class];
 
-        $interfaceReflections = $reflectionStorage->getInterfaceReflections();
+        $interfaceReflections = $this->reflectionStorage->getInterfaceReflections();
         $this->interfaceReflection = $interfaceReflections[RichInterface::class];
     }
 }

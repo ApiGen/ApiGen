@@ -3,15 +3,14 @@
 namespace ApiGen\Tests\Generator;
 
 use ApiGen\Generator\AutoCompleteDataGenerator;
-use ApiGen\Reflection\Parser\Parser;
-use ApiGen\Tests\AbstractContainerAwareTestCase;
+use ApiGen\Tests\AbstractParserAwareTestCase;
 
-final class AutoCompleteDataGeneratorTest extends AbstractContainerAwareTestCase
+final class AutoCompleteDataGeneratorTest extends AbstractParserAwareTestCase
 {
     public function test(): void
     {
-        $parser = $this->container->get(Parser::class);
-        $parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
 
         $autoCompleteDataGenerator = $this->container->get(AutoCompleteDataGenerator::class);
         $autoCompleteDataGenerator->generate();

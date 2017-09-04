@@ -6,9 +6,7 @@ services:
         resource: '..'
 
     # cached AST Locator
-    Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator: ~
-    Roave\BetterReflection\SourceLocator\Ast\Locator:
-        alias: Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator
+    Roave\BetterReflection\SourceLocator\Ast\Locator: ~
 
     # nikic\PHP-Parser
     PhpParser\Parser:

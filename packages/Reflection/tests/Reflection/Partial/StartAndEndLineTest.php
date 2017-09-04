@@ -15,7 +15,8 @@ final class StartAndEndLineTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->parser->parseFilesAndDirectories([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->parser->parse();
         $this->reflection = $this->reflectionStorage->getClassReflections()[SomeClassWithAnnotations::class];
     }
 
