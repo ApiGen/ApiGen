@@ -70,7 +70,7 @@
     },
     "scripts": {
         "complete-check": ["phpunit", "@phpstan", "@check-cs"],
-        "phpstan": "phpstan analyse packages src bin --level 6 --configuration phpstan.neon",
+        "phpstan": "phpstan analyse packages src bin --level max --configuration phpstan.neon",
         "check-cs": "ecs check packages bin src tests",
         "fix-cs": "ecs check packages bin src tests --fix"
     },
