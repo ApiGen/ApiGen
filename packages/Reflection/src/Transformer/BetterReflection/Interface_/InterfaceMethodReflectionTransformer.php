@@ -5,7 +5,6 @@ namespace ApiGen\Reflection\Transformer\BetterReflection\Interface_;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Reflection\Interface_\InterfaceMethodReflection;
 use phpDocumentor\Reflection\DocBlockFactory;
-use Roave\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 final class InterfaceMethodReflectionTransformer implements TransformerInterface
@@ -30,7 +29,7 @@ final class InterfaceMethodReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param object|BetterReflectionFunction $reflection
+     * @param object|ReflectionMethod $reflection
      */
     public function transform($reflection): InterfaceMethodReflection
     {

@@ -8,3 +8,5 @@ parameters:
         # misstype
         - '#Parameter \#2 \$array of method PHPUnit\\Framework\\Assert::assertArrayHasKey\(\) expects mixed\[\]\|ArrayAccess#'
         - '#Parameter \#1 \$reflection of method ApiGen\\StringRouting\\Route\\SourceCodeRoute::buildLineAnchor\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\Partial\\StartAndEndLineInterface#'
+        - '#Parameter \#1 \$reflection of static method ApiGen\\Reflection\\Helper\\ReflectionAnalyzer::getReflectionInterfaceFromReflection\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface, ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface#'
+        - '#Parameter \#1 \$reflection of method ApiGen\\Element\\ReflectionCollectorCollector::processReflection\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface, ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface\|ApiGen\\Reflection\\Contract\\TransformerCollectorAwareInterface given#'

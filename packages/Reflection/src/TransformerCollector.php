@@ -3,6 +3,7 @@
 namespace ApiGen\Reflection;
 
 use ApiGen\Element\ReflectionCollectorCollector;
+use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
 use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
@@ -70,6 +71,7 @@ final class TransformerCollector
                 continue;
             }
 
+            /** @var AbstractReflectionInterface|TransformerCollectorAwareInterface $transformedReflection */
             $transformedReflection = $transformer->transform($reflection);
 
             if ($transformedReflection instanceof TransformerCollectorAwareInterface) {
