@@ -189,13 +189,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getMethod(string $name): ClassMethodReflectionInterface
     {
-        if (! isset($this->getMethods()[$name])) {
-            throw new InvalidArgumentException(sprintf(
-                'Method "%s" does not exist in "%s" class.',
-                $name,
-                $this->getName()
-            ));
-        }
+        $this->ensureMethodExists($name);
 
         return $this->getMethods()[$name];
     }
@@ -251,26 +245,14 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getConstant(string $name): ClassConstantReflectionInterface
     {
-        if (isset($this->getConstants()[$name])) {
-            return $this->getConstants()[$name];
-        }
+        $this->ensureConstantExists($name);
 
-        throw new InvalidArgumentException(sprintf(
-            'Constant %s does not exist in class %s',
-            $name,
-            $this->getName()
-        ));
+        return $this->getConstants()[$name];
     }
 
     public function getOwnConstant(string $name): ClassConstantReflectionInterface
     {
-        if (! isset($this->getOwnConstants()[$name])) {
-            throw new InvalidArgumentException(sprintf(
-                'Constant %s does not exist in class %s',
-                $name,
-                $this->getName()
-            ));
-        }
+        $this->ensureOwnConstantExists($name);
 
         return $this->getOwnConstants()[$name];
     }
@@ -323,13 +305,7 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
 
     public function getProperty(string $name): ClassPropertyReflectionInterface
     {
-        if (! isset($this->getProperties()[$name])) {
-            throw new InvalidArgumentException(sprintf(
-                'Property %s does not exist in class %s',
-                $name,
-                $this->getName()
-            ));
-        }
+        $this->ensurePropertyExists($name);
 
         return $this->getProperties()[$name];
     }
@@ -431,5 +407,49 @@ final class ClassReflection implements ClassReflectionInterface, TransformerColl
     public function setTransformerCollector(TransformerCollector $transformerCollector): void
     {
         $this->transformerCollector = $transformerCollector;
+    }
+
+    private function ensureMethodExists(string $name): void
+    {
+        if (! isset($this->getMethods()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Method "%s" does not exist in "%s" class.',
+                $name,
+                $this->getName()
+            ));
+        }
+    }
+
+    private function ensureConstantExists(string $name): void
+    {
+        if (! isset($this->getConstants()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Constant %s does not exist in class %s',
+                $name,
+                $this->getName()
+            ));
+        }
+    }
+
+    private function ensurePropertyExists(string $name): void
+    {
+        if (! isset($this->getProperties()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Property %s does not exist in class %s',
+                $name,
+                $this->getName()
+            ));
+        }
+    }
+
+    private function ensureOwnConstantExists(string $name): void
+    {
+        if (! isset($this->getOwnConstants()[$name])) {
+            throw new InvalidArgumentException(sprintf(
+                'Constant %s does not exist in class %s',
+                $name,
+                $this->getName()
+            ));
+        }
     }
 }

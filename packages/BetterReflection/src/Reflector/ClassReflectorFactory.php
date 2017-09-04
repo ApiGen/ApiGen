@@ -19,8 +19,6 @@ final class ClassReflectorFactory
 
     public function create(): ClassReflector
     {
-        return new ClassReflector(
-            $this->sourceLocatorsFactory->create()
-        );
+        return new ClassReflector($this->sourceLocatorsFactory->create());
     }
 }

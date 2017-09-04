@@ -113,3 +113,6 @@ parameters:
         SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff:
             - packages/Reflection/tests/Parser/DifferentVendorSources/vendor/autoload.php
             - tests/bootstrap.php
+
+        Symplify\CodingStandard\Fixer\Php\ClassStringToClassConstantFixer:
+            - packages/Reflection/src/ReflectionStorage.php
