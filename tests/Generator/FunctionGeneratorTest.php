@@ -23,6 +23,7 @@ final class FunctionGeneratorTest extends AbstractParserAwareTestCase
     public function test(): void
     {
         $this->functionGenerator->generate();
+
         $this->assertFileExists(
             TEMP_DIR . '/function-ApiGen.Tests.Generator.Source.someFunction.html'
         );
@@ -31,7 +32,7 @@ final class FunctionGeneratorTest extends AbstractParserAwareTestCase
         );
 
         $this->assertFileExists(
-            TEMP_DIR . '/source-function-Generator.Source.SomeFunction.php.html'
+            TEMP_DIR . '/source-function-Generator.Source.someFunction.php.html'
         );
     }
 }

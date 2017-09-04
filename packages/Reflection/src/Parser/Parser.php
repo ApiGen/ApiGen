@@ -11,6 +11,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\TransformerCollector;
+use Roave\BetterReflection\Reflection\ReflectionClass;
 use Roave\BetterReflection\Reflector\ClassReflector;
 use Roave\BetterReflection\Reflector\FunctionReflector;
 
@@ -116,8 +117,8 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[] $betterClassReflections
-     * @return ClassReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
     private function resolveParentClassesInterfacesAndTraits(array $betterClassReflections): array
     {
@@ -135,64 +136,64 @@ final class Parser
     }
 
     /**
-     * @param ClassReflectionInterface[] $classReflections
-     * @return ClassReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
-    private function resolveParentClasses(array $classReflections): array
+    private function resolveParentClasses(array $betterClassReflections): array
     {
-        foreach ($classReflections as $reflection) {
+        foreach ($betterClassReflections as $reflection) {
             $class = $reflection;
             while ($parentClass = $class->getParentClass()) {
                 $class = $parentClass;
 
                 /** @var ClassReflectionInterface $parentClass */
-                if (isset($classReflections[$parentClass->getName()])) {
+                if (isset($betterClassReflections[$parentClass->getName()])) {
                     continue;
                 }
 
-                $classReflections[$parentClass->getName()] = $parentClass;
+                $betterClassReflections[$parentClass->getName()] = $parentClass;
             }
         }
 
-        return $classReflections;
+        return $betterClassReflections;
     }
 
     /**
-     * @param ClassReflectionInterface[]|InterfaceReflectionInterface[] $reflections
-     * @return ClassReflectionInterface[]|InterfaceReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
-    private function resolveParentInterfaces(array $reflections): array
+    private function resolveParentInterfaces(array $betterClassReflections): array
     {
-        foreach ($reflections as $reflection) {
-            foreach ($reflection->getInterfaces() as $interface) {
-                if (isset($reflections[$interface->getName()])) {
+        foreach ($betterClassReflections as $betterClassReflection) {
+            foreach ($betterClassReflection->getInterfaces() as $interface) {
+                if (isset($betterClassReflections[$interface->getName()])) {
                     continue;
                 }
 
-                $reflections[$interface->getName()] = $interface;
+                $betterClassReflections[$interface->getName()] = $interface;
             }
         }
 
-        return $reflections;
+        return $betterClassReflections;
     }
 
     /**
-     * @param ClassReflectionInterface[]|TraitReflectionInterface[] $reflections
-     * @return ClassReflectionInterface[]|TraitReflectionInterface[]
+     * @param ReflectionClass[] $betterClassReflections
+     * @return ReflectionClass[]
      */
-    private function resolveParentTraits(array $reflections): array
+    private function resolveParentTraits(array $betterClassReflections): array
     {
-        foreach ($reflections as $reflection) {
-            foreach ($reflection->getTraits() as $trait) {
-                if (isset($reflections[$trait->getName()])) {
+        foreach ($betterClassReflections as $betterClassReflection) {
+            foreach ($betterClassReflection->getTraits() as $trait) {
+                if (isset($betterClassReflections[$trait->getName()])) {
                     continue;
                 }
 
-                $reflections[$trait->getName()] = $trait;
+                $betterClassReflections[$trait->getName()] = $trait;
             }
         }
 
-        return $reflections;
+        return $betterClassReflections;
     }
 
     private function parseClassElements(): void

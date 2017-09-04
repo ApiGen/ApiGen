@@ -3,3 +3,8 @@ parameters:
         - "#Constant TEMP_DIR not found#"
         - '#Call to an undefined method ApiGen\\Reflection\\Contract\\Reflection\\Partial\\AnnotationsInterface::getName\(\)#'
         - '#Class Symfony\\Component\\ExpressionLanguage\\ExpressionLanguage not found and could not be autoloaded#'
+        # bug
+        - '#Parameter \#1 \$reflection of static method ApiGen\\Reflection\\Helper\\ReflectionAnalyzer::getReflectionInterfaceFromReflection\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\AbstractReflectionInterface, ApiGen\\Reflection\\Contract\\Reflection\\Partial\\AnnotationsInterface given#'
+        # misstype
+        - '#Parameter \#2 \$array of method PHPUnit\\Framework\\Assert::assertArrayHasKey\(\) expects mixed\[\]\|ArrayAccess#'
+        - '#Parameter \#1 \$reflection of method ApiGen\\StringRouting\\Route\\SourceCodeRoute::buildLineAnchor\(\) expects ApiGen\\Reflection\\Contract\\Reflection\\Partial\\StartAndEndLineInterface#'
