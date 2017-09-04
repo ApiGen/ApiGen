@@ -28,16 +28,23 @@ final class SourceLocatorsFactory
      */
     private $configuration;
 
+    /**
+     * @var ProjectVendorSourceLocatorFactory
+     */
+    private $projectVendorSourceLocatorFactory;
+
     public function __construct(
         DirectorySourceLocatorFactory $directorySourceLocatorFactory,
         FileSourceLocatorFactory $fileSourceLocatorFactory,
         FallbackSourceLocatorFactory $fallbackSourceLocatorFactory,
+        ProjectVendorSourceLocatorFactory $projectVendorSourceLocatorFactory,
         Configuration $configuration
     ) {
         $this->directorySourceLocatorFactory = $directorySourceLocatorFactory;
         $this->fileSourceLocatorFactory = $fileSourceLocatorFactory;
         $this->fallbackSourceLocatorFactory = $fallbackSourceLocatorFactory;
         $this->configuration = $configuration;
+        $this->projectVendorSourceLocatorFactory = $projectVendorSourceLocatorFactory;
     }
 
     public function create(): SourceLocator
@@ -48,6 +55,7 @@ final class SourceLocatorsFactory
         $locators = [];
         if ($directories) {
             $locators[] = $this->directorySourceLocatorFactory->createFromDirectories($directories);
+            $locators[] = $this->projectVendorSourceLocatorFactory->createFromDirectories($directories);
         }
 
         if ($files) {
