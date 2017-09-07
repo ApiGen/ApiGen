@@ -60,12 +60,15 @@ final class ApiGenApplication
             DestinationOption::NAME => $runCommand->getDestination(),
         ]);
 
-        $this->output->write('Processing reflections (this may take a while)...');
+        $this->output->write('Parsing reflections (this may take a while)...');
         $this->parser->parseFilesAndDirectories($options[SourceOption::NAME]);
-        $this->output->write("\x0D\x1B[2K"); // clears the line
+        $this->output->writeln(' <info>done!</info>');
+        $this->output->writeln('Generating documentation...');
 
         $this->prepareDestination($options[DestinationOption::NAME], (bool) $options[OverwriteOption::NAME]);
         $this->generatorQueue->run();
+
+        $this->output->writeln('<info>Your documentation has been generated successfully!</info>');
     }
 
     private function prepareDestination(string $destination, bool $shouldOverwrite): void

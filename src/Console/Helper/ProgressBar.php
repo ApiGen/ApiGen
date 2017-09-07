@@ -42,7 +42,7 @@ final class ProgressBar
 
         $this->bar->advance($increment);
         if ($this->bar->getProgress() === $this->bar->getMaxSteps()) {
-            $this->output->writeln(' - <info>Finished!</info>');
+            $this->output->writeln(' - <info>done!</info>');
         }
     }
 }
