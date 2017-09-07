@@ -13,6 +13,7 @@ final class DirectorySourceLocatorFactory
      * @var AstLocator
      */
     private $astLocator;
+
     /**
      * @var ProjectVendorSourceLocatorFactory
      */
