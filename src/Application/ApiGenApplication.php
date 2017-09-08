@@ -10,6 +10,7 @@ use ApiGen\ModularConfiguration\Option\OverwriteOption;
 use ApiGen\ModularConfiguration\Option\SourceOption;
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Utils\FileSystem;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class ApiGenApplication
 {
@@ -33,16 +34,23 @@ final class ApiGenApplication
      */
     private $fileSystem;
 
+    /**
+     * @var OutputInterface
+     */
+    private $output;
+
     public function __construct(
         Configuration $configuration,
         Parser $parser,
         GeneratorQueue $generatorQueue,
-        FileSystem $fileSystem
+        FileSystem $fileSystem,
+        OutputInterface $output
     ) {
         $this->configuration = $configuration;
         $this->parser = $parser;
         $this->generatorQueue = $generatorQueue;
         $this->fileSystem = $fileSystem;
+        $this->output = $output;
     }
 
     public function runCommand(RunCommand $runCommand): void
@@ -52,9 +60,15 @@ final class ApiGenApplication
             DestinationOption::NAME => $runCommand->getDestination(),
         ]);
 
+        $this->output->write('Parsing reflections (this may take a while)...');
         $this->parser->parseFilesAndDirectories($options[SourceOption::NAME]);
+        $this->output->writeln(' <info>done!</info>');
+        $this->output->writeln('Generating documentation...');
+
         $this->prepareDestination($options[DestinationOption::NAME], (bool) $options[OverwriteOption::NAME]);
         $this->generatorQueue->run();
+
+        $this->output->writeln('<info>Your documentation has been generated successfully!</info>');
     }
 
     private function prepareDestination(string $destination, bool $shouldOverwrite): void
