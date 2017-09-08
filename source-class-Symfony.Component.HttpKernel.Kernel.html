@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <link rel="stylesheet" href="resources/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/style.css">
+
+        <title>
+            Source file | ApiGen It-self
+        </title>
+    </head>
+
+    <body>
+<div id="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="index.html">
+                                ApiGen It-self
+                            </a>
+                        </li>
+
+                            <li>
+                                <a href="classes.html">Classes</a>
+                            </li>
+
+                            <li>
+                                <a href="interfaces.html">Interfaces</a>
+                            </li>
+
+
+
+                            <li>
+                                <a href="exceptions.html">Exceptions</a>
+                            </li>
+
+                    </ul>
+
+                    <form id="search" class="pull-right">
+                        <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace" autofocus>
+                    </form>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+    <div id="source">
+        <pre class="numbers"><code><span id="1" class="l"><a href="#1">  1: </a></span><span id="2" class="l"><a href="#2">  2: </a></span><span id="3" class="l"><a href="#3">  3: </a></span></span><span id="4" class="l"><a href="#4">  4: </a></span></span><span id="5" class="l"><a href="#5">  5: </a></span></span><span id="6" class="l"><a href="#6">  6: </a></span></span><span id="7" class="l"><a href="#7">  7: </a></span></span><span id="8" class="l"><a href="#8">  8: </a></span></span><span id="9" class="l"><a href="#9">  9: </a></span></span><span id="10" class="l"><a href="#10"> 10: </a></span><span id="11" class="l"><a href="#11"> 11: </a></span><span id="12" class="l"><a href="#12"> 12: </a></span><span id="13" class="l"><a href="#13"> 13: </a></span><span id="14" class="l"><a href="#14"> 14: </a></span><span id="15" class="l"><a href="#15"> 15: </a></span><span id="16" class="l"><a href="#16"> 16: </a></span><span id="17" class="l"><a href="#17"> 17: </a></span><span id="18" class="l"><a href="#18"> 18: </a></span><span id="19" class="l"><a href="#19"> 19: </a></span><span id="20" class="l"><a href="#20"> 20: </a></span><span id="21" class="l"><a href="#21"> 21: </a></span><span id="22" class="l"><a href="#22"> 22: </a></span><span id="23" class="l"><a href="#23"> 23: </a></span><span id="24" class="l"><a href="#24"> 24: </a></span><span id="25" class="l"><a href="#25"> 25: </a></span><span id="26" class="l"><a href="#26"> 26: </a></span><span id="27" class="l"><a href="#27"> 27: </a></span><span id="28" class="l"><a href="#28"> 28: </a></span><span id="29" class="l"><a href="#29"> 29: </a></span><span id="30" class="l"><a href="#30"> 30: </a></span><span id="31" class="l"><a href="#31"> 31: </a></span><span id="32" class="l"><a href="#32"> 32: </a></span><span id="33" class="l"><a href="#33"> 33: </a></span><span id="34" class="l"><a href="#34"> 34: </a></span><span id="35" class="l"><a href="#35"> 35: </a></span><span id="36" class="l"><a href="#36"> 36: </a></span><span id="37" class="l"><a href="#37"> 37: </a></span><span id="38" class="l"><a href="#38"> 38: </a></span></span><span id="39" class="l"><a href="#39"> 39: </a></span></span><span id="40" class="l"><a href="#40"> 40: </a></span></span><span id="41" class="l"><a href="#41"> 41: </a></span></span><span id="42" class="l"><a href="#42"> 42: </a></span></span><span id="43" class="l"><a href="#43"> 43: </a></span></span><span id="44" class="l"><a href="#44"> 44: </a></span><span id="45" class="l"><a href="#45"> 45: </a></span><span id="46" class="l"><a href="#46"> 46: </a></span><span id="47" class="l"><a href="#47"> 47: </a></span></span><span id="48" class="l"><a href="#48"> 48: </a></span></span><span id="49" class="l"><a href="#49"> 49: </a></span><span id="50" class="l"><a href="#50"> 50: </a></span><span id="51" class="l"><a href="#51"> 51: </a></span><span id="52" class="l"><a href="#52"> 52: </a></span><span id="53" class="l"><a href="#53"> 53: </a></span><span id="54" class="l"><a href="#54"> 54: </a></span><span id="55" class="l"><a href="#55"> 55: </a></span><span id="56" class="l"><a href="#56"> 56: </a></span><span id="57" class="l"><a href="#57"> 57: </a></span><span id="58" class="l"><a href="#58"> 58: </a></span><span id="59" class="l"><a href="#59"> 59: </a></span><span id="60" class="l"><a href="#60"> 60: </a></span><span id="61" class="l"><a href="#61"> 61: </a></span><span id="62" class="l"><a href="#62"> 62: </a></span><span id="63" class="l"><a href="#63"> 63: </a></span><span id="64" class="l"><a href="#64"> 64: </a></span><span id="65" class="l"><a href="#65"> 65: </a></span><span id="66" class="l"><a href="#66"> 66: </a></span><span id="67" class="l"><a href="#67"> 67: </a></span><span id="68" class="l"><a href="#68"> 68: </a></span><span id="69" class="l"><a href="#69"> 69: </a></span><span id="70" class="l"><a href="#70"> 70: </a></span><span id="71" class="l"><a href="#71"> 71: </a></span><span id="72" class="l"><a href="#72"> 72: </a></span><span id="73" class="l"><a href="#73"> 73: </a></span><span id="74" class="l"><a href="#74"> 74: </a></span></span><span id="75" class="l"><a href="#75"> 75: </a></span></span><span id="76" class="l"><a href="#76"> 76: </a></span></span><span id="77" class="l"><a href="#77"> 77: </a></span></span><span id="78" class="l"><a href="#78"> 78: </a></span></span><span id="79" class="l"><a href="#79"> 79: </a></span><span id="80" class="l"><a href="#80"> 80: </a></span><span id="81" class="l"><a href="#81"> 81: </a></span><span id="82" class="l"><a href="#82"> 82: </a></span><span id="83" class="l"><a href="#83"> 83: </a></span><span id="84" class="l"><a href="#84"> 84: </a></span><span id="85" class="l"><a href="#85"> 85: </a></span><span id="86" class="l"><a href="#86"> 86: </a></span><span id="87" class="l"><a href="#87"> 87: </a></span><span id="88" class="l"><a href="#88"> 88: </a></span><span id="89" class="l"><a href="#89"> 89: </a></span><span id="90" class="l"><a href="#90"> 90: </a></span><span id="91" class="l"><a href="#91"> 91: </a></span><span id="92" class="l"><a href="#92"> 92: </a></span><span id="93" class="l"><a href="#93"> 93: </a></span><span id="94" class="l"><a href="#94"> 94: </a></span><span id="95" class="l"><a href="#95"> 95: </a></span><span id="96" class="l"><a href="#96"> 96: </a></span><span id="97" class="l"><a href="#97"> 97: </a></span><span id="98" class="l"><a href="#98"> 98: </a></span><span id="99" class="l"><a href="#99"> 99: </a></span><span id="100" class="l"><a href="#100">100: </a></span><span id="101" class="l"><a href="#101">101: </a></span><span id="102" class="l"><a href="#102">102: </a></span></span><span id="103" class="l"><a href="#103">103: </a></span></span><span id="104" class="l"><a href="#104">104: </a></span><span id="105" class="l"><a href="#105">105: </a></span><span id="106" class="l"><a href="#106">106: </a></span><span id="107" class="l"><a href="#107">107: </a></span><span id="108" class="l"><a href="#108">108: </a></span><span id="109" class="l"><a href="#109">109: </a></span><span id="110" class="l"><a href="#110">110: </a></span><span id="111" class="l"><a href="#111">111: </a></span><span id="112" class="l"><a href="#112">112: </a></span><span id="113" class="l"><a href="#113">113: </a></span><span id="114" class="l"><a href="#114">114: </a></span><span id="115" class="l"><a href="#115">115: </a></span><span id="116" class="l"><a href="#116">116: </a></span><span id="117" class="l"><a href="#117">117: </a></span><span id="118" class="l"><a href="#118">118: </a></span><span id="119" class="l"><a href="#119">119: </a></span><span id="120" class="l"><a href="#120">120: </a></span><span id="121" class="l"><a href="#121">121: </a></span><span id="122" class="l"><a href="#122">122: </a></span><span id="123" class="l"><a href="#123">123: </a></span><span id="124" class="l"><a href="#124">124: </a></span><span id="125" class="l"><a href="#125">125: </a></span><span id="126" class="l"><a href="#126">126: </a></span><span id="127" class="l"><a href="#127">127: </a></span><span id="128" class="l"><a href="#128">128: </a></span><span id="129" class="l"><a href="#129">129: </a></span></span><span id="130" class="l"><a href="#130">130: </a></span></span><span id="131" class="l"><a href="#131">131: </a></span><span id="132" class="l"><a href="#132">132: </a></span><span id="133" class="l"><a href="#133">133: </a></span><span id="134" class="l"><a href="#134">134: </a></span><span id="135" class="l"><a href="#135">135: </a></span><span id="136" class="l"><a href="#136">136: </a></span><span id="137" class="l"><a href="#137">137: </a></span><span id="138" class="l"><a href="#138">138: </a></span><span id="139" class="l"><a href="#139">139: </a></span><span id="140" class="l"><a href="#140">140: </a></span><span id="141" class="l"><a href="#141">141: </a></span><span id="142" class="l"><a href="#142">142: </a></span><span id="143" class="l"><a href="#143">143: </a></span></span><span id="144" class="l"><a href="#144">144: </a></span></span><span id="145" class="l"><a href="#145">145: </a></span><span id="146" class="l"><a href="#146">146: </a></span><span id="147" class="l"><a href="#147">147: </a></span><span id="148" class="l"><a href="#148">148: </a></span><span id="149" class="l"><a href="#149">149: </a></span><span id="150" class="l"><a href="#150">150: </a></span><span id="151" class="l"><a href="#151">151: </a></span><span id="152" class="l"><a href="#152">152: </a></span><span id="153" class="l"><a href="#153">153: </a></span><span id="154" class="l"><a href="#154">154: </a></span><span id="155" class="l"><a href="#155">155: </a></span><span id="156" class="l"><a href="#156">156: </a></span><span id="157" class="l"><a href="#157">157: </a></span><span id="158" class="l"><a href="#158">158: </a></span><span id="159" class="l"><a href="#159">159: </a></span><span id="160" class="l"><a href="#160">160: </a></span><span id="161" class="l"><a href="#161">161: </a></span><span id="162" class="l"><a href="#162">162: </a></span></span><span id="163" class="l"><a href="#163">163: </a></span></span><span id="164" class="l"><a href="#164">164: </a></span><span id="165" class="l"><a href="#165">165: </a></span><span id="166" class="l"><a href="#166">166: </a></span><span id="167" class="l"><a href="#167">167: </a></span><span id="168" class="l"><a href="#168">168: </a></span><span id="169" class="l"><a href="#169">169: </a></span><span id="170" class="l"><a href="#170">170: </a></span><span id="171" class="l"><a href="#171">171: </a></span><span id="172" class="l"><a href="#172">172: </a></span><span id="173" class="l"><a href="#173">173: </a></span><span id="174" class="l"><a href="#174">174: </a></span></span><span id="175" class="l"><a href="#175">175: </a></span></span><span id="176" class="l"><a href="#176">176: </a></span></span><span id="177" class="l"><a href="#177">177: </a></span></span><span id="178" class="l"><a href="#178">178: </a></span><span id="179" class="l"><a href="#179">179: </a></span><span id="180" class="l"><a href="#180">180: </a></span><span id="181" class="l"><a href="#181">181: </a></span><span id="182" class="l"><a href="#182">182: </a></span><span id="183" class="l"><a href="#183">183: </a></span><span id="184" class="l"><a href="#184">184: </a></span></span><span id="185" class="l"><a href="#185">185: </a></span></span><span id="186" class="l"><a href="#186">186: </a></span><span id="187" class="l"><a href="#187">187: </a></span><span id="188" class="l"><a href="#188">188: </a></span><span id="189" class="l"><a href="#189">189: </a></span><span id="190" class="l"><a href="#190">190: </a></span><span id="191" class="l"><a href="#191">191: </a></span><span id="192" class="l"><a href="#192">192: </a></span></span><span id="193" class="l"><a href="#193">193: </a></span></span><span id="194" class="l"><a href="#194">194: </a></span><span id="195" class="l"><a href="#195">195: </a></span><span id="196" class="l"><a href="#196">196: </a></span><span id="197" class="l"><a href="#197">197: </a></span><span id="198" class="l"><a href="#198">198: </a></span><span id="199" class="l"><a href="#199">199: </a></span><span id="200" class="l"><a href="#200">200: </a></span><span id="201" class="l"><a href="#201">201: </a></span><span id="202" class="l"><a href="#202">202: </a></span><span id="203" class="l"><a href="#203">203: </a></span><span id="204" class="l"><a href="#204">204: </a></span><span id="205" class="l"><a href="#205">205: </a></span><span id="206" class="l"><a href="#206">206: </a></span><span id="207" class="l"><a href="#207">207: </a></span><span id="208" class="l"><a href="#208">208: </a></span></span><span id="209" class="l"><a href="#209">209: </a></span></span><span id="210" class="l"><a href="#210">210: </a></span></span><span id="211" class="l"><a href="#211">211: </a></span></span><span id="212" class="l"><a href="#212">212: </a></span><span id="213" class="l"><a href="#213">213: </a></span><span id="214" class="l"><a href="#214">214: </a></span><span id="215" class="l"><a href="#215">215: </a></span><span id="216" class="l"><a href="#216">216: </a></span><span id="217" class="l"><a href="#217">217: </a></span><span id="218" class="l"><a href="#218">218: </a></span><span id="219" class="l"><a href="#219">219: </a></span><span id="220" class="l"><a href="#220">220: </a></span><span id="221" class="l"><a href="#221">221: </a></span><span id="222" class="l"><a href="#222">222: </a></span><span id="223" class="l"><a href="#223">223: </a></span><span id="224" class="l"><a href="#224">224: </a></span><span id="225" class="l"><a href="#225">225: </a></span><span id="226" class="l"><a href="#226">226: </a></span><span id="227" class="l"><a href="#227">227: </a></span><span id="228" class="l"><a href="#228">228: </a></span><span id="229" class="l"><a href="#229">229: </a></span><span id="230" class="l"><a href="#230">230: </a></span><span id="231" class="l"><a href="#231">231: </a></span><span id="232" class="l"><a href="#232">232: </a></span><span id="233" class="l"><a href="#233">233: </a></span><span id="234" class="l"><a href="#234">234: </a></span><span id="235" class="l"><a href="#235">235: </a></span><span id="236" class="l"><a href="#236">236: </a></span><span id="237" class="l"><a href="#237">237: </a></span><span id="238" class="l"><a href="#238">238: </a></span><span id="239" class="l"><a href="#239">239: </a></span><span id="240" class="l"><a href="#240">240: </a></span><span id="241" class="l"><a href="#241">241: </a></span><span id="242" class="l"><a href="#242">242: </a></span><span id="243" class="l"><a href="#243">243: </a></span><span id="244" class="l"><a href="#244">244: </a></span><span id="245" class="l"><a href="#245">245: </a></span><span id="246" class="l"><a href="#246">246: </a></span><span id="247" class="l"><a href="#247">247: </a></span><span id="248" class="l"><a href="#248">248: </a></span><span id="249" class="l"><a href="#249">249: </a></span><span id="250" class="l"><a href="#250">250: </a></span><span id="251" class="l"><a href="#251">251: </a></span><span id="252" class="l"><a href="#252">252: </a></span><span id="253" class="l"><a href="#253">253: </a></span><span id="254" class="l"><a href="#254">254: </a></span><span id="255" class="l"><a href="#255">255: </a></span><span id="256" class="l"><a href="#256">256: </a></span><span id="257" class="l"><a href="#257">257: </a></span><span id="258" class="l"><a href="#258">258: </a></span><span id="259" class="l"><a href="#259">259: </a></span><span id="260" class="l"><a href="#260">260: </a></span><span id="261" class="l"><a href="#261">261: </a></span><span id="262" class="l"><a href="#262">262: </a></span><span id="263" class="l"><a href="#263">263: </a></span><span id="264" class="l"><a href="#264">264: </a></span><span id="265" class="l"><a href="#265">265: </a></span><span id="266" class="l"><a href="#266">266: </a></span><span id="267" class="l"><a href="#267">267: </a></span></span><span id="268" class="l"><a href="#268">268: </a></span></span><span id="269" class="l"><a href="#269">269: </a></span><span id="270" class="l"><a href="#270">270: </a></span><span id="271" class="l"><a href="#271">271: </a></span><span id="272" class="l"><a href="#272">272: </a></span><span id="273" class="l"><a href="#273">273: </a></span><span id="274" class="l"><a href="#274">274: </a></span><span id="275" class="l"><a href="#275">275: </a></span><span id="276" class="l"><a href="#276">276: </a></span><span id="277" class="l"><a href="#277">277: </a></span><span id="278" class="l"><a href="#278">278: </a></span><span id="279" class="l"><a href="#279">279: </a></span><span id="280" class="l"><a href="#280">280: </a></span><span id="281" class="l"><a href="#281">281: </a></span><span id="282" class="l"><a href="#282">282: </a></span></span><span id="283" class="l"><a href="#283">283: </a></span></span><span id="284" class="l"><a href="#284">284: </a></span><span id="285" class="l"><a href="#285">285: </a></span><span id="286" class="l"><a href="#286">286: </a></span><span id="287" class="l"><a href="#287">287: </a></span><span id="288" class="l"><a href="#288">288: </a></span><span id="289" class="l"><a href="#289">289: </a></span><span id="290" class="l"><a href="#290">290: </a></span></span><span id="291" class="l"><a href="#291">291: </a></span></span><span id="292" class="l"><a href="#292">292: </a></span><span id="293" class="l"><a href="#293">293: </a></span><span id="294" class="l"><a href="#294">294: </a></span><span id="295" class="l"><a href="#295">295: </a></span><span id="296" class="l"><a href="#296">296: </a></span><span id="297" class="l"><a href="#297">297: </a></span><span id="298" class="l"><a href="#298">298: </a></span></span><span id="299" class="l"><a href="#299">299: </a></span></span><span id="300" class="l"><a href="#300">300: </a></span><span id="301" class="l"><a href="#301">301: </a></span><span id="302" class="l"><a href="#302">302: </a></span><span id="303" class="l"><a href="#303">303: </a></span><span id="304" class="l"><a href="#304">304: </a></span><span id="305" class="l"><a href="#305">305: </a></span><span id="306" class="l"><a href="#306">306: </a></span><span id="307" class="l"><a href="#307">307: </a></span><span id="308" class="l"><a href="#308">308: </a></span><span id="309" class="l"><a href="#309">309: </a></span><span id="310" class="l"><a href="#310">310: </a></span><span id="311" class="l"><a href="#311">311: </a></span></span><span id="312" class="l"><a href="#312">312: </a></span></span><span id="313" class="l"><a href="#313">313: </a></span></span><span id="314" class="l"><a href="#314">314: </a></span></span><span id="315" class="l"><a href="#315">315: </a></span><span id="316" class="l"><a href="#316">316: </a></span><span id="317" class="l"><a href="#317">317: </a></span><span id="318" class="l"><a href="#318">318: </a></span><span id="319" class="l"><a href="#319">319: </a></span><span id="320" class="l"><a href="#320">320: </a></span><span id="321" class="l"><a href="#321">321: </a></span><span id="322" class="l"><a href="#322">322: </a></span><span id="323" class="l"><a href="#323">323: </a></span><span id="324" class="l"><a href="#324">324: </a></span><span id="325" class="l"><a href="#325">325: </a></span><span id="326" class="l"><a href="#326">326: </a></span><span id="327" class="l"><a href="#327">327: </a></span><span id="328" class="l"><a href="#328">328: </a></span><span id="329" class="l"><a href="#329">329: </a></span><span id="330" class="l"><a href="#330">330: </a></span><span id="331" class="l"><a href="#331">331: </a></span><span id="332" class="l"><a href="#332">332: </a></span><span id="333" class="l"><a href="#333">333: </a></span></span><span id="334" class="l"><a href="#334">334: </a></span></span><span id="335" class="l"><a href="#335">335: </a></span><span id="336" class="l"><a href="#336">336: </a></span><span id="337" class="l"><a href="#337">337: </a></span><span id="338" class="l"><a href="#338">338: </a></span><span id="339" class="l"><a href="#339">339: </a></span><span id="340" class="l"><a href="#340">340: </a></span><span id="341" class="l"><a href="#341">341: </a></span></span><span id="342" class="l"><a href="#342">342: </a></span></span><span id="343" class="l"><a href="#343">343: </a></span></span><span id="344" class="l"><a href="#344">344: </a></span></span><span id="345" class="l"><a href="#345">345: </a></span></span><span id="346" class="l"><a href="#346">346: </a></span></span><span id="347" class="l"><a href="#347">347: </a></span></span><span id="348" class="l"><a href="#348">348: </a></span></span><span id="349" class="l"><a href="#349">349: </a></span></span><span id="350" class="l"><a href="#350">350: </a></span></span><span id="351" class="l"><a href="#351">351: </a></span></span><span id="352" class="l"><a href="#352">352: </a></span></span><span id="353" class="l"><a href="#353">353: </a></span></span><span id="354" class="l"><a href="#354">354: </a></span><span id="355" class="l"><a href="#355">355: </a></span><span id="356" class="l"><a href="#356">356: </a></span><span id="357" class="l"><a href="#357">357: </a></span><span id="358" class="l"><a href="#358">358: </a></span><span id="359" class="l"><a href="#359">359: </a></span><span id="360" class="l"><a href="#360">360: </a></span><span id="361" class="l"><a href="#361">361: </a></span><span id="362" class="l"><a href="#362">362: </a></span><span id="363" class="l"><a href="#363">363: </a></span><span id="364" class="l"><a href="#364">364: </a></span></span><span id="365" class="l"><a href="#365">365: </a></span></span><span id="366" class="l"><a href="#366">366: </a></span></span><span id="367" class="l"><a href="#367">367: </a></span></span><span id="368" class="l"><a href="#368">368: </a></span><span id="369" class="l"><a href="#369">369: </a></span><span id="370" class="l"><a href="#370">370: </a></span><span id="371" class="l"><a href="#371">371: </a></span><span id="372" class="l"><a href="#372">372: </a></span><span id="373" class="l"><a href="#373">373: </a></span><span id="374" class="l"><a href="#374">374: </a></span><span id="375" class="l"><a href="#375">375: </a></span><span id="376" class="l"><a href="#376">376: </a></span><span id="377" class="l"><a href="#377">377: </a></span><span id="378" class="l"><a href="#378">378: </a></span></span><span id="379" class="l"><a href="#379">379: </a></span></span><span id="380" class="l"><a href="#380">380: </a></span><span id="381" class="l"><a href="#381">381: </a></span><span id="382" class="l"><a href="#382">382: </a></span><span id="383" class="l"><a href="#383">383: </a></span><span id="384" class="l"><a href="#384">384: </a></span><span id="385" class="l"><a href="#385">385: </a></span><span id="386" class="l"><a href="#386">386: </a></span></span><span id="387" class="l"><a href="#387">387: </a></span></span><span id="388" class="l"><a href="#388">388: </a></span><span id="389" class="l"><a href="#389">389: </a></span><span id="390" class="l"><a href="#390">390: </a></span><span id="391" class="l"><a href="#391">391: </a></span><span id="392" class="l"><a href="#392">392: </a></span><span id="393" class="l"><a href="#393">393: </a></span><span id="394" class="l"><a href="#394">394: </a></span></span><span id="395" class="l"><a href="#395">395: </a></span></span><span id="396" class="l"><a href="#396">396: </a></span><span id="397" class="l"><a href="#397">397: </a></span><span id="398" class="l"><a href="#398">398: </a></span><span id="399" class="l"><a href="#399">399: </a></span><span id="400" class="l"><a href="#400">400: </a></span><span id="401" class="l"><a href="#401">401: </a></span><span id="402" class="l"><a href="#402">402: </a></span></span><span id="403" class="l"><a href="#403">403: </a></span></span><span id="404" class="l"><a href="#404">404: </a></span><span id="405" class="l"><a href="#405">405: </a></span><span id="406" class="l"><a href="#406">406: </a></span><span id="407" class="l"><a href="#407">407: </a></span><span id="408" class="l"><a href="#408">408: </a></span><span id="409" class="l"><a href="#409">409: </a></span><span id="410" class="l"><a href="#410">410: </a></span></span><span id="411" class="l"><a href="#411">411: </a></span></span><span id="412" class="l"><a href="#412">412: </a></span><span id="413" class="l"><a href="#413">413: </a></span><span id="414" class="l"><a href="#414">414: </a></span><span id="415" class="l"><a href="#415">415: </a></span><span id="416" class="l"><a href="#416">416: </a></span><span id="417" class="l"><a href="#417">417: </a></span><span id="418" class="l"><a href="#418">418: </a></span></span><span id="419" class="l"><a href="#419">419: </a></span></span><span id="420" class="l"><a href="#420">420: </a></span><span id="421" class="l"><a href="#421">421: </a></span><span id="422" class="l"><a href="#422">422: </a></span><span id="423" class="l"><a href="#423">423: </a></span><span id="424" class="l"><a href="#424">424: </a></span><span id="425" class="l"><a href="#425">425: </a></span><span id="426" class="l"><a href="#426">426: </a></span><span id="427" class="l"><a href="#427">427: </a></span><span id="428" class="l"><a href="#428">428: </a></span><span id="429" class="l"><a href="#429">429: </a></span><span id="430" class="l"><a href="#430">430: </a></span><span id="431" class="l"><a href="#431">431: </a></span><span id="432" class="l"><a href="#432">432: </a></span></span><span id="433" class="l"><a href="#433">433: </a></span></span><span id="434" class="l"><a href="#434">434: </a></span></span><span id="435" class="l"><a href="#435">435: </a></span></span><span id="436" class="l"><a href="#436">436: </a></span></span><span id="437" class="l"><a href="#437">437: </a></span></span><span id="438" class="l"><a href="#438">438: </a></span></span><span id="439" class="l"><a href="#439">439: </a></span></span><span id="440" class="l"><a href="#440">440: </a></span></span><span id="441" class="l"><a href="#441">441: </a></span></span><span id="442" class="l"><a href="#442">442: </a></span><span id="443" class="l"><a href="#443">443: </a></span><span id="444" class="l"><a href="#444">444: </a></span><span id="445" class="l"><a href="#445">445: </a></span><span id="446" class="l"><a href="#446">446: </a></span><span id="447" class="l"><a href="#447">447: </a></span><span id="448" class="l"><a href="#448">448: </a></span><span id="449" class="l"><a href="#449">449: </a></span><span id="450" class="l"><a href="#450">450: </a></span><span id="451" class="l"><a href="#451">451: </a></span><span id="452" class="l"><a href="#452">452: </a></span><span id="453" class="l"><a href="#453">453: </a></span><span id="454" class="l"><a href="#454">454: </a></span><span id="455" class="l"><a href="#455">455: </a></span><span id="456" class="l"><a href="#456">456: </a></span><span id="457" class="l"><a href="#457">457: </a></span><span id="458" class="l"><a href="#458">458: </a></span><span id="459" class="l"><a href="#459">459: </a></span><span id="460" class="l"><a href="#460">460: </a></span><span id="461" class="l"><a href="#461">461: </a></span><span id="462" class="l"><a href="#462">462: </a></span><span id="463" class="l"><a href="#463">463: </a></span><span id="464" class="l"><a href="#464">464: </a></span><span id="465" class="l"><a href="#465">465: </a></span><span id="466" class="l"><a href="#466">466: </a></span><span id="467" class="l"><a href="#467">467: </a></span><span id="468" class="l"><a href="#468">468: </a></span><span id="469" class="l"><a href="#469">469: </a></span><span id="470" class="l"><a href="#470">470: </a></span><span id="471" class="l"><a href="#471">471: </a></span><span id="472" class="l"><a href="#472">472: </a></span><span id="473" class="l"><a href="#473">473: </a></span><span id="474" class="l"><a href="#474">474: </a></span><span id="475" class="l"><a href="#475">475: </a></span><span id="476" class="l"><a href="#476">476: </a></span><span id="477" class="l"><a href="#477">477: </a></span><span id="478" class="l"><a href="#478">478: </a></span><span id="479" class="l"><a href="#479">479: </a></span><span id="480" class="l"><a href="#480">480: </a></span><span id="481" class="l"><a href="#481">481: </a></span><span id="482" class="l"><a href="#482">482: </a></span><span id="483" class="l"><a href="#483">483: </a></span><span id="484" class="l"><a href="#484">484: </a></span><span id="485" class="l"><a href="#485">485: </a></span><span id="486" class="l"><a href="#486">486: </a></span><span id="487" class="l"><a href="#487">487: </a></span><span id="488" class="l"><a href="#488">488: </a></span><span id="489" class="l"><a href="#489">489: </a></span><span id="490" class="l"><a href="#490">490: </a></span><span id="491" class="l"><a href="#491">491: </a></span><span id="492" class="l"><a href="#492">492: </a></span><span id="493" class="l"><a href="#493">493: </a></span><span id="494" class="l"><a href="#494">494: </a></span><span id="495" class="l"><a href="#495">495: </a></span><span id="496" class="l"><a href="#496">496: </a></span></span><span id="497" class="l"><a href="#497">497: </a></span></span><span id="498" class="l"><a href="#498">498: </a></span></span><span id="499" class="l"><a href="#499">499: </a></span></span><span id="500" class="l"><a href="#500">500: </a></span></span><span id="501" class="l"><a href="#501">501: </a></span></span><span id="502" class="l"><a href="#502">502: </a></span><span id="503" class="l"><a href="#503">503: </a></span><span id="504" class="l"><a href="#504">504: </a></span><span id="505" class="l"><a href="#505">505: </a></span><span id="506" class="l"><a href="#506">506: </a></span><span id="507" class="l"><a href="#507">507: </a></span></span><span id="508" class="l"><a href="#508">508: </a></span></span><span id="509" class="l"><a href="#509">509: </a></span></span><span id="510" class="l"><a href="#510">510: </a></span></span><span id="511" class="l"><a href="#511">511: </a></span><span id="512" class="l"><a href="#512">512: </a></span><span id="513" class="l"><a href="#513">513: </a></span><span id="514" class="l"><a href="#514">514: </a></span><span id="515" class="l"><a href="#515">515: </a></span><span id="516" class="l"><a href="#516">516: </a></span><span id="517" class="l"><a href="#517">517: </a></span></span><span id="518" class="l"><a href="#518">518: </a></span></span><span id="519" class="l"><a href="#519">519: </a></span></span><span id="520" class="l"><a href="#520">520: </a></span></span><span id="521" class="l"><a href="#521">521: </a></span></span><span id="522" class="l"><a href="#522">522: </a></span></span><span id="523" class="l"><a href="#523">523: </a></span><span id="524" class="l"><a href="#524">524: </a></span><span id="525" class="l"><a href="#525">525: </a></span><span id="526" class="l"><a href="#526">526: </a></span><span id="527" class="l"><a href="#527">527: </a></span><span id="528" class="l"><a href="#528">528: </a></span><span id="529" class="l"><a href="#529">529: </a></span></span><span id="530" class="l"><a href="#530">530: </a></span></span><span id="531" class="l"><a href="#531">531: </a></span></span><span id="532" class="l"><a href="#532">532: </a></span></span><span id="533" class="l"><a href="#533">533: </a></span></span><span id="534" class="l"><a href="#534">534: </a></span><span id="535" class="l"><a href="#535">535: </a></span><span id="536" class="l"><a href="#536">536: </a></span><span id="537" class="l"><a href="#537">537: </a></span><span id="538" class="l"><a href="#538">538: </a></span><span id="539" class="l"><a href="#539">539: </a></span><span id="540" class="l"><a href="#540">540: </a></span><span id="541" class="l"><a href="#541">541: </a></span><span id="542" class="l"><a href="#542">542: </a></span><span id="543" class="l"><a href="#543">543: </a></span><span id="544" class="l"><a href="#544">544: </a></span><span id="545" class="l"><a href="#545">545: </a></span><span id="546" class="l"><a href="#546">546: </a></span><span id="547" class="l"><a href="#547">547: </a></span><span id="548" class="l"><a href="#548">548: </a></span><span id="549" class="l"><a href="#549">549: </a></span><span id="550" class="l"><a href="#550">550: </a></span><span id="551" class="l"><a href="#551">551: </a></span><span id="552" class="l"><a href="#552">552: </a></span><span id="553" class="l"><a href="#553">553: </a></span><span id="554" class="l"><a href="#554">554: </a></span><span id="555" class="l"><a href="#555">555: </a></span><span id="556" class="l"><a href="#556">556: </a></span><span id="557" class="l"><a href="#557">557: </a></span><span id="558" class="l"><a href="#558">558: </a></span><span id="559" class="l"><a href="#559">559: </a></span><span id="560" class="l"><a href="#560">560: </a></span><span id="561" class="l"><a href="#561">561: </a></span><span id="562" class="l"><a href="#562">562: </a></span><span id="563" class="l"><a href="#563">563: </a></span><span id="564" class="l"><a href="#564">564: </a></span><span id="565" class="l"><a href="#565">565: </a></span><span id="566" class="l"><a href="#566">566: </a></span><span id="567" class="l"><a href="#567">567: </a></span><span id="568" class="l"><a href="#568">568: </a></span><span id="569" class="l"><a href="#569">569: </a></span><span id="570" class="l"><a href="#570">570: </a></span><span id="571" class="l"><a href="#571">571: </a></span><span id="572" class="l"><a href="#572">572: </a></span><span id="573" class="l"><a href="#573">573: </a></span><span id="574" class="l"><a href="#574">574: </a></span><span id="575" class="l"><a href="#575">575: </a></span><span id="576" class="l"><a href="#576">576: </a></span><span id="577" class="l"><a href="#577">577: </a></span><span id="578" class="l"><a href="#578">578: </a></span><span id="579" class="l"><a href="#579">579: </a></span><span id="580" class="l"><a href="#580">580: </a></span><span id="581" class="l"><a href="#581">581: </a></span><span id="582" class="l"><a href="#582">582: </a></span><span id="583" class="l"><a href="#583">583: </a></span><span id="584" class="l"><a href="#584">584: </a></span><span id="585" class="l"><a href="#585">585: </a></span><span id="586" class="l"><a href="#586">586: </a></span><span id="587" class="l"><a href="#587">587: </a></span><span id="588" class="l"><a href="#588">588: </a></span><span id="589" class="l"><a href="#589">589: </a></span><span id="590" class="l"><a href="#590">590: </a></span><span id="591" class="l"><a href="#591">591: </a></span><span id="592" class="l"><a href="#592">592: </a></span><span id="593" class="l"><a href="#593">593: </a></span><span id="594" class="l"><a href="#594">594: </a></span><span id="595" class="l"><a href="#595">595: </a></span><span id="596" class="l"><a href="#596">596: </a></span><span id="597" class="l"><a href="#597">597: </a></span><span id="598" class="l"><a href="#598">598: </a></span><span id="599" class="l"><a href="#599">599: </a></span><span id="600" class="l"><a href="#600">600: </a></span><span id="601" class="l"><a href="#601">601: </a></span></span><span id="602" class="l"><a href="#602">602: </a></span></span><span id="603" class="l"><a href="#603">603: </a></span></span><span id="604" class="l"><a href="#604">604: </a></span></span><span id="605" class="l"><a href="#605">605: </a></span><span id="606" class="l"><a href="#606">606: </a></span><span id="607" class="l"><a href="#607">607: </a></span><span id="608" class="l"><a href="#608">608: </a></span><span id="609" class="l"><a href="#609">609: </a></span><span id="610" class="l"><a href="#610">610: </a></span><span id="611" class="l"><a href="#611">611: </a></span><span id="612" class="l"><a href="#612">612: </a></span><span id="613" class="l"><a href="#613">613: </a></span><span id="614" class="l"><a href="#614">614: </a></span><span id="615" class="l"><a href="#615">615: </a></span><span id="616" class="l"><a href="#616">616: </a></span><span id="617" class="l"><a href="#617">617: </a></span><span id="618" class="l"><a href="#618">618: </a></span><span id="619" class="l"><a href="#619">619: </a></span><span id="620" class="l"><a href="#620">620: </a></span><span id="621" class="l"><a href="#621">621: </a></span><span id="622" class="l"><a href="#622">622: </a></span><span id="623" class="l"><a href="#623">623: </a></span><span id="624" class="l"><a href="#624">624: </a></span><span id="625" class="l"><a href="#625">625: </a></span><span id="626" class="l"><a href="#626">626: </a></span><span id="627" class="l"><a href="#627">627: </a></span><span id="628" class="l"><a href="#628">628: </a></span><span id="629" class="l"><a href="#629">629: </a></span><span id="630" class="l"><a href="#630">630: </a></span><span id="631" class="l"><a href="#631">631: </a></span><span id="632" class="l"><a href="#632">632: </a></span><span id="633" class="l"><a href="#633">633: </a></span><span id="634" class="l"><a href="#634">634: </a></span><span id="635" class="l"><a href="#635">635: </a></span><span id="636" class="l"><a href="#636">636: </a></span><span id="637" class="l"><a href="#637">637: </a></span><span id="638" class="l"><a href="#638">638: </a></span></span><span id="639" class="l"><a href="#639">639: </a></span></span><span id="640" class="l"><a href="#640">640: </a></span></span><span id="641" class="l"><a href="#641">641: </a></span></span><span id="642" class="l"><a href="#642">642: </a></span></span><span id="643" class="l"><a href="#643">643: </a></span></span><span id="644" class="l"><a href="#644">644: </a></span></span><span id="645" class="l"><a href="#645">645: </a></span></span><span id="646" class="l"><a href="#646">646: </a></span><span id="647" class="l"><a href="#647">647: </a></span><span id="648" class="l"><a href="#648">648: </a></span><span id="649" class="l"><a href="#649">649: </a></span><span id="650" class="l"><a href="#650">650: </a></span><span id="651" class="l"><a href="#651">651: </a></span><span id="652" class="l"><a href="#652">652: </a></span><span id="653" class="l"><a href="#653">653: </a></span><span id="654" class="l"><a href="#654">654: </a></span><span id="655" class="l"><a href="#655">655: </a></span><span id="656" class="l"><a href="#656">656: </a></span><span id="657" class="l"><a href="#657">657: </a></span><span id="658" class="l"><a href="#658">658: </a></span><span id="659" class="l"><a href="#659">659: </a></span><span id="660" class="l"><a href="#660">660: </a></span><span id="661" class="l"><a href="#661">661: </a></span><span id="662" class="l"><a href="#662">662: </a></span><span id="663" class="l"><a href="#663">663: </a></span><span id="664" class="l"><a href="#664">664: </a></span></span><span id="665" class="l"><a href="#665">665: </a></span></span><span id="666" class="l"><a href="#666">666: </a></span></span><span id="667" class="l"><a href="#667">667: </a></span></span><span id="668" class="l"><a href="#668">668: </a></span></span><span id="669" class="l"><a href="#669">669: </a></span></span><span id="670" class="l"><a href="#670">670: </a></span><span id="671" class="l"><a href="#671">671: </a></span><span id="672" class="l"><a href="#672">672: </a></span><span id="673" class="l"><a href="#673">673: </a></span><span id="674" class="l"><a href="#674">674: </a></span><span id="675" class="l"><a href="#675">675: </a></span><span id="676" class="l"><a href="#676">676: </a></span><span id="677" class="l"><a href="#677">677: </a></span><span id="678" class="l"><a href="#678">678: </a></span><span id="679" class="l"><a href="#679">679: </a></span><span id="680" class="l"><a href="#680">680: </a></span><span id="681" class="l"><a href="#681">681: </a></span><span id="682" class="l"><a href="#682">682: </a></span><span id="683" class="l"><a href="#683">683: </a></span><span id="684" class="l"><a href="#684">684: </a></span><span id="685" class="l"><a href="#685">685: </a></span><span id="686" class="l"><a href="#686">686: </a></span><span id="687" class="l"><a href="#687">687: </a></span><span id="688" class="l"><a href="#688">688: </a></span><span id="689" class="l"><a href="#689">689: </a></span><span id="690" class="l"><a href="#690">690: </a></span><span id="691" class="l"><a href="#691">691: </a></span><span id="692" class="l"><a href="#692">692: </a></span><span id="693" class="l"><a href="#693">693: </a></span><span id="694" class="l"><a href="#694">694: </a></span><span id="695" class="l"><a href="#695">695: </a></span><span id="696" class="l"><a href="#696">696: </a></span><span id="697" class="l"><a href="#697">697: </a></span></span><span id="698" class="l"><a href="#698">698: </a></span></span><span id="699" class="l"><a href="#699">699: </a></span></span><span id="700" class="l"><a href="#700">700: </a></span></span><span id="701" class="l"><a href="#701">701: </a></span><span id="702" class="l"><a href="#702">702: </a></span><span id="703" class="l"><a href="#703">703: </a></span><span id="704" class="l"><a href="#704">704: </a></span><span id="705" class="l"><a href="#705">705: </a></span><span id="706" class="l"><a href="#706">706: </a></span><span id="707" class="l"><a href="#707">707: </a></span><span id="708" class="l"><a href="#708">708: </a></span><span id="709" class="l"><a href="#709">709: </a></span><span id="710" class="l"><a href="#710">710: </a></span><span id="711" class="l"><a href="#711">711: </a></span><span id="712" class="l"><a href="#712">712: </a></span><span id="713" class="l"><a href="#713">713: </a></span><span id="714" class="l"><a href="#714">714: </a></span><span id="715" class="l"><a href="#715">715: </a></span><span id="716" class="l"><a href="#716">716: </a></span><span id="717" class="l"><a href="#717">717: </a></span><span id="718" class="l"><a href="#718">718: </a></span><span id="719" class="l"><a href="#719">719: </a></span><span id="720" class="l"><a href="#720">720: </a></span><span id="721" class="l"><a href="#721">721: </a></span><span id="722" class="l"><a href="#722">722: </a></span><span id="723" class="l"><a href="#723">723: </a></span><span id="724" class="l"><a href="#724">724: </a></span><span id="725" class="l"><a href="#725">725: </a></span><span id="726" class="l"><a href="#726">726: </a></span></span><span id="727" class="l"><a href="#727">727: </a></span></span><span id="728" class="l"><a href="#728">728: </a></span></span><span id="729" class="l"><a href="#729">729: </a></span></span><span id="730" class="l"><a href="#730">730: </a></span><span id="731" class="l"><a href="#731">731: </a></span><span id="732" class="l"><a href="#732">732: </a></span><span id="733" class="l"><a href="#733">733: </a></span><span id="734" class="l"><a href="#734">734: </a></span><span id="735" class="l"><a href="#735">735: </a></span><span id="736" class="l"><a href="#736">736: </a></span><span id="737" class="l"><a href="#737">737: </a></span><span id="738" class="l"><a href="#738">738: </a></span><span id="739" class="l"><a href="#739">739: </a></span><span id="740" class="l"><a href="#740">740: </a></span><span id="741" class="l"><a href="#741">741: </a></span><span id="742" class="l"><a href="#742">742: </a></span><span id="743" class="l"><a href="#743">743: </a></span></span><span id="744" class="l"><a href="#744">744: </a></span></span><span id="745" class="l"><a href="#745">745: </a></span></span><span id="746" class="l"><a href="#746">746: </a></span></span><span id="747" class="l"><a href="#747">747: </a></span></span><span id="748" class="l"><a href="#748">748: </a></span></span><span id="749" class="l"><a href="#749">749: </a></span></span><span id="750" class="l"><a href="#750">750: </a></span><span id="751" class="l"><a href="#751">751: </a></span><span id="752" class="l"><a href="#752">752: </a></span><span id="753" class="l"><a href="#753">753: </a></span><span id="754" class="l"><a href="#754">754: </a></span><span id="755" class="l"><a href="#755">755: </a></span><span id="756" class="l"><a href="#756">756: </a></span><span id="757" class="l"><a href="#757">757: </a></span><span id="758" class="l"><a href="#758">758: </a></span><span id="759" class="l"><a href="#759">759: </a></span><span id="760" class="l"><a href="#760">760: </a></span><span id="761" class="l"><a href="#761">761: </a></span><span id="762" class="l"><a href="#762">762: </a></span><span id="763" class="l"><a href="#763">763: </a></span><span id="764" class="l"><a href="#764">764: </a></span><span id="765" class="l"><a href="#765">765: </a></span></span><span id="766" class="l"><a href="#766">766: </a></span></span><span id="767" class="l"><a href="#767">767: </a></span></span><span id="768" class="l"><a href="#768">768: </a></span></span><span id="769" class="l"><a href="#769">769: </a></span></span><span id="770" class="l"><a href="#770">770: </a></span></span><span id="771" class="l"><a href="#771">771: </a></span><span id="772" class="l"><a href="#772">772: </a></span><span id="773" class="l"><a href="#773">773: </a></span><span id="774" class="l"><a href="#774">774: </a></span><span id="775" class="l"><a href="#775">775: </a></span><span id="776" class="l"><a href="#776">776: </a></span><span id="777" class="l"><a href="#777">777: </a></span><span id="778" class="l"><a href="#778">778: </a></span><span id="779" class="l"><a href="#779">779: </a></span><span id="780" class="l"><a href="#780">780: </a></span><span id="781" class="l"><a href="#781">781: </a></span><span id="782" class="l"><a href="#782">782: </a></span><span id="783" class="l"><a href="#783">783: </a></span><span id="784" class="l"><a href="#784">784: </a></span><span id="785" class="l"><a href="#785">785: </a></span><span id="786" class="l"><a href="#786">786: </a></span><span id="787" class="l"><a href="#787">787: </a></span><span id="788" class="l"><a href="#788">788: </a></span></span><span id="789" class="l"><a href="#789">789: </a></span></span><span id="790" class="l"><a href="#790">790: </a></span></span><span id="791" class="l"><a href="#791">791: </a></span></span><span id="792" class="l"><a href="#792">792: </a></span></span><span id="793" class="l"><a href="#793">793: </a></span></span><span id="794" class="l"><a href="#794">794: </a></span></span><span id="795" class="l"><a href="#795">795: </a></span></span><span id="796" class="l"><a href="#796">796: </a></span></span><span id="797" class="l"><a href="#797">797: </a></span><span id="798" class="l"><a href="#798">798: </a></span><span id="799" class="l"><a href="#799">799: </a></span><span id="800" class="l"><a href="#800">800: </a></span><span id="801" class="l"><a href="#801">801: </a></span><span id="802" class="l"><a href="#802">802: </a></span><span id="803" class="l"><a href="#803">803: </a></span><span id="804" class="l"><a href="#804">804: </a></span><span id="805" class="l"><a href="#805">805: </a></span><span id="806" class="l"><a href="#806">806: </a></span><span id="807" class="l"><a href="#807">807: </a></span><span id="808" class="l"><a href="#808">808: </a></span><span id="809" class="l"><a href="#809">809: </a></span><span id="810" class="l"><a href="#810">810: </a></span><span id="811" class="l"><a href="#811">811: </a></span><span id="812" class="l"><a href="#812">812: </a></span><span id="813" class="l"><a href="#813">813: </a></span><span id="814" class="l"><a href="#814">814: </a></span><span id="815" class="l"><a href="#815">815: </a></span><span id="816" class="l"><a href="#816">816: </a></span><span id="817" class="l"><a href="#817">817: </a></span><span id="818" class="l"><a href="#818">818: </a></span><span id="819" class="l"><a href="#819">819: </a></span><span id="820" class="l"><a href="#820">820: </a></span><span id="821" class="l"><a href="#821">821: </a></span><span id="822" class="l"><a href="#822">822: </a></span><span id="823" class="l"><a href="#823">823: </a></span><span id="824" class="l"><a href="#824">824: </a></span><span id="825" class="l"><a href="#825">825: </a></span><span id="826" class="l"><a href="#826">826: </a></span><span id="827" class="l"><a href="#827">827: </a></span><span id="828" class="l"><a href="#828">828: </a></span><span id="829" class="l"><a href="#829">829: </a></span><span id="830" class="l"><a href="#830">830: </a></span><span id="831" class="l"><a href="#831">831: </a></span><span id="832" class="l"><a href="#832">832: </a></span><span id="833" class="l"><a href="#833">833: </a></span><span id="834" class="l"><a href="#834">834: </a></span><span id="835" class="l"><a href="#835">835: </a></span><span id="836" class="l"><a href="#836">836: </a></span><span id="837" class="l"><a href="#837">837: </a></span><span id="838" class="l"><a href="#838">838: </a></span><span id="839" class="l"><a href="#839">839: </a></span><span id="840" class="l"><a href="#840">840: </a></span><span id="841" class="l"><a href="#841">841: </a></span><span id="842" class="l"><a href="#842">842: </a></span><span id="843" class="l"><a href="#843">843: </a></span><span id="844" class="l"><a href="#844">844: </a></span><span id="845" class="l"><a href="#845">845: </a></span><span id="846" class="l"><a href="#846">846: </a></span><span id="847" class="l"><a href="#847">847: </a></span><span id="848" class="l"><a href="#848">848: </a></span><span id="849" class="l"><a href="#849">849: </a></span><span id="850" class="l"><a href="#850">850: </a></span><span id="851" class="l"><a href="#851">851: </a></span><span id="852" class="l"><a href="#852">852: </a></span><span id="853" class="l"><a href="#853">853: </a></span><span id="854" class="l"><a href="#854">854: </a></span><span id="855" class="l"><a href="#855">855: </a></span><span id="856" class="l"><a href="#856">856: </a></span><span id="857" class="l"><a href="#857">857: </a></span><span id="858" class="l"><a href="#858">858: </a></span><span id="859" class="l"><a href="#859">859: </a></span><span id="860" class="l"><a href="#860">860: </a></span><span id="861" class="l"><a href="#861">861: </a></span><span id="862" class="l"><a href="#862">862: </a></span><span id="863" class="l"><a href="#863">863: </a></span><span id="864" class="l"><a href="#864">864: </a></span><span id="865" class="l"><a href="#865">865: </a></span><span id="866" class="l"><a href="#866">866: </a></span><span id="867" class="l"><a href="#867">867: </a></span></code></pre>
+        <pre class="code"><code><span class="l" id="line-1"><span class="xlang">&lt;?php</span>
+</span><span class="l" id="line-2">
+</span><span class="l" id="line-3"><span class="php-comment">/*
+</span></span><span class="l" id="line-4"><span class="php-comment"> * This file is part of the Symfony package.
+</span></span><span class="l" id="line-5"><span class="php-comment"> *
+</span></span><span class="l" id="line-6"><span class="php-comment"> * (c) Fabien Potencier &lt;fabien@symfony.com&gt;
+</span></span><span class="l" id="line-7"><span class="php-comment"> *
+</span></span><span class="l" id="line-8"><span class="php-comment"> * For the full copyright and license information, please view the LICENSE
+</span></span><span class="l" id="line-9"><span class="php-comment"> * file that was distributed with this source code.
+</span></span><span class="l" id="line-10"><span class="php-comment"> */</span>
+</span><span class="l" id="line-11">
+</span><span class="l" id="line-12"><span class="php-keyword1">namespace</span> Symfony\Component\HttpKernel;
+</span><span class="l" id="line-13">
+</span><span class="l" id="line-14"><span class="php-keyword1">use</span> Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator;
+</span><span class="l" id="line-15"><span class="php-keyword1">use</span> Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper;
+</span><span class="l" id="line-16"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\ContainerInterface;
+</span><span class="l" id="line-17"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\ContainerBuilder;
+</span><span class="l" id="line-18"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\Dumper\PhpDumper;
+</span><span class="l" id="line-19"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+</span><span class="l" id="line-20"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
+</span><span class="l" id="line-21"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\Loader\IniFileLoader;
+</span><span class="l" id="line-22"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+</span><span class="l" id="line-23"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\Loader\DirectoryLoader;
+</span><span class="l" id="line-24"><span class="php-keyword1">use</span> Symfony\Component\DependencyInjection\Loader\ClosureLoader;
+</span><span class="l" id="line-25"><span class="php-keyword1">use</span> Symfony\Component\HttpFoundation\Request;
+</span><span class="l" id="line-26"><span class="php-keyword1">use</span> Symfony\Component\HttpFoundation\Response;
+</span><span class="l" id="line-27"><span class="php-keyword1">use</span> Symfony\Component\HttpKernel\Bundle\BundleInterface;
+</span><span class="l" id="line-28"><span class="php-keyword1">use</span> Symfony\Component\HttpKernel\Config\EnvParametersResource;
+</span><span class="l" id="line-29"><span class="php-keyword1">use</span> Symfony\Component\HttpKernel\Config\FileLocator;
+</span><span class="l" id="line-30"><span class="php-keyword1">use</span> Symfony\Component\HttpKernel\DependencyInjection\MergeExtensionConfigurationPass;
+</span><span class="l" id="line-31"><span class="php-keyword1">use</span> Symfony\Component\HttpKernel\DependencyInjection\AddAnnotatedClassesToCachePass;
+</span><span class="l" id="line-32"><span class="php-keyword1">use</span> Symfony\Component\Config\Loader\GlobFileLoader;
+</span><span class="l" id="line-33"><span class="php-keyword1">use</span> Symfony\Component\Config\Loader\LoaderResolver;
+</span><span class="l" id="line-34"><span class="php-keyword1">use</span> Symfony\Component\Config\Loader\DelegatingLoader;
+</span><span class="l" id="line-35"><span class="php-keyword1">use</span> Symfony\Component\Config\ConfigCache;
+</span><span class="l" id="line-36"><span class="php-keyword1">use</span> Symfony\Component\ClassLoader\ClassCollectionLoader;
+</span><span class="l" id="line-37">
+</span><span class="l" id="line-38"><span class="php-comment">/**
+</span></span><span class="l" id="line-39"><span class="php-comment"> * The Kernel is the heart of the Symfony system.
+</span></span><span class="l" id="line-40"><span class="php-comment"> *
+</span></span><span class="l" id="line-41"><span class="php-comment"> * It manages an environment made of bundles.
+</span></span><span class="l" id="line-42"><span class="php-comment"> *
+</span></span><span class="l" id="line-43"><span class="php-comment"> * @author Fabien Potencier &lt;fabien@symfony.com&gt;
+</span></span><span class="l" id="line-44"><span class="php-comment"> */</span>
+</span><span class="l" id="line-45"><span class="php-keyword1">abstract</span> <span class="php-keyword1">class</span> Kernel <span class="php-keyword1">implements</span> KernelInterface, TerminableInterface
+</span><span class="l" id="line-46">{
+</span><span class="l" id="line-47">    <span class="php-comment">/**
+</span></span><span class="l" id="line-48"><span class="php-comment">     * @var BundleInterface[]
+</span></span><span class="l" id="line-49"><span class="php-comment">     */</span>
+</span><span class="l" id="line-50">    <span class="php-keyword1">protected</span> <span class="php-var">$bundles</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-51">
+</span><span class="l" id="line-52">    <span class="php-keyword1">protected</span> <span class="php-var">$bundleMap</span>;
+</span><span class="l" id="line-53">    <span class="php-keyword1">protected</span> <span class="php-var">$container</span>;
+</span><span class="l" id="line-54">    <span class="php-keyword1">protected</span> <span class="php-var">$rootDir</span>;
+</span><span class="l" id="line-55">    <span class="php-keyword1">protected</span> <span class="php-var">$environment</span>;
+</span><span class="l" id="line-56">    <span class="php-keyword1">protected</span> <span class="php-var">$debug</span>;
+</span><span class="l" id="line-57">    <span class="php-keyword1">protected</span> <span class="php-var">$booted</span> = <span class="php-keyword1">false</span>;
+</span><span class="l" id="line-58">    <span class="php-keyword1">protected</span> <span class="php-var">$name</span>;
+</span><span class="l" id="line-59">    <span class="php-keyword1">protected</span> <span class="php-var">$startTime</span>;
+</span><span class="l" id="line-60">    <span class="php-keyword1">protected</span> <span class="php-var">$loadClassCache</span>;
+</span><span class="l" id="line-61">
+</span><span class="l" id="line-62">    <span class="php-keyword1">private</span> <span class="php-var">$projectDir</span>;
+</span><span class="l" id="line-63">
+</span><span class="l" id="line-64">    <span class="php-keyword1">const</span> VERSION = <span class="php-quote">'3.3.8'</span>;
+</span><span class="l" id="line-65">    <span class="php-keyword1">const</span> VERSION_ID = <span class="php-num">30308</span>;
+</span><span class="l" id="line-66">    <span class="php-keyword1">const</span> MAJOR_VERSION = <span class="php-num">3</span>;
+</span><span class="l" id="line-67">    <span class="php-keyword1">const</span> MINOR_VERSION = <span class="php-num">3</span>;
+</span><span class="l" id="line-68">    <span class="php-keyword1">const</span> RELEASE_VERSION = <span class="php-num">8</span>;
+</span><span class="l" id="line-69">    <span class="php-keyword1">const</span> EXTRA_VERSION = <span class="php-quote">''</span>;
+</span><span class="l" id="line-70">
+</span><span class="l" id="line-71">    <span class="php-keyword1">const</span> END_OF_MAINTENANCE = <span class="php-quote">'01/2018'</span>;
+</span><span class="l" id="line-72">    <span class="php-keyword1">const</span> END_OF_LIFE = <span class="php-quote">'07/2018'</span>;
+</span><span class="l" id="line-73">
+</span><span class="l" id="line-74">    <span class="php-comment">/**
+</span></span><span class="l" id="line-75"><span class="php-comment">     * Constructor.
+</span></span><span class="l" id="line-76"><span class="php-comment">     *
+</span></span><span class="l" id="line-77"><span class="php-comment">     * @param string $environment The environment
+</span></span><span class="l" id="line-78"><span class="php-comment">     * @param bool   $debug       Whether to enable debugging or not
+</span></span><span class="l" id="line-79"><span class="php-comment">     */</span>
+</span><span class="l" id="line-80">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __construct(<span class="php-var">$environment</span>, <span class="php-var">$debug</span>)
+</span><span class="l" id="line-81">    {
+</span><span class="l" id="line-82">        <span class="php-var">$this</span>-&gt;environment = <span class="php-var">$environment</span>;
+</span><span class="l" id="line-83">        <span class="php-var">$this</span>-&gt;debug = (bool) <span class="php-var">$debug</span>;
+</span><span class="l" id="line-84">        <span class="php-var">$this</span>-&gt;rootDir = <span class="php-var">$this</span>-&gt;getRootDir();
+</span><span class="l" id="line-85">        <span class="php-var">$this</span>-&gt;name = <span class="php-var">$this</span>-&gt;getName();
+</span><span class="l" id="line-86">
+</span><span class="l" id="line-87">        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;debug) {
+</span><span class="l" id="line-88">            <span class="php-var">$this</span>-&gt;startTime = <span class="php-keyword2">microtime</span>(<span class="php-keyword1">true</span>);
+</span><span class="l" id="line-89">        }
+</span><span class="l" id="line-90">    }
+</span><span class="l" id="line-91">
+</span><span class="l" id="line-92">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> __clone()
+</span><span class="l" id="line-93">    {
+</span><span class="l" id="line-94">        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;debug) {
+</span><span class="l" id="line-95">            <span class="php-var">$this</span>-&gt;startTime = <span class="php-keyword2">microtime</span>(<span class="php-keyword1">true</span>);
+</span><span class="l" id="line-96">        }
+</span><span class="l" id="line-97">
+</span><span class="l" id="line-98">        <span class="php-var">$this</span>-&gt;booted = <span class="php-keyword1">false</span>;
+</span><span class="l" id="line-99">        <span class="php-var">$this</span>-&gt;container = <span class="php-keyword1">null</span>;
+</span><span class="l" id="line-100">    }
+</span><span class="l" id="line-101">
+</span><span class="l" id="line-102">    <span class="php-comment">/**
+</span></span><span class="l" id="line-103"><span class="php-comment">     * Boots the current kernel.
+</span></span><span class="l" id="line-104"><span class="php-comment">     */</span>
+</span><span class="l" id="line-105">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> boot()
+</span><span class="l" id="line-106">    {
+</span><span class="l" id="line-107">        <span class="php-keyword1">if</span> (<span class="php-keyword1">true</span> === <span class="php-var">$this</span>-&gt;booted) {
+</span><span class="l" id="line-108">            <span class="php-keyword1">return</span>;
+</span><span class="l" id="line-109">        }
+</span><span class="l" id="line-110">
+</span><span class="l" id="line-111">        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;loadClassCache) {
+</span><span class="l" id="line-112">            <span class="php-var">$this</span>-&gt;doLoadClassCache(<span class="php-var">$this</span>-&gt;loadClassCache[<span class="php-num">0</span>], <span class="php-var">$this</span>-&gt;loadClassCache[<span class="php-num">1</span>]);
+</span><span class="l" id="line-113">        }
+</span><span class="l" id="line-114">
+</span><span class="l" id="line-115">        <span class="php-comment">// init bundles</span>
+</span><span class="l" id="line-116">        <span class="php-var">$this</span>-&gt;initializeBundles();
+</span><span class="l" id="line-117">
+</span><span class="l" id="line-118">        <span class="php-comment">// init container</span>
+</span><span class="l" id="line-119">        <span class="php-var">$this</span>-&gt;initializeContainer();
+</span><span class="l" id="line-120">
+</span><span class="l" id="line-121">        <span class="php-keyword1">foreach</span> (<span class="php-var">$this</span>-&gt;getBundles() <span class="php-keyword1">as</span> <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-122">            <span class="php-var">$bundle</span>-&gt;setContainer(<span class="php-var">$this</span>-&gt;container);
+</span><span class="l" id="line-123">            <span class="php-var">$bundle</span>-&gt;boot();
+</span><span class="l" id="line-124">        }
+</span><span class="l" id="line-125">
+</span><span class="l" id="line-126">        <span class="php-var">$this</span>-&gt;booted = <span class="php-keyword1">true</span>;
+</span><span class="l" id="line-127">    }
+</span><span class="l" id="line-128">
+</span><span class="l" id="line-129">    <span class="php-comment">/**
+</span></span><span class="l" id="line-130"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-131"><span class="php-comment">     */</span>
+</span><span class="l" id="line-132">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> terminate(Request <span class="php-var">$request</span>, Response <span class="php-var">$response</span>)
+</span><span class="l" id="line-133">    {
+</span><span class="l" id="line-134">        <span class="php-keyword1">if</span> (<span class="php-keyword1">false</span> === <span class="php-var">$this</span>-&gt;booted) {
+</span><span class="l" id="line-135">            <span class="php-keyword1">return</span>;
+</span><span class="l" id="line-136">        }
+</span><span class="l" id="line-137">
+</span><span class="l" id="line-138">        <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;getHttpKernel() <span class="php-keyword1">instanceof</span> TerminableInterface) {
+</span><span class="l" id="line-139">            <span class="php-var">$this</span>-&gt;getHttpKernel()-&gt;terminate(<span class="php-var">$request</span>, <span class="php-var">$response</span>);
+</span><span class="l" id="line-140">        }
+</span><span class="l" id="line-141">    }
+</span><span class="l" id="line-142">
+</span><span class="l" id="line-143">    <span class="php-comment">/**
+</span></span><span class="l" id="line-144"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-145"><span class="php-comment">     */</span>
+</span><span class="l" id="line-146">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> shutdown()
+</span><span class="l" id="line-147">    {
+</span><span class="l" id="line-148">        <span class="php-keyword1">if</span> (<span class="php-keyword1">false</span> === <span class="php-var">$this</span>-&gt;booted) {
+</span><span class="l" id="line-149">            <span class="php-keyword1">return</span>;
+</span><span class="l" id="line-150">        }
+</span><span class="l" id="line-151">
+</span><span class="l" id="line-152">        <span class="php-var">$this</span>-&gt;booted = <span class="php-keyword1">false</span>;
+</span><span class="l" id="line-153">
+</span><span class="l" id="line-154">        <span class="php-keyword1">foreach</span> (<span class="php-var">$this</span>-&gt;getBundles() <span class="php-keyword1">as</span> <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-155">            <span class="php-var">$bundle</span>-&gt;shutdown();
+</span><span class="l" id="line-156">            <span class="php-var">$bundle</span>-&gt;setContainer(<span class="php-keyword1">null</span>);
+</span><span class="l" id="line-157">        }
+</span><span class="l" id="line-158">
+</span><span class="l" id="line-159">        <span class="php-var">$this</span>-&gt;container = <span class="php-keyword1">null</span>;
+</span><span class="l" id="line-160">    }
+</span><span class="l" id="line-161">
+</span><span class="l" id="line-162">    <span class="php-comment">/**
+</span></span><span class="l" id="line-163"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-164"><span class="php-comment">     */</span>
+</span><span class="l" id="line-165">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> handle(Request <span class="php-var">$request</span>, <span class="php-var">$type</span> = HttpKernelInterface::MASTER_REQUEST, <span class="php-var">$catch</span> = <span class="php-keyword1">true</span>)
+</span><span class="l" id="line-166">    {
+</span><span class="l" id="line-167">        <span class="php-keyword1">if</span> (<span class="php-keyword1">false</span> === <span class="php-var">$this</span>-&gt;booted) {
+</span><span class="l" id="line-168">            <span class="php-var">$this</span>-&gt;boot();
+</span><span class="l" id="line-169">        }
+</span><span class="l" id="line-170">
+</span><span class="l" id="line-171">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;getHttpKernel()-&gt;handle(<span class="php-var">$request</span>, <span class="php-var">$type</span>, <span class="php-var">$catch</span>);
+</span><span class="l" id="line-172">    }
+</span><span class="l" id="line-173">
+</span><span class="l" id="line-174">    <span class="php-comment">/**
+</span></span><span class="l" id="line-175"><span class="php-comment">     * Gets a HTTP kernel from the container.
+</span></span><span class="l" id="line-176"><span class="php-comment">     *
+</span></span><span class="l" id="line-177"><span class="php-comment">     * @return HttpKernel
+</span></span><span class="l" id="line-178"><span class="php-comment">     */</span>
+</span><span class="l" id="line-179">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getHttpKernel()
+</span><span class="l" id="line-180">    {
+</span><span class="l" id="line-181">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;container-&gt;get(<span class="php-quote">'http_kernel'</span>);
+</span><span class="l" id="line-182">    }
+</span><span class="l" id="line-183">
+</span><span class="l" id="line-184">    <span class="php-comment">/**
+</span></span><span class="l" id="line-185"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-186"><span class="php-comment">     */</span>
+</span><span class="l" id="line-187">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getBundles()
+</span><span class="l" id="line-188">    {
+</span><span class="l" id="line-189">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;bundles;
+</span><span class="l" id="line-190">    }
+</span><span class="l" id="line-191">
+</span><span class="l" id="line-192">    <span class="php-comment">/**
+</span></span><span class="l" id="line-193"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-194"><span class="php-comment">     */</span>
+</span><span class="l" id="line-195">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getBundle(<span class="php-var">$name</span>, <span class="php-var">$first</span> = <span class="php-keyword1">true</span>)
+</span><span class="l" id="line-196">    {
+</span><span class="l" id="line-197">        <span class="php-keyword1">if</span> (!<span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;bundleMap[<span class="php-var">$name</span>])) {
+</span><span class="l" id="line-198">            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \InvalidArgumentException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'Bundle &quot;%s&quot; does not exist or it is not enabled. Maybe you forgot to add it in the registerBundles() method of your %s.php file?'</span>, <span class="php-var">$name</span>, <span class="php-keyword2">get_class</span>(<span class="php-var">$this</span>)));
+</span><span class="l" id="line-199">        }
+</span><span class="l" id="line-200">
+</span><span class="l" id="line-201">        <span class="php-keyword1">if</span> (<span class="php-keyword1">true</span> === <span class="php-var">$first</span>) {
+</span><span class="l" id="line-202">            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;bundleMap[<span class="php-var">$name</span>][<span class="php-num">0</span>];
+</span><span class="l" id="line-203">        }
+</span><span class="l" id="line-204">
+</span><span class="l" id="line-205">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;bundleMap[<span class="php-var">$name</span>];
+</span><span class="l" id="line-206">    }
+</span><span class="l" id="line-207">
+</span><span class="l" id="line-208">    <span class="php-comment">/**
+</span></span><span class="l" id="line-209"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-210"><span class="php-comment">     *
+</span></span><span class="l" id="line-211"><span class="php-comment">     * @throws \RuntimeException if a custom resource is hidden by a resource in a derived bundle
+</span></span><span class="l" id="line-212"><span class="php-comment">     */</span>
+</span><span class="l" id="line-213">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> locateResource(<span class="php-var">$name</span>, <span class="php-var">$dir</span> = <span class="php-keyword1">null</span>, <span class="php-var">$first</span> = <span class="php-keyword1">true</span>)
+</span><span class="l" id="line-214">    {
+</span><span class="l" id="line-215">        <span class="php-keyword1">if</span> (<span class="php-quote">'@'</span> !== <span class="php-var">$name</span>[<span class="php-num">0</span>]) {
+</span><span class="l" id="line-216">            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \InvalidArgumentException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'A resource name must start with @ (&quot;%s&quot; given).'</span>, <span class="php-var">$name</span>));
+</span><span class="l" id="line-217">        }
+</span><span class="l" id="line-218">
+</span><span class="l" id="line-219">        <span class="php-keyword1">if</span> (<span class="php-keyword1">false</span> !== <span class="php-keyword2">strpos</span>(<span class="php-var">$name</span>, <span class="php-quote">'..'</span>)) {
+</span><span class="l" id="line-220">            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \RuntimeException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'File name &quot;%s&quot; contains invalid characters (..).'</span>, <span class="php-var">$name</span>));
+</span><span class="l" id="line-221">        }
+</span><span class="l" id="line-222">
+</span><span class="l" id="line-223">        <span class="php-var">$bundleName</span> = <span class="php-keyword2">substr</span>(<span class="php-var">$name</span>, <span class="php-num">1</span>);
+</span><span class="l" id="line-224">        <span class="php-var">$path</span> = <span class="php-quote">''</span>;
+</span><span class="l" id="line-225">        <span class="php-keyword1">if</span> (<span class="php-keyword1">false</span> !== <span class="php-keyword2">strpos</span>(<span class="php-var">$bundleName</span>, <span class="php-quote">'/'</span>)) {
+</span><span class="l" id="line-226">            <span class="php-keyword1">list</span>(<span class="php-var">$bundleName</span>, <span class="php-var">$path</span>) = <span class="php-keyword2">explode</span>(<span class="php-quote">'/'</span>, <span class="php-var">$bundleName</span>, <span class="php-num">2</span>);
+</span><span class="l" id="line-227">        }
+</span><span class="l" id="line-228">
+</span><span class="l" id="line-229">        <span class="php-var">$isResource</span> = <span class="php-num">0</span> === <span class="php-keyword2">strpos</span>(<span class="php-var">$path</span>, <span class="php-quote">'Resources'</span>) &amp;&amp; <span class="php-keyword1">null</span> !== <span class="php-var">$dir</span>;
+</span><span class="l" id="line-230">        <span class="php-var">$overridePath</span> = <span class="php-keyword2">substr</span>(<span class="php-var">$path</span>, <span class="php-num">9</span>);
+</span><span class="l" id="line-231">        <span class="php-var">$resourceBundle</span> = <span class="php-keyword1">null</span>;
+</span><span class="l" id="line-232">        <span class="php-var">$bundles</span> = <span class="php-var">$this</span>-&gt;getBundle(<span class="php-var">$bundleName</span>, <span class="php-keyword1">false</span>);
+</span><span class="l" id="line-233">        <span class="php-var">$files</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-234">
+</span><span class="l" id="line-235">        <span class="php-keyword1">foreach</span> (<span class="php-var">$bundles</span> <span class="php-keyword1">as</span> <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-236">            <span class="php-keyword1">if</span> (<span class="php-var">$isResource</span> &amp;&amp; <span class="php-keyword2">file_exists</span>(<span class="php-var">$file</span> = <span class="php-var">$dir</span>.<span class="php-quote">'/'</span>.<span class="php-var">$bundle</span>-&gt;getName().<span class="php-var">$overridePath</span>)) {
+</span><span class="l" id="line-237">                <span class="php-keyword1">if</span> (<span class="php-keyword1">null</span> !== <span class="php-var">$resourceBundle</span>) {
+</span><span class="l" id="line-238">                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \RuntimeException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'&quot;%s&quot; resource is hidden by a resource from the &quot;%s&quot; derived bundle. Create a &quot;%s&quot; file to override the bundle resource.'</span>,
+</span><span class="l" id="line-239">                        <span class="php-var">$file</span>,
+</span><span class="l" id="line-240">                        <span class="php-var">$resourceBundle</span>,
+</span><span class="l" id="line-241">                        <span class="php-var">$dir</span>.<span class="php-quote">'/'</span>.<span class="php-var">$bundles</span>[<span class="php-num">0</span>]-&gt;getName().<span class="php-var">$overridePath</span>
+</span><span class="l" id="line-242">                    ));
+</span><span class="l" id="line-243">                }
+</span><span class="l" id="line-244">
+</span><span class="l" id="line-245">                <span class="php-keyword1">if</span> (<span class="php-var">$first</span>) {
+</span><span class="l" id="line-246">                    <span class="php-keyword1">return</span> <span class="php-var">$file</span>;
+</span><span class="l" id="line-247">                }
+</span><span class="l" id="line-248">                <span class="php-var">$files</span>[] = <span class="php-var">$file</span>;
+</span><span class="l" id="line-249">            }
+</span><span class="l" id="line-250">
+</span><span class="l" id="line-251">            <span class="php-keyword1">if</span> (<span class="php-keyword2">file_exists</span>(<span class="php-var">$file</span> = <span class="php-var">$bundle</span>-&gt;getPath().<span class="php-quote">'/'</span>.<span class="php-var">$path</span>)) {
+</span><span class="l" id="line-252">                <span class="php-keyword1">if</span> (<span class="php-var">$first</span> &amp;&amp; !<span class="php-var">$isResource</span>) {
+</span><span class="l" id="line-253">                    <span class="php-keyword1">return</span> <span class="php-var">$file</span>;
+</span><span class="l" id="line-254">                }
+</span><span class="l" id="line-255">                <span class="php-var">$files</span>[] = <span class="php-var">$file</span>;
+</span><span class="l" id="line-256">                <span class="php-var">$resourceBundle</span> = <span class="php-var">$bundle</span>-&gt;getName();
+</span><span class="l" id="line-257">            }
+</span><span class="l" id="line-258">        }
+</span><span class="l" id="line-259">
+</span><span class="l" id="line-260">        <span class="php-keyword1">if</span> (<span class="php-keyword2">count</span>(<span class="php-var">$files</span>) &gt; <span class="php-num">0</span>) {
+</span><span class="l" id="line-261">            <span class="php-keyword1">return</span> <span class="php-var">$first</span> &amp;&amp; <span class="php-var">$isResource</span> ? <span class="php-var">$files</span>[<span class="php-num">0</span>] : <span class="php-var">$files</span>;
+</span><span class="l" id="line-262">        }
+</span><span class="l" id="line-263">
+</span><span class="l" id="line-264">        <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \InvalidArgumentException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'Unable to find file &quot;%s&quot;.'</span>, <span class="php-var">$name</span>));
+</span><span class="l" id="line-265">    }
+</span><span class="l" id="line-266">
+</span><span class="l" id="line-267">    <span class="php-comment">/**
+</span></span><span class="l" id="line-268"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-269"><span class="php-comment">     */</span>
+</span><span class="l" id="line-270">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getName()
+</span><span class="l" id="line-271">    {
+</span><span class="l" id="line-272">        <span class="php-keyword1">if</span> (<span class="php-keyword1">null</span> === <span class="php-var">$this</span>-&gt;name) {
+</span><span class="l" id="line-273">            <span class="php-var">$this</span>-&gt;name = <span class="php-keyword2">preg_replace</span>(<span class="php-quote">'/[^a-zA-Z0-9_]+/'</span>, <span class="php-quote">''</span>, <span class="php-keyword2">basename</span>(<span class="php-var">$this</span>-&gt;rootDir));
+</span><span class="l" id="line-274">            <span class="php-keyword1">if</span> (<span class="php-keyword2">ctype_digit</span>(<span class="php-var">$this</span>-&gt;name[<span class="php-num">0</span>])) {
+</span><span class="l" id="line-275">                <span class="php-var">$this</span>-&gt;name = <span class="php-quote">'_'</span>.<span class="php-var">$this</span>-&gt;name;
+</span><span class="l" id="line-276">            }
+</span><span class="l" id="line-277">        }
+</span><span class="l" id="line-278">
+</span><span class="l" id="line-279">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;name;
+</span><span class="l" id="line-280">    }
+</span><span class="l" id="line-281">
+</span><span class="l" id="line-282">    <span class="php-comment">/**
+</span></span><span class="l" id="line-283"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-284"><span class="php-comment">     */</span>
+</span><span class="l" id="line-285">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getEnvironment()
+</span><span class="l" id="line-286">    {
+</span><span class="l" id="line-287">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;environment;
+</span><span class="l" id="line-288">    }
+</span><span class="l" id="line-289">
+</span><span class="l" id="line-290">    <span class="php-comment">/**
+</span></span><span class="l" id="line-291"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-292"><span class="php-comment">     */</span>
+</span><span class="l" id="line-293">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> isDebug()
+</span><span class="l" id="line-294">    {
+</span><span class="l" id="line-295">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;debug;
+</span><span class="l" id="line-296">    }
+</span><span class="l" id="line-297">
+</span><span class="l" id="line-298">    <span class="php-comment">/**
+</span></span><span class="l" id="line-299"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-300"><span class="php-comment">     */</span>
+</span><span class="l" id="line-301">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getRootDir()
+</span><span class="l" id="line-302">    {
+</span><span class="l" id="line-303">        <span class="php-keyword1">if</span> (<span class="php-keyword1">null</span> === <span class="php-var">$this</span>-&gt;rootDir) {
+</span><span class="l" id="line-304">            <span class="php-var">$r</span> = <span class="php-keyword1">new</span> \ReflectionObject(<span class="php-var">$this</span>);
+</span><span class="l" id="line-305">            <span class="php-var">$this</span>-&gt;rootDir = <span class="php-keyword2">dirname</span>(<span class="php-var">$r</span>-&gt;getFileName());
+</span><span class="l" id="line-306">        }
+</span><span class="l" id="line-307">
+</span><span class="l" id="line-308">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;rootDir;
+</span><span class="l" id="line-309">    }
+</span><span class="l" id="line-310">
+</span><span class="l" id="line-311">    <span class="php-comment">/**
+</span></span><span class="l" id="line-312"><span class="php-comment">     * Gets the application root dir (path of the project's composer file).
+</span></span><span class="l" id="line-313"><span class="php-comment">     *
+</span></span><span class="l" id="line-314"><span class="php-comment">     * @return string The project root dir
+</span></span><span class="l" id="line-315"><span class="php-comment">     */</span>
+</span><span class="l" id="line-316">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getProjectDir()
+</span><span class="l" id="line-317">    {
+</span><span class="l" id="line-318">        <span class="php-keyword1">if</span> (<span class="php-keyword1">null</span> === <span class="php-var">$this</span>-&gt;projectDir) {
+</span><span class="l" id="line-319">            <span class="php-var">$r</span> = <span class="php-keyword1">new</span> \ReflectionObject(<span class="php-var">$this</span>);
+</span><span class="l" id="line-320">            <span class="php-var">$dir</span> = <span class="php-var">$rootDir</span> = <span class="php-keyword2">dirname</span>(<span class="php-var">$r</span>-&gt;getFileName());
+</span><span class="l" id="line-321">            <span class="php-keyword1">while</span> (!<span class="php-keyword2">file_exists</span>(<span class="php-var">$dir</span>.<span class="php-quote">'/composer.json'</span>)) {
+</span><span class="l" id="line-322">                <span class="php-keyword1">if</span> (<span class="php-var">$dir</span> === <span class="php-keyword2">dirname</span>(<span class="php-var">$dir</span>)) {
+</span><span class="l" id="line-323">                    <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;projectDir = <span class="php-var">$rootDir</span>;
+</span><span class="l" id="line-324">                }
+</span><span class="l" id="line-325">                <span class="php-var">$dir</span> = <span class="php-keyword2">dirname</span>(<span class="php-var">$dir</span>);
+</span><span class="l" id="line-326">            }
+</span><span class="l" id="line-327">            <span class="php-var">$this</span>-&gt;projectDir = <span class="php-var">$dir</span>;
+</span><span class="l" id="line-328">        }
+</span><span class="l" id="line-329">
+</span><span class="l" id="line-330">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;projectDir;
+</span><span class="l" id="line-331">    }
+</span><span class="l" id="line-332">
+</span><span class="l" id="line-333">    <span class="php-comment">/**
+</span></span><span class="l" id="line-334"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-335"><span class="php-comment">     */</span>
+</span><span class="l" id="line-336">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getContainer()
+</span><span class="l" id="line-337">    {
+</span><span class="l" id="line-338">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;container;
+</span><span class="l" id="line-339">    }
+</span><span class="l" id="line-340">
+</span><span class="l" id="line-341">    <span class="php-comment">/**
+</span></span><span class="l" id="line-342"><span class="php-comment">     * Loads the PHP class cache.
+</span></span><span class="l" id="line-343"><span class="php-comment">     *
+</span></span><span class="l" id="line-344"><span class="php-comment">     * This methods only registers the fact that you want to load the cache classes.
+</span></span><span class="l" id="line-345"><span class="php-comment">     * The cache will actually only be loaded when the Kernel is booted.
+</span></span><span class="l" id="line-346"><span class="php-comment">     *
+</span></span><span class="l" id="line-347"><span class="php-comment">     * That optimization is mainly useful when using the HttpCache class in which
+</span></span><span class="l" id="line-348"><span class="php-comment">     * case the class cache is not loaded if the Response is in the cache.
+</span></span><span class="l" id="line-349"><span class="php-comment">     *
+</span></span><span class="l" id="line-350"><span class="php-comment">     * @param string $name      The cache name prefix
+</span></span><span class="l" id="line-351"><span class="php-comment">     * @param string $extension File extension of the resulting file
+</span></span><span class="l" id="line-352"><span class="php-comment">     *
+</span></span><span class="l" id="line-353"><span class="php-comment">     * @deprecated since version 3.3, to be removed in 4.0.
+</span></span><span class="l" id="line-354"><span class="php-comment">     */</span>
+</span><span class="l" id="line-355">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> loadClassCache(<span class="php-var">$name</span> = <span class="php-quote">'classes'</span>, <span class="php-var">$extension</span> = <span class="php-quote">'.php'</span>)
+</span><span class="l" id="line-356">    {
+</span><span class="l" id="line-357">        <span class="php-keyword1">if</span> (\PHP_VERSION_ID &gt;= <span class="php-num">70000</span>) {
+</span><span class="l" id="line-358">            @<span class="php-keyword2">trigger_error</span>(__METHOD__.<span class="php-quote">'() is deprecated since version 3.3, to be removed in 4.0.'</span>, E_USER_DEPRECATED);
+</span><span class="l" id="line-359">        }
+</span><span class="l" id="line-360">
+</span><span class="l" id="line-361">        <span class="php-var">$this</span>-&gt;loadClassCache = <span class="php-keyword1">array</span>(<span class="php-var">$name</span>, <span class="php-var">$extension</span>);
+</span><span class="l" id="line-362">    }
+</span><span class="l" id="line-363">
+</span><span class="l" id="line-364">    <span class="php-comment">/**
+</span></span><span class="l" id="line-365"><span class="php-comment">     * @internal
+</span></span><span class="l" id="line-366"><span class="php-comment">     *
+</span></span><span class="l" id="line-367"><span class="php-comment">     * @deprecated since version 3.3, to be removed in 4.0.
+</span></span><span class="l" id="line-368"><span class="php-comment">     */</span>
+</span><span class="l" id="line-369">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> setClassCache(<span class="php-keyword1">array</span> <span class="php-var">$classes</span>)
+</span><span class="l" id="line-370">    {
+</span><span class="l" id="line-371">        <span class="php-keyword1">if</span> (\PHP_VERSION_ID &gt;= <span class="php-num">70000</span>) {
+</span><span class="l" id="line-372">            @<span class="php-keyword2">trigger_error</span>(__METHOD__.<span class="php-quote">'() is deprecated since version 3.3, to be removed in 4.0.'</span>, E_USER_DEPRECATED);
+</span><span class="l" id="line-373">        }
+</span><span class="l" id="line-374">
+</span><span class="l" id="line-375">        <span class="php-keyword2">file_put_contents</span>(<span class="php-var">$this</span>-&gt;getCacheDir().<span class="php-quote">'/classes.map'</span>, <span class="php-keyword2">sprintf</span>(<span class="php-quote">'&lt;?php return %s;'</span>, <span class="php-keyword2">var_export</span>(<span class="php-var">$classes</span>, <span class="php-keyword1">true</span>)));
+</span><span class="l" id="line-376">    }
+</span><span class="l" id="line-377">
+</span><span class="l" id="line-378">    <span class="php-comment">/**
+</span></span><span class="l" id="line-379"><span class="php-comment">     * @internal
+</span></span><span class="l" id="line-380"><span class="php-comment">     */</span>
+</span><span class="l" id="line-381">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> setAnnotatedClassCache(<span class="php-keyword1">array</span> <span class="php-var">$annotatedClasses</span>)
+</span><span class="l" id="line-382">    {
+</span><span class="l" id="line-383">        <span class="php-keyword2">file_put_contents</span>(<span class="php-var">$this</span>-&gt;getCacheDir().<span class="php-quote">'/annotations.map'</span>, <span class="php-keyword2">sprintf</span>(<span class="php-quote">'&lt;?php return %s;'</span>, <span class="php-keyword2">var_export</span>(<span class="php-var">$annotatedClasses</span>, <span class="php-keyword1">true</span>)));
+</span><span class="l" id="line-384">    }
+</span><span class="l" id="line-385">
+</span><span class="l" id="line-386">    <span class="php-comment">/**
+</span></span><span class="l" id="line-387"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-388"><span class="php-comment">     */</span>
+</span><span class="l" id="line-389">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getStartTime()
+</span><span class="l" id="line-390">    {
+</span><span class="l" id="line-391">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;debug ? <span class="php-var">$this</span>-&gt;startTime : -INF;
+</span><span class="l" id="line-392">    }
+</span><span class="l" id="line-393">
+</span><span class="l" id="line-394">    <span class="php-comment">/**
+</span></span><span class="l" id="line-395"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-396"><span class="php-comment">     */</span>
+</span><span class="l" id="line-397">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getCacheDir()
+</span><span class="l" id="line-398">    {
+</span><span class="l" id="line-399">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;rootDir.<span class="php-quote">'/cache/'</span>.<span class="php-var">$this</span>-&gt;environment;
+</span><span class="l" id="line-400">    }
+</span><span class="l" id="line-401">
+</span><span class="l" id="line-402">    <span class="php-comment">/**
+</span></span><span class="l" id="line-403"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-404"><span class="php-comment">     */</span>
+</span><span class="l" id="line-405">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getLogDir()
+</span><span class="l" id="line-406">    {
+</span><span class="l" id="line-407">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;rootDir.<span class="php-quote">'/logs'</span>;
+</span><span class="l" id="line-408">    }
+</span><span class="l" id="line-409">
+</span><span class="l" id="line-410">    <span class="php-comment">/**
+</span></span><span class="l" id="line-411"><span class="php-comment">     * {@inheritdoc}
+</span></span><span class="l" id="line-412"><span class="php-comment">     */</span>
+</span><span class="l" id="line-413">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> getCharset()
+</span><span class="l" id="line-414">    {
+</span><span class="l" id="line-415">        <span class="php-keyword1">return</span> <span class="php-quote">'UTF-8'</span>;
+</span><span class="l" id="line-416">    }
+</span><span class="l" id="line-417">
+</span><span class="l" id="line-418">    <span class="php-comment">/**
+</span></span><span class="l" id="line-419"><span class="php-comment">     * @deprecated since version 3.3, to be removed in 4.0.
+</span></span><span class="l" id="line-420"><span class="php-comment">     */</span>
+</span><span class="l" id="line-421">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> doLoadClassCache(<span class="php-var">$name</span>, <span class="php-var">$extension</span>)
+</span><span class="l" id="line-422">    {
+</span><span class="l" id="line-423">        <span class="php-keyword1">if</span> (\PHP_VERSION_ID &gt;= <span class="php-num">70000</span>) {
+</span><span class="l" id="line-424">            @<span class="php-keyword2">trigger_error</span>(__METHOD__.<span class="php-quote">'() is deprecated since version 3.3, to be removed in 4.0.'</span>, E_USER_DEPRECATED);
+</span><span class="l" id="line-425">        }
+</span><span class="l" id="line-426">
+</span><span class="l" id="line-427">        <span class="php-keyword1">if</span> (!<span class="php-var">$this</span>-&gt;booted &amp;&amp; <span class="php-keyword2">is_file</span>(<span class="php-var">$this</span>-&gt;getCacheDir().<span class="php-quote">'/classes.map'</span>)) {
+</span><span class="l" id="line-428">            ClassCollectionLoader::load(<span class="php-keyword1">include</span>(<span class="php-var">$this</span>-&gt;getCacheDir().<span class="php-quote">'/classes.map'</span>), <span class="php-var">$this</span>-&gt;getCacheDir(), <span class="php-var">$name</span>, <span class="php-var">$this</span>-&gt;debug, <span class="php-keyword1">false</span>, <span class="php-var">$extension</span>);
+</span><span class="l" id="line-429">        }
+</span><span class="l" id="line-430">    }
+</span><span class="l" id="line-431">
+</span><span class="l" id="line-432">    <span class="php-comment">/**
+</span></span><span class="l" id="line-433"><span class="php-comment">     * Initializes the data structures related to the bundle management.
+</span></span><span class="l" id="line-434"><span class="php-comment">     *
+</span></span><span class="l" id="line-435"><span class="php-comment">     *  - the bundles property maps a bundle name to the bundle instance,
+</span></span><span class="l" id="line-436"><span class="php-comment">     *  - the bundleMap property maps a bundle name to the bundle inheritance hierarchy (most derived bundle first).
+</span></span><span class="l" id="line-437"><span class="php-comment">     *
+</span></span><span class="l" id="line-438"><span class="php-comment">     * @throws \LogicException if two bundles share a common name
+</span></span><span class="l" id="line-439"><span class="php-comment">     * @throws \LogicException if a bundle tries to extend a non-registered bundle
+</span></span><span class="l" id="line-440"><span class="php-comment">     * @throws \LogicException if a bundle tries to extend itself
+</span></span><span class="l" id="line-441"><span class="php-comment">     * @throws \LogicException if two bundles extend the same ancestor
+</span></span><span class="l" id="line-442"><span class="php-comment">     */</span>
+</span><span class="l" id="line-443">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> initializeBundles()
+</span><span class="l" id="line-444">    {
+</span><span class="l" id="line-445">        <span class="php-comment">// init bundles</span>
+</span><span class="l" id="line-446">        <span class="php-var">$this</span>-&gt;bundles = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-447">        <span class="php-var">$topMostBundles</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-448">        <span class="php-var">$directChildren</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-449">
+</span><span class="l" id="line-450">        <span class="php-keyword1">foreach</span> (<span class="php-var">$this</span>-&gt;registerBundles() <span class="php-keyword1">as</span> <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-451">            <span class="php-var">$name</span> = <span class="php-var">$bundle</span>-&gt;getName();
+</span><span class="l" id="line-452">            <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$this</span>-&gt;bundles[<span class="php-var">$name</span>])) {
+</span><span class="l" id="line-453">                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \LogicException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'Trying to register two bundles with the same name &quot;%s&quot;'</span>, <span class="php-var">$name</span>));
+</span><span class="l" id="line-454">            }
+</span><span class="l" id="line-455">            <span class="php-var">$this</span>-&gt;bundles[<span class="php-var">$name</span>] = <span class="php-var">$bundle</span>;
+</span><span class="l" id="line-456">
+</span><span class="l" id="line-457">            <span class="php-keyword1">if</span> (<span class="php-var">$parentName</span> = <span class="php-var">$bundle</span>-&gt;getParent()) {
+</span><span class="l" id="line-458">                <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$directChildren</span>[<span class="php-var">$parentName</span>])) {
+</span><span class="l" id="line-459">                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \LogicException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'Bundle &quot;%s&quot; is directly extended by two bundles &quot;%s&quot; and &quot;%s&quot;.'</span>, <span class="php-var">$parentName</span>, <span class="php-var">$name</span>, <span class="php-var">$directChildren</span>[<span class="php-var">$parentName</span>]));
+</span><span class="l" id="line-460">                }
+</span><span class="l" id="line-461">                <span class="php-keyword1">if</span> (<span class="php-var">$parentName</span> == <span class="php-var">$name</span>) {
+</span><span class="l" id="line-462">                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \LogicException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'Bundle &quot;%s&quot; can not extend itself.'</span>, <span class="php-var">$name</span>));
+</span><span class="l" id="line-463">                }
+</span><span class="l" id="line-464">                <span class="php-var">$directChildren</span>[<span class="php-var">$parentName</span>] = <span class="php-var">$name</span>;
+</span><span class="l" id="line-465">            } <span class="php-keyword1">else</span> {
+</span><span class="l" id="line-466">                <span class="php-var">$topMostBundles</span>[<span class="php-var">$name</span>] = <span class="php-var">$bundle</span>;
+</span><span class="l" id="line-467">            }
+</span><span class="l" id="line-468">        }
+</span><span class="l" id="line-469">
+</span><span class="l" id="line-470">        <span class="php-comment">// look for orphans</span>
+</span><span class="l" id="line-471">        <span class="php-keyword1">if</span> (!<span class="php-keyword1">empty</span>(<span class="php-var">$directChildren</span>) &amp;&amp; <span class="php-keyword2">count</span>(<span class="php-var">$diff</span> = <span class="php-keyword2">array_diff_key</span>(<span class="php-var">$directChildren</span>, <span class="php-var">$this</span>-&gt;bundles))) {
+</span><span class="l" id="line-472">            <span class="php-var">$diff</span> = <span class="php-keyword2">array_keys</span>(<span class="php-var">$diff</span>);
+</span><span class="l" id="line-473">
+</span><span class="l" id="line-474">            <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \LogicException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'Bundle &quot;%s&quot; extends bundle &quot;%s&quot;, which is not registered.'</span>, <span class="php-var">$directChildren</span>[<span class="php-var">$diff</span>[<span class="php-num">0</span>]], <span class="php-var">$diff</span>[<span class="php-num">0</span>]));
+</span><span class="l" id="line-475">        }
+</span><span class="l" id="line-476">
+</span><span class="l" id="line-477">        <span class="php-comment">// inheritance</span>
+</span><span class="l" id="line-478">        <span class="php-var">$this</span>-&gt;bundleMap = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-479">        <span class="php-keyword1">foreach</span> (<span class="php-var">$topMostBundles</span> <span class="php-keyword1">as</span> <span class="php-var">$name</span> =&gt; <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-480">            <span class="php-var">$bundleMap</span> = <span class="php-keyword1">array</span>(<span class="php-var">$bundle</span>);
+</span><span class="l" id="line-481">            <span class="php-var">$hierarchy</span> = <span class="php-keyword1">array</span>(<span class="php-var">$name</span>);
+</span><span class="l" id="line-482">
+</span><span class="l" id="line-483">            <span class="php-keyword1">while</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$directChildren</span>[<span class="php-var">$name</span>])) {
+</span><span class="l" id="line-484">                <span class="php-var">$name</span> = <span class="php-var">$directChildren</span>[<span class="php-var">$name</span>];
+</span><span class="l" id="line-485">                <span class="php-keyword2">array_unshift</span>(<span class="php-var">$bundleMap</span>, <span class="php-var">$this</span>-&gt;bundles[<span class="php-var">$name</span>]);
+</span><span class="l" id="line-486">                <span class="php-var">$hierarchy</span>[] = <span class="php-var">$name</span>;
+</span><span class="l" id="line-487">            }
+</span><span class="l" id="line-488">
+</span><span class="l" id="line-489">            <span class="php-keyword1">foreach</span> (<span class="php-var">$hierarchy</span> <span class="php-keyword1">as</span> <span class="php-var">$hierarchyBundle</span>) {
+</span><span class="l" id="line-490">                <span class="php-var">$this</span>-&gt;bundleMap[<span class="php-var">$hierarchyBundle</span>] = <span class="php-var">$bundleMap</span>;
+</span><span class="l" id="line-491">                <span class="php-keyword2">array_pop</span>(<span class="php-var">$bundleMap</span>);
+</span><span class="l" id="line-492">            }
+</span><span class="l" id="line-493">        }
+</span><span class="l" id="line-494">    }
+</span><span class="l" id="line-495">
+</span><span class="l" id="line-496">    <span class="php-comment">/**
+</span></span><span class="l" id="line-497"><span class="php-comment">     * The extension point similar to the Bundle::build() method.
+</span></span><span class="l" id="line-498"><span class="php-comment">     *
+</span></span><span class="l" id="line-499"><span class="php-comment">     * Use this method to register compiler passes and manipulate the container during the building process.
+</span></span><span class="l" id="line-500"><span class="php-comment">     *
+</span></span><span class="l" id="line-501"><span class="php-comment">     * @param ContainerBuilder $container
+</span></span><span class="l" id="line-502"><span class="php-comment">     */</span>
+</span><span class="l" id="line-503">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> build(ContainerBuilder <span class="php-var">$container</span>)
+</span><span class="l" id="line-504">    {
+</span><span class="l" id="line-505">    }
+</span><span class="l" id="line-506">
+</span><span class="l" id="line-507">    <span class="php-comment">/**
+</span></span><span class="l" id="line-508"><span class="php-comment">     * Gets the container class.
+</span></span><span class="l" id="line-509"><span class="php-comment">     *
+</span></span><span class="l" id="line-510"><span class="php-comment">     * @return string The container class
+</span></span><span class="l" id="line-511"><span class="php-comment">     */</span>
+</span><span class="l" id="line-512">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getContainerClass()
+</span><span class="l" id="line-513">    {
+</span><span class="l" id="line-514">        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;name.<span class="php-keyword2">ucfirst</span>(<span class="php-var">$this</span>-&gt;environment).(<span class="php-var">$this</span>-&gt;debug ? <span class="php-quote">'Debug'</span> : <span class="php-quote">''</span>).<span class="php-quote">'ProjectContainer'</span>;
+</span><span class="l" id="line-515">    }
+</span><span class="l" id="line-516">
+</span><span class="l" id="line-517">    <span class="php-comment">/**
+</span></span><span class="l" id="line-518"><span class="php-comment">     * Gets the container's base class.
+</span></span><span class="l" id="line-519"><span class="php-comment">     *
+</span></span><span class="l" id="line-520"><span class="php-comment">     * All names except Container must be fully qualified.
+</span></span><span class="l" id="line-521"><span class="php-comment">     *
+</span></span><span class="l" id="line-522"><span class="php-comment">     * @return string
+</span></span><span class="l" id="line-523"><span class="php-comment">     */</span>
+</span><span class="l" id="line-524">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getContainerBaseClass()
+</span><span class="l" id="line-525">    {
+</span><span class="l" id="line-526">        <span class="php-keyword1">return</span> <span class="php-quote">'Container'</span>;
+</span><span class="l" id="line-527">    }
+</span><span class="l" id="line-528">
+</span><span class="l" id="line-529">    <span class="php-comment">/**
+</span></span><span class="l" id="line-530"><span class="php-comment">     * Initializes the service container.
+</span></span><span class="l" id="line-531"><span class="php-comment">     *
+</span></span><span class="l" id="line-532"><span class="php-comment">     * The cached version of the service container is used when fresh, otherwise the
+</span></span><span class="l" id="line-533"><span class="php-comment">     * container is built.
+</span></span><span class="l" id="line-534"><span class="php-comment">     */</span>
+</span><span class="l" id="line-535">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> initializeContainer()
+</span><span class="l" id="line-536">    {
+</span><span class="l" id="line-537">        <span class="php-var">$class</span> = <span class="php-var">$this</span>-&gt;getContainerClass();
+</span><span class="l" id="line-538">        <span class="php-var">$cache</span> = <span class="php-keyword1">new</span> ConfigCache(<span class="php-var">$this</span>-&gt;getCacheDir().<span class="php-quote">'/'</span>.<span class="php-var">$class</span>.<span class="php-quote">'.php'</span>, <span class="php-var">$this</span>-&gt;debug);
+</span><span class="l" id="line-539">        <span class="php-var">$fresh</span> = <span class="php-keyword1">true</span>;
+</span><span class="l" id="line-540">        <span class="php-keyword1">if</span> (!<span class="php-var">$cache</span>-&gt;isFresh()) {
+</span><span class="l" id="line-541">            <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;debug) {
+</span><span class="l" id="line-542">                <span class="php-var">$collectedLogs</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-543">                <span class="php-var">$previousHandler</span> = <span class="php-keyword2">set_error_handler</span>(<span class="php-keyword1">function</span> (<span class="php-var">$type</span>, <span class="php-var">$message</span>, <span class="php-var">$file</span>, <span class="php-var">$line</span>) <span class="php-keyword1">use</span> (&amp;<span class="php-var">$collectedLogs</span>, &amp;<span class="php-var">$previousHandler</span>) {
+</span><span class="l" id="line-544">                    <span class="php-keyword1">if</span> (E_USER_DEPRECATED !== <span class="php-var">$type</span> &amp;&amp; E_DEPRECATED !== <span class="php-var">$type</span>) {
+</span><span class="l" id="line-545">                        <span class="php-keyword1">return</span> <span class="php-var">$previousHandler</span> ? <span class="php-var">$previousHandler</span>(<span class="php-var">$type</span>, <span class="php-var">$message</span>, <span class="php-var">$file</span>, <span class="php-var">$line</span>) : <span class="php-keyword1">false</span>;
+</span><span class="l" id="line-546">                    }
+</span><span class="l" id="line-547">
+</span><span class="l" id="line-548">                    <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$collectedLogs</span>[<span class="php-var">$message</span>])) {
+</span><span class="l" id="line-549">                        ++<span class="php-var">$collectedLogs</span>[<span class="php-var">$message</span>][<span class="php-quote">'count'</span>];
+</span><span class="l" id="line-550">
+</span><span class="l" id="line-551">                        <span class="php-keyword1">return</span>;
+</span><span class="l" id="line-552">                    }
+</span><span class="l" id="line-553">
+</span><span class="l" id="line-554">                    <span class="php-var">$backtrace</span> = <span class="php-keyword2">debug_backtrace</span>(DEBUG_BACKTRACE_IGNORE_ARGS, <span class="php-num">3</span>);
+</span><span class="l" id="line-555">                    <span class="php-comment">// Clean the trace by removing first frames added by the error handler itself.</span>
+</span><span class="l" id="line-556">                    <span class="php-keyword1">for</span> (<span class="php-var">$i</span> = <span class="php-num">0</span>; <span class="php-keyword1">isset</span>(<span class="php-var">$backtrace</span>[<span class="php-var">$i</span>]); ++<span class="php-var">$i</span>) {
+</span><span class="l" id="line-557">                        <span class="php-keyword1">if</span> (<span class="php-keyword1">isset</span>(<span class="php-var">$backtrace</span>[<span class="php-var">$i</span>][<span class="php-quote">'file'</span>], <span class="php-var">$backtrace</span>[<span class="php-var">$i</span>][<span class="php-quote">'line'</span>]) &amp;&amp; <span class="php-var">$backtrace</span>[<span class="php-var">$i</span>][<span class="php-quote">'line'</span>] === <span class="php-var">$line</span> &amp;&amp; <span class="php-var">$backtrace</span>[<span class="php-var">$i</span>][<span class="php-quote">'file'</span>] === <span class="php-var">$file</span>) {
+</span><span class="l" id="line-558">                            <span class="php-var">$backtrace</span> = <span class="php-keyword2">array_slice</span>(<span class="php-var">$backtrace</span>, <span class="php-num">1</span> + <span class="php-var">$i</span>);
+</span><span class="l" id="line-559">                            <span class="php-keyword1">break</span>;
+</span><span class="l" id="line-560">                        }
+</span><span class="l" id="line-561">                    }
+</span><span class="l" id="line-562">
+</span><span class="l" id="line-563">                    <span class="php-var">$collectedLogs</span>[<span class="php-var">$message</span>] = <span class="php-keyword1">array</span>(
+</span><span class="l" id="line-564">                        <span class="php-quote">'type'</span> =&gt; <span class="php-var">$type</span>,
+</span><span class="l" id="line-565">                        <span class="php-quote">'message'</span> =&gt; <span class="php-var">$message</span>,
+</span><span class="l" id="line-566">                        <span class="php-quote">'file'</span> =&gt; <span class="php-var">$file</span>,
+</span><span class="l" id="line-567">                        <span class="php-quote">'line'</span> =&gt; <span class="php-var">$line</span>,
+</span><span class="l" id="line-568">                        <span class="php-quote">'trace'</span> =&gt; <span class="php-var">$backtrace</span>,
+</span><span class="l" id="line-569">                        <span class="php-quote">'count'</span> =&gt; <span class="php-num">1</span>,
+</span><span class="l" id="line-570">                    );
+</span><span class="l" id="line-571">                });
+</span><span class="l" id="line-572">            }
+</span><span class="l" id="line-573">
+</span><span class="l" id="line-574">            <span class="php-keyword1">try</span> {
+</span><span class="l" id="line-575">                <span class="php-var">$container</span> = <span class="php-keyword1">null</span>;
+</span><span class="l" id="line-576">                <span class="php-var">$container</span> = <span class="php-var">$this</span>-&gt;buildContainer();
+</span><span class="l" id="line-577">                <span class="php-var">$container</span>-&gt;compile();
+</span><span class="l" id="line-578">            } finally {
+</span><span class="l" id="line-579">                <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;debug) {
+</span><span class="l" id="line-580">                    <span class="php-keyword2">restore_error_handler</span>();
+</span><span class="l" id="line-581">
+</span><span class="l" id="line-582">                    <span class="php-keyword2">file_put_contents</span>(<span class="php-var">$this</span>-&gt;getCacheDir().<span class="php-quote">'/'</span>.<span class="php-var">$class</span>.<span class="php-quote">'Deprecations.log'</span>, <span class="php-keyword2">serialize</span>(<span class="php-keyword2">array_values</span>(<span class="php-var">$collectedLogs</span>)));
+</span><span class="l" id="line-583">                    <span class="php-keyword2">file_put_contents</span>(<span class="php-var">$this</span>-&gt;getCacheDir().<span class="php-quote">'/'</span>.<span class="php-var">$class</span>.<span class="php-quote">'Compiler.log'</span>, <span class="php-keyword1">null</span> !== <span class="php-var">$container</span> ? <span class="php-keyword2">implode</span>(<span class="php-quote">&quot;\n&quot;</span>, <span class="php-var">$container</span>-&gt;getCompiler()-&gt;getLog()) : <span class="php-quote">''</span>);
+</span><span class="l" id="line-584">                }
+</span><span class="l" id="line-585">            }
+</span><span class="l" id="line-586">            <span class="php-var">$this</span>-&gt;dumpContainer(<span class="php-var">$cache</span>, <span class="php-var">$container</span>, <span class="php-var">$class</span>, <span class="php-var">$this</span>-&gt;getContainerBaseClass());
+</span><span class="l" id="line-587">
+</span><span class="l" id="line-588">            <span class="php-var">$fresh</span> = <span class="php-keyword1">false</span>;
+</span><span class="l" id="line-589">        }
+</span><span class="l" id="line-590">
+</span><span class="l" id="line-591">        <span class="php-keyword1">require_once</span> <span class="php-var">$cache</span>-&gt;getPath();
+</span><span class="l" id="line-592">
+</span><span class="l" id="line-593">        <span class="php-var">$this</span>-&gt;container = <span class="php-keyword1">new</span> <span class="php-var">$class</span>();
+</span><span class="l" id="line-594">        <span class="php-var">$this</span>-&gt;container-&gt;set(<span class="php-quote">'kernel'</span>, <span class="php-var">$this</span>);
+</span><span class="l" id="line-595">
+</span><span class="l" id="line-596">        <span class="php-keyword1">if</span> (!<span class="php-var">$fresh</span> &amp;&amp; <span class="php-var">$this</span>-&gt;container-&gt;has(<span class="php-quote">'cache_warmer'</span>)) {
+</span><span class="l" id="line-597">            <span class="php-var">$this</span>-&gt;container-&gt;get(<span class="php-quote">'cache_warmer'</span>)-&gt;warmUp(<span class="php-var">$this</span>-&gt;container-&gt;getParameter(<span class="php-quote">'kernel.cache_dir'</span>));
+</span><span class="l" id="line-598">        }
+</span><span class="l" id="line-599">    }
+</span><span class="l" id="line-600">
+</span><span class="l" id="line-601">    <span class="php-comment">/**
+</span></span><span class="l" id="line-602"><span class="php-comment">     * Returns the kernel parameters.
+</span></span><span class="l" id="line-603"><span class="php-comment">     *
+</span></span><span class="l" id="line-604"><span class="php-comment">     * @return array An array of kernel parameters
+</span></span><span class="l" id="line-605"><span class="php-comment">     */</span>
+</span><span class="l" id="line-606">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getKernelParameters()
+</span><span class="l" id="line-607">    {
+</span><span class="l" id="line-608">        <span class="php-var">$bundles</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-609">        <span class="php-var">$bundlesMetadata</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-610">
+</span><span class="l" id="line-611">        <span class="php-keyword1">foreach</span> (<span class="php-var">$this</span>-&gt;bundles <span class="php-keyword1">as</span> <span class="php-var">$name</span> =&gt; <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-612">            <span class="php-var">$bundles</span>[<span class="php-var">$name</span>] = <span class="php-keyword2">get_class</span>(<span class="php-var">$bundle</span>);
+</span><span class="l" id="line-613">            <span class="php-var">$bundlesMetadata</span>[<span class="php-var">$name</span>] = <span class="php-keyword1">array</span>(
+</span><span class="l" id="line-614">                <span class="php-quote">'parent'</span> =&gt; <span class="php-var">$bundle</span>-&gt;getParent(),
+</span><span class="l" id="line-615">                <span class="php-quote">'path'</span> =&gt; <span class="php-var">$bundle</span>-&gt;getPath(),
+</span><span class="l" id="line-616">                <span class="php-quote">'namespace'</span> =&gt; <span class="php-var">$bundle</span>-&gt;getNamespace(),
+</span><span class="l" id="line-617">            );
+</span><span class="l" id="line-618">        }
+</span><span class="l" id="line-619">
+</span><span class="l" id="line-620">        <span class="php-keyword1">return</span> <span class="php-keyword2">array_merge</span>(
+</span><span class="l" id="line-621">            <span class="php-keyword1">array</span>(
+</span><span class="l" id="line-622">                <span class="php-quote">'kernel.root_dir'</span> =&gt; <span class="php-keyword2">realpath</span>(<span class="php-var">$this</span>-&gt;rootDir) ?: <span class="php-var">$this</span>-&gt;rootDir,
+</span><span class="l" id="line-623">                <span class="php-quote">'kernel.project_dir'</span> =&gt; <span class="php-keyword2">realpath</span>(<span class="php-var">$this</span>-&gt;getProjectDir()) ?: <span class="php-var">$this</span>-&gt;getProjectDir(),
+</span><span class="l" id="line-624">                <span class="php-quote">'kernel.environment'</span> =&gt; <span class="php-var">$this</span>-&gt;environment,
+</span><span class="l" id="line-625">                <span class="php-quote">'kernel.debug'</span> =&gt; <span class="php-var">$this</span>-&gt;debug,
+</span><span class="l" id="line-626">                <span class="php-quote">'kernel.name'</span> =&gt; <span class="php-var">$this</span>-&gt;name,
+</span><span class="l" id="line-627">                <span class="php-quote">'kernel.cache_dir'</span> =&gt; <span class="php-keyword2">realpath</span>(<span class="php-var">$this</span>-&gt;getCacheDir()) ?: <span class="php-var">$this</span>-&gt;getCacheDir(),
+</span><span class="l" id="line-628">                <span class="php-quote">'kernel.logs_dir'</span> =&gt; <span class="php-keyword2">realpath</span>(<span class="php-var">$this</span>-&gt;getLogDir()) ?: <span class="php-var">$this</span>-&gt;getLogDir(),
+</span><span class="l" id="line-629">                <span class="php-quote">'kernel.bundles'</span> =&gt; <span class="php-var">$bundles</span>,
+</span><span class="l" id="line-630">                <span class="php-quote">'kernel.bundles_metadata'</span> =&gt; <span class="php-var">$bundlesMetadata</span>,
+</span><span class="l" id="line-631">                <span class="php-quote">'kernel.charset'</span> =&gt; <span class="php-var">$this</span>-&gt;getCharset(),
+</span><span class="l" id="line-632">                <span class="php-quote">'kernel.container_class'</span> =&gt; <span class="php-var">$this</span>-&gt;getContainerClass(),
+</span><span class="l" id="line-633">            ),
+</span><span class="l" id="line-634">            <span class="php-var">$this</span>-&gt;getEnvParameters(<span class="php-keyword1">false</span>)
+</span><span class="l" id="line-635">        );
+</span><span class="l" id="line-636">    }
+</span><span class="l" id="line-637">
+</span><span class="l" id="line-638">    <span class="php-comment">/**
+</span></span><span class="l" id="line-639"><span class="php-comment">     * Gets the environment parameters.
+</span></span><span class="l" id="line-640"><span class="php-comment">     *
+</span></span><span class="l" id="line-641"><span class="php-comment">     * Only the parameters starting with &quot;SYMFONY__&quot; are considered.
+</span></span><span class="l" id="line-642"><span class="php-comment">     *
+</span></span><span class="l" id="line-643"><span class="php-comment">     * @return array An array of parameters
+</span></span><span class="l" id="line-644"><span class="php-comment">     *
+</span></span><span class="l" id="line-645"><span class="php-comment">     * @deprecated since version 3.3, to be removed in 4.0
+</span></span><span class="l" id="line-646"><span class="php-comment">     */</span>
+</span><span class="l" id="line-647">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getEnvParameters()
+</span><span class="l" id="line-648">    {
+</span><span class="l" id="line-649">        <span class="php-keyword1">if</span> (<span class="php-num">0</span> === <span class="php-keyword2">func_num_args</span>() || <span class="php-keyword2">func_get_arg</span>(<span class="php-num">0</span>)) {
+</span><span class="l" id="line-650">            @<span class="php-keyword2">trigger_error</span>(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'The %s() method is deprecated as of 3.3 and will be removed in 4.0. Use the %%env()%% syntax to get the value of any environment variable from configuration files instead.'</span>, __METHOD__), E_USER_DEPRECATED);
+</span><span class="l" id="line-651">        }
+</span><span class="l" id="line-652">
+</span><span class="l" id="line-653">        <span class="php-var">$parameters</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-654">        <span class="php-keyword1">foreach</span> (<span class="php-var">$_SERVER</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$value</span>) {
+</span><span class="l" id="line-655">            <span class="php-keyword1">if</span> (<span class="php-num">0</span> === <span class="php-keyword2">strpos</span>(<span class="php-var">$key</span>, <span class="php-quote">'SYMFONY__'</span>)) {
+</span><span class="l" id="line-656">                @<span class="php-keyword2">trigger_error</span>(<span class="php-keyword2">sprintf</span>(<span class="php-quote">'The support of special environment variables that start with SYMFONY__ (such as &quot;%s&quot;) is deprecated as of 3.3 and will be removed in 4.0. Use the %%env()%% syntax instead to get the value of environment variables in configuration files.'</span>, <span class="php-var">$key</span>), E_USER_DEPRECATED);
+</span><span class="l" id="line-657">                <span class="php-var">$parameters</span>[<span class="php-keyword2">strtolower</span>(<span class="php-keyword2">str_replace</span>(<span class="php-quote">'__'</span>, <span class="php-quote">'.'</span>, <span class="php-keyword2">substr</span>(<span class="php-var">$key</span>, <span class="php-num">9</span>)))] = <span class="php-var">$value</span>;
+</span><span class="l" id="line-658">            }
+</span><span class="l" id="line-659">        }
+</span><span class="l" id="line-660">
+</span><span class="l" id="line-661">        <span class="php-keyword1">return</span> <span class="php-var">$parameters</span>;
+</span><span class="l" id="line-662">    }
+</span><span class="l" id="line-663">
+</span><span class="l" id="line-664">    <span class="php-comment">/**
+</span></span><span class="l" id="line-665"><span class="php-comment">     * Builds the service container.
+</span></span><span class="l" id="line-666"><span class="php-comment">     *
+</span></span><span class="l" id="line-667"><span class="php-comment">     * @return ContainerBuilder The compiled service container
+</span></span><span class="l" id="line-668"><span class="php-comment">     *
+</span></span><span class="l" id="line-669"><span class="php-comment">     * @throws \RuntimeException
+</span></span><span class="l" id="line-670"><span class="php-comment">     */</span>
+</span><span class="l" id="line-671">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> buildContainer()
+</span><span class="l" id="line-672">    {
+</span><span class="l" id="line-673">        <span class="php-keyword1">foreach</span> (<span class="php-keyword1">array</span>(<span class="php-quote">'cache'</span> =&gt; <span class="php-var">$this</span>-&gt;getCacheDir(), <span class="php-quote">'logs'</span> =&gt; <span class="php-var">$this</span>-&gt;getLogDir()) <span class="php-keyword1">as</span> <span class="php-var">$name</span> =&gt; <span class="php-var">$dir</span>) {
+</span><span class="l" id="line-674">            <span class="php-keyword1">if</span> (!<span class="php-keyword2">is_dir</span>(<span class="php-var">$dir</span>)) {
+</span><span class="l" id="line-675">                <span class="php-keyword1">if</span> (<span class="php-keyword1">false</span> === @<span class="php-keyword2">mkdir</span>(<span class="php-var">$dir</span>, <span class="php-num">0777</span>, <span class="php-keyword1">true</span>) &amp;&amp; !<span class="php-keyword2">is_dir</span>(<span class="php-var">$dir</span>)) {
+</span><span class="l" id="line-676">                    <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \RuntimeException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">&quot;Unable to create the %s directory (%s)\n&quot;</span>, <span class="php-var">$name</span>, <span class="php-var">$dir</span>));
+</span><span class="l" id="line-677">                }
+</span><span class="l" id="line-678">            } <span class="php-keyword1">elseif</span> (!<span class="php-keyword2">is_writable</span>(<span class="php-var">$dir</span>)) {
+</span><span class="l" id="line-679">                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> \RuntimeException(<span class="php-keyword2">sprintf</span>(<span class="php-quote">&quot;Unable to write in the %s directory (%s)\n&quot;</span>, <span class="php-var">$name</span>, <span class="php-var">$dir</span>));
+</span><span class="l" id="line-680">            }
+</span><span class="l" id="line-681">        }
+</span><span class="l" id="line-682">
+</span><span class="l" id="line-683">        <span class="php-var">$container</span> = <span class="php-var">$this</span>-&gt;getContainerBuilder();
+</span><span class="l" id="line-684">        <span class="php-var">$container</span>-&gt;addObjectResource(<span class="php-var">$this</span>);
+</span><span class="l" id="line-685">        <span class="php-var">$this</span>-&gt;prepareContainer(<span class="php-var">$container</span>);
+</span><span class="l" id="line-686">
+</span><span class="l" id="line-687">        <span class="php-keyword1">if</span> (<span class="php-keyword1">null</span> !== <span class="php-var">$cont</span> = <span class="php-var">$this</span>-&gt;registerContainerConfiguration(<span class="php-var">$this</span>-&gt;getContainerLoader(<span class="php-var">$container</span>))) {
+</span><span class="l" id="line-688">            <span class="php-var">$container</span>-&gt;merge(<span class="php-var">$cont</span>);
+</span><span class="l" id="line-689">        }
+</span><span class="l" id="line-690">
+</span><span class="l" id="line-691">        <span class="php-var">$container</span>-&gt;addCompilerPass(<span class="php-keyword1">new</span> AddAnnotatedClassesToCachePass(<span class="php-var">$this</span>));
+</span><span class="l" id="line-692">        <span class="php-var">$container</span>-&gt;addResource(<span class="php-keyword1">new</span> EnvParametersResource(<span class="php-quote">'SYMFONY__'</span>));
+</span><span class="l" id="line-693">
+</span><span class="l" id="line-694">        <span class="php-keyword1">return</span> <span class="php-var">$container</span>;
+</span><span class="l" id="line-695">    }
+</span><span class="l" id="line-696">
+</span><span class="l" id="line-697">    <span class="php-comment">/**
+</span></span><span class="l" id="line-698"><span class="php-comment">     * Prepares the ContainerBuilder before it is compiled.
+</span></span><span class="l" id="line-699"><span class="php-comment">     *
+</span></span><span class="l" id="line-700"><span class="php-comment">     * @param ContainerBuilder $container A ContainerBuilder instance
+</span></span><span class="l" id="line-701"><span class="php-comment">     */</span>
+</span><span class="l" id="line-702">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> prepareContainer(ContainerBuilder <span class="php-var">$container</span>)
+</span><span class="l" id="line-703">    {
+</span><span class="l" id="line-704">        <span class="php-var">$extensions</span> = <span class="php-keyword1">array</span>();
+</span><span class="l" id="line-705">        <span class="php-keyword1">foreach</span> (<span class="php-var">$this</span>-&gt;bundles <span class="php-keyword1">as</span> <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-706">            <span class="php-keyword1">if</span> (<span class="php-var">$extension</span> = <span class="php-var">$bundle</span>-&gt;getContainerExtension()) {
+</span><span class="l" id="line-707">                <span class="php-var">$container</span>-&gt;registerExtension(<span class="php-var">$extension</span>);
+</span><span class="l" id="line-708">                <span class="php-var">$extensions</span>[] = <span class="php-var">$extension</span>-&gt;getAlias();
+</span><span class="l" id="line-709">            }
+</span><span class="l" id="line-710">
+</span><span class="l" id="line-711">            <span class="php-keyword1">if</span> (<span class="php-var">$this</span>-&gt;debug) {
+</span><span class="l" id="line-712">                <span class="php-var">$container</span>-&gt;addObjectResource(<span class="php-var">$bundle</span>);
+</span><span class="l" id="line-713">            }
+</span><span class="l" id="line-714">        }
+</span><span class="l" id="line-715">
+</span><span class="l" id="line-716">        <span class="php-keyword1">foreach</span> (<span class="php-var">$this</span>-&gt;bundles <span class="php-keyword1">as</span> <span class="php-var">$bundle</span>) {
+</span><span class="l" id="line-717">            <span class="php-var">$bundle</span>-&gt;build(<span class="php-var">$container</span>);
+</span><span class="l" id="line-718">        }
+</span><span class="l" id="line-719">
+</span><span class="l" id="line-720">        <span class="php-var">$this</span>-&gt;build(<span class="php-var">$container</span>);
+</span><span class="l" id="line-721">
+</span><span class="l" id="line-722">        <span class="php-comment">// ensure these extensions are implicitly loaded</span>
+</span><span class="l" id="line-723">        <span class="php-var">$container</span>-&gt;getCompilerPassConfig()-&gt;setMergePass(<span class="php-keyword1">new</span> MergeExtensionConfigurationPass(<span class="php-var">$extensions</span>));
+</span><span class="l" id="line-724">    }
+</span><span class="l" id="line-725">
+</span><span class="l" id="line-726">    <span class="php-comment">/**
+</span></span><span class="l" id="line-727"><span class="php-comment">     * Gets a new ContainerBuilder instance used to build the service container.
+</span></span><span class="l" id="line-728"><span class="php-comment">     *
+</span></span><span class="l" id="line-729"><span class="php-comment">     * @return ContainerBuilder
+</span></span><span class="l" id="line-730"><span class="php-comment">     */</span>
+</span><span class="l" id="line-731">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getContainerBuilder()
+</span><span class="l" id="line-732">    {
+</span><span class="l" id="line-733">        <span class="php-var">$container</span> = <span class="php-keyword1">new</span> ContainerBuilder();
+</span><span class="l" id="line-734">        <span class="php-var">$container</span>-&gt;getParameterBag()-&gt;add(<span class="php-var">$this</span>-&gt;getKernelParameters());
+</span><span class="l" id="line-735">
+</span><span class="l" id="line-736">        <span class="php-keyword1">if</span> (<span class="php-keyword2">class_exists</span>(<span class="php-quote">'ProxyManager\Configuration'</span>) &amp;&amp; <span class="php-keyword2">class_exists</span>(<span class="php-quote">'Symfony\Bridge\ProxyManager\LazyProxy\Instantiator\RuntimeInstantiator'</span>)) {
+</span><span class="l" id="line-737">            <span class="php-var">$container</span>-&gt;setProxyInstantiator(<span class="php-keyword1">new</span> RuntimeInstantiator());
+</span><span class="l" id="line-738">        }
+</span><span class="l" id="line-739">
+</span><span class="l" id="line-740">        <span class="php-keyword1">return</span> <span class="php-var">$container</span>;
+</span><span class="l" id="line-741">    }
+</span><span class="l" id="line-742">
+</span><span class="l" id="line-743">    <span class="php-comment">/**
+</span></span><span class="l" id="line-744"><span class="php-comment">     * Dumps the service container to PHP code in the cache.
+</span></span><span class="l" id="line-745"><span class="php-comment">     *
+</span></span><span class="l" id="line-746"><span class="php-comment">     * @param ConfigCache      $cache     The config cache
+</span></span><span class="l" id="line-747"><span class="php-comment">     * @param ContainerBuilder $container The service container
+</span></span><span class="l" id="line-748"><span class="php-comment">     * @param string           $class     The name of the class to generate
+</span></span><span class="l" id="line-749"><span class="php-comment">     * @param string           $baseClass The name of the container's base class
+</span></span><span class="l" id="line-750"><span class="php-comment">     */</span>
+</span><span class="l" id="line-751">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> dumpContainer(ConfigCache <span class="php-var">$cache</span>, ContainerBuilder <span class="php-var">$container</span>, <span class="php-var">$class</span>, <span class="php-var">$baseClass</span>)
+</span><span class="l" id="line-752">    {
+</span><span class="l" id="line-753">        <span class="php-comment">// cache the container</span>
+</span><span class="l" id="line-754">        <span class="php-var">$dumper</span> = <span class="php-keyword1">new</span> PhpDumper(<span class="php-var">$container</span>);
+</span><span class="l" id="line-755">
+</span><span class="l" id="line-756">        <span class="php-keyword1">if</span> (<span class="php-keyword2">class_exists</span>(<span class="php-quote">'ProxyManager\Configuration'</span>) &amp;&amp; <span class="php-keyword2">class_exists</span>(<span class="php-quote">'Symfony\Bridge\ProxyManager\LazyProxy\PhpDumper\ProxyDumper'</span>)) {
+</span><span class="l" id="line-757">            <span class="php-var">$dumper</span>-&gt;setProxyDumper(<span class="php-keyword1">new</span> ProxyDumper(<span class="php-keyword2">md5</span>(<span class="php-var">$cache</span>-&gt;getPath())));
+</span><span class="l" id="line-758">        }
+</span><span class="l" id="line-759">
+</span><span class="l" id="line-760">        <span class="php-var">$content</span> = <span class="php-var">$dumper</span>-&gt;dump(<span class="php-keyword1">array</span>(<span class="php-quote">'class'</span> =&gt; <span class="php-var">$class</span>, <span class="php-quote">'base_class'</span> =&gt; <span class="php-var">$baseClass</span>, <span class="php-quote">'file'</span> =&gt; <span class="php-var">$cache</span>-&gt;getPath(), <span class="php-quote">'debug'</span> =&gt; <span class="php-var">$this</span>-&gt;debug));
+</span><span class="l" id="line-761">
+</span><span class="l" id="line-762">        <span class="php-var">$cache</span>-&gt;write(<span class="php-var">$content</span>, <span class="php-var">$container</span>-&gt;getResources());
+</span><span class="l" id="line-763">    }
+</span><span class="l" id="line-764">
+</span><span class="l" id="line-765">    <span class="php-comment">/**
+</span></span><span class="l" id="line-766"><span class="php-comment">     * Returns a loader for the container.
+</span></span><span class="l" id="line-767"><span class="php-comment">     *
+</span></span><span class="l" id="line-768"><span class="php-comment">     * @param ContainerInterface $container The service container
+</span></span><span class="l" id="line-769"><span class="php-comment">     *
+</span></span><span class="l" id="line-770"><span class="php-comment">     * @return DelegatingLoader The loader
+</span></span><span class="l" id="line-771"><span class="php-comment">     */</span>
+</span><span class="l" id="line-772">    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> getContainerLoader(ContainerInterface <span class="php-var">$container</span>)
+</span><span class="l" id="line-773">    {
+</span><span class="l" id="line-774">        <span class="php-var">$locator</span> = <span class="php-keyword1">new</span> FileLocator(<span class="php-var">$this</span>);
+</span><span class="l" id="line-775">        <span class="php-var">$resolver</span> = <span class="php-keyword1">new</span> LoaderResolver(<span class="php-keyword1">array</span>(
+</span><span class="l" id="line-776">            <span class="php-keyword1">new</span> XmlFileLoader(<span class="php-var">$container</span>, <span class="php-var">$locator</span>),
+</span><span class="l" id="line-777">            <span class="php-keyword1">new</span> YamlFileLoader(<span class="php-var">$container</span>, <span class="php-var">$locator</span>),
+</span><span class="l" id="line-778">            <span class="php-keyword1">new</span> IniFileLoader(<span class="php-var">$container</span>, <span class="php-var">$locator</span>),
+</span><span class="l" id="line-779">            <span class="php-keyword1">new</span> PhpFileLoader(<span class="php-var">$container</span>, <span class="php-var">$locator</span>),
+</span><span class="l" id="line-780">            <span class="php-keyword1">new</span> GlobFileLoader(<span class="php-var">$locator</span>),
+</span><span class="l" id="line-781">            <span class="php-keyword1">new</span> DirectoryLoader(<span class="php-var">$container</span>, <span class="php-var">$locator</span>),
+</span><span class="l" id="line-782">            <span class="php-keyword1">new</span> ClosureLoader(<span class="php-var">$container</span>),
+</span><span class="l" id="line-783">        ));
+</span><span class="l" id="line-784">
+</span><span class="l" id="line-785">        <span class="php-keyword1">return</span> <span class="php-keyword1">new</span> DelegatingLoader(<span class="php-var">$resolver</span>);
+</span><span class="l" id="line-786">    }
+</span><span class="l" id="line-787">
+</span><span class="l" id="line-788">    <span class="php-comment">/**
+</span></span><span class="l" id="line-789"><span class="php-comment">     * Removes comments from a PHP source string.
+</span></span><span class="l" id="line-790"><span class="php-comment">     *
+</span></span><span class="l" id="line-791"><span class="php-comment">     * We don't use the PHP php_strip_whitespace() function
+</span></span><span class="l" id="line-792"><span class="php-comment">     * as we want the content to be readable and well-formatted.
+</span></span><span class="l" id="line-793"><span class="php-comment">     *
+</span></span><span class="l" id="line-794"><span class="php-comment">     * @param string $source A PHP string
+</span></span><span class="l" id="line-795"><span class="php-comment">     *
+</span></span><span class="l" id="line-796"><span class="php-comment">     * @return string The PHP string with the comments removed
+</span></span><span class="l" id="line-797"><span class="php-comment">     */</span>
+</span><span class="l" id="line-798">    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-keyword1">function</span> stripComments(<span class="php-var">$source</span>)
+</span><span class="l" id="line-799">    {
+</span><span class="l" id="line-800">        <span class="php-keyword1">if</span> (!<span class="php-keyword2">function_exists</span>(<span class="php-quote">'token_get_all'</span>)) {
+</span><span class="l" id="line-801">            <span class="php-keyword1">return</span> <span class="php-var">$source</span>;
+</span><span class="l" id="line-802">        }
+</span><span class="l" id="line-803">
+</span><span class="l" id="line-804">        <span class="php-var">$rawChunk</span> = <span class="php-quote">''</span>;
+</span><span class="l" id="line-805">        <span class="php-var">$output</span> = <span class="php-quote">''</span>;
+</span><span class="l" id="line-806">        <span class="php-var">$tokens</span> = <span class="php-keyword2">token_get_all</span>(<span class="php-var">$source</span>);
+</span><span class="l" id="line-807">        <span class="php-var">$ignoreSpace</span> = <span class="php-keyword1">false</span>;
+</span><span class="l" id="line-808">        <span class="php-keyword1">for</span> (<span class="php-var">$i</span> = <span class="php-num">0</span>; <span class="php-keyword1">isset</span>(<span class="php-var">$tokens</span>[<span class="php-var">$i</span>]); ++<span class="php-var">$i</span>) {
+</span><span class="l" id="line-809">            <span class="php-var">$token</span> = <span class="php-var">$tokens</span>[<span class="php-var">$i</span>];
+</span><span class="l" id="line-810">            <span class="php-keyword1">if</span> (!<span class="php-keyword1">isset</span>(<span class="php-var">$token</span>[<span class="php-num">1</span>]) || <span class="php-quote">'b&quot;'</span> === <span class="php-var">$token</span>) {
+</span><span class="l" id="line-811">                <span class="php-var">$rawChunk</span> .= <span class="php-var">$token</span>;
+</span><span class="l" id="line-812">            } <span class="php-keyword1">elseif</span> (T_START_HEREDOC === <span class="php-var">$token</span>[<span class="php-num">0</span>]) {
+</span><span class="l" id="line-813">                <span class="php-var">$output</span> .= <span class="php-var">$rawChunk</span>.<span class="php-var">$token</span>[<span class="php-num">1</span>];
+</span><span class="l" id="line-814">                <span class="php-keyword1">do</span> {
+</span><span class="l" id="line-815">                    <span class="php-var">$token</span> = <span class="php-var">$tokens</span>[++<span class="php-var">$i</span>];
+</span><span class="l" id="line-816">                    <span class="php-var">$output</span> .= <span class="php-keyword1">isset</span>(<span class="php-var">$token</span>[<span class="php-num">1</span>]) &amp;&amp; <span class="php-quote">'b&quot;'</span> !== <span class="php-var">$token</span> ? <span class="php-var">$token</span>[<span class="php-num">1</span>] : <span class="php-var">$token</span>;
+</span><span class="l" id="line-817">                } <span class="php-keyword1">while</span> (<span class="php-var">$token</span>[<span class="php-num">0</span>] !== T_END_HEREDOC);
+</span><span class="l" id="line-818">                <span class="php-var">$rawChunk</span> = <span class="php-quote">''</span>;
+</span><span class="l" id="line-819">            } <span class="php-keyword1">elseif</span> (T_WHITESPACE === <span class="php-var">$token</span>[<span class="php-num">0</span>]) {
+</span><span class="l" id="line-820">                <span class="php-keyword1">if</span> (<span class="php-var">$ignoreSpace</span>) {
+</span><span class="l" id="line-821">                    <span class="php-var">$ignoreSpace</span> = <span class="php-keyword1">false</span>;
+</span><span class="l" id="line-822">
+</span><span class="l" id="line-823">                    <span class="php-keyword1">continue</span>;
+</span><span class="l" id="line-824">                }
+</span><span class="l" id="line-825">
+</span><span class="l" id="line-826">                <span class="php-comment">// replace multiple new lines with a single newline</span>
+</span><span class="l" id="line-827">                <span class="php-var">$rawChunk</span> .= <span class="php-keyword2">preg_replace</span>(<span class="php-keyword1">array</span>(<span class="php-quote">'/\n{2,}/S'</span>), <span class="php-quote">&quot;\n&quot;</span>, <span class="php-var">$token</span>[<span class="php-num">1</span>]);
+</span><span class="l" id="line-828">            } <span class="php-keyword1">elseif</span> (<span class="php-keyword2">in_array</span>(<span class="php-var">$token</span>[<span class="php-num">0</span>], <span class="php-keyword1">array</span>(T_COMMENT, T_DOC_COMMENT))) {
+</span><span class="l" id="line-829">                <span class="php-var">$ignoreSpace</span> = <span class="php-keyword1">true</span>;
+</span><span class="l" id="line-830">            } <span class="php-keyword1">else</span> {
+</span><span class="l" id="line-831">                <span class="php-var">$rawChunk</span> .= <span class="php-var">$token</span>[<span class="php-num">1</span>];
+</span><span class="l" id="line-832">
+</span><span class="l" id="line-833">                <span class="php-comment">// The PHP-open tag already has a new-line</span>
+</span><span class="l" id="line-834">                <span class="php-keyword1">if</span> (T_OPEN_TAG === <span class="php-var">$token</span>[<span class="php-num">0</span>]) {
+</span><span class="l" id="line-835">                    <span class="php-var">$ignoreSpace</span> = <span class="php-keyword1">true</span>;
+</span><span class="l" id="line-836">                }
+</span><span class="l" id="line-837">            }
+</span><span class="l" id="line-838">        }
+</span><span class="l" id="line-839">
+</span><span class="l" id="line-840">        <span class="php-var">$output</span> .= <span class="php-var">$rawChunk</span>;
+</span><span class="l" id="line-841">
+</span><span class="l" id="line-842">        <span class="php-keyword1">if</span> (\PHP_VERSION_ID &gt;= <span class="php-num">70000</span>) {
+</span><span class="l" id="line-843">            <span class="php-comment">// PHP 7 memory manager will not release after token_get_all(), see https://bugs.php.net/70098</span>
+</span><span class="l" id="line-844">            <span class="php-keyword1">unset</span>(<span class="php-var">$tokens</span>, <span class="php-var">$rawChunk</span>);
+</span><span class="l" id="line-845">            gc_mem_caches();
+</span><span class="l" id="line-846">        }
+</span><span class="l" id="line-847">
+</span><span class="l" id="line-848">        <span class="php-keyword1">return</span> <span class="php-var">$output</span>;
+</span><span class="l" id="line-849">    }
+</span><span class="l" id="line-850">
+</span><span class="l" id="line-851">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <span class="php-keyword2">serialize</span>()
+</span><span class="l" id="line-852">    {
+</span><span class="l" id="line-853">        <span class="php-keyword1">return</span> <span class="php-keyword2">serialize</span>(<span class="php-keyword1">array</span>(<span class="php-var">$this</span>-&gt;environment, <span class="php-var">$this</span>-&gt;debug));
+</span><span class="l" id="line-854">    }
+</span><span class="l" id="line-855">
+</span><span class="l" id="line-856">    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <span class="php-keyword2">unserialize</span>(<span class="php-var">$data</span>)
+</span><span class="l" id="line-857">    {
+</span><span class="l" id="line-858">        <span class="php-keyword1">if</span> (\PHP_VERSION_ID &gt;= <span class="php-num">70000</span>) {
+</span><span class="l" id="line-859">            <span class="php-keyword1">list</span>(<span class="php-var">$environment</span>, <span class="php-var">$debug</span>) = <span class="php-keyword2">unserialize</span>(<span class="php-var">$data</span>, <span class="php-keyword1">array</span>(<span class="php-quote">'allowed_classes'</span> =&gt; <span class="php-keyword1">false</span>));
+</span><span class="l" id="line-860">        } <span class="php-keyword1">else</span> {
+</span><span class="l" id="line-861">            <span class="php-keyword1">list</span>(<span class="php-var">$environment</span>, <span class="php-var">$debug</span>) = <span class="php-keyword2">unserialize</span>(<span class="php-var">$data</span>);
+</span><span class="l" id="line-862">        }
+</span><span class="l" id="line-863">
+</span><span class="l" id="line-864">        <span class="php-var">$this</span>-&gt;__construct(<span class="php-var">$environment</span>, <span class="php-var">$debug</span>);
+</span><span class="l" id="line-865">    }
+</span><span class="l" id="line-866">}
+</span><span class="l" id="line-867"></span><br></code></pre>
+    </div>
+    <div id="footer">
+        Generated by <a href="https://github.com/apigen/apigen">ApiGen</a>
+    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="resources/jquery-3.2.1.min.js"></script>
+        <script src="resources/jquery-ui-1.12.1.min.js"></script>
+
+        <script src="elementlist.js"></script>
+        <script src="resources/main.js"></script>
+    </body>
+</html>
+
+

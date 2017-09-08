@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <link rel="stylesheet" href="resources/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/style.css">
+
+        <title>
+            Interface Symfony\Component\HttpKernel\KernelInterface | ApiGen It-self
+        </title>
+    </head>
+
+    <body>
+<div id="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="index.html">
+                                ApiGen It-self
+                            </a>
+                        </li>
+
+                            <li>
+                                <a href="classes.html">Classes</a>
+                            </li>
+
+                            <li>
+                                <a href="interfaces.html">Interfaces</a>
+                            </li>
+
+
+
+                            <li>
+                                <a href="exceptions.html">Exceptions</a>
+                            </li>
+
+                    </ul>
+
+                    <form id="search" class="pull-right">
+                        <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace" autofocus>
+                    </form>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+            <div id="breadcrumbs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+
+
+<div class="pull-left type">
+    <span class="label label-info">Interface</span>
+</div>
+
+<ol class="breadcrumb pull-left">
+        <li>
+            <a href="namespace-Symfony.html">Symfony</a>
+        </li>
+            <li class="backslash">\</li>
+        <li>
+            <a href="namespace-Symfony.Component.html">Component</a>
+        </li>
+            <li class="backslash">\</li>
+        <li>
+            <a href="namespace-Symfony.Component.HttpKernel.html">HttpKernel</a>
+        </li>
+
+        <li class="backslash">\</li>
+        <li class="active">KernelInterface</li>
+</ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+    <h1>KernelInterface</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                The Kernel is the heart of the Symfony system.
+
+It manages an environment made of bundles.
+            </div>
+        </div>
+
+        <dl class="tree">
+            <dd>
+                implements
+                    <a href="interface-Serializable.html">Serializable</a>, 
+                    <a href="interface-Symfony.Component.HttpKernel.HttpKernelInterface.html">Symfony\Component\HttpKernel\HttpKernelInterface</a>
+            </dd>
+        </dl>
+
+        <div>
+            <h2>Known implementers</h2>
+            <p>
+                    <a href="class-ApiGen.DependencyInjection.AppKernel.html">
+                        ApiGen\DependencyInjection\AppKernel
+                    </a>, 
+                    <a href="class-Symfony.Component.HttpKernel.Kernel.html">
+                        Symfony\Component\HttpKernel\Kernel
+                    </a>
+            </p>
+        </div>
+
+    <div class="info">
+            <br>
+            <a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html" class="open-source-code">Open source code</a>
+        <br>
+    </div>
+
+        <table class="summary table table-responsive table-bordered table-striped" id="methods">
+            <tr><th colspan="3">Methods Summary</th></tr>
+
+
+
+<tr id="_registerBundles">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_registerBundles">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#32">registerBundles</a>( )</code>
+
+            <div class="description">
+                Returns an array of bundles to register.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_registerContainerConfiguration">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_registerContainerConfiguration">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#39">registerContainerConfiguration</a>( <span> Symfony\Component\Config\Loader\LoaderInterface <span class="property-name">$loader</span> </span> )</code>
+
+            <div class="description">
+                Loads the container configuration.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_boot">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_boot">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#44">boot</a>( )</code>
+
+            <div class="description">
+                Boots the current kernel.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_shutdown">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_shutdown">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#51">shutdown</a>( )</code>
+
+            <div class="description">
+                Shutdowns the kernel.
+
+This method is mainly useful when doing functional testing.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getBundles">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getBundles">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#58">getBundles</a>( )</code>
+
+            <div class="description">
+                Gets the registered bundle instances.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getBundle">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getBundle">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#70">getBundle</a>( <span> string <span class="property-name">$name</span> </span>, <span> bool <span class="property-name">$first</span> = <span class="php-keyword1">true</span></span> )</code>
+
+            <div class="description">
+                Returns a bundle and optionally its descendants by its name.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_locateResource">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_locateResource">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#100">locateResource</a>( <span> string <span class="property-name">$name</span> </span>, <span> string <span class="property-name">$dir</span> = <span class="php-keyword1">NULL</span></span>, <span> bool <span class="property-name">$first</span> = <span class="php-keyword1">true</span></span> )</code>
+
+            <div class="description">
+                Returns the file path for a given resource.
+
+A Resource can be a file or a directory.
+
+The resource name must follow the following pattern:
+
+    "@BundleName/path/to/a/file.something"
+
+where BundleName is the name of the bundle
+and the remaining part is the relative path in the bundle.
+
+If $dir is passed, and the first segment of the path is "Resources",
+this method will look for a file named:
+
+    $dir/&lt;BundleName&gt;/path/without/Resources
+
+before looking in the bundle resource folder.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getName">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getName">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#107">getName</a>( )</code>
+
+            <div class="description">
+                Gets the name of the kernel.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getEnvironment">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getEnvironment">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#114">getEnvironment</a>( )</code>
+
+            <div class="description">
+                Gets the environment.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_isDebug">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_isDebug">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#121">isDebug</a>( )</code>
+
+            <div class="description">
+                Checks if debug mode is enabled.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getRootDir">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getRootDir">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#128">getRootDir</a>( )</code>
+
+            <div class="description">
+                Gets the application root dir (path of the project's Kernel class).
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getContainer">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getContainer">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#135">getContainer</a>( )</code>
+
+            <div class="description">
+                Gets the current container.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getStartTime">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getStartTime">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#142">getStartTime</a>( )</code>
+
+            <div class="description">
+                Gets the request start time (not available if debug is disabled).
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getCacheDir">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getCacheDir">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#149">getCacheDir</a>( )</code>
+
+            <div class="description">
+                Gets the cache directory.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getLogDir">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getLogDir">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#156">getLogDir</a>( )</code>
+
+            <div class="description">
+                Gets the log directory.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+
+
+
+<tr id="_getCharset">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getCharset">#</a>
+            <code><a href="source-interface-Symfony.Component.HttpKernel.KernelInterface.html#163">getCharset</a>( )</code>
+
+            <div class="description">
+                Gets the charset of the application.
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+        </table>
+
+
+            <table class="summary table table-responsive table-bordered table-striped">
+                <tr><th>
+                    Constants inherited from <a href="interface-Symfony.Component.HttpKernel.HttpKernelInterface.html#constants">Symfony\Component\HttpKernel\HttpKernelInterface</a>
+                </th></tr>
+                <tr>
+<td>
+    <code class="keyword">
+            <a href="interface-Symfony.Component.HttpKernel.HttpKernelInterface.html#MASTER_REQUEST" class="constant-name">
+                MASTER_REQUEST
+            </a>, 
+            <a href="interface-Symfony.Component.HttpKernel.HttpKernelInterface.html#SUB_REQUEST" class="constant-name">
+                SUB_REQUEST
+            </a>
+    </code>
+</td>
+                </tr>
+            </table>
+    <div id="footer">
+        Generated by <a href="https://github.com/apigen/apigen">ApiGen</a>
+    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="resources/jquery-3.2.1.min.js"></script>
+        <script src="resources/jquery-ui-1.12.1.min.js"></script>
+
+        <script src="elementlist.js"></script>
+        <script src="resources/main.js"></script>
+    </body>
+</html>
+
+

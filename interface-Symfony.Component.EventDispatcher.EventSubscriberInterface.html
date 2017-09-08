@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <link rel="stylesheet" href="resources/bootstrap.min.css">
+        <link rel="stylesheet" href="resources/style.css">
+
+        <title>
+            Interface Symfony\Component\EventDispatcher\EventSubscriberInterface | ApiGen It-self
+        </title>
+    </head>
+
+    <body>
+<div id="navigation">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar">
+                    <ul class="nav navbar-nav">
+                        <li>
+                            <a href="index.html">
+                                ApiGen It-self
+                            </a>
+                        </li>
+
+                            <li>
+                                <a href="classes.html">Classes</a>
+                            </li>
+
+                            <li>
+                                <a href="interfaces.html">Interfaces</a>
+                            </li>
+
+
+
+                            <li>
+                                <a href="exceptions.html">Exceptions</a>
+                            </li>
+
+                    </ul>
+
+                    <form id="search" class="pull-right">
+                        <input type="text" name="q" class="form-control text" placeholder="Search class, function or namespace" autofocus>
+                    </form>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+            <div id="breadcrumbs">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-12">
+
+
+<div class="pull-left type">
+    <span class="label label-info">Interface</span>
+</div>
+
+<ol class="breadcrumb pull-left">
+        <li>
+            <a href="namespace-Symfony.html">Symfony</a>
+        </li>
+            <li class="backslash">\</li>
+        <li>
+            <a href="namespace-Symfony.Component.html">Component</a>
+        </li>
+            <li class="backslash">\</li>
+        <li>
+            <a href="namespace-Symfony.Component.EventDispatcher.html">EventDispatcher</a>
+        </li>
+
+        <li class="backslash">\</li>
+        <li class="active">EventSubscriberInterface</li>
+</ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+    <h1>EventSubscriberInterface</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                An EventSubscriber knows himself what events he is interested in.
+
+If an EventSubscriber is added to an EventDispatcherInterface, the manager invokes
+{@link getSubscribedEvents} and registers the subscriber as a listener for all
+returned events.
+            </div>
+        </div>
+
+
+        <div>
+            <h2>Known implementers</h2>
+            <p>
+                    <a href="class-ApiGen.EventSubscriber.ConfigurationTemplateVariablesEventSubscriber.html">
+                        ApiGen\EventSubscriber\ConfigurationTemplateVariablesEventSubscriber
+                    </a>, 
+                    <a href="class-ApiGen.EventSubscriber.ElementsTemplateVariablesEventSubscriber.html">
+                        ApiGen\EventSubscriber\ElementsTemplateVariablesEventSubscriber
+                    </a>, 
+                    <a href="class-ApiGen.EventSubscriber.ProgressBarEventSubscriber.html">
+                        ApiGen\EventSubscriber\ProgressBarEventSubscriber
+                    </a>
+            </p>
+        </div>
+
+    <div class="info">
+            <br>
+            <br>
+            <br>
+            <br>
+            <a href="source-interface-Symfony.Component.EventDispatcher.EventSubscriberInterface.html" class="open-source-code">Open source code</a>
+        <br>
+    </div>
+
+        <table class="summary table table-responsive table-bordered table-striped" id="methods">
+            <tr><th colspan="3">Methods Summary</th></tr>
+
+
+
+<tr id="_getSubscribedEvents">
+
+    <td class="attributes col-md-1">
+        <code class="keyword">
+                
+                public
+        </code>
+    </td>
+
+    <td class="name">
+        <div>
+            <a class="anchor pull-right" href="#_getSubscribedEvents">#</a>
+            <code><a href="source-interface-Symfony.Component.EventDispatcher.EventSubscriberInterface.html#45">getSubscribedEvents</a>( )</code>
+
+            <div class="description">
+                Returns an array of event names this subscriber wants to listen to.
+
+The array keys are event names and the value can be:
+
+ * The method name to call (priority defaults to 0)
+ * An array composed of the method name to call and the priority
+ * An array of arrays composed of the method names to call and respective
+   priorities, or 0 if unset
+
+For instance:
+
+ * array('eventName' =&gt; 'methodName')
+ * array('eventName' =&gt; array('methodName', $priority))
+ * array('eventName' =&gt; array(array('methodName1', $priority), array('methodName2')))
+
+
+
+
+
+
+
+            </div>
+        </div>
+    </td>
+</tr>
+        </table>
+
+
+    <div id="footer">
+        Generated by <a href="https://github.com/apigen/apigen">ApiGen</a>
+    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="resources/jquery-3.2.1.min.js"></script>
+        <script src="resources/jquery-ui-1.12.1.min.js"></script>
+
+        <script src="elementlist.js"></script>
+        <script src="resources/main.js"></script>
+    </body>
+</html>
+
+
