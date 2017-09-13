@@ -12,7 +12,6 @@
     "require": {
         "php": "^7.1",
         "roave/better-reflection": "dev-master#5190d83",
-        "phpdocumentor/reflection-docblock": "^3.1",
         "kukulich/fshl": "^2.1",
 
         "latte/latte": "^2.4",
