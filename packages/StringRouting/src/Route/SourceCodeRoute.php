@@ -60,9 +60,10 @@ final class SourceCodeRoute implements RouteInterface
         }
 
         if ($reflection instanceof FunctionReflectionInterface) {
+            $hash = substr(sha1($reflection->getFileName()), 0, 6);
             $relativeFileName = $this->relativePathResolver->getRelativePath($reflection->getFileName());
 
-            return 'source-function-'
+            return 'source-function-' . $hash . '-'
                 . NamingHelper::nameToFilePath($relativeFileName) . '.html'
                 . $this->buildLineAnchor($reflection);
         }

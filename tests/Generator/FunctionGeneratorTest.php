@@ -14,7 +14,10 @@ final class FunctionGeneratorTest extends AbstractParserAwareTestCase
 
     protected function setUp(): void
     {
-        $this->resolveConfigurationBySource([__DIR__ . '/Source']);
+        $this->resolveConfigurationBySource([
+        	__DIR__ . '/Source',
+        	__DIR__ . '/NotLoadedSources',
+        ]);
         $this->parser->parse();
 
         $this->functionGenerator = $this->container->get(FunctionGenerator::class);
@@ -32,7 +35,23 @@ final class FunctionGeneratorTest extends AbstractParserAwareTestCase
         );
 
         $this->assertFileExists(
-            TEMP_DIR . '/source-function-Generator.Source.someFunction.php.html'
+            TEMP_DIR . '/source-function-8cc419-SomeFunction.php.html'
+        );
+        $this->assertContains(
+            'ApiGen\Tests\Generator\Source',
+            file_get_contents(TEMP_DIR . '/source-function-8cc419-SomeFunction.php.html')
+        );
+
+        $this->assertFileExists(
+            TEMP_DIR . '/source-function-859aae-SomeFunction.php.html'
+        );
+        $this->assertContains(
+            'ApiGen\Tests\Generator\NotLoadedSources',
+            file_get_contents(TEMP_DIR . '/source-function-859aae-SomeFunction.php.html')
+        );
+
+        $this->assertFileExists(
+            TEMP_DIR . '/source-function-7c21e1-SubNamespace.SomeFunction.php.html'
         );
     }
 }
