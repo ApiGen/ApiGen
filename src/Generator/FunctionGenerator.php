@@ -84,7 +84,11 @@ final class FunctionGenerator implements GeneratorInterface
 
         $relativePath = $this->relativePathResolver->getRelativePath($functionReflection->getFileName());
 
-        $destination = $this->configuration->getDestinationWithPrefixName('source-function-', $relativePath);
+        $hash = substr(sha1($functionReflection->getFileName()), 0, 6);
+        $destination = $this->configuration->getDestinationWithPrefixName(
+            'source-function-' . $hash . '-',
+            $relativePath
+        );
 
         if (file_exists($destination)) {
             return;

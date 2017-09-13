@@ -24,6 +24,7 @@ final class SeeUsesCoversAnnotationSubscriber implements AnnotationSubscriberInt
      * @var LinkBuilder
      */
     private $linkBuilder;
+
     /**
      * @var ElementResolver
      */
