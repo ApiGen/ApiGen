@@ -2,6 +2,6 @@
 
 namespace ApiGen\Tests\Generator\NotLoadedSources;
 
-function SomeFunction()
+function someFunction(): void
 {
 }
