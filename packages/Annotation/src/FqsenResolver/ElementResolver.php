@@ -7,8 +7,8 @@ use ApiGen\Reflection\Contract\Reflection\Class_\AbstractClassElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
-use ApiGen\Reflection\Contract\Reflection\Interface_\AbstractInterfaceElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\AbstractInterfaceElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\AbstractTraitElementInterface;
 use ApiGen\Reflection\ReflectionStorage;
 use Nette\Utils\Strings;
@@ -114,9 +114,9 @@ final class ElementResolver
             return $reflection->getDeclaringInterfaceName();
         } elseif ($reflection instanceof AbstractTraitElementInterface) {
             return $reflection->getDeclaringTraitName();
-        } else {
-            return $reflection->getName();
         }
+
+        return $reflection->getName();
     }
 
     private function getClassyReflection(string $name): ?AbstractReflectionInterface

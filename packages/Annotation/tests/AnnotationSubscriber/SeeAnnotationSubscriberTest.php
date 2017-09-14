@@ -4,8 +4,8 @@ namespace ApiGen\Annotation\Tests\AnnotationSubscriber;
 
 use ApiGen\Annotation\AnnotationDecorator;
 use ApiGen\Annotation\AnnotationList;
+use ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource\InterfaceWithSeeAnnotationsInterface;
 use ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource\SomeClassWithSeeAnnotations;
-use ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource\SomeInterfaceWithSeeAnnotations;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
@@ -47,9 +47,11 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
         $this->classReflection = $this->reflectionStorage->getClassReflections()[SomeClassWithSeeAnnotations::class];
         $this->methodReflection = $this->classReflection->getMethod('returnArray');
         $this->functionReflection = $this->reflectionStorage->getFunctionReflections()[
-        	'ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource\someFunction'
+            'ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource\someFunction'
         ];
-        $this->interfaceReflection = $this->reflectionStorage->getInterfaceReflections()[SomeInterfaceWithSeeAnnotations::class];
+        $this->interfaceReflection = $this->reflectionStorage->getInterfaceReflections()[
+            InterfaceWithSeeAnnotationsInterface::class
+        ];
     }
 
     public function testPropertyOnMissingClassReflection(): void
@@ -111,8 +113,8 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
         $this->assertSame(
             '<code><a href="function-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource'
             . '.anotherFunction.html">anotherFunction()</a></code>',
-            $this->annotationDecorator->decorate($seeFunctionAnnotation, $this->functionReflection
-        ));
+            $this->annotationDecorator->decorate($seeFunctionAnnotation, $this->functionReflection)
+        );
 
         $seeFunctionAnnotation = $this->methodReflection->getAnnotation(AnnotationList::SEE)[5];
 
@@ -125,12 +127,13 @@ final class SeeAnnotationSubscriberTest extends AbstractParserAwareTestCase
 
     public function testInterface(): void
     {
-        $seeMethodAnnotation = $this->interfaceReflection->getMethod('someSexyMethod')->getAnnotation(AnnotationList::SEE)[0];
+        $seeMethodAnnotation = $this->interfaceReflection->getMethod('someSexyMethod')
+            ->getAnnotation(AnnotationList::SEE)[0];
 
         $this->assertSame(
             '<code><a href="class-ApiGen.Annotation.Tests.AnnotationSubscriber.SeeAnnotationSubscriberSource'
             . '.SomeClassWithSeeAnnotations.html#_returnArray">SomeClassWithSeeAnnotations::returnArray()</a></code>',
-            $this->annotationDecorator->decorate($seeMethodAnnotation, $this->interfaceReflection
-        ));
+            $this->annotationDecorator->decorate($seeMethodAnnotation, $this->interfaceReflection)
+        );
     }
 }

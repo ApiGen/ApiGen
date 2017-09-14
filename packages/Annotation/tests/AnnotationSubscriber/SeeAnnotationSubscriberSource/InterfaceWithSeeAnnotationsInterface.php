@@ -2,11 +2,11 @@
 
 namespace ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource;
 
-use ApiGen\Annotation\Tests\AnnotationDecoratorSource\ReturnedClass;
-
-interface SomeInterfaceWithSeeAnnotations
+interface InterfaceWithSeeAnnotationsInterface
 {
     /**
+     * Test.
+     *
      * @see SomeClassWithSeeAnnotations::returnArray()
      */
     public function someSexyMethod(): int;

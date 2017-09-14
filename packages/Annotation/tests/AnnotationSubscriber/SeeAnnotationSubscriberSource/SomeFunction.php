@@ -2,13 +2,13 @@
 
 namespace ApiGen\Annotation\Tests\AnnotationSubscriber\SeeAnnotationSubscriberSource;
 
-use ApiGen\Annotation\Tests\AnnotationDecoratorSource\ReturnedClass;
-
 function anotherFunction(): void
 {
 }
 
 /**
+ * Test.
+ *
  * @see anotherFunction()
  */
 function someFunction(): void
