@@ -87,6 +87,7 @@ final class ElementResolver
         $classReflectionName = ltrim($classReflectionName, '\\');
 
         // @todo return only string on non resolved existing class
+        /** @var ClassReflectionInterface|InterfaceReflectionInterface|TraitReflectionInterface */
         $classyReflection = $this->getClassyReflection($classReflectionName);
 
         if ($classyReflection === null) {
@@ -111,7 +112,7 @@ final class ElementResolver
             return $reflection->getDeclaringClassName();
         } elseif ($reflection instanceof AbstractInterfaceElementInterface) {
             return $reflection->getDeclaringInterfaceName();
-        } elseif ($reflection instanceof AbstractInterfaceElementInterface) {
+        } elseif ($reflection instanceof AbstractTraitElementInterface) {
             return $reflection->getDeclaringTraitName();
         } else {
             return $reflection->getName();
@@ -133,7 +134,7 @@ final class ElementResolver
         return null;
     }
 
-    private function getNamespace(AbstractReflectionInterface $reflection): string
+    private function getNamespace(AbstractReflectionInterface $reflection): ?string
     {
         if ($reflection instanceof AbstractClassElementInterface) {
             return $reflection->getDeclaringClass()->getNamespaceName();
@@ -141,8 +142,10 @@ final class ElementResolver
             return $reflection->getDeclaringInterface()->getNamespaceName();
         } elseif ($reflection instanceof AbstractTraitElementInterface) {
             return $reflection->getDeclaringTrait()->getNamespaceName();
-        } else {
+        } elseif ($reflection instanceof FunctionReflectionInterface) {
             return $reflection->getNamespaceName();
         }
+
+        return null;
     }
 }
