@@ -193,7 +193,7 @@ final class Parser
 
     private function parseFunctions(SourceLocator $sourceLocator): void
     {
-        $functionReflector = new FunctionReflector($sourceLocator);
+        $functionReflector = new FunctionReflector($sourceLocator, new ClassReflector($sourceLocator));
         $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
         $this->reflectionStorage->setFunctionReflections($functionReflections);
     }
