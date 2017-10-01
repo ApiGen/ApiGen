@@ -11,7 +11,7 @@
     "bin": ["bin/apigen"],
     "require": {
         "php": "^7.1",
-        "roave/better-reflection": "dev-master#d32bda4",
+        "roave/better-reflection": "dev-master#c87d856",
         "kukulich/fshl": "^2.1",
 
         "latte/latte": "^2.4",
@@ -33,7 +33,7 @@
         "tracy/tracy": "^2.4",
         "phpunit/phpunit": "^6.0",
         "phpstan/phpstan": "^0.8",
-        "symplify/easy-coding-standard": "^2.2"
+        "symplify/easy-coding-standard": "2.3.1"
     },
     "autoload": {
         "psr-4": {
