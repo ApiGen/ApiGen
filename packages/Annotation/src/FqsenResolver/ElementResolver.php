@@ -3,10 +3,13 @@
 namespace ApiGen\Annotation\FqsenResolver;
 
 use ApiGen\Reflection\Contract\Reflection\AbstractReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Class_\AbstractClassElementInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\AbstractInterfaceElementInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\AbstractTraitElementInterface;
 use ApiGen\Reflection\ReflectionStorage;
 use Nette\Utils\Strings;
 use phpDocumentor\Reflection\FqsenResolver;
@@ -45,10 +48,7 @@ final class ElementResolver
      */
     public function resolveReflectionFromNameAndReflection(string $name, AbstractReflectionInterface $reflection)
     {
-        $reflectionName = $reflection->getName();
-        if ($reflection instanceof ClassMethodReflectionInterface) {
-            $reflectionName = $reflection->getDeclaringClassName();
-        }
+        $reflectionName = $this->getReflectionName($reflection);
 
         $isProperty = false;
         $propertyName = '';
@@ -73,7 +73,7 @@ final class ElementResolver
         }
 
         if ($isFunction) {
-            $namespace = $reflection->getDeclaringClass()->getNamespaceName();
+            $namespace = $this->getNamespace($reflection);
             $functionReflections = $this->reflectionStorage->getFunctionReflections();
 
             $namespacedFunctionName = $namespace . '\\' . $functionName;
@@ -87,23 +87,65 @@ final class ElementResolver
         $classReflectionName = ltrim($classReflectionName, '\\');
 
         // @todo return only string on non resolved existing class
-        $classReflections = $this->reflectionStorage->getClassReflections();
+        /** @var ClassReflectionInterface|InterfaceReflectionInterface|TraitReflectionInterface */
+        $classyReflection = $this->getClassyReflection($classReflectionName);
 
-        if (! isset($classReflections[$classReflectionName])) {
+        if ($classyReflection === null) {
             // @todo or autoresolve class that exists?
             return $name;
         }
 
-        $classReflection = $classReflections[$classReflectionName];
-
         if ($isProperty) {
-            return $classReflection->getProperty($propertyName);
+            return $classyReflection->getProperty($propertyName);
         }
 
         if ($isMethod) {
-            return $classReflection->getMethod($methodName);
+            return $classyReflection->getMethod($methodName);
         }
 
-        return $classReflection;
+        return $classyReflection;
+    }
+
+    private function getReflectionName(AbstractReflectionInterface $reflection): string
+    {
+        if ($reflection instanceof AbstractClassElementInterface) {
+            return $reflection->getDeclaringClassName();
+        } elseif ($reflection instanceof AbstractInterfaceElementInterface) {
+            return $reflection->getDeclaringInterfaceName();
+        } elseif ($reflection instanceof AbstractTraitElementInterface) {
+            return $reflection->getDeclaringTraitName();
+        }
+
+        return $reflection->getName();
+    }
+
+    private function getClassyReflection(string $name): ?AbstractReflectionInterface
+    {
+        $classyReflections = $this->reflectionStorage->getClassReflections() +
+            $this->reflectionStorage->getInterfaceReflections() +
+            $this->reflectionStorage->getTraitReflections();
+
+        foreach ($classyReflections as $reflection) {
+            if ($reflection->getName() === $name) {
+                return $reflection;
+            }
+        }
+
+        return null;
+    }
+
+    private function getNamespace(AbstractReflectionInterface $reflection): ?string
+    {
+        if ($reflection instanceof AbstractClassElementInterface) {
+            return $reflection->getDeclaringClass()->getNamespaceName();
+        } elseif ($reflection instanceof AbstractInterfaceElementInterface) {
+            return $reflection->getDeclaringInterface()->getNamespaceName();
+        } elseif ($reflection instanceof AbstractTraitElementInterface) {
+            return $reflection->getDeclaringTrait()->getNamespaceName();
+        } elseif ($reflection instanceof FunctionReflectionInterface) {
+            return $reflection->getNamespaceName();
+        }
+
+        return null;
     }
 }

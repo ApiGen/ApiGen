@@ -33,7 +33,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
 
     public function getTypeHint(): string
     {
-        $types = (string) $this->betterParameterReflection->getTypeHint();
+        $types = (string) $this->betterParameterReflection->getType();
         $types = $this->removeClassPreSlashes($types);
         if ($types) {
             return $types;

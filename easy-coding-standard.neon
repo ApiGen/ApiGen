@@ -32,6 +32,7 @@ parameters:
         - PhpCsFixer\Fixer\Phpdoc\PhpdocAlignFixer
         - PhpCsFixer\Fixer\Operator\NewWithBracesFixer
         - PhpCsFixer\Fixer\Phpdoc\PhpdocInlineTagFixer
+        - PhpCsFixer\Fixer\ControlStructure\YodaStyleFixer
         # resolve later
         - Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff
 
