@@ -23,8 +23,8 @@ Add to your `composer.json`:
 ```json
 {
     "require": {
-        "apigen/apigen": "5.0.0-RC5",
-        "roave/better-reflection": "dev-master#a402048"
+        "apigen/apigen": "dev-master",
+        "roave/better-reflection": "dev-master#c87d856"
     }
 }
 ```
