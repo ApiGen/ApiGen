@@ -34,8 +34,14 @@ final class ConfigurationResolver
      */
     public function resolveValuesWithDefaults(array $values): array
     {
+        $values = array_change_key_case($values, CASE_LOWER);
+
         foreach ($this->getOptionNames() as $name) {
-            $values[$name] = $this->resolveValue($name, $values[$name] ?? null);
+            $lowered = strtolower($name);
+            $values[$name] = $this->resolveValue($name, $values[$lowered] ?? null);
+            if ($name !== $lowered) {
+                unset($values[$lowered]);
+            }
         }
 
         return $values;

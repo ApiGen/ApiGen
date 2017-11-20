@@ -13,7 +13,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 
 interface ClassReflectionInterface extends StartAndEndLineInterface, AnnotationsInterface, AbstractReflectionInterface, InNamespaceInterface, FileNameAwareReflectionInterface
 {
-    public function getParentClass(): ?ClassReflectionInterface;
+    public function getParentClass(): ?self;
 
     public function getParentClassName(): ?string;
 

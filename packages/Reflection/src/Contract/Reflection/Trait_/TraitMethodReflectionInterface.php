@@ -6,5 +6,5 @@ use ApiGen\Reflection\Contract\Reflection\AbstractMethodReflectionInterface;
 
 interface TraitMethodReflectionInterface extends AbstractMethodReflectionInterface, AbstractTraitElementInterface
 {
-    public function getOverriddenMethod(): ?TraitMethodReflectionInterface;
+    public function getOverriddenMethod(): ?self;
 }
