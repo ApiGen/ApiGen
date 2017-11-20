@@ -139,7 +139,7 @@ Associated element is internal, so ApiGen hides it.
 
 ## Themes
 
-To enable a custom theme just provide `themeDirectory` configuration option in your `apigen.yml`:
+To enable a custom theme just provide `theme_directory` configuration option in your `apigen.yml`:
 
 ```yaml
 parameters:
