@@ -97,7 +97,7 @@ Reference to Class, Function, Property, Method etc. element.
 ```php
 /**
  * @see SomeClass
- * @see SomeClass::$propety
+ * @see SomeClass::$property
  * @see SomeClass::someFunction()
  */
 ```
