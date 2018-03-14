@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection\Parser;
 
+use ApiGen\BetterReflection\Reflector\CacheClassReflector;
 use ApiGen\BetterReflection\SourceLocator\SourceLocatorsFactory;
 use ApiGen\Element\Cache\ReflectionWarmUpper;
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
@@ -186,14 +187,14 @@ final class Parser
 
     private function parseClassElements(SourceLocator $sourceLocator): void
     {
-        $classReflector = new ClassReflector($sourceLocator);
+        $classReflector = new CacheClassReflector($sourceLocator);
         $classInterfaceAndTraitReflections = $this->transformBetterClassInterfaceAndTraitReflections($classReflector);
         $this->separateClassInterfaceAndTraitReflections($classInterfaceAndTraitReflections);
     }
 
     private function parseFunctions(SourceLocator $sourceLocator): void
     {
-        $functionReflector = new FunctionReflector($sourceLocator, new ClassReflector($sourceLocator));
+        $functionReflector = new FunctionReflector($sourceLocator, new CacheClassReflector($sourceLocator));
         $functionReflections = $this->transformBetterFunctionReflections($functionReflector);
         $this->reflectionStorage->setFunctionReflections($functionReflections);
     }
