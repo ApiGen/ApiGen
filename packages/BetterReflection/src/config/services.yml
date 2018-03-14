@@ -4,6 +4,7 @@ services:
 
     ApiGen\BetterReflection\:
         resource: '..'
+        exclude: '../{Reflector}'
 
     # cached AST Locator
     Roave\BetterReflection\SourceLocator\Ast\PhpParserLocator: ~
