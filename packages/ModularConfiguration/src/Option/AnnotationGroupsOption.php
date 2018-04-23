@@ -9,7 +9,7 @@ final class AnnotationGroupsOption implements OptionInterface
     /**
      * @var string
      */
-    public const NAME = 'annotationGroups';
+    public const NAME = 'annotation_groups';
 
     public function getName(): string
     {

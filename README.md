@@ -12,7 +12,7 @@ Just look at [**ApiGen API**](https://apigen.github.io/ApiGen):
 
 ![ApiGen Preview](docs/preview.png)
 
-## Your Help is Needed to Finish 5.x Release  
+## Your Help is Needed to Finish 5.x Release
 
 :heart: We need your help to test new version of ApiGen.
 
@@ -78,10 +78,10 @@ the root of your project:
 
 ```yaml
 parameters:
-    visibilityLevels: [public, protected] # array
-    annotationGroups: [todo, deprecated] # array
+    visibility_levels: [public, protected] # array
+    annotation_groups: [todo, deprecated] # array
     title: "ApiGen Docs" # string
-    baseUrl: "http://apigen.org/api" # string
+    base_url: "http://apigen.org/api" # string
     overwrite: false # bool
 ```
 
@@ -121,7 +121,7 @@ A website url.
 ```php
 /**
  * This is already mentioned on Wiki.
- * @link https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall Click to see a cool quote  
+ * @link https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall Click to see a cool quote
  */
 ```
 
@@ -129,21 +129,21 @@ A website url.
 
 ```html
 This is already mentioned on Wiki.
-@link <a href="https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall">Click to see a cool quote</a> 
+@link <a href="https://en.wikipedia.org/wiki/United_we_stand,_divided_we_fall">Click to see a cool quote</a>
 ```
 
-### `@internal` 
+### `@internal`
 
 Associated element is internal, so ApiGen hides it.
 
 
 ## Themes
 
-To enable a custom theme just provide `themeDirectory` configuration option in your `apigen.yml`:
+To enable a custom theme just provide `theme_directory` configuration option in your `apigen.yml`:
 
 ```yaml
 parameters:
-    themeDirectory: path/to/theme # path to theme's config file
+    theme_directory: path/to/theme # path to theme's config file
 ```
 
 ## Contributing

@@ -11,7 +11,7 @@ final class ThemeDirectoryOption implements OptionInterface
     /**
      * @var string
      */
-    public const NAME = 'themeDirectory';
+    public const NAME = 'theme_directory';
 
     /**
      * @var FileSystem

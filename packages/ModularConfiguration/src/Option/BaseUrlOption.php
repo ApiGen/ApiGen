@@ -9,7 +9,7 @@ final class BaseUrlOption implements OptionInterface
     /**
      * @var string
      */
-    public const NAME = 'baseUrl';
+    public const NAME = 'base_url';
 
     public function getName(): string
     {

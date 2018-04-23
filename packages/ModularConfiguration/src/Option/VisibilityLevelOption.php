@@ -10,7 +10,7 @@ final class VisibilityLevelOption implements OptionInterface
     /**
      * @var string
      */
-    public const NAME = 'visibilityLevels';
+    public const NAME = 'visibility_levels';
 
     /**
      * @var string
