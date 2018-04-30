@@ -45,7 +45,7 @@ final class See extends BaseTag implements StaticMethod
      * @param string $body
      */
     public static function create(
-        $body,
+        string $body,
         FqsenResolver $resolver = null,
         DescriptionFactory $descriptionFactory = null,
         TypeContext $context = null
