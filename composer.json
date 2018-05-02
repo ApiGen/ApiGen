@@ -2,6 +2,7 @@
     "name": "apigen/apigen",
     "description": "PHP 7.1 source code API generator.",
     "license": "MIT",
+    "minimum-stability": "dev",
     "authors": [
         { "name": "ApiGen Contributors", "homepage": "https://github.com/apigen/apigen/graphs/contributors" },
         { "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
@@ -19,12 +20,12 @@
         "nette/finder": "^2.4",
         "nette/neon": "^2.4",
 
-        "symfony/config": "^3.3",
-        "symfony/console": "^3.3",
-        "symfony/finder": "^3.3",
-        "symfony/dependency-injection": "^3.3",
-        "symfony/http-kernel": "^3.3",
-        "symfony/yaml": "^3.3",
+        "symfony/config": "^3.4",
+        "symfony/console": "^3.4",
+        "symfony/finder": "^3.4",
+        "symfony/dependency-injection": "^3.4",
+        "symfony/http-kernel": "^3.4",
+        "symfony/yaml": "^3.4",
         "symplify/package-builder": "^2.2",
         "psr/container": "^1.0",
         "zendframework/zend-code": "^3.1"
