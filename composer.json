@@ -11,7 +11,7 @@
     "bin": ["bin/apigen"],
     "require": {
         "php": "^7.1",
-        "roave/better-reflection": "dev-master#c87d856",
+        "roave/better-reflection": "dev-master#1efdfe5",
         "kukulich/fshl": "^2.1",
 
         "latte/latte": "^2.4",
