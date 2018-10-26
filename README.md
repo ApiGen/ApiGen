@@ -24,7 +24,7 @@ Add to your `composer.json`:
 {
     "require": {
         "apigen/apigen": "dev-master",
-        "roave/better-reflection": "dev-master#c87d856"
+        "roave/better-reflection": "dev-master#1efdfe5"
     }
 }
 ```
