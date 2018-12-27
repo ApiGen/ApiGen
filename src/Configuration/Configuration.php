@@ -115,17 +115,22 @@ final class Configuration
 
     public function getTemplateByName(string $name): string
     {
-        return $this->getTemplatesDirectory() . DIRECTORY_SEPARATOR . $name . '.latte';
+        return sprintf('%s%s%s.latte', $this->getTemplatesDirectory(), DIRECTORY_SEPARATOR, $name);
     }
 
     public function getDestinationWithName(string $name): string
     {
-        return $this->getDestination() . DIRECTORY_SEPARATOR . $name . '.html';
+        return sprintf('%s%s%s.html', $this->getDestination(), DIRECTORY_SEPARATOR, $name);
     }
 
     public function getDestinationWithPrefixName(string $prefix, string $name): string
     {
-        return $this->getDestination() . DIRECTORY_SEPARATOR .
-            $prefix . NamingHelper::nameToFilePath($name) . '.html';
+        return sprintf(
+            '%s%s%s%s.html',
+            $this->getDestination(),
+            DIRECTORY_SEPARATOR,
+            $prefix,
+            NamingHelper::nameToFilePath($name)
+        );
     }
 }

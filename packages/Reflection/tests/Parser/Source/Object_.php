@@ -2,6 +2,6 @@
 
 namespace ApiGen\Reflection\Tests\Parser\Source;
 
-class Object
+class Object_
 {
 }

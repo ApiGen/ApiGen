@@ -14,7 +14,8 @@ use ApiGen\Reflection\TransformerCollector;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
-abstract class AbstractParameterReflection implements AbstractParameterReflectionInterface, TransformerCollectorAwareInterface
+abstract class AbstractParameterReflection implements AbstractParameterReflectionInterface,
+    TransformerCollectorAwareInterface
 {
     /**
      * @var ReflectionParameter
@@ -26,11 +27,18 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
      */
     protected $transformerCollector;
 
+    /**
+     * AbstractParameterReflection constructor.
+     * @param ReflectionParameter $betterParameterReflection
+     */
     public function __construct(ReflectionParameter $betterParameterReflection)
     {
         $this->betterParameterReflection = $betterParameterReflection;
     }
 
+    /**
+     * @return string
+     */
     public function getTypeHint(): string
     {
         $types = (string) $this->betterParameterReflection->getType();
@@ -47,6 +55,9 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         return '';
     }
 
+    /**
+     * @return bool
+     */
     public function isDefaultValueAvailable(): bool
     {
         return $this->betterParameterReflection->isDefaultValueAvailable();
@@ -117,7 +128,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
     }
 
     /**
-     * @return ClassMethodReflectionInterface|FunctionReflectionInterface|TraitMethodReflectionInterface
+     * @return ClassMethodReflectionInterface|FunctionReflectionInterface|TraitMethodReflectionInterface|null
      */
     private function getDeclaringReflection()
     {
@@ -128,5 +139,7 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         if ($this instanceof MethodParameterReflectionInterface) {
             return $this->getDeclaringMethod();
         }
+
+        return null;
     }
 }

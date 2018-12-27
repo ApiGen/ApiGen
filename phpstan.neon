@@ -3,3 +3,5 @@ parameters:
         - "#Constant TEMP_DIR not found#"
         - '#Call to an undefined method ApiGen\\Reflection\\Contract\\Reflection\\Partial\\AnnotationsInterface::getName\(\)#'
         - '#Class Symfony\\Component\\ExpressionLanguage\\ExpressionLanguage not found and could not be autoloaded#'
+    excludes_analyse:
+        - '%currentWorkingDirectory%/packages/*/tests/*'

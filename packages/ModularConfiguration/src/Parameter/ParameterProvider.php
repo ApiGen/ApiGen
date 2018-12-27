@@ -38,7 +38,7 @@ final class ParameterProvider implements ParameterProviderInterface
     private function unsetSymfonyDefaultParameters(array $containerParameters): array
     {
         foreach ($containerParameters as $name => $value) {
-            if (Strings::startsWith($name, 'kernel')) {
+            if (Strings::startsWith($name, 'kernel') || Strings::startsWith($name, 'container')) {
                 unset($containerParameters[$name]);
             }
         }

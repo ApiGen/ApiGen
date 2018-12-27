@@ -2,7 +2,23 @@ language: php
 
 sudo: false
 
-php: 7.1
+php:
+    - 7.1
+    - 7.2
+    - 7.1snapshot
+    - 7.2snapshot
+    - master
+
+matrix:
+    fast_finish: true
+    allow_failures:
+        - php: 7.1snapshot
+        - php: 7.2snapshot
+        - php: master
+
+cache:
+    directories:
+        - $HOME/.composer/cache
 
 env:
     global:
@@ -12,16 +28,14 @@ env:
         - secure: jJuaecVvLaHk9/kQabIcCn3pZ5KaqC5VZQUnvU5UWzAJmUxoDBVCAkdAz1/F3VyWhBtiiYiTo2D+DFsIXiNYXRNMIHp5AE+tz4XgSiZUhqV81BvRtCgJSJIBsiyVmbKE5WAoHt/ovMKZY7StVVejmK3OfsbXOf1ewhpWsmNTI30=
 
 before_install:
-    # Prevents global install of dev dependecies failing (due to Roave\BetterReflection:@dev)
-    - composer global config minimum-stability dev
     - composer global config prefer-stable true
 
 install:
     # install composer dependencies
     - composer install
     # Create composer global installs
-    - composer create-project apigen/apigen:dev-master temp/apigen-project
-    - composer global require apigen/apigen:dev-master
+    - CWD="$(pwd)" && mkdir -p ~/temp/apigen-project && cp -r . ~/temp/apigen-project && cd ~/temp/apigen-project/ && composer install && cd $CWD
+    - composer global require apigen/apigen
 
 script:
     # run tests
@@ -36,7 +50,7 @@ script:
     - composer phpstan
 
     # Global install checks
-    - temp/apigen-project/bin/apigen generate -h
+    - ~/temp/apigen-project/bin/apigen generate -h
     # disable for now, due to commit lock on opened PR
     # https://github.com/ApiGen/ApiGen/commit/891bdf8c8090ee72028943bb9d06d1accda27daf
     # https://github.com/Roave/BetterReflection/pull/312
@@ -74,4 +88,4 @@ after_script:
 
 # do not send emails
 notifications:
-    email: never
+    email: false

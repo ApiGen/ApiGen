@@ -61,7 +61,7 @@ final class StepCounter
     }
 
     /**
-     * @param FileNameAwareReflectionInterface[]
+     * @param FileNameAwareReflectionInterface[] $reflections
      */
     private function getSourceCodeCountForReflections(array $reflections): int
     {

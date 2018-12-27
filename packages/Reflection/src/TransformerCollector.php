@@ -10,6 +10,10 @@ use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Exception\UnsupportedReflectionClassException;
 
+/**
+ * Class TransformerCollector
+ * @package ApiGen\Reflection
+ */
 final class TransformerCollector
 {
     /**
@@ -22,6 +26,10 @@ final class TransformerCollector
      */
     private $reflectionCollectorCollector;
 
+    /**
+     * TransformerCollector constructor.
+     * @param ReflectionCollectorCollector $reflectionCollectorCollector
+     */
     public function __construct(ReflectionCollectorCollector $reflectionCollectorCollector)
     {
         $this->reflectionCollectorCollector = $reflectionCollectorCollector;
@@ -32,10 +40,6 @@ final class TransformerCollector
         $this->transformers[] = $transformer;
     }
 
-    /**
-     * @param object[] $reflections
-     * @return object[]
-     */
     public function transformGroup(array $reflections): array
     {
         $elements = [];
@@ -61,7 +65,8 @@ final class TransformerCollector
 
     /**
      * @param object $reflection
-     * @return object
+     * @return mixed
+     * @throws UnsupportedReflectionClassException
      */
     public function transformSingle($reflection)
     {
@@ -92,6 +97,7 @@ final class TransformerCollector
 
     /**
      * @param object[] $reflections
+     * @return TransformerInterface|null
      */
     private function detectMatchingTransformer(array $reflections): ?TransformerInterface
     {
@@ -108,6 +114,7 @@ final class TransformerCollector
 
     /**
      * @param object $transformedReflection
+     * @return bool
      */
     private function hasAllowedAccessLevel($transformedReflection): bool
     {
@@ -125,6 +132,7 @@ final class TransformerCollector
 
     /**
      * @param object $transformedReflection
+     * @return bool
      */
     private function shouldSkipReflection($transformedReflection): bool
     {

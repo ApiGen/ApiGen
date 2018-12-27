@@ -10,7 +10,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
-use InvalidArgumentException;
+use ApiGen\Reflection\Reflection\Exception\NotFoundException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -119,7 +119,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     public function getMethod(string $name): TraitMethodReflectionInterface
     {
         if (! isset($this->getMethods()[$name])) {
-            throw new InvalidArgumentException(sprintf(
+            throw new NotFoundException(sprintf(
                 'Method "%s" does not exist in trait "%s".',
                 $name,
                 $this->getName()
@@ -174,7 +174,7 @@ final class TraitReflection implements TraitReflectionInterface, TransformerColl
     public function getProperty(string $name): TraitPropertyReflectionInterface
     {
         if (! isset($this->getProperties()[$name])) {
-            throw new InvalidArgumentException(sprintf(
+            throw new NotFoundException(sprintf(
                 'Property "%s" does not exist in trait "%s".',
                 $name,
                 $this->getName()

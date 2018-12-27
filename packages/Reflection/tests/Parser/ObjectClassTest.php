@@ -5,7 +5,7 @@ namespace ApiGen\Reflection\Tests\Parser;
 use ApiGen\Reflection\Parser\Parser;
 use ApiGen\Reflection\ReflectionStorage;
 use ApiGen\Reflection\Tests\Parser\Source\ChildOfObject;
-use ApiGen\Reflection\Tests\Parser\Source\Object;
+use ApiGen\Reflection\Tests\Parser\Source\Object_;
 use ApiGen\Tests\AbstractContainerAwareTestCase;
 
 final class ObjectClassTest extends AbstractContainerAwareTestCase
@@ -33,8 +33,8 @@ final class ObjectClassTest extends AbstractContainerAwareTestCase
         $classReflections = $this->reflectionStorage->getClassReflections();
         $this->assertCount(4, $classReflections);
 
-        $this->assertArrayHasKey(Object::class, $classReflections);
-        $this->assertSame(Object::class, $classReflections[Object::class]->getName());
+        $this->assertArrayHasKey(Object_::class, $classReflections);
+        $this->assertSame(Object_::class, $classReflections[Object_::class]->getName());
     }
 
     public function testGetParent(): void
@@ -42,6 +42,6 @@ final class ObjectClassTest extends AbstractContainerAwareTestCase
         $classReflections = $this->reflectionStorage->getClassReflections();
 
         $classReflection = $classReflections[ChildOfObject::class]->getParentClass();
-        $this->assertSame(Object::class, $classReflection->getName());
+        $this->assertSame(Object_::class, $classReflection->getName());
     }
 }

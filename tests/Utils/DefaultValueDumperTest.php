@@ -20,7 +20,7 @@ final class DefaultValueDumperTest extends TestCase
     /**
      * @dataProvider getDumpData()
      *
-     * @param mixed
+     * @param mixed $value
      */
     public function testDump($value, string $expected): void
     {
@@ -35,10 +35,7 @@ final class DefaultValueDumperTest extends TestCase
         return [
             [11, '11'],
             [true, 'true'],
-            [['cat', 'dog'], "array (\n" .
-                "  0 => 'cat',\n" .
-                "  1 => 'dog',\n" .
-                ')', ],
+            [['cat', 'dog'], "array (\n" . "  0 => 'cat',\n" . "  1 => 'dog',\n" . ')'],
         ];
     }
 }
