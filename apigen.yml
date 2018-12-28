@@ -1,4 +1,5 @@
 parameters:
     title: "ApiGen It-self"
-    visibilityLevels: [public, protected]
-    baseUrl: http://apigen.org
+    visibility_levels: [public, protected]
+    base_url: http://apigen.org
+    theme_directory: packages/ThemeDefault/src

@@ -33,10 +33,7 @@ final class RelativePathResolver
             }
         }
 
-        throw new InvalidArgumentException(sprintf(
-            'Could not determine "%s" relative path',
-            $fileName
-        ));
+        throw new InvalidArgumentException(sprintf('Could not determine "%s" relative path', $fileName));
     }
 
     private function getFileNameWithoutSourcePath(string $fileName, string $directory): string

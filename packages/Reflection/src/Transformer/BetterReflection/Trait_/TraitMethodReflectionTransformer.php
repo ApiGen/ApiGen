@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\DocBlock\DocBlockFactory;
 use ApiGen\Reflection\Reflection\Trait_\TraitMethodReflection;
+use Roave\BetterReflection\Reflection\Reflection;
 use Roave\BetterReflection\Reflection\ReflectionMethod;
 
 final class TraitMethodReflectionTransformer implements TransformerInterface
@@ -21,7 +22,7 @@ final class TraitMethodReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param object $reflection
+     * @param Reflection $reflection
      */
     public function matches($reflection): bool
     {
@@ -35,7 +36,7 @@ final class TraitMethodReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param object|ReflectionMethod $reflection
+     * @param ReflectionMethod $reflection
      */
     public function transform($reflection): TraitMethodReflectionInterface
     {

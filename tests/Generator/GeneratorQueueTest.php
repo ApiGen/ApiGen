@@ -22,6 +22,11 @@ final class GeneratorQueueTest extends AbstractContainerAwareTestCase
         $this->generatorQueue = $this->container->get(GeneratorQueue::class);
     }
 
+    protected function tearDown()
+    {
+        unlink(TEMP_DIR . '/file.txt');
+    }
+
     public function testRun(): void
     {
         $this->assertFileNotExists(TEMP_DIR . '/file.txt');

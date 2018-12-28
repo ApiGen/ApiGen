@@ -25,15 +25,9 @@ final class FunctionGeneratorTest extends AbstractContainerAwareTestCase
     public function test(): void
     {
         $this->functionGenerator->generate();
-        $this->assertFileExists(
-            TEMP_DIR . '/function-ApiGen.Tests.Generator.Source.someFunction.html'
-        );
-        $this->assertFileExists(
-            TEMP_DIR . '/function-ApiGen.Tests.Generator.Source.someOtherFunction.html'
-        );
+        $this->assertFileExists(TEMP_DIR . '/function-ApiGen.Tests.Generator.Source.someFunction.html');
+        $this->assertFileExists(TEMP_DIR . '/function-ApiGen.Tests.Generator.Source.someOtherFunction.html');
 
-        $this->assertFileExists(
-            TEMP_DIR . '/source-function-Generator.Source.SomeFunction.php.html'
-        );
+        $this->assertFileExists(TEMP_DIR . '/source-function-Generator.Source.SomeFunction.php.html');
     }
 }

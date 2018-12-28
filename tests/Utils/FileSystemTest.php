@@ -19,13 +19,13 @@ final class FileSystemTest extends TestCase
 
     public function testNormalizePath(): void
     {
-        $backslashPath = 'C:' . DIRECTORY_SEPARATOR . 'Program Files' . DIRECTORY_SEPARATOR . 'ApiGen';
+        $backslashPath = sprintf('C:%sProgram Files%sApiGen', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
         $this->assertSame($backslashPath, $this->fileSystem->normalizePath($backslashPath));
     }
 
     public function testEnsureDirectoryExists(): void
     {
-        $filePath = TEMP_DIR . '/some/dir/file.txt';
+        $filePath = sprintf('%s/some/dir/file.txt', TEMP_DIR);
         $dirPath = dirname($filePath);
         $this->assertFileNotExists($dirPath);
 
@@ -35,10 +35,10 @@ final class FileSystemTest extends TestCase
 
     public function testPurgeDir(): void
     {
-        $dir = TEMP_DIR . '/dir-with-content';
+        $dir = sprintf('%s/dir-with-content', TEMP_DIR);
         mkdir($dir);
-        mkdir($dir . '/dir-inside');
-        file_put_contents($dir . '/file.txt', '...');
+        mkdir(sprintf('%s/dir-inside', $dir));
+        file_put_contents(sprintf('%s/file.txt', $dir), '...');
 
         @rmdir($dir);
         $this->assertFileExists($dir);
@@ -52,7 +52,7 @@ final class FileSystemTest extends TestCase
 
     public function testPurgeDirOnNonExistingDir(): void
     {
-        $dir = TEMP_DIR . '/not-created-dir';
+        $dir = sprintf('%s/not-created-dir', TEMP_DIR);
         $this->assertFileNotExists($dir);
 
         $this->fileSystem->purgeDir($dir);
@@ -61,31 +61,25 @@ final class FileSystemTest extends TestCase
 
     public function testGetAbsolutePath(): void
     {
-        $absoluteDir = $this->fileSystem->normalizePath(TEMP_DIR . '/relative-dir');
+        $absoluteDir = $this->fileSystem->normalizePath(sprintf('%s/relative-dir', TEMP_DIR));
         mkdir($absoluteDir);
         $this->assertFileExists($absoluteDir);
 
-        $absoluteFile = $absoluteDir . DIRECTORY_SEPARATOR . 'file.txt';
+        $absoluteFile = sprintf('%s%sfile.txt', $absoluteDir, DIRECTORY_SEPARATOR);
         file_put_contents($absoluteFile, '...');
         $this->assertFileExists($absoluteFile);
 
         $this->assertSame($absoluteDir, $this->fileSystem->getAbsolutePath($absoluteDir));
 
-        $this->assertSame(
-            'someFile.txt',
-            $this->fileSystem->getAbsolutePath('someFile.txt')
-        );
+        $this->assertSame('someFile.txt', $this->fileSystem->getAbsolutePath('someFile.txt'));
 
-        $testFile = DIRECTORY_SEPARATOR . 'someDir' . DIRECTORY_SEPARATOR . 'someDeeperFile.txt';
-        $this->assertSame(
-            $testFile,
-            $this->fileSystem->getAbsolutePath($testFile)
-        );
+        $testFile = sprintf('%ssomeDir%ssomeDeeperFile.txt', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
+        $this->assertSame($testFile, $this->fileSystem->getAbsolutePath($testFile));
     }
 
     public function testIsDirEmpty(): void
     {
-        $this->assertTrue($this->fileSystem->isDirEmpty(__DIR__ . '/FileSystemSource/EmptyDir'));
-        $this->assertFalse($this->fileSystem->isDirEmpty(__DIR__ . '/FileSystemSource/NonEmptyDir'));
+        $this->assertTrue($this->fileSystem->isDirEmpty(sprintf('%s/FileSystemSource/EmptyDir', __DIR__)));
+        $this->assertFalse($this->fileSystem->isDirEmpty(sprintf('%s/FileSystemSource/NonEmptyDir', __DIR__)));
     }
 }

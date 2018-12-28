@@ -19,12 +19,13 @@ final class ProcessDocTextEvent extends Event
     private $reflection;
 
     /**
-     * @param AnnotationsInterface|AbstractReflectionInterface $reflection
+     * @param string $text
+     * @param AnnotationsInterface $annotations
      */
-    public function __construct(string $text, AnnotationsInterface $reflection)
+    public function __construct(string $text, AnnotationsInterface $annotations)
     {
         $this->text = $text;
-        $this->reflection = $reflection;
+        $this->reflection = $annotations;
     }
 
     public function getText(): string
@@ -33,7 +34,7 @@ final class ProcessDocTextEvent extends Event
     }
 
     /**
-     * @return AnnotationsInterface|AbstractReflectionInterface
+     * @return AnnotationsInterface
      */
     public function getReflectionElement(): AnnotationsInterface
     {

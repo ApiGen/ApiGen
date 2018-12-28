@@ -47,8 +47,8 @@ final class AppKernel extends Kernel
         return sys_get_temp_dir() . '/_apigen_kernel_log';
     }
 
-    protected function build(ContainerBuilder $container): void
+    protected function build(ContainerBuilder $containerBuilder): void
     {
-        $container->addCompilerPass(new CollectorCompilerPass);
+        $containerBuilder->addCompilerPass(new CollectorCompilerPass);
     }
 }

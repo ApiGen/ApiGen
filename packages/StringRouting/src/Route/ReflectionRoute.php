@@ -32,7 +32,7 @@ final class ReflectionRoute implements RouteInterface
     }
 
     /**
-     * @param AbstractReflectionInterface $argument
+     * @param AbstractReflectionInterface $reflection
      */
     public function constructUrl($reflection): string
     {

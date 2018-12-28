@@ -34,9 +34,12 @@ final class RelativePathResolverTest extends AbstractContainerAwareTestCase
             SourceOption::NAME => [TEMP_DIR],
         ]);
 
-        $this->assertSame('some-file.txt', $this->relativePathResolver->getRelativePath(TEMP_DIR . '/some-file.txt'));
+        $this->assertSame(
+            'some-file.txt',
+            $this->relativePathResolver->getRelativePath(sprintf('%s/some-file.txt', TEMP_DIR))
+        );
 
-        $testPath = 'some' . DIRECTORY_SEPARATOR . 'dir' . DIRECTORY_SEPARATOR . 'file.txt';
+        $testPath = sprintf('some%sdir%sfile.txt', DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR);
         $this->assertSame(
             $testPath,
             $this->relativePathResolver->getRelativePath(TEMP_DIR . DIRECTORY_SEPARATOR . $testPath)

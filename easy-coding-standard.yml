@@ -1,18 +1,18 @@
-includes:
-    - vendor/symplify/easy-coding-standard/config/php70-checkers.neon
-    - vendor/symplify/easy-coding-standard/config/php71-checkers.neon
-    - vendor/symplify/easy-coding-standard/config/symfony-checkers.neon
-    - vendor/symplify/easy-coding-standard/config/symplify-checkers.neon
-    - vendor/symplify/easy-coding-standard/config/common.neon
-    - vendor/symplify/easy-coding-standard/config/spaces.neon
+imports:
+    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/php70.yml' }
+    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/php71.yml' }
+    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/symfony.yml' }
+    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/symplify.yml' }
+    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/common.yml' }
+    - { resource: '%vendor_dir%/symplify/easy-coding-standard/config/common/spaces.yml' }
 
-checkers:
+services:
     # PSR2
     PHP_CodeSniffer\Standards\Generic\Sniffs\Files\LineLengthSniff:
         absoluteLineLimit: 120
 
     # Code Structures
-    - SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff
+    SlevomatCodingStandard\Sniffs\ControlStructures\AssignmentInConditionSniff: ~
 
     # Namespaces
     SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff:
@@ -21,8 +21,8 @@ checkers:
     # Strict and Scalar types
     SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
         usefulAnnotations:
-            - @dataProvider
-            - @deprecated
+            - '@dataProvider'
+            - '@deprecated'
         enableEachParameterAndReturnInspection: true
 
 parameters:
@@ -80,11 +80,11 @@ parameters:
             - packages/Reflection/src/Reflection/Function_/FunctionParameterReflection.php
             - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php
             - packages/Reflection/src/Contract/Reflection/AbstractMethodReflectionInterface.php
-            - *packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php
+            - '*packages/Reflection/src/Contract/Reflection/*/*ReflectionInterface.php'
 
         Symplify\CodingStandard\Sniffs\Debug\CommentedOutCodeSniff:
             # todos, remove after they are fixed
-            - *packages/Annotation/src/AnnotationSubscriber/*Subscriber.php
+            - '*packages/Annotation/src/AnnotationSubscriber/*Subscriber.php'
             - packages/Reflection/tests/Reflection/Method/MethodReflection/ParameterWithConstantDefalutValueTest.php
             - packages/Reflection/tests/Reflection/Function_/FunctionParameterReflection/ConstantDefaultValueTest.php
             - packages/Reflection/src/Reflection/Interface_/InterfaceConstantReflection.php

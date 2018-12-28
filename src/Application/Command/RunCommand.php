@@ -9,14 +9,14 @@ use Symfony\Component\Console\Input\InputInterface;
 final class RunCommand
 {
     /**
-     * @var string[]
-     */
-    private $source = [];
-
-    /**
      * @var string
      */
     private $destination;
+
+    /**
+     * @var string[]
+     */
+    private $source = [];
 
     /**
      * @param string[] $source
@@ -29,10 +29,7 @@ final class RunCommand
 
     public static function createFromInput(InputInterface $input): self
     {
-        return new self(
-            $input->getArgument(SourceOption::NAME),
-            $input->getOption(DestinationOption::NAME)
-        );
+        return new self($input->getArgument(SourceOption::NAME), $input->getOption(DestinationOption::NAME));
     }
 
     /**

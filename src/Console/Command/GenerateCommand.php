@@ -65,6 +65,9 @@ final class GenerateCommand extends Command
 
     private function ensureDestinationIsSet(InputInterface $input): void
     {
-        $this->configurationResolver->resolveValue(DestinationOption::NAME, $input->getOption(DestinationOption::NAME));
+        $this->configurationResolver->resolveValue(
+            DestinationOption::NAME,
+            $input->getOption(DestinationOption::NAME)
+        );
     }
 }

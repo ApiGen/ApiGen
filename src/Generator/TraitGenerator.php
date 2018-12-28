@@ -70,7 +70,10 @@ final class TraitGenerator implements GeneratorInterface
         $content = file_get_contents($traitReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
-        $destination = $this->configuration->getDestinationWithPrefixName('source-trait-', $traitReflection->getName());
+        $destination = $this->configuration->getDestinationWithPrefixName(
+            'source-trait-',
+            $traitReflection->getName()
+        );
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('source'),

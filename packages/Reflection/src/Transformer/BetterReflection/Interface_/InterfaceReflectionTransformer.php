@@ -7,6 +7,7 @@ use ApiGen\Reflection\Contract\Transformer\SortableTransformerInterface;
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Reflection\Interface_\InterfaceReflection;
 use phpDocumentor\Reflection\DocBlockFactory;
+use Roave\BetterReflection\Reflection\Reflection;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
 final class InterfaceReflectionTransformer implements TransformerInterface, SortableTransformerInterface
@@ -28,7 +29,7 @@ final class InterfaceReflectionTransformer implements TransformerInterface, Sort
     }
 
     /**
-     * @param object $reflection
+     * @param Reflection $reflection
      */
     public function matches($reflection): bool
     {
@@ -36,7 +37,7 @@ final class InterfaceReflectionTransformer implements TransformerInterface, Sort
     }
 
     /**
-     * @param object|ReflectionClass $reflection
+     * @param ReflectionClass $reflection
      */
     public function transform($reflection): InterfaceReflection
     {

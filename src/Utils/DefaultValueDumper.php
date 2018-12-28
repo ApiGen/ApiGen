@@ -5,7 +5,7 @@ namespace ApiGen\Utils;
 final class DefaultValueDumper
 {
     /**
-     * @param mixed
+     * @param mixed $value
      */
     public function dumpValue($value): string
     {

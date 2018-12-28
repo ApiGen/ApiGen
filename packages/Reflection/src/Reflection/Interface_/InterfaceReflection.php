@@ -10,7 +10,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceMethodReflectionIn
 use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
-use Exception;
+use ApiGen\Reflection\Reflection\Exception\NotFoundException;
 use phpDocumentor\Reflection\DocBlock;
 use Roave\BetterReflection\Reflection\ReflectionClass;
 
@@ -182,9 +182,7 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
             }
         }
 
-        throw new Exception(
-            sprintf('missing cosntant %s', $name)
-        );
+        throw new NotFoundException(sprintf('missing cosntant %s', $name));
     }
 
     public function getOwnConstant(string $name): InterfaceConstantReflectionInterface
@@ -195,14 +193,14 @@ final class InterfaceReflection implements InterfaceReflectionInterface, Transfo
             }
         }
 
-        throw new Exception(
-            sprintf('missing cosntant %s', $name)
-        );
+        throw new NotFoundException(sprintf('missing constant %s', $name));
     }
 
     /**
      * Actually "extends interface", but naming goes wrong on more places.
      * So decided to keep it here.
+     * @param string $interface
+     * @return bool
      */
     public function implementsInterface(string $interface): bool
     {

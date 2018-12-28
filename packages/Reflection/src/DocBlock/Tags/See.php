@@ -38,7 +38,7 @@ final class See extends BaseTag implements StaticMethod
 
     public function __toString(): string
     {
-        return ($this->refers ?: $this->link) . ($this->description ? ' ' . $this->description->render() : '');
+        return ($this->refers ?? $this->link) . ($this->description ? ' ' . $this->description->render() : '');
     }
 
     /**

@@ -6,6 +6,7 @@ use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceConstantReflection
 use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Reflection\Interface_\InterfaceConstantReflection;
 use phpDocumentor\Reflection\DocBlockFactoryInterface;
+use Roave\BetterReflection\Reflection\Reflection;
 use Roave\BetterReflection\Reflection\ReflectionClassConstant;
 
 final class InterfaceConstantReflectionTransformer implements TransformerInterface
@@ -21,7 +22,7 @@ final class InterfaceConstantReflectionTransformer implements TransformerInterfa
     }
 
     /**
-     * @param object $reflection
+     * @param Reflection $reflection
      */
     public function matches($reflection): bool
     {
@@ -35,7 +36,7 @@ final class InterfaceConstantReflectionTransformer implements TransformerInterfa
     }
 
     /**
-     * @param object|ReflectionClassConstant $reflection
+     * @param ReflectionClassConstant $reflection
      */
     public function transform($reflection): InterfaceConstantReflectionInterface
     {
