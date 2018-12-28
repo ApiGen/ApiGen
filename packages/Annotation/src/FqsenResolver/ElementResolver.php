@@ -89,7 +89,7 @@ final class ElementResolver
         $classReflectionName = ltrim($classReflectionName, '\\');
 
         // @todo return only string on non resolved existing class
-        /** @var ClassReflectionInterface|InterfaceReflectionInterface|TraitReflectionInterface */
+        /** @var ClassReflectionInterface|InterfaceReflectionInterface|TraitReflectionInterface|null */
         $classyReflection = $this->getClassyReflection($classReflectionName);
 
         if ($classyReflection === null) {

@@ -11,6 +11,7 @@ use ApiGen\Reflection\Contract\Reflection\Method\MethodParameterReflectionInterf
 use ApiGen\Reflection\Contract\Reflection\Trait_\TraitMethodReflectionInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\TransformerCollector;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use Roave\BetterReflection\Reflection\ReflectionParameter;
 
@@ -115,7 +116,10 @@ abstract class AbstractParameterReflection implements AbstractParameterReflectio
         return implode('|', $typesInArray);
     }
 
-    private function getAnnotation(): ?Param
+    /**
+     * @return Param|null
+     */
+    private function getAnnotation(): ?Tag
     {
         $declaringReflection = $this->getDeclaringReflection();
         $annotations = $declaringReflection->getAnnotation(AnnotationList::PARAM);

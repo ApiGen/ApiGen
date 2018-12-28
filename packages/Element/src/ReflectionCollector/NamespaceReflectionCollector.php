@@ -30,7 +30,7 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
     private $cachedNamespaceKeys = [];
 
     /**
-     * @param InNamespaceInterface|AbstractReflectionInterface $reflection
+     * @param ClassReflectionInterface $reflection
      */
     public function processReflection(AbstractReflectionInterface $reflection): void
     {
@@ -42,7 +42,7 @@ final class NamespaceReflectionCollector implements BasicReflectionCollectorInte
         $namespace = $reflection->getNamespaceName() ?: self::NO_NAMESPACE;
 
         if ($reflectionInterface === ClassReflectionInterface::class) {
-            $reflectionInterface = ($reflection->implementsInterface(Throwable::class)) ? 'exception' : 'class';
+            $reflectionInterface = $reflection->implementsInterface(Throwable::class) ? 'exception' : 'class';
         }
 
         $this->collectedReflections[$namespace][$reflectionInterface][$reflection->getName()] = $reflection;

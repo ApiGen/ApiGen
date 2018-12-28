@@ -35,7 +35,7 @@ final class ClassMethodReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param ReflectionMethod|object $reflection
+     * @param ReflectionMethod $reflection
      */
     public function transform($reflection): ClassMethodReflectionInterface
     {

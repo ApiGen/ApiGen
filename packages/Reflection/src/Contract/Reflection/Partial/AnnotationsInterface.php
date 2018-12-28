@@ -13,12 +13,12 @@ interface AnnotationsInterface
     public function hasAnnotation(string $name): bool;
 
     /**
-     * @return Tag[]
+     * @return array
      */
     public function getAnnotation(string $name): array;
 
     /**
-     * @return Tag[]|Tag[][]
+     * @return array
      */
     public function getAnnotations(): array;
 }

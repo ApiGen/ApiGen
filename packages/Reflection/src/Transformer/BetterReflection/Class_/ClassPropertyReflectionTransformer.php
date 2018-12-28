@@ -7,6 +7,7 @@ use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\DocBlock\DocBlockFactory;
 use ApiGen\Reflection\Reflection\Class_\ClassPropertyReflection;
 use Roave\BetterReflection\Reflection\ReflectionProperty;
+use Roave\BetterReflection\Reflector\Reflector;
 
 final class ClassPropertyReflectionTransformer implements TransformerInterface
 {
@@ -21,7 +22,7 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param object $reflection
+     * @param Reflector $reflection
      */
     public function matches($reflection): bool
     {
@@ -33,7 +34,7 @@ final class ClassPropertyReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param object|ReflectionProperty $reflection
+     * @param ReflectionProperty $reflection
      */
     public function transform($reflection): ClassPropertyReflectionInterface
     {
