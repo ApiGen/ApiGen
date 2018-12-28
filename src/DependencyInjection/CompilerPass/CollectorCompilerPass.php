@@ -29,7 +29,9 @@ use Symplify\PackageBuilder\DependencyInjection\DefinitionFinder;
 
 final class CollectorCompilerPass implements CompilerPassInterface
 {
-    /** @var DefinitionCollector $definitionCollector */
+    /**
+     * @var DefinitionCollector
+     */
     private $definitionCollector;
 
     public function __construct()
@@ -91,8 +93,9 @@ final class CollectorCompilerPass implements CompilerPassInterface
         );
     }
 
-    private function collectReflectionCollectorsToReflectionCollectorCollector(ContainerBuilder $containerBuilder): void
-    {
+    private function collectReflectionCollectorsToReflectionCollectorCollector(
+        ContainerBuilder $containerBuilder
+    ): void {
         $this->definitionCollector->loadCollectorWithType(
             $containerBuilder,
             ReflectionCollectorCollector::class,

@@ -25,18 +25,13 @@ final class ClassConstantReflectionTransformer implements TransformerInterface
      */
     public function matches($reflection): bool
     {
-        if (! $reflection instanceof ReflectionClassConstant ||
-           ($reflection->getDeclaringClass()->isInterface() ||
-            $reflection->getDeclaringClass()->isTrait())
-        ) {
-            return false;
-        }
-
-        return true;
+        return !(!$reflection instanceof ReflectionClassConstant ||
+            ($reflection->getDeclaringClass()->isInterface() ||
+                $reflection->getDeclaringClass()->isTrait()));
     }
 
     /**
-     * @param object|ReflectionClassConstant $reflection
+     * @param ReflectionClassConstant $reflection
      */
     public function transform($reflection): ClassConstantReflectionInterface
     {

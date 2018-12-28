@@ -53,30 +53,30 @@ final class ExceptionGenerator implements GeneratorInterface
         }
     }
 
-    private function generateForException(ClassReflectionInterface $exceptionReflection): void
+    private function generateForException(ClassReflectionInterface $classReflection): void
     {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('class'),
-            $this->configuration->getDestinationWithPrefixName('exception-', $exceptionReflection->getName()),
+            $this->configuration->getDestinationWithPrefixName('exception-', $classReflection->getName()),
             [
                 'activePage' => 'exception',
-                'class' => $exceptionReflection,
+                'class' => $classReflection,
             ]
         );
     }
 
-    private function generateSourceCodeForException(ClassReflectionInterface $exceptionReflection): void
+    private function generateSourceCodeForException(ClassReflectionInterface $classReflection): void
     {
-        $content = file_get_contents($exceptionReflection->getFileName());
+        $content = file_get_contents($classReflection->getFileName());
         $highlightedContent = $this->sourceCodeHighlighter->highlightAndAddLineNumbers($content);
 
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('source'),
-            $this->configuration->getDestinationWithPrefixName('source-exception-', $exceptionReflection->getName()),
+            $this->configuration->getDestinationWithPrefixName('source-exception-', $classReflection->getName()),
             [
                 'activePage' => 'class',
-                'activeClass' => $exceptionReflection,
-                'fileName' => $exceptionReflection->getFileName(),
+                'activeClass' => $classReflection,
+                'fileName' => $classReflection->getFileName(),
                 'source' => $highlightedContent,
             ]
         );

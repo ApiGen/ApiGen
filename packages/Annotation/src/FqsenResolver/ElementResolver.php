@@ -9,7 +9,9 @@ use ApiGen\Reflection\Contract\Reflection\Class_\ClassPropertyReflectionInterfac
 use ApiGen\Reflection\Contract\Reflection\Class_\ClassReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Function_\FunctionReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Interface_\AbstractInterfaceElementInterface;
+use ApiGen\Reflection\Contract\Reflection\Interface_\InterfaceReflectionInterface;
 use ApiGen\Reflection\Contract\Reflection\Trait_\AbstractTraitElementInterface;
+use ApiGen\Reflection\Contract\Reflection\Trait_\TraitReflectionInterface;
 use ApiGen\Reflection\ReflectionStorage;
 use Nette\Utils\Strings;
 use phpDocumentor\Reflection\FqsenResolver;
@@ -110,9 +112,13 @@ final class ElementResolver
     {
         if ($reflection instanceof AbstractClassElementInterface) {
             return $reflection->getDeclaringClassName();
-        } elseif ($reflection instanceof AbstractInterfaceElementInterface) {
+        }
+
+        if ($reflection instanceof AbstractInterfaceElementInterface) {
             return $reflection->getDeclaringInterfaceName();
-        } elseif ($reflection instanceof AbstractTraitElementInterface) {
+        }
+
+        if ($reflection instanceof AbstractTraitElementInterface) {
             return $reflection->getDeclaringTraitName();
         }
 
@@ -138,11 +144,17 @@ final class ElementResolver
     {
         if ($reflection instanceof AbstractClassElementInterface) {
             return $reflection->getDeclaringClass()->getNamespaceName();
-        } elseif ($reflection instanceof AbstractInterfaceElementInterface) {
+        }
+
+        if ($reflection instanceof AbstractInterfaceElementInterface) {
             return $reflection->getDeclaringInterface()->getNamespaceName();
-        } elseif ($reflection instanceof AbstractTraitElementInterface) {
+        }
+
+        if ($reflection instanceof AbstractTraitElementInterface) {
             return $reflection->getDeclaringTrait()->getNamespaceName();
-        } elseif ($reflection instanceof FunctionReflectionInterface) {
+        }
+
+        if ($reflection instanceof FunctionReflectionInterface) {
             return $reflection->getNamespaceName();
         }
 

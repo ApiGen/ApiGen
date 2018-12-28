@@ -19,12 +19,12 @@ final class ProcessDocTextEvent extends Event
     private $reflection;
 
     /**
-     * @param AnnotationsInterface|AbstractReflectionInterface $reflection
+     * @param AnnotationsInterface|AbstractReflectionInterface $text
      */
-    public function __construct(string $text, AnnotationsInterface $reflection)
+    public function __construct(string $text, AnnotationsInterface $annotations)
     {
         $this->text = $text;
-        $this->reflection = $reflection;
+        $this->reflection = $annotations;
     }
 
     public function getText(): string

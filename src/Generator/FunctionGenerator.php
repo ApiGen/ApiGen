@@ -61,14 +61,14 @@ final class FunctionGenerator implements GeneratorInterface
         }
     }
 
-    private function generateForFunction(FunctionReflectionInterface $reflectionFunction): void
+    private function generateForFunction(FunctionReflectionInterface $functionReflection): void
     {
         $this->templateRenderer->renderToFile(
             $this->configuration->getTemplateByName('function'),
-            $this->configuration->getDestinationWithPrefixName('function-', $reflectionFunction->getName()),
+            $this->configuration->getDestinationWithPrefixName('function-', $functionReflection->getName()),
             [
                 'activePage' => 'function',
-                'function' => $reflectionFunction,
+                'function' => $functionReflection,
             ]
         );
     }

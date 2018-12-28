@@ -10,8 +10,7 @@ final class Finder implements FinderInterface
 {
     /**
      * @param string[] $sources
-     * @param string[] $exclude
-     * @param string[] $extensions
+     *
      * @return SplFileInfo[]
      */
     public function find(array $sources): array
@@ -46,8 +45,8 @@ final class Finder implements FinderInterface
     /**
      * @return SplFileInfo[]
      */
-    private function convertFinderToArray(NetteFinder $finder): array
+    private function convertFinderToArray(NetteFinder $netteFinder): array
     {
-        return iterator_to_array($finder->getIterator());
+        return iterator_to_array($netteFinder->getIterator());
     }
 }

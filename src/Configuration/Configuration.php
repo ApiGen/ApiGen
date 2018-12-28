@@ -40,6 +40,7 @@ final class Configuration
 
     /**
      * @param mixed[] $options
+     *
      * @return mixed[]
      */
     public function resolveOptions(array $options): array

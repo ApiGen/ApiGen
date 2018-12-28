@@ -15,7 +15,7 @@ final class ParameterProvider implements ParameterProviderInterface
     private $parameters = [];
 
     /**
-     * @param Container|ContainerInterface $container
+     * @param Container $container
      */
     public function __construct(ContainerInterface $container)
     {

@@ -6,7 +6,6 @@ final class DefaultValueDumper
 {
     /**
      * @param mixed $value
-     * @return string
      */
     public function dumpValue($value): string
     {

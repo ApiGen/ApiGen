@@ -9,14 +9,14 @@ use ApiGen\Contract\Generator\GeneratorInterface;
 final class GeneratorQueue
 {
     /**
-     * @var ProgressBar
-     */
-    private $progressBar;
-
-    /**
      * @var GeneratorInterface[]
      */
     private $generators = [];
+
+    /**
+     * @var ProgressBar
+     */
+    private $progressBar;
 
     /**
      * @var StepCounter

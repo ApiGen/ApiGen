@@ -60,21 +60,6 @@ final class StepCounter
             + $this->getSourceCodeCountForReflections($this->reflectionStorage->getFunctionReflections());
     }
 
-    /**
-     * @param FileNameAwareReflectionInterface[] $reflections
-     */
-    private function getSourceCodeCountForReflections(array $reflections): int
-    {
-        $count = 0;
-        foreach ($reflections as $reflection) {
-            if ($reflection->getFileName()) {
-                ++$count;
-            }
-        }
-
-        return $count;
-    }
-
     private function getOverviewPagesCount(): int
     {
         $count = 2; // index.html + elementlist.js
@@ -96,6 +81,21 @@ final class StepCounter
 
         if (count($this->reflectionStorage->getFunctionReflections())) {
             ++$count; // functions.html
+        }
+
+        return $count;
+    }
+
+    /**
+     * @param FileNameAwareReflectionInterface[] $reflections
+     */
+    private function getSourceCodeCountForReflections(array $reflections): int
+    {
+        $count = 0;
+        foreach ($reflections as $reflection) {
+            if ($reflection->getFileName()) {
+                ++$count;
+            }
         }
 
         return $count;

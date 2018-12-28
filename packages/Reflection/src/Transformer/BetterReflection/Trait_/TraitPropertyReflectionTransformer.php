@@ -21,7 +21,7 @@ final class TraitPropertyReflectionTransformer implements TransformerInterface
     }
 
     /**
-     * @param object $reflection
+     * @param ReflectionProperty $reflection
      */
     public function matches($reflection): bool
     {
@@ -29,12 +29,7 @@ final class TraitPropertyReflectionTransformer implements TransformerInterface
             return false;
         }
 
-        $declaringClassOrTrait = $reflection->getDeclaringClass();
-        if ($declaringClassOrTrait === null) {
-            return false;
-        }
-
-        return $declaringClassOrTrait->isTrait();
+        return $reflection->getDeclaringClass()->isTrait();
     }
 
     /**
