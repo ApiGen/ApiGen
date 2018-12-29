@@ -2,6 +2,7 @@
 
 namespace ApiGen\Reflection;
 
+use ApiGen\Configuration\Configuration;
 use ApiGen\Element\ReflectionCollectorCollector;
 use ApiGen\Reflection\Contract\Reflection\Partial\AccessLevelInterface;
 use ApiGen\Reflection\Contract\Reflection\Partial\AnnotationsInterface;
@@ -10,6 +11,9 @@ use ApiGen\Reflection\Contract\Transformer\TransformerInterface;
 use ApiGen\Reflection\Contract\TransformerCollectorAwareInterface;
 use ApiGen\Reflection\Exception\UnsupportedReflectionClassException;
 
+/**
+ * Class TransformerCollector.
+ */
 final class TransformerCollector
 {
     /**
@@ -22,9 +26,16 @@ final class TransformerCollector
      */
     private $reflectionCollectorCollector;
 
-    public function __construct(ReflectionCollectorCollector $reflectionCollectorCollector)
+    /** @var Configuration $configuration */
+    private $configuration;
+
+    /**
+     * TransformerCollector constructor.
+     */
+    public function __construct(ReflectionCollectorCollector $reflectionCollectorCollector, Configuration $config)
     {
         $this->reflectionCollectorCollector = $reflectionCollectorCollector;
+        $this->configuration = $config;
     }
 
     public function addTransformer(TransformerInterface $transformer): void
@@ -32,10 +43,6 @@ final class TransformerCollector
         $this->transformers[] = $transformer;
     }
 
-    /**
-     * @param object[] $reflections
-     * @return object[]
-     */
     public function transformGroup(array $reflections): array
     {
         $elements = [];
@@ -61,7 +68,10 @@ final class TransformerCollector
 
     /**
      * @param object $reflection
-     * @return object
+     *
+     * @return mixed
+     *
+     * @throws UnsupportedReflectionClassException
      */
     public function transformSingle($reflection)
     {
@@ -91,6 +101,24 @@ final class TransformerCollector
     }
 
     /**
+     * @param object $transformedReflection
+     */
+    private function shouldSkipReflection($transformedReflection): bool
+    {
+        if ($transformedReflection instanceof AnnotationsInterface
+            && $transformedReflection->hasAnnotation('internal')
+        ) {
+            return true;
+        }
+
+        if (! $this->hasAllowedAccessLevel($transformedReflection)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * @param object[] $reflections
      */
     private function detectMatchingTransformer(array $reflections): ?TransformerInterface
@@ -115,29 +143,14 @@ final class TransformerCollector
             return true;
         }
 
-        // hardcoded @todo make service-like and using Configuration
-        if ($transformedReflection->isPublic() || $transformedReflection->isProtected()) {
-            return true;
-        }
+        $visibilityLevels = $this->configuration->getVisibilityLevels();
 
-        return false;
-    }
+        $public = $visibilityLevels & \ReflectionProperty::IS_PUBLIC;
+        $protected = $visibilityLevels & \ReflectionProperty::IS_PROTECTED;
+        $private = $visibilityLevels & \ReflectionProperty::IS_PRIVATE;
 
-    /**
-     * @param object $transformedReflection
-     */
-    private function shouldSkipReflection($transformedReflection): bool
-    {
-        if ($transformedReflection instanceof AnnotationsInterface
-            && $transformedReflection->hasAnnotation('internal')
-        ) {
-            return true;
-        }
-
-        if (! $this->hasAllowedAccessLevel($transformedReflection)) {
-            return true;
-        }
-
-        return false;
+        return ($public && $transformedReflection->isPublic())
+            || ($protected && $transformedReflection->isProtected())
+            || ($private && $transformedReflection->isPrivate());
     }
 }
