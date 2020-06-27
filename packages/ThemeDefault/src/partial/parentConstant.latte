@@ -1,9 +1,0 @@
-<td>
-    <code class="keyword">
-        {foreach $parentClassOrInterface->getOwnConstants() as $parentClassOrInterfaceConstant}
-            <a href="{$parentClassOrInterfaceConstant|linkReflection}" n:class="$parentClassOrInterfaceConstant->isDeprecated() ? deprecated, constant-name">
-                {$parentClassOrInterfaceConstant->getName()}
-            </a>{sep}, {/sep}
-        {/foreach}
-    </code>
-</td>
