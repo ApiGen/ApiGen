@@ -1,11 +1,32 @@
 {
-    "name": "apigen/apigen",
-    "description": "PHP 7.1 source code API generator.",
-    "license": "MIT",
-    "authors": [
-        { "name": "ApiGen Contributors", "homepage": "https://github.com/apigen/apigen/graphs/contributors" },
-        { "name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich" },
-        { "name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville" },
-        { "name": "David Grudl",  "homepage": "http://davidgrudl.com" }
-    ]
+	"name": "apigen/apigen",
+	"description": "PHP source code API generator.",
+	"license": "MIT",
+	"authors": [
+		{"name": "ApiGen Contributors", "homepage": "https://github.com/apigen/apigen/graphs/contributors"},
+		{"name": "Jaroslav Hanslík", "homepage": "https://github.com/kukulich"},
+		{"name": "Ondřej Nešpor", "homepage": "https://github.com/andrewsville"},
+		{"name": "David Grudl", "homepage": "https://davidgrudl.com"}
+	],
+	"bin": ["bin/apigen"],
+	"require": {
+		"php": ">=7.4",
+		"amphp/parallel": "^1.1",
+		"latte/latte": "^2.9@dev",
+		"league/commonmark": "^1.5",
+		"nette/finder": "^2.4",
+		"nette/neon": "^3.1",
+		"nette/utils": "^3.1",
+		"nikic/php-parser": "^4.4",
+		"phpstan/phpdoc-parser": "~0.4"
+	},
+	"require-dev": {
+		"tracy/tracy": "^2.7"
+	},
+	"autoload": {
+		"classmap": ["stubs"],
+		"psr-4": {
+			"ApiGenX\\": "src"
+		}
+	}
 }

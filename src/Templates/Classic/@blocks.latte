@@ -1,0 +1,419 @@
+{varType ApiGenX\Index $index}
+
+{define namespaceLinks, ApiGenX\NamespaceIndex $namespace}{*
+	*}{if $namespace->namespace !== ''}{*
+		*}{include #this, $index->namespace[$namespace->namespaceLower]}\{*
+	*}{/if}{*
+	*}<a href="{$namespace|namespaceUrl}">{$namespace->nameShort}</a>{*
+*}{/define}
+
+
+{define classLikeLink, ApiGenX\Info\ClassLikeInfo $info, bool $short}{*
+	*}{var bool $active = $info === $classLike}{*
+	*}{default bool $short = false}{*
+	*}<a n:tag-if="!$active" href="{$info|elementUrl}">{*
+		*}<b n:tag-if="$active">{*
+			*}<span n:class="$info->isDeprecated() ? deprecated, $active ? active", n:attr="title => $short ? $info->name">{*
+				*}{if $short}{$info->nameShort}{else}{$info->name}{/if}{*
+			*}</span>{*
+		*}</b>{*
+	*}</a>{*
+*}{/define}
+
+
+{define methodLink}
+	{varType ApiGenX\Info\ClassLikeInfo $classLike}
+	{varType ApiGenX\Info\MethodInfo $method}
+	<code><a href="{$classLike|elementUrl}#_{$method->name}">{$classLike->name}::{$method->name}()</a></code>
+{/define}
+
+
+{define methodLinkSimple}{*
+	*}{varType ApiGenX\Info\ClassLikeInfo $classLike}{*
+	*}{varType ApiGenX\Info\MethodInfo $method}{*
+	*}<a href="{$classLike|elementUrl}#_{$method->name}" n:class="$method->isDeprecated() ? deprecated">{$method->name}()</a>{*
+*}{/define}
+
+
+{define propertyLinkSimple}{*
+	*}{varType ApiGenX\Info\ClassLikeInfo $classLike}{*
+	*}{varType ApiGenX\Info\PropertyInfo $property}{*
+	*}<a href="{$classLike|elementUrl}#${$property->name}" n:class="$property->isDeprecated() ? deprecated"><var>${$property->name}</var></a>{*
+*}{/define}
+
+
+{*{define memberLink}*}{**}
+{*	*}{*{varType ApiGenX\Info\ClassLikeInfo $classLike}*}{**}
+{*	*}{*{varType ApiGenX\Info\MemberInfo $member}*}{**}
+{*	*}{*{varType Latte\Runtime\Html|string $content}*}{**}
+
+{*	*}{*<a n:tag-if="$classLike->fileName" href="{$classLike|elementUrl}#{$member->startLine}-{$member->endLine}" title="Go to source code">*}{**}
+{*		*}{*<span n:tag-if="$member->isDeprecated()" class="deprecated">{$content}</span>*}{**}
+{*	*}{*</a>*}{**}
+{**}{*{/define}*}
+
+
+{define memberSourceLink}{*
+	*}{varType ApiGenX\Info\ClassLikeInfo $classLike}{*
+	*}{varType ApiGenX\Info\MemberInfo $member}{*
+	*}{varType Latte\Runtime\Html|string $content}{*
+
+	*}<a n:tag-if="$classLike->fileName" href="{$classLike->fileName|sourceUrl}#{$member->startLine}-{$member->endLine}" title="Go to source code">{*
+		*}<span n:tag-if="$member->isDeprecated()" class="deprecated">{$content}</span>{*
+	*}</a>{*
+*}{/define}
+
+
+{define classLikeSignature, ApiGenX\Info\ClassLikeInfo $info}
+	{include classLikeLink, $info}
+
+{*	{if $info->class && $info->extends}*}
+{*		extends*}
+{*		{include classLikeLink, $index->classLike[$info->extends]}*}
+{*	{/if}*}
+
+	{if $info->interface && $info->extends}
+		extends
+		{foreach $info->extends as $extends}
+			{include classLikeLink, $index->classLike[$extends]}{sep}, {/sep}
+		{/foreach}
+	{/if}
+
+	{if $info->class && $info->implements}
+		implements
+		{foreach $info->implements as $implements}
+			{include classLikeLink, $index->classLike[$implements]}{sep}, {/sep}
+		{/foreach}
+	{/if}
+{/define}
+
+{define classTree, ApiGenX\Info\ClassLikeInfo $info, array $children}
+	{if $info->class && $info->extends}
+		{include this, $index->classLike[$info->extends], $children + [$info->extends => [$info]]}
+	{else}
+		{include classTreeList, [$info], $children}
+	{/if}
+{/define}
+
+{define classTreeList, array $classes, array $children}
+	<ul class="tree-x">
+		{foreach $classes as $info}
+			{include classTreeItem, $info, $children}
+		{/foreach}
+	</ul>
+{/define}
+
+{define classTreeItem, ApiGenX\Info\ClassLikeInfo $info, array $children}
+	<li>
+		{include classLikeSignature, $info}
+		{if !empty($children[$info->nameLower])}
+			{include classTreeList, $children[$info->nameLower], $children}
+		{/if}
+	</li>
+{/define}
+
+{define type}{*
+	*}{varType PHPStan\PhpDocParser\Ast\Type\TypeNode $type}{*
+	*}{default bool $brackets = false}{*
+	*}{default bool $short = true}{*
+
+	*}{if $type === null}{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode}{*
+		*}{var string $lower = strtolower($type)}{*
+		*}{ifset $index->classLike[$lower]}{include classLikeLink, $index->classLike[$lower], $short}{else}{$type}{/ifset}{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode}{*
+		*}{include this, type => $type->type, brackets => true}[]{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\NullableTypeNode}{*
+		*}?{include this, type => $type->type, brackets => true}{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\UnionTypeNode}{*
+		*}{if $brackets}({/if}{*
+		*}{foreach $type->types as $innerType}{*
+			*}{include this, type => $innerType, brackets => true}{*
+			*}{sep}|{/sep}{*
+		*}{/foreach}{*
+		*}{if $brackets}){/if}{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode}{*
+		*}{if $brackets}({/if}{*
+		*}{foreach $type->types as $innerType}{*
+			*}{include this, type => $innerType, brackets => true}{*
+			*}{sep}&amp;{/sep}{*
+		*}{/foreach}{*
+		*}{if $brackets}){/if}{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\GenericTypeNode}{*
+		*}{include this, type => $type->type}{*
+		*}&lt;{*
+		*}{foreach $type->genericTypes as $genericType}{*
+			*}{include this, type => $genericType}{*
+			*}{sep}, {/sep}{*
+		*}{/foreach}{*
+		*}&gt;{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\CallableTypeNode}{*
+		*}{if $brackets}({/if}{*
+		*}{include this, type => $type->identifier}{*
+		*}({*
+		*}{foreach $type->parameters as $parameter}{*
+			*}{include this, type => $parameter->type}{*
+			*}{if $parameter->isReference}&{/if}{if $parameter->isVariadic}...{/if}{*
+			*}{if $parameter->parameterName && $parameter->type} {/if}{*
+			*}{$parameter->parameterName}{*
+			*}{sep}, {/sep}{*
+		*}{/foreach}{*
+		*}):&nbsp;{*
+		*}{include this, type => $type->returnType, brackets => true}{*
+		*}{if $brackets}){/if}{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ThisTypeNode}{*
+		*}{$type}{*
+
+	*}{else}{*
+		*}UNRESOLVED{*
+	*}{/if}{*
+*}{/define}
+
+
+{define nameNode}{*
+	*}{varType PhpParser\Node\Name $name}{*
+	*}{var string $lower = $name->toLowerString()}{*
+
+	*}{if $lower === 'true' || $lower === 'false' || $lower === 'null'}{*
+		*}<span class="php-kw">{$name}</span>{*
+	*}{elseif $name instanceof PhpParser\Node\Name\FullyQualified && isset($index->classLike[$lower])}{*
+		*}{include classLikeLink, $index->classLike[$lower], true}{*
+	*}{else}{*
+		*}{$name}{*
+	*}{/if}{*
+*}{/define}
+
+
+{define expr}{*
+	*}{varType PhpParser\Node\Expr $expr}{*
+
+	*}{if $expr instanceof PhpParser\Node\Expr\ClassConstFetch}{*
+		*}{include nameNode, name => $expr->class}::{$expr->name}{*
+	*}{elseif $expr instanceof PhpParser\Node\Expr\ConstFetch}{*
+		*}{include nameNode, name => $expr->name}{*
+	*}{elseif $expr instanceof PhpParser\Node\Scalar\LNumber || $expr instanceof PhpParser\Node\Scalar\DNumber}{*
+		*}<span class="php-num">{$expr|exprPrint}</span>{*
+	*}{elseif $expr instanceof PhpParser\Node\Scalar\String_}{*
+		*}<span class="php-str">{$expr|exprPrint}</span>{*
+	*}{elseif $expr instanceof PhpParser\Node\Expr\Array_}{*
+		*}[{foreach $expr->items as $item}{*
+			*}{if $item->key}{include this, expr => $item->key} => {/if}{*
+			*}{include this, expr => $item->value}{*
+			*}{sep}, {/sep}{*
+		*}{/foreach}]{*
+	*}{else}{*
+		*}{$expr|exprPrint}{*
+	*}{/if}{*
+*}{/define}
+
+
+{define parameter}{*
+	*}{varType ApiGenX\Info\ParameterInfo $parameter}{*
+
+	*}<span>{*
+		*}{if $parameter->type}{include type, type => $parameter->type}&nbsp;{/if}{*
+		*}{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>{*
+		*}{if $parameter->default} = {include expr, expr => $parameter->default}{/if}{*
+	*}</span>{*
+*}{/define}
+
+
+{define parameters}{*
+	*}{varType ApiGenX\Info\ParameterInfo[] $parameters}{*
+	*}{default string $sep = ', '}{*
+
+	*}{foreach $parameters as $parameter}{*
+		*}{include parameter, parameter => $parameter}{sep}{$sep}{/sep}{*
+	*}{/foreach}{*
+*}{/define}
+
+
+{define methodRelation}
+	{varType string $title}
+	{varType ApiGenX\Info\MethodInfo $method}
+	{varType ApiGenX\Info\ClassLikeInfo[] $related}
+
+	{if $related}
+		<h4>{$title}</h4>
+		<div class="list">
+			{foreach $related as $classLike}
+				{include methodLink, classLike => $classLike, method => $method}
+				{sep}<br>{/sep}
+			{/foreach}
+		</div>
+	{/if}
+{/define}
+
+
+{define methodSignature}{*
+	*}{varType ApiGenX\Info\ClassLikeInfo $classLike}{*
+	*}{varType ApiGenX\Info\MethodInfo $method}{*
+	*}{default bool $multiLine = false}{*
+
+	*}{include memberSourceLink, classLike => $classLike, member => $method, content => $method->name}{*
+	*}({$multiLine ? "\n    "}{include parameters, parameters => $method->parameters, sep => $multiLine ? ",\n    " : ", "}{$multiLine ? "\n"}){*
+	*}{if $method->returnType}: {include type, type => $method->returnType}{/if}{*
+*}{/define}
+
+
+{define method}
+	{varType ApiGenX\Info\ClassLikeInfo $classLike}
+	{varType ApiGenX\Info\MethodInfo $method}
+
+	{capture $id}{if false && $method->magic}m{/if}_{$method->name}{/capture}
+
+	<tr data-order="{$method->name}" id="{$id}" class="collapsed">
+		<td class="attributes">
+			<code>
+				{if !$classLike->interface && $method->abstract}abstract{elseif $method->final}final{/if}
+				{if $method->protected}protected{elseif $method->private}private{else}public{/if}
+				{if $method->static}static{/if}
+				{if $method->byRef}&amp;{/if}
+			</code>
+		</td>
+
+		<td class="name">
+			<div>
+				<a class="anchor" href="#{$id}">#</a>
+
+				{capture $signature}{include methodSignature, classLike => $classLike, method => $method}{/capture}
+				<code>{if strlen(stripHtml($signature)) > 100}{include methodSignature, classLike => $classLike, method => $method, multiLine => true}{else}{$signature}{/if}</code>
+
+				<div n:if="$method->description" class="description short">
+					{$method->description|shortDescription}
+				</div>
+
+				<div class="description detailed">
+					{$method->description|longDescription}
+
+{*					{if !$class->deprecated && $method->deprecated}*}
+{*						<h4>Deprecated</h4>*}
+{*						{ifset $annotations['deprecated']}*}
+{*						<div class="list">*}
+{*						{foreach $annotations['deprecated'] as $description}*}
+{*							{if $description}*}
+{*								{$description|annotation:'deprecated':$method|noescape}<br>*}
+{*							{/if}*}
+{*						{/foreach}*}
+{*						</div>*}
+{*						{/ifset}*}
+{*					{/if}*}
+
+					{if}
+						<h4>Parameters</h4>
+						<div class="list">
+							<dl>
+								{foreach $method->parameters as $parameter}
+									{if $parameter->description}
+										<dt>{if $parameter->variadic}...{/if}<var>${$parameter->name}</var></dt>
+										<dd>{$parameter->description|longDescription}</dd>
+										{var $hasParametersDescription = true}
+									{/if}
+								{/foreach}
+							</dl>
+						</div>
+					{/if isset($hasParametersDescription)}
+
+					{if}
+						<h4>Returns</h4>
+						<div class="list">
+							{foreach $method->tags['return'] ?? [] as $tag}
+								{if $tag->description}
+									{$tag->description|longDescription}{sep}<br>{/sep}
+									{var $hasReturnDescription = true}
+								{/if}
+							{/foreach}
+						</div>
+					{/if isset($hasReturnDescription)}
+
+					{if !empty($method->tags['throws'])}
+						<h4>Throws</h4>
+						<div class="list">
+							{foreach $method->tags['throws'] as $tag}
+								{include type, type => $tag->type, short => false} {$tag->description}{sep}<br>{/sep}
+							{/foreach}
+						</div>
+					{/if}
+
+{*					{foreach $template->annotationSort($template->annotationFilter($annotations, array('deprecated', 'param', 'return', 'throws'))) as $annotation => $descriptions}*}
+{*						<h4>{$annotation|annotationBeautify}</h4>*}
+{*						<div class="list">*}
+{*						{foreach $descriptions as $description}*}
+{*							{if $description}*}
+{*								{$description|annotation:$annotation:$method|noescape}<br>*}
+{*							{/if}*}
+{*						{/foreach}*}
+{*						</div>*}
+{*					{/foreach}*}
+
+					{include methodRelation, title => 'Overrides', method => $method, related => $index->methodOverrides[$classLike->nameLower][$method->nameLower] ?? []}
+					{include methodRelation, title => 'Overriden by', method => $method, related => $index->methodOverriddenBy[$classLike->nameLower][$method->nameLower] ?? []}
+					{include methodRelation, title => 'Implements', method => $method, related => $index->methodImplements[$classLike->nameLower][$method->nameLower] ?? []}
+					{include methodRelation, title => 'Implemented by', method => $method, related => $index->methodImplementedBy[$classLike->nameLower][$method->nameLower] ?? []}
+				</div>
+			<div>
+		</td>
+	</tr>
+{/define}
+
+
+{define property}
+	{varType ApiGenX\Info\ClassLikeInfo $classLike}
+	{varType ApiGenX\Info\PropertyInfo $property}
+
+	{capture $id}{if false && $property->magic}m{/if}${$property->name}{/capture}
+
+	<tr data-order="{$property->name}" id="{$id}" class="collapsed">
+		<td class="attributes">
+			<code>
+				{if $property->protected}protected{elseif $property->private}private{else}public{/if}
+				{if $property->static}static{/if}
+{*				{if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}*}
+				{if $property->type}{include type, type => $property->type}{/if}
+			</code>
+		</td>
+
+		<td class="name">
+			{if false && $class->internal}
+				<a href="{$property|manualUrl}" title="Go to PHP documentation"><var>${$property->name}</var></a>
+			{else}
+				{capture $linkContent}<var>${$property->name}</var>{/capture}
+				{include memberSourceLink, classLike => $classLike, member => $property, content => $linkContent}
+			{/if}
+
+{*			<div n:if="$config->template['options']['elementDetailsCollapsed']" class="description short">*}
+{*				{$property|shortDescription:true|noescape}*}
+{*			</div>*}
+
+{*			<div n:class="description, detailed, $config->template['options']['elementDetailsCollapsed'] ? hidden">*}
+{*				{$property|longDescription|noescape}*}
+
+{*				{foreach $template->annotationSort($template->annotationFilter($property->annotations, array('var'))) as $annotation => $descriptions}*}
+{*					<h4>{$annotation|annotationBeautify}</h4>*}
+{*					<div class="list">*}
+{*					{foreach $descriptions as $description}*}
+{*						{if $description}*}
+{*							{$description|annotation:$annotation:$property|noescape}<br>*}
+{*						{/if}*}
+{*					{/foreach}*}
+{*					</div>*}
+{*				{/foreach}*}
+{*			</div>*}
+		</td>
+
+		<td n:if="true || !$property->magic" class="value">{*
+			*}<div>{*
+				*}<a href="#{$id}" class="anchor">#</a>{*
+				*}<code n:if="$property->default">{include expr, expr => $property->default}</code>{*
+			*}</div>{*
+		*}</td>
+	</tr>
+{/define}
