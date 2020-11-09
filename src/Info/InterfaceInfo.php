@@ -2,16 +2,16 @@
 
 namespace ApiGenX\Info;
 
-use ApiGenX\Index;
+use ApiGenX\Index\Index;
 
 
 final class InterfaceInfo extends ClassLikeInfo
 {
-	/** @var string[] */
+	/** @var NameInfo[] indexed by [classLikeName] */
 	public array $extends;
 
 
-	public function __construct(string $name)
+	public function __construct(NameInfo $name)
 	{
 		parent::__construct($name);
 		$this->class = false;
@@ -26,8 +26,8 @@ final class InterfaceInfo extends ClassLikeInfo
 	public function ancestors(Index $index): iterable
 	{
 		foreach ($this->extends as $extend) {
-			if (isset($index->interface[$extend])) { // TODO: missing guard
-				$parent = $index->interface[$extend];
+			if (isset($index->interface[$extend->fullLower])) { // TODO: missing guard
+				$parent = $index->interface[$extend->fullLower];
 				yield $parent;
 				yield from $parent->ancestors($index);
 			}

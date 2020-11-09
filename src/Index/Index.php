@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX;
+namespace ApiGenX\Index;
 
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
@@ -13,7 +13,7 @@ final class Index
 	/** @var FileInfo[] indexed by [filePath] */
 	public array $files = [];
 
-	/** @var NamespaceInfo[] indexed by [namespaceName] */
+	/** @var NamespaceIndex[] indexed by [namespaceName] */
 	public array $namespace = [];
 
 	/** @var ClassLikeInfo[] indexed by [classLikeName] */

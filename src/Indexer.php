@@ -2,6 +2,9 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Index\FileInfo;
+use ApiGenX\Index\Index;
+use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\InterfaceInfo;
@@ -27,24 +30,24 @@ final class Indexer
 			return;
 		}
 
-		$info = new NamespaceInfo($namespace);
+		$info = new NamespaceIndex($namespace);
 
 		if ($namespaceLower !== '') {
-			$this->indexNamespace($index, $info->namespace, $info->namespaceLower);
+			$this->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower);
 		}
 
 		$index->namespace[$namespaceLower] = $info;
-		$index->namespace[$info->namespaceLower]->children[$namespaceLower] = $info;
+		$index->namespace[$info->name->namespaceLower]->children[$namespaceLower] = $info;
 	}
 
 
 	public function indexClassLike(Index $index, ClassLikeInfo $info): void
 	{
-		if (isset($index->classLike[$info->nameLower])) {
+		if (isset($index->classLike[$info->name->fullLower])) {
 			return; // ignore duplicates
 		}
 
-		$index->classLike[$info->nameLower] = $info;
+		$index->classLike[$info->name->fullLower] = $info;
 
 		foreach ($info->constants as $constantName => $_) {
 			$index->constants[$constantName][] = $info;
@@ -86,8 +89,8 @@ final class Indexer
 		foreach ($index->namespace as $namespaceIndex) {
 			foreach ($namespaceIndex->class as $info) {
 				if ($info->isThrowable($index)) {
-					unset($namespaceIndex->class[$info->nameShortLower]);
-					$namespaceIndex->exception[$info->nameShortLower] = $info;
+					unset($namespaceIndex->class[$info->name->shortLower]);
+					$namespaceIndex->exception[$info->name->shortLower] = $info;
 				}
 			}
 		}
@@ -104,50 +107,50 @@ final class Indexer
 
 	private function indexClass(ClassInfo $info, Index $index): void
 	{
-		$index->class[$info->nameLower] = $info;
-		$index->namespace[$info->namespaceLower]->class[$info->nameShortLower] = $info;
-		$index->classExtends[$info->extends ?? ''][$info->nameLower] = $info;
+		$index->class[$info->name->fullLower] = $info;
+		$index->namespace[$info->name->namespaceLower]->class[$info->name->shortLower] = $info;
+		$index->classExtends[$info->extends ? $info->extends->fullLower : ''][$info->name->fullLower] = $info;
 
-		foreach ($info->implements as $interfaceName) {
-			$index->classImplements[$interfaceName][$info->nameLower] = $info;
+		foreach ($info->implements as $interfaceNameLower => $interfaceName) {
+			$index->classImplements[$interfaceNameLower][$info->name->fullLower] = $info;
 		}
 	}
 
 
 	private function indexInterface(InterfaceInfo $info, Index $index): void
 	{
-		$index->interface[$info->nameLower] = $info;
-		$index->namespace[$info->namespaceLower]->interface[$info->nameShortLower] = $info;
+		$index->interface[$info->name->fullLower] = $info;
+		$index->namespace[$info->name->namespaceLower]->interface[$info->name->shortLower] = $info;
 
 		if ($info->extends) {
-			foreach ($info->extends as $interfaceName) {
-				$index->interfaceExtends[$interfaceName][$info->nameLower] = $info;
+			foreach ($info->extends as $interfaceNameLower => $interfaceName) {
+				$index->interfaceExtends[$interfaceNameLower][$info->name->fullLower] = $info;
 			}
 
 		} else {
-			$index->interfaceExtends[''][$info->nameLower] = $info;
+			$index->interfaceExtends[''][$info->name->fullLower] = $info;
 		}
 	}
 
 
 	private function indexTrait(TraitInfo $info, Index $index): void
 	{
-		$index->trait[$info->nameLower] = $info;
-		$index->namespace[$info->namespaceLower]->trait[$info->nameShortLower] = $info;
+		$index->trait[$info->name->fullLower] = $info;
+		$index->namespace[$info->name->namespaceLower]->trait[$info->name->shortLower] = $info;
 	}
 
 
 	private function indexInstanceOf(Index $index, ClassLikeInfo $info): void
 	{
-		if (isset($index->instanceOf[$info->nameLower])) {
+		if (isset($index->instanceOf[$info->name->fullLower])) {
 			return; // already computed
 		}
 
-		$index->instanceOf[$info->nameLower] = [$info->nameLower => $info];
+		$index->instanceOf[$info->name->fullLower] = [$info->name->fullLower => $info];
 		foreach ([$index->classExtends, $index->classImplements, $index->interfaceExtends] as $edges) {
-			foreach ($edges[$info->nameLower] ?? [] as $childInfo) {
+			foreach ($edges[$info->name->fullLower] ?? [] as $childInfo) {
 				$this->indexInstanceOf($index, $childInfo);
-				$index->instanceOf[$info->nameLower] += $index->instanceOf[$childInfo->nameLower];
+				$index->instanceOf[$info->name->fullLower] += $index->instanceOf[$childInfo->name->fullLower];
 			}
 		}
 	}
@@ -155,7 +158,7 @@ final class Indexer
 
 	private function indexClassMethodOverrides(Index $index, ClassInfo $info, array $normal, array $abstract): void
 	{
-		$queue = $info->implements;
+		$queue = array_keys($info->implements);
 		while (!empty($queue)) {
 			$interface = $index->interface[array_shift($queue)] ?? null;
 
@@ -167,8 +170,8 @@ final class Indexer
 				$abstract[$method->nameLower] = $interface;
 			}
 
-			foreach ($interface->extends as $extend) {
-				$queue[] = $extend;
+			foreach ($interface->extends as $extendLower => $extend) {
+				$queue[] = $extendLower;
 			}
 		}
 
@@ -179,14 +182,14 @@ final class Indexer
 
 			if (isset($normal[$method->nameLower])) {
 				$ancestor = $normal[$method->nameLower];
-				$index->methodOverrides[$info->nameLower][$method->nameLower][] = $ancestor;
-				$index->methodOverriddenBy[$ancestor->nameLower][$method->nameLower][] = $info;
+				$index->methodOverrides[$info->name->fullLower][$method->nameLower][] = $ancestor;
+				$index->methodOverriddenBy[$ancestor->name->fullLower][$method->nameLower][] = $info;
 			}
 
 			if (isset($abstract[$method->nameLower])) {
 				$ancestor = $abstract[$method->nameLower];
-				$index->methodImplements[$info->nameLower][$method->nameLower][] = $ancestor;
-				$index->methodImplementedBy[$ancestor->nameLower][$method->nameLower][] = $info;
+				$index->methodImplements[$info->name->fullLower][$method->nameLower][] = $ancestor;
+				$index->methodImplementedBy[$ancestor->name->fullLower][$method->nameLower][] = $info;
 			}
 
 			if ($method->abstract) {
@@ -198,7 +201,7 @@ final class Indexer
 			}
 		}
 
-		foreach ($index->classExtends[$info->nameLower] ?? [] as $child) {
+		foreach ($index->classExtends[$info->name->fullLower] ?? [] as $child) {
 			$this->indexClassMethodOverrides($index, $child, $normal, $abstract);
 		}
 	}

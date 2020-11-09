@@ -1,4 +1,5 @@
 /api
 /temp
 /vendor
+/zz
 composer.lock

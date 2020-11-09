@@ -12,7 +12,7 @@ final class BodySkipper extends NodeVisitorAbstract
 	public function enterNode(Node $node)
 	{
 		if ($node instanceof Node\FunctionLike && isset($node->stmts)) {
-			$node->stmts = [];
+			$node->stmts = []; // TODO: why? maybe to not skip param traversal?
 //			return NodeTraverser::DONT_TRAVERSE_CHILDREN;
 		}
 

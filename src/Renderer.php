@@ -2,6 +2,9 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Index\FileInfo;
+use ApiGenX\Index\Index;
+use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Templates\Classic\ClassTemplate;
 use ApiGenX\Templates\Classic\NamespaceTemplate;
@@ -38,14 +41,14 @@ final class Renderer
 	}
 
 
-	public function render(Index $index, string $outputDir)
+	public function render(Index $index, string $outputDir, int $workerCount = 1)
 	{
 		$template = new TreeTemplate();
 		$template->index = $index;
 
 		$this->renderTemplate($template, "$outputDir/{$this->url->tree()}");
 
-		$this->forkLoop(1, $index->namespace, function (NamespaceInfo $info) use ($outputDir, $index) {
+		$this->forkLoop($workerCount, $index->namespace, function (NamespaceIndex $info) use ($outputDir, $index) {
 			$template = new NamespaceTemplate();
 			$template->index = $index;
 			$template->layoutNamespace = $info;
@@ -56,10 +59,10 @@ final class Renderer
 			$this->renderTemplate($template, "$outputDir/{$this->url->namespace($info)}");
 		});
 
-		$this->forkLoop(1, $index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index) {
+		$this->forkLoop($workerCount, $index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index) {
 			$template = new ClassTemplate();
 			$template->index = $index;
-			$template->layoutNamespace = $index->namespace[$info->namespaceLower];
+			$template->layoutNamespace = $index->namespace[$info->name->namespaceLower];
 			$template->layoutClassLike = $info;
 
 			$template->class = $info;
@@ -67,7 +70,7 @@ final class Renderer
 			$this->renderTemplate($template, "$outputDir/{$this->url->classLike($info)}");
 		});
 
-		$this->forkLoop(1, $index->files, function (FileInfo $info, $path) use ($outputDir, $index) {
+		$this->forkLoop($workerCount, $index->files, function (FileInfo $info, $path) use ($outputDir, $index) {
 			if (!$info->primary) {
 				return;
 			}
@@ -143,7 +146,7 @@ final class Renderer
 		$latte->addFilter('longDescription', fn(string $description) => new Latte\Runtime\Html($this->commonMark->convertToHtml($description)));
 		$latte->addFilter('groupUrl', fn(string $s) => $s);
 		$latte->addFilter('namespaceUrl', [$this->url, 'namespace']);
-		$latte->addFilter('elementUrl', [$this->url, 'classLike']);
+		$latte->addFilter('elementUrl', [$this->url, 'classLike']); // TODO: rename
 		$latte->addFilter('sourceUrl', [$this->url, 'source']);
 		$latte->addFilter('exprPrint', [$exprPrinter, 'prettyPrintExpr']);
 

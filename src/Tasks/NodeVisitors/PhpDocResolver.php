@@ -136,6 +136,8 @@ final class PhpDocResolver extends NodeVisitorAbstract
 				yield from self::getIdentifiers($item->valueType);
 			}
 		}
+
+		// TODO: support remaining types
 	}
 
 

@@ -11,6 +11,7 @@ Tracy\Debugger::$maxDepth = 10;
 // INPUT
 $rootDir = __DIR__ . '/../../hranipex';
 $sourceDirs = ['src'];
+$outputDir = __DIR__ . '/../zz';
 
 
 // INIT
@@ -20,9 +21,15 @@ foreach ($sourceDirs as $sourceDir) {
 }
 
 // AUTOLOADER
-$autoloader = function (string $classLikeName) use ($rootDir): ?string {
-	$composerAutoloader = require "$rootDir/vendor/autoload.php";
-	$composerAutoloader->unregister();
+$robotLoader = new Nette\Loaders\RobotLoader(); // TODO: use static map as stubs don't change
+$robotLoader->setTempDirectory(__DIR__ . '/../temp');
+$robotLoader->addDirectory(__DIR__ . '/../stubs');
+
+$composerAutoloader = require "$rootDir/vendor/autoload.php";
+$composerAutoloader->unregister();
+$composerAutoloader->addClassMap($robotLoader->getIndexedClasses());
+
+$autoloader = function (string $classLikeName) use ($composerAutoloader): ?string {
 	return $composerAutoloader->findFile($classLikeName) ?: null;
 };
 
@@ -42,26 +49,9 @@ $urlGenerator->setBaseDir($baseDir);
 
 $sourceHighlighter = new ApiGenX\SourceHighlighter();
 
+$analyzer = new ApiGenX\Analyzer();
 $indexer = new ApiGenX\Indexer();
 $renderer = new ApiGenX\Renderer($urlGenerator, $commonMark, $sourceHighlighter);
 
-$apiGen = new ApiGenX\ApiGen($indexer, $renderer);
-
-$time = -microtime(true);
-$apiGen->analyze($files, $autoloader);
-$time += microtime(true);
-
-dump('Analyze');
-dump(sprintf('  Time:         %6.0f ms', $time * 1e3));
-dump(sprintf('  Memory usage: %6.0f MB', memory_get_usage() / 1e6));
-dump(sprintf('  Memory peak:  %6.0f MB', memory_get_peak_usage() / 1e6));
-
-
-$time = -microtime(true);
-$apiGen->render(__DIR__ . '/../zz');
-$time += microtime(true);
-
-dump('Render');
-dump(sprintf('  Time:         %6.0f ms', $time * 1e3));
-dump(sprintf('  Memory usage: %6.0f MB', memory_get_usage() / 1e6));
-dump(sprintf('  Memory peak:  %6.0f MB', memory_get_peak_usage() / 1e6));
+$apiGen = new ApiGenX\ApiGen($analyzer, $indexer, $renderer);
+$apiGen->generate($files, $autoloader, $outputDir);

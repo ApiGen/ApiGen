@@ -1,6 +1,6 @@
 {define elements}
 	<tr n:foreach="$elements as $element">
-		<td class="name"><a href="{$element|elementUrl}" n:class="$element->isDeprecated() ? deprecated">{$element->nameShort}</a></td>
+		<td class="name"><a href="{$element|elementUrl}" n:class="$element->isDeprecated() ? deprecated">{$element->name->short}</a></td>
 		<td>{$element->description|shortDescription}</td>
 	</tr>
 {/define}

@@ -2,19 +2,20 @@
 
 namespace ApiGenX\Info;
 
-use ApiGenX\Index;
+use ApiGenX\Index\Index;
 use ApiGenX\Info\Traits\HasDependencies;
 use ApiGenX\Info\Traits\HasLineLocation;
-use ApiGenX\Info\Traits\HasName;
 use ApiGenX\Info\Traits\HasTags;
 
 
 abstract class ClassLikeInfo
 {
-	use HasName;
 	use HasTags;
 	use HasLineLocation;
 	use HasDependencies;
+
+	/** @var NameInfo */
+	public NameInfo $name;
 
 	/** @var bool */
 	public bool $class;
@@ -41,15 +42,15 @@ abstract class ClassLikeInfo
 	public array $methods = [];
 
 
-	public function __construct(string $name)
+	public function __construct(NameInfo $name)
 	{
-		$this->initName($name);
+		$this->name = $name;
 	}
 
 
 	public function isInstanceOf(Index $index, string $type): bool
 	{
-		return isset($index->instanceOf[$type][$this->nameLower]);
+		return isset($index->instanceOf[$type][$this->name->fullLower]);
 	}
 
 

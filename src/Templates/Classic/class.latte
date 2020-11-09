@@ -13,7 +13,7 @@
 <div id="content" class="class">
 	<h1 n:class="$class->isDeprecated() ? deprecated">
 		{if $class->interface}Interface{elseif $class->trait}Trait{else}Class{/if}
-		{$class->nameShort}
+		{$class->name->short}
 	</h1>
 
 	<div class="description" n:if="$class->description">
@@ -60,13 +60,13 @@
 
 	{define children}
 		{foreach $children as $child}
-			<a href="{$child|elementUrl}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->name}</span></a>{sep}, {/sep}
+			<a href="{$child|elementUrl}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->name->full}</span></a>{sep}, {/sep}
 		{/foreach}
 	{/define}
 
-	<div n:ifset="$index->classExtends[$class->nameLower]">
+	<div n:ifset="$index->classExtends[$class->name->fullLower]">
 		<h4>Direct known subclasses</h4>
-		{include children, children => $index->classExtends[$class->nameLower]}
+		{include children, children => $index->classExtends[$class->name->fullLower]}
 	</div>
 
 {*	<div n:if="$indirectSubClasses">*}
@@ -74,14 +74,14 @@
 {*		{include children, children => $indirectSubClasses}*}
 {*	</div>*}
 
-	<div n:ifset="$index->classImplements[$class->nameLower]">
+	<div n:ifset="$index->classImplements[$class->name->fullLower]">
 		<h4>Direct known implementers</h4>
-		{include children, children => $index->classImplements[$class->nameLower]}
+		{include children, children => $index->classImplements[$class->name->fullLower]}
 	</div>
 
-{*	<div n:ifset="$index->instanceOf[$class->nameLower]">*}
+{*	<div n:ifset="$index->instanceOf[$class->name->fullLower]">*}
 {*		<h4>Indirect known implementers</h4>*}
-{*		{include children, children => $index->instanceOf[$class->nameLower]}*}
+{*		{include children, children => $index->instanceOf[$class->name->fullLower]}*}
 {*	</div>*}
 
 {*	<div n:if="$directUsers">*}
@@ -97,7 +97,7 @@
 	<div class="info">
 		{if !$class->interface && !$class->trait && ($class->abstract || $class->final)}<b>{if $class->abstract}Abstract{else}Final{/if}</b><br>{/if}
 {*		{if $class->internal}<b>PHP Extension:</b> <a href="{$class->extension|manualUrl}" title="Go to PHP documentation">{$class->extension->name|firstUpper}</a><br>{/if}*}
-		{if $class->namespace}<b>Namespace:</b> {include namespaceLinks, $index->namespace[$class->namespaceLower]}<br>{/if}
+		{if $class->name->namespaceLower}<b>Namespace:</b> {include namespaceLinks, $index->namespace[$class->name->namespaceLower]}<br>{/if}
 {*		{if $class->inPackage()}<b>Package:</b> {$class->packageName|packageLinks|noescape}<br>{/if}*}
 
 {*		{foreach $template->annotationSort($template->annotationFilter($class->annotations)) as $annotation => $values}*}
@@ -108,7 +108,7 @@
 {*		{/foreach}*}
 {*		{if $class->internal}<b>Documented at</b> <a href="{$class|manualUrl}" title="Go to PHP documentation">php.net</a>{else}<b>Located at</b> <a n:tag-if="$config->sourceCode" href="{$class|sourceUrl}" title="Go to source code">{$class->fileName|relativePath}</a>{/if}<br>*}
 
-		{if $class->fileName}<b>Located at</b> <a href="{$class->fileName|sourceUrl}#{$class->startLine}" title="Go to source code">{$class->fileName|relativePath}</a><br>{/if}
+		{if $class->file}<b>Located at</b> <a href="{$class->file|sourceUrl}#{$class->startLine}" title="Go to source code">{$class->file|relativePath}</a><br>{/if}
 	</div>
 
 {*	{var $ownMethods = $class->ownMethods}*}

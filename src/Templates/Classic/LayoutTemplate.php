@@ -2,9 +2,9 @@
 
 namespace ApiGenX\Templates\Classic;
 
-use ApiGenX\Index;
+use ApiGenX\Index\Index;
+use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\NamespaceIndex;
 
 
 abstract class LayoutTemplate

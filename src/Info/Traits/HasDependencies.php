@@ -2,9 +2,11 @@
 
 namespace ApiGenX\Info\Traits;
 
+use ApiGenX\Info\NameInfo;
+
 
 trait HasDependencies
 {
-	/** @var true[] indexed by [classLikeName] */
+	/** @var NameInfo[] indexed by [classLikeName] */
 	public array $dependencies = [];
 }

@@ -2,10 +2,10 @@
 
 namespace ApiGenX\Templates\Classic;
 
-use ApiGenX\NamespaceInfo;
+use ApiGenX\Index\NamespaceIndex;
 
 
 final class NamespaceTemplate extends LayoutTemplate
 {
-	public NamespaceInfo $namespace;
+	public NamespaceIndex $namespace; // TODO! collision with LayoutTemplate var
 }

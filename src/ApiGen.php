@@ -2,104 +2,62 @@
 
 namespace ApiGenX;
 
-use Amp;
-use Amp\Parallel\Worker\BasicEnvironment;
-use Amp\Parallel\Worker\DefaultPool;
-use ApiGenX\Info\ClassInfo;
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Tasks\AnalyzeTaskX;
 
+use ApiGenX\Index\Index;
 
 final class ApiGen
 {
+	/** @var Analyzer */
+	private Analyzer $analyzer;
+
 	/** @var Indexer */
 	private Indexer $indexer;
 
 	/** @var Renderer */
 	private Renderer $renderer;
 
-	/** @var Index */
-	private Index $index;
 
-
-	public function __construct(Indexer $indexer, Renderer $renderer)
+	public function __construct(Analyzer $analyzer, Indexer $indexer, Renderer $renderer)
 	{
+		$this->analyzer = $analyzer;
 		$this->indexer = $indexer;
 		$this->renderer = $renderer;
-		$this->index = new Index();
 	}
 
 
-	/**
-	 * @param string[]                                 $files      indexed by []
-	 * @param callable(string $classLikeName): ?string $autoloader
-	 */
-	public function analyze(array $files, callable $autoloader)
+	public function generate(array $files, callable $autoloader, string $outputDir)
 	{
-		$async = false;
+		$index = new Index();
 
-		$env = new BasicEnvironment();
-		$pool = new DefaultPool();
+		$analyzeTime = 0;
+		$indexTime = 0;
+		$renderTime = 0;
 
-		$promises = [];
-		$missing = [];
+		$analyzeTime -= microtime(true);
 
-		foreach ($files as $file) {
-			$file = realpath($file);
-			$task = new AnalyzeTaskX($file, true);
-			$promises[$file] ??= $async ? $pool->enqueue($task) : new Amp\Success($task->run($env));
+		foreach ($this->analyzer->analyzeX($files, $autoloader) as $info) {
+			$analyzeTime += microtime(true);
+			$indexTime -= microtime(true);
+
+//			$this->indexer->indexFile($index, $info->file, $info->primary);
+//			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower);
+//			$this->indexer->indexClassLike($index, $info);
+
+			$indexTime += microtime(true);
+			$analyzeTime -= microtime(true);
 		}
 
-		while (current($promises) !== false) {
-			$dependencies = [];
+		$analyzeTime += microtime(true);
+//		$indexTime -= microtime(true);
+//		$this->indexer->postProcess($index);
+//		$indexTime += microtime(true);
+//
+//		$renderTime -= microtime(true);
+//		$this->renderer->render($index, $outputDir, 1);
+//		$renderTime += microtime(true);
 
-			while (($promise = current($promises)) !== false) {
-				next($promises);
-
-				foreach (Amp\Promise\wait($promise) as $info) {
-					foreach ($info->dependencies as $dependency => $_) {
-						if (!isset($this->index->classLike[$dependency])) {
-							$missing[$dependency][] = $info;
-							$dependencies[$dependency][] = $info;
-						}
-					}
-
-					if ($info instanceof ClassLikeInfo) {
-						unset($dependencies[$info->nameLower], $missing[$info->nameLower]);
-						$this->indexer->indexFile($this->index, $info->file, $info->primary);
-						$this->indexer->indexNamespace($this->index, $info->namespace, $info->namespaceLower);
-						$this->indexer->indexClassLike($this->index, $info);
-					}
-				}
-			}
-
-			foreach ($dependencies as $dependency => $dependentClassLikes) {
-				$file = $autoloader($dependency);
-
-				if ($file !== null) {
-					$file = realpath($file);
-					$task = new AnalyzeTaskX($file, false);
-					$promises[$file] ??= $async ? $pool->enqueue($task) : new Amp\Success($task->run($env));
-				}
-			}
-		}
-
-		foreach ($missing as $dependency => $dependentClassLikes) {
-			dump(["MISSING: $dependency" => $dependentClassLikes[0]->name]);
-
-			$info = new ClassInfo($dependency); // TODO: mark as missing
-			$info->primary = false;
-			$this->indexer->indexFile($this->index, $info->file, $info->primary);
-			$this->indexer->indexNamespace($this->index, $info->namespace, $info->namespaceLower);
-			$this->indexer->indexClassLike($this->index, $info);
-		}
-
-		$this->indexer->postProcess($this->index);
-	}
-
-
-	public function render(string $outputDir)
-	{
-		$this->renderer->render($this->index, $outputDir);
+		dump(sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3));
+		dump(sprintf('Index Time:         %6.0f ms', $indexTime * 1e3));
+		dump(sprintf('Render Time:        %6.0f ms', $renderTime * 1e3));
 	}
 }

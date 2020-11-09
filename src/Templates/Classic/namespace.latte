@@ -21,7 +21,7 @@
 	<table class="summary" id="namespaces" n:if="$namespace->children">
 		<caption>Namespaces summary</caption>
 		<tr n:foreach="$namespace->children as $child">
-			<td class="name"><a href="{$child|namespaceUrl}">{$child->name}</a></td>
+			<td class="name"><a href="{$child|namespaceUrl}">{$child->name->full}</a></td>
 		</tr>
 	</table>
 </div>

@@ -2,6 +2,7 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use Nette\Utils\Strings;
 
@@ -25,19 +26,19 @@ final class UrlGenerator
 
 	public function relative(string $path): string
 	{
-		return Strings::after(realpath($path), realpath($this->baseDir) . DIRECTORY_SEPARATOR);
+		return Strings::after(realpath($path), realpath($this->baseDir) . DIRECTORY_SEPARATOR) ?? '#'; // TODO: normalize else where
 	}
 
 
 	public function classLike(ClassLikeInfo $classLike): string
 	{
-		return strtr($classLike->name, '\\', '.') . '.html';
+		return strtr($classLike->name->full, '\\', '.') . '.html';
 	}
 
 
-	public function namespace(NamespaceInfo $namespace): string
+	public function namespace(NamespaceIndex $namespace): string
 	{
-		return 'namespace-' . strtr($namespace->name, '\\', '.') . '.html';
+		return 'namespace-' . strtr($namespace->name->full, '\\', '.') . '.html';
 	}
 
 

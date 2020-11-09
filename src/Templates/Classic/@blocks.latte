@@ -1,10 +1,10 @@
 {varType ApiGenX\Index $index}
 
 {define namespaceLinks, ApiGenX\NamespaceIndex $namespace}{*
-	*}{if $namespace->namespace !== ''}{*
-		*}{include #this, $index->namespace[$namespace->namespaceLower]}\{*
+	*}{if $namespace->name->namespaceLower !== ''}{*
+		*}{include #this, $index->namespace[$namespace->name->namespaceLower]}\{*
 	*}{/if}{*
-	*}<a href="{$namespace|namespaceUrl}">{$namespace->nameShort}</a>{*
+	*}<a href="{$namespace|namespaceUrl}">{$namespace->name->short}</a>{*
 *}{/define}
 
 
@@ -13,8 +13,8 @@
 	*}{default bool $short = false}{*
 	*}<a n:tag-if="!$active" href="{$info|elementUrl}">{*
 		*}<b n:tag-if="$active">{*
-			*}<span n:class="$info->isDeprecated() ? deprecated, $active ? active", n:attr="title => $short ? $info->name">{*
-				*}{if $short}{$info->nameShort}{else}{$info->name}{/if}{*
+			*}<span n:class="$info->isDeprecated() ? deprecated, $active ? active", n:attr="title => $short ? $info->name->full">{*
+				*}{if $short}{$info->name->short}{else}{$info->name->full}{/if}{*
 			*}</span>{*
 		*}</b>{*
 	*}</a>{*
@@ -24,7 +24,7 @@
 {define methodLink}
 	{varType ApiGenX\Info\ClassLikeInfo $classLike}
 	{varType ApiGenX\Info\MethodInfo $method}
-	<code><a href="{$classLike|elementUrl}#_{$method->name}">{$classLike->name}::{$method->name}()</a></code>
+	<code><a href="{$classLike|elementUrl}#_{$method->name}">{$classLike->name->full}::{$method->name}()</a></code>
 {/define}
 
 
@@ -47,7 +47,7 @@
 {*	*}{*{varType ApiGenX\Info\MemberInfo $member}*}{**}
 {*	*}{*{varType Latte\Runtime\Html|string $content}*}{**}
 
-{*	*}{*<a n:tag-if="$classLike->fileName" href="{$classLike|elementUrl}#{$member->startLine}-{$member->endLine}" title="Go to source code">*}{**}
+{*	*}{*<a n:tag-if="$classLike->file" href="{$classLike|elementUrl}#{$member->startLine}-{$member->endLine}" title="Go to source code">*}{**}
 {*		*}{*<span n:tag-if="$member->isDeprecated()" class="deprecated">{$content}</span>*}{**}
 {*	*}{*</a>*}{**}
 {**}{*{/define}*}
@@ -58,7 +58,7 @@
 	*}{varType ApiGenX\Info\MemberInfo $member}{*
 	*}{varType Latte\Runtime\Html|string $content}{*
 
-	*}<a n:tag-if="$classLike->fileName" href="{$classLike->fileName|sourceUrl}#{$member->startLine}-{$member->endLine}" title="Go to source code">{*
+	*}<a n:tag-if="$classLike->file" href="{$classLike->file|sourceUrl}#{$member->startLine}-{$member->endLine}" title="Go to source code">{*
 		*}<span n:tag-if="$member->isDeprecated()" class="deprecated">{$content}</span>{*
 	*}</a>{*
 *}{/define}
@@ -74,14 +74,14 @@
 
 	{if $info->interface && $info->extends}
 		extends
-		{foreach $info->extends as $extends}
+		{foreach $info->extends as $extends => $_}
 			{include classLikeLink, $index->classLike[$extends]}{sep}, {/sep}
 		{/foreach}
 	{/if}
 
 	{if $info->class && $info->implements}
 		implements
-		{foreach $info->implements as $implements}
+		{foreach $info->implements as $implements => $_}
 			{include classLikeLink, $index->classLike[$implements]}{sep}, {/sep}
 		{/foreach}
 	{/if}
@@ -89,7 +89,7 @@
 
 {define classTree, ApiGenX\Info\ClassLikeInfo $info, array $children}
 	{if $info->class && $info->extends}
-		{include this, $index->classLike[$info->extends], $children + [$info->extends => [$info]]}
+		{include this, $index->classLike[$info->extends->fullLower], $children + [$info->extends->fullLower => [$info]]}
 	{else}
 		{include classTreeList, [$info], $children}
 	{/if}
@@ -106,8 +106,8 @@
 {define classTreeItem, ApiGenX\Info\ClassLikeInfo $info, array $children}
 	<li>
 		{include classLikeSignature, $info}
-		{if !empty($children[$info->nameLower])}
-			{include classTreeList, $children[$info->nameLower], $children}
+		{if !empty($children[$info->name->fullLower])}
+			{include classTreeList, $children[$info->name->fullLower], $children}
 		{/if}
 	</li>
 {/define}
@@ -354,10 +354,10 @@
 {*						</div>*}
 {*					{/foreach}*}
 
-					{include methodRelation, title => 'Overrides', method => $method, related => $index->methodOverrides[$classLike->nameLower][$method->nameLower] ?? []}
-					{include methodRelation, title => 'Overriden by', method => $method, related => $index->methodOverriddenBy[$classLike->nameLower][$method->nameLower] ?? []}
-					{include methodRelation, title => 'Implements', method => $method, related => $index->methodImplements[$classLike->nameLower][$method->nameLower] ?? []}
-					{include methodRelation, title => 'Implemented by', method => $method, related => $index->methodImplementedBy[$classLike->nameLower][$method->nameLower] ?? []}
+					{include methodRelation, title => 'Overrides', method => $method, related => $index->methodOverrides[$classLike->name->fullLower][$method->nameLower] ?? []}
+					{include methodRelation, title => 'Overriden by', method => $method, related => $index->methodOverriddenBy[$classLike->name->fullLower][$method->nameLower] ?? []}
+					{include methodRelation, title => 'Implements', method => $method, related => $index->methodImplements[$classLike->name->fullLower][$method->nameLower] ?? []}
+					{include methodRelation, title => 'Implemented by', method => $method, related => $index->methodImplementedBy[$classLike->name->fullLower][$method->nameLower] ?? []}
 				</div>
 			<div>
 		</td>

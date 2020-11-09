@@ -5,7 +5,7 @@ namespace ApiGenX;
 
 final class SourceHighlighter
 {
-	public array $tokenClass = [
+	public array $tokenClass = [ // TODO: update for PHP 8
 		T_OPEN_TAG => 'php-tag',
 		T_OPEN_TAG_WITH_ECHO => 'php-tag',
 		T_CLOSE_TAG => 'php-tag',
@@ -97,7 +97,7 @@ final class SourceHighlighter
 		$source = file_get_contents($path);
 		$align = strlen(strval(substr_count($source, "\n")));
 
-		$lineStart = "<div id=\"%1\$d\" class=\"l\"><a class=\"l\" href=\"#%1\$d\">%1\${$align}d: </a>";
+		$lineStart = "<div id=\"%1\$d\" class=\"l\"><a class=\"l\" href=\"#%1\$d\">%1\${$align}d: </a>"; // TODO: use PHP 8 * modifier
 		$lineEnd = '</div>';
 
 		$line = 1;
@@ -120,7 +120,7 @@ final class SourceHighlighter
 
 	private function tokenize(string $source): iterable
 	{
-		foreach (token_get_all($source, TOKEN_PARSE) as $token) {
+		foreach (token_get_all($source, TOKEN_PARSE) as $token) { // TODO: use PHP 8 new parsing API
 			$id = is_array($token) ? $token[0] : -1;
 			$text = is_array($token) ? $token[1] : $token;
 
