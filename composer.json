@@ -23,7 +23,8 @@
 		"react/child-process": "^0.6.1",
 		"react/promise": "^2.8",
 		"react/event-loop": "^1.1",
-		"react/promise-stream": "^1.2.0"
+		"react/promise-stream": "^1.2.0",
+		"phpstan/php-8-stubs": "^0.1.12"
 	},
 	"require-dev": {
 		"tracy/tracy": "^2.7"

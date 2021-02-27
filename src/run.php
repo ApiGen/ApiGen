@@ -22,16 +22,18 @@ foreach ($sourceDirs as $sourceDir) {
 
 
 // AUTOLOADER
-$robotLoader = new Nette\Loaders\RobotLoader(); // TODO: use static map as stubs don't change
-$robotLoader->setTempDirectory(__DIR__ . '/../temp');
-$robotLoader->addDirectory(__DIR__ . '/../stubs');
+$stubsMap = array_map(fn (string $path) => __DIR__ . "/../vendor/phpstan/php-8-stubs/$path", PHPStan\Php8StubsMap::CLASSES);
+$stubsMap['runtimeexception'] = __DIR__ . '/../stubs/@fix.php';
+$stubsMap['logicexception'] = __DIR__ . '/../stubs/@fix.php';
+$stubsMap['stdClass'] = __DIR__ . '/../stubs/@fix.php';
 
+/** @var \Composer\Autoload\ClassLoader $composerAutoloader */
 $composerAutoloader = require "$rootDir/vendor/autoload.php";
 $composerAutoloader->unregister();
-$composerAutoloader->addClassMap($robotLoader->getIndexedClasses());
+//$composerAutoloader->addClassMap($stubsMap);
 
-$autoloader = function (string $classLikeName) use ($composerAutoloader): ?string {
-	return $composerAutoloader->findFile($classLikeName) ?: null;
+$autoloader = function (string $classLikeName) use ($composerAutoloader, $stubsMap): ?string {
+	return $composerAutoloader->findFile($classLikeName) ?: $stubsMap[strtolower($classLikeName)] ?? null;
 };
 
 
