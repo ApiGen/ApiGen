@@ -52,8 +52,8 @@ final class Analyzer
 
 		$processWaiting = function (array $result) use ($deferred, &$found, &$missing, &$waiting) {
 			if (--$waiting === 0) {
-				dump(count($found));
-				dump(count($missing));
+				dump(sprintf('Found: %d', count($found)));
+				dump(sprintf('Missing: %d', count($missing)));
 
 				foreach ($missing as $dependency) {
 					$info = new ClassInfo($dependency); // TODO: mark as missing
