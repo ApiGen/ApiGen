@@ -10,9 +10,9 @@
 	],
 	"bin": ["bin/apigen"],
 	"require": {
-		"php": ">=7.4",
+		"php": ">=8.0",
 		"amphp/parallel": "^1.1",
-		"latte/latte": "^2.9@dev",
+		"latte/latte": "^2.10",
 		"league/commonmark": "^1.5",
 		"nette/finder": "^2.4",
 		"nette/neon": "^3.1",
