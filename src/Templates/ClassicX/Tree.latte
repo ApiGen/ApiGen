@@ -1,0 +1,30 @@
+{templateType ApiGenX\Templates\ClassicX\TreeTemplate}
+{import 'blocks/@index.latte'}
+
+{embed layout}
+	{define title}Tree{/define}
+
+	{define content}
+		<h1>{include title}</h1>
+
+		{ifset $global->index->classExtends['']}
+			<h3>Classes</h3>
+			{include classTreeList, $global->index->classExtends[''], $global->index->classExtends}
+		{/ifset}
+
+		{ifset $global->index->interface}
+			<h3>Interfaces</h3>
+			{include classTreeList, $global->index->interface, []}
+		{/ifset}
+
+		{if $global->index->trait}
+			<h3>Traits</h3>
+			{include classTreeList, $global->index->trait, []}
+		{/if}
+
+{*		{if $exceptionTree->valid()}*}
+{*			<h3>Exceptions</h3>*}
+{*			{include tree, tree => $exceptionTree}*}
+{*		{/if}*}
+	{/define}
+{/embed}

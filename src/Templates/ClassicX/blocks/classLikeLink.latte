@@ -1,0 +1,13 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{* TODO: replace <b> with CSS *}
+{define classLikeLink, ApiGenX\Info\ClassLikeInfo $info, bool $short = false}{*
+	*}{var bool $active = $info === $global->activeClassLike}{*
+	*}<a n:tag-if="!$active" href="{elementUrl($info)}">{*
+		*}<b n:tag-if="$active">{*
+			*}<span n:class="$info->isDeprecated() ? deprecated, $active ? active" n:attr="title => $short ? $info->name->full">{*
+				*}{if $short}{$info->name->short}{else}{$info->name->full}{/if}{*
+			*}</span>{*
+		*}</b>{*
+	*}</a>{*
+*}{/define}

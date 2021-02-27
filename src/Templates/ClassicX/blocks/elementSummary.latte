@@ -1,0 +1,32 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define elementSummary, ApiGenX\Index\NamespaceIndex $namespace}
+	<table class="elementSummary">
+		{include elementSummaryGroup, heading: 'Classes', elements: $namespace->class}
+		{include elementSummaryGroup, heading: 'Interfaces', elements: $namespace->interface}
+		{include elementSummaryGroup, heading: 'Traits', elements: $namespace->trait}
+		{include elementSummaryGroup, heading: 'Exceptions', elements: $namespace->exception}
+{*		{include elementSummaryGroup, heading: 'Constants', elements: $namespace->constant}*}
+{*		{include elementSummaryGroup, heading: 'Functions', elements: $namespace->function}*}
+		{include elementSummaryGroup, heading: 'Namespaces', elements: $namespace->children}
+	</table>
+{/define}
+
+{define local elementSummaryGroup, string $heading, ApiGenX\Info\ElementInfo[] $elements}
+	{if $elements}
+		<tr class="elementSummary-heading">
+			<th colspan="2">{$heading}</th>
+		</tr>
+
+		{foreach $elements as $element}
+			<tr class="elementSummary-item">
+				<td><a href="{elementUrl($element)}" n:class="$element->isDeprecated() ? deprecated">{elementName($element)}</a></td>
+				<td>{elementShortDescription($element)}</td>
+			</tr>
+		{/foreach}
+
+		<tr class="elementSummary-spacer">
+			<td colspan="2">&nbsp;</td>
+		</tr>
+	{/if}
+{/define}

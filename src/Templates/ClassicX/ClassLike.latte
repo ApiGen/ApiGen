@@ -1,0 +1,61 @@
+{templateType ApiGenX\Templates\ClassicX\ClassLikeTemplate}
+{import 'blocks/@index.latte'}
+
+{embed layout}
+	{define title}
+		{if $classLike->isDeprecated()}Deprecated {/if}
+		{include classLikeKind, $classLike}
+		{$classLike->name->full}
+	{/define}
+
+	{define content}
+		<h1 n:class="$classLike->isDeprecated() ? deprecated">
+			{include classLikeKind, $classLike}
+			{$classLike->name->short}
+		</h1>
+
+		<div class="description" n:if="$classLike->description">
+			{longDescription($classLike->description)}
+		</div>
+
+		{if ($classLike->class && ($classLike->extends || $classLike->implements || $classLike->uses)) || ($classLike->interface && $classLike->extends) || ($classLike->trait && $classLike->uses)}
+			{include classTree, $classLike, []}
+		{/if}
+
+		<div n:ifset="$global->index->classExtends[$classLike->name->fullLower]">
+			<h4>Direct known subclasses</h4>
+			{include children, children => $global->index->classExtends[$classLike->name->fullLower]}
+		</div>
+
+	{*	<div n:if="$indirectSubClasses">*}
+	{*		<h4>Indirect known subclasses</h4>*}
+	{*		{include children, children => $indirectSubClasses}*}
+	{*	</div>*}
+
+		<div n:ifset="$global->index->classImplements[$classLike->name->fullLower]">
+			<h4>Direct known implementers</h4>
+			{include children, children => $global->index->classImplements[$classLike->name->fullLower]}
+		</div>
+
+	{*	<div n:ifset="$index->instanceOf[$classLike->name->fullLower]">*}
+	{*		<h4>Indirect known implementers</h4>*}
+	{*		{include children, children => $index->instanceOf[$classLike->name->fullLower]}*}
+	{*	</div>*}
+
+	{*	<div n:if="$directUsers">*}
+	{*		<h4>Direct Known Users</h4>*}
+	{*		{include children, children => $directUsers}*}
+	{*	</div>*}
+
+	{*	<div n:if="$indirectUsers">*}
+	{*		<h4>Indirect Known Users</h4>*}
+	{*		{include children, children => $indirectUsers}*}
+	{*	</div>*}
+	{/define}
+{/embed}
+
+{define local children}
+	{foreach $children as $child}
+		<a href="{elementUrl($child)}"><span n:tag-if="$child->isDeprecated()" class="deprecated">{$child->name->full}</span></a>{sep}, {/sep}
+	{/foreach}
+{/define}

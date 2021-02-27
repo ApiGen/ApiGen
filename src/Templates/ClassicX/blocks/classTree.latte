@@ -1,0 +1,26 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define classTree, ApiGenX\Info\ClassLikeInfo $info, ApiGenX\Info\ClassLikeInfo[][] $children}
+	{if $info->class && $info->extends}
+		{include this, info: $global->index->classLike[$info->extends->fullLower], children: $children + [$info->extends->fullLower => [$info]]}
+	{else}
+		{include classTreeList, classes: [$info], children: $children}
+	{/if}
+{/define}
+
+{define classTreeList, ApiGenX\Info\ClassLikeInfo[] $classes, ApiGenX\Info\ClassLikeInfo[][] $children}
+	<ul class="classTree">
+		{foreach $classes as $info}
+			{include classTreeItem, info: $info, children: $children}
+		{/foreach}
+	</ul>
+{/define}
+
+{define local classTreeItem, ApiGenX\Info\ClassLikeInfo $info, ApiGenX\Info\ClassLikeInfo[][] $children}
+	<li>
+		{include classLikeSignature, $info}
+		{if !empty($children[$info->name->fullLower])}
+			{include classTreeList, classes: $children[$info->name->fullLower], children: $children}
+		{/if}
+	</li>
+{/define}

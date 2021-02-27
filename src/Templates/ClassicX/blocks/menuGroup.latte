@@ -1,0 +1,16 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define menuGroup, ApiGenX\Index\NamespaceIndex $namespace, int $level = 0}
+	<ul class="menuGroup">
+		{foreach $namespace->children as $child}
+			{var bool $isActive = $global->activeNamespace && str_starts_with("{$global->activeNamespace->name->fullLower}\\", "{$child->name->fullLower}\\")}
+			{var bool $isCollapsed = $level > 0 && !$isActive}
+			<li n:class="menuGroup-item, $isActive ? active, $isCollapsed ? collapsed">
+				<a href="{namespaceUrl($child)}">{$child->name->short}{if $child->children}<span></span>{/if}</a>
+				{if $child->children && $child !== $namespace}
+					{include this, namespace: $child, level: $level + 1}
+				{/if}
+			</li>
+		{/foreach}
+	</ul>
+{/define}

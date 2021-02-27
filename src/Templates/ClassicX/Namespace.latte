@@ -1,0 +1,11 @@
+{templateType ApiGenX\Templates\ClassicX\NamespaceTemplate}
+{import 'blocks/@index.latte'}
+
+{embed layout}
+	{define title}{if $namespace != ''}Namespace {$namespace->name->full}{else}No namespace{/if}{/define}
+
+	{define content}
+		<h1>{if $namespace != ''}Namespace {include namespaceLinks, $namespace}{else}No namespace{/if}</h1>
+		{include elementSummary, $namespace}
+	{/define}
+{/embed}

@@ -1,0 +1,42 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define menu}
+	<div class="menu">
+		{if $global->index->namespace['']}
+			<h3>Namespaces</h3>
+			{include menuGroup, namespace: $global->index->namespace['']}
+		{/if}
+
+		{if $global->activeNamespace}
+			{if $global->activeNamespace->class}
+				<h3>Classes</h3>
+				{include menuElements, $global->activeNamespace->class}
+			{/if}
+
+			{if $global->activeNamespace->interface}
+				<h3>Interfaces</h3>
+				{include menuElements, $global->activeNamespace->interface}
+			{/if}
+
+			{if $global->activeNamespace->trait}
+				<h3>Traits</h3>
+				{include menuElements, $global->activeNamespace->trait}
+			{/if}
+
+			{if $global->activeNamespace->exception}
+				<h3>Exceptions</h3>
+				{include menuElements, $global->activeNamespace->exception}
+			{/if}
+
+{*			{if $constants}*}
+{*				<h3>Constants</h3>*}
+{*				{include menuElements, $constants, activeElement => $constant}*}
+{*			{/if}*}
+
+{*			{if $functions}*}
+{*				<h3>Functions</h3>*}
+{*				{include menuElements, $functions, activeElement => $function}*}
+{*			{/if}*}
+		{/if}
+	</div>
+{/define}
