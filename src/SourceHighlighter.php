@@ -2,6 +2,8 @@
 
 namespace ApiGenX;
 
+use PhpToken;
+
 
 final class SourceHighlighter
 {
@@ -120,15 +122,12 @@ final class SourceHighlighter
 
 	private function tokenize(string $source): iterable
 	{
-		foreach (token_get_all($source, TOKEN_PARSE) as $token) { // TODO: use PHP 8 new parsing API
-			$id = is_array($token) ? $token[0] : -1;
-			$text = is_array($token) ? $token[1] : $token;
-
-			$lines = explode("\n", $text);
+		foreach (PhpToken::tokenize($source, TOKEN_PARSE) as $token) {
+			$lines = explode("\n", $token->text);
 			$lastLine = count($lines) - 1;
 
 			foreach ($lines as $i => $line) {
-				yield $id => $line;
+				yield $token->id => $line;
 
 				if ($i !== $lastLine) {
 					yield T_WHITESPACE => "\n";

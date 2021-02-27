@@ -19,25 +19,15 @@ use PhpParser\PrettyPrinter\Standard;
 
 final class Renderer
 {
-	/** @var UrlGenerator */
-	private UrlGenerator $url;
-
-	/** @var CommonMarkConverter */
-	private CommonMarkConverter $commonMark;
-
-	/** @var SourceHighlighter */
-	private SourceHighlighter $sourceHighlighter;
-
-	/** @var Latte\Engine */
 	private Latte\Engine $latte;
 
 
-	public function __construct(UrlGenerator $urlGenerator, CommonMarkConverter $commonMark, SourceHighlighter $sourceHighlighter)
-	{
-		$this->url = $urlGenerator;
-		$this->commonMark = $commonMark;
-		$this->sourceHighlighter = $sourceHighlighter;
-		$this->latte = $this->createLatte();
+	public function __construct(
+		private UrlGenerator $url,
+		private CommonMarkConverter $commonMark,
+		private SourceHighlighter $sourceHighlighter
+	) {
+		$this->latte = $this->createLatte(); // TODO: extract
 	}
 
 

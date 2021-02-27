@@ -35,21 +35,12 @@ final class PhpDocResolver extends NodeVisitorAbstract
 		'void' => true, 'object' => true, 'never' => true, 'self' => true, 'static' => true, 'parent' => true,
 	];
 
-	/** @var Lexer */
-	private $lexer;
 
-	/** @var PhpDocParser */
-	private $parser;
-
-	/** @var NameContext */
-	private $nameContext;
-
-
-	public function __construct(Lexer $lexer, PhpDocParser $parser, NameContext $nameContext)
-	{
-		$this->lexer = $lexer;
-		$this->parser = $parser;
-		$this->nameContext = $nameContext;
+	public function __construct(
+		private Lexer $lexer,
+		private PhpDocParser $parser,
+		private NameContext $nameContext,
+	) {
 	}
 
 

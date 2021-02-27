@@ -3,29 +3,20 @@
 namespace ApiGenX;
 
 use ApiGenX\Index\Index;
+use Generator;
 
 
 final class ApiGen
 {
-	/** @var Analyzer */
-	private Analyzer $analyzer;
-
-	/** @var Indexer */
-	private Indexer $indexer;
-
-	/** @var Renderer */
-	private Renderer $renderer;
-
-
-	public function __construct(Analyzer $analyzer, Indexer $indexer, Renderer $renderer)
-	{
-		$this->analyzer = $analyzer;
-		$this->indexer = $indexer;
-		$this->renderer = $renderer;
+	public function __construct(
+		private Analyzer $analyzer,
+		private Indexer $indexer,
+		private Renderer $renderer,
+	) {
 	}
 
 
-	public function generate(array $files, callable $autoloader, string $outputDir)
+	public function generate(array $files, callable $autoloader, string $outputDir): Generator
 	{
 		$index = new Index();
 

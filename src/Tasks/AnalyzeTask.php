@@ -42,15 +42,10 @@ use PHPStan\PhpDocParser\Parser\TypeParser;
 
 final class AnalyzeTask implements Task
 {
-	private string $sourceFile;
-
-	private bool $isPrimary;
-
-
-	public function __construct(string $sourceFile, bool $isPrimary = true)
-	{
-		$this->sourceFile = $sourceFile;
-		$this->isPrimary = $isPrimary;
+	public function __construct(
+		private string $sourceFile,
+		private bool $isPrimary = true,
+	) {
 	}
 
 

@@ -12,22 +12,14 @@ use React\Promise\PromiseInterface;
 
 final class Analyzer
 {
-	private LoopInterface $loop;
-
-	private TaskExecutor $taskExecutor;
-
-
-	public function __construct(LoopInterface $loop, TaskExecutor $taskExecutor)
+	public function __construct(private LoopInterface $loop, private TaskExecutor $taskExecutor)
 	{
-		$this->loop = $loop;
-		$this->taskExecutor = $taskExecutor;
 	}
 
 
 	/**
-	 * @param  string[]                                 $files indexed by []
+	 * @param  string[] $files indexed by []
 	 * @param  callable(string $classLikeName): ?string $autoloader
-	 * @return PromiseInterface
 	 */
 	public function analyze(array $files, callable $autoloader): PromiseInterface
 	{
