@@ -22,7 +22,8 @@
 		"nette/robot-loader": "^3.3",
 		"react/child-process": "^0.6.1",
 		"react/promise": "^2.8",
-		"react/event-loop": "^1.1"
+		"react/event-loop": "^1.1",
+		"react/promise-stream": "^1.2.0"
 	},
 	"require-dev": {
 		"tracy/tracy": "^2.7"
