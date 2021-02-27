@@ -2,8 +2,8 @@
 
 namespace ApiGenX;
 
-
 use ApiGenX\Index\Index;
+
 
 final class ApiGen
 {
@@ -35,26 +35,26 @@ final class ApiGen
 
 		$analyzeTime -= microtime(true);
 
-		foreach ($this->analyzer->analyzeX($files, $autoloader) as $info) {
+		foreach (yield $this->analyzer->analyze($files, $autoloader) as $info) {
 			$analyzeTime += microtime(true);
 			$indexTime -= microtime(true);
 
-//			$this->indexer->indexFile($index, $info->file, $info->primary);
-//			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower);
-//			$this->indexer->indexClassLike($index, $info);
+			$this->indexer->indexFile($index, $info->file, $info->primary);
+			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower);
+			$this->indexer->indexClassLike($index, $info);
 
 			$indexTime += microtime(true);
 			$analyzeTime -= microtime(true);
 		}
 
 		$analyzeTime += microtime(true);
-//		$indexTime -= microtime(true);
-//		$this->indexer->postProcess($index);
-//		$indexTime += microtime(true);
-//
-//		$renderTime -= microtime(true);
-//		$this->renderer->render($index, $outputDir, 1);
-//		$renderTime += microtime(true);
+		$indexTime -= microtime(true);
+		$this->indexer->postProcess($index);
+		$indexTime += microtime(true);
+
+		$renderTime -= microtime(true);
+		$this->renderer->render($index, $outputDir, 1);
+		$renderTime += microtime(true);
 
 		dump(sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3));
 		dump(sprintf('Index Time:         %6.0f ms', $indexTime * 1e3));

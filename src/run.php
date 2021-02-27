@@ -20,6 +20,7 @@ foreach ($sourceDirs as $sourceDir) {
 	$files = array_merge($files, array_keys(iterator_to_array(Nette\Utils\Finder::findFiles('*.php')->from("$rootDir/$sourceDir"))));
 }
 
+
 // AUTOLOADER
 $robotLoader = new Nette\Loaders\RobotLoader(); // TODO: use static map as stubs don't change
 $robotLoader->setTempDirectory(__DIR__ . '/../temp');
@@ -33,13 +34,44 @@ $autoloader = function (string $classLikeName) use ($composerAutoloader): ?strin
 	return $composerAutoloader->findFile($classLikeName) ?: null;
 };
 
+
 // BASE DIR
 $baseDir = realpath($rootDir . '/' . Nette\Utils\Strings::findPrefix(array_map(fn($s) => "$s/", $sourceDirs)));
 
-//$classMap = [];
-//$classMap += array_change_key_case(require __DIR__ . '/../../hranipex/vendor/composer/autoload_classmap.php', CASE_LOWER);
-//$classMap += array_change_key_case(require __DIR__ . '/../vendor/composer/autoload_classmap.php', CASE_LOWER);
 
+// COROUTINES
+$coroutineX = function (React\EventLoop\LoopInterface $loop, Generator $gen, callable $resolve, callable $reject) use (&$coroutineX) {
+	$onResolve = function ($result) use ($loop, $gen, $resolve, $reject, $coroutineX) {
+		$gen->send($result);
+		$loop->futureTick(fn() => $coroutineX($loop, $gen, $resolve, $reject));
+	};
+
+	$onReject = function (Throwable $exception) use ($loop, $gen, $resolve, $reject, $coroutineX) {
+		$gen->throw($exception);
+		$loop->futureTick(fn() => $coroutineX($loop, $gen, $resolve, $reject));
+	};
+
+	$value = $gen->current();
+
+	if ($value instanceof React\Promise\PromiseInterface) {
+		$value->then($onResolve, $onReject)->then(null, $reject);
+
+	} elseif ($value instanceof Generator) {
+		$coroutineX($loop, $value, $onResolve, $onReject);
+
+	} else {
+		$resolve($gen->getReturn());
+	}
+};
+
+$coroutineY = function (React\EventLoop\LoopInterface $loop, Generator $gen) use ($coroutineX) {
+	return new React\Promise\Promise(function (callable $resolve, callable $reject) use ($loop, $gen, $coroutineX) {
+		$loop->futureTick(fn() => $coroutineX($loop, $gen, $resolve, $reject));
+	});
+};
+
+
+// COMPOSITION ROOT
 $commonMarkEnv = League\CommonMark\Environment::createCommonMarkEnvironment();
 $commonMarkEnv->addExtension(new League\CommonMark\Extension\Autolink\AutolinkExtension());
 $commonMark = new League\CommonMark\CommonMarkConverter([], $commonMarkEnv);
@@ -49,9 +81,15 @@ $urlGenerator->setBaseDir($baseDir);
 
 $sourceHighlighter = new ApiGenX\SourceHighlighter();
 
-$analyzer = new ApiGenX\Analyzer();
+$loop = React\EventLoop\Factory::create();
+$executor = new ApiGenX\TaskExecutor\LimitTaskExecutor(ApiGenX\TaskExecutor\PoolTaskExecutor::create(8, fn() => new ApiGenX\TaskExecutor\WorkerTaskExecutor($loop)), 80);
+//$executor = new ApiGenX\TaskExecutor\SimpleTaskExecutor(new ApiGenX\TaskExecutor\DefaultTaskEnvironment());
+
+$analyzer = new ApiGenX\Analyzer($loop, $executor);
 $indexer = new ApiGenX\Indexer();
 $renderer = new ApiGenX\Renderer($urlGenerator, $commonMark, $sourceHighlighter);
 
 $apiGen = new ApiGenX\ApiGen($analyzer, $indexer, $renderer);
-$apiGen->generate($files, $autoloader, $outputDir);
+$coroutineY($loop, $apiGen->generate($files, $autoloader, $outputDir))->then(fn() => $loop->stop());
+
+$loop->run();

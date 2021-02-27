@@ -2,117 +2,51 @@
 
 namespace ApiGenX;
 
-use Amp;
-use Amp\Parallel\Worker\BasicEnvironment;
-use Amp\Parallel\Worker\DefaultPool;
 use ApiGenX\Info\ClassInfo;
-use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\TaskExecutor\TaskExecutor;
 use ApiGenX\Tasks\AnalyzeTask;
+use React\EventLoop\LoopInterface;
+use React\Promise\Deferred;
+use React\Promise\PromiseInterface;
 
 
 final class Analyzer
 {
-	/**
-	 * @param  string[]                                 $files      indexed by []
-	 * @param  callable(string $classLikeName): ?string $autoloader
-	 * @return ClassLikeInfo[]|iterable
-	 */
-	public function analyze(array $files, callable $autoloader): iterable
+	private LoopInterface $loop;
+
+	private TaskExecutor $taskExecutor;
+
+
+	public function __construct(LoopInterface $loop, TaskExecutor $taskExecutor)
 	{
-		$async = true; // TODO
-
-		$env = new BasicEnvironment();
-		$pool = new DefaultPool(8); // TODO: worker count
-
-		$promises = [];
-		$found = [];
-		$missing = [];
-
-		foreach ($files as $file) {
-			$file = realpath($file);
-			$task = new AnalyzeTask($file, true);
-			$promises[$file] ??= $async ? $pool->enqueue($task) : new Amp\Success($task->run($env));
-		}
-
-		while (current($promises) !== false) {
-			$dependencies = [];
-
-			while (($promise = current($promises)) !== false) {
-				next($promises);
-
-				foreach (Amp\Promise\wait($promise) as $info) { // TODO: try order-independent result processing
-					foreach ($info->dependencies as $dependency) {
-						if (!isset($found[$dependency->fullLower])) {
-							$missing[$dependency->fullLower] = $dependency;
-							$dependencies[$dependency->fullLower] = $dependency;
-						}
-					}
-
-					if ($info instanceof ClassLikeInfo) {
-						unset($dependencies[$info->name->fullLower], $missing[$info->name->fullLower]);
-						$found[$info->name->fullLower] = $info;
-						yield $info;
-
-					} else {
-						throw new \LogicException(); // TODO: functions and constants
-					}
-				}
-			}
-
-			foreach ($dependencies as $dependency) {
-				$file = $autoloader($dependency->full);
-
-				if ($file !== null) {
-					$file = realpath($file);
-					$task = new AnalyzeTask($file, false);
-					$promises[$file] ??= $async ? $pool->enqueue($task) : new Amp\Success($task->run($env));
-				}
-			}
-		}
-
-		foreach ($missing as $dependency) {
-			dump("MISSING: {$dependency->full}");
-			$info = new ClassInfo($dependency); // TODO: mark as missing
-			$info->primary = false;
-
-			yield $info;
-		}
+		$this->loop = $loop;
+		$this->taskExecutor = $taskExecutor;
 	}
 
 
 	/**
-	 * @param  string[]                                 $files      indexed by []
+	 * @param  string[]                                 $files indexed by []
 	 * @param  callable(string $classLikeName): ?string $autoloader
-	 * @return ClassLikeInfo[]|iterable
+	 * @return PromiseInterface
 	 */
-	public function analyzeX(array $files, callable $autoloader): iterable
+	public function analyze(array $files, callable $autoloader): PromiseInterface
 	{
-		$async = false; // TODO
+		$deferred = new Deferred();
 
-		$env = new BasicEnvironment();
-		$pool = new DefaultPool(16); // TODO: worker count
-
-		$promises = [];
+		$analyzed = [];
 		$found = [];
 		$missing = [];
 		$waiting = 0;
 
-		$onResolve = function ($error, array $result) use ($autoloader, $async, $env, $pool, &$promises, &$found, &$missing, &$waiting, &$onResolve) {
+		$processResult = function (array $result) use ($autoloader, &$schedule, &$found, &$missing) {
 			foreach ($result as $info) {
 				foreach ($info->dependencies as $dependency) {
-					if (!isset($found[$dependency->fullLower])) {
+					if (!isset($found[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
 						$missing[$dependency->fullLower] = $dependency;
 						$file = $autoloader($dependency->full);
 
 						if ($file !== null) {
-							$file = realpath($file);
-
-							if (!isset($promises[$file])) {
-								$task = new AnalyzeTask($file, false);
-								$promises[$file] = $async ? $pool->enqueue($task) : new Amp\Success($task->run($env));
-								$promises[$file]->onResolve($onResolve);
-								$waiting++;
-							}
+							$schedule($file, false);
 						}
 					}
 				}
@@ -121,34 +55,40 @@ final class Analyzer
 				$found[$info->name->fullLower] = $info;
 			}
 
-			$waiting--;
+			return $result;
+		};
 
-			if ($waiting === 0) {
-				Amp\Loop::stop();
+		$processWaiting = function (array $result) use ($deferred, &$found, &$missing, &$waiting) {
+			if (--$waiting === 0) {
+				dump(count($found));
+				dump(count($missing));
+
+				foreach ($missing as $dependency) {
+					$info = new ClassInfo($dependency); // TODO: mark as missing
+					$info->primary = false;
+					$found[$info->name->fullLower] = $info;
+				}
+
+				$deferred->resolve($found);
+			}
+
+			return $result;
+		};
+
+		$schedule = function (string $file, bool $isPrimary) use (&$analyzed, &$waiting, $processResult, $processWaiting) {
+			$file = realpath($file);
+
+			if (!isset($analyzed[$file])) {
+				$analyzed[$file] = true;
+				$waiting++;
+				$this->taskExecutor->process(new AnalyzeTask($file, $isPrimary))->then($processResult)->then($processWaiting);
 			}
 		};
 
 		foreach ($files as $file) {
-			$file = realpath($file);
-
-			if (!isset($promises[$file])) {
-				$task = new AnalyzeTask($file, true);
-				$promises[$file] = $async ? $pool->enqueue($task) : new Amp\Success($task->run($env));
-				$promises[$file]->onResolve($onResolve);
-				$waiting++;
-			}
+			$schedule($file, true);
 		}
 
-		Amp\Loop::run();
-
-		yield from $found;
-
-		foreach ($missing as $dependency) {
-			dump("MISSING: {$dependency->full}");
-			$info = new ClassInfo($dependency); // TODO: mark as missing
-			$info->primary = false;
-
-			yield $info;
-		}
+		return $deferred->promise();
 	}
 }

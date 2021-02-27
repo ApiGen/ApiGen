@@ -2,8 +2,6 @@
 
 namespace ApiGenX\Tasks;
 
-use Amp\Parallel\Worker\Environment;
-use Amp\Parallel\Worker\Task;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
@@ -13,6 +11,8 @@ use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\ParameterInfo;
 use ApiGenX\Info\PropertyInfo;
 use ApiGenX\Info\TraitInfo;
+use ApiGenX\TaskExecutor\Task;
+use ApiGenX\TaskExecutor\TaskEnvironment;
 use ApiGenX\Tasks\NodeVisitors\BodySkipper;
 use ApiGenX\Tasks\NodeVisitors\PhpDocResolver;
 use Iterator;
@@ -54,7 +54,7 @@ final class AnalyzeTask implements Task
 	}
 
 
-	public function run(Environment $environment)
+	public function run(TaskEnvironment $environment)
 	{
 		$environment['phpParser'] ??= $this->createPhpParser();
 		$environment['phpAstTraverser'] ??= $this->createAstTraverser();
