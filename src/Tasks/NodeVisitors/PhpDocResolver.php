@@ -33,6 +33,7 @@ final class PhpDocResolver extends NodeVisitorAbstract
 		'false' => true, 'null' => true, 'float' => true, 'double' => true, 'array' => true, 'scalar' => true,
 		'number' => true, 'iterable' => true, 'callable' => true, 'resource' => true, 'mixed' => true,
 		'void' => true, 'object' => true, 'never' => true, 'self' => true, 'static' => true, 'parent' => true,
+		'class-string' => true,
 	];
 
 
