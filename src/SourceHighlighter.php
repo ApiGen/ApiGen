@@ -94,12 +94,11 @@ final class SourceHighlighter
 	];
 
 
-	public function highlight(string $path): string
+	public function highlight(string $source): string
 	{
-		$source = file_get_contents($path);
 		$align = strlen(strval(substr_count($source, "\n")));
 
-		$lineStart = "<div id=\"%1\$d\" class=\"l\"><a class=\"l\" href=\"#%1\$d\">%1\${$align}d: </a>"; // TODO: use PHP 8 * modifier
+		$lineStart = "<div id=\"%1\$d\" class=\"source-line\"><a class=\"source-lineNum\" href=\"#%1\$d\">%1\${$align}d: </a>"; // TODO: use PHP 8 * modifier
 		$lineEnd = '</div>';
 
 		$line = 1;

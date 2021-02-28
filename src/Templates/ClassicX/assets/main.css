@@ -285,3 +285,47 @@ code a b {
 .menuGroup-item.collapsed > ul {
 	display: none;
 }
+
+
+/* source */
+.source-line.selected {
+	background: #fffbdd;
+}
+
+.source-lineNum {
+	user-select: none;
+	padding-left: 2px;
+	color: #c0c0c0;
+}
+
+.source-lineNum:hover, .source-lineNum:active, .source-lineNum:focus {
+	background: transparent;
+	color: #c0c0c0 !important;
+}
+
+.php-tag {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+.php-kw {
+	color: #e71818;
+	font-weight: bold;
+}
+
+.php-var {
+	color: #d59401;
+	font-weight: bold;
+}
+
+.php-num {
+	color: #cd0673;
+}
+
+.php-str {
+	color: #008000;
+}
+
+.php-comment {
+	color: #929292;
+}

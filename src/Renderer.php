@@ -2,6 +2,7 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Index\FileInfo;
 use ApiGenX\Index\Index;
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
@@ -9,6 +10,7 @@ use ApiGenX\Renderer\LatteFunctions;
 use ApiGenX\Templates\ClassicX\ClassLikeTemplate;
 use ApiGenX\Templates\ClassicX\GlobalParameters;
 use ApiGenX\Templates\ClassicX\NamespaceTemplate;
+use ApiGenX\Templates\ClassicX\SourceTemplate;
 use ApiGenX\Templates\ClassicX\TreeTemplate;
 use Latte;
 use League\CommonMark\CommonMarkConverter;
@@ -76,22 +78,25 @@ final class Renderer
 
 			$this->renderTemplate($template, "$outputDir/{$this->url->classLike($info)}");
 		});
-//
-//		$this->forkLoop($workerCount, $index->files, function (FileInfo $info, $path) use ($outputDir, $index) {
-//			if (!$info->primary) {
-//				return;
-//			}
-//
-//			$template = new SourceTemplate();
-//			$template->index = $index;
-//			$template->layoutNamespace = null;
-//			$template->layoutClassLike = null;
-//
-//			$template->fileName = $path;
-//			$template->source = $this->sourceHighlighter->highlight($path);
-//
-//			$this->renderTemplate($template, "$outputDir/{$this->url->source($path)}");
-//		});
+
+		$this->forkLoop($workerCount, $index->files, function (FileInfo $info, $path) use ($outputDir, $index) {
+			if (!$info->primary) {
+				return;
+			}
+
+			$template = new SourceTemplate(
+				global: new GlobalParameters(
+					index: $index,
+					activePage: 'source',
+					activeNamespace: null, // TODO!
+					activeClassLike: null, // TODO!
+				),
+				path: $path,
+				source: FileSystem::read($path),
+			);
+
+			$this->renderTemplate($template, "$outputDir/{$this->url->source($path)}");
+		});
 	}
 
 
@@ -105,6 +110,10 @@ final class Renderer
 
 	private function forkLoop(int $workerCount, iterable $it, callable $handle)
 	{
+		if (PHP_SAPI !== 'cli') {
+			$workerCount = 1;
+		}
+
 		$workers = [];
 		$workerId = 0;
 
@@ -159,12 +168,13 @@ final class Renderer
 
 
 //		$latte->addFilter('staticFile', fn(string $file) => "/src/Templates/Classic/$file"); // TODO!
-//		$latte->addFilter('relativePath', fn(?string $path) => $path ? $this->url->relative($path) : null); // TODO!
+		$latte->addFilter('relativePath', fn(?string $path) => $path ? $this->url->relative($path) : null); // TODO!
 		$latte->addFunction('longDescription', fn(string $description) => new Latte\Runtime\Html($this->commonMark->convertToHtml($description)));
 //		$latte->addFilter('groupUrl', fn(string $s) => $s);
 //		$latte->addFilter('namespaceUrl', [$this->url, 'namespace']);
 //		$latte->addFilter('elementUrl', [$this->url, 'classLike']); // TODO: rename
-//		$latte->addFilter('sourceUrl', [$this->url, 'source']);
+		$latte->addFilter('sourceUrl', [$this->url, 'source']);
+		$latte->addFilter('highlight', [$this->sourceHighlighter, 'highlight']);
 //		$latte->addFilter('exprPrint', [$exprPrinter, 'prettyPrintExpr']);
 //
 //		$latte->addFunction('stripHtml', fn (Latte\Runtime\Html $html) => html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8')); // TODO!
