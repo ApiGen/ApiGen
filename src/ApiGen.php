@@ -16,7 +16,7 @@ final class ApiGen
 	}
 
 
-	public function generate(array $files, callable $autoloader, string $outputDir): Generator
+	public function generate(array $files, callable $autoloader, string $outputDir, int $workerCount): Generator
 	{
 		$index = new Index();
 
@@ -44,7 +44,7 @@ final class ApiGen
 		$indexTime += microtime(true);
 
 		$renderTime -= microtime(true);
-		$this->renderer->render($index, $outputDir, 1);
+		$this->renderer->render($index, $outputDir, $workerCount);
 		$renderTime += microtime(true);
 
 		dump(sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3));

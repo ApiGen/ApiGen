@@ -14,6 +14,7 @@ $rootDir = __DIR__ . '/../../hranipex';
 $sourceDirs = ['src'];
 $tempDir = __DIR__ . '/../temp';
 $outputDir = __DIR__ . '/../zz';
+$workerCount = 16;
 
 
 // INIT
@@ -97,6 +98,12 @@ $indexer = new ApiGenX\Indexer();
 $renderer = new ApiGenX\Renderer($latte, $urlGenerator);
 
 $apiGen = new ApiGenX\ApiGen($analyzer, $indexer, $renderer);
-$coroutineY($loop, $apiGen->generate($files, $autoloader, $outputDir))->then(fn() => $loop->stop());
+$coroutineY($loop, $apiGen->generate($files, $autoloader, $outputDir, $workerCount))->then(
+	fn() => $loop->stop(),
+	function (Throwable $e) use ($loop) {
+		$loop->stop();
+		Tracy\Debugger::exceptionHandler($e);
+	},
+);
 
 $loop->run();
