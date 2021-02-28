@@ -2,7 +2,7 @@
 
 {define classTree, ApiGenX\Info\ClassLikeInfo $info, ApiGenX\Info\ClassLikeInfo[][] $children}
 	{if $info->class && $info->extends}
-		{include this, info: $global->index->classLike[$info->extends->fullLower], children: $children + [$info->extends->fullLower => [$info]]}
+		{include this, info: $global->index->classLike[$info->extends->fullLower], children: [$info->extends->fullLower => [$info]] + $children}
 	{else}
 		{include classTreeList, classes: [$info], children: $children}
 	{/if}
