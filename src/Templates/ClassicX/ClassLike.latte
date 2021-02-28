@@ -18,10 +18,8 @@
 			{longDescription($classLike->description)}
 		</div>
 
-		{if ($classLike->class && ($classLike->extends || $classLike->implements || $classLike->uses)) || ($classLike->interface && $classLike->extends) || ($classLike->trait && $classLike->uses)}
-			{include classTree, $classLike, []}
-		{/if}
-
+		{* TODO: move merged array to index *}
+		{include classTree, $classLike, $global->index->classExtends + $global->index->classImplements + $global->index->interfaceExtends}
 		{include classLikeRelated, $classLike}
 	{/define}
 {/embed}

@@ -2,22 +2,22 @@
 
 {define classLikeRelated, ApiGenX\Info\ClassLikeInfo $classLike}
 	{if $classLike->class}
-		{embed classLikeRelatedGroup, $global->index->classExtends[$classLike->name->fullLower] ?? []}
-			{define title}Direct known subclasses{/define}
-		{/embed}
+{*		{embed classLikeRelatedGroup, $global->index->classExtends[$classLike->name->fullLower] ?? []}*}
+{*			{define title}Direct known subclasses{/define}*}
+{*		{/embed}*}
 
-		{embed classLikeRelatedGroup, $classLike->indirectDescendants($global->index)}
-			{define title}Indirect known subclasses{/define}
-		{/embed}
+{*		{embed classLikeRelatedGroup, $classLike->indirectDescendants($global->index)}*}
+{*			{define title}Indirect known subclasses{/define}*}
+{*		{/embed}*}
 
 	{elseif $classLike->interface}
-		{embed classLikeRelatedGroup, $global->index->classImplements[$classLike->name->fullLower] ?? []}
-			{define title}Direct known implementers{/define}
-		{/embed}
+{*		{embed classLikeRelatedGroup, $global->index->classImplements[$classLike->name->fullLower] ?? []}*}
+{*			{define title}Direct known implementers{/define}*}
+{*		{/embed}*}
 
-		{embed classLikeRelatedGroup, $global->index->instanceOf[$classLike->name->fullLower] ?? []}
-			{define title}Indirect known implementers{/define}
-		{/embed}
+{*		{embed classLikeRelatedGroup, $global->index->instanceOf[$classLike->name->fullLower] ?? []}*}
+{*			{define title}Indirect known implementers{/define}*}
+{*		{/embed}*}
 
 	{elseif $classLike->trait}
 		{embed classLikeRelatedGroup, $global->index->classUses[$classLike->name->fullLower] ?? []}
