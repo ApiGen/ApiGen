@@ -8,7 +8,7 @@ use ApiGenX\Info\Traits\HasLineLocation;
 use ApiGenX\Info\Traits\HasTags;
 
 
-abstract class ClassLikeInfo
+abstract class ClassLikeInfo implements ElementInfo
 {
 	use HasTags;
 	use HasLineLocation;

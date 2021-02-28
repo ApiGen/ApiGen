@@ -3,12 +3,13 @@
 namespace ApiGenX\Index;
 
 use ApiGenX\Info\ClassInfo;
+use ApiGenX\Info\ElementInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
 
-final class NamespaceIndex // TODO: split to NamespaceIndex + NamespaceInfo?
+final class NamespaceIndex implements ElementInfo // TODO: split to NamespaceIndex + NamespaceInfo?
 {
 	/** @var NameInfo */
 	public NameInfo $name;
@@ -32,5 +33,11 @@ final class NamespaceIndex // TODO: split to NamespaceIndex + NamespaceInfo?
 	public function __construct(string $name)
 	{
 		$this->name = new NameInfo($name);
+	}
+
+
+	public function isDeprecated(): bool
+	{
+		return false; // TODO?
 	}
 }
