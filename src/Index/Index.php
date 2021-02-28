@@ -34,6 +34,9 @@ final class Index
 	/** @var ClassInfo[][] indexed by [classLikeName][classLikeName] */
 	public array $classImplements = [];
 
+	/** @var ClassInfo[][] indexed by [classLikeName][classLikeName] */
+	public array $classUses = [];
+
 	/** @var InterfaceInfo[][] indexed by [classLikeName][classLikeName] */
 	public array $interfaceExtends = [];
 

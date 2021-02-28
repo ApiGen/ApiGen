@@ -2,6 +2,8 @@
 
 namespace ApiGenX\Info;
 
+use ApiGenX\Index\Index;
+
 
 final class TraitInfo extends ClassLikeInfo
 {
@@ -15,5 +17,17 @@ final class TraitInfo extends ClassLikeInfo
 		$this->class = false;
 		$this->interface = false;
 		$this->trait = true;
+	}
+
+
+	/**
+	 * @return ClassInfo[]
+	 */
+	public function indirectUses(Index $index): iterable
+	{
+		foreach ($index->classUses[$this->name->fullLower] ?? [] as $directUser) {
+			yield from $index->classExtends[$directUser->name->fullLower] ?? [];
+			yield from $directUser->indirectDescendants($index);
+		}
 	}
 }

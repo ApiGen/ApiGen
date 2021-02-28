@@ -114,6 +114,10 @@ final class Indexer
 		foreach ($info->implements as $interfaceNameLower => $interfaceName) {
 			$index->classImplements[$interfaceNameLower][$info->name->fullLower] = $info;
 		}
+
+		foreach ($info->uses as $traitNameLower => $traitName) {
+			$index->classUses[$traitNameLower][$info->name->fullLower] = $info;
+		}
 	}
 
 

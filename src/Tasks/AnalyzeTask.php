@@ -104,8 +104,14 @@ final class AnalyzeTask implements Task
 			$info->final = $node->isFinal();
 			$info->extends = $node->extends ? $this->processName($node->extends) : null;
 			$info->implements = $this->processNameList($node->implements);
+
+			foreach ($node->getTraitUses() as $traitUse) {
+				$info->uses += $this->processNameList($traitUse->traits);
+			}
+
 			$info->dependencies += $info->extends ? [$info->extends->fullLower => $info->extends] : [];
 			$info->dependencies += $info->implements;
+			$info->dependencies += $info->uses;
 
 		} elseif ($node instanceof Node\Stmt\Interface_) {
 			$info = new InterfaceInfo($name);

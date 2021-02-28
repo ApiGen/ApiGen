@@ -44,4 +44,16 @@ final class ClassInfo extends ClassLikeInfo
 			yield from $parent->ancestors($index);
 		}
 	}
+
+
+	/**
+	 * @return ClassInfo[]
+	 */
+	public function indirectDescendants(Index $index): iterable
+	{
+		foreach ($index->classExtends[$this->name->fullLower] ?? [] as $descendant) {
+			yield from $index->classExtends[$descendant->name->fullLower] ?? [];
+			yield from $descendant->indirectDescendants($index);
+		}
+	}
 }
