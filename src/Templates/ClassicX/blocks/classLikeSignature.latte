@@ -16,4 +16,11 @@
 			{include classLikeLink, $global->index->classLike[$implements]}{sep}, {/sep}
 		{/foreach}
 	{/if}
+
+	{if $info->class && $info->uses}
+		uses
+		{foreach $info->uses as $trait => $_}
+			{include classLikeLink, $global->index->classLike[$trait]}{sep}, {/sep}
+		{/foreach}
+	{/if}
 {/define}
