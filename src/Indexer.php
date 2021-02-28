@@ -8,6 +8,7 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\InterfaceInfo;
+use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
 
@@ -232,6 +233,10 @@ final class Indexer
 		}
 
 		foreach ($index->classImplements as &$arr) {
+			ksort($arr);
+		}
+
+		foreach ($index->classUses as &$arr) {
 			ksort($arr);
 		}
 
