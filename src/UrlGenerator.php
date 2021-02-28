@@ -10,18 +10,8 @@ use Nette\Utils\Strings;
 
 final class UrlGenerator
 {
-	private string $baseDir = '';
-
-
-	public function getBaseDir(): string
+	public function __construct(private string $baseDir)
 	{
-		return $this->baseDir;
-	}
-
-
-	public function setBaseDir(string $baseDir): void
-	{
-		$this->baseDir = $baseDir;
 	}
 
 

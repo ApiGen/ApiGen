@@ -12,6 +12,7 @@ Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen())
 // INPUT
 $rootDir = __DIR__ . '/../../hranipex';
 $sourceDirs = ['src'];
+$tempDir = __DIR__ . '/../temp';
 $outputDir = __DIR__ . '/../zz';
 
 
@@ -79,10 +80,13 @@ $commonMarkEnv = League\CommonMark\Environment::createCommonMarkEnvironment();
 $commonMarkEnv->addExtension(new League\CommonMark\Extension\Autolink\AutolinkExtension());
 $commonMark = new League\CommonMark\CommonMarkConverter([], $commonMarkEnv);
 
-$urlGenerator = new ApiGenX\UrlGenerator();
-$urlGenerator->setBaseDir($baseDir);
+$urlGenerator = new ApiGenX\UrlGenerator($baseDir);
 
 $sourceHighlighter = new ApiGenX\SourceHighlighter();
+
+$latteFunctions = new ApiGenX\Renderer\LatteFunctions();
+$latteFactory = new ApiGenX\Renderer\LatteEngineFactory($latteFunctions, $urlGenerator, $commonMark, $sourceHighlighter);
+$latte = $latteFactory->create($tempDir);
 
 $loop = React\EventLoop\Factory::create();
 $executor = new ApiGenX\TaskExecutor\LimitTaskExecutor(ApiGenX\TaskExecutor\PoolTaskExecutor::create(8, fn() => new ApiGenX\TaskExecutor\WorkerTaskExecutor($loop)), 80);
@@ -90,7 +94,7 @@ $executor = new ApiGenX\TaskExecutor\LimitTaskExecutor(ApiGenX\TaskExecutor\Pool
 
 $analyzer = new ApiGenX\Analyzer($loop, $executor);
 $indexer = new ApiGenX\Indexer();
-$renderer = new ApiGenX\Renderer($urlGenerator, $commonMark, $sourceHighlighter);
+$renderer = new ApiGenX\Renderer($latte, $urlGenerator);
 
 $apiGen = new ApiGenX\ApiGen($analyzer, $indexer, $renderer);
 $coroutineY($loop, $apiGen->generate($files, $autoloader, $outputDir))->then(fn() => $loop->stop());
