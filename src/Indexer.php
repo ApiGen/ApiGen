@@ -228,6 +228,8 @@ final class Indexer
 
 	private function sort(Index $index): void
 	{
+		ksort($index->files);
+		ksort($index->namespace);
 		ksort($index->classLike);
 		ksort($index->class);
 		ksort($index->interface);
@@ -256,5 +258,11 @@ final class Indexer
 			ksort($namespaceIndex->exception);
 			ksort($namespaceIndex->children);
 		}
+
+		// move root namespace to end
+		$rootNamespace = $index->namespace[''];
+		unset($index->namespace[''], $rootNamespace->children['']);
+		$index->namespace[''] = $rootNamespace;
+		$rootNamespace->children[''] = $rootNamespace;
 	}
 }
