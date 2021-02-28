@@ -29,6 +29,7 @@ final class Analyzer
 		$found = [];
 		$missing = [];
 		$waiting = 0;
+		$scheduled = false;
 
 		$processResult = function (array $result) use ($autoloader, &$schedule, &$found, &$missing) {
 			foreach ($result as $info) {
@@ -50,10 +51,10 @@ final class Analyzer
 			return $result;
 		};
 
-		$processWaiting = function (array $result) use ($deferred, &$found, &$missing, &$waiting) {
-			if (--$waiting === 0) {
-				dump(sprintf('Found: %d', count($found)));
-				dump(sprintf('Missing: %d', count($missing)));
+		$processWaiting = function (array $result) use ($deferred, &$found, &$missing, &$waiting, &$scheduled) {
+			if (--$waiting === 0  && $scheduled) {
+//				dump(sprintf('Found: %d', count($found)));
+//				dump(sprintf('Missing: %d', count($missing)));
 
 				foreach ($missing as $dependency) {
 					$info = new ClassInfo($dependency); // TODO: mark as missing
@@ -77,7 +78,8 @@ final class Analyzer
 			}
 		};
 
-		foreach ($files as $file) {
+		foreach ($files as $i => $file) {
+			$scheduled = $i === count($files) - 1;
 			$schedule($file, true);
 		}
 
