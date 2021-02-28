@@ -10,18 +10,17 @@ Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen());
 
 // INPUT
-$rootDir = __DIR__ . '/../../hranipex';
-$sourceDirs = ['src'];
+$projectDir = __DIR__ . '/../_my/input-nette3';
+$sourceDirs = ['vendor/*/*/src'];
 $tempDir = __DIR__ . '/../temp';
 $outputDir = __DIR__ . '/../zz';
 $workerCount = 16;
 
 
 // INIT
-$files = [];
-foreach ($sourceDirs as $sourceDir) {
-	$files = array_merge($files, array_keys(iterator_to_array(Nette\Utils\Finder::findFiles('*.php')->from("$rootDir/$sourceDir"))));
-}
+$sourceDirsResolved = array_keys(iterator_to_array(Nette\Utils\Finder::findDirectories(...$sourceDirs)->from($projectDir)));
+$filesResolved = array_keys(iterator_to_array(Nette\Utils\Finder::findFiles('*.php')->from(...$sourceDirsResolved)));
+$baseDir = Nette\Utils\Strings::findPrefix(array_map(fn($s) => realpath($s) . DIRECTORY_SEPARATOR, $sourceDirsResolved));
 
 
 // AUTOLOADER
@@ -31,17 +30,13 @@ $stubsMap['logicexception'] = __DIR__ . '/../stubs/@fix.php';
 $stubsMap['stdClass'] = __DIR__ . '/../stubs/@fix.php';
 
 /** @var \Composer\Autoload\ClassLoader $composerAutoloader */
-$composerAutoloader = require "$rootDir/vendor/autoload.php";
+$composerAutoloader = require "$projectDir/vendor/autoload.php";
 $composerAutoloader->unregister();
 //$composerAutoloader->addClassMap($stubsMap);
 
 $autoloader = function (string $classLikeName) use ($composerAutoloader, $stubsMap): ?string {
 	return $composerAutoloader->findFile($classLikeName) ?: $stubsMap[strtolower($classLikeName)] ?? null;
 };
-
-
-// BASE DIR
-$baseDir = realpath($rootDir . '/' . Nette\Utils\Strings::findPrefix(array_map(fn($s) => "$s/", $sourceDirs)));
 
 
 // COROUTINES
@@ -98,7 +93,7 @@ $indexer = new ApiGenX\Indexer();
 $renderer = new ApiGenX\Renderer($latte, $urlGenerator);
 
 $apiGen = new ApiGenX\ApiGen($analyzer, $indexer, $renderer);
-$coroutineY($loop, $apiGen->generate($files, $autoloader, $outputDir, $workerCount))->then(
+$coroutineY($loop, $apiGen->generate($filesResolved, $autoloader, $outputDir, $workerCount))->then(
 	fn() => $loop->stop(),
 	function (Throwable $e) use ($loop) {
 		$loop->stop();
