@@ -10,8 +10,7 @@
 
 	{define content}
 		<h1 n:class="$classLike->isDeprecated() ? deprecated">
-			{include classLikeKind, $classLike}
-			{$classLike->name->short}
+			{include classLikeKind, $classLike} {include classLikeLinks, $classLike}
 		</h1>
 
 		<div class="description" n:if="$classLike->description">

@@ -1,0 +1,6 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define classLikeLinks, ApiGenX\Info\ClassLikeInfo $info}{*
+	*}{if $classLike->name->namespaceLower}{include namespaceLinks, $global->index->namespace[$classLike->name->namespaceLower]}\{/if}{*
+	*}<a href="{elementUrl($info)}">{$info->name->short}</a>{*
+*}{/define}
