@@ -196,13 +196,24 @@ code a b {
 }
 
 .layout-aside {
-	flex: 0 0 auto;
+	width: 300px;
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	overflow-y: auto;
+	scrollbar-width: none;
+}
+
+.layout-aside::-webkit-scrollbar {
+	width: 0;
+	height: 0;
 }
 
 .layout-main {
 	flex: 1 1 0;
 	display: flex;
 	flex-direction: column;
+	margin-left: 320px;
 }
 
 .layout-content {
@@ -217,8 +228,6 @@ code a b {
 /* menu */
 .menu {
 	padding: 10px;
-	min-width: 250px;
-	margin-right: 20px;
 }
 
 .menu > *:first-child {
