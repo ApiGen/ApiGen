@@ -11,9 +11,6 @@ use ApiGenX\Info\TraitInfo;
 
 final class NamespaceIndex implements ElementInfo // TODO: split to NamespaceIndex + NamespaceInfo?
 {
-	/** @var NameInfo */
-	public NameInfo $name;
-
 	/** @var ClassInfo[] indexed by [className] */
 	public array $class = [];
 
@@ -30,9 +27,10 @@ final class NamespaceIndex implements ElementInfo // TODO: split to NamespaceInd
 	public array $children = [];
 
 
-	public function __construct(string $name)
-	{
-		$this->name = new NameInfo($name);
+	public function __construct(
+		public NameInfo $name,
+		public bool $primary,
+	) {
 	}
 
 

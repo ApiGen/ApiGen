@@ -16,20 +16,30 @@ final class Indexer
 	public function indexFile(Index $index, ?string $file, bool $primary): void
 	{
 		$file = $file === null ? '' : realpath($file);
-		$index->files[$file] ??= new FileIndex($file, $primary);
-	}
 
-
-	public function indexNamespace(Index $index, string $namespace, string $namespaceLower): void
-	{
-		if (isset($index->namespace[$namespaceLower])) {
+		if (isset($index->files[$file])) {
+			$index->files[$file]->primary = $index->files[$file]->primary || $primary;
 			return;
 		}
 
-		$info = new NamespaceIndex($namespace);
+		$index->files[$file] = new FileIndex($file, $primary);
+	}
+
+
+	public function indexNamespace(Index $index, string $namespace, string $namespaceLower, bool $primary): void
+	{
+		if (isset($index->namespace[$namespaceLower])) {
+			while ($primary && !$index->namespace[$namespaceLower]->primary) {
+				$index->namespace[$namespaceLower]->primary = true;
+				$namespaceLower = $index->namespace[$namespaceLower]->name->namespaceLower;
+			}
+			return;
+		}
+
+		$info = new NamespaceIndex(new NameInfo($namespace), $primary);
 
 		if ($namespaceLower !== '') {
-			$this->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower);
+			$this->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $primary);
 		}
 
 		$index->namespace[$namespaceLower] = $info;

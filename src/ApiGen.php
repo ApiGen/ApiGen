@@ -31,7 +31,7 @@ final class ApiGen
 			$indexTime -= microtime(true);
 
 			$this->indexer->indexFile($index, $info->file, $info->primary);
-			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower);
+			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $info->primary);
 			$this->indexer->indexClassLike($index, $info);
 
 			$indexTime += microtime(true);
