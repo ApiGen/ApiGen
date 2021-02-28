@@ -1,0 +1,23 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define elementSummaryGroup, string $heading, ApiGenX\Info\ElementInfo[] $elements, bool $showDescription = true, bool $onlyPrimary = false}
+	{try}
+		<tr class="elementSummary-heading">
+			<th colspan="2">{$heading}</th>
+		</tr>
+
+		{foreach $elements as $element}
+			{skipIf $onlyPrimary && !$element->primary}
+			<tr class="elementSummary-item">
+				<td colspan="{$showDescription ? 1 : 2}"><a href="{elementUrl($element)}" n:class="$element->isDeprecated() ? deprecated">{elementName($element)}</a></td>
+				<td n:if="$showDescription">{elementShortDescription($element)}</td>
+			</tr>
+		{else}
+			{rollback}
+		{/foreach}
+
+		<tr class="elementSummary-spacer">
+			<td colspan="2"></td>
+		</tr>
+	{/try}
+{/define}

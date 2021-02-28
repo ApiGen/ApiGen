@@ -8,6 +8,7 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Templates\ClassicX\ClassLikeTemplate;
 use ApiGenX\Templates\ClassicX\GlobalParameters;
+use ApiGenX\Templates\ClassicX\IndexTemplate;
 use ApiGenX\Templates\ClassicX\NamespaceTemplate;
 use ApiGenX\Templates\ClassicX\SourceTemplate;
 use ApiGenX\Templates\ClassicX\TreeTemplate;
@@ -31,9 +32,24 @@ final class Renderer
 		FileSystem::createDir($outputDir);
 		FileSystem::copy("$templateDir/assets", "$outputDir/assets");
 
+		$title = 'My API Documentation'; // TODO
+
+		$template = new IndexTemplate(
+			global: new GlobalParameters(
+				index: $index,
+				title: $title,
+				activePage: 'index',
+				activeNamespace: null,
+				activeClassLike: null,
+			),
+		);
+
+		$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->index()}");
+
 		$template = new TreeTemplate(
 			global: new GlobalParameters(
 				index: $index,
+				title: $title,
 				activePage: 'tree',
 				activeNamespace: null,
 				activeClassLike: null,
@@ -42,10 +58,11 @@ final class Renderer
 
 		$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->tree()}");
 
-		$this->forkLoop($workerCount, $index->namespace, function (NamespaceIndex $info) use ($outputDir, $index) {
+		$this->forkLoop($workerCount, $index->namespace, function (NamespaceIndex $info) use ($outputDir, $index, $title) {
 			$template = new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
+					title: $title,
 					activePage: 'namespace',
 					activeNamespace: $info,
 					activeClassLike: null,
@@ -56,10 +73,11 @@ final class Renderer
 			$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->namespace($info)}");
 		});
 
-		$this->forkLoop($workerCount, $index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index) {
+		$this->forkLoop($workerCount, $index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index, $title) {
 			$template = new ClassLikeTemplate(
 					global: new GlobalParameters(
 					index: $index,
+					title: $title,
 					activePage: 'namespace',
 					activeNamespace: $index->namespace[$info->name->namespaceLower],
 					activeClassLike: $info,
@@ -70,7 +88,7 @@ final class Renderer
 			$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->classLike($info)}");
 		});
 
-		$this->forkLoop($workerCount, $index->files, function (FileIndex $file, $path) use ($outputDir, $index) {
+		$this->forkLoop($workerCount, $index->files, function (FileIndex $file, $path) use ($outputDir, $index, $title) {
 			if (!$file->primary) {
 				return;
 			}
@@ -81,6 +99,7 @@ final class Renderer
 			$template = new SourceTemplate(
 				global: new GlobalParameters(
 					index: $index,
+					title: $title,
 					activePage: 'source',
 					activeNamespace: $activeNamespace,
 					activeClassLike: $activeClassLike,

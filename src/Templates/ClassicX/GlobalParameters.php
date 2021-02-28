@@ -11,6 +11,7 @@ final class GlobalParameters
 {
 	public function __construct(
 		public Index $index,
+		public string $title,
 		public string $activePage,
 		public ?NamespaceIndex $activeNamespace,
 		public ?ClassLikeInfo $activeClassLike,

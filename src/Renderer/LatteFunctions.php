@@ -28,7 +28,7 @@ final class LatteFunctions
 			return $info->name->short;
 
 		} elseif ($info instanceof NamespaceIndex) {
-			return $info->name->full;
+			return $info->name->full === '' ? 'none' : $info->name->full;
 
 		} else {
 			throw new \LogicException();

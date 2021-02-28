@@ -53,6 +53,12 @@ final class UrlGenerator
 	}
 
 
+	public function index(): string
+	{
+		return 'index.html';
+	}
+
+
 	public function tree(): string
 	{
 		return 'tree.html';

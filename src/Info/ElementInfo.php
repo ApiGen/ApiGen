@@ -3,6 +3,9 @@
 namespace ApiGenX\Info;
 
 
+/**
+ * @property-read bool $primary
+ */
 interface ElementInfo
 {
 	public function isDeprecated(): bool;

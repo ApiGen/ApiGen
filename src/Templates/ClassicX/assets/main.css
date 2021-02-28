@@ -180,7 +180,7 @@ code a b {
 }
 
 .elementSummary-item td:first-child {
-	width: 1px;
+	width: 200px;
 }
 
 .elementSummary-spacer td {
