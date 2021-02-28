@@ -17,7 +17,7 @@ final class UrlGenerator
 
 	public function relative(string $path): string
 	{
-		return Strings::after(realpath($path), realpath($this->baseDir) . DIRECTORY_SEPARATOR) ?? '#'; // TODO: normalize else where
+		return Strings::after(realpath($path), realpath($this->baseDir) . DIRECTORY_SEPARATOR) ?? throw new \LogicException(); // TODO: normalize else where
 	}
 
 
