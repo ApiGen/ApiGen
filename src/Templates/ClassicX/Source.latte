@@ -2,7 +2,7 @@
 {import 'blocks/@index.latte'}
 
 {embed layout}
-	{define title}File {$path}{/define}
+	{define title}File {$path|relativePath}{/define}
 
 	{define content}
 		{include source, $source}
