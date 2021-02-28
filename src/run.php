@@ -4,9 +4,10 @@ require __DIR__ . '/../vendor/autoload.php';
 
 ini_set('zend.exception_ignore_args', '0');
 
-Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 Tracy\Debugger::$strictMode = true;
 Tracy\Debugger::$maxDepth = 10;
+Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
+Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen());
 
 // INPUT
 $rootDir = __DIR__ . '/../../hranipex';
