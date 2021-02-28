@@ -10,7 +10,7 @@ use ApiGenX\Info\TraitInfo;
 
 final class Index
 {
-	/** @var FileInfo[] indexed by [filePath] */
+	/** @var FileIndex[] indexed by [filePath] */
 	public array $files = [];
 
 	/** @var NamespaceIndex[] indexed by [namespaceName] */

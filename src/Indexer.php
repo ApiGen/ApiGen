@@ -2,7 +2,7 @@
 
 namespace ApiGenX;
 
-use ApiGenX\Index\FileInfo;
+use ApiGenX\Index\FileIndex;
 use ApiGenX\Index\Index;
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassInfo;
@@ -15,12 +15,8 @@ final class Indexer
 {
 	public function indexFile(Index $index, ?string $file, bool $primary): void
 	{
-		if ($file === null) {
-			return;
-		}
-
-		$file = realpath($file);
-		$index->files[$file] ??= new FileInfo($file, $primary);
+		$file = $file === null ? '' : realpath($file);
+		$index->files[$file] ??= new FileIndex($file, $primary);
 	}
 
 
@@ -108,6 +104,7 @@ final class Indexer
 	private function indexClass(ClassInfo $info, Index $index): void
 	{
 		$index->class[$info->name->fullLower] = $info;
+		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
 		$index->namespace[$info->name->namespaceLower]->class[$info->name->shortLower] = $info;
 		$index->classExtends[$info->extends ? $info->extends->fullLower : ''][$info->name->fullLower] = $info;
 
@@ -124,6 +121,7 @@ final class Indexer
 	private function indexInterface(InterfaceInfo $info, Index $index): void
 	{
 		$index->interface[$info->name->fullLower] = $info;
+		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
 		$index->namespace[$info->name->namespaceLower]->interface[$info->name->shortLower] = $info;
 
 		if ($info->extends) {
@@ -140,6 +138,7 @@ final class Indexer
 	private function indexTrait(TraitInfo $info, Index $index): void
 	{
 		$index->trait[$info->name->fullLower] = $info;
+		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
 		$index->namespace[$info->name->namespaceLower]->trait[$info->name->shortLower] = $info;
 	}
 
