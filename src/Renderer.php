@@ -6,6 +6,7 @@ use ApiGenX\Index\FileIndex;
 use ApiGenX\Index\Index;
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\Renderer\UrlGenerator;
 use ApiGenX\Templates\ClassicX\ClassLikeTemplate;
 use ApiGenX\Templates\ClassicX\GlobalParameters;
 use ApiGenX\Templates\ClassicX\IndexTemplate;
