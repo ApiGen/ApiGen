@@ -4,6 +4,8 @@ namespace ApiGenX;
 
 use ApiGenX\Index\Index;
 use Generator;
+use Symfony\Component\Console\Helper\ProgressBar;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 
 
 final class ApiGen
@@ -16,7 +18,7 @@ final class ApiGen
 	}
 
 
-	public function generate(array $files, callable $autoloader, string $outputDir, int $workerCount): Generator
+	public function generate(ConsoleOutputInterface $output, array $files, string $outputDir): Generator
 	{
 		$index = new Index();
 
@@ -26,7 +28,13 @@ final class ApiGen
 
 		$analyzeTime -= microtime(true);
 
-		foreach (yield $this->analyzer->analyze($files, $autoloader) as $info) {
+		$analyzeProgress = new ProgressBar($output->section());
+		$analyzeProgress->setFormat('verbose');
+
+		$indexProgress = new ProgressBar($output->section());
+		$renderProgress = new ProgressBar($output->section());
+
+		foreach (yield $this->analyzer->analyze($analyzeProgress, $files) as $info) {
 			$analyzeTime += microtime(true);
 			$indexTime -= microtime(true);
 
@@ -44,7 +52,7 @@ final class ApiGen
 		$indexTime += microtime(true);
 
 		$renderTime -= microtime(true);
-		$this->renderer->render($index, $outputDir, $workerCount);
+		$this->renderer->render($index, $outputDir);
 		$renderTime += microtime(true);
 
 		dump(sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3));

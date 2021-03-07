@@ -21,11 +21,12 @@ final class Renderer
 	public function __construct(
 		private Latte\Engine $latte,
 		private UrlGenerator $urlGenerator,
+		private int $workerCount,
 	) {
 	}
 
 
-	public function render(Index $index, string $outputDir, int $workerCount = 1)
+	public function render(Index $index, string $outputDir)
 	{
 		$templateDir = __DIR__ . '/Templates/ClassicX';
 		FileSystem::delete($outputDir);
@@ -58,7 +59,7 @@ final class Renderer
 
 		$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->tree()}");
 
-		$this->forkLoop($workerCount, $index->namespace, function (NamespaceIndex $info) use ($outputDir, $index, $title) {
+		$this->forkLoop($index->namespace, function (NamespaceIndex $info) use ($outputDir, $index, $title) {
 			$template = new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
@@ -73,7 +74,7 @@ final class Renderer
 			$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->namespace($info)}");
 		});
 
-		$this->forkLoop($workerCount, $index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index, $title) {
+		$this->forkLoop($index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index, $title) {
 			$template = new ClassLikeTemplate(
 					global: new GlobalParameters(
 					index: $index,
@@ -88,7 +89,7 @@ final class Renderer
 			$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->classLike($info)}");
 		});
 
-		$this->forkLoop($workerCount, $index->files, function (FileIndex $file, $path) use ($outputDir, $index, $title) {
+		$this->forkLoop($index->files, function (FileIndex $file, $path) use ($outputDir, $index, $title) {
 			if (!$file->primary) {
 				return;
 			}
@@ -121,11 +122,9 @@ final class Renderer
 	}
 
 
-	private function forkLoop(int $workerCount, iterable $it, callable $handle)
+	private function forkLoop(iterable $it, callable $handle)
 	{
-		if (PHP_SAPI !== 'cli') {
-			$workerCount = 1;
-		}
+		$workerCount = PHP_SAPI === 'cli' ? $this->workerCount : 1;
 
 		$workers = [];
 		$workerId = 0;

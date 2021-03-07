@@ -1,0 +1,99 @@
+#!/usr/bin/env php
+<?php declare(strict_types = 1);
+
+use ApiGenX\ApiGenFactory;
+use Nette\Utils\Finder;
+use Nette\Utils\Strings;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Console\SingleCommandApplication;
+
+
+if (is_file(__DIR__ . '/../vendor/autoload.php')) {
+	require __DIR__ . '/../vendor/autoload.php';
+
+} elseif (is_file(__DIR__ . '/../../../autoload.php')) {
+	require __DIR__ . '/../../../autoload.php';
+
+} else {
+	fwrite(STDERR, "error: unable to find autoloader\n");
+	exit(1);
+}
+
+Tracy\Debugger::$strictMode = true;
+Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
+Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen());
+
+$coroutine = function (React\EventLoop\LoopInterface $loop, Generator $gen, callable $resolve, callable $reject) use (&$coroutine) {
+	$onResolve = function ($result) use ($loop, $gen, $resolve, $reject, $coroutine) {
+		$gen->send($result);
+		$loop->futureTick(fn() => $coroutine($loop, $gen, $resolve, $reject));
+	};
+
+	$onReject = function (Throwable $exception) use ($loop, $gen, $resolve, $reject, $coroutine) {
+		$gen->throw($exception);
+		$loop->futureTick(fn() => $coroutine($loop, $gen, $resolve, $reject));
+	};
+
+	$value = $gen->current();
+
+	if ($value instanceof React\Promise\PromiseInterface) {
+		$value->then($onResolve, $onReject)->then(null, $reject);
+
+	} elseif ($value instanceof Generator) {
+		$coroutine($loop, $value, $onResolve, $onReject);
+
+	} else {
+		$resolve($gen->getReturn());
+	}
+};
+
+$app = new SingleCommandApplication();
+$app->setName('ApiGen');
+
+$app->addOption('source', 's', InputOption::VALUE_REQUIRED, 'source directory');
+$app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask', ['*.php']);
+$app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask', ['temp/**', 'var/**', 'vendor/**']);
+$app->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'output directory');
+$app->addOption('workers', 'w', InputOption::VALUE_REQUIRED, 'worker count', 8);
+
+$app->setCode(function (InputInterface $input, ConsoleOutputInterface $output) use ($coroutine): int {
+	$options = $input->getOptions();
+
+	$workingDir = getcwd();
+	$sourceDir = $options['source'] ?? $workingDir;
+	$include = $options['include'];
+	$exclude = $options['exclude'];
+	$outputDir = $options['output'] ?? sprintf('%s/api', $workingDir);
+	$workerCount = (int) $options['workers'];
+
+	if (!is_dir($sourceDir)) {
+		$output->writeln("Directory '$sourceDir' does not exist");
+		return 1;
+	}
+
+	$sourceDir = realpath($sourceDir);
+	$files = Finder::findFiles(...$include)->exclude(...$exclude)->from($sourceDir);
+	$files = array_keys(iterator_to_array($files));
+
+	if (!count($files)) {
+		$output->writeln("No source files found.");
+		return 1;
+	}
+
+	$files = array_map('realpath', $files);
+	$baseDir = Strings::findPrefix($files);
+
+	$loop = React\EventLoop\Factory::create();
+	$apiGenFactory = new ApiGenFactory();
+
+	$apiGen = $apiGenFactory->create($loop, $sourceDir, $baseDir, $workerCount);
+
+	$coroutine($loop, $apiGen->generate($output, $files, $outputDir), [$loop, 'stop'], [Tracy\Debugger::class, 'exceptionHandler']);
+	$loop->run();
+
+	return 0;
+});
+
+$app->run();

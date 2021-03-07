@@ -5,7 +5,6 @@ namespace ApiGenX;
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ElementInfo;
-use Nette\Utils\Strings;
 
 
 final class UrlGenerator
@@ -17,7 +16,12 @@ final class UrlGenerator
 
 	public function relative(string $path): string
 	{
-		return Strings::after(realpath($path), realpath($this->baseDir) . DIRECTORY_SEPARATOR) ?? throw new \LogicException(); // TODO: normalize else where
+		if (str_starts_with($path, $this->baseDir)) {
+			return substr($path, strlen($this->baseDir));
+
+		} else {
+			throw new \LogicException();
+		}
 	}
 
 

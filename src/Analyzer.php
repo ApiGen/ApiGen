@@ -8,20 +8,23 @@ use ApiGenX\Tasks\AnalyzeTask;
 use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 
 final class Analyzer
 {
-	public function __construct(private LoopInterface $loop, private TaskExecutor $taskExecutor)
-	{
+	public function __construct(
+		private Locator $locator,
+		private LoopInterface $loop,
+		private TaskExecutor $taskExecutor,
+	) {
 	}
 
 
 	/**
 	 * @param  string[] $files indexed by []
-	 * @param  callable(string $classLikeName): ?string $autoloader
 	 */
-	public function analyze(array $files, callable $autoloader): PromiseInterface
+	public function analyze(ProgressBar $progressBar, array $files): PromiseInterface
 	{
 		$deferred = new Deferred();
 
@@ -31,12 +34,12 @@ final class Analyzer
 		$waiting = 0;
 		$scheduled = false;
 
-		$processResult = function (array $result) use ($autoloader, &$schedule, &$found, &$missing) {
+		$processResult = function (array $result) use (&$schedule, &$found, &$missing) {
 			foreach ($result as $info) {
 				foreach ($info->dependencies as $dependency) {
 					if (!isset($found[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
-						$missing[$dependency->fullLower] = $dependency;
-						$file = $autoloader($dependency->full);
+						$missing[$dependency->fullLower] = $info;
+						$file = $this->locator->locate($dependency);
 
 						if ($file !== null) {
 							$schedule($file, false);
@@ -51,12 +54,18 @@ final class Analyzer
 			return $result;
 		};
 
-		$processWaiting = function (array $result) use ($deferred, &$found, &$missing, &$waiting, &$scheduled) {
-			if (--$waiting === 0  && $scheduled) {
-//				dump(sprintf('Found: %d', count($found)));
-//				dump(sprintf('Missing: %d', count($missing)));
+		$processWaiting = function (array $result) use ($deferred, &$found, &$missing, &$waiting, &$scheduled, $progressBar) {
+			$progressBar->advance();
 
-				foreach ($missing as $dependency) {
+			if (--$waiting === 0  && $scheduled) {
+				dump(sprintf('Found: %d', count($found)));
+				dump(sprintf('Missing: %d', count($missing)));
+
+				foreach ($missing as $fullLower => $dependencyOf) {
+					$dependency = $dependencyOf->dependencies[$fullLower];
+
+					dump("Missing {$dependency->full} required by {$dependencyOf->name->full}");
+
 					$info = new ClassInfo($dependency); // TODO: mark as missing
 					$info->primary = false;
 					$found[$info->name->fullLower] = $info;
@@ -68,11 +77,12 @@ final class Analyzer
 			return $result;
 		};
 
-		$schedule = function (string $file, bool $isPrimary) use (&$analyzed, &$waiting, $processResult, $processWaiting) {
+		$schedule = function (string $file, bool $isPrimary) use (&$analyzed, &$waiting, $processResult, $processWaiting, $progressBar) {
 			$file = realpath($file);
 
 			if (!isset($analyzed[$file])) {
 				$analyzed[$file] = true;
+				$progressBar->setMaxSteps($progressBar->getMaxSteps() + 1);
 				$waiting++;
 				$this->taskExecutor->process(new AnalyzeTask($file, $isPrimary))->then($processResult)->then($processWaiting);
 			}
