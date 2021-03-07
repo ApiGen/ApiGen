@@ -66,6 +66,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output) u
 	$include = $options['include'];
 	$exclude = $options['exclude'];
 	$outputDir = $options['output'] ?? sprintf('%s/api', $workingDir);
+	$title = 'API Documentation';
 	$workerCount = (int) $options['workers'];
 
 	if (!is_dir($sourceDir)) {
@@ -90,7 +91,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output) u
 
 	$apiGen = $apiGenFactory->create($loop, $sourceDir, $baseDir, $workerCount);
 
-	$coroutine($loop, $apiGen->generate($output, $files, $outputDir), [$loop, 'stop'], [Tracy\Debugger::class, 'exceptionHandler']);
+	$coroutine($loop, $apiGen->generate($output, $files, $outputDir, $title), [$loop, 'stop'], [Tracy\Debugger::class, 'exceptionHandler']);
 	$loop->run();
 
 	return 0;

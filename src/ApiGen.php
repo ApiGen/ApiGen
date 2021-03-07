@@ -18,7 +18,7 @@ final class ApiGen
 	}
 
 
-	public function generate(ConsoleOutputInterface $output, array $files, string $outputDir): Generator
+	public function generate(ConsoleOutputInterface $output, array $files, string $outputDir, string $title): Generator
 	{
 		$index = new Index();
 
@@ -29,12 +29,15 @@ final class ApiGen
 		$analyzeTime -= microtime(true);
 
 		$analyzeProgress = new ProgressBar($output->section());
-		$analyzeProgress->setFormat('verbose');
+		$analyzeProgress->setFormat('Analyzing: %current%/%max% [%bar%] %percent:3s%%');
 
 		$indexProgress = new ProgressBar($output->section());
+		$indexProgress->setFormat('Indexing:  %current%/%max% [%bar%] %percent:3s%%');
+
 		$renderProgress = new ProgressBar($output->section());
 
-		foreach (yield $this->analyzer->analyze($analyzeProgress, $files) as $info) {
+		$infos = yield $this->analyzer->analyze($analyzeProgress, $files);
+		foreach ($indexProgress->iterate($infos) as $info) {
 			$analyzeTime += microtime(true);
 			$indexTime -= microtime(true);
 
@@ -52,7 +55,7 @@ final class ApiGen
 		$indexTime += microtime(true);
 
 		$renderTime -= microtime(true);
-		$this->renderer->render($index, $outputDir);
+		$this->renderer->render($index, $outputDir, $title);
 		$renderTime += microtime(true);
 
 		dump(sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3));

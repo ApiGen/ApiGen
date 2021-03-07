@@ -27,16 +27,15 @@ final class Renderer
 	}
 
 
-	public function render(Index $index, string $outputDir)
+	public function render(Index $index, string $outputDir, string $title)
 	{
 		$templateDir = __DIR__ . '/Templates/ClassicX';
 		FileSystem::delete($outputDir);
 		FileSystem::createDir($outputDir);
 		FileSystem::copy("$templateDir/assets", "$outputDir/assets");
 
-		$title = 'My API Documentation'; // TODO
 
-		$template = new IndexTemplate(
+		$this->renderTemplate("$outputDir/{$this->urlGenerator->index()}", new IndexTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -44,11 +43,9 @@ final class Renderer
 				activeNamespace: null,
 				activeClassLike: null,
 			),
-		);
+		));
 
-		$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->index()}");
-
-		$template = new TreeTemplate(
+		$this->renderTemplate("$outputDir/{$this->urlGenerator->tree()}", new TreeTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -56,12 +53,10 @@ final class Renderer
 				activeNamespace: null,
 				activeClassLike: null,
 			),
-		);
-
-		$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->tree()}");
+		));
 
 		$this->forkLoop($index->namespace, function (NamespaceIndex $info) use ($outputDir, $index, $title) {
-			$template = new NamespaceTemplate(
+			$this->renderTemplate("$outputDir/{$this->urlGenerator->namespace($info)}", new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -70,13 +65,11 @@ final class Renderer
 					activeClassLike: null,
 				),
 				namespace: $info,
-			);
-
-			$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->namespace($info)}");
+			));
 		});
 
 		$this->forkLoop($index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index, $title) {
-			$template = new ClassLikeTemplate(
+			$this->renderTemplate("$outputDir/{$this->urlGenerator->classLike($info)}", new ClassLikeTemplate(
 					global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -85,9 +78,7 @@ final class Renderer
 					activeClassLike: $info,
 				),
 				classLike: $info,
-			);
-
-			$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->classLike($info)}");
+			));
 		});
 
 		$this->forkLoop($index->files, function (FileIndex $file, $path) use ($outputDir, $index, $title) {
@@ -98,7 +89,7 @@ final class Renderer
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
-			$template = new SourceTemplate(
+			$this->renderTemplate("$outputDir/{$this->urlGenerator->source($path)}", new SourceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -108,14 +99,12 @@ final class Renderer
 				),
 				path: $path,
 				source: FileSystem::read($path),
-			);
-
-			$this->renderTemplate($template, "$outputDir/{$this->urlGenerator->source($path)}");
+			));
 		});
 	}
 
 
-	private function renderTemplate(object $template, string $outputPath): void
+	private function renderTemplate(string $outputPath, object $template): void
 	{
 		$classPath = (new \ReflectionClass($template))->getFileName();
 		$lattePath = dirname($classPath) . '/' . basename($classPath, 'Template.php') . '.latte';
