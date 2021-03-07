@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Tasks\NodeVisitors;
+namespace ApiGenX\Analyzer\NodeVisitors;
 
 use PhpParser\Node;
 use PhpParser\NodeTraverser;

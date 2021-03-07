@@ -1,7 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Tasks;
+namespace ApiGenX\Analyzer;
 
+use ApiGenX\Analyzer\NodeVisitors\BodySkipper;
+use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
@@ -13,8 +15,6 @@ use ApiGenX\Info\PropertyInfo;
 use ApiGenX\Info\TraitInfo;
 use ApiGenX\TaskExecutor\Task;
 use ApiGenX\TaskExecutor\TaskEnvironment;
-use ApiGenX\Tasks\NodeVisitors\BodySkipper;
-use ApiGenX\Tasks\NodeVisitors\PhpDocResolver;
 use Iterator;
 use Nette\Utils\FileSystem;
 use PhpParser\Node;

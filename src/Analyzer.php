@@ -2,9 +2,9 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Analyzer\AnalyzeTask;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\TaskExecutor\TaskExecutor;
-use ApiGenX\Tasks\AnalyzeTask;
 use React\EventLoop\LoopInterface;
 use React\Promise\Deferred;
 use React\Promise\PromiseInterface;
