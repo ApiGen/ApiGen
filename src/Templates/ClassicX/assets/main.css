@@ -115,6 +115,8 @@ a:hover, a:active, a:focus, a:hover b, a:hover var {
 
 code, var, pre {
 	font-family: monospace;
+	-moz-tab-size: 4;
+	tab-size: 4;
 }
 
 var {
