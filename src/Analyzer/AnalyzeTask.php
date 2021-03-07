@@ -44,7 +44,7 @@ final class AnalyzeTask implements Task
 {
 	public function __construct(
 		private string $sourceFile,
-		private bool $isPrimary = true,
+		private bool $isPrimary,
 	) {
 	}
 
