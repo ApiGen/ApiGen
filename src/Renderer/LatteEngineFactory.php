@@ -2,7 +2,6 @@
 
 namespace ApiGenX\Renderer;
 
-use ApiGenX\SourceHighlighter;
 use ApiGenX\UrlGenerator;
 use Latte;
 use League\CommonMark\CommonMarkConverter;

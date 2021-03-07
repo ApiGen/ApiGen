@@ -124,7 +124,7 @@ final class Renderer
 
 	private function forkLoop(iterable $it, callable $handle)
 	{
-		$workerCount = PHP_SAPI === 'cli' ? $this->workerCount : 1;
+		$workerCount = PHP_SAPI === 'cli' && extension_loaded('pcntl') ? $this->workerCount : 1;
 
 		$workers = [];
 		$workerId = 0;

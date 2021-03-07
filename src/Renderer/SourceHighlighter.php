@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX;
+namespace ApiGenX\Renderer;
 
 use PhpToken;
 

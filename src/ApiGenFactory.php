@@ -4,6 +4,7 @@ namespace ApiGenX;
 
 use ApiGenX\Renderer\LatteEngineFactory;
 use ApiGenX\Renderer\LatteFunctions;
+use ApiGenX\Renderer\SourceHighlighter;
 use ApiGenX\TaskExecutor\LimitTaskExecutor;
 use ApiGenX\TaskExecutor\PoolTaskExecutor;
 use ApiGenX\TaskExecutor\WorkerTaskExecutor;
