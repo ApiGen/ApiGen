@@ -19,10 +19,9 @@ final class LatteEngineFactory
 	}
 
 
-	public function create(string $tempDir): Latte\Engine
+	public function create(): Latte\Engine
 	{
 		$latte = new Latte\Engine();
-		$latte->setTempDirectory($tempDir);
 
 		$latte->addFunction('asset', [$this->functions, 'asset']);
 		$latte->addFunction('shortDescription', [$this->functions, 'shortDescription']);
