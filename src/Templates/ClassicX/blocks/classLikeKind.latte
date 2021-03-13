@@ -1,5 +1,5 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
-{define classLikeKind, ApiGenX\Info\ClassLikeInfo $info, bool $short = false}{*
-	*}{if $classLike->interface}Interface{elseif $classLike->trait}Trait{else}Class{/if}{*
+{define classLikeKind, ApiGenX\Info\ClassLikeInfo $info}{*
+	*}{if $info->interface}Interface{elseif $info->trait}Trait{else}Class{/if}{*
 *}{/define}
