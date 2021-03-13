@@ -10,7 +10,7 @@ use ApiGenX\Info\ClassLikeInfo;
 final class GlobalParameters
 {
 	public function __construct(
-		public ?Index $index = null,
+		public Index $index,
 		public string $title,
 		public string $activePage,
 		public ?NamespaceIndex $activeNamespace,
