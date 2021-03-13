@@ -14,6 +14,7 @@ final class ApiGen
 		private Analyzer $analyzer,
 		private Indexer $indexer,
 		private Renderer $renderer,
+		private RendererX $rendererX,
 	) {
 	}
 
@@ -53,6 +54,10 @@ final class ApiGen
 		$indexTime -= microtime(true);
 		$this->indexer->postProcess($index);
 		$indexTime += microtime(true);
+
+//		$renderTime -= microtime(true);
+//		yield $this->rendererX->render($index, $outputDir, $title);
+//		$renderTime += microtime(true);
 
 		$renderTime -= microtime(true);
 		$this->renderer->render($index, $outputDir, $title);

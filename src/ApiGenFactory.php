@@ -36,7 +36,8 @@ final class ApiGenFactory
 		$analyzer = new Analyzer($locator, $loop, $executor);
 		$indexer = new Indexer();
 		$renderer = new Renderer($latte, $urlGenerator, $workerCount);
+		$rendererX = new RendererX($urlGenerator, $executor, $baseDir);
 
-		return new ApiGen($analyzer, $indexer, $renderer);
+		return new ApiGen($analyzer, $indexer, $renderer, $rendererX);
 	}
 }
