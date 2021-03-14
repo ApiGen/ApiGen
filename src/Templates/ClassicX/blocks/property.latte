@@ -6,7 +6,7 @@
 	<tr class="expandable collapsed" data-order="{$property->name}" id="{$id}">
 		<td class="table-cell table-shrink">
 			<code style="white-space: nowrap">
-				{if $property->protected}protected{elseif $property->private}private{else}public{/if}
+				{include memberVisibility, $property}
 				{if $property->static}static{/if}
 {*				{if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}*}
 			</code>

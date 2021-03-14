@@ -7,7 +7,7 @@
 		<td class="table-cell table-shrink">
 			<code style="white-space: nowrap">
 				{if !$classLike->interface && $method->abstract}abstract{elseif $method->final}final{/if}
-				{if $method->protected}protected{elseif $method->private}private{else}public{/if}
+				{include memberVisibility, $method}
 				{if $method->static}static{/if}
 				{if $method->byRef}&amp;{/if}
 			</code>
