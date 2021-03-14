@@ -119,7 +119,7 @@ code, var, pre {
 	font-family: monospace;
 	-moz-tab-size: 4;
 	tab-size: 4;
-	white-space: pre;
+	white-space: pre-wrap;
 }
 
 var {
@@ -363,8 +363,12 @@ code a b {
 
 .table-anchor {
 	width: 1px;
-	padding: 3px;
+	padding: 3px 6px;
 	border-left: none;
+}
+
+.table-anchor > a {
+	padding: 0;
 }
 
 .table-spacer td {

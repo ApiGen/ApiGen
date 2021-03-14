@@ -20,7 +20,7 @@ final class UrlGenerator
 			return substr($path, strlen($this->baseDir));
 
 		} else {
-			throw new \LogicException();
+			throw new \LogicException("{$path} does not start with {$this->baseDir}");
 		}
 	}
 

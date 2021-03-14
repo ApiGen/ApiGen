@@ -13,7 +13,7 @@
 			{include classLikeKind, $classLike} {include classLikeLinks, $classLike}
 		</h1>
 
-		<div class="description" n:if="$classLike->description">
+		<div n:if="$classLike->description" class="description">
 			{longDescription($classLike->description)}
 		</div>
 
@@ -28,6 +28,9 @@
 
 		{include methodSummary, $classLike}
 		{include methodInheritedSummary, $classLike, []}
+		{* TODO: methods used from traits *}
+		{* TODO: own constants *}
+		{* TODO: inherited constants *}
 		{include propertySummary, $classLike}
 	{/define}
 {/embed}
