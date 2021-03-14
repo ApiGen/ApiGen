@@ -12,10 +12,10 @@
 			{include classTreeList, $global->index->classExtends[''], $global->index->classExtends}
 		{/ifset}
 
-		{ifset $global->index->interface}
+		{if $global->index->interface}
 			<h3>Interfaces</h3>
 			{include classTreeList, $global->index->interface, []}
-		{/ifset}
+		{/if}
 
 		{if $global->index->trait}
 			<h3>Traits</h3>
