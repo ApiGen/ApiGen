@@ -29,8 +29,10 @@
 		{include methodSummary, $classLike}
 		{include methodInheritedSummary, $classLike, []}
 		{* TODO: methods used from traits *}
-		{* TODO: own constants *}
+
+		{include constantSummary, $classLike}
 		{* TODO: inherited constants *}
+
 		{include propertySummary, $classLike}
 		{include propertyInheritedSummary, $classLike, []}
 	{/define}
