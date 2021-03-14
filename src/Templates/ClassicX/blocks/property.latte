@@ -17,19 +17,13 @@
 		</td>
 
 		<td class="table-cell">
-			{embed memberSourceLink, classLike => $classLike, member => $property}
+			{embed memberSourceLink, classLike: $classLike, member: $property}
 				{block content}<var>${$property->name}</var>{/block}
 			{/embed}
 
-			<div n:if="$property->description" class="expandable-collapsedView">
-				{$property->description|shortDescription}
-			</div>
-
-			<div class="expandable-expandedView">
-				{longDescription($property->description)}
-			</div>
-
-			{* TODO: other tags (uses, internal...) *}
+			{embed memberDescription, $property}
+				{block details}{* TODO: other tags (uses, internal...) *}{/block}
+			{/embed}
 		</td>
 
 		<td class="table-cell">

@@ -9,19 +9,13 @@
 		</td>
 
 		<td class="table-cell">
-			{embed memberSourceLink, classLike => $classLike, member => $constant}
+			{embed memberSourceLink, classLike: $classLike, member: $constant}
 				{block content}<code>{$constant->name}</code>{/block}
 			{/embed}
 
-			<div n:if="$constant->description" class="expandable-collapsedView">
-				{$constant->description|shortDescription}
-			</div>
-
-			<div class="expandable-expandedView">
-				{longDescription($constant->description)}
-			</div>
-
-			{* TODO: other tags (uses, internal...) *}
+			{embed memberDescription, $constant}
+				{block details}{* TODO: other tags (uses, internal...) *}{/block}
+			{/embed}
 		</td>
 
 		<td class="table-cell table-shrink">
