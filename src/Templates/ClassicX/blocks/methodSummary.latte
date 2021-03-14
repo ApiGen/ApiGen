@@ -9,7 +9,7 @@
 
 			{foreach $classLike->methods as $method}
 				{skipIf $method->private}
-				{include method, classLike => $classLike, method => $method}
+				{include method, classLike: $classLike, method: $method}
 			{else}
 				{rollback}
 			{/foreach}

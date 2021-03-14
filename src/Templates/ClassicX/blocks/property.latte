@@ -13,7 +13,7 @@
 		</td>
 
 		<td class="table-cell table-shrink">
-			<code>{if $property->type}{include type, type => $property->type}{/if}</code>
+			<code>{if $property->type}{include type, $property->type}{/if}</code>
 		</td>
 
 		<td class="table-cell">
@@ -27,7 +27,7 @@
 		</td>
 
 		<td class="table-cell">
-			<code n:if="$property->default">{include expr, expr => $property->default}</code>
+			<code n:if="$property->default">{include expr, $property->default}</code>
 		</td>
 
 		<td class="table-anchor">

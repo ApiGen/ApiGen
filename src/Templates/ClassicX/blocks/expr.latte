@@ -17,7 +17,7 @@
 			*}{else}{*
 				*}{="\n\t"}{*
 				*}{foreach $expr->items as $item}{*
-					*}{if $item->key}{include this, expr: $item->key} => {/if}{*
+					*}{if $item->key}{include this, expr: $item->key} =&gt; {/if}{*
 					*}{include this, expr: $item->value}{sep}{=",\n\t"}{/sep}{*
 				*}{/foreach}{*
 				*}{=",\n"}{*
