@@ -2,13 +2,15 @@
 
 namespace ApiGenX\Info\Traits;
 
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
+
 
 trait HasTags
 {
 	/** @var string */
 	public string $description = '';
 
-	/** @var string[][] indexed by [tagName][]  */
+	/** @var PhpDocTagValueNode[][] indexed by [tagName][]  */
 	public array $tags = [];
 
 

@@ -29,6 +29,7 @@ use PhpParser\ParserFactory;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
@@ -307,6 +308,9 @@ final class AnalyzeTask implements Task
 	}
 
 
+	/**
+	 * @return PhpDocTagValueNode[]
+	 */
 	private function extractTags(PhpDocNode $node): array
 	{
 		$tags = [];
