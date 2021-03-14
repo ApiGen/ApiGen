@@ -1,0 +1,7 @@
+{define parameter, ApiGenX\Info\ParameterInfo $parameter}{*
+	*}<span>{*
+		*}{if $parameter->type}{include type, type: $parameter->type}&nbsp;{/if}{*
+		*}{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>{*
+		*}{if $parameter->default} = {include expr, expr: $parameter->default}{/if}{*
+	*}</span>{*
+*}{/define}

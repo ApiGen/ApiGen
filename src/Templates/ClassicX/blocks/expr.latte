@@ -1,0 +1,19 @@
+{define expr, PhpParser\Node\Expr $expr}{*
+	*}{if $expr instanceof PhpParser\Node\Expr\ClassConstFetch}{*
+		*}{include exprName, name: $expr->class}::{$expr->name}{*
+	*}{elseif $expr instanceof PhpParser\Node\Expr\ConstFetch}{*
+		*}{include exprName, name: $expr->name}{*
+	*}{elseif $expr instanceof PhpParser\Node\Scalar\LNumber || $expr instanceof PhpParser\Node\Scalar\DNumber}{*
+		*}<span class="php-num">{$expr|exprPrint}</span>{*
+	*}{elseif $expr instanceof PhpParser\Node\Scalar\String_}{*
+		*}<span class="php-str">{$expr|exprPrint}</span>{*
+	*}{elseif $expr instanceof PhpParser\Node\Expr\Array_}{*
+		*}[{foreach $expr->items as $item}{*
+			*}{if $item->key}{include this, expr: $item->key}: {/if}{*
+			*}{include this, expr: $item->value}{*
+			*}{sep}, {/sep}{*
+		*}{/foreach}]{*
+	*}{else}{*
+		*}{$expr|exprPrint}{*
+	*}{/if}{*
+*}{/define}

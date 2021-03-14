@@ -1,0 +1,5 @@
+{define parameters, ApiGenX\Info\ParameterInfo[] $parameters, string $sep = ', '}{*
+	*}{foreach $parameters as $parameter}{*
+		*}{include parameter, parameter: $parameter}{sep}{$sep}{/sep}{*
+	*}{/foreach}{*
+*}{/define}

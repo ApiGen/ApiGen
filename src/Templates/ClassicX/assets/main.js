@@ -6,12 +6,14 @@ document.querySelectorAll('.menuGroup-item > a > span').forEach(el => {
 	})
 })
 
+
 // open details
-document.querySelectorAll('.summary tr').forEach(el => {
+document.querySelectorAll('.expandable').forEach(el => {
 	el.addEventListener('click', e => {
 		e.currentTarget.classList.toggle('collapsed')
 	})
 })
+
 
 // line selection
 let ranges = []

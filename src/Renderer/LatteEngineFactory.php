@@ -4,6 +4,7 @@ namespace ApiGenX\Renderer;
 
 use Latte;
 use League\CommonMark\CommonMarkConverter;
+use PhpParser\PrettyPrinter\Standard;
 
 
 final class LatteEngineFactory
@@ -19,10 +20,14 @@ final class LatteEngineFactory
 
 	public function create(): Latte\Engine
 	{
+		$exprPrinter = new Standard();
+
 		$latte = new Latte\Engine();
+		$latte->setTempDirectory(__DIR__ . '/../../temp');
 
 		$latte->addFunction('asset', [$this->functions, 'asset']);
 		$latte->addFunction('shortDescription', [$this->functions, 'shortDescription']);
+		$latte->addFilter('shortDescription', [$this->functions, 'shortDescription']);
 		$latte->addFunction('elementName', [$this->functions, 'elementName']);
 		$latte->addFunction('elementShortDescription', [$this->functions, 'elementShortDescription']);
 
@@ -38,9 +43,9 @@ final class LatteEngineFactory
 //		$latte->addFilter('elementUrl', [$this->url, 'classLike']); // TODO: rename
 		$latte->addFilter('sourceUrl', [$this->url, 'source']);
 		$latte->addFilter('highlight', [$this->sourceHighlighter, 'highlight']);
-//		$latte->addFilter('exprPrint', [$exprPrinter, 'prettyPrintExpr']);
+		$latte->addFilter('exprPrint', [$exprPrinter, 'prettyPrintExpr']);
 //
-//		$latte->addFunction('stripHtml', fn (Latte\Runtime\Html $html) => html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8')); // TODO!
+		$latte->addFunction('stripHtml', fn (Latte\Runtime\Html $html) => html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8')); // TODO!
 
 		return $latte;
 	}
