@@ -1,0 +1,23 @@
+{define propertyInherited, ApiGenX\Info\ClassLikeInfo $from, array $overriden}
+	{try}
+		<table class="table">
+			<tr class="table-heading">
+				<th>Properties inherited from {include classLikeLink, $from}</th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code>{*
+						*}{foreach $from->properties as $propertyName => $property}{*
+							*}{skipIf isset($overriden[$propertyName]) || $property->private}{*
+							*}{include propertyLinkSimple, classLike: $from, property: $property}{sep}, {/sep}{*
+						*}{else}{*
+							*}{rollback}{*
+						*}{/foreach}{*
+					*}</code>
+				</td>
+			</tr>
+		</table>
+	{/try}
+
+	{include propertyInheritedSummary, $from, $overriden}
+{/define}
