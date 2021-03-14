@@ -24,6 +24,7 @@ final class LatteEngineFactory
 
 		$latte = new Latte\Engine();
 		$latte->setTempDirectory(__DIR__ . '/../../temp');
+		$latte->setExceptionHandler(fn (\Throwable $e) => throw $e);
 
 		$latte->addFunction('asset', [$this->functions, 'asset']);
 		$latte->addFunction('shortDescription', [$this->functions, 'shortDescription']);
