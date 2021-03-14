@@ -1,13 +1,18 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
 {define methodSummary, ApiGenX\Info\ClassLikeInfo $classLike}
-	<table n:if="$classLike->methods" class="table" id="methods">
-		<tr class="table-heading">
-			<th colspan="3">Methods</th>
-		</tr>
+	{try}
+		<table class="table" id="methods">
+			<tr class="table-heading">
+				<th colspan="3">Methods</th>
+			</tr>
 
-		{foreach $classLike->methods as $method}
-			{include method, classLike => $classLike, method => $method}
-		{/foreach}
-	</table>
+			{foreach $classLike->methods as $method}
+				{skipIf $method->private}
+				{include method, classLike => $classLike, method => $method}
+			{else}
+				{rollback}
+			{/foreach}
+		</table>
+	{/try}
 {/define}
