@@ -8,11 +8,23 @@
 	*}{elseif $expr instanceof PhpParser\Node\Scalar\String_}{*
 		*}<span class="php-str">{$expr|exprPrint}</span>{*
 	*}{elseif $expr instanceof PhpParser\Node\Expr\Array_}{*
-		*}[{foreach $expr->items as $item}{*
-			*}{if $item->key}{include this, expr: $item->key}: {/if}{*
-			*}{include this, expr: $item->value}{*
-			*}{sep}, {/sep}{*
-		*}{/foreach}]{*
+		*}[{*
+			*}{try}{*
+				*}{foreach $expr->items as $item}{*
+					*}{if $item->key}{rollback}{/if}{*
+					*}{include this, expr: $item->value}{sep}, {/sep}{*
+				*}{/foreach}{*
+			*}{else}{*
+				*}{="\n\t"}{*
+				*}{foreach $expr->items as $item}{*
+					*}{if $item->key}{include this, expr: $item->key} => {/if}{*
+					*}{include this, expr: $item->value}{sep}{=",\n\t"}{/sep}{*
+				*}{/foreach}{*
+				*}{=",\n"}{*
+			*}{/try}{*
+		*}]{*
+	*}{elseif $expr instanceof PhpParser\Node\Expr\UnaryMinus}{*
+		*}-{include this, expr: $expr->expr}{*
 	*}{else}{*
 		*}{$expr|exprPrint}{*
 	*}{/if}{*

@@ -1,0 +1,43 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define property, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\PropertyInfo $property}
+	{capture $id}${$property->name}{/capture}
+
+	<tr class="expandable collapsed" data-order="{$property->name}" id="{$id}">
+		<td class="table-cell table-shrink">
+			<code style="white-space: nowrap">
+				{if $property->protected}protected{elseif $property->private}private{else}public{/if}
+				{if $property->static}static{/if}
+{*				{if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}*}
+			</code>
+		</td>
+
+		<td class="table-cell table-shrink">
+			<code>{if $property->type}{include type, type => $property->type}{/if}</code>
+		</td>
+
+		<td class="table-cell">
+			{embed memberSourceLink, classLike => $classLike, member => $property}
+				{block content}<var>${$property->name}</var>{/block}
+			{/embed}
+
+			<div n:if="$property->description" class="expandable-collapsedView">
+				{$property->description|shortDescription}
+			</div>
+
+			<div class="expandable-expandedView">
+				{longDescription($property->description)}
+			</div>
+
+			{* TODO: other tags (uses, internal...) *}
+		</td>
+
+		<td class="table-cell">
+			<code n:if="$property->default">{include expr, expr => $property->default}</code>
+		</td>
+
+		<td class="table-anchor">
+			<a href="#{$id}">#</a>
+		</td>
+	</tr>
+{/define}

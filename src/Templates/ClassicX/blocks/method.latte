@@ -3,7 +3,7 @@
 {define method, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MethodInfo $method}
 	{capture $id}_{$method->name}{/capture}
 
-	<tr class="table-row expandable collapsed" data-order="{$method->name}" id="{$id}">
+	<tr class="expandable collapsed" data-order="{$method->name}" id="{$id}">
 		<td class="table-cell table-shrink">
 			<code style="white-space: nowrap">
 				{if !$classLike->interface && $method->abstract}abstract{elseif $method->final}final{/if}
@@ -20,6 +20,7 @@
 			<div n:if="$method->description" class="expandable-collapsedView">
 				{$method->description|shortDescription}
 			</div>
+
 			<div class="expandable-expandedView">
 				{longDescription($method->description)}
 

@@ -1,0 +1,13 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define propertySummary, ApiGenX\Info\ClassLikeInfo $classLike}
+	<table n:if="$classLike->properties" class="table" id="properties">
+		<tr class="table-heading">
+			<th colspan="5">Properties</th>
+		</tr>
+
+		{foreach $classLike->properties as $property}
+			{include property, classLike: $classLike, property: $property}
+		{/foreach}
+	</table>
+{/define}
