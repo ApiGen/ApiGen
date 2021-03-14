@@ -91,7 +91,13 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output) u
 
 	$apiGen = $apiGenFactory->create($loop, $sourceDir, $baseDir, $workerCount);
 
-	$coroutine($loop, $apiGen->generate($output, $files, $outputDir, $title), [$loop, 'stop'], [Tracy\Debugger::class, 'exceptionHandler']);
+	$coroutine(
+		$loop,
+		$apiGen->generate($output, $files, $outputDir, $title),
+		[$loop, 'stop'],
+		fn (Throwable $e) => $loop->futureTick(fn () => throw $e)
+	);
+
 	$loop->run();
 
 	return 0;
