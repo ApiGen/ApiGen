@@ -2,13 +2,13 @@
 
 {define elementSummaryGroup, string $heading, ApiGenX\Info\ElementInfo[] $elements, bool $showDescription = true, bool $onlyPrimary = false}
 	{try}
-		<tr class="table-heading">
-			<th colspan="2">{$heading}</th>
+		<tr>
+			<th class="table-heading" colspan="2">{$heading}</th>
 		</tr>
 
 		{foreach $elements as $element}
 			{skipIf $onlyPrimary && !$element->primary}
-			<tr class="table-row">
+			<tr>
 				<td class="table-cell" colspan="{$showDescription ? 1 : 2}"><a href="{elementUrl($element)}" n:class="$element->isDeprecated() ? deprecated">{elementName($element)}</a></td>
 				<td class="table-cell" n:if="$showDescription">{elementShortDescription($element)}</td>
 			</tr>
@@ -16,8 +16,8 @@
 			{rollback}
 		{/foreach}
 
-		<tr class="table-spacer">
-			<td colspan="2"></td>
+		<tr>
+			<td class="table-spacer" colspan="2"></td>
 		</tr>
 	{/try}
 {/define}

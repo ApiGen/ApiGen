@@ -334,7 +334,7 @@ code a b {
 	border-collapse: collapse;
 }
 
-.table-heading > th {
+.table-heading {
 	border: 1px solid #cccccc;
 	padding: 3px 5px;
 	background: #ecede5;
@@ -371,6 +371,6 @@ code a b {
 	padding: 0;
 }
 
-.table-spacer td {
+.table-spacer {
 	height: 30px
 }
