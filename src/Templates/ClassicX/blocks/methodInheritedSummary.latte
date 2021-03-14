@@ -1,0 +1,11 @@
+{define methodInheritedSummary, ApiGenX\Info\ClassLikeInfo $classLike, array $overriden}
+	{if $classLike->class}
+		{if $classLike->extends}
+			{include methodInherited, $global->index->classLike[$classLike->extends->fullLower], $overriden + $classLike->methods}
+		{/if}
+	{elseif $classLike->interface}
+		{foreach $classLike->extends as $parent}
+			{include methodInherited, $global->index->classLike[$parent->fullLower], $overriden + $classLike->methods}
+		{/foreach}
+	{/if}
+{/define}
