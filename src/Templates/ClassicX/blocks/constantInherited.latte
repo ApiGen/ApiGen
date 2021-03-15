@@ -1,0 +1,23 @@
+{define constantInherited ApiGenX\Info\ClassLikeInfo $from, array $overriden}
+	{try}
+		<table class="table">
+			<tr>
+				<th class="table-heading">Constants inherited from {include classLikeLink, $from}</th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code>{*
+						*}{foreach $from->constants as $constantName => $constant}{*
+							*}{skipIf isset($overriden[$constantName]) || $constant->private}{*
+							*}{include constantLinkSimple, classLike: $from, constant: $constant}{sep}, {/sep}{*
+						*}{else}{*
+							*}{rollback}{*
+						*}{/foreach}{*
+					*}</code>
+				</td>
+			</tr>
+		</table>
+	{/try}
+
+	{include constantInheritedSummary, $from, $overriden}
+{/define}

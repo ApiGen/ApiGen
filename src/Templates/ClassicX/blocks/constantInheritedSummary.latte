@@ -1,0 +1,18 @@
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define constantInheritedSummary, ApiGenX\Info\ClassLikeInfo $classLike, array $overriden}
+	{if $classLike->class}
+		{if $classLike->extends}
+			{include constantInherited, $global->index->classLike[$classLike->extends->fullLower], $overriden + $classLike->constants}
+		{/if}
+
+		{foreach $classLike->implements as $interface}
+			{include constantInherited, $global->index->classLike[$interface->fullLower], $overriden + $classLike->constants}
+		{/foreach}
+
+	{elseif $classLike->interface}
+		{foreach $classLike->extends as $parent}
+			{include constantInherited, $global->index->classLike[$parent->fullLower], $overriden + $classLike->constants}
+		{/foreach}
+	{/if}
+{/define}
