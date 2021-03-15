@@ -62,7 +62,7 @@
 						<h4>Throws</h4>
 						<div>
 							{foreach $method->tags['throws'] as $tag}
-								{include type, type: $tag->type, short: false} {$tag->description}{sep}<br>{/sep}
+								<code>{include type, type: $tag->type, short: false}</code> {$tag->description}{sep}<br>{/sep}
 							{/foreach}
 						</div>
 					{/if}

@@ -58,13 +58,13 @@ final class Analyzer
 			$progressBar->advance();
 
 			if (--$waiting === 0  && $scheduled) {
-				dump(sprintf('Found: %d', count($found)));
-				dump(sprintf('Missing: %d', count($missing)));
+//				dump(sprintf('Found: %d', count($found)));
+//				dump(sprintf('Missing: %d', count($missing)));
 
 				foreach ($missing as $fullLower => $dependencyOf) {
 					$dependency = $dependencyOf->dependencies[$fullLower];
 
-					dump("Missing {$dependency->full} required by {$dependencyOf->name->full}");
+//					dump("Missing {$dependency->full} required by {$dependencyOf->name->full}");
 
 					$info = new ClassInfo($dependency); // TODO: mark as missing
 					$info->primary = false;

@@ -18,4 +18,10 @@ trait HasTags
 	{
 		return isset($this->tags['deprecated']);
 	}
+
+
+	public function isInternal(): bool
+	{
+		return isset($this->tags['internal']);
+	}
 }

@@ -18,7 +18,7 @@ final class LatteFunctions
 
 	public function shortDescription(string $description): string
 	{
-		return Strings::before("$description\n", "\n");
+		return Strings::truncate(Strings::before("$description\n\n", "\n\n"), 120); // TODO!
 	}
 
 

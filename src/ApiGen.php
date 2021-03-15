@@ -61,5 +61,6 @@ final class ApiGen
 		dump(sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3));
 		dump(sprintf('Index Time:         %6.0f ms', $indexTime * 1e3));
 		dump(sprintf('Render Time:        %6.0f ms', $renderTime * 1e3));
+		dump(sprintf('Peak Memory:        %6.0f MB', memory_get_peak_usage() / 1e6));
 	}
 }
