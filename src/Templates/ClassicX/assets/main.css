@@ -29,7 +29,7 @@ table {
 	border-collapse: collapse;
 }
 
-ul, li {
+ul, ol {
 	list-style: none;
 }
 
@@ -78,11 +78,6 @@ h4 + * {
 	margin-left: 1em;
 }
 
-p:not(:first-child) {
-	margin-top: 1em;
-	padding: 0;
-}
-
 a {
 	color: #006aeb;
 	padding: 3px 1px;
@@ -125,6 +120,15 @@ code a b {
 }
 
 
+/* classLikeDescription */
+.classLikeDescription {
+	margin-top: 1em;
+	border: 1px solid #cccccc;
+	background-color: #ecede5;
+	padding: 10px;
+}
+
+
 /* classLikeSection */
 .classLikeSection {
 	margin-top: 1em;
@@ -139,6 +143,23 @@ code a b {
 
 .classTree .classTree li:last-child {
 	background: url('images/tree-last.png') left -240px no-repeat;
+}
+
+
+/* description */
+.description *:first-child {
+	margin-top: 0;
+}
+
+.description p {
+	margin-top: 1em;
+	padding: 0;
+}
+
+.description ul {
+	margin-top: 1em;
+	padding-left: 2em;
+	list-style-type: disc;
 }
 
 
@@ -346,7 +367,7 @@ code a b {
 
 .table-anchor {
 	width: 1px;
-	padding: 3px 6px;
+	padding: 3px 6px 3px 0;
 	border-left: none;
 }
 

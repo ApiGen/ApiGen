@@ -1,0 +1,7 @@
+{define classLikeDescription, ApiGenX\Info\ClassLikeInfo $classLike}
+	{if $classLike->description}
+		<div class="classLikeDescription">
+			{include description, $classLike->description}
+		</div>
+	{/if}
+{/define}

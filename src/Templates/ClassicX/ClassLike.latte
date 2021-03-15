@@ -13,9 +13,7 @@
 			{include classLikeKind, $classLike} {include classLikeLinks, $classLike}
 		</h1>
 
-		<div n:if="$classLike->description" class="classLikeSection">
-			{longDescription($classLike->description)}
-		</div>
+		{include classLikeDescription, $classLike}
 
 		<div class="classLikeSection">
 			{include classTree, $classLike, $global->index->classExtends + $global->index->classImplements + $global->index->classUses + $global->index->interfaceExtends}
