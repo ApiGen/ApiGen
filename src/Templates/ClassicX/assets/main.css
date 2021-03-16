@@ -126,6 +126,7 @@ code a b {
 	border: 1px solid #cccccc;
 	background-color: #ecede5;
 	padding: 10px;
+	max-width: 1000px;
 }
 
 
@@ -180,7 +181,7 @@ code a b {
 .layout {
 	display: flex;
 	flex-direction: row;
-	max-width: 1400px;
+	/*max-width: 1400px;*/
 }
 
 .layout-aside {
@@ -203,6 +204,7 @@ code a b {
 	display: flex;
 	flex-direction: column;
 	margin-left: 320px;
+	margin-right: 10px;
 }
 
 .layout-content {
@@ -334,6 +336,7 @@ code a b {
 /* table */
 .table {
 	width: 100%;
+	max-width: 1000px;
 	margin: 1.2em 0 2.4em;
 	border-collapse: collapse;
 }
