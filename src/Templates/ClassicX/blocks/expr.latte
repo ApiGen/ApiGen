@@ -1,4 +1,4 @@
-{define expr, PhpParser\Node\Expr $expr}{*
+{define expr, PhpParser\Node\Expr $expr, string $indent = ''}{*
 	*}{if $expr instanceof PhpParser\Node\Expr\ClassConstFetch}{*
 		*}{include exprName, name: $expr->class}::{$expr->name}{*
 	*}{elseif $expr instanceof PhpParser\Node\Expr\ConstFetch}{*
@@ -15,12 +15,12 @@
 					*}{include this, expr: $item->value}{sep}, {/sep}{*
 				*}{/foreach}{*
 			*}{else}{*
-				*}{="\n\t"}{*
+				*}{="\n\t$indent"}{*
 				*}{foreach $expr->items as $item}{*
 					*}{if $item->key}{include this, expr: $item->key} =&gt; {/if}{*
-					*}{include this, expr: $item->value}{sep}{=",\n\t"}{/sep}{*
+					*}{include this, expr: $item->value, indent: "\t$indent"}{sep}{=",\n\t$indent"}{/sep}{*
 				*}{/foreach}{*
-				*}{=",\n"}{*
+				*}{=",\n$indent"}{*
 			*}{/try}{*
 		*}]{*
 	*}{elseif $expr instanceof PhpParser\Node\Expr\UnaryMinus}{*
