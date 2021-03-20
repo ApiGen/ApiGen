@@ -43,6 +43,9 @@ final class Index
 	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName], e.g. ['a']['b'] means that B instance of A */
 	public array $instanceOf = [];
 
+	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName] instance of + classUses */
+	public array $tree = [];
+
 	/** @var ClassLikeInfo[][] indexed by [constantName][] */
 	public array $constants = [];
 

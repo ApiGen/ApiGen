@@ -97,6 +97,9 @@ final class Indexer
 			}
 		}
 
+		// tree
+		$index->tree = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends);
+
 		// exceptions
 		foreach ($index->namespace as $namespaceIndex) {
 			foreach ($namespaceIndex->class as $info) {
