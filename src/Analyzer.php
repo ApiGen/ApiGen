@@ -2,11 +2,13 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Analyzer\AnalyzeResult;
 use ApiGenX\Analyzer\AnalyzeTask;
 use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
+use ApiGenX\Info\ErrorInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MethodInfo;
 use ApiGenX\Info\NameInfo;
@@ -47,10 +49,9 @@ final class Analyzer
 
 
 	/**
-	 * @param  string[] $files indexed by []
-	 * @return ClassLikeInfo[]
+	 * @param string[] $files indexed by []
 	 */
-	public function analyze(ProgressBar $progressBar, array $files): array
+	public function analyze(ProgressBar $progressBar, array $files): AnalyzeResult
 	{
 		/** @var AnalyzeTask[] $tasks indexed by [path] */
 		$tasks = [];
@@ -60,6 +61,9 @@ final class Analyzer
 
 		/** @var ClassLikeInfo[] $found indexed by [classLikeName] */
 		$missing = [];
+
+		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
+		$errors = [];
 
 		$schedule = function (string $file, bool $isPrimary) use (&$tasks, $progressBar): void {
 			$file = realpath($file);
@@ -73,43 +77,52 @@ final class Analyzer
 
 		foreach ($tasks as &$task) {
 			foreach ($this->processTask($task) as $info) {
-				foreach ($info->dependencies as $dependency) {
-					if (!isset($found[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
-						$missing[$dependency->fullLower] = $info;
-						$file = $this->locator->locate($dependency);
+				if ($info instanceof ClassLikeInfo) {
+					foreach ($info->dependencies as $dependency) {
+						if (!isset($found[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
+							$missing[$dependency->fullLower] = $info;
+							$file = $this->locator->locate($dependency);
 
-						if ($file !== null) {
-							$schedule($file, isPrimary: false);
+							if ($file !== null) {
+								$schedule($file, isPrimary: false);
+							}
 						}
 					}
-				}
 
-				unset($missing[$info->name->fullLower]);
-				$found[$info->name->fullLower] = $info;
+					unset($missing[$info->name->fullLower]);
+					$found[$info->name->fullLower] = $info;
+
+				} elseif ($info instanceof ErrorInfo) {
+					$errors[$info->kind][] = $info;
+
+				} else {
+					throw new \LogicException();
+				}
 			}
 
 			$progressBar->setMessage($task->sourceFile);
 			$progressBar->advance();
 		}
 
-		dump(sprintf('Found:   %d', count($found)));
-		dump(sprintf('Missing: %d', count($missing)));
-
 		foreach ($missing as $fullLower => $dependencyOf) {
 			$dependency = $dependencyOf->dependencies[$fullLower];
-			dump("Missing {$dependency->full} references by {$dependencyOf->name->full}");
+			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$dependencyOf->name->full}");
 
 			$info = new ClassInfo($dependency); // TODO: mark as missing
 			$info->primary = false;
 			$found[$info->name->fullLower] = $info;
 		}
 
-		return $found;
+		$result = new AnalyzeResult();
+		$result->classLike = $found;
+		$result->error = $errors;
+
+		return $result;
 	}
 
 
 	/**
-	 * @return ClassLikeInfo[]
+	 * @return ClassLikeInfo[]|ErrorInfo[]
 	 */
 	private function processTask(AnalyzeTask $task): array
 	{
@@ -118,7 +131,7 @@ final class Analyzer
 			$ast = $this->traverser->traverse($ast);
 
 		} catch (\PhpParser\Error $e) {
-			return []; // TODO: emit ErrorInfo
+			return [new ErrorInfo(ErrorInfo::KIND_SYNTAX_ERROR, "Parse error in file {$task->sourceFile}:\n{$e->getMessage()}")];
 		}
 
 		return iterator_to_array($this->processNodes($task, $ast), false);
@@ -132,7 +145,7 @@ final class Analyzer
 	{
 		foreach ($nodes as $node) {
 			if ($node instanceof Node\Stmt\Namespace_) {
-				yield from $this->processNodes($task, $node->stmts); // TODO: emit NamespaceInfo?
+				yield from $this->processNodes($task, $node->stmts);
 
 			} elseif ($node instanceof Node\Stmt\ClassLike && $node->name !== null) {
 				yield $this->processClassLike($task, $node); // TODO: functions, constants, class aliases

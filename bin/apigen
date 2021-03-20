@@ -2,12 +2,14 @@
 <?php declare(strict_types = 1);
 
 use ApiGenX\ApiGenFactory;
+use Composer\InstalledVersions;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\SingleCommandApplication;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 
 if (is_file(__DIR__ . '/../vendor/autoload.php')) {
@@ -28,6 +30,7 @@ Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen())
 
 $app = new SingleCommandApplication();
 $app->setName('ApiGen');
+$app->setVersion(InstalledVersions::getPrettyVersion('apigen/apigen'));
 
 $app->addOption('source', 's', InputOption::VALUE_REQUIRED, 'source directory');
 $app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask', ['*.php']);
@@ -66,7 +69,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 
 	$apiGenFactory = new ApiGenFactory();
 	$apiGen = $apiGenFactory->create($sourceDir, $baseDir, $baseUrl, $workerCount);
-	$apiGen->generate($output, $files, $outputDir, $title);
+	$apiGen->generate(new SymfonyStyle($input, $output), $files, $outputDir, $title);
 
 	return 0;
 });
