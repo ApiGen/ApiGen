@@ -7,7 +7,6 @@ use Composer\Autoload\ClassLoader;
 use League;
 use Nette\Utils\Finder;
 use PHPStan\Php8StubsMap;
-use React;
 use ReflectionClass;
 
 

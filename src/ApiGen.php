@@ -18,15 +18,9 @@ final class ApiGen
 	}
 
 
-	public function generate(ConsoleOutputInterface $output, array $files, string $outputDir, string $title): Generator
+	public function generate(ConsoleOutputInterface $output, array $files, string $outputDir, string $title): void
 	{
 		$index = new Index();
-
-		$analyzeTime = 0;
-		$indexTime = 0;
-		$renderTime = 0;
-
-		$analyzeTime -= microtime(true);
 
 		$analyzeProgress = new ProgressBar($output->section());
 		$analyzeProgress->setFormat('Analyzing: %current%/%max% [%bar%] %percent:3s%%');
@@ -35,26 +29,23 @@ final class ApiGen
 		$indexProgress->setFormat('Indexing:  %current%/%max% [%bar%] %percent:3s%%');
 
 		$renderProgress = new ProgressBar($output->section());
+		$renderProgress->setFormat('Rendering: %current%/%max% [%bar%] %percent:3s%%');
 
-		$infos = yield $this->analyzer->analyze($analyzeProgress, $files);
-		foreach ($indexProgress->iterate($infos) as $info) {
-			$analyzeTime += microtime(true);
-			$indexTime -= microtime(true);
+		$analyzeTime = -microtime(true);
+		$classLikeInfos = $this->analyzer->analyze($analyzeProgress, $files);
+		$analyzeTime += microtime(true);
 
+		$indexTime = -microtime(true);
+		foreach ($indexProgress->iterate($classLikeInfos) as $info) {
 			$this->indexer->indexFile($index, $info->file, $info->primary);
 			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $info->primary);
 			$this->indexer->indexClassLike($index, $info);
-
-			$indexTime += microtime(true);
-			$analyzeTime -= microtime(true);
 		}
 
-		$analyzeTime += microtime(true);
-		$indexTime -= microtime(true);
 		$this->indexer->postProcess($index);
 		$indexTime += microtime(true);
 
-		$renderTime -= microtime(true);
+		$renderTime = -microtime(true);
 		$this->renderer->render($index, $outputDir, $title);
 		$renderTime += microtime(true);
 

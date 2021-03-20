@@ -2,24 +2,27 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Analyzer\NodeVisitors\BodySkipper;
+use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGenX\Renderer\LatteEngineFactory;
 use ApiGenX\Renderer\LatteFunctions;
 use ApiGenX\Renderer\SourceHighlighter;
 use ApiGenX\Renderer\UrlGenerator;
-use ApiGenX\TaskExecutor\DefaultTaskEnvironment;
-use ApiGenX\TaskExecutor\LimitTaskExecutor;
-use ApiGenX\TaskExecutor\PoolTaskExecutor;
-use ApiGenX\TaskExecutor\SimpleTaskExecutor;
-use ApiGenX\TaskExecutor\WorkerTaskExecutor;
 use League;
 use PhpParser;
-use React;
-use React\EventLoop\LoopInterface;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeTraverserInterface;
+use PhpParser\NodeVisitor\NameResolver;
+use PhpParser\ParserFactory;
+use PHPStan\PhpDocParser\Lexer\Lexer;
+use PHPStan\PhpDocParser\Parser\ConstExprParser;
+use PHPStan\PhpDocParser\Parser\PhpDocParser;
+use PHPStan\PhpDocParser\Parser\TypeParser;
 
 
 final class ApiGenFactory
 {
-	public function create(LoopInterface $loop, string $sourceDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
+	public function create(string $sourceDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
 	{
 		$commonMarkEnv = League\CommonMark\Environment::createCommonMarkEnvironment();
 		$commonMarkEnv->addExtension(new League\CommonMark\Extension\Autolink\AutolinkExtension());
@@ -33,15 +36,32 @@ final class ApiGenFactory
 		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
 		$latte = $latteFactory->create();
 
-		$executor = $workerCount === 1
-			? new SimpleTaskExecutor($loop, new DefaultTaskEnvironment())
-			: new LimitTaskExecutor(PoolTaskExecutor::create($workerCount, fn() => new WorkerTaskExecutor($loop)), 80);
-
 		$locator = new Locator($sourceDir);
-		$analyzer = new Analyzer($locator, $loop, $executor);
+		$phpParserFactory = new ParserFactory();
+		$phpParser = $phpParserFactory->create(ParserFactory::PREFER_PHP7);
+		$phpNodeTraverser = $this->createPhpNodeTraverser();
+		$analyzer = new Analyzer($locator, $phpParser, $phpNodeTraverser);
+
 		$indexer = new Indexer();
 		$renderer = new Renderer($latte, $urlGenerator, $workerCount);
 
 		return new ApiGen($analyzer, $indexer, $renderer);
+	}
+
+
+	private function createPhpNodeTraverser(): NodeTraverserInterface
+	{
+		$nameResolver = new NameResolver();
+		$nameContext = $nameResolver->getNameContext();
+
+		$phpDocLexer = new Lexer();
+		$phpDocParser = new PhpDocParser(new TypeParser(), new ConstExprParser());
+
+		$traverser = new NodeTraverser();
+		$traverser->addVisitor(new BodySkipper());
+		$traverser->addVisitor($nameResolver);
+		$traverser->addVisitor(new PhpDocResolver($phpDocLexer, $phpDocParser, $nameContext));
+
+		return $traverser;
 	}
 }

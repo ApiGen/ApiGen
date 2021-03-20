@@ -25,30 +25,6 @@ Tracy\Debugger::$strictMode = true;
 Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen());
 
-$coroutine = function (React\EventLoop\LoopInterface $loop, Generator $gen, callable $resolve, callable $reject) use (&$coroutine) {
-	$onResolve = function ($result) use ($loop, $gen, $resolve, $reject, $coroutine) {
-		$gen->send($result);
-		$loop->futureTick(fn() => $coroutine($loop, $gen, $resolve, $reject));
-	};
-
-	$onReject = function (Throwable $exception) use ($loop, $gen, $resolve, $reject, $coroutine) {
-		$gen->throw($exception);
-		$loop->futureTick(fn() => $coroutine($loop, $gen, $resolve, $reject));
-	};
-
-	$value = $gen->current();
-
-	if ($value instanceof React\Promise\PromiseInterface) {
-		$value->then($onResolve, $onReject)->then(null, $reject);
-
-	} elseif ($value instanceof Generator) {
-		$coroutine($loop, $value, $onResolve, $onReject);
-
-	} else {
-		$resolve($gen->getReturn());
-	}
-};
-
 $app = new SingleCommandApplication();
 $app->setName('ApiGen');
 
@@ -58,7 +34,7 @@ $app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE
 $app->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'output directory');
 $app->addOption('workers', 'w', InputOption::VALUE_REQUIRED, 'worker count', 8);
 
-$app->setCode(function (InputInterface $input, ConsoleOutputInterface $output) use ($coroutine): int {
+$app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): int {
 	$options = $input->getOptions();
 
 	$workingDir = getcwd();
@@ -87,19 +63,9 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output) u
 	$baseDir = Strings::findPrefix($files);
 	$baseUrl = ''; // TODO!
 
-	$loop = React\EventLoop\Factory::create();
 	$apiGenFactory = new ApiGenFactory();
-
-	$apiGen = $apiGenFactory->create($loop, $sourceDir, $baseDir, $baseUrl, $workerCount);
-
-	$coroutine(
-		$loop,
-		$apiGen->generate($output, $files, $outputDir, $title),
-		[$loop, 'stop'],
-		fn (Throwable $e) => $loop->futureTick(fn () => throw $e)
-	);
-
-	$loop->run();
+	$apiGen = $apiGenFactory->create($sourceDir, $baseDir, $baseUrl, $workerCount);
+	$apiGen->generate($output, $files, $outputDir, $title);
 
 	return 0;
 });
