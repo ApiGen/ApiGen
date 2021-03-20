@@ -2,6 +2,7 @@
 
 namespace ApiGenX;
 
+use ApiGenX\Analyzer\AnalyzeResult;
 use ApiGenX\Index\Index;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -18,48 +19,83 @@ final class ApiGen
 
 	public function generate(SymfonyStyle $output, array $files, string $outputDir, string $title): void
 	{
-		$index = new Index();
-
-		$analyzeProgress = $output->createProgressBar();
-		$analyzeProgress->setFormat('Analyzing: %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
-
-		$indexProgress = $output->createProgressBar();
-		$indexProgress->setFormat('Indexing:  %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%');
-
-		$renderProgress = $output->createProgressBar();
-		$renderProgress->setFormat('Rendering: %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
+		$output->title("ApiGen: Generating $title");
 
 		$analyzeTime = -microtime(true);
-		$analyzeResult = $this->analyzer->analyze($analyzeProgress, $files);
-		$analyzeProgress->finish();
-		$output->newLine();
+		$analyzeResult = $this->analyze($output, $files);
 		$analyzeTime += microtime(true);
 
 		$indexTime = -microtime(true);
-		foreach ($indexProgress->iterate($analyzeResult->classLike) as $info) {
+		$index = $this->index($output, $analyzeResult);
+		$indexTime += microtime(true);
+
+		$renderTime = -microtime(true);
+		$this->render($output, $index, $outputDir, $title);
+		$renderTime += microtime(true);
+
+		$this->performance($output, $analyzeTime, $indexTime, $renderTime);
+		$this->finish($output, $analyzeResult);
+	}
+
+
+	private function analyze(SymfonyStyle $output, array $files): AnalyzeResult
+	{
+		$progressBar = $output->createProgressBar();
+		$progressBar->setFormat('<fg=green>Analyzing</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
+
+		$analyzeResult = $this->analyzer->analyze($progressBar, $files);
+
+		$progressBar->setMessage('done');
+		$progressBar->finish();
+		$output->newLine(2);
+
+		return $analyzeResult;
+	}
+
+
+	private function index(SymfonyStyle $output, AnalyzeResult $analyzeResult): Index
+	{
+		$index = new Index();
+
+		foreach ($analyzeResult->classLike as $info) {
 			$this->indexer->indexFile($index, $info->file, $info->primary);
 			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $info->primary);
 			$this->indexer->indexClassLike($index, $info);
 		}
 
 		$this->indexer->postProcess($index);
-		$indexProgress->finish();
-		$output->newLine();
-		$indexTime += microtime(true);
+		return $index;
+	}
 
-		$renderTime = -microtime(true);
-		$this->renderer->render($renderProgress, $index, $outputDir, $title);
-		$renderProgress->finish();
-		$output->newLine();
-		$renderTime += microtime(true);
 
-		$output->info(implode("\n", [
-			sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3),
-			sprintf('Index Time:         %6.0f ms', $indexTime * 1e3),
-			sprintf('Render Time:        %6.0f ms', $renderTime * 1e3),
-			sprintf('Peak Memory:        %6.0f MB', memory_get_peak_usage() / 1e6),
-		]));
+	private function render(SymfonyStyle $output, Index $index, string $outputDir, string $title): void
+	{
+		$progressBar = $output->createProgressBar();
+		$progressBar->setFormat('<fg=green>Rendering</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
 
+		$this->renderer->render($progressBar, $index, $outputDir, $title);
+
+		$progressBar->setMessage('done');
+		$progressBar->finish();
+		$output->newLine(2);
+	}
+
+
+	private function performance(SymfonyStyle $output, float $analyzeTime, float $indexTime, float $renderTime): void
+	{
+		if ($output->isVeryVerbose()) {
+			$output->info(implode("\n", [
+				sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3),
+				sprintf('Index Time:         %6.0f ms', $indexTime * 1e3),
+				sprintf('Render Time:        %6.0f ms', $renderTime * 1e3),
+				sprintf('Peak Memory:        %6.0f MB', memory_get_peak_usage() / 1e6),
+			]));
+		}
+	}
+
+
+	private function finish(SymfonyStyle $output, AnalyzeResult $analyzeResult): void
+	{
 		if (!$analyzeResult->error) {
 			$output->success('Finished OK');
 			return;
