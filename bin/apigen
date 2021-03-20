@@ -21,6 +21,7 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 	exit(1);
 }
 
+ini_set('memory_limit', '512M');
 Tracy\Debugger::$strictMode = true;
 Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen());
