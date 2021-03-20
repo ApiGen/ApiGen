@@ -1,25 +1,25 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
-{define classLikeSignature, ApiGenX\Info\ClassLikeInfo $info}
-	{include classLikeLink, $info}
+{define classLikeSignature, ApiGenX\Info\ClassLikeInfo $classLike}
+	{include classLikeLink, $classLike}
 
-	{if $info->interface && $info->extends}
+	{if $classLike->interface && $classLike->extends}
 		extends
-		{foreach $info->extends as $extends => $_}
+		{foreach $classLike->extends as $extends => $_}
 			{include classLikeLink, $global->index->classLike[$extends]}{sep}, {/sep}
 		{/foreach}
 	{/if}
 
-	{if $info->class && $info->implements}
+	{if $classLike->class && $classLike->implements}
 		implements
-		{foreach $info->implements as $implements => $_}
+		{foreach $classLike->implements as $implements => $_}
 			{include classLikeLink, $global->index->classLike[$implements]}{sep}, {/sep}
 		{/foreach}
 	{/if}
 
-	{if $info->class && $info->uses}
+	{if $classLike->class && $classLike->uses}
 		uses
-		{foreach $info->uses as $trait => $_}
+		{foreach $classLike->uses as $trait => $_}
 			{include classLikeLink, $global->index->classLike[$trait]}{sep}, {/sep}
 		{/foreach}
 	{/if}

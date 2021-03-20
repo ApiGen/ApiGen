@@ -6,7 +6,7 @@
 			<h4>{include title}</h4>
 
 			{foreach $items as $item}{* TODO: SORT *}
-				<a href="{elementUrl($item)}"><span n:tag-if="$item->isDeprecated()" class="deprecated">{$item->name->full}</span></a>{sep}, {/sep}
+				<a href="{classLikeUrl($item)}"><span n:tag-if="$item->isDeprecated()" class="deprecated">{$item->name->full}</span></a>{sep}, {/sep}
 			{else}
 				{rollback}
 			{/foreach}
