@@ -1,84 +1,80 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
 {define method, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MethodInfo $method}
-	{capture $id}_{$method->name}{/capture}
+	{embed member, $method}
+		{block cells}
+			<td class="table-cell table-shrink">
+				<code style="white-space: nowrap">
+					{if !$classLike->interface && $method->abstract}abstract{elseif $method->final}final{/if}
+					{include memberVisibility, $method}
+					{if $method->static}static{/if}
+					{if $method->byRef}&amp;{/if}
+				</code>
+			</td>
 
-	<tr class="expandable collapsed" data-order="{$method->name}" id="{$id}">
-		<td class="table-cell table-shrink">
-			<code style="white-space: nowrap">
-				{if !$classLike->interface && $method->abstract}abstract{elseif $method->final}final{/if}
-				{include memberVisibility, $method}
-				{if $method->static}static{/if}
-				{if $method->byRef}&amp;{/if}
-			</code>
-		</td>
+			<td class="table-cell">
+				{capture $signature}{include methodSignature, classLike: $classLike, method: $method}{/capture}
+				<code>{if strlen(stripHtml($signature)) > 120}{include methodSignature, classLike: $classLike, method: $method, multiLine: true}{else}{$signature}{/if}</code>
 
-		<td class="table-cell">
-			{capture $signature}{include methodSignature, classLike: $classLike, method: $method}{/capture}
-			<code>{if strlen(stripHtml($signature)) > 120}{include methodSignature, classLike: $classLike, method: $method, multiLine: true}{else}{$signature}{/if}</code>
+				{embed memberDescription, $method}
+					{block details}
+						{try}
+							<h4>Deprecated</h4>
+							<div>
+								{foreach $method->tags['deprecated'] ?? [] as $tag}
+									{skipIf !$tag->description}
+									{longDescription($tag->description)}{sep}<br>{/sep}
+								{else}
+									{rollback}
+								{/foreach}
+							</div>
+						{/try}
 
-			{embed memberDescription, $method}
-				{block details}
-					{try}
-						<h4>Deprecated</h4>
-						<div>
-							{foreach $method->tags['deprecated'] ?? [] as $tag}
-								{skipIf !$tag->description}
-								{longDescription($tag->description)}{sep}<br>{/sep}
-							{else}
-								{rollback}
-							{/foreach}
-						</div>
-					{/try}
+						{try}
+							<h4>Parameters</h4>
+							<table>
+								{foreach $method->parameters as $parameter}
+									{skipIf !$parameter->description}
+									<tr>
+										<td>{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>&nbsp;&nbsp;</td>
+										<td>{longDescription($parameter->description)}</td>
+									</tr>
+								{else}
+									{rollback}
+								{/foreach}
+							</table>
+						{/try}
 
-					{try}
-						<h4>Parameters</h4>
-						<table>
-							{foreach $method->parameters as $parameter}
-								{skipIf !$parameter->description}
-								<tr>
-									<td>{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>&nbsp;&nbsp;</td>
-									<td>{longDescription($parameter->description)}</td>
-								</tr>
-							{else}
-								{rollback}
-							{/foreach}
-						</table>
-					{/try}
+						{try}
+							<h4>Returns</h4>
+							<div>
+								{foreach $method->tags['return'] ?? [] as $tag}
+									{skipIf !$tag->description}
+									{longDescription($tag->description)}{sep}<br>{/sep}
+								{else}
+									{rollback}
+								{/foreach}
+							</div>
+						{/try}
 
-					{try}
-						<h4>Returns</h4>
-						<div>
-							{foreach $method->tags['return'] ?? [] as $tag}
-								{skipIf !$tag->description}
-								{longDescription($tag->description)}{sep}<br>{/sep}
-							{else}
-								{rollback}
-							{/foreach}
-						</div>
-					{/try}
+						{if !empty($method->tags['throws'])}
+							<h4>Throws</h4>
+							<div>
+								{foreach $method->tags['throws'] as $tag}
+									<code>{include type, type: $tag->type, short: false}</code> {$tag->description}{sep}<br>{/sep}
+								{/foreach}
+							</div>
+						{/if}
 
-					{if !empty($method->tags['throws'])}
-						<h4>Throws</h4>
-						<div>
-							{foreach $method->tags['throws'] as $tag}
-								<code>{include type, type: $tag->type, short: false}</code> {$tag->description}{sep}<br>{/sep}
-							{/foreach}
-						</div>
-					{/if}
+						{* TODO: other tags (uses, internal...) *}
 
-					{* TODO: other tags (uses, internal...) *}
-
-					{include methodRelation, title: 'Overrides', method: $method, related: $global->index->methodOverrides[$classLike->name->fullLower][$method->nameLower] ?? []}
-					{include methodRelation, title: 'Overriden by', method: $method, related: $global->index->methodOverriddenBy[$classLike->name->fullLower][$method->nameLower] ?? []}
-					{include methodRelation, title: 'Implements', method: $method, related: $global->index->methodImplements[$classLike->name->fullLower][$method->nameLower] ?? []}
-					{include methodRelation, title: 'Implemented by', method: $method, related: $global->index->methodImplementedBy[$classLike->name->fullLower][$method->nameLower] ?? []}
-				{/block}
-			{/embed}
-		</td>
-
-		<td class="table-anchor">
-			<a href="#{$id}">#</a>
-		</td>
-	</tr>
+						{include methodRelation, title: 'Overrides', method: $method, related: $global->index->methodOverrides[$classLike->name->fullLower][$method->nameLower] ?? []}
+						{include methodRelation, title: 'Overriden by', method: $method, related: $global->index->methodOverriddenBy[$classLike->name->fullLower][$method->nameLower] ?? []}
+						{include methodRelation, title: 'Implements', method: $method, related: $global->index->methodImplements[$classLike->name->fullLower][$method->nameLower] ?? []}
+						{include methodRelation, title: 'Implemented by', method: $method, related: $global->index->methodImplementedBy[$classLike->name->fullLower][$method->nameLower] ?? []}
+					{/block}
+				{/embed}
+			</td>
+		{/block}
+	{/embed}
 {/define}

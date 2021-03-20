@@ -10,23 +10,25 @@ use ApiGenX\TaskExecutor\LimitTaskExecutor;
 use ApiGenX\TaskExecutor\PoolTaskExecutor;
 use ApiGenX\TaskExecutor\WorkerTaskExecutor;
 use League;
+use PhpParser;
 use React;
 use React\EventLoop\LoopInterface;
 
 
 final class ApiGenFactory
 {
-	public function create(LoopInterface $loop, string $sourceDir, string $baseDir, int $workerCount): ApiGen
+	public function create(LoopInterface $loop, string $sourceDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
 	{
 		$commonMarkEnv = League\CommonMark\Environment::createCommonMarkEnvironment();
 		$commonMarkEnv->addExtension(new League\CommonMark\Extension\Autolink\AutolinkExtension());
 		$commonMark = new League\CommonMark\CommonMarkConverter([], $commonMarkEnv);
 
-		$urlGenerator = new UrlGenerator($baseDir);
+		$urlGenerator = new UrlGenerator($baseDir, $baseUrl);
 		$sourceHighlighter = new SourceHighlighter();
+		$exprPrettyPrinter = new PhpParser\PrettyPrinter\Standard();
 
-		$latteFunctions = new LatteFunctions();
-		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator, $commonMark, $sourceHighlighter);
+		$latteFunctions = new LatteFunctions($urlGenerator, $sourceHighlighter, $commonMark, $exprPrettyPrinter);
+		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
 		$latte = $latteFactory->create();
 
 		$executor = new LimitTaskExecutor(PoolTaskExecutor::create($workerCount, fn() => new WorkerTaskExecutor($loop)), 80);

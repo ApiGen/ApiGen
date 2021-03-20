@@ -1,37 +1,33 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
 {define property, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\PropertyInfo $property}
-	{capture $id}${$property->name}{/capture}
+	{embed member, $property}
+		{block cells}
+			<td class="table-cell table-shrink">
+				<code style="white-space: nowrap">
+					{include memberVisibility, $property}
+					{if $property->static}static{/if}
+{*					{if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}*}
+				</code>
+			</td>
 
-	<tr class="expandable collapsed" data-order="{$property->name}" id="{$id}">
-		<td class="table-cell table-shrink">
-			<code style="white-space: nowrap">
-				{include memberVisibility, $property}
-				{if $property->static}static{/if}
-{*				{if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}*}
-			</code>
-		</td>
+			<td class="table-cell table-shrink">
+				<code>{if $property->type}{include type, $property->type}{/if}</code>
+			</td>
 
-		<td class="table-cell table-shrink">
-			<code>{if $property->type}{include type, $property->type}{/if}</code>
-		</td>
+			<td class="table-cell">
+				{embed memberSourceLink, classLike: $classLike, member: $property}
+					{block content}<var>${$property->name}</var>{/block}
+				{/embed}
 
-		<td class="table-cell">
-			{embed memberSourceLink, classLike: $classLike, member: $property}
-				{block content}<var>${$property->name}</var>{/block}
-			{/embed}
+				{embed memberDescription, $property}
+					{block details}{* TODO: other tags (uses, internal...) *}{/block}
+				{/embed}
+			</td>
 
-			{embed memberDescription, $property}
-				{block details}{* TODO: other tags (uses, internal...) *}{/block}
-			{/embed}
-		</td>
-
-		<td class="table-cell">
-			<code n:if="$property->default">{include expr, $property->default}</code>
-		</td>
-
-		<td class="table-anchor">
-			<a href="#{$id}">#</a>
-		</td>
-	</tr>
+			<td class="table-cell">
+				<code n:if="$property->default">{include expr, $property->default}</code>
+			</td>
+		{/block}
+	{/embed}
 {/define}

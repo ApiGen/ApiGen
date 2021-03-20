@@ -1,5 +1,5 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
 {define source, string $source}
-	<pre class="source"><code>{$source|highlight|noescape}</code></pre>
+	<pre class="source"><code>{highlight($source)}</code></pre>
 {/define}

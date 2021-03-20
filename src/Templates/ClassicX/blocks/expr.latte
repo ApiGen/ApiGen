@@ -4,9 +4,9 @@
 	*}{elseif $expr instanceof PhpParser\Node\Expr\ConstFetch}{*
 		*}{include exprName, name: $expr->name}{*
 	*}{elseif $expr instanceof PhpParser\Node\Scalar\LNumber || $expr instanceof PhpParser\Node\Scalar\DNumber}{*
-		*}<span class="php-num">{$expr|exprPrint}</span>{*
+		*}<span class="php-num">{exprPrint($expr)}</span>{*
 	*}{elseif $expr instanceof PhpParser\Node\Scalar\String_}{*
-		*}<span class="php-str">{$expr|exprPrint}</span>{*
+		*}<span class="php-str">{exprPrint($expr)}</span>{*
 	*}{elseif $expr instanceof PhpParser\Node\Expr\Array_}{*
 		*}[{*
 			*}{try}{*
@@ -26,6 +26,6 @@
 	*}{elseif $expr instanceof PhpParser\Node\Expr\UnaryMinus}{*
 		*}-{include this, expr: $expr->expr}{*
 	*}{else}{*
-		*}{$expr|exprPrint}{*
+		*}{exprPrint($expr)}{*
 	*}{/if}{*
 *}{/define}

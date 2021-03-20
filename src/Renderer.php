@@ -35,7 +35,7 @@ final class Renderer
 		FileSystem::copy("$templateDir/assets", "$outputDir/assets");
 
 
-		$this->renderTemplate("$outputDir/{$this->urlGenerator->index()}", new IndexTemplate(
+		$this->renderTemplate("$outputDir/{$this->urlGenerator->getIndexPath()}", new IndexTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -45,7 +45,7 @@ final class Renderer
 			),
 		));
 
-		$this->renderTemplate("$outputDir/{$this->urlGenerator->tree()}", new TreeTemplate(
+		$this->renderTemplate("$outputDir/{$this->urlGenerator->getTreePath()}", new TreeTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -56,7 +56,7 @@ final class Renderer
 		));
 
 		$this->forkLoop($index->namespace, function (NamespaceIndex $info) use ($outputDir, $index, $title) {
-			$this->renderTemplate("$outputDir/{$this->urlGenerator->namespace($info)}", new NamespaceTemplate(
+			$this->renderTemplate("$outputDir/{$this->urlGenerator->getNamespacePath($info)}", new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -69,7 +69,7 @@ final class Renderer
 		});
 
 		$this->forkLoop($index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index, $title) {
-			$this->renderTemplate("$outputDir/{$this->urlGenerator->classLike($info)}", new ClassLikeTemplate(
+			$this->renderTemplate("$outputDir/{$this->urlGenerator->getClassLikePath($info)}", new ClassLikeTemplate(
 					global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -89,7 +89,7 @@ final class Renderer
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
-			$this->renderTemplate("$outputDir/{$this->urlGenerator->source($path)}", new SourceTemplate(
+			$this->renderTemplate("$outputDir/{$this->urlGenerator->getSourcePath($path)}", new SourceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,

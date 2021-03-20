@@ -3,8 +3,7 @@
 namespace ApiGenX\Renderer;
 
 use Latte;
-use League\CommonMark\CommonMarkConverter;
-use PhpParser\PrettyPrinter\Standard;
+use Throwable;
 
 
 final class LatteEngineFactory
@@ -12,41 +11,36 @@ final class LatteEngineFactory
 	public function __construct(
 		private LatteFunctions $functions,
 		private UrlGenerator $url,
-		private CommonMarkConverter $commonMark,
-		private SourceHighlighter $sourceHighlighter,
 	) {
 	}
 
 
 	public function create(): Latte\Engine
 	{
-		$exprPrinter = new Standard();
-
 		$latte = new Latte\Engine();
-		$latte->setTempDirectory(__DIR__ . '/../../temp');
-		$latte->setExceptionHandler(fn (\Throwable $e) => throw $e);
+		$latte->setExceptionHandler(fn(Throwable $e) => throw $e);
 
-		$latte->addFunction('asset', [$this->functions, 'asset']);
+		$latte->addFunction('stripHtml', [$this->functions, 'stripHtml']);
+		$latte->addFunction('highlight', [$this->functions, 'highlight']);
+		$latte->addFunction('exprPrint', [$this->functions, 'prettyPrintExpr']);
 		$latte->addFunction('shortDescription', [$this->functions, 'shortDescription']);
-		$latte->addFilter('shortDescription', [$this->functions, 'shortDescription']);
+		$latte->addFunction('longDescription', [$this->functions, 'longDescription']);
+
 		$latte->addFunction('elementName', [$this->functions, 'elementName']);
 		$latte->addFunction('elementShortDescription', [$this->functions, 'elementShortDescription']);
+		$latte->addFunction('elementUrl', [$this->functions, 'elementUrl']);
 
-		$latte->addFunction('namespaceUrl', [$this->url, 'namespace']);
-		$latte->addFunction('elementUrl', [$this->url, 'element']); // TODO: rename?
-
-
-//		$latte->addFilter('staticFile', fn(string $file) => "/src/Templates/Classic/$file"); // TODO!
-		$latte->addFilter('relativePath', fn(?string $path) => $path ? $this->url->relative($path) : null); // TODO!
-		$latte->addFunction('longDescription', fn(string $description) => new Latte\Runtime\Html($this->commonMark->convertToHtml($description)));
-//		$latte->addFilter('groupUrl', fn(string $s) => $s);
-//		$latte->addFilter('namespaceUrl', [$this->url, 'namespace']);
-//		$latte->addFilter('elementUrl', [$this->url, 'classLike']); // TODO: rename
-		$latte->addFilter('sourceUrl', [$this->url, 'source']);
-		$latte->addFilter('highlight', [$this->sourceHighlighter, 'highlight']);
-		$latte->addFilter('exprPrint', [$exprPrinter, 'prettyPrintExpr']);
-//
-		$latte->addFunction('stripHtml', fn (Latte\Runtime\Html $html) => html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8')); // TODO!
+		$latte->addFunction('relativePath', [$this->url, 'getRelativePath']);
+		$latte->addFunction('assetUrl', [$this->url, 'getAssetUrl']);
+		$latte->addFunction('indexUrl', [$this->url, 'getIndexUrl']);
+		$latte->addFunction('treeUrl', [$this->url, 'getTreeUrl']);
+		$latte->addFunction('namespaceUrl', [$this->url, 'getNamespaceUrl']);
+		$latte->addFunction('classLikeUrl', [$this->url, 'getClassLikeUrl']);
+		$latte->addFunction('classLikeSourceUrl', [$this->url, 'getClassLikeSourceUrl']);
+		$latte->addFunction('memberUrl', [$this->url, 'getMemberUrl']);
+		$latte->addFunction('memberAnchor', [$this->url, 'getMemberAnchor']);
+		$latte->addFunction('memberSourceUrl', [$this->url, 'getMemberSourceUrl']);
+		$latte->addFunction('sourceUrl', [$this->url, 'getSourceUrl']);
 
 		return $latte;
 	}

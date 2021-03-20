@@ -1,11 +1,14 @@
 {define methodRelation, ApiGenX\Info\MethodInfo $method, string $title, ApiGenX\Info\ClassLikeInfo[] $related}
 	{if $related}
 		<h4>{$title}</h4>
-		<div>
+		<ul>
 			{foreach $related as $classLike}
-				{include methodLink, classLike: $classLike, method: $method}
-				{sep}<br>{/sep}
+				<li>
+					{embed memberLink, $classLike, $method}
+						{block content}<code>{$classLike->name->full}::{$method->name}()</code>{/block}
+					{/embed}
+				</li>
 			{/foreach}
-		</div>
+		</ul>
 	{/if}
 {/define}

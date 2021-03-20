@@ -1,29 +1,25 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
 {define constant, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\ConstantInfo $constant}
-	{capture $id}{$constant->name}{/capture}
+	{embed member, $constant}
+		{block cells}
+			<td class="table-cell table-shrink">
+				<code style="white-space: nowrap">{include memberVisibility, $constant}</code>
+			</td>
 
-	<tr class="expandable collapsed" data-order="{$constant->name}" id="{$id}">
-		<td class="table-cell table-shrink">
-			<code style="white-space: nowrap">{include memberVisibility, $constant}</code>
-		</td>
+			<td class="table-cell">
+				{embed memberSourceLink, classLike: $classLike, member: $constant}
+					{block content}<code>{$constant->name}</code>{/block}
+				{/embed}
 
-		<td class="table-cell">
-			{embed memberSourceLink, classLike: $classLike, member: $constant}
-				{block content}<code>{$constant->name}</code>{/block}
-			{/embed}
+				{embed memberDescription, $constant}
+					{block details}{* TODO: other tags (uses, internal...) *}{/block}
+				{/embed}
+			</td>
 
-			{embed memberDescription, $constant}
-				{block details}{* TODO: other tags (uses, internal...) *}{/block}
-			{/embed}
-		</td>
-
-		<td class="table-cell">
-			<code>{include expr, $constant->value}</code>
-		</td>
-
-		<td class="table-anchor">
-			<a href="#{$id}">#</a>
-		</td>
-	</tr>
+			<td class="table-cell">
+				<code>{include expr, $constant->value}</code>
+			</td>
+		{/block}
+	{/embed}
 {/define}

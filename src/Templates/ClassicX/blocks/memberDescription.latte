@@ -1,6 +1,6 @@
 {define memberDescription, ApiGenX\Info\MemberInfo $member}
 	<div n:if="$member->description" class="expandable-collapsedView">
-		{$member->description|shortDescription}
+		{shortDescription($member->description)}
 	</div>
 
 	<div class="expandable-expandedView">

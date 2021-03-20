@@ -9,7 +9,8 @@
 					<code>{*
 						*}{foreach $from->methods as $methodName => $method}{*
 							*}{skipIf isset($overriden[$methodName]) || $method->private}{*
-							*}{include methodLinkSimple, classLike: $from, method: $method}{sep}, {/sep}{*
+							*}{embed memberLink, $from, $method}{block content}{$method->name}(){/block}{/embed}{*
+							*}{sep}, {/sep}{*
 						*}{else}{*
 							*}{rollback}{*
 						*}{/foreach}{*

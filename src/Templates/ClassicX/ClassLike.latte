@@ -21,7 +21,7 @@
 
 		<div class="classLikeSection">
 			{if $classLike->class && ($classLike->abstract || $classLike->final)}<b>{if $classLike->abstract}Abstract{else}Final{/if}</b><br>{/if}
-			{if $classLike->file && $classLike->primary}<b>Located at</b> <a href="{$classLike->file|sourceUrl}#{$classLike->startLine}" title="Go to source code">{$classLike->file|relativePath}</a><br>{/if}
+			{if $classLike->file && $classLike->primary}<b>Located at</b> <a href="{classLikeSourceUrl($classLike)}" title="Go to source code">{relativePath($classLike->file)}</a><br>{/if}
 		</div>
 
 		{include methodSummary, $classLike}

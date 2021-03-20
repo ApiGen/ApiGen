@@ -85,11 +85,12 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output) u
 
 	$files = array_map('realpath', $files);
 	$baseDir = Strings::findPrefix($files);
+	$baseUrl = ''; // TODO!
 
 	$loop = React\EventLoop\Factory::create();
 	$apiGenFactory = new ApiGenFactory();
 
-	$apiGen = $apiGenFactory->create($loop, $sourceDir, $baseDir, $workerCount);
+	$apiGen = $apiGenFactory->create($loop, $sourceDir, $baseDir, $baseUrl, $workerCount);
 
 	$coroutine(
 		$loop,
