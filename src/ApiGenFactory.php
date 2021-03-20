@@ -6,8 +6,10 @@ use ApiGenX\Renderer\LatteEngineFactory;
 use ApiGenX\Renderer\LatteFunctions;
 use ApiGenX\Renderer\SourceHighlighter;
 use ApiGenX\Renderer\UrlGenerator;
+use ApiGenX\TaskExecutor\DefaultTaskEnvironment;
 use ApiGenX\TaskExecutor\LimitTaskExecutor;
 use ApiGenX\TaskExecutor\PoolTaskExecutor;
+use ApiGenX\TaskExecutor\SimpleTaskExecutor;
 use ApiGenX\TaskExecutor\WorkerTaskExecutor;
 use League;
 use PhpParser;
@@ -31,8 +33,9 @@ final class ApiGenFactory
 		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
 		$latte = $latteFactory->create();
 
-		$executor = new LimitTaskExecutor(PoolTaskExecutor::create($workerCount, fn() => new WorkerTaskExecutor($loop)), 80);
-//		$executor = new SimpleTaskExecutor(new DefaultTaskEnvironment());
+		$executor = $workerCount === 1
+			? new SimpleTaskExecutor($loop, new DefaultTaskEnvironment())
+			: new LimitTaskExecutor(PoolTaskExecutor::create($workerCount, fn() => new WorkerTaskExecutor($loop)), 80);
 
 		$locator = new Locator($sourceDir);
 		$analyzer = new Analyzer($locator, $loop, $executor);
