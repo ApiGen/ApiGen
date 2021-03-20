@@ -25,7 +25,7 @@ final class LatteFunctions
 
 	public function stripHtml(string $s): string
 	{
-		return html_entity_decode(strip_tags((string) $s), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		return html_entity_decode(strip_tags($s), ENT_QUOTES | ENT_HTML5, 'UTF-8');
 	}
 
 

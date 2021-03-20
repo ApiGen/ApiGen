@@ -27,6 +27,8 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
@@ -214,12 +216,12 @@ final class Analyzer
 				}
 
 			} elseif ($member instanceof Node\Stmt\Property) {
-				$type = isset($tags['var'][0]) ? $tags['var'][0]->type : $this->processType($member->type);
+				$varTag = isset($tags['var'][0]) && $tags['var'][0] instanceof VarTagValueNode ? $tags['var'][0] : null;
 
 				foreach ($member->props as $property) {
 					$memberInfo = new PropertyInfo($property->name->name);
 
-					$memberInfo->description = isset($tags['var'][0]) ? $tags['var'][0]->description : $description;
+					$memberInfo->description = $varTag ? $varTag->description : $description;
 					$memberInfo->tags = $tags;
 
 					$memberInfo->startLine = $member->getComments() ? $member->getComments()[0]->getStartLine() : $member->getStartLine();
@@ -230,22 +232,24 @@ final class Analyzer
 					$memberInfo->private = $member->isPrivate();
 					$memberInfo->static = $member->isStatic();
 
-					$memberInfo->type = $type;
+					$memberInfo->type = $varTag ? $varTag->type : $this->processTypeOrNull($member->type);
 					$memberInfo->default = $property->default;
 
 					$info->properties[$property->name->name] = $memberInfo;
 					$info->dependencies += $property->default ? $this->extractExprDependencies($property->default) : [];
-					$info->dependencies += $type ? $this->extractTypeDependencies($type) : [];
+					$info->dependencies += $memberInfo->type ? $this->extractTypeDependencies($memberInfo->type) : [];
 				}
 
 			} elseif ($member instanceof Node\Stmt\ClassMethod) {
+				$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
+
 				$memberInfo = new MethodInfo($member->name->name);
 
 				$memberInfo->description = $description;
 				$memberInfo->tags = $tags;
 
 				$memberInfo->parameters = $this->processParameters($memberDoc->getParamTagValues(), $member->params);
-				$memberInfo->returnType = isset($tags['return'][0]) ? $tags['return'][0]->type : $this->processType($member->returnType);
+				$memberInfo->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($member->returnType);
 				$memberInfo->byRef = $member->byRef;
 
 				$memberInfo->startLine = $member->getComments() ? $member->getComments()[0]->getStartLine() : $member->getStartLine();
@@ -284,10 +288,13 @@ final class Analyzer
 
 		$parameterInfos = [];
 		foreach ($parameters as $parameter) {
+			assert($parameter->var instanceof Node\Expr\Variable);
+			assert(is_scalar($parameter->var->name));
+
 			$paramTag = $paramTags["\${$parameter->var->name}"] ?? null;
 			$parameterInfo = new ParameterInfo($parameter->var->name);
 			$parameterInfo->description = $paramTag ? $paramTag->description : '';
-			$parameterInfo->type = $paramTag ? $paramTag->type : $this->processType($parameter->type);
+			$parameterInfo->type = $paramTag ? $paramTag->type : $this->processTypeOrNull($parameter->type);
 			$parameterInfo->byRef = $parameter->byRef;
 			$parameterInfo->variadic = $parameter->variadic || ($paramTag && $paramTag->isVariadic);
 			$parameterInfo->default = $parameter->default;
@@ -324,12 +331,17 @@ final class Analyzer
 	/**
 	 * @param null|Identifier|Name|NullableType|UnionType $node
 	 */
-	private function processType(?Node $node): ?TypeNode
+	private function processTypeOrNull(?Node $node): ?TypeNode
 	{
-		if ($node === null) {
-			return null;
-		}
+		return $node ? $this->processType($node) : null;
+	}
 
+
+	/**
+	 * @param Identifier|Name|NullableType|UnionType $node
+	 */
+	private function processType(Node $node): TypeNode
+	{
 		if ($node instanceof NullableType) {
 			return new NullableTypeNode($this->processType($node->type));
 		}
@@ -365,7 +377,7 @@ final class Analyzer
 
 
 	/**
-	 * @return PhpDocTagValueNode[]
+	 * @return PhpDocTagValueNode[][] indexed by [tagName][]
 	 */
 	private function extractTags(PhpDocNode $node): array
 	{

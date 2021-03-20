@@ -25,15 +25,17 @@ final class ClassInfo extends ClassLikeInfo
 
 	public function __construct(NameInfo $name)
 	{
-		parent::__construct($name);
-		$this->class = true;
-		$this->interface = false;
-		$this->trait = false;
+		parent::__construct(
+			$name,
+			class: true,
+			interface: false,
+			trait: false,
+		);
 	}
 
 
 	/**
-	 * @return ClassInfo[]
+	 * @return iterable<ClassInfo>
 	 */
 	public function ancestors(Index $index): iterable
 	{
@@ -47,7 +49,7 @@ final class ClassInfo extends ClassLikeInfo
 
 
 	/**
-	 * @return ClassInfo[]
+	 * @return iterable<ClassInfo>
 	 */
 	public function indirectDescendants(Index $index): iterable
 	{

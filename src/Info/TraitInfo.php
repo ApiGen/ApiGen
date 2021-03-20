@@ -13,15 +13,17 @@ final class TraitInfo extends ClassLikeInfo
 
 	public function __construct(NameInfo $name)
 	{
-		parent::__construct($name);
-		$this->class = false;
-		$this->interface = false;
-		$this->trait = true;
+		parent::__construct(
+			$name,
+			class: false,
+			interface: false,
+			trait: true,
+		);
 	}
 
 
 	/**
-	 * @return ClassInfo[]
+	 * @return iterable<ClassInfo>
 	 */
 	public function indirectUses(Index $index): iterable
 	{

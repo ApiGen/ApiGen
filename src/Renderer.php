@@ -28,7 +28,7 @@ final class Renderer
 	}
 
 
-	public function render(ProgressBar $progressBar, Index $index, string $outputDir, string $title)
+	public function render(ProgressBar $progressBar, Index $index, string $outputDir, string $title): void
 	{
 		$templateDir = __DIR__ . '/Templates/ClassicX';
 		FileSystem::delete($outputDir);
@@ -84,7 +84,7 @@ final class Renderer
 			));
 		});
 
-		$this->forkLoop($progressBar, $primaryFiles, function (FileIndex $file, $path) use ($progressBar, $outputDir, $index, $title) {
+		$this->forkLoop($progressBar, $primaryFiles, function (FileIndex $file, string $path) use ($progressBar, $outputDir, $index, $title) {
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
@@ -114,7 +114,7 @@ final class Renderer
 	}
 
 
-	private function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle)
+	private function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle): void
 	{
 		$workerCount = PHP_SAPI === 'cli' && extension_loaded('pcntl') ? $this->workerCount : 1;
 

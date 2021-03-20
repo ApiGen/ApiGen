@@ -14,18 +14,6 @@ abstract class ClassLikeInfo implements ElementInfo
 	use HasLineLocation;
 	use HasDependencies;
 
-	/** @var NameInfo */
-	public NameInfo $name;
-
-	/** @var bool */
-	public bool $class;
-
-	/** @var bool */
-	public bool $interface;
-
-	/** @var bool */
-	public bool $trait;
-
 	/** @var bool */
 	public bool $primary = true;
 
@@ -42,9 +30,12 @@ abstract class ClassLikeInfo implements ElementInfo
 	public array $methods = [];
 
 
-	public function __construct(NameInfo $name)
-	{
-		$this->name = $name;
+	public function __construct(
+		public NameInfo $name,
+		public bool $class,
+		public bool $interface,
+		public bool $trait,
+	) {
 	}
 
 

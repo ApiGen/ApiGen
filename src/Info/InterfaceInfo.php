@@ -8,20 +8,22 @@ use ApiGenX\Index\Index;
 final class InterfaceInfo extends ClassLikeInfo
 {
 	/** @var NameInfo[] indexed by [classLikeName] */
-	public array $extends;
+	public array $extends = [];
 
 
 	public function __construct(NameInfo $name)
 	{
-		parent::__construct($name);
-		$this->class = false;
-		$this->interface = true;
-		$this->trait = false;
+		parent::__construct(
+			$name,
+			class: false,
+			interface: true,
+			trait: false,
+		);
 	}
 
 
 	/**
-	 * @return ClassInfo[]
+	 * @return iterable<InterfaceInfo>
 	 */
 	public function ancestors(Index $index): iterable
 	{
