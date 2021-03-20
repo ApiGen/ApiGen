@@ -23,13 +23,13 @@ final class ApiGen
 		$index = new Index();
 
 		$analyzeProgress = new ProgressBar($output->section());
-		$analyzeProgress->setFormat('Analyzing: %current%/%max% [%bar%] %percent:3s%%');
+		$analyzeProgress->setFormat('Analyzing: %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
 
 		$indexProgress = new ProgressBar($output->section());
-		$indexProgress->setFormat('Indexing:  %current%/%max% [%bar%] %percent:3s%%');
+		$indexProgress->setFormat('Indexing:  %current%/%max% [%bar%] %percent:3s%% %elapsed:6s%');
 
 		$renderProgress = new ProgressBar($output->section());
-		$renderProgress->setFormat('Rendering: %current%/%max% [%bar%] %percent:3s%%');
+		$renderProgress->setFormat('Rendering: %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
 
 		$analyzeTime = -microtime(true);
 		$classLikeInfos = $this->analyzer->analyze($analyzeProgress, $files);
@@ -46,7 +46,7 @@ final class ApiGen
 		$indexTime += microtime(true);
 
 		$renderTime = -microtime(true);
-		$this->renderer->render($index, $outputDir, $title);
+		$this->renderer->render($renderProgress, $index, $outputDir, $title);
 		$renderTime += microtime(true);
 
 		dump(sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3));

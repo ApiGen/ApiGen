@@ -86,6 +86,7 @@ final class Analyzer
 				$found[$info->name->fullLower] = $info;
 			}
 
+			$progressBar->setMessage($task->sourceFile);
 			$progressBar->advance();
 		}
 

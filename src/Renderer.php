@@ -15,6 +15,7 @@ use ApiGenX\Templates\ClassicX\SourceTemplate;
 use ApiGenX\Templates\ClassicX\TreeTemplate;
 use Latte;
 use Nette\Utils\FileSystem;
+use Symfony\Component\Console\Helper\ProgressBar;
 
 
 final class Renderer
@@ -27,15 +28,17 @@ final class Renderer
 	}
 
 
-	public function render(Index $index, string $outputDir, string $title)
+	public function render(ProgressBar $progressBar, Index $index, string $outputDir, string $title)
 	{
 		$templateDir = __DIR__ . '/Templates/ClassicX';
 		FileSystem::delete($outputDir);
 		FileSystem::createDir($outputDir);
 		FileSystem::copy("$templateDir/assets", "$outputDir/assets");
 
+		$primaryFiles = array_filter($index->files, fn(FileIndex $file) => $file->primary);
+		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($primaryFiles));
 
-		$this->renderTemplate("$outputDir/{$this->urlGenerator->getIndexPath()}", new IndexTemplate(
+		$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getIndexPath()}", new IndexTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -45,7 +48,7 @@ final class Renderer
 			),
 		));
 
-		$this->renderTemplate("$outputDir/{$this->urlGenerator->getTreePath()}", new TreeTemplate(
+		$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getTreePath()}", new TreeTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -55,8 +58,8 @@ final class Renderer
 			),
 		));
 
-		$this->forkLoop($index->namespace, function (NamespaceIndex $info) use ($outputDir, $index, $title) {
-			$this->renderTemplate("$outputDir/{$this->urlGenerator->getNamespacePath($info)}", new NamespaceTemplate(
+		$this->forkLoop($progressBar, $index->namespace, function (NamespaceIndex $info) use ($progressBar, $outputDir, $index, $title) {
+			$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getNamespacePath($info)}", new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -68,8 +71,8 @@ final class Renderer
 			));
 		});
 
-		$this->forkLoop($index->classLike, function (ClassLikeInfo $info) use ($outputDir, $index, $title) {
-			$this->renderTemplate("$outputDir/{$this->urlGenerator->getClassLikePath($info)}", new ClassLikeTemplate(
+		$this->forkLoop($progressBar, $index->classLike, function (ClassLikeInfo $info) use ($progressBar, $outputDir, $index, $title) {
+			$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getClassLikePath($info)}", new ClassLikeTemplate(
 					global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -81,15 +84,11 @@ final class Renderer
 			));
 		});
 
-		$this->forkLoop($index->files, function (FileIndex $file, $path) use ($outputDir, $index, $title) {
-			if (!$file->primary) {
-				return;
-			}
-
+		$this->forkLoop($progressBar, $primaryFiles, function (FileIndex $file, $path) use ($progressBar, $outputDir, $index, $title) {
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
-			$this->renderTemplate("$outputDir/{$this->urlGenerator->getSourcePath($path)}", new SourceTemplate(
+			$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getSourcePath($path)}", new SourceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -104,15 +103,18 @@ final class Renderer
 	}
 
 
-	private function renderTemplate(string $outputPath, object $template): void
+	private function renderTemplate(ProgressBar $progressBar, string $outputPath, object $template): void
 	{
+		$progressBar->setMessage($outputPath);
+		$progressBar->advance();
+
 		$classPath = (new \ReflectionClass($template))->getFileName();
 		$lattePath = dirname($classPath) . '/' . basename($classPath, 'Template.php') . '.latte';
 		FileSystem::write($outputPath, $this->latte->renderToString($lattePath, $template));
 	}
 
 
-	private function forkLoop(iterable $it, callable $handle)
+	private function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle)
 	{
 		$workerCount = PHP_SAPI === 'cli' && extension_loaded('pcntl') ? $this->workerCount : 1;
 
@@ -138,6 +140,9 @@ final class Renderer
 		foreach ($it as $key => $value) {
 			if ((($index++) % $workerCount) === $workerId) {
 				$handle($value, $key);
+
+			} else {
+				$progressBar->advance();
 			}
 		}
 
