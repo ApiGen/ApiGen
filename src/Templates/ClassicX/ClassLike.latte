@@ -15,9 +15,11 @@
 
 		{include classLikeDescription, $classLike}
 
-		<div class="classLikeSection">
-			{include classTree, $classLike, $global->index->dag}
-		</div>
+		{if !empty($global->index->dag[$classLike->name->fullLower]) || ($classLike->class && ($classLike->extends || $classLike->implements || $classLike->uses)) || ($classLike->interface && $classLike->extends) || ($classLike->trait && $classLike->uses)}
+			<div class="classLikeSection">
+				{include classTree, $classLike, $global->index->dag}
+			</div>
+		{/if}
 
 		<div class="classLikeSection">
 			{if $classLike->class && ($classLike->abstract || $classLike->final)}<b>{if $classLike->abstract}Abstract{else}Final{/if}</b><br>{/if}
