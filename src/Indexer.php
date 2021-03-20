@@ -90,15 +90,15 @@ final class Indexer
 
 	public function postProcess(Index $index): void
 	{
+		// DAG
+		$this->indexDirectedAcyclicGraph($index);
+
 		// instance of
 		foreach ([$index->class, $index->interface] as $infos) {
 			foreach ($infos as $info) {
 				$this->indexInstanceOf($index, $info);
 			}
 		}
-
-		// tree
-		$index->tree = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends);
 
 		// exceptions
 		foreach ($index->namespace as $namespaceIndex) {
@@ -159,6 +159,31 @@ final class Indexer
 		$index->trait[$info->name->fullLower] = $info;
 		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
 		$index->namespace[$info->name->namespaceLower]->trait[$info->name->shortLower] = $info;
+	}
+
+
+	private function indexDirectedAcyclicGraph(Index $index): void
+	{
+		$dag = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends);
+
+		$findCycle = function (array $node, array $visited) use ($index, $dag, &$findCycle): void {
+			foreach ($node as $childKey => $_) {
+				if (isset($visited[$childKey])) {
+					$path = [...array_keys($visited), $childKey];
+					$path = array_map(fn (string $item) => $index->classLike[$item]->name->full, $path);
+					throw new \LogicException("Invalid directed acyclic graph because it contains cycle:\n" . implode(' -> ', $path));
+
+				} else {
+					$findCycle($dag[$childKey] ?? [], $visited + [$childKey => true]);
+				}
+			}
+		};
+
+		foreach ($dag as $nodeKey => $node) {
+			$findCycle($node, [$nodeKey => true]);
+		}
+
+		$index->dag = $dag;
 	}
 
 

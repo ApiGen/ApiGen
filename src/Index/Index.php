@@ -40,11 +40,11 @@ final class Index
 	/** @var InterfaceInfo[][] indexed by [classLikeName][classLikeName] */
 	public array $interfaceExtends = [];
 
+	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName] classExtends + classImplements + classUses + interfaceExtends */
+	public array $dag = [];
+
 	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName], e.g. ['a']['b'] means that B instance of A */
 	public array $instanceOf = [];
-
-	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName] instance of + classUses */
-	public array $tree = [];
 
 	/** @var ClassLikeInfo[][] indexed by [constantName][] */
 	public array $constants = [];
