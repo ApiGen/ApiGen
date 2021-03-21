@@ -2,6 +2,6 @@
 
 {define methodSignature, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MethodInfo $method, bool $multiLine = false}{*
 	*}{embed memberSourceLink, classLike: $classLike, member: $method}{block content}{$method->name}{/block}{/embed}{*
-	*}({$multiLine ? "\n\t"}{include parameters, parameters: $method->parameters, sep: $multiLine ? ",\n\t" : ", "}{$multiLine ? "\n"}){*
+	*}({$multiLine ? "\n\t"}{include parameters, classLike: $classLike, parameters: $method->parameters, sep: $multiLine ? ",\n\t" : ", "}{$multiLine ? "\n"}){*
 	*}{if $method->returnType}: {include type, type: $method->returnType}{/if}{*
 *}{/define}

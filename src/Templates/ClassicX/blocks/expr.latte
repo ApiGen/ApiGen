@@ -1,8 +1,8 @@
-{define expr, PhpParser\Node\Expr $expr, string $indent = ''}{*
+{define expr, PhpParser\Node\Expr $expr, ?ApiGenX\Info\ClassLikeInfo $scope, string $indent = ''}{*
 	*}{if $expr instanceof PhpParser\Node\Expr\ClassConstFetch}{*
-		*}{include exprName, name: $expr->class}::{$expr->name}{*
+		*}{include exprName, name: $expr->class, scope: $scope}::{$expr->name}{*
 	*}{elseif $expr instanceof PhpParser\Node\Expr\ConstFetch}{*
-		*}{include exprName, name: $expr->name}{*
+		*}{include exprName, name: $expr->name, scope: $scope}{*
 	*}{elseif $expr instanceof PhpParser\Node\Scalar\LNumber || $expr instanceof PhpParser\Node\Scalar\DNumber}{*
 		*}<span class="php-num">{exprPrint($expr)}</span>{*
 	*}{elseif $expr instanceof PhpParser\Node\Scalar\String_}{*
@@ -12,19 +12,19 @@
 			*}{try}{*
 				*}{foreach $expr->items as $item}{*
 					*}{if $item->key}{rollback}{/if}{*
-					*}{include this, expr: $item->value}{sep}, {/sep}{*
+					*}{include this, expr: $item->value, scope: $scope}{sep}, {/sep}{*
 				*}{/foreach}{*
 			*}{else}{*
 				*}{="\n\t$indent"}{*
 				*}{foreach $expr->items as $item}{*
 					*}{if $item->key}{include this, expr: $item->key} =&gt; {/if}{*
-					*}{include this, expr: $item->value, indent: "\t$indent"}{sep}{=",\n\t$indent"}{/sep}{*
+					*}{include this, expr: $item->value, scope: $scope, indent: "\t$indent"}{sep}{=",\n\t$indent"}{/sep}{*
 				*}{/foreach}{*
 				*}{=",\n$indent"}{*
 			*}{/try}{*
 		*}]{*
 	*}{elseif $expr instanceof PhpParser\Node\Expr\UnaryMinus}{*
-		*}-{include this, expr: $expr->expr}{*
+		*}-{include this, expr: $expr->expr, scope: $scope}{*
 	*}{else}{*
 		*}{exprPrint($expr)}{*
 	*}{/if}{*

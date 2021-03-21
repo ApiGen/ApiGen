@@ -1,12 +1,16 @@
 {varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
 
-{define exprName, PhpParser\Node\Name $name}{*
+{define exprName, PhpParser\Node\Name $name, ?ApiGenX\Info\ClassLikeInfo $scope}{*
 	*}{var string $lower = $name->toLowerString()}{*
 
 	*}{if $lower === 'true' || $lower === 'false' || $lower === 'null'}{*
 		*}<span class="php-kw">{$name}</span>{*
+	*}{elseif $lower === 'self' && $scope}{*
+		*}{include classLikeLink, classLike: $scope, text: $lower}{*
+	*}{elseif $lower === 'parent' && $scope && $scope->class && $scope->extends}{*
+		*}{include classLikeLink, classLike: $global->index->classLike[$scope->extends->fullLower], text: $lower}{*
 	*}{elseif $name instanceof PhpParser\Node\Name\FullyQualified && isset($global->index->classLike[$lower])}{*
-		*}{include classLikeLink, $global->index->classLike[$lower], true}{*
+		*}{include classLikeLink, classLike: $global->index->classLike[$lower], short: true}{*
 	*}{else}{*
 		*}{$name}{*
 	*}{/if}{*
