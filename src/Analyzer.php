@@ -65,7 +65,7 @@ final class Analyzer
 		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
 		$errors = [];
 
-		$schedule = function (string $file, bool $isPrimary) use (&$tasks, $progressBar): void {
+		$schedule = static function (string $file, bool $isPrimary) use (&$tasks, $progressBar): void {
 			$file = realpath($file);
 			$tasks[$file] ??= new AnalyzeTask($file, $isPrimary);
 			$progressBar->setMaxSteps(count($tasks));
@@ -108,8 +108,7 @@ final class Analyzer
 			$dependency = $dependencyOf->dependencies[$fullLower];
 			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$dependencyOf->name->full}");
 
-			$info = new ClassInfo($dependency); // TODO: mark as missing
-			$info->primary = false;
+			$info = new ClassInfo($dependency, primary: false); // TODO: mark as missing
 			$found[$info->name->fullLower] = $info;
 		}
 
@@ -131,7 +130,12 @@ final class Analyzer
 			$ast = $this->traverser->traverse($ast);
 
 		} catch (\PhpParser\Error $e) {
-			return [new ErrorInfo(ErrorInfo::KIND_SYNTAX_ERROR, "Parse error in file {$task->sourceFile}:\n{$e->getMessage()}")];
+			return [
+				new ErrorInfo(
+					ErrorInfo::KIND_SYNTAX_ERROR,
+					"Parse error in file {$task->sourceFile}:\n{$e->getMessage()}",
+				)
+			];
 		}
 
 		return iterator_to_array($this->processNodes($task, $ast), false);
@@ -171,7 +175,7 @@ final class Analyzer
 		$name = $this->processName($node->namespacedName);
 
 		if ($node instanceof Node\Stmt\Class_) {
-			$info = new ClassInfo($name);
+			$info = new ClassInfo($name, $task->isPrimary);
 			$info->abstract = $node->isAbstract();
 			$info->final = $node->isFinal();
 			$info->extends = $node->extends ? $this->processName($node->extends) : null;
@@ -186,19 +190,18 @@ final class Analyzer
 			$info->dependencies += $info->uses;
 
 		} elseif ($node instanceof Node\Stmt\Interface_) {
-			$info = new InterfaceInfo($name);
+			$info = new InterfaceInfo($name, $task->isPrimary);
 			$info->extends = $this->processNameList($node->extends);
 			$info->dependencies += $info->extends;
 
 		} elseif ($node instanceof Node\Stmt\Trait_) {
-			$info = new TraitInfo($name);
+			$info = new TraitInfo($name, $task->isPrimary);
 
 		} else {
 			throw new \LogicException();
 		}
 
 		$classDoc = $this->extractPhpDoc($node);
-		$info->primary = $task->isPrimary;
 		$info->description = $this->extractDescription($classDoc);
 		$info->tags = $this->extractTags($classDoc);
 		$info->file = $task->sourceFile;
