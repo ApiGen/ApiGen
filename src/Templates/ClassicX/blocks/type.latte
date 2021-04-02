@@ -4,7 +4,7 @@
 	*}{if $type === null}{*
 
 	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode}{*
-		*}{var string $lower = strtolower($type)}{*
+		*}{var string $lower = strtolower($type->name)}{*
 		*}{ifset $global->index->classLike[$lower]}{include classLikeLink, $global->index->classLike[$lower], $short}{else}{$type}{/ifset}{*
 
 	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode}{*
