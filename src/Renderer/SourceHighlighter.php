@@ -7,7 +7,7 @@ use PhpToken;
 
 final class SourceHighlighter
 {
-	public array $tokenClass = [ // TODO: update for PHP 8
+	public array $tokenClass = [
 		T_OPEN_TAG => 'php-tag',
 		T_OPEN_TAG_WITH_ECHO => 'php-tag',
 		T_CLOSE_TAG => 'php-tag',
@@ -98,7 +98,7 @@ final class SourceHighlighter
 	{
 		$align = strlen(strval(substr_count($source, "\n")));
 
-		$lineStart = "<div id=\"%1\$d\" class=\"source-line\"><a class=\"source-lineNum\" href=\"#%1\$d\">%1\${$align}d: </a>"; // TODO: use PHP 8 * modifier
+		$lineStart = "<div id=\"%1\$d\" class=\"source-line\"><a class=\"source-lineNum\" href=\"#%1\$d\">%1\${$align}d: </a>";
 		$lineEnd = '</div>';
 
 		$line = 1;
