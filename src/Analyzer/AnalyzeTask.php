@@ -7,7 +7,7 @@ final class AnalyzeTask
 {
 	public function __construct(
 		public string $sourceFile,
-		public bool $isPrimary,
+		public bool $primary,
 	) {
 	}
 }

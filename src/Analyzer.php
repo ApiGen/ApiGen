@@ -65,14 +65,14 @@ final class Analyzer
 		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
 		$errors = [];
 
-		$schedule = static function (string $file, bool $isPrimary) use (&$tasks, $progressBar): void {
+		$schedule = static function (string $file, bool $primary) use (&$tasks, $progressBar): void {
 			$file = realpath($file);
-			$tasks[$file] ??= new AnalyzeTask($file, $isPrimary);
+			$tasks[$file] ??= new AnalyzeTask($file, $primary);
 			$progressBar->setMaxSteps(count($tasks));
 		};
 
 		foreach ($files as $file) {
-			$schedule($file, isPrimary: true);
+			$schedule($file, primary: true);
 		}
 
 		foreach ($tasks as &$task) {
@@ -84,7 +84,7 @@ final class Analyzer
 							$file = $this->locator->locate($dependency);
 
 							if ($file !== null) {
-								$schedule($file, isPrimary: false);
+								$schedule($file, primary: false);
 							}
 						}
 					}
@@ -107,9 +107,7 @@ final class Analyzer
 		foreach ($missing as $fullLower => $dependencyOf) {
 			$dependency = $dependencyOf->dependencies[$fullLower];
 			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$dependencyOf->name->full}");
-
-			$info = new ClassInfo($dependency, primary: false); // TODO: mark as missing
-			$found[$info->name->fullLower] = $info;
+			$found[$dependency->fullLower] = new ClassInfo($dependency, primary: false); // TODO: mark as missing (add MissingInfo?)
 		}
 
 		$result = new AnalyzeResult();
@@ -128,17 +126,12 @@ final class Analyzer
 		try {
 			$ast = $this->parser->parse(FileSystem::read($task->sourceFile));
 			$ast = $this->traverser->traverse($ast);
+			return iterator_to_array($this->processNodes($task, $ast), preserve_keys: false);
 
 		} catch (\PhpParser\Error $e) {
-			return [
-				new ErrorInfo(
-					ErrorInfo::KIND_SYNTAX_ERROR,
-					"Parse error in file {$task->sourceFile}:\n{$e->getMessage()}",
-				)
-			];
+			$error = new ErrorInfo(ErrorInfo::KIND_SYNTAX_ERROR, "Parse error in file {$task->sourceFile}:\n{$e->getMessage()}");
+			return [$error];
 		}
-
-		return iterator_to_array($this->processNodes($task, $ast), false);
 	}
 
 
@@ -175,7 +168,7 @@ final class Analyzer
 		$name = $this->processName($node->namespacedName);
 
 		if ($node instanceof Node\Stmt\Class_) {
-			$info = new ClassInfo($name, $task->isPrimary);
+			$info = new ClassInfo($name, $task->primary);
 			$info->abstract = $node->isAbstract();
 			$info->final = $node->isFinal();
 			$info->extends = $node->extends ? $this->processName($node->extends) : null;
@@ -190,12 +183,12 @@ final class Analyzer
 			$info->dependencies += $info->uses;
 
 		} elseif ($node instanceof Node\Stmt\Interface_) {
-			$info = new InterfaceInfo($name, $task->isPrimary);
+			$info = new InterfaceInfo($name, $task->primary);
 			$info->extends = $this->processNameList($node->extends);
 			$info->dependencies += $info->extends;
 
 		} elseif ($node instanceof Node\Stmt\Trait_) {
-			$info = new TraitInfo($name, $task->isPrimary);
+			$info = new TraitInfo($name, $task->primary);
 
 		} else {
 			throw new \LogicException();
@@ -324,7 +317,7 @@ final class Analyzer
 
 	private function processName(Node\Name $name): NameInfo
 	{
-		return new NameInfo($name->toString()); // TODO: utilize already parsed structure?
+		return new NameInfo($name->toString());
 	}
 
 
