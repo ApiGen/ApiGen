@@ -45,12 +45,12 @@ final class Locator
 		if (is_dir($vendorDir)) {
 			$loader->addClassMap(require "$vendorDir/composer/autoload_classmap.php");
 
-			foreach (require "$vendorDir/composer/autoload_namespaces.php" as $ns => $path) {
-				$loader->set($ns, $path);
+			foreach (require "$vendorDir/composer/autoload_namespaces.php" as $prefix => $paths) {
+				$loader->set($prefix, $paths);
 			}
 
-			foreach (require "$vendorDir/composer/autoload_psr4.php" as $ns => $path) {
-				$loader->setPsr4($ns, $path);
+			foreach (require "$vendorDir/composer/autoload_psr4.php" as $prefix => $paths) {
+				$loader->setPsr4($prefix, $paths);
 			}
 
 		} else {
