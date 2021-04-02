@@ -91,13 +91,6 @@ final class UrlGenerator
 	}
 
 
-	public function getClassLikeSourcePath(ClassLikeInfo $classLike): string
-	{
-		assert($classLike->file !== null);
-		return $this->getSourcePath($classLike->file);
-	}
-
-
 	public function getMemberUrl(ClassLikeInfo $classLike, MemberInfo $member): string
 	{
 		return $this->getClassLikeUrl($classLike) . '#' . $this->getMemberAnchor($member);
