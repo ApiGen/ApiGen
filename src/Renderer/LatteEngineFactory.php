@@ -18,6 +18,7 @@ final class LatteEngineFactory
 	public function create(): Latte\Engine
 	{
 		$latte = new Latte\Engine();
+		$latte->setStrictTypes();
 		$latte->setExceptionHandler(fn(Throwable $e) => throw $e);
 
 		$latte->addFunction('stripHtml', [$this->functions, 'stripHtml']);
