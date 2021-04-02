@@ -73,10 +73,10 @@ final class Renderer
 
 		$this->forkLoop($progressBar, $index->classLike, function (ClassLikeInfo $info) use ($progressBar, $outputDir, $index, $title) {
 			$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getClassLikePath($info)}", new ClassLikeTemplate(
-					global: new GlobalParameters(
+				global: new GlobalParameters(
 					index: $index,
 					title: $title,
-					activePage: 'namespace',
+					activePage: 'classLike',
 					activeNamespace: $index->namespace[$info->name->namespaceLower],
 					activeClassLike: $info,
 				),
