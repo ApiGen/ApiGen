@@ -5,6 +5,7 @@ use ApiGenX\ApiGenFactory;
 use Composer\InstalledVersions;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -19,11 +20,10 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 	require __DIR__ . '/../../../autoload.php';
 
 } else {
-	fwrite(STDERR, "error: unable to find autoloader\n");
+	fwrite(STDERR, "ERROR: unable to find autoloader\n");
 	exit(1);
 }
 
-ini_set('memory_limit', '512M');
 Tracy\Debugger::$strictMode = true;
 Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
 Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen());
@@ -37,6 +37,9 @@ $app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE
 $app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask', ['temp/**', 'var/**', 'vendor/**']);
 $app->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'output directory');
 $app->addOption('workers', 'w', InputOption::VALUE_REQUIRED, 'worker count', 8);
+$app->addOption('title', 't', InputOption::VALUE_REQUIRED, 'title', 'API Documentation');
+$app->addOption('base-url', null, InputOption::VALUE_REQUIRED, 'base URL', '');
+$app->addOption('memory-limit', null, InputOption::VALUE_REQUIRED, 'memory limit', '512M');
 
 $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): int {
 	$options = $input->getOptions();
@@ -46,29 +49,61 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 	$include = $options['include'];
 	$exclude = $options['exclude'];
 	$outputDir = $options['output'] ?? sprintf('%s/api', $workingDir);
-	$title = 'API Documentation';
 	$workerCount = (int) $options['workers'];
+	$title = $options['title'];
+	$baseUrl = $options['base-url'];
+	$memoryLimit = $options['memory-limit'];
+
+	$style = new SymfonyStyle($input, $output);
+	$style->title("ApiGen: Generating $title");
 
 	if (!is_dir($sourceDir)) {
-		$output->writeln("Directory '$sourceDir' does not exist");
+		$style->error(sprintf("Directory '%s' does not exist", $sourceDir));
 		return 1;
 	}
 
+	if (!is_dir(dirname($outputDir))) {
+		$style->error(sprintf("Directory '%s' does not exist", dirname($outputDir)));
+		return 1;
+	}
+
+	if (!ini_set('memory_limit', $memoryLimit)) {
+		$style->warning('Failed to configure memory limit');
+	}
+
 	$sourceDir = realpath($sourceDir);
+	$outputDir = realpath(dirname($outputDir)) . DIRECTORY_SEPARATOR . basename($outputDir);
 	$files = Finder::findFiles(...$include)->exclude(...$exclude)->from($sourceDir);
 	$files = array_keys(iterator_to_array($files));
 
 	if (!count($files)) {
-		$output->writeln("No source files found.");
+		$style->error('No source files found.');
 		return 1;
+
+	} elseif ($style->isDebug()) {
+		$style->text('<info>Matching source files:</info>');
+		$style->newLine();
+		$style->listing($files);
+
+	} elseif ($style->isVerbose()) {
+		$style->text(sprintf('Found %d source files.', count($files)));
 	}
 
 	$files = array_map('realpath', $files);
 	$baseDir = Strings::findPrefix($files);
-	$baseUrl = ''; // TODO!
 
-	$style = new SymfonyStyle($input, $output);
-	$style->title("ApiGen: Generating $title");
+	if ($style->isDebug()) {
+		$style->definitionList(
+			'Resolved Configuration',
+			new TableSeparator(),
+			['sourceDir' => $sourceDir],
+			['outputDir' => $outputDir],
+			['baseDir' => $baseDir],
+			['baseUrl' => $baseUrl],
+			['memoryLimit' => $memoryLimit],
+			['workerCount' => $workerCount],
+		);
+	}
 
 	$apiGenFactory = new ApiGenFactory();
 	$apiGen = $apiGenFactory->create($style, $sourceDir, $baseDir, $baseUrl, $workerCount);

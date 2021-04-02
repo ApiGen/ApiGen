@@ -51,7 +51,7 @@ final class Locator
 			$output->warning("Unable to use Composer autoloader for finding dependencies because directory\n$vendorDir does not exist.");
 
 		} else {
-			$output->writeln("Using Composer autoloader for finding dependencies ($vendorDir).\n");
+			$output->text("Using Composer autoloader for finding dependencies in $vendorDir.\n");
 			$loader->addClassMap(require "$vendorDir/composer/autoload_classmap.php");
 
 			foreach (require "$vendorDir/composer/autoload_namespaces.php" as $prefix => $paths) {

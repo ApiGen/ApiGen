@@ -4,6 +4,7 @@ namespace ApiGenX;
 
 use ApiGenX\Analyzer\AnalyzeResult;
 use ApiGenX\Index\Index;
+use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 
@@ -39,7 +40,7 @@ final class ApiGen
 	private function analyze(SymfonyStyle $output, array $files): AnalyzeResult
 	{
 		$progressBar = $output->createProgressBar();
-		$progressBar->setFormat('<fg=green>Analyzing</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
+		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
 
 		$analyzeResult = $this->analyzer->analyze($progressBar, $files);
 
@@ -69,7 +70,7 @@ final class ApiGen
 	private function render(SymfonyStyle $output, Index $index, string $outputDir, string $title): void
 	{
 		$progressBar = $output->createProgressBar();
-		$progressBar->setFormat('<fg=green>Rendering</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
+		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
 
 		$this->renderer->render($progressBar, $index, $outputDir, $title);
 
@@ -81,13 +82,15 @@ final class ApiGen
 
 	private function performance(SymfonyStyle $output, float $analyzeTime, float $indexTime, float $renderTime): void
 	{
-		if ($output->isVeryVerbose()) {
-			$output->info(implode("\n", [
-				sprintf('Analyze Time:       %6.0f ms', $analyzeTime * 1e3),
-				sprintf('Index Time:         %6.0f ms', $indexTime * 1e3),
-				sprintf('Render Time:        %6.0f ms', $renderTime * 1e3),
-				sprintf('Peak Memory:        %6.0f MB', memory_get_peak_usage() / 1e6),
-			]));
+		if ($output->isDebug()) {
+			$output->definitionList(
+				'Performance',
+				new TableSeparator(),
+				['Analyze Time' => sprintf('%6.0f ms', $analyzeTime * 1e3)],
+				['Index Time' => sprintf('%6.0f ms', $indexTime * 1e3)],
+				['Render Time' => sprintf('%6.0f ms', $renderTime * 1e3)],
+				['Peak Memory' => sprintf('%6.0f MB', memory_get_peak_usage() / 1e6)],
+			);
 		}
 	}
 
