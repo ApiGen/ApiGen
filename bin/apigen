@@ -67,9 +67,12 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 	$baseDir = Strings::findPrefix($files);
 	$baseUrl = ''; // TODO!
 
+	$style = new SymfonyStyle($input, $output);
+	$style->title("ApiGen: Generating $title");
+
 	$apiGenFactory = new ApiGenFactory();
-	$apiGen = $apiGenFactory->create($sourceDir, $baseDir, $baseUrl, $workerCount);
-	$apiGen->generate(new SymfonyStyle($input, $output), $files, $outputDir, $title);
+	$apiGen = $apiGenFactory->create($style, $sourceDir, $baseDir, $baseUrl, $workerCount);
+	$apiGen->generate($style, $files, $outputDir, $title);
 
 	return 0;
 });

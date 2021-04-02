@@ -19,8 +19,6 @@ final class ApiGen
 
 	public function generate(SymfonyStyle $output, array $files, string $outputDir, string $title): void
 	{
-		$output->title("ApiGen: Generating $title");
-
 		$analyzeTime = -microtime(true);
 		$analyzeResult = $this->analyze($output, $files);
 		$analyzeTime += microtime(true);

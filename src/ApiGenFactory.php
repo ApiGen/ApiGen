@@ -18,11 +18,12 @@ use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\ConstExprParser;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TypeParser;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 
 final class ApiGenFactory
 {
-	public function create(string $sourceDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
+	public function create(SymfonyStyle $output, string $sourceDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
 	{
 		$commonMarkEnv = League\CommonMark\Environment::createCommonMarkEnvironment();
 		$commonMarkEnv->addExtension(new League\CommonMark\Extension\Autolink\AutolinkExtension());
@@ -36,7 +37,7 @@ final class ApiGenFactory
 		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
 		$latte = $latteFactory->create();
 
-		$locator = new Locator($sourceDir);
+		$locator = Locator::create($output, $sourceDir);
 		$phpParserFactory = new ParserFactory();
 		$phpParser = $phpParserFactory->create(ParserFactory::PREFER_PHP7);
 		$phpNodeTraverser = $this->createPhpNodeTraverser();

@@ -8,23 +8,28 @@ use League;
 use Nette\Utils\Finder;
 use PHPStan\Php8StubsMap;
 use ReflectionClass;
+use Symfony\Component\Console\Style\OutputStyle;
 
 
 final class Locator
 {
-	private array $stubsMap;
-
-	private ClassLoader $classLoader;
-
-
-	public function __construct(string $projectDir)
-	{
-		$this->stubsMap = $this->createStubsMap();
-		$this->classLoader = $this->createComposerClassLoader($projectDir);
+	public function __construct(
+		private array $stubsMap,
+		private ClassLoader $classLoader,
+	) {
 	}
 
 
-	private function createStubsMap(): array
+	public static function create(OutputStyle $output, string $projectDir): self
+	{
+		return new self(
+			self::createStubsMap(),
+			self::createComposerClassLoader($output, $projectDir),
+		);
+	}
+
+
+	private static function createStubsMap(): array
 	{
 		$stubsDir = dirname((new ReflectionClass(Php8StubsMap::class))->getFileName());
 		$stubsMap = array_map(fn(string $path) => "$stubsDir/$path", Php8StubsMap::CLASSES);
@@ -37,12 +42,16 @@ final class Locator
 	}
 
 
-	private function createComposerClassLoader(string $projectDir): ClassLoader
+	private static function createComposerClassLoader(OutputStyle $output, string $projectDir): ClassLoader
 	{
 		$vendorDir = "$projectDir/vendor";
 		$loader = new ClassLoader();
 
-		if (is_dir($vendorDir)) {
+		if (!is_dir($vendorDir)) {
+			$output->warning("Unable to use Composer autoloader for finding dependencies because directory\n$vendorDir does not exist.");
+
+		} else {
+			$output->writeln("Using Composer autoloader for finding dependencies ($vendorDir).\n");
 			$loader->addClassMap(require "$vendorDir/composer/autoload_classmap.php");
 
 			foreach (require "$vendorDir/composer/autoload_namespaces.php" as $prefix => $paths) {
@@ -52,9 +61,6 @@ final class Locator
 			foreach (require "$vendorDir/composer/autoload_psr4.php" as $prefix => $paths) {
 				$loader->setPsr4($prefix, $paths);
 			}
-
-		} else {
-			// TODO: emit warning
 		}
 
 		return $loader;
