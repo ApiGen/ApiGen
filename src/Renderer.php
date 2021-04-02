@@ -15,6 +15,7 @@ use ApiGenX\Templates\ClassicX\SourceTemplate;
 use ApiGenX\Templates\ClassicX\TreeTemplate;
 use Latte;
 use Nette\Utils\FileSystem;
+use Nette\Utils\Finder;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 
@@ -31,14 +32,21 @@ final class Renderer
 	public function render(ProgressBar $progressBar, Index $index, string $outputDir, string $title): void
 	{
 		$templateDir = __DIR__ . '/Templates/ClassicX';
+		$assetsDir = $templateDir . '/assets';
+
 		FileSystem::delete($outputDir);
 		FileSystem::createDir($outputDir);
-		FileSystem::copy("$templateDir/assets", "$outputDir/assets");
+
+		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
+			$name = substr($path, strlen($assetsDir) + 1);
+			$target = "$outputDir/" . $this->urlGenerator->getAssetPath($name);
+			FileSystem::copy($path, $target);
+		}
 
 		$primaryFiles = array_filter($index->files, fn(FileIndex $file) => $file->primary);
 		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($primaryFiles));
 
-		$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getIndexPath()}", new IndexTemplate(
+		$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getIndexPath(), new IndexTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -48,7 +56,7 @@ final class Renderer
 			),
 		));
 
-		$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getTreePath()}", new TreeTemplate(
+		$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getTreePath(), new TreeTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $title,
@@ -59,7 +67,7 @@ final class Renderer
 		));
 
 		$this->forkLoop($progressBar, $index->namespace, function (NamespaceIndex $info) use ($progressBar, $outputDir, $index, $title) {
-			$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getNamespacePath($info)}", new NamespaceTemplate(
+			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -72,7 +80,7 @@ final class Renderer
 		});
 
 		$this->forkLoop($progressBar, $index->classLike, function (ClassLikeInfo $info) use ($progressBar, $outputDir, $index, $title) {
-			$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getClassLikePath($info)}", new ClassLikeTemplate(
+			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,
@@ -88,7 +96,7 @@ final class Renderer
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
-			$this->renderTemplate($progressBar, "$outputDir/{$this->urlGenerator->getSourcePath($path)}", new SourceTemplate(
+			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getSourcePath($path), new SourceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $title,

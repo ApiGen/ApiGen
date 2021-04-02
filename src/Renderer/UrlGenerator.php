@@ -32,7 +32,13 @@ final class UrlGenerator
 
 	public function getAssetUrl(string $name): string
 	{
-		return "{$this->baseUrl}assets/{$name}";
+		return $this->baseUrl . $this->getAssetPath($name);
+	}
+
+
+	public function getAssetPath(string $name): string
+	{
+		return "assets/$name";
 	}
 
 
