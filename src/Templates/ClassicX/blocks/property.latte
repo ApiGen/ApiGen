@@ -7,7 +7,7 @@
 				<code style="white-space: nowrap">
 					{include memberVisibility, $property}
 					{if $property->static}static{/if}
-{*					{if $property->readOnly}read-only{elseif $property->writeOnly}write-only{/if}*}
+					{if $property->readOnly}readonly{elseif $property->writeOnly}writeonly{/if}
 				</code>
 			</td>
 

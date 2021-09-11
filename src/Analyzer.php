@@ -10,6 +10,7 @@ use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
 use ApiGenX\Info\ErrorInfo;
 use ApiGenX\Info\InterfaceInfo;
+use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\ParameterInfo;
@@ -25,10 +26,12 @@ use PhpParser\Node\UnionType;
 use PhpParser\NodeTraverserInterface;
 use PhpParser\Parser;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
@@ -198,6 +201,50 @@ final class Analyzer
 		$info->startLine = $node->getStartLine();
 		$info->endLine = $node->getEndLine();
 
+		foreach ($this->extractMembers($info->tags, $node) as $member) {
+			if ($member instanceof ConstantInfo){
+				$info->constants[$member->name] = $member;
+				$info->dependencies += $this->extractExprDependencies($member->value);
+
+			} elseif ($member instanceof PropertyInfo){
+				$info->properties[$member->name] = $member;
+				$info->dependencies += $member->default ? $this->extractExprDependencies($member->default) : [];
+				$info->dependencies += $member->type ? $this->extractTypeDependencies($member->type) : [];
+
+			} elseif ($member instanceof MethodInfo){
+				$info->methods[$member->nameLower] = $member;
+				$info->dependencies += $member->returnType ? $this->extractTypeDependencies($member->returnType) : [];
+
+				foreach ($member->parameters as $parameterInfo) {
+					$info->dependencies += $parameterInfo->type ? $this->extractTypeDependencies($parameterInfo->type) : [];
+					$info->dependencies += $parameterInfo->default ? $this->extractExprDependencies($parameterInfo->default) : [];
+				}
+
+			} else {
+				throw new \LogicException();
+			}
+		}
+
+		return $info;
+	}
+
+
+	/**
+	 * @param  PhpDocTagValueNode[][] $tags indexed by [tagName][]
+	 * @return iterable<MemberInfo>
+	 */
+	private function extractMembers(array $tags, Node\Stmt\ClassLike $node): iterable
+	{
+		yield from $this->extractMembersClassLikeBody($node);
+		yield from $this->extractMembersClassLikeTags($tags);
+	}
+
+
+	/**
+	 * @return iterable<MemberInfo>
+	 */
+	private function extractMembersClassLikeBody(Node\Stmt\ClassLike $node): iterable
+	{
 		foreach ($node->stmts as $member) {
 			$memberDoc = $this->extractPhpDoc($member);
 			$description = $this->extractDescription($memberDoc);
@@ -217,8 +264,7 @@ final class Analyzer
 					$memberInfo->protected = $member->isProtected();
 					$memberInfo->private = $member->isPrivate();
 
-					$info->constants[$constant->name->name] = $memberInfo;
-					$info->dependencies += $this->extractExprDependencies($constant->value);
+					yield $memberInfo;
 				}
 
 			} elseif ($member instanceof Node\Stmt\Property) {
@@ -241,9 +287,7 @@ final class Analyzer
 					$memberInfo->type = $varTag ? $varTag->type : $this->processTypeOrNull($member->type);
 					$memberInfo->default = $property->default;
 
-					$info->properties[$property->name->name] = $memberInfo;
-					$info->dependencies += $property->default ? $this->extractExprDependencies($property->default) : [];
-					$info->dependencies += $memberInfo->type ? $this->extractTypeDependencies($memberInfo->type) : [];
+					yield $memberInfo;
 				}
 
 			} elseif ($member instanceof Node\Stmt\ClassMethod) {
@@ -269,17 +313,60 @@ final class Analyzer
 				$memberInfo->abstract = $member->isAbstract();
 				$memberInfo->final = $member->isFinal();
 
-				$info->methods[$memberInfo->nameLower] = $memberInfo;
-				$info->dependencies += $memberInfo->returnType ? $this->extractTypeDependencies($memberInfo->returnType) : [];
+				yield $memberInfo;
+			}
+		}
+	}
 
-				foreach ($memberInfo->parameters as $parameterInfo) {
-					$info->dependencies += $parameterInfo->type ? $this->extractTypeDependencies($parameterInfo->type) : [];
-					$info->dependencies += $parameterInfo->default ? $this->extractExprDependencies($parameterInfo->default) : [];
-				}
+
+	/**
+	 * @param  PhpDocTagValueNode[][] $tags indexed by [tagName][]
+	 * @return iterable<MemberInfo>
+	 */
+	private function extractMembersClassLikeTags(array $tags): iterable
+	{
+		$propertyTags = [
+			'property' => [false, false],
+			'property-read' => [true, false],
+			'property-write' => [false, true],
+		];
+
+		foreach ($propertyTags as $tag => [$readOnly, $writeOnly]) {
+			/** @var PropertyTagValueNode $value */
+			foreach ($tags[$tag] ?? [] as $value){
+				$propertyInfo = new PropertyInfo(substr($value->propertyName, 1));
+				$propertyInfo->magic = true;
+				$propertyInfo->public = true;
+				$propertyInfo->type = $value->type;
+				$propertyInfo->description = $value->description;
+				$propertyInfo->readOnly = $readOnly;
+				$propertyInfo->writeOnly = $writeOnly;
+
+				yield $propertyInfo;
 			}
 		}
 
-		return $info;
+		/** @var MethodTagValueNode $value */
+		foreach ($tags['method'] ?? [] as $value){
+			$methodInfo = new MethodInfo($value->methodName);
+			$methodInfo->magic = true;
+			$methodInfo->public = true;
+			$methodInfo->static = $value->isStatic;
+			$methodInfo->returnType = $value->returnType;
+			$methodInfo->description = $value->description;
+
+			foreach ($value->parameters as $parameter) {
+				$parameterInfo = new ParameterInfo($parameter->parameterName);
+				$parameterInfo->type = $parameter->type;
+				$parameterInfo->byRef = $parameter->isReference;
+				$parameterInfo->variadic = $parameter->isVariadic;
+//				$parameterInfo->default = $parameter->defaultValue; // TODO: implement expr format conversion
+
+				$methodInfo->parameters[$parameterInfo->name] = $parameterInfo;
+			}
+
+			yield $methodInfo;
+		}
 	}
 
 

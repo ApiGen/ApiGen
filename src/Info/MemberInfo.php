@@ -16,6 +16,9 @@ abstract class MemberInfo
 	/** @var string */
 	public string $name;
 
+	/** @var bool */
+	public bool $magic = false;
+
 
 	public function __construct(string $name)
 	{

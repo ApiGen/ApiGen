@@ -16,4 +16,10 @@ final class PropertyInfo extends MemberInfo
 
 	/** @var bool */
 	public bool $static = false;
+
+	/** @var bool */
+	public bool $readOnly = false;
+
+	/** @var bool */
+	public bool $writeOnly = false;
 }
