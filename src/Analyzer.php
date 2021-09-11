@@ -110,11 +110,7 @@ final class Analyzer
 			$found[$dependency->fullLower] = new ClassInfo($dependency, primary: false); // TODO: mark as missing (add MissingInfo?)
 		}
 
-		$result = new AnalyzeResult();
-		$result->classLike = $found;
-		$result->error = $errors;
-
-		return $result;
+		return new AnalyzeResult($found, $errors);
 	}
 
 

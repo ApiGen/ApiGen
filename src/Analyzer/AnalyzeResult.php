@@ -8,9 +8,13 @@ use ApiGenX\Info\ErrorInfo;
 
 final class AnalyzeResult
 {
-	/** @var ClassLikeInfo[] indexed by [classLikeName] */
-	public array $classLike = [];
-
-	/** @var ErrorInfo[][] indexed by [error kind][] */
-	public array $error = [];
+	/**
+	 * @param ClassLikeInfo[] $classLike indexed by [classLikeName]
+	 * @param ErrorInfo[][]   $error     indexed by [errorKind][]
+	 */
+	public function __construct(
+		public array $classLike,
+		public array $error,
+	) {
+	}
 }
