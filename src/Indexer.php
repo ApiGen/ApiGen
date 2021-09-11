@@ -203,6 +203,10 @@ final class Indexer
 	}
 
 
+	/**
+	 * @param ClassInfo[] $normal   indexed by [methodName]
+	 * @param ClassInfo[] $abstract indexed by [methodName]
+	 */
 	private function indexClassMethodOverrides(Index $index, ClassInfo $info, array $normal, array $abstract): void
 	{
 		$queue = array_keys($info->implements);

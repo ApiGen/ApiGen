@@ -18,6 +18,9 @@ final class ApiGen
 	}
 
 
+	/**
+	 * @param string[] $files indexed by []
+	 */
 	public function generate(SymfonyStyle $output, array $files, string $outputDir, string $title): void
 	{
 		$analyzeTime = -microtime(true);
@@ -37,6 +40,9 @@ final class ApiGen
 	}
 
 
+	/**
+	 * @param string[] $files indexed by []
+	 */
 	private function analyze(SymfonyStyle $output, array $files): AnalyzeResult
 	{
 		$progressBar = $output->createProgressBar();

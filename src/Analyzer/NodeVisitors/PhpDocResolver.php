@@ -45,7 +45,7 @@ final class PhpDocResolver extends NodeVisitorAbstract
 	}
 
 
-	public function enterNode(Node $node)
+	public function enterNode(Node $node): null|int|Node
 	{
 		$doc = $node->getDocComment();
 
@@ -56,14 +56,14 @@ final class PhpDocResolver extends NodeVisitorAbstract
 		$tokens = $this->lexer->tokenize($doc->getText());
 		$phpDoc = $this->parser->parse(new TokenIterator($tokens));
 
-
 		$this->resolvePhpDoc($phpDoc);
 		$node->setAttribute('phpDoc', $phpDoc);
+		return null;
 	}
 
 
 	/**
-	 * @return iterable|TypeNode[]
+	 * @return iterable<TypeNode>
 	 */
 	public static function getTypes(PhpDocNode $phpDocNode): iterable
 	{
@@ -94,7 +94,7 @@ final class PhpDocResolver extends NodeVisitorAbstract
 
 
 	/**
-	 * @return iterable|IdentifierTypeNode[]
+	 * @return iterable<IdentifierTypeNode>
 	 */
 	public static function getIdentifiers(TypeNode $typeNode): iterable
 	{

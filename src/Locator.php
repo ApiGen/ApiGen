@@ -13,6 +13,9 @@ use Symfony\Component\Console\Style\OutputStyle;
 
 final class Locator
 {
+	/**
+	 * @param string[] $stubsMap indexed by [classLikeName]
+	 */
 	public function __construct(
 		private array $stubsMap,
 		private ClassLoader $classLoader,
