@@ -66,7 +66,7 @@ final class Analyzer
 		$errors = [];
 
 		$schedule = static function (string $file, bool $primary) use (&$tasks, $progressBar): void {
-			$file = realpath($file);
+			$file = Helpers::realPath($file);
 			$tasks[$file] ??= new AnalyzeTask($file, $primary);
 			$progressBar->setMaxSteps(count($tasks));
 		};
@@ -120,7 +120,7 @@ final class Analyzer
 	private function processTask(AnalyzeTask $task): array
 	{
 		try {
-			$ast = $this->parser->parse(FileSystem::read($task->sourceFile));
+			$ast = $this->parser->parse(FileSystem::read($task->sourceFile)) ?? throw new \LogicException();
 			$ast = $this->traverser->traverse($ast);
 			return iterator_to_array($this->processNodes($task, $ast), preserve_keys: false);
 
@@ -132,7 +132,8 @@ final class Analyzer
 
 
 	/**
-	 * @param Node[] $nodes
+	 * @param  Node[] $nodes indexed by []
+	 * @return Iterator<ClassLikeInfo>
 	 */
 	private function processNodes(AnalyzeTask $task, array $nodes): Iterator // TODO: move to astTraverser?
 	{
@@ -318,6 +319,7 @@ final class Analyzer
 
 
 	/**
+	 * @param  Node\Name[] $names indexed by []
 	 * @return NameInfo[] indexed by [classLikeName]
 	 */
 	private function processNameList(array $names): array
@@ -398,12 +400,18 @@ final class Analyzer
 	}
 
 
+	/**
+	 * @return NameInfo[] indexed by [classLike]
+	 */
 	private function extractExprDependencies(Node\Expr $value): array
 	{
 		return []; // TODO!
 	}
 
 
+	/**
+	 * @return NameInfo[] indexed by [classLike]
+	 */
 	private function extractTypeDependencies(TypeNode $type): array
 	{
 		$dependencies = [];

@@ -116,12 +116,19 @@ final class Renderer
 		$progressBar->setMessage($outputPath);
 		$progressBar->advance();
 
-		$classPath = (new \ReflectionClass($template))->getFileName();
+		$classPath = Helpers::classLikePath($template::class);
 		$lattePath = dirname($classPath) . '/' . basename($classPath, 'Template.php') . '.latte';
 		FileSystem::write($outputPath, $this->latte->renderToString($lattePath, $template));
 	}
 
 
+	/**
+	 * @template K
+	 * @template V
+	 *
+	 * @param iterable<K, V>       $it
+	 * @param callable(V, K): void $handle
+	 */
 	private function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle): void
 	{
 		$workerCount = PHP_SAPI === 'cli' && extension_loaded('pcntl') ? $this->workerCount : 1;

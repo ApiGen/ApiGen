@@ -7,7 +7,6 @@ use Composer\Autoload\ClassLoader;
 use League;
 use Nette\Utils\Finder;
 use PHPStan\Php8StubsMap;
-use ReflectionClass;
 use Symfony\Component\Console\Style\OutputStyle;
 
 
@@ -32,9 +31,12 @@ final class Locator
 	}
 
 
+	/**
+	 * @return string[] indexed by [classLikeName]
+	 */
 	private static function createStubsMap(): array
 	{
-		$stubsDir = dirname((new ReflectionClass(Php8StubsMap::class))->getFileName());
+		$stubsDir = dirname(Helpers::classLikePath(Php8StubsMap::class));
 		$stubsMap = array_map(fn(string $path) => "$stubsDir/$path", Php8StubsMap::CLASSES);
 
 		foreach (Finder::findFiles('*.php')->in(__DIR__ . '/../stubs') as $path => $_) {

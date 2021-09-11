@@ -16,7 +16,7 @@ final class Indexer
 {
 	public function indexFile(Index $index, ?string $file, bool $primary): void
 	{
-		$file = $file === null ? '' : realpath($file);
+		$file = $file === null ? '' : Helpers::realPath($file);
 
 		if (isset($index->files[$file])) {
 			$index->files[$file]->primary = $index->files[$file]->primary || $primary;
@@ -204,8 +204,8 @@ final class Indexer
 
 
 	/**
-	 * @param ClassInfo[] $normal   indexed by [methodName]
-	 * @param ClassInfo[] $abstract indexed by [methodName]
+	 * @param ClassInfo[]     $normal   indexed by [methodName]
+	 * @param ClassLikeInfo[] $abstract indexed by [methodName]
 	 */
 	private function indexClassMethodOverrides(Index $index, ClassInfo $info, array $normal, array $abstract): void
 	{
