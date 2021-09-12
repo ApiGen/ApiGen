@@ -25,10 +25,7 @@ final class ApiGenFactory
 {
 	public function create(SymfonyStyle $output, string $sourceDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
 	{
-		$commonMarkEnv = new League\CommonMark\Environment\Environment();
-		$commonMarkEnv->addExtension(new League\CommonMark\Extension\CommonMark\CommonMarkCoreExtension());
-		$commonMarkEnv->addExtension(new League\CommonMark\Extension\Autolink\AutolinkExtension());
-		$commonMark = new League\CommonMark\MarkdownConverter($commonMarkEnv);
+		$commonMark = new League\CommonMark\GithubFlavoredMarkdownConverter();
 
 		$urlGenerator = new UrlGenerator($baseDir, $baseUrl);
 		$sourceHighlighter = new SourceHighlighter();
