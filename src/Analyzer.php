@@ -314,6 +314,31 @@ final class Analyzer
 				$memberInfo->final = $member->isFinal();
 
 				yield $memberInfo;
+
+				if ($member->name->toLowerString() === '__construct') {
+					foreach ($member->params as $param) {
+						if ($param->flags === 0) {
+							continue;
+						}
+
+						assert($param->var instanceof Node\Expr\Variable);
+						assert(is_string($param->var->name));
+						$propertyInfo = new PropertyInfo($param->var->name);
+
+						$propertyInfo->description = $memberInfo->parameters[$propertyInfo->name]->description;
+
+						$propertyInfo->startLine = $param->getStartLine();
+						$propertyInfo->endLine = $param->getEndLine();
+
+						$propertyInfo->public = (bool) ($param->flags & Node\Stmt\Class_::MODIFIER_PUBLIC);
+						$propertyInfo->protected = (bool) ($param->flags & Node\Stmt\Class_::MODIFIER_PROTECTED);
+						$propertyInfo->private = (bool) ($param->flags & Node\Stmt\Class_::MODIFIER_PRIVATE);
+
+						$propertyInfo->type = $memberInfo->parameters[$propertyInfo->name]->type;
+
+						yield $propertyInfo;
+					}
+				}
 			}
 		}
 	}
