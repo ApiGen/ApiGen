@@ -66,7 +66,7 @@ final class Renderer
 			),
 		));
 
-		$this->forkLoop($progressBar, $index->namespace, function (NamespaceIndex $info) use ($progressBar, $outputDir, $index, $title) {
+		$this->forkLoop($progressBar, $index->namespace, function (?ProgressBar $progressBar, NamespaceIndex $info) use ($outputDir, $index, $title) {
 			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
@@ -79,7 +79,7 @@ final class Renderer
 			));
 		});
 
-		$this->forkLoop($progressBar, $index->classLike, function (ClassLikeInfo $info) use ($progressBar, $outputDir, $index, $title) {
+		$this->forkLoop($progressBar, $index->classLike, function (?ProgressBar $progressBar, ClassLikeInfo $info) use ($outputDir, $index, $title) {
 			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
 				global: new GlobalParameters(
 					index: $index,
@@ -92,7 +92,7 @@ final class Renderer
 			));
 		});
 
-		$this->forkLoop($progressBar, $primaryFiles, function (FileIndex $file, string $path) use ($progressBar, $outputDir, $index, $title) {
+		$this->forkLoop($progressBar, $primaryFiles, function (?ProgressBar $progressBar, FileIndex $file, string $path) use ($outputDir, $index, $title) {
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
@@ -111,10 +111,12 @@ final class Renderer
 	}
 
 
-	private function renderTemplate(ProgressBar $progressBar, string $outputPath, object $template): void
+	private function renderTemplate(?ProgressBar $progressBar, string $outputPath, object $template): void
 	{
-		$progressBar->setMessage($outputPath);
-		$progressBar->advance();
+		if ($progressBar !== null) {
+			$progressBar->setMessage($outputPath);
+			$progressBar->advance();
+		}
 
 		$classPath = Helpers::classLikePath($template::class);
 		$lattePath = dirname($classPath) . '/' . basename($classPath, 'Template.php') . '.latte';
@@ -126,8 +128,8 @@ final class Renderer
 	 * @template K
 	 * @template V
 	 *
-	 * @param iterable<K, V>       $it
-	 * @param callable(V, K): void $handle
+	 * @param iterable<K, V>                     $it
+	 * @param callable(?ProgressBar, V, K): void $handle
 	 */
 	private function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle): void
 	{
@@ -144,6 +146,7 @@ final class Renderer
 
 			} elseif ($pid === 0) {
 				$workerId = $i;
+				$progressBar = null;
 				break;
 
 			} else {
@@ -154,9 +157,9 @@ final class Renderer
 		$index = 0;
 		foreach ($it as $key => $value) {
 			if ((($index++) % $workerCount) === $workerId) {
-				$handle($value, $key);
+				$handle($progressBar, $value, $key);
 
-			} else {
+			} elseif ($progressBar !== null) {
 				$progressBar->advance();
 			}
 		}
