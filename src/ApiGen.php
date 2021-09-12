@@ -46,7 +46,7 @@ final class ApiGen
 	private function analyze(SymfonyStyle $output, array $files): AnalyzeResult
 	{
 		$progressBar = $output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
+		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% [%bar%] %percent:3s%% %message%');
 
 		$analyzeResult = $this->analyzer->analyze($progressBar, $files);
 
@@ -76,7 +76,7 @@ final class ApiGen
 	private function render(SymfonyStyle $output, Index $index, string $outputDir, string $title): void
 	{
 		$progressBar = $output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% [%bar%] %percent:3s%% %elapsed:6s% %message%');
+		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% [%bar%] %percent:3s%% %message%');
 
 		$this->renderer->render($progressBar, $index, $outputDir, $title);
 
