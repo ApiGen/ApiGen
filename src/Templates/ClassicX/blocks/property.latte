@@ -20,7 +20,7 @@
 					{block content}<var>${$property->name}</var>{/block}
 				{/embed}
 
-				{embed memberDescription, $property}
+				{embed memberDescription, classLike: $classLike, member: $property}}
 					{block details}{* TODO: other tags (uses, internal...) *}{/block}
 				{/embed}
 			</td>

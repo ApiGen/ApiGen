@@ -1,10 +1,14 @@
-{define memberDescription, ApiGenX\Info\MemberInfo $member}
-	<div n:if="$member->description" class="expandable-collapsedView">
-		{shortDescription($member->description)}
+{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
+
+{define memberDescription, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MemberInfo $member}
+	{var $description = $member->getEffectiveDescription($global->index, $classLike)}
+
+	<div n:if="$description" class="expandable-collapsedView">
+		{shortDescription($description)}
 	</div>
 
 	<div class="expandable-expandedView">
-		{include description, $member->description}
+		{include description, $description}
 		{block details}{/block}
 	</div>
 {/define}

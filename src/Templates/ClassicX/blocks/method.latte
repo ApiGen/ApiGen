@@ -16,7 +16,7 @@
 				{capture $signature}{include methodSignature, classLike: $classLike, method: $method}{/capture}
 				<code>{if strlen(stripHtml($signature)) > 120}{include methodSignature, classLike: $classLike, method: $method, multiLine: true}{else}{$signature}{/if}</code>
 
-				{embed memberDescription, $method}
+				{embed memberDescription, classLike: $classLike, member: $method}
 					{block details}
 						{try}
 							<h4>Deprecated</h4>

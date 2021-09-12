@@ -12,7 +12,7 @@
 					{block content}<code>{$constant->name}</code>{/block}
 				{/embed}
 
-				{embed memberDescription, $constant}
+				{embed memberDescription, classLike: $classLike, member: $constant}
 					{block details}{* TODO: other tags (uses, internal...) *}{/block}
 				{/embed}
 			</td>

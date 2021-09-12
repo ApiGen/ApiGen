@@ -2,6 +2,7 @@
 
 namespace ApiGenX\Info;
 
+use ApiGenX\Index\Index;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 
@@ -33,5 +34,33 @@ final class MethodInfo extends MemberInfo
 	{
 		parent::__construct($name);
 		$this->nameLower = strtolower($name);
+	}
+
+
+	public function getEffectiveDescription(Index $index, ClassLikeInfo $classLike): string
+	{
+		$description = parent::getEffectiveDescription($index, $classLike);
+
+		if ($description !== '') {
+			return $description;
+		}
+
+		foreach ($index->methodOverrides[$classLike->name->fullLower][$this->nameLower] ?? [] as $ancestor) {
+			$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
+
+			if ($description !== '') {
+				return $description;
+			}
+		}
+
+		foreach ($index->methodImplements[$classLike->name->fullLower][$this->nameLower] ?? [] as $ancestor) {
+			$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
+
+			if ($description !== '') {
+				return $description;
+			}
+		}
+
+		return '';
 	}
 }
