@@ -24,17 +24,17 @@ final class NameInfo
 	public string $namespaceLower;
 
 
-	public function __construct(string $name, ?string $fullLower = null)
+	public function __construct(string $full, ?string $fullLower = null)
 	{
-		$pos = strrpos($name, '\\');
+		$pos = strrpos($full, '\\');
 
-		$this->full = $name;
-		$this->fullLower = $fullLower ?? strtolower($this->full);
+		$this->full = $full;
+		$this->fullLower = $fullLower ?? strtolower($full);
 
-		$this->short = $pos === false ? $name : substr($name, $pos + 1);
+		$this->short = $pos === false ? $full : substr($full, $pos + 1);
 		$this->shortLower = strtolower($this->short);
 
-		$this->namespace = $pos === false ? '' : substr($name, 0, $pos);
+		$this->namespace = $pos === false ? '' : substr($full, 0, $pos);
 		$this->namespaceLower = strtolower($this->namespace);
 	}
 }
