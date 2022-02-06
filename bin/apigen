@@ -5,6 +5,7 @@ use ApiGenX\ApiGenFactory;
 use Composer\InstalledVersions;
 use Nette\Utils\Finder;
 use Nette\Utils\Strings;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -59,12 +60,12 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 
 	if (!is_dir($sourceDir)) {
 		$style->error(sprintf("Directory '%s' does not exist", $sourceDir));
-		return 1;
+		return Command::FAILURE;
 	}
 
 	if (!is_dir(dirname($outputDir))) {
 		$style->error(sprintf("Directory '%s' does not exist", dirname($outputDir)));
-		return 1;
+		return Command::FAILURE;
 	}
 
 	if (!ini_set('memory_limit', $memoryLimit)) {
@@ -78,7 +79,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 
 	if (!count($files)) {
 		$style->error('No source files found.');
-		return 1;
+		return Command::FAILURE;
 
 	} elseif ($style->isDebug()) {
 		$style->text('<info>Matching source files:</info>');
@@ -109,7 +110,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 	$apiGen = $apiGenFactory->create($style, $sourceDir, $baseDir, $baseUrl, $workerCount);
 	$apiGen->generate($style, $files, $outputDir, $title);
 
-	return 0;
+	return Command::SUCCESS;
 });
 
 $app->run();
