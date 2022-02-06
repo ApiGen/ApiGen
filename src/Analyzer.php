@@ -543,7 +543,7 @@ final class Analyzer
 			foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
 				$lower = strtolower($identifier->name);
 				if (!isset(PhpDocResolver::KEYWORDS[$lower])) {
-					$dependencies[$lower] = new NameInfo($identifier->name);
+					$dependencies[$lower] = new NameInfo($identifier->name, $lower);
 				}
 			}
 		}

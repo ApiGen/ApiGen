@@ -41,7 +41,7 @@ final class Indexer
 			}
 		}
 
-		$info = new NamespaceIndex(new NameInfo($namespace), $primary);
+		$info = new NamespaceIndex(new NameInfo($namespace, $namespaceLower), $primary);
 
 		if ($namespaceLower !== '') {
 			$primary = $primary && $info->name->namespaceLower !== '';

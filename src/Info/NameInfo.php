@@ -24,12 +24,12 @@ final class NameInfo
 	public string $namespaceLower;
 
 
-	public function __construct(string $name)
+	public function __construct(string $name, ?string $fullLower = null)
 	{
 		$pos = strrpos($name, '\\');
 
 		$this->full = $name;
-		$this->fullLower = strtolower($name);
+		$this->fullLower = $fullLower ?? strtolower($this->full);
 
 		$this->short = $pos === false ? $name : substr($name, $pos + 1);
 		$this->shortLower = strtolower($this->short);
