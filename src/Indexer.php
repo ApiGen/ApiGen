@@ -166,7 +166,7 @@ final class Indexer
 	{
 		$dag = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends);
 
-		$findCycle = function (array $node, array $visited) use ($index, $dag, &$findCycle): void {
+		$findCycle = static function (array $node, array $visited) use ($index, $dag, &$findCycle): void {
 			foreach ($node as $childKey => $_) {
 				if (isset($visited[$childKey])) {
 					$path = [...array_keys($visited), $childKey];
