@@ -19,7 +19,9 @@ use ApiGenX\Info\TraitInfo;
 use Iterator;
 use Nette\Utils\FileSystem;
 use PhpParser\Node;
+use PhpParser\Node\ComplexType;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\IntersectionType;
 use PhpParser\Node\Name;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\UnionType;
@@ -35,6 +37,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
@@ -448,7 +451,7 @@ final class Analyzer
 
 
 	/**
-	 * @param null|Identifier|Name|NullableType|UnionType $node
+	 * @param null|Identifier|Name|ComplexType $node
 	 */
 	private function processTypeOrNull(?Node $node): ?TypeNode
 	{
@@ -457,16 +460,24 @@ final class Analyzer
 
 
 	/**
-	 * @param Identifier|Name|NullableType|UnionType $node
+	 * @param Identifier|Name|ComplexType $node
 	 */
 	private function processType(Node $node): TypeNode
 	{
-		if ($node instanceof NullableType) {
-			return new NullableTypeNode($this->processType($node->type));
-		}
+		if ($node instanceof ComplexType) {
+			if ($node instanceof NullableType) {
+				return new NullableTypeNode($this->processType($node->type));
+			}
 
-		if ($node instanceof UnionType) {
-			return new UnionTypeNode(array_map([$this, 'processType'], $node->types));
+			if ($node instanceof UnionType) {
+				return new UnionTypeNode(array_map([$this, 'processType'], $node->types));
+			}
+
+			if ($node instanceof IntersectionType) {
+				return new IntersectionTypeNode(array_map([$this, 'processType'], $node->types));
+			}
+
+			throw new \LogicException('Unsupported complex type');
 		}
 
 		return new IdentifierTypeNode($node->toString());
