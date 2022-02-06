@@ -16,7 +16,9 @@ final class Indexer
 {
 	public function indexFile(Index $index, ?string $file, bool $primary): void
 	{
-		$file = $file === null ? '' : Helpers::realPath($file);
+		if ($file === null) {
+			return;
+		}
 
 		if (isset($index->files[$file])) {
 			$index->files[$file]->primary = $index->files[$file]->primary || $primary;
