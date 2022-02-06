@@ -211,16 +211,16 @@ final class Analyzer
 
 			} elseif ($member instanceof PropertyInfo){
 				$info->properties[$member->name] = $member;
-				$info->dependencies += $member->default ? $this->extractExprDependencies($member->default) : [];
-				$info->dependencies += $member->type ? $this->extractTypeDependencies($member->type) : [];
+				$info->dependencies += $this->extractExprDependencies($member->default);
+				$info->dependencies += $this->extractTypeDependencies($member->type);
 
 			} elseif ($member instanceof MethodInfo){
 				$info->methods[$member->nameLower] = $member;
-				$info->dependencies += $member->returnType ? $this->extractTypeDependencies($member->returnType) : [];
+				$info->dependencies += $this->extractTypeDependencies($member->returnType);
 
 				foreach ($member->parameters as $parameterInfo) {
-					$info->dependencies += $parameterInfo->type ? $this->extractTypeDependencies($parameterInfo->type) : [];
-					$info->dependencies += $parameterInfo->default ? $this->extractExprDependencies($parameterInfo->default) : [];
+					$info->dependencies += $this->extractTypeDependencies($parameterInfo->type);
+					$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
 				}
 
 			} else {
@@ -526,7 +526,7 @@ final class Analyzer
 	/**
 	 * @return NameInfo[] indexed by [classLike]
 	 */
-	private function extractExprDependencies(Node\Expr $value): array
+	private function extractExprDependencies(?Node\Expr $value): array
 	{
 		return []; // TODO!
 	}
@@ -535,14 +535,16 @@ final class Analyzer
 	/**
 	 * @return NameInfo[] indexed by [classLike]
 	 */
-	private function extractTypeDependencies(TypeNode $type): array
+	private function extractTypeDependencies(?TypeNode $type): array
 	{
 		$dependencies = [];
 
-		foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
-			$lower = strtolower($identifier->name);
-			if (!isset(PhpDocResolver::KEYWORDS[$lower])) {
-				$dependencies[$lower] = new NameInfo($identifier->name);
+		if ($type !== null) {
+			foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
+				$lower = strtolower($identifier->name);
+				if (!isset(PhpDocResolver::KEYWORDS[$lower])) {
+					$dependencies[$lower] = new NameInfo($identifier->name);
+				}
 			}
 		}
 
