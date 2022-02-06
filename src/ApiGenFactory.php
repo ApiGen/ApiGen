@@ -23,7 +23,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 final class ApiGenFactory
 {
-	public function create(SymfonyStyle $output, string $sourceDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
+	public function create(SymfonyStyle $output, string $projectDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
 	{
 		$commonMark = new League\CommonMark\GithubFlavoredMarkdownConverter();
 
@@ -35,7 +35,7 @@ final class ApiGenFactory
 		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
 		$latte = $latteFactory->create();
 
-		$locator = Locator::create($output, $sourceDir);
+		$locator = Locator::create($output, $projectDir);
 		$phpParserFactory = new ParserFactory();
 		$phpParser = $phpParserFactory->create(ParserFactory::PREFER_PHP7);
 		$phpNodeTraverser = $this->createPhpNodeTraverser();
