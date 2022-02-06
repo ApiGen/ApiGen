@@ -25,5 +25,8 @@
 		"psr-4": {
 			"ApiGenX\\": "src"
 		}
+	},
+	"require-dev": {
+		"phpstan/phpstan": "^1.4"
 	}
 }
