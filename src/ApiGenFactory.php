@@ -4,13 +4,7 @@ namespace ApiGenX;
 
 use ApiGenX\Analyzer\NodeVisitors\BodySkipper;
 use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
-use ApiGenX\Renderer\Latte\LatteEngineFactory;
-use ApiGenX\Renderer\Latte\LatteFunctions;
-use ApiGenX\Renderer\Latte\LatteRenderer;
-use ApiGenX\Renderer\SourceHighlighter;
-use ApiGenX\Renderer\UrlGenerator;
-use League;
-use PhpParser;
+use ApiGenX\Renderer\Latte\LatteRendererFactory;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeTraverserInterface;
 use PhpParser\NodeVisitor\NameResolver;
@@ -70,16 +64,6 @@ final class ApiGenFactory
 
 	private function createRenderer(string $baseDir, string $baseUrl, int $workerCount): Renderer
 	{
-		$commonMark = new League\CommonMark\GithubFlavoredMarkdownConverter();
-
-		$urlGenerator = new UrlGenerator($baseDir, $baseUrl);
-		$sourceHighlighter = new SourceHighlighter();
-		$exprPrettyPrinter = new PhpParser\PrettyPrinter\Standard();
-
-		$latteFunctions = new LatteFunctions($urlGenerator, $sourceHighlighter, $commonMark, $exprPrettyPrinter);
-		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
-		$latte = $latteFactory->create();
-
-		return new LatteRenderer($latte, $urlGenerator, $workerCount);
+		return (new LatteRendererFactory)->create($baseDir, $baseUrl, $workerCount);
 	}
 }
