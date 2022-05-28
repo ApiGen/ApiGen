@@ -25,26 +25,22 @@ final class ApiGenFactory
 {
 	public function create(SymfonyStyle $output, string $projectDir, string $baseDir, string $baseUrl, int $workerCount): ApiGen
 	{
-		$commonMark = new League\CommonMark\GithubFlavoredMarkdownConverter();
+		$analyzer = $this->createAnalyzer($output, $projectDir);
+		$indexer = $this->createIndexer();
+		$renderer = $this->createRenderer($baseDir, $baseUrl, $workerCount);
 
-		$urlGenerator = new UrlGenerator($baseDir, $baseUrl);
-		$sourceHighlighter = new SourceHighlighter();
-		$exprPrettyPrinter = new PhpParser\PrettyPrinter\Standard();
+		return new ApiGen($analyzer, $indexer, $renderer);
+	}
 
-		$latteFunctions = new LatteFunctions($urlGenerator, $sourceHighlighter, $commonMark, $exprPrettyPrinter);
-		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
-		$latte = $latteFactory->create();
 
+	private function createAnalyzer(SymfonyStyle $output, string $projectDir): Analyzer
+	{
 		$locator = Locator::create($output, $projectDir);
 		$phpParserFactory = new ParserFactory();
 		$phpParser = $phpParserFactory->create(ParserFactory::PREFER_PHP7);
 		$phpNodeTraverser = $this->createPhpNodeTraverser();
-		$analyzer = new Analyzer($locator, $phpParser, $phpNodeTraverser);
 
-		$indexer = new Indexer();
-		$renderer = new Renderer($latte, $urlGenerator, $workerCount);
-
-		return new ApiGen($analyzer, $indexer, $renderer);
+		return new Analyzer($locator, $phpParser, $phpNodeTraverser);
 	}
 
 
@@ -62,5 +58,27 @@ final class ApiGenFactory
 		$traverser->addVisitor(new PhpDocResolver($phpDocLexer, $phpDocParser, $nameContext));
 
 		return $traverser;
+	}
+
+
+	private function createIndexer(): Indexer
+	{
+		return new Indexer();
+	}
+
+
+	private function createRenderer(string $baseDir, string $baseUrl, int $workerCount): Renderer
+	{
+		$commonMark = new League\CommonMark\GithubFlavoredMarkdownConverter();
+
+		$urlGenerator = new UrlGenerator($baseDir, $baseUrl);
+		$sourceHighlighter = new SourceHighlighter();
+		$exprPrettyPrinter = new PhpParser\PrettyPrinter\Standard();
+
+		$latteFunctions = new LatteFunctions($urlGenerator, $sourceHighlighter, $commonMark, $exprPrettyPrinter);
+		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
+		$latte = $latteFactory->create();
+
+		return new Renderer($latte, $urlGenerator, $workerCount);
 	}
 }
