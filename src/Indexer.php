@@ -17,7 +17,7 @@ final class Indexer
 	public function indexFile(Index $index, ?string $file, bool $primary): void
 	{
 		if ($file === null) {
-			return;
+			$file = '';
 		}
 
 		if (isset($index->files[$file])) {
