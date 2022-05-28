@@ -33,15 +33,13 @@ final class Indexer
 	public function indexNamespace(Index $index, string $namespace, string $namespaceLower, bool $primary): void
 	{
 		if (isset($index->namespace[$namespaceLower])) {
-			if (!$primary || $index->namespace[$namespaceLower]->primary) {
-				return;
-
-			} else {
-				$info = $index->namespace[$namespaceLower];
-				$info->primary = true;
-				$this->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $info->name->namespaceLower !== '');
-				return;
+			if ($primary && !$index->namespace[$namespaceLower]->primary) {
+				for ($info = $index->namespace[$namespaceLower]; $info->name->full !== ''; $info = $index->namespace[$info->name->namespaceLower]) {
+					$info->primary = true;
+				}
 			}
+
+			return;
 		}
 
 		$info = new NamespaceIndex(new NameInfo($namespace, $namespaceLower), $primary);
