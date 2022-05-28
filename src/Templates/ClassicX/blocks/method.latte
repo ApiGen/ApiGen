@@ -14,7 +14,7 @@
 
 			<td class="table-cell">
 				{capture $signature}{include methodSignature, classLike: $classLike, method: $method}{/capture}
-				<code>{if strlen(stripHtml($signature)) > 120}{include methodSignature, classLike: $classLike, method: $method, multiLine: true}{else}{$signature}{/if}</code>
+				<code>{if strlen(stripHtml($signature)) > 110}{include methodSignature, classLike: $classLike, method: $method, multiLine: true}{else}{$signature}{/if}</code>
 
 				{embed memberDescription, classLike: $classLike, member: $method}
 					{block details}
