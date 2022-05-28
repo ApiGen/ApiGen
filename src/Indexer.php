@@ -50,7 +50,7 @@ final class Indexer
 		}
 
 		$index->namespace[$namespaceLower] = $info;
-		$index->namespace[$info->name->namespaceLower]->children[$namespaceLower] = $info;
+		$index->namespace[$info->name->namespaceLower]->children[$info->name->shortLower] = $info;
 	}
 
 

@@ -24,7 +24,7 @@ final class NamespaceIndex implements ElementInfo
 	/** @var ClassInfo[] indexed by [exceptionName] */
 	public array $exception = [];
 
-	/** @var NamespaceIndex[] indexed by [namespaceName] */
+	/** @var NamespaceIndex[] indexed by [namespaceShortName] */
 	public array $children = [];
 
 
