@@ -37,7 +37,11 @@ final class Locator
 	private static function createStubsMap(): array
 	{
 		$stubsDir = dirname(Helpers::classLikePath(Php8StubsMap::class));
-		$stubsMap = array_map(fn(string $path) => "$stubsDir/$path", Php8StubsMap::CLASSES);
+		$stubsMap = [];
+
+		foreach ((new Php8StubsMap(PHP_VERSION_ID))->classes as $class => $path) {
+			$stubsMap[$class] = "$stubsDir/$path";
+		}
 
 		foreach (Finder::findFiles('*.php')->in(__DIR__ . '/../stubs') as $path => $_) {
 			$stubsMap[strtolower(pathinfo($path, PATHINFO_FILENAME))] = $path;

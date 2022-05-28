@@ -16,7 +16,7 @@
 		"nette/finder": "^2.5",
 		"nette/utils": "^3.2",
 		"nikic/php-parser": "^4.12",
-		"phpstan/php-8-stubs": "^0.1.23",
+		"phpstan/php-8-stubs": "^0.3.9",
 		"phpstan/phpdoc-parser": "^1.2",
 		"symfony/console": "^6.0",
 		"tracy/tracy": "^2.8"
