@@ -12,6 +12,7 @@ use ApiGenX\Info\ErrorInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
+use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\ParameterInfo;
 use ApiGenX\Info\PropertyInfo;
@@ -65,7 +66,7 @@ final class Analyzer
 		/** @var ClassLikeInfo[] $found indexed by [classLikeName] */
 		$found = [];
 
-		/** @var ClassLikeInfo[] $found indexed by [classLikeName] */
+		/** @var ClassLikeInfo[] $missing indexed by [classLikeName] */
 		$missing = [];
 
 		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
@@ -110,10 +111,10 @@ final class Analyzer
 			$progressBar->advance();
 		}
 
-		foreach ($missing as $fullLower => $dependencyOf) {
-			$dependency = $dependencyOf->dependencies[$fullLower];
-			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$dependencyOf->name->full}");
-			$found[$dependency->fullLower] = new ClassInfo($dependency, primary: false); // TODO: mark as missing (add MissingInfo? / UndefinedInfo)
+		foreach ($missing as $fullLower => $referencedBy) {
+			$dependency = $referencedBy->dependencies[$fullLower];
+			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$referencedBy->name->full}");
+			$found[$dependency->fullLower] = new MissingInfo($dependency, $referencedBy->name);
 		}
 
 		return new AnalyzeResult($found, $errors);

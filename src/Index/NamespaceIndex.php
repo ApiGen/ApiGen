@@ -5,6 +5,7 @@ namespace ApiGenX\Index;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ElementInfo;
 use ApiGenX\Info\InterfaceInfo;
+use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 

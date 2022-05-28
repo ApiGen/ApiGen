@@ -8,6 +8,7 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\InterfaceInfo;
+use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
@@ -83,6 +84,9 @@ final class Indexer
 
 		} elseif ($info instanceof TraitInfo) {
 			$this->indexTrait($info, $index);
+
+		} elseif ($info instanceof MissingInfo) {
+			$this->indexMissing($info, $index);
 
 		} else {
 			throw new \LogicException();
@@ -161,6 +165,12 @@ final class Indexer
 		$index->trait[$info->name->fullLower] = $info;
 		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
 		$index->namespace[$info->name->namespaceLower]->trait[$info->name->shortLower] = $info;
+	}
+
+
+	private function indexMissing(MissingInfo $info, Index $index): void
+	{
+		// nothing to index
 	}
 
 
