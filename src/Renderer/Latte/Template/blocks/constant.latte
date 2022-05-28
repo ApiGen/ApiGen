@@ -1,0 +1,25 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define constant, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\ConstantInfo $constant}
+	{embed member, $constant}
+		{block cells}
+			<td class="table-cell table-shrink">
+				<code style="white-space: nowrap">{include memberVisibility, $constant}</code>
+			</td>
+
+			<td class="table-cell">
+				{embed memberSourceLink, classLike: $classLike, member: $constant}
+					{block content}<code>{$constant->name}</code>{/block}
+				{/embed}
+
+				{embed memberDescription, classLike: $classLike, member: $constant}
+					{block details}{* TODO: other tags (uses, internal...) *}{/block}
+				{/embed}
+			</td>
+
+			<td class="table-cell">
+				<code>{include expr, expr: $constant->value, scope: $classLike}</code>
+			</td>
+		{/block}
+	{/embed}
+{/define}

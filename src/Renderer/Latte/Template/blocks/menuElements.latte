@@ -1,0 +1,11 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define menuElements, ApiGenX\Info\ElementInfo[] $elements}
+	<ul>
+		<li n:foreach="$elements as $element" n:class="$element === $global->activeClassLike ? active">
+			<a n:class="$element->isDeprecated() ? deprecated" href="{elementUrl($element)}">
+				{elementName($element)}
+			</a>
+		</li>
+	</ul>
+{/define}

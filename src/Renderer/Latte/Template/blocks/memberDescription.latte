@@ -1,0 +1,14 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define memberDescription, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MemberInfo $member}
+	{var $description = $member->getEffectiveDescription($global->index, $classLike)}
+
+	<div n:if="$description" class="expandable-collapsedView">
+		{shortDescription($description)}
+	</div>
+
+	<div class="expandable-expandedView">
+		{include description, $description}
+		{block details}{/block}
+	</div>
+{/define}

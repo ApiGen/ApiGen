@@ -1,0 +1,39 @@
+{templateType ApiGenX\Renderer\Latte\Template\ClassLikeTemplate}
+{import 'blocks/@index.latte'}
+
+{embed layout}
+	{define title}
+		{if $classLike->isDeprecated()}Deprecated {/if}
+		{include classLikeKind, $classLike}
+		{$classLike->name->full}
+	{/define}
+
+	{define content}
+		<h1 n:class="$classLike->isDeprecated() ? deprecated">
+			{include classLikeKind, $classLike} {include classLikeLinks, $classLike}
+		</h1>
+
+		{include classLikeDescription, $classLike}
+
+		{if !empty($global->index->dag[$classLike->name->fullLower]) || ($classLike->class && ($classLike->extends || $classLike->implements || $classLike->uses)) || ($classLike->interface && $classLike->extends) || ($classLike->trait && $classLike->uses)}
+			<div class="classLikeSection">
+				{include classTree, $classLike, $global->index->dag}
+			</div>
+		{/if}
+
+		<div class="classLikeSection">
+			{if $classLike->class && ($classLike->abstract || $classLike->final)}<b>{if $classLike->abstract}Abstract{else}Final{/if}</b><br>{/if}
+			{if $classLike->file && $classLike->primary}<b>Located at</b> <a href="{classLikeSourceUrl($classLike)}" title="Go to source code">{relativePath($classLike->file)}</a><br>{/if}
+		</div>
+
+		{include methodSummary, $classLike}
+		{include methodInheritedSummary, $classLike, []}
+		{* TODO: methods used from traits *}
+
+		{include constantSummary, $classLike}
+		{include constantInheritedSummary, $classLike, []}
+
+		{include propertySummary, $classLike}
+		{include propertyInheritedSummary, $classLike, []}
+	{/define}
+{/embed}

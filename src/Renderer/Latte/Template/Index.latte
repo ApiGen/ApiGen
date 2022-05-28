@@ -1,0 +1,14 @@
+{templateType ApiGenX\Renderer\Latte\Template\TreeTemplate}
+{import 'blocks/@index.latte'}
+
+{embed layout}
+	{define content}
+		<h1>{$global->title}</h1>
+
+		{embed elementSummary}
+			{define elementSummaryContent}
+				{include elementSummaryGroup, heading: 'Namespaces', elements: $global->index->namespace, showDescription: false, onlyPrimary: true}
+			{/define}
+		{/embed}
+	{/define}
+{/embed}

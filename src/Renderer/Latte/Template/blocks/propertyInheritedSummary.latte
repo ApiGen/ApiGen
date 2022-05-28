@@ -1,0 +1,13 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define propertyInheritedSummary, ApiGenX\Info\ClassLikeInfo $classLike, array $overriden}
+	{if $classLike->class}
+		{if $classLike->extends}
+			{include propertyInherited, $global->index->classLike[$classLike->extends->fullLower], $overriden + $classLike->properties}
+		{/if}
+	{elseif $classLike->interface}
+		{foreach $classLike->extends as $parent}
+			{include propertyInherited, $global->index->classLike[$parent->fullLower], $overriden + $classLike->properties}
+		{/foreach}
+	{/if}
+{/define}

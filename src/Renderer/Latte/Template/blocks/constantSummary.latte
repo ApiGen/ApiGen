@@ -1,0 +1,18 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define constantSummary, ApiGenX\Info\ClassLikeInfo $classLike}
+	{try}
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading" colspan="4">Constants</th>
+			</tr>
+
+			{foreach $classLike->constants as $constant}
+				{skipIf $constant->private}
+				{include constant, classLike: $classLike, constant: $constant}
+			{else}
+				{rollback}
+			{/foreach}
+		</table>
+	{/try}
+{/define}

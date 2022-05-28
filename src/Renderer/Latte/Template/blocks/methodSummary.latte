@@ -1,0 +1,18 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define methodSummary, ApiGenX\Info\ClassLikeInfo $classLike}
+	{try}
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading" colspan="3">Methods</th>
+			</tr>
+
+			{foreach $classLike->methods as $method}
+				{skipIf $method->private}
+				{include method, classLike: $classLike, method: $method}
+			{else}
+				{rollback}
+			{/foreach}
+		</table>
+	{/try}
+{/define}

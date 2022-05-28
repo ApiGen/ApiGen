@@ -9,12 +9,12 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Renderer;
 use ApiGenX\Renderer\UrlGenerator;
-use ApiGenX\Templates\ClassicX\ClassLikeTemplate;
-use ApiGenX\Templates\ClassicX\GlobalParameters;
-use ApiGenX\Templates\ClassicX\IndexTemplate;
-use ApiGenX\Templates\ClassicX\NamespaceTemplate;
-use ApiGenX\Templates\ClassicX\SourceTemplate;
-use ApiGenX\Templates\ClassicX\TreeTemplate;
+use ApiGenX\Renderer\Latte\Template\ClassLikeTemplate;
+use ApiGenX\Renderer\Latte\Template\GlobalParameters;
+use ApiGenX\Renderer\Latte\Template\IndexTemplate;
+use ApiGenX\Renderer\Latte\Template\NamespaceTemplate;
+use ApiGenX\Renderer\Latte\Template\SourceTemplate;
+use ApiGenX\Renderer\Latte\Template\TreeTemplate;
 use Latte;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
@@ -33,7 +33,7 @@ final class LatteRenderer implements Renderer
 
 	public function render(ProgressBar $progressBar, Index $index, string $outputDir, string $title): void
 	{
-		$templateDir = __DIR__ . '/Templates/ClassicX';
+		$templateDir = __DIR__ . '/Template';
 		$assetsDir = $templateDir . '/assets';
 
 		FileSystem::delete($outputDir);

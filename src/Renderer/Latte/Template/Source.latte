@@ -1,0 +1,10 @@
+{templateType ApiGenX\Renderer\Latte\Template\SourceTemplate}
+{import 'blocks/@index.latte'}
+
+{embed layout}
+	{define title}File {relativePath($path)}{/define}
+
+	{define content}
+		{include source, $source}
+	{/define}
+{/embed}

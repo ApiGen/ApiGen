@@ -1,8 +1,0 @@
-{varType ApiGenX\Templates\ClassicX\GlobalParameters $global}
-
-{define namespaceLinks, ApiGenX\Index\NamespaceIndex $namespace}{*
-	*}{if $namespace->name->namespaceLower !== ''}{*
-		*}{include this, $global->index->namespace[$namespace->name->namespaceLower]}\{*
-	*}{/if}{*
-	*}<a href="{namespaceUrl($namespace)}">{$namespace->name->short}</a>{*
-*}{/define}
