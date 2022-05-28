@@ -6,7 +6,7 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ElementInfo;
 use Latte\Runtime\Html;
-use League\CommonMark\MarkdownConverterInterface;
+use League\CommonMark\ConverterInterface;
 use Nette\Utils\Strings;
 use PhpParser\Node\Expr;
 use PhpParser\PrettyPrinter\Standard as ExprPrettyPrinter;
@@ -17,7 +17,7 @@ final class LatteFunctions
 	public function __construct(
 		private UrlGenerator $url,
 		private SourceHighlighter $sourceHighlighter,
-		private MarkdownConverterInterface $markdown,
+		private ConverterInterface $markdown,
 		private ExprPrettyPrinter $exprPrettyPrinter,
 	) {
 	}
@@ -49,7 +49,7 @@ final class LatteFunctions
 
 	public function longDescription(string $description): Html
 	{
-		return new Html($this->markdown->convertToHtml($description)->getContent());
+		return new Html($this->markdown->convert($description)->getContent());
 	}
 
 
