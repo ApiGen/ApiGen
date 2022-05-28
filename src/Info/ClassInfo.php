@@ -38,7 +38,7 @@ final class ClassInfo extends ClassLikeInfo
 	/**
 	 * @return iterable<ClassInfo>
 	 */
-	public function ancestors(Index $index): iterable
+	public function ancestors(Index $index): iterable // TODO: remove?
 	{
 		if ($this->extends) {
 			$parent = $index->class[$this->extends->fullLower];

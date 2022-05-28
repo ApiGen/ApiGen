@@ -113,7 +113,7 @@ final class Analyzer
 		foreach ($missing as $fullLower => $dependencyOf) {
 			$dependency = $dependencyOf->dependencies[$fullLower];
 			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$dependencyOf->name->full}");
-			$found[$dependency->fullLower] = new ClassInfo($dependency, primary: false); // TODO: mark as missing (add MissingInfo?)
+			$found[$dependency->fullLower] = new ClassInfo($dependency, primary: false); // TODO: mark as missing (add MissingInfo? / UndefinedInfo)
 		}
 
 		return new AnalyzeResult($found, $errors);

@@ -58,7 +58,7 @@ final class Indexer
 	public function indexClassLike(Index $index, ClassLikeInfo $info): void
 	{
 		if (isset($index->classLike[$info->name->fullLower])) {
-			return; // ignore duplicates
+			return; // ignore duplicates (TODO: emit warning?)
 		}
 
 		$index->classLike[$info->name->fullLower] = $info;

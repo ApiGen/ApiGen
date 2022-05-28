@@ -11,10 +11,10 @@ use ApiGenX\Info\TraitInfo;
 final class Index
 {
 	/** @var FileIndex[] indexed by [filePath] */
-	public array $files = [];
+	public array $files = []; // TODO: fileTree
 
 	/** @var NamespaceIndex[] indexed by [namespaceName] */
-	public array $namespace = [];
+	public array $namespace = []; // TODO: namespaceTree?
 
 	/** @var ClassLikeInfo[] indexed by [classLikeName] */
 	public array $classLike = [];

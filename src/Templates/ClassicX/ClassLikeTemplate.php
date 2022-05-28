@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Templates\ClassicX;
+namespace ApiGenX\Templates\ClassicX; // TODO: rename namespace to singular 'Template'
 
 use ApiGenX\Info\ClassLikeInfo;
 
