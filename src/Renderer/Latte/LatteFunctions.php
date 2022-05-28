@@ -1,10 +1,12 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer;
+namespace ApiGenX\Renderer\Latte;
 
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ElementInfo;
+use ApiGenX\Renderer\SourceHighlighter;
+use ApiGenX\Renderer\UrlGenerator;
 use Latte\Runtime\Html;
 use League\CommonMark\ConverterInterface;
 use Nette\Utils\Strings;

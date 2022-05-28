@@ -4,8 +4,9 @@ namespace ApiGenX;
 
 use ApiGenX\Analyzer\NodeVisitors\BodySkipper;
 use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
-use ApiGenX\Renderer\LatteEngineFactory;
-use ApiGenX\Renderer\LatteFunctions;
+use ApiGenX\Renderer\Latte\LatteEngineFactory;
+use ApiGenX\Renderer\Latte\LatteFunctions;
+use ApiGenX\Renderer\Latte\LatteRenderer;
 use ApiGenX\Renderer\SourceHighlighter;
 use ApiGenX\Renderer\UrlGenerator;
 use League;
@@ -79,6 +80,6 @@ final class ApiGenFactory
 		$latteFactory = new LatteEngineFactory($latteFunctions, $urlGenerator);
 		$latte = $latteFactory->create();
 
-		return new Renderer($latte, $urlGenerator, $workerCount);
+		return new LatteRenderer($latte, $urlGenerator, $workerCount);
 	}
 }
