@@ -16,17 +16,14 @@
 			</td>
 
 			<td class="table-cell">
-				{embed memberSourceLink, classLike: $classLike, member: $property}
-					{block content}<var>${$property->name}</var>{/block}
-				{/embed}
+				<code>{*
+					*}{embed memberSourceLink, classLike: $classLike, member: $property}{block content}<var>${$property->name}</var>{/block}{/embed}{*
+					*}{if $property->default} = {include expr, expr: $property->default, scope: $classLike}{/if}{*
+				*}</code>
 
 				{embed memberDescription, classLike: $classLike, member: $property}}
 					{block details}{* TODO: other tags (uses, internal...) *}{/block}
 				{/embed}
-			</td>
-
-			<td class="table-cell">
-				<code n:if="$property->default">{include expr, expr: $property->default, scope: $classLike}</code>
 			</td>
 		{/block}
 	{/embed}
