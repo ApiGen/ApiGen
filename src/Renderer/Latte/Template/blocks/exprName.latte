@@ -8,6 +8,6 @@
 	*}{elseif isset($global->index->classLike[$name->fullLower])}{*
 		*}{include classLikeLink, classLike: $global->index->classLike[$name->fullLower], short: true}{*
 	*}{else}{*
-		*}{$error()}{*
+		*}{$name->full}{*
 	*}{/if}{*
 *}{/define}

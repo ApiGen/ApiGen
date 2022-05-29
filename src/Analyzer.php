@@ -40,6 +40,15 @@ use PhpParser\Node\NullableType;
 use PhpParser\Node\UnionType;
 use PhpParser\NodeTraverserInterface;
 use PhpParser\Parser;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprArrayNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFalseNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFloatNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprIntegerNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNullNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprTrueNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
@@ -401,7 +410,7 @@ final class Analyzer
 				$parameterInfo->type = $parameter->type;
 				$parameterInfo->byRef = $parameter->isReference;
 				$parameterInfo->variadic = $parameter->isVariadic;
-//				$parameterInfo->default = $parameter->defaultValue; // TODO: implement expr format conversion
+				$parameterInfo->default = $parameter->defaultValue ? $this->processPhpStanExpr($parameter->defaultValue) : null;
 
 				$methodInfo->parameters[$parameterInfo->name] = $parameterInfo;
 			}
@@ -567,6 +576,52 @@ final class Analyzer
 
 		} else {
 			throw new \LogicException(get_class($expr));
+		}
+	}
+
+
+	private function processPhpStanExpr(ConstExprNode $expr): ExprInfo
+	{
+		if ($expr instanceof ConstExprTrueNode) {
+			return new BooleanExprInfo(true);
+
+		} elseif ($expr instanceof ConstExprFalseNode) {
+			return new BooleanExprInfo(false);
+
+		} elseif ($expr instanceof ConstExprNullNode) {
+			return new NullExprInfo();
+
+		} elseif ($expr instanceof ConstExprIntegerNode) {
+			return $this->processExpr(Node\Scalar\LNumber::fromString($expr->value));
+
+		} elseif ($expr instanceof ConstExprFloatNode) {
+			return new FloatExprInfo(Node\Scalar\DNumber::parse($expr->value));
+
+		} elseif ($expr instanceof ConstExprStringNode) {
+			return new StringExprInfo(Node\Scalar\String_::parse($expr->value));
+
+		} elseif ($expr instanceof ConstExprArrayNode) {
+			$items = [];
+
+			foreach ($expr->items as $item) {
+				$items[] = new ArrayItemExprInfo(
+					$item->key ? $this->processPhpStanExpr($item->key) : null,
+					$this->processPhpStanExpr($item->value),
+				);
+			}
+
+			return new ArrayExprInfo($items);
+
+		} elseif ($expr instanceof ConstFetchNode) {
+			if ($expr->className === '') {
+				return new ConstantFetchExprInfo($expr->name);
+
+			} else {
+				return new ClassConstantFetchExprInfo(new NameInfo($expr->className), $expr->name);
+			}
+
+		} else {
+			throw new \LogicException();
 		}
 	}
 

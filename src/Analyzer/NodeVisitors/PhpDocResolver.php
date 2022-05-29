@@ -5,6 +5,8 @@ namespace ApiGenX\Analyzer\NodeVisitors;
 use PhpParser\NameContext;
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
@@ -94,6 +96,23 @@ final class PhpDocResolver extends NodeVisitorAbstract
 
 
 	/**
+	 * @return iterable<ConstExprNode>
+	 */
+	public static function getExpressions(PhpDocNode $phpDocNode): iterable
+	{
+		foreach ($phpDocNode->getTags() as $tag) {
+			if ($tag->value instanceof MethodTagValueNode) {
+				foreach ($tag->value->parameters as $parameter) {
+					if ($parameter->defaultValue) {
+						yield $parameter->defaultValue;
+					}
+				}
+			}
+		}
+	}
+
+
+	/**
 	 * @return iterable<IdentifierTypeNode>
 	 */
 	public static function getIdentifiers(TypeNode $typeNode): iterable
@@ -136,13 +155,26 @@ final class PhpDocResolver extends NodeVisitorAbstract
 		foreach (self::getTypes($phpDoc) as $type) {
 			foreach (self::getIdentifiers($type) as $identifier) {
 				if (!isset(self::KEYWORDS[strtolower($identifier->name)])) {
-					if ($identifier->name[0] === '\\') {
-						$identifier->name = substr($identifier->name, 1);
-					} else {
-						$identifier->name = $this->nameContext->getResolvedClassName(new Node\Name($identifier->name))->toString();
-					}
+					$identifier->name = $this->resolveIdentifier($identifier->name);
 				}
 			}
+		}
+
+		foreach (self::getExpressions($phpDoc) as $expr) {
+			if ($expr instanceof ConstFetchNode && $expr->className !== '') {
+				$expr->className = $this->resolveIdentifier($expr->className);
+			}
+		}
+	}
+
+
+	private function resolveIdentifier(string $identifier): string
+	{
+		if ($identifier[0] === '\\') {
+			return substr($identifier, 1);
+
+		} else {
+			return $this->nameContext->getResolvedClassName(new Node\Name($identifier))->toString();
 		}
 	}
 }
