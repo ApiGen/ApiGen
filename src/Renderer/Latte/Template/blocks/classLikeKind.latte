@@ -1,5 +1,8 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
 {define classLikeKind, ApiGenX\Info\ClassLikeInfo $classLike}{*
-	*}{if $classLike->interface}Interface{elseif $classLike->trait}Trait{else}Class{/if}{*
+	*}{if $classLike->interface}Interface{*
+	*}{elseif $classLike->trait}Trait{*
+	*}{elseif $classLike->class}Class{*
+	*}{else}{/if}{*
 *}{/define}
