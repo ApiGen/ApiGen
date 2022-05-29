@@ -23,17 +23,17 @@ final class ApiGen
 	 */
 	public function generate(SymfonyStyle $output, array $files, string $outputDir, string $title): void
 	{
-		$analyzeTime = -microtime(true);
+		$analyzeTime = -hrtime(true);
 		$analyzeResult = $this->analyze($output, $files);
-		$analyzeTime += microtime(true);
+		$analyzeTime += hrtime(true);
 
-		$indexTime = -microtime(true);
+		$indexTime = -hrtime(true);
 		$index = $this->index($output, $analyzeResult);
-		$indexTime += microtime(true);
+		$indexTime += hrtime(true);
 
-		$renderTime = -microtime(true);
+		$renderTime = -hrtime(true);
 		$this->render($output, $index, $outputDir, $title);
-		$renderTime += microtime(true);
+		$renderTime += hrtime(true);
 
 		$this->performance($output, $analyzeTime, $indexTime, $renderTime);
 		$this->finish($output, $analyzeResult);
@@ -92,9 +92,9 @@ final class ApiGen
 			$output->definitionList(
 				'Performance',
 				new TableSeparator(),
-				['Analyze Time' => sprintf('%6.0f ms', $analyzeTime * 1e3)],
-				['Index Time' => sprintf('%6.0f ms', $indexTime * 1e3)],
-				['Render Time' => sprintf('%6.0f ms', $renderTime * 1e3)],
+				['Analyze Time' => sprintf('%6.0f ms', $analyzeTime / 1e6)],
+				['Index Time' => sprintf('%6.0f ms', $indexTime / 1e6)],
+				['Render Time' => sprintf('%6.0f ms', $renderTime / 1e6)],
 				['Peak Memory' => sprintf('%6.0f MB', memory_get_peak_usage() / 1e6)],
 			);
 		}
