@@ -406,7 +406,7 @@ final class Analyzer
 			$methodInfo->description = $value->description;
 
 			foreach ($value->parameters as $parameter) {
-				$parameterInfo = new ParameterInfo($parameter->parameterName);
+				$parameterInfo = new ParameterInfo(substr($parameter->parameterName, 1));
 				$parameterInfo->type = $parameter->type;
 				$parameterInfo->byRef = $parameter->isReference;
 				$parameterInfo->variadic = $parameter->isVariadic;
