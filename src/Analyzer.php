@@ -288,6 +288,7 @@ final class Analyzer
 					$memberInfo->public = $member->isPublic();
 					$memberInfo->protected = $member->isProtected();
 					$memberInfo->private = $member->isPrivate();
+					$memberInfo->final = $member->isFinal();
 
 					yield $memberInfo;
 				}
