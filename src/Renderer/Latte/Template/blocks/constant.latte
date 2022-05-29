@@ -8,17 +8,14 @@
 			</td>
 
 			<td class="table-cell">
-				{embed memberSourceLink, classLike: $classLike, member: $constant}
-					{block content}<code>{$constant->name}</code>{/block}
-				{/embed}
+				<code>{*
+					*}{embed memberSourceLink, classLike: $classLike, member: $constant}{block content}{$constant->name}{/block}{/embed}{*
+					*} = {include expr, expr: $constant->value, scope: $classLike}{*
+				*}</code>
 
 				{embed memberDescription, classLike: $classLike, member: $constant}
 					{block details}{* TODO: other tags (uses, internal...) *}{/block}
 				{/embed}
-			</td>
-
-			<td class="table-cell">
-				<code>{include expr, expr: $constant->value, scope: $classLike}</code>
 			</td>
 		{/block}
 	{/embed}

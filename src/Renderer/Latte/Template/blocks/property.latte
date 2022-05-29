@@ -17,7 +17,9 @@
 
 			<td class="table-cell">
 				<code>{*
-					*}{embed memberSourceLink, classLike: $classLike, member: $property}{block content}<var>${$property->name}</var>{/block}{/embed}{*
+					*}{embed memberSourceLink, classLike: $classLike, member: $property}{*
+						*}{block content}<var>${$property->name}</var>{/block}{*
+					*}{/embed}{*
 					*}{if $property->default} = {include expr, expr: $property->default, scope: $classLike}{/if}{*
 				*}</code>
 
