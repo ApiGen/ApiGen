@@ -11,7 +11,7 @@
 	"bin": ["bin/apigen"],
 	"require": {
 		"php": ">=8.0",
-		"latte/latte": "^2.10",
+		"latte/latte": "^3.0",
 		"league/commonmark": "^2.0",
 		"nette/finder": "^2.5",
 		"nette/utils": "^3.2",

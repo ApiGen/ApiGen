@@ -21,11 +21,11 @@
 
 	{elseif $classLike->trait}
 		{embed classLikeRelatedGroup, $global->index->classUses[$classLike->name->fullLower] ?? []}
-			{define title}Direct Known Users{/define}
+			{block title}Direct Known Users{/block}
 		{/embed}
 
 		{embed classLikeRelatedGroup, $classLike->indirectUses($global->index)}
-			{define title}Indirect Known Users{/define}
+			{block title}Indirect Known Users{/block}
 		{/embed}
 	{/if}
 {/define}

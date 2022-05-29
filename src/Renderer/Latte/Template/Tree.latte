@@ -2,9 +2,9 @@
 {import 'blocks/@index.latte'}
 
 {embed layout}
-	{define title}Tree{/define}
+	{block title}Tree{/block}
 
-	{define content}
+	{block content}
 		<h1>{include title}</h1>
 
 		{ifset $global->index->classExtends['']}
@@ -26,5 +26,5 @@
 {*			<h3>Exceptions</h3>*}
 {*			{include tree, tree => $exceptionTree}*}
 {*		{/if}*}
-	{/define}
+	{/block}
 {/embed}

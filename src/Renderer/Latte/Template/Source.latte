@@ -2,9 +2,9 @@
 {import 'blocks/@index.latte'}
 
 {embed layout}
-	{define title}File {relativePath($path)}{/define}
+	{block title}File {relativePath($path)}{/block}
 
-	{define content}
+	{block content}
 		{include source, $source}
-	{/define}
+	{/block}
 {/embed}
