@@ -308,6 +308,7 @@ final class Analyzer
 					$memberInfo->protected = $member->isProtected();
 					$memberInfo->private = $member->isPrivate();
 					$memberInfo->static = $member->isStatic();
+					$memberInfo->readOnly = $member->isReadonly();
 
 					$memberInfo->type = $varTag ? $varTag->type : $this->processTypeOrNull($member->type);
 					$memberInfo->default = $this->processExprOrNull($property->default);
