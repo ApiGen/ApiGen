@@ -1,13 +1,11 @@
-{define expr, PhpParser\Node\Expr $expr, ?ApiGenX\Info\ClassLikeInfo $scope, string $indent = ''}{*
-	*}{if $expr instanceof PhpParser\Node\Expr\ClassConstFetch}{*
-		*}{include exprName, name: $expr->class, scope: $scope}::{$expr->name}{*
-	*}{elseif $expr instanceof PhpParser\Node\Expr\ConstFetch}{*
-		*}{include exprName, name: $expr->name, scope: $scope}{*
-	*}{elseif $expr instanceof PhpParser\Node\Scalar\LNumber || $expr instanceof PhpParser\Node\Scalar\DNumber}{*
-		*}<span class="php-num">{exprPrint($expr)}</span>{*
-	*}{elseif $expr instanceof PhpParser\Node\Scalar\String_}{*
-		*}<span class="php-str">{exprPrint($expr)}</span>{*
-	*}{elseif $expr instanceof PhpParser\Node\Expr\Array_}{*
+{define expr, ApiGenX\Info\ExprInfo $expr, ?ApiGenX\Info\ClassLikeInfo $scope, string $indent = ''}{*
+	*}{if $expr instanceof ApiGenX\Info\Expr\BooleanExprInfo || $expr instanceof ApiGenX\Info\Expr\NullExprInfo}{*
+		*}<span class="php-kw">{$expr->toString()}</span>{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\IntegerExprInfo || $expr instanceof ApiGenX\Info\Expr\FloatExprInfo}{*
+		*}<span class="php-num">{$expr->toString()}</span>{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\StringExprInfo}{*
+		*}<span class="php-str">{$expr->toString()}</span>{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\ArrayExprInfo}{*
 		*}[{*
 			*}{try}{*
 				*}{foreach $expr->items as $item}{*
@@ -23,9 +21,18 @@
 				*}{=",\n$indent"}{*
 			*}{/try}{*
 		*}]{*
-	*}{elseif $expr instanceof PhpParser\Node\Expr\UnaryMinus}{*
-		*}-{include this, expr: $expr->expr, scope: $scope}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\ClassConstantFetchExprInfo}{*
+		*}{include exprName, name: $expr->classLike, scope: $scope}::{$expr->name}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\ConstantFetchExprInfo}{*
+		*}{$expr->name}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\BinaryOpExprInfo}{*
+		*}{include this, expr: $expr->left, scope: $scope}{*
+		*}{$expr->op}{*
+		*}{include this, expr: $expr->right, scope: $scope}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\UnaryOpExprInfo}{*
+		*}{$expr->op}{*
+		*}{include this, expr: $expr->expr, scope: $scope}{*
 	*}{else}{*
-		*}{exprPrint($expr)}{*
+		*}{$error()}{*
 	*}{/if}{*
 *}{/define}

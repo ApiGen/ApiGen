@@ -1,17 +1,13 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
-{define exprName, PhpParser\Node\Name $name, ?ApiGenX\Info\ClassLikeInfo $scope}{*
-	*}{var string $lower = $name->toLowerString()}{*
-
-	*}{if $lower === 'true' || $lower === 'false' || $lower === 'null'}{*
-		*}<span class="php-kw">{$name}</span>{*
-	*}{elseif $lower === 'self' && $scope}{*
-		*}{include classLikeLink, classLike: $scope, text: $lower}{*
-	*}{elseif $lower === 'parent' && $scope && $scope->class && $scope->extends}{*
-		*}{include classLikeLink, classLike: $global->index->classLike[$scope->extends->fullLower], text: $lower}{*
-	*}{elseif $name instanceof PhpParser\Node\Name\FullyQualified && isset($global->index->classLike[$lower])}{*
-		*}{include classLikeLink, classLike: $global->index->classLike[$lower], short: true}{*
+{define exprName, ApiGenX\Info\NameInfo $name, ?ApiGenX\Info\ClassLikeInfo $scope}{*
+	*}{if $name->fullLower === 'self' && $scope}{*
+		*}{include classLikeLink, classLike: $scope, text: $name->fullLower}{*
+	*}{elseif $name->fullLower === 'parent' && $scope && $scope->class && $scope->extends}{*
+		*}{include classLikeLink, classLike: $global->index->classLike[$scope->extends->fullLower], text: $name->fullLower}{*
+	*}{elseif isset($global->index->classLike[$name->fullLower])}{*
+		*}{include classLikeLink, classLike: $global->index->classLike[$name->fullLower], short: true}{*
 	*}{else}{*
-		*}{$name}{*
+		*}{$error()}{*
 	*}{/if}{*
 *}{/define}

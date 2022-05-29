@@ -9,6 +9,18 @@ use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
 use ApiGenX\Info\ErrorInfo;
+use ApiGenX\Info\Expr\ArrayExprInfo;
+use ApiGenX\Info\Expr\ArrayItemExprInfo;
+use ApiGenX\Info\Expr\BinaryOpExprInfo;
+use ApiGenX\Info\Expr\BooleanExprInfo;
+use ApiGenX\Info\Expr\ClassConstantFetchExprInfo;
+use ApiGenX\Info\Expr\ConstantFetchExprInfo;
+use ApiGenX\Info\Expr\FloatExprInfo;
+use ApiGenX\Info\Expr\IntegerExprInfo;
+use ApiGenX\Info\Expr\NullExprInfo;
+use ApiGenX\Info\Expr\StringExprInfo;
+use ApiGenX\Info\Expr\UnaryOpExprInfo;
+use ApiGenX\Info\ExprInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
@@ -256,7 +268,7 @@ final class Analyzer
 
 			if ($member instanceof Node\Stmt\ClassConst) {
 				foreach ($member->consts as $constant) {
-					$memberInfo = new ConstantInfo($constant->name->name, $constant->value);
+					$memberInfo = new ConstantInfo($constant->name->name, $this->processExpr($constant->value));
 
 					$memberInfo->description = $description;
 					$memberInfo->tags = $tags;
@@ -289,7 +301,7 @@ final class Analyzer
 					$memberInfo->static = $member->isStatic();
 
 					$memberInfo->type = $varTag ? $varTag->type : $this->processTypeOrNull($member->type);
-					$memberInfo->default = $property->default;
+					$memberInfo->default = $this->processExprOrNull($property->default);
 
 					yield $memberInfo;
 				}
@@ -419,7 +431,7 @@ final class Analyzer
 			$parameterInfo->type = $paramTag ? $paramTag->type : $this->processTypeOrNull($parameter->type);
 			$parameterInfo->byRef = $parameter->byRef;
 			$parameterInfo->variadic = $parameter->variadic || ($paramTag && $paramTag->isVariadic);
-			$parameterInfo->default = $parameter->default;
+			$parameterInfo->default = $this->processExprOrNull($parameter->default);
 
 			$parameterInfos[$parameter->var->name] = $parameterInfo;
 		}
@@ -485,6 +497,80 @@ final class Analyzer
 	}
 
 
+	private function processExprOrNull(?Node\Expr $expr): ?ExprInfo
+	{
+		return $expr ? $this->processExpr($expr) : null;
+	}
+
+
+	private function processExpr(Node\Expr $expr): ExprInfo
+	{
+		if ($expr instanceof Node\Scalar\LNumber) {
+			return new IntegerExprInfo($expr->value, $expr->getAttribute('kind'));
+
+		} elseif ($expr instanceof Node\Scalar\DNumber) {
+			return new FloatExprInfo($expr->value);
+
+		} elseif ($expr instanceof Node\Scalar\String_) {
+			return new StringExprInfo($expr->value);
+
+		} elseif ($expr instanceof Node\Expr\Array_) {
+			$items = [];
+
+			foreach ($expr->items as $item) {
+				assert($item !== null);
+				$key = $this->processExprOrNull($item->key);
+				$value = $this->processExpr($item->value);
+				$items[] = new ArrayItemExprInfo($key, $value);
+			}
+
+			return new ArrayExprInfo($items);
+
+		} elseif ($expr instanceof Node\Expr\ClassConstFetch) {
+			assert($expr->class instanceof Node\Name);
+			assert($expr->name instanceof Node\Identifier);
+
+			// TODO: handle 'self' & 'parent' differently?
+			return new ClassConstantFetchExprInfo($this->processName($expr->class), $expr->name->toString());
+
+		} elseif ($expr instanceof Node\Expr\ConstFetch) {
+			$lower = $expr->name->toLowerString();
+
+			if ($lower === 'true') {
+				return new BooleanExprInfo(true);
+
+			} elseif ($lower === 'false') {
+				return new BooleanExprInfo(false);
+
+			} elseif ($lower === 'null') {
+				return new NullExprInfo();
+
+			} else {
+				return new ConstantFetchExprInfo($expr->name->toString());
+			}
+
+		} elseif ($expr instanceof Node\Scalar\MagicConst) {
+			return new ConstantFetchExprInfo($expr->getName());
+
+		} elseif ($expr instanceof Node\Expr\UnaryMinus) {
+			return new UnaryOpExprInfo('-', $this->processExpr($expr->expr));
+
+		} elseif ($expr instanceof Node\Expr\UnaryPlus) {
+			return new UnaryOpExprInfo('+', $this->processExpr($expr->expr));
+
+		} elseif ($expr instanceof Node\Expr\BinaryOp) {
+			return new BinaryOpExprInfo(
+				$expr->getOperatorSigil(),
+				$this->processExpr($expr->left),
+				$this->processExpr($expr->right),
+			);
+
+		} else {
+			throw new \LogicException(get_class($expr));
+		}
+	}
+
+
 	private function extractPhpDoc(Node $node): PhpDocNode
 	{
 		return $node->getAttribute('phpDoc') ?? new PhpDocNode([]);
@@ -527,9 +613,30 @@ final class Analyzer
 	/**
 	 * @return NameInfo[] indexed by [classLike]
 	 */
-	private function extractExprDependencies(?Node\Expr $value): array
+	private function extractExprDependencies(?ExprInfo $expr): array
 	{
-		return []; // TODO!
+		$dependencies = [];
+
+		if ($expr instanceof ArrayExprInfo) {
+			foreach ($expr->items as $item) {
+				$dependencies += $this->extractExprDependencies($item->key);
+				$dependencies += $this->extractExprDependencies($item->value);
+			}
+
+		} elseif ($expr instanceof BinaryOpExprInfo) {
+			$dependencies += $this->extractExprDependencies($expr->left);
+			$dependencies += $this->extractExprDependencies($expr->right);
+
+		} elseif ($expr instanceof UnaryOpExprInfo) {
+			$dependencies += $this->extractExprDependencies($expr->expr);
+
+		} elseif ($expr instanceof ClassConstantFetchExprInfo) {
+			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {
+				$dependencies[$expr->classLike->fullLower] = $expr->classLike;
+			}
+		}
+
+		return $dependencies;
 	}
 
 

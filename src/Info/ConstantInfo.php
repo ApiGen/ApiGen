@@ -2,16 +2,14 @@
 
 namespace ApiGenX\Info;
 
-use PhpParser\Node\Expr;
-
 
 final class ConstantInfo extends MemberInfo
 {
-	/** @var Expr */
-	public Expr $value;
+	/** @var ExprInfo */
+	public ExprInfo $value;
 
 
-	public function __construct(string $name, Expr $value)
+	public function __construct(string $name, ExprInfo $value)
 	{
 		parent::__construct($name);
 		$this->value = $value;

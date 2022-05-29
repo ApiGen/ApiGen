@@ -2,7 +2,6 @@
 
 namespace ApiGenX\Info;
 
-use PhpParser\Node\Expr;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 
@@ -23,8 +22,8 @@ final class ParameterInfo
 	/** @var bool */
 	public bool $variadic = false;
 
-	/** @var Expr|null */
-	public ?Expr $default = null;
+	/** @var ExprInfo|null */
+	public ?ExprInfo $default = null;
 
 
 	public function __construct(string $name)
