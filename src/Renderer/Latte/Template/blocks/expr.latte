@@ -15,14 +15,33 @@
 			*}{else}{*
 				*}{="\n\t$indent"}{*
 				*}{foreach $expr->items as $item}{*
-					*}{if $item->key}{include this, expr: $item->key} =&gt; {/if}{*
+					*}{if $item->key}{include this, expr: $item->key, scope: $scope} =&gt; {/if}{*
 					*}{include this, expr: $item->value, scope: $scope, indent: "\t$indent"}{sep}{=",\n\t$indent"}{/sep}{*
 				*}{/foreach}{*
 				*}{=",\n$indent"}{*
 			*}{/try}{*
 		*}]{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ClassConstantFetchExprInfo}{*
-		*}{include exprName, name: $expr->classLike, scope: $scope}::{$expr->name}{*
+		*}{if $expr->classLike->fullLower === 'self' && $scope}{*
+			*}{var $memberClassLike = $scope}{*
+			*}{include classLikeLink, classLike: $memberClassLike, text: $expr->classLike->fullLower}{*
+		*}{elseif $expr->classLike->fullLower === 'parent' && $scope && $scope->class && $scope->extends}{*
+			*}{var $memberClassLike = $global->index->classLike[$scope->extends->fullLower]}{*
+			*}{include classLikeLink, classLike: $memberClassLike, text: $expr->classLike->fullLower}{*
+		*}{elseif isset($global->index->classLike[$expr->classLike->fullLower])}{*
+			*}{var $memberClassLike = $global->index->classLike[$expr->classLike->fullLower]}{*
+			*}{include classLikeLink, classLike: $memberClassLike, short: true}{*
+		*}{else}{*
+			*}{var $memberClassLike = null}{*
+			*}{$expr->classLike->full}{*
+		*}{/if}{*
+		*}::{*
+		*}{if $memberClassLike !== null && isset($memberClassLike->constants[$expr->name])}{*
+			*}{var $member = $memberClassLike->constants[$expr->name]}{*
+			*}{embed memberLink, $memberClassLike, $member}{block content}{$member->name}{/block}{/embed}{*
+		*}{else}{*
+			*}{$expr->name}{*
+		*}{/if}{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ConstantFetchExprInfo}{*
 		*}{$expr->name}{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\BinaryOpExprInfo}{*
