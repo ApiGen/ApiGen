@@ -1,12 +1,3 @@
-// menu
-document.querySelectorAll('.menuGroup-item > a > span').forEach(el => {
-	el.addEventListener('click', e => {
-		e.preventDefault()
-		e.currentTarget.closest('li').classList.toggle('collapsed')
-	})
-})
-
-
 // open details
 document.querySelectorAll('.expandable').forEach(el => {
 	el.addEventListener('click', e => {

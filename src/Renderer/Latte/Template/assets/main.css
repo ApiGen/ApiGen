@@ -258,40 +258,6 @@ code a b {
 }
 
 
-/* menuGroup */
-.menuGroup-item {
-	position: relative;
-}
-
-.menuGroup-item > a > span {
-	display: block;
-	content: '';
-	position: absolute;
-	top: 4px;
-	right: 2px;
-	cursor: pointer;
-	width: 12px;
-	height: 12px;
-	background: url('images/collapsed.png') transparent 0 0 no-repeat;
-}
-
-.menuGroup-item > a > span:hover {
-	background-position: -12px 0;
-}
-
-.menuGroup-item.collapsed > a > span {
-	background-position: 0 -12px;
-}
-
-.menuGroup-item.collapsed > a > span:hover {
-	background-position: -12px -12px;
-}
-
-.menuGroup-item.collapsed > ul {
-	display: none;
-}
-
-
 /* php */
 .php-tag {
 	color: #ff0000;
