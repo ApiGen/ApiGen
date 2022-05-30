@@ -86,6 +86,8 @@ final class SourceHighlighter
 		T_LIST => self::PHP_KEYWORD,
 		T_ARRAY => self::PHP_KEYWORD,
 		T_NAMESPACE => self::PHP_KEYWORD,
+		T_ENUM => self::PHP_KEYWORD,
+		T_READONLY => self::PHP_KEYWORD,
 		T_LNUMBER => self::PHP_NUMBER,
 		T_DNUMBER => self::PHP_NUMBER,
 		T_CONSTANT_ENCAPSED_STRING => self::PHP_STRING,
