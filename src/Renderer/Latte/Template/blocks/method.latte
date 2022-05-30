@@ -5,7 +5,7 @@
 		{block cells}
 			<td class="table-cell table-shrink">
 				<code style="white-space: nowrap">
-					{if !$classLike->interface && $method->abstract}abstract{elseif $method->final}final{/if}
+					{if !isInterface($classLike) && $method->abstract}abstract{elseif $method->final}final{/if}
 					{include memberVisibility, $method}
 					{if $method->static}static{/if}
 					{if $method->byRef}&amp;{/if}

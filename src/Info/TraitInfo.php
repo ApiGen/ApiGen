@@ -11,18 +11,6 @@ final class TraitInfo extends ClassLikeInfo
 	public array $uses = [];
 
 
-	public function __construct(NameInfo $name, bool $primary)
-	{
-		parent::__construct(
-			$name,
-			class: false,
-			interface: false,
-			trait: true,
-			primary: $primary,
-		);
-	}
-
-
 	/**
 	 * @return iterable<ClassInfo>
 	 */

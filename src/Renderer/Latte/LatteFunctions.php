@@ -3,8 +3,11 @@
 namespace ApiGenX\Renderer\Latte;
 
 use ApiGenX\Index\NamespaceIndex;
+use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ElementInfo;
+use ApiGenX\Info\InterfaceInfo;
+use ApiGenX\Info\TraitInfo;
 use ApiGenX\Renderer\SourceHighlighter;
 use ApiGenX\Renderer\UrlGenerator;
 use Latte\Runtime\Html;
@@ -19,6 +22,24 @@ final class LatteFunctions
 		private SourceHighlighter $sourceHighlighter,
 		private ConverterInterface $markdown,
 	) {
+	}
+
+
+	public function isClass(ClassLikeInfo $info): bool
+	{
+		return $info instanceof ClassInfo;
+	}
+
+
+	public function isInterface(ClassLikeInfo $info): bool
+	{
+		return $info instanceof InterfaceInfo;
+	}
+
+
+	public function isTrait(ClassLikeInfo $info): bool
+	{
+		return $info instanceof TraitInfo;
 	}
 
 

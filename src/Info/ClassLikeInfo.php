@@ -29,9 +29,6 @@ abstract class ClassLikeInfo implements ElementInfo
 
 	public function __construct(
 		public NameInfo $name,
-		public bool $class,
-		public bool $interface,
-		public bool $trait,
 		public bool $primary,
 	) {
 	}

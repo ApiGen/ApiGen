@@ -1,7 +1,7 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
 {define classTree, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\ClassLikeInfo[][] $children}
-	{if $classLike->class && $classLike->extends}
+	{if isClass($classLike) && $classLike->extends}
 		{include this, classLike: $global->index->classLike[$classLike->extends->fullLower], children: [$classLike->extends->fullLower => [$classLike]] + $children}
 	{else}
 		{include classTreeList, classes: [$classLike], children: $children}

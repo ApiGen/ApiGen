@@ -15,14 +15,14 @@
 
 		{include classLikeDescription, $classLike}
 
-		{if !empty($global->index->dag[$classLike->name->fullLower]) || ($classLike->class && ($classLike->extends || $classLike->implements || $classLike->uses)) || ($classLike->interface && $classLike->extends) || ($classLike->trait && $classLike->uses)}
+		{if !empty($global->index->dag[$classLike->name->fullLower]) || (isClass($classLike) && ($classLike->extends || $classLike->implements || $classLike->uses)) || (isInterface($classLike) && $classLike->extends) || (isTrait($classLike) && $classLike->uses)}
 			<div class="classLikeSection">
 				{include classTree, $classLike, $global->index->dag}
 			</div>
 		{/if}
 
 		<div class="classLikeSection">
-			{if $classLike->class && ($classLike->abstract || $classLike->final)}<b>{if $classLike->abstract}Abstract{else}Final{/if}</b><br>{/if}
+			{if isClass($classLike) && ($classLike->abstract || $classLike->final)}<b>{if $classLike->abstract}Abstract{else}Final{/if}</b><br>{/if}
 			{if $classLike->file && $classLike->primary}<b>Located at</b> <a href="{classLikeSourceUrl($classLike)}" title="Go to source code">{relativePath($classLike->file)}</a><br>{/if}
 		</div>
 

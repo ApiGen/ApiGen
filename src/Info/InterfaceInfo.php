@@ -11,18 +11,6 @@ final class InterfaceInfo extends ClassLikeInfo
 	public array $extends = [];
 
 
-	public function __construct(NameInfo $name, bool $primary)
-	{
-		parent::__construct(
-			$name,
-			class: false,
-			interface: true,
-			trait: false,
-			primary: $primary,
-		);
-	}
-
-
 	/**
 	 * @return iterable<InterfaceInfo>
 	 */

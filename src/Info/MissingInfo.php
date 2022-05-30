@@ -11,9 +11,6 @@ final class MissingInfo extends ClassLikeInfo
 	) {
 		parent::__construct(
 			$name,
-			class: false,
-			interface: false,
-			trait: false,
 			primary: false,
 		);
 	}

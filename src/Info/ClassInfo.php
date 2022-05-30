@@ -23,18 +23,6 @@ final class ClassInfo extends ClassLikeInfo
 	public array $uses = [];
 
 
-	public function __construct(NameInfo $name, bool $primary)
-	{
-		parent::__construct(
-			$name,
-			class: true,
-			interface: false,
-			trait: false,
-			primary: $primary,
-		);
-	}
-
-
 	/**
 	 * @return iterable<ClassInfo>
 	 */

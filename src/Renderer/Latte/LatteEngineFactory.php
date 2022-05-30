@@ -22,6 +22,10 @@ final class LatteEngineFactory
 		$latte->setStrictTypes();
 		$latte->setExceptionHandler(fn(Throwable $e) => throw $e);
 
+		$latte->addFunction('isClass', [$this->functions, 'isClass']);
+		$latte->addFunction('isInterface', [$this->functions, 'isInterface']);
+		$latte->addFunction('isTrait', [$this->functions, 'isTrait']);
+
 		$latte->addFunction('textWidth', [$this->functions, 'textWidth']);
 		$latte->addFunction('htmlWidth', [$this->functions, 'htmlWidth']);
 		$latte->addFunction('highlight', [$this->functions, 'highlight']);

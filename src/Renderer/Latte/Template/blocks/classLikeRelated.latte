@@ -1,7 +1,7 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
 {define classLikeRelated, ApiGenX\Info\ClassLikeInfo $classLike}
-	{if $classLike->class}
+	{if isClass($classLike)}
 {*		{embed classLikeRelatedGroup, $global->index->classExtends[$classLike->name->fullLower] ?? []}*}
 {*			{define title}Direct known subclasses{/define}*}
 {*		{/embed}*}
@@ -10,7 +10,7 @@
 {*			{define title}Indirect known subclasses{/define}*}
 {*		{/embed}*}
 
-	{elseif $classLike->interface}
+	{elseif isInterface($classLike)}
 {*		{embed classLikeRelatedGroup, $global->index->classImplements[$classLike->name->fullLower] ?? []}*}
 {*			{define title}Direct known implementers{/define}*}
 {*		{/embed}*}
@@ -19,7 +19,7 @@
 {*			{define title}Indirect known implementers{/define}*}
 {*		{/embed}*}
 
-	{elseif $classLike->trait}
+	{elseif isTrait($classLike)}
 		{embed classLikeRelatedGroup, $global->index->classUses[$classLike->name->fullLower] ?? []}
 			{block title}Direct Known Users{/block}
 		{/embed}
