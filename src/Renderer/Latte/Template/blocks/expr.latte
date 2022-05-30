@@ -35,6 +35,9 @@
 		*}{if $memberClassLike !== null && isset($memberClassLike->constants[$expr->name])}{*
 			*}{var $member = $memberClassLike->constants[$expr->name]}{*
 			*}{embed memberLink, $memberClassLike, $member}{block content}{$member->name}{/block}{/embed}{*
+		*}{elseif $memberClassLike !== null && isEnum($memberClassLike) && isset($memberClassLike->cases[$expr->name])}{*
+			*}{var $member = $memberClassLike->cases[$expr->name]}{*
+			*}{embed memberLink, $memberClassLike, $member}{block content}{$member->name}{/block}{/embed}{*
 		*}{else}{*
 			*}{$expr->name}{*
 		*}{/if}{*
