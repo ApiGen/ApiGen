@@ -9,7 +9,7 @@ document.querySelectorAll('.expandable').forEach(el => {
 // line selection
 let ranges = []
 let last = null
-const match = window.location.hash.substr(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/)
+const match = window.location.hash.slice(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/)
 
 const handleLinesSelectionChange = () => {
 	history.replaceState({}, '', '#' + ranges.map(([a, b]) => a === b ? a : `${a}-${b}`).join(','));
@@ -35,7 +35,7 @@ if (match) {
 document.querySelectorAll('.source-lineNum').forEach(a => {
 	a.addEventListener('click', e => {
 		e.preventDefault()
-		const line = e.currentTarget.closest('div')
+		const line = e.currentTarget.closest('tr')
 		const n = Number.parseInt(line.id)
 		const selected = line.classList.contains('selected') && e.ctrlKey
 		const extending = e.shiftKey && ranges.length > 0

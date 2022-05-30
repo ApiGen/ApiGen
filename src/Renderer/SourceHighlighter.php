@@ -108,8 +108,8 @@ final class SourceHighlighter
 	public function highlight(string $source): string
 	{
 		$align = strlen(strval(1 + substr_count($source, "\n")));
-		$lineStart = "<div id=\"%1\$d\" class=\"source-line\"><a class=\"source-lineNum\" href=\"#%1\$d\">%1\${$align}d: </a>";
-		$lineEnd = '</div>';
+		$lineStart = "<tr id=\"%1\$d\" class=\"source-line\"><td><a class=\"source-lineNum\" href=\"#%1\$d\">%1\${$align}d: </a></td><td>";
+		$lineEnd = '</td></tr>';
 
 		$line = 1;
 		$out = sprintf($lineStart, $line);

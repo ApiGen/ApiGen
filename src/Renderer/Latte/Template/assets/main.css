@@ -92,7 +92,6 @@ a:hover, a:active, a:focus, a:hover b, a:hover var {
 
 code, var, pre {
 	font-family: monospace;
-	-moz-tab-size: 4;
 	tab-size: 4;
 	white-space: pre-wrap;
 }
@@ -286,6 +285,16 @@ code a b {
 
 
 /* source */
+.source {
+	font-family: monospace;
+	tab-size: 4;
+	white-space: pre-wrap;
+}
+
+.source td {
+	vertical-align: top;
+}
+
 .source-line.selected {
 	background: #fffbdd;
 }
