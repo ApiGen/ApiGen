@@ -243,17 +243,15 @@ code a b {
 	padding: 0 2px;
 }
 
-.menu .active > a, .menu > span {
+.menu .active > a {
 	color: #333333;
 	background: none;
 	font-weight: bold;
 }
 
-.menu .active > a.invalid {
-	color: #e71818;
-}
-
-.menu .active > a:hover, .menu .active > a:active, .menu .active > a:focus {
+.menu .active > a:hover,
+.menu .active > a:active,
+.menu .active > a:focus {
 	background-color: #006aeb;
 }
 
