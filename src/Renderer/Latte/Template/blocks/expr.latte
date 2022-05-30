@@ -1,3 +1,5 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
 {define expr, ApiGenX\Info\ExprInfo $expr, ?ApiGenX\Info\ClassLikeInfo $scope, string $indent = ''}{*
 	*}{if $expr instanceof ApiGenX\Info\Expr\BooleanExprInfo || $expr instanceof ApiGenX\Info\Expr\NullExprInfo}{*
 		*}<span class="php-kw">{$expr->toString()}</span>{*
@@ -51,6 +53,16 @@
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\UnaryOpExprInfo}{*
 		*}{$expr->op}{*
 		*}{include this, expr: $expr->expr, scope: $scope}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\NewExprInfo}{*
+		*}{var $classLike = $global->index->classLike[$expr->classLike->fullLower]}{*
+		*}<span class="php-kw">new</span> {include classLikeLink, classLike: $classLike, short: true}{*
+		*}({*
+		*}{foreach $expr->args as $arg}{*
+			*}{if $arg->name}{$arg->name}: {/if}{*
+			*}{include this, expr: $arg->value, scope: $scope}{*
+			*}{sep}, {/sep}{*
+		*}{/foreach}{*
+		*}){*
 	*}{else}{*
 		*}{$error()}{*
 	*}{/if}{*

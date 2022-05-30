@@ -9,6 +9,7 @@ use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
 use ApiGenX\Info\ErrorInfo;
+use ApiGenX\Info\Expr\ArgExprInfo;
 use ApiGenX\Info\Expr\ArrayExprInfo;
 use ApiGenX\Info\Expr\ArrayItemExprInfo;
 use ApiGenX\Info\Expr\BinaryOpExprInfo;
@@ -17,6 +18,7 @@ use ApiGenX\Info\Expr\ClassConstantFetchExprInfo;
 use ApiGenX\Info\Expr\ConstantFetchExprInfo;
 use ApiGenX\Info\Expr\FloatExprInfo;
 use ApiGenX\Info\Expr\IntegerExprInfo;
+use ApiGenX\Info\Expr\NewExprInfo;
 use ApiGenX\Info\Expr\NullExprInfo;
 use ApiGenX\Info\Expr\StringExprInfo;
 use ApiGenX\Info\Expr\UnaryOpExprInfo;
@@ -576,6 +578,17 @@ final class Analyzer
 				$this->processExpr($expr->right),
 			);
 
+		} elseif ($expr instanceof Node\Expr\New_) {
+			assert($expr->class instanceof Name);
+
+			$args = [];
+			foreach ($expr->args as $arg) {
+				assert($arg instanceof Node\Arg);
+				$args[] = new ArgExprInfo($arg->name?->name, $this->processExpr($arg->value));
+			}
+
+			return new NewExprInfo($this->processName($expr->class), $args);
+
 		} else {
 			throw new \LogicException(get_class($expr));
 		}
@@ -690,6 +703,15 @@ final class Analyzer
 		} elseif ($expr instanceof ClassConstantFetchExprInfo) {
 			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {
 				$dependencies[$expr->classLike->fullLower] = $expr->classLike;
+			}
+
+		} elseif ($expr instanceof NewExprInfo) {
+			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {
+				$dependencies[$expr->classLike->fullLower] = $expr->classLike;
+			}
+
+			foreach ($expr->args as $arg) {
+				$dependencies += $this->extractExprDependencies($arg->value);
 			}
 		}
 
