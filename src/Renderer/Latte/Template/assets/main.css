@@ -130,12 +130,24 @@ code a b {
 
 /* classTree */
 .classTree .classTree li {
-	padding-left: 30px;
-	background: url('images/tree-vertical.png') left repeat-y, url('images/tree-hasnext.png') left 10px no-repeat;
+	position: relative;
+	margin-left: 19px;
+	border-left: 1px solid black;
+	padding-left: 10px;
 }
 
 .classTree .classTree li:last-child {
-	background: url('images/tree-last.png') left -240px no-repeat;
+	border-left-color: transparent;
+}
+
+.classTree .classTree li::before {
+	content: '';
+	position: absolute;
+	left: -1px;
+	width: 10px;
+	height: 10px;
+	border-left: 1px solid black;
+	border-bottom: 1px solid black;
 }
 
 
