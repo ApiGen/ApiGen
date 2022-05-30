@@ -10,8 +10,6 @@ use ApiGenX\Renderer\UrlGenerator;
 use Latte\Runtime\Html;
 use League\CommonMark\ConverterInterface;
 use Nette\Utils\Strings;
-use PhpParser\Node\Expr;
-use PhpParser\PrettyPrinter\Standard as ExprPrettyPrinter;
 
 
 final class LatteFunctions
@@ -20,7 +18,6 @@ final class LatteFunctions
 		private UrlGenerator $url,
 		private SourceHighlighter $sourceHighlighter,
 		private ConverterInterface $markdown,
-		private ExprPrettyPrinter $exprPrettyPrinter,
 	) {
 	}
 
@@ -34,12 +31,6 @@ final class LatteFunctions
 	public function highlight(string $s): Html
 	{
 		return new Html($this->sourceHighlighter->highlight($s));
-	}
-
-
-	public function prettyPrintExpr(Expr $expr): string
-	{
-		return $this->exprPrettyPrinter->prettyPrintExpr($expr);
 	}
 
 

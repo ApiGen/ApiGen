@@ -24,7 +24,6 @@ final class LatteEngineFactory
 
 		$latte->addFunction('stripHtml', [$this->functions, 'stripHtml']);
 		$latte->addFunction('highlight', [$this->functions, 'highlight']);
-		$latte->addFunction('exprPrint', [$this->functions, 'prettyPrintExpr']);
 		$latte->addFunction('shortDescription', [$this->functions, 'shortDescription']);
 		$latte->addFunction('longDescription', [$this->functions, 'longDescription']);
 
