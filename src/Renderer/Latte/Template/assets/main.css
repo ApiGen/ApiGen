@@ -11,6 +11,7 @@ h2,
 h3,
 h4,
 p,
+pre,
 ul,
 ol,
 li,
@@ -18,11 +19,6 @@ td,
 th {
 	margin: 0;
 	padding: 0;
-}
-
-body {
-	min-height: 100vh;
-	line-height: 1;
 }
 
 table {
@@ -36,12 +32,13 @@ ul, ol {
 
 /* base */
 body {
+	min-height: 100vh;
 	font: 13px/1.5 Verdana, 'Geneva CE', lucida, sans-serif;
 	background: #ffffff;
 	color: #333333;
 }
 
-h1, h2, h3, h4, caption {
+h1, h2, h3, h4 {
 	font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
 	color: #053368;
 }
@@ -104,10 +101,6 @@ var {
 	font-weight: bold;
 	font-style: normal;
 	color: #ca8a04;
-}
-
-pre {
-	margin: 0;
 }
 
 code a b {
@@ -337,7 +330,6 @@ code a b {
 .table {
 	width: 100%;
 	margin: 1.2em 0 2.4em;
-	border-collapse: collapse;
 }
 
 .table-heading {
