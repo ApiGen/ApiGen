@@ -1,0 +1,18 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define enumCase, ApiGenX\Info\EnumInfo $enum, ApiGenX\Info\EnumCaseInfo $enumCase}
+	{embed member, $enumCase}
+		{block cells}
+			<td class="table-cell">
+				<code>{*
+					*}{embed memberSourceLink, classLike: $classLike, member: $enumCase}{block content}{$enumCase->name}{/block}{/embed}{*
+					*}{if $enumCase->value} = {include expr, expr: $enumCase->value, scope: $classLike}{/if}{*
+				*}</code>
+
+				{embed memberDescription, classLike: $classLike, member: $enumCase}
+					{block details}{* TODO: other tags (uses, internal...) *}{/block}
+				{/embed}
+			</td>
+		{/block}
+	{/embed}
+{/define}

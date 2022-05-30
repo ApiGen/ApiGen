@@ -4,6 +4,7 @@ namespace ApiGenX\Index;
 
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\TraitInfo;
 
@@ -28,6 +29,9 @@ final class Index
 	/** @var TraitInfo[] indexed by [traitName] */
 	public array $trait = [];
 
+	/** @var EnumInfo[] indexed by [enumName] */
+	public array $enum = [];
+
 	/** @var ClassInfo[][] indexed by [classLikeName][classLikeName] */
 	public array $classExtends = [];
 
@@ -39,6 +43,9 @@ final class Index
 
 	/** @var InterfaceInfo[][] indexed by [classLikeName][classLikeName] */
 	public array $interfaceExtends = [];
+
+	/** @var EnumInfo[][] indexed by [classLikeName][classLikeName] */
+	public array $enumImplements = [];
 
 	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName] classExtends + classImplements + classUses + interfaceExtends */
 	public array $dag = [];

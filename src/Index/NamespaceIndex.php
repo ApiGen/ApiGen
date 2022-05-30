@@ -4,6 +4,7 @@ namespace ApiGenX\Index;
 
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ElementInfo;
+use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
@@ -20,6 +21,9 @@ final class NamespaceIndex implements ElementInfo
 
 	/** @var TraitInfo[] indexed by [traitName] */
 	public array $trait = [];
+
+	/** @var EnumInfo[] indexed by [enumName] */
+	public array $enum = [];
 
 	/** @var ClassInfo[] indexed by [exceptionName] */
 	public array $exception = [];

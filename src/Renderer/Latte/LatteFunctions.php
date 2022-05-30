@@ -6,6 +6,7 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ElementInfo;
+use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\TraitInfo;
 use ApiGenX\Renderer\SourceHighlighter;
@@ -40,6 +41,12 @@ final class LatteFunctions
 	public function isTrait(ClassLikeInfo $info): bool
 	{
 		return $info instanceof TraitInfo;
+	}
+
+
+	public function isEnum(ClassLikeInfo $info): bool
+	{
+		return $info instanceof EnumInfo;
 	}
 
 

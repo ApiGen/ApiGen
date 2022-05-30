@@ -10,6 +10,13 @@
 		{/foreach}
 	{/if}
 
+	{if isEnum($classLike) && $classLike->implements}
+		implements
+		{foreach $classLike->implements as $implements => $_}
+			{include classLikeLink, $global->index->classLike[$implements]}{sep}, {/sep}
+		{/foreach}
+	{/if}
+
 	{if isClass($classLike) && $classLike->implements}
 		implements
 		{foreach $classLike->implements as $implements => $_}

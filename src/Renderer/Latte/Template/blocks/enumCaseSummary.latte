@@ -1,0 +1,17 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define enumCaseSummary, ApiGenX\Info\EnumInfo $classLike}
+	{try}
+		<table class="table" id="cases">
+			<tr>
+				<th class="table-heading" colspan="2">Cases</th>
+			</tr>
+
+			{foreach $classLike->cases as $case}
+				{include enumCase, classLike: $classLike, enumCase: $case}
+			{else}
+				{rollback}
+			{/foreach}
+		</table>
+	{/try}
+{/define}

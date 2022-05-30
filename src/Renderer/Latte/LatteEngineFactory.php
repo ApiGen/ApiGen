@@ -25,6 +25,7 @@ final class LatteEngineFactory
 		$latte->addFunction('isClass', [$this->functions, 'isClass']);
 		$latte->addFunction('isInterface', [$this->functions, 'isInterface']);
 		$latte->addFunction('isTrait', [$this->functions, 'isTrait']);
+		$latte->addFunction('isEnum', [$this->functions, 'isEnum']);
 
 		$latte->addFunction('textWidth', [$this->functions, 'textWidth']);
 		$latte->addFunction('htmlWidth', [$this->functions, 'htmlWidth']);

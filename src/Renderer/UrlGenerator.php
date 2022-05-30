@@ -5,6 +5,7 @@ namespace ApiGenX\Renderer;
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
+use ApiGenX\Info\EnumCaseInfo;
 use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
 use ApiGenX\Info\PropertyInfo;
@@ -105,7 +106,7 @@ final class UrlGenerator
 
 	public function getMemberAnchor(MemberInfo $member): string
 	{
-		if ($member instanceof ConstantInfo) {
+		if ($member instanceof ConstantInfo || $member instanceof EnumCaseInfo) {
 			return $member->name;
 
 		} elseif ($member instanceof PropertyInfo) {

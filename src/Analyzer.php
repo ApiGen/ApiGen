@@ -8,6 +8,8 @@ use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
+use ApiGenX\Info\EnumCaseInfo;
+use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\ErrorInfo;
 use ApiGenX\Info\Expr\ArgExprInfo;
 use ApiGenX\Info\Expr\ArrayExprInfo;
@@ -31,6 +33,7 @@ use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\ParameterInfo;
 use ApiGenX\Info\PropertyInfo;
 use ApiGenX\Info\TraitInfo;
+use BackedEnum;
 use Iterator;
 use Nette\Utils\FileSystem;
 use PhpParser\Node;
@@ -66,6 +69,7 @@ use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use Symfony\Component\Console\Helper\ProgressBar;
+use UnitEnum;
 
 
 final class Analyzer
@@ -217,6 +221,14 @@ final class Analyzer
 		} elseif ($node instanceof Node\Stmt\Trait_) {
 			$info = new TraitInfo($name, $task->primary);
 
+		} elseif ($node instanceof Node\Stmt\Enum_) {
+			$autoImplement = new NameInfo($node->scalarType ? BackedEnum::class : UnitEnum::class);
+
+			$info = new EnumInfo($name, $task->primary);
+			$info->scalarType = $node->scalarType?->name;
+			$info->implements = $this->processNameList($node->implements) + [$autoImplement->fullLower => $autoImplement];
+			$info->dependencies += $info->implements;
+
 		} else {
 			throw new \LogicException();
 		}
@@ -246,6 +258,11 @@ final class Analyzer
 					$info->dependencies += $this->extractTypeDependencies($parameterInfo->type);
 					$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
 				}
+
+			} elseif ($member instanceof EnumCaseInfo){
+				assert($info instanceof EnumInfo);
+				$info->cases[$member->name] = $member;
+				$info->dependencies += $this->extractExprDependencies($member->value);
 
 			} else {
 				throw new \LogicException();
@@ -368,6 +385,17 @@ final class Analyzer
 						yield $propertyInfo;
 					}
 				}
+
+			} elseif ($member instanceof Node\Stmt\EnumCase) {
+				$memberInfo = new EnumCaseInfo($member->name->name, $this->processExprOrNull($member->expr));
+
+				$memberInfo->description = $description;
+				$memberInfo->tags = $tags;
+
+				$memberInfo->startLine = $member->getComments() ? $member->getComments()[0]->getStartLine() : $member->getStartLine();
+				$memberInfo->endLine = $member->getEndLine();
+
+				yield $memberInfo;
 			}
 		}
 	}

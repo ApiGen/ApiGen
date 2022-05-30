@@ -23,6 +23,11 @@
 				{include menuElements, $global->activeNamespace->trait}
 			{/if}
 
+			{if $global->activeNamespace->enum}
+				<h3>Enums</h3>
+				{include menuElements, $global->activeNamespace->enum}
+			{/if}
+
 			{if $global->activeNamespace->exception}
 				<h3>Exceptions</h3>
 				{include menuElements, $global->activeNamespace->exception}

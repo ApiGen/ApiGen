@@ -7,6 +7,7 @@ use ApiGenX\Index\Index;
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
@@ -82,6 +83,9 @@ final class Indexer
 
 		} elseif ($info instanceof TraitInfo) {
 			$this->indexTrait($info, $index);
+
+		} elseif ($info instanceof EnumInfo) {
+			$this->indexEnum($info, $index);
 
 		} elseif ($info instanceof MissingInfo) {
 			$this->indexMissing($info, $index);
@@ -166,6 +170,18 @@ final class Indexer
 	}
 
 
+	private function indexEnum(EnumInfo $info, Index $index): void
+	{
+		$index->enum[$info->name->fullLower] = $info;
+		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
+		$index->namespace[$info->name->namespaceLower]->enum[$info->name->shortLower] = $info;
+
+		foreach ($info->implements as $interfaceNameLower => $interfaceName) {
+			$index->enumImplements[$interfaceNameLower][$info->name->fullLower] = $info;
+		}
+	}
+
+
 	private function indexMissing(MissingInfo $info, Index $index): void
 	{
 		// nothing to index
@@ -174,7 +190,7 @@ final class Indexer
 
 	private function indexDirectedAcyclicGraph(Index $index): void
 	{
-		$dag = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends);
+		$dag = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends, $index->enumImplements);
 
 		$findCycle = static function (array $node, array $visited) use ($index, $dag, &$findCycle): void {
 			foreach ($node as $childKey => $_) {
@@ -204,7 +220,7 @@ final class Indexer
 		}
 
 		$index->instanceOf[$info->name->fullLower] = [$info->name->fullLower => $info];
-		foreach ([$index->classExtends, $index->classImplements, $index->interfaceExtends] as $edges) {
+		foreach ([$index->classExtends, $index->classImplements, $index->interfaceExtends, $index->enumImplements] as $edges) {
 			foreach ($edges[$info->name->fullLower] ?? [] as $childInfo) {
 				$this->indexInstanceOf($index, $childInfo);
 				$index->instanceOf[$info->name->fullLower] += $index->instanceOf[$childInfo->name->fullLower];
@@ -276,6 +292,7 @@ final class Indexer
 		ksort($index->class);
 		ksort($index->interface);
 		ksort($index->trait);
+		ksort($index->enum);
 
 		foreach ($index->classExtends as &$arr) {
 			ksort($arr);
@@ -293,10 +310,15 @@ final class Indexer
 			ksort($arr);
 		}
 
+		foreach ($index->enumImplements as &$arr) {
+			ksort($arr);
+		}
+
 		foreach ($index->namespace as $namespaceIndex) {
 			ksort($namespaceIndex->class);
 			ksort($namespaceIndex->interface);
 			ksort($namespaceIndex->trait);
+			ksort($namespaceIndex->enum);
 			ksort($namespaceIndex->exception);
 			ksort($namespaceIndex->children);
 		}

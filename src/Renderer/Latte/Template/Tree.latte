@@ -21,6 +21,11 @@
 			{include classTreeList, $global->index->trait, []}
 		{/if}
 
+		{if $global->index->enum}
+			<h3>Enums</h3>
+			{include classTreeList, $global->index->enum, []}
+		{/if}
+
 {*		{if $exceptionTree->valid()}*}
 {*			<h3>Exceptions</h3>*}
 {*			{include tree, tree => $exceptionTree}*}
