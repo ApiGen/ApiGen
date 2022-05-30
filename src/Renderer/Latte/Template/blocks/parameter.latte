@@ -1,6 +1,6 @@
 {define parameter, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\ParameterInfo $parameter}{*
 	*}<span>{*
-		*}{if $parameter->type}{include type, type: $parameter->type}&nbsp;{/if}{*
+		*}{if $parameter->type}{include type, type: $parameter->type} {/if}{*
 		*}{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>{*
 		*}{if $parameter->default} = {include expr, expr: $parameter->default, scope: $classLike}{/if}{*
 	*}</span>{*

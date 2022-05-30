@@ -22,9 +22,16 @@ final class LatteFunctions
 	}
 
 
-	public function stripHtml(Html $s): string
+	public function textWidth(string $text): int
 	{
-		return html_entity_decode(strip_tags((string) $s), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		return Strings::length($text) + 3 * substr_count($text, "\t");
+	}
+
+
+	public function htmlWidth(Html $html): int
+	{
+		$text = html_entity_decode(strip_tags((string) $html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+		return $this->textWidth($text);
 	}
 
 

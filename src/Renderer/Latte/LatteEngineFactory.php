@@ -22,7 +22,8 @@ final class LatteEngineFactory
 		$latte->setStrictTypes();
 		$latte->setExceptionHandler(fn(Throwable $e) => throw $e);
 
-		$latte->addFunction('stripHtml', [$this->functions, 'stripHtml']);
+		$latte->addFunction('textWidth', [$this->functions, 'textWidth']);
+		$latte->addFunction('htmlWidth', [$this->functions, 'htmlWidth']);
 		$latte->addFunction('highlight', [$this->functions, 'highlight']);
 		$latte->addFunction('shortDescription', [$this->functions, 'shortDescription']);
 		$latte->addFunction('longDescription', [$this->functions, 'longDescription']);

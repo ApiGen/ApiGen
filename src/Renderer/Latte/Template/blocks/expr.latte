@@ -8,21 +8,15 @@
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\StringExprInfo}{*
 		*}<span class="php-str">{$expr->toString()}</span>{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ArrayExprInfo}{*
-		*}[{*
-			*}{try}{*
-				*}{foreach $expr->items as $item}{*
-					*}{if $item->key}{rollback}{/if}{*
-					*}{include this, expr: $item->value, scope: $scope}{sep}, {/sep}{*
-				*}{/foreach}{*
-			*}{else}{*
-				*}{="\n\t$indent"}{*
-				*}{foreach $expr->items as $item}{*
-					*}{if $item->key}{include this, expr: $item->key, scope: $scope} =&gt; {/if}{*
-					*}{include this, expr: $item->value, scope: $scope, indent: "\t$indent"}{sep}{=",\n\t$indent"}{/sep}{*
-				*}{/foreach}{*
-				*}{=",\n$indent"}{*
-			*}{/try}{*
-		*}]{*
+		*}{embed autoBreakingLine, items: $expr->items, maxWidth: 100, indent: $indent}{*
+			*}{block before}{="["}{/block}{*
+			*}{block after}{="]"}{/block}{*
+			*}{block item}{*
+				*}{if $item->key}{include expr, expr: $item->key, scope: $scope} =&gt; {/if}{*
+				*}{include expr, expr: $item->value, scope: $scope, indent: "\t$indent"}{*
+			*}{/block}{*
+			*}{block sep},{/block}{*
+		*}{/embed}{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ClassConstantFetchExprInfo}{*
 		*}{if $expr->classLike->fullLower === 'self' && $scope}{*
 			*}{var $memberClassLike = $scope}{*
