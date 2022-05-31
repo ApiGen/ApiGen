@@ -13,6 +13,14 @@ use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\SingleCommandApplication;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+error_reporting(E_ALL);
+ini_set('display_errors', 'stderr');
+
+set_error_handler(function (int $severity, string $message, string $file, int $line) {
+	if (error_reporting() & $severity) {
+		throw new ErrorException($message, 0, $severity, $file, $line);
+	}
+});
 
 if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 	require __DIR__ . '/../vendor/autoload.php';
@@ -24,10 +32,6 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 	fwrite(STDERR, "ERROR: unable to find autoloader\n");
 	exit(1);
 }
-
-Tracy\Debugger::$strictMode = true;
-Tracy\Debugger::enable(Tracy\Debugger::DEVELOPMENT);
-Latte\Bridges\Tracy\BlueScreenPanel::initialize(Tracy\Debugger::getBlueScreen());
 
 $app = new SingleCommandApplication();
 $app->setName('ApiGen');
