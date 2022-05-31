@@ -10,21 +10,14 @@
 		{/foreach}
 	{/if}
 
-	{if isEnum($classLike) && $classLike->implements}
+	{if (isClass($classLike) || isEnum($classLike)) && $classLike->implements}
 		implements
 		{foreach $classLike->implements as $implements => $_}
 			{include classLikeLink, $global->index->classLike[$implements]}{sep}, {/sep}
 		{/foreach}
 	{/if}
 
-	{if isClass($classLike) && $classLike->implements}
-		implements
-		{foreach $classLike->implements as $implements => $_}
-			{include classLikeLink, $global->index->classLike[$implements]}{sep}, {/sep}
-		{/foreach}
-	{/if}
-
-	{if isClass($classLike) && $classLike->uses}
+	{if (isClass($classLike) || isEnum($classLike)) && $classLike->uses}
 		uses
 		{foreach $classLike->uses as $trait => $_}
 			{include classLikeLink, $global->index->classLike[$trait]}{sep}, {/sep}

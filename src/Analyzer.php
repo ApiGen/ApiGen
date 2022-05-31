@@ -227,7 +227,13 @@ final class Analyzer
 			$info = new EnumInfo($name, $task->primary);
 			$info->scalarType = $node->scalarType?->name;
 			$info->implements = $this->processNameList($node->implements) + [$autoImplement->fullLower => $autoImplement];
+
+			foreach ($node->getTraitUses() as $traitUse) {
+				$info->uses += $this->processNameList($traitUse->traits);
+			}
+
 			$info->dependencies += $info->implements;
+			$info->dependencies += $info->uses;
 
 		} else {
 			throw new \LogicException();

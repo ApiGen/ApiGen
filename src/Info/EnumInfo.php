@@ -11,6 +11,9 @@ final class EnumInfo extends ClassLikeInfo
 	/** @var NameInfo[] indexed by [classLikeName] */
 	public array $implements = [];
 
+	/** @var NameInfo[] indexed by [classLikeName] */
+	public array $uses = [];
+
 	/** @var EnumCaseInfo[] indexed by [caseName] */
 	public array $cases = [];
 }
