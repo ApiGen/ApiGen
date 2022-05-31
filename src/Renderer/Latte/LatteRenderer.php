@@ -172,6 +172,20 @@ final class LatteRenderer implements Renderer
 
 		foreach ($workers as $pid) {
 			pcntl_waitpid($pid, $status);
+
+			if (pcntl_wifexited($status)) {
+				$exitCode = pcntl_wexitstatus($status);
+				if ($exitCode !== 0) {
+					throw new \RuntimeException("Worker with PID $pid exited with code $exitCode, try running ApiGen with --workers 1");
+				}
+
+			} elseif (pcntl_wifsignaled($status)) {
+				$signal = pcntl_wtermsig($status);
+				throw new \RuntimeException("Worker with PID $pid was killed by signal $signal, try running ApiGen with --workers 1");
+
+			} else {
+				throw new \LogicException('Invalid worker state');
+			}
 		}
 	}
 }
