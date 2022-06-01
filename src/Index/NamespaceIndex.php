@@ -6,26 +6,25 @@ use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ElementInfo;
 use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\InterfaceInfo;
-use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
 
 final class NamespaceIndex implements ElementInfo
 {
-	/** @var ClassInfo[] indexed by [className] */
+	/** @var ClassInfo[] indexed by [classShortName] (excludes exceptions) */
 	public array $class = [];
 
-	/** @var InterfaceInfo[] indexed by [interfaceName] */
+	/** @var InterfaceInfo[] indexed by [interfaceShortName] */
 	public array $interface = [];
 
-	/** @var TraitInfo[] indexed by [traitName] */
+	/** @var TraitInfo[] indexed by [traitShortName] */
 	public array $trait = [];
 
-	/** @var EnumInfo[] indexed by [enumName] */
+	/** @var EnumInfo[] indexed by [enumShortName] */
 	public array $enum = [];
 
-	/** @var ClassInfo[] indexed by [exceptionName] */
+	/** @var ClassInfo[] indexed by [exceptionShortName] */
 	public array $exception = [];
 
 	/** @var NamespaceIndex[] indexed by [namespaceShortName] */
