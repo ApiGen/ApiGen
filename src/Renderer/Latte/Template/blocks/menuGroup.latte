@@ -7,7 +7,7 @@
 			{var bool $isCollapsed = $level > 0 && !$isActive}
 			{skipIf !$child->primary && !$isActive}
 			<li n:class="menuGroup-item, $isActive ? active">
-				<a href="{namespaceUrl($child)}">{$child->name->short ?: 'none'}</a>
+				<a href="{namespaceUrl($child)}" n:class="$child->deprecated ? deprecated">{$child->name->short ?: 'none'}</a>
 				{if !$isCollapsed && $child->children && $child->name->short !== ''}
 					{include this, namespace: $child, level: $level + 1}
 				{/if}

@@ -72,7 +72,7 @@ final class ApiGen
 
 		foreach ($analyzeResult->classLike as $info) {
 			$this->indexer->indexFile($index, $info->file, $info->primary);
-			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $info->primary);
+			$this->indexer->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $info->primary, $info->isDeprecated());
 			$this->indexer->indexClassLike($index, $info);
 		}
 

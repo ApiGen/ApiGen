@@ -38,7 +38,7 @@ final class Indexer
 	}
 
 
-	public function indexNamespace(Index $index, string $namespace, string $namespaceLower, bool $primary): void
+	public function indexNamespace(Index $index, string $namespace, string $namespaceLower, bool $primary, bool $deprecated): void
 	{
 		if (isset($index->namespace[$namespaceLower])) {
 			if ($primary) {
@@ -51,14 +51,25 @@ final class Indexer
 				}
 			}
 
+			if (!$deprecated) {
+				for (
+					$info = $index->namespace[$namespaceLower];
+					$info->deprecated && $info->name->full !== '';
+					$info = $index->namespace[$info->name->namespaceLower]
+				) {
+					$info->deprecated = false;
+				}
+			}
+
 			return;
 		}
 
-		$info = new NamespaceIndex(new NameInfo($namespace, $namespaceLower), $primary);
+		$info = new NamespaceIndex(new NameInfo($namespace, $namespaceLower), $primary, $deprecated);
 
 		if ($namespaceLower !== '') {
 			$primary = $primary && $info->name->namespaceLower !== '';
-			$this->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $primary);
+			$deprecated = $deprecated && $info->name->namespaceLower !== '';
+			$this->indexNamespace($index, $info->name->namespace, $info->name->namespaceLower, $primary, $deprecated);
 		}
 
 		$index->namespace[$namespaceLower] = $info;

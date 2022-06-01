@@ -34,12 +34,13 @@ final class NamespaceIndex implements ElementInfo
 	public function __construct(
 		public NameInfo $name,
 		public bool $primary,
+		public bool $deprecated,
 	) {
 	}
 
 
 	public function isDeprecated(): bool
 	{
-		return false; // TODO?
+		return $this->deprecated;
 	}
 }
