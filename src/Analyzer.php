@@ -163,6 +163,9 @@ final class Analyzer
 		} catch (\PhpParser\Error $e) {
 			$error = new ErrorInfo(ErrorInfo::KIND_SYNTAX_ERROR, "Parse error in file {$task->sourceFile}:\n{$e->getMessage()}");
 			return [$error];
+
+		} catch (\Throwable $e) {
+			throw new \LogicException("Failed to analyze file $task->sourceFile", 0, $e);
 		}
 	}
 
@@ -178,7 +181,12 @@ final class Analyzer
 				yield from $this->processNodes($task, $node->stmts);
 
 			} elseif ($node instanceof Node\Stmt\ClassLike && $node->name !== null) {
-				yield $this->processClassLike($task, $node); // TODO: functions, constants, class aliases
+				try {
+					yield $this->processClassLike($task, $node); // TODO: functions, constants, class aliases
+
+				} catch (\Throwable $e) {
+					throw new \LogicException("Failed to analyze $node->name", 0, $e);
+				}
 
 			} elseif ($node instanceof Node) {
 				foreach ($node->getSubNodeNames() as $name) {
