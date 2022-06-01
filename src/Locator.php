@@ -4,6 +4,7 @@ namespace ApiGenX;
 
 use ApiGenX\Info\NameInfo;
 use Composer\Autoload\ClassLoader;
+use JetBrains\PHPStormStub\PhpStormStubsMap;
 use League;
 use Nette\Utils\Finder;
 use PHPStan\Php8StubsMap;
@@ -36,11 +37,16 @@ final class Locator
 	 */
 	private static function createStubsMap(): array
 	{
-		$stubsDir = dirname(Helpers::classLikePath(Php8StubsMap::class));
 		$stubsMap = [];
 
+		$phpStormStubsDir = dirname(Helpers::classLikePath(PhpStormStubsMap::class));
+		foreach (PhpStormStubsMap::CLASSES as $class => $path) {
+			$stubsMap[strtolower($class)] = "$phpStormStubsDir/$path";
+		}
+
+		$phpStanStubsDir = dirname(Helpers::classLikePath(Php8StubsMap::class));
 		foreach ((new Php8StubsMap(PHP_VERSION_ID))->classes as $class => $path) {
-			$stubsMap[$class] = "$stubsDir/$path";
+			$stubsMap[$class] = "$phpStanStubsDir/$path";
 		}
 
 		foreach (Finder::findFiles('*.php')->in(__DIR__ . '/../stubs') as $path => $_) {
