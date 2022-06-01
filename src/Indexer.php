@@ -235,20 +235,21 @@ final class Indexer
 	 */
 	private function indexClassMethodOverrides(Index $index, ClassInfo $info, array $normal, array $abstract): void
 	{
-		$queue = array_keys($info->implements);
-		while (!empty($queue)) {
-			$interface = $index->interface[array_shift($queue)] ?? null;
+		$stack = array_keys($info->implements);
+		$stackIndex = count($stack);
 
-			if ($interface === null) {
-				continue;
-			}
+		while ($stackIndex > 0) {
+			$interfaceNameLower = $stack[--$stackIndex];
+			$interface = $index->interface[$interfaceNameLower] ?? null;
 
-			foreach ($interface->methods as $method) {
-				$abstract[$method->nameLower] = $interface;
-			}
+			if ($interface !== null) {
+				foreach ($interface->methods as $method) {
+					$abstract[$method->nameLower] = $interface;
+				}
 
-			foreach ($interface->extends as $extendLower => $extend) {
-				$queue[] = $extendLower;
+				foreach ($interface->extends as $extendLower => $extend) {
+					$stack[$stackIndex++] = $extendLower;
+				}
 			}
 		}
 
