@@ -9,6 +9,7 @@ final class FloatExprInfo implements ExprInfo
 {
 	public function __construct(
 		public float $value,
+		public string $raw,
 	) {
 	}
 

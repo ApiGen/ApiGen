@@ -552,13 +552,13 @@ final class Analyzer
 	private function processExpr(Node\Expr $expr): ExprInfo
 	{
 		if ($expr instanceof Node\Scalar\LNumber) {
-			return new IntegerExprInfo($expr->value, $expr->getAttribute('kind'));
+			return new IntegerExprInfo($expr->value, $expr->getAttribute('kind'), $expr->getAttribute('rawValue'));
 
 		} elseif ($expr instanceof Node\Scalar\DNumber) {
-			return new FloatExprInfo($expr->value);
+			return new FloatExprInfo($expr->value, $expr->getAttribute('rawValue'));
 
 		} elseif ($expr instanceof Node\Scalar\String_) {
-			return new StringExprInfo($expr->value);
+			return new StringExprInfo($expr->value, $expr->getAttribute('rawValue'));
 
 		} elseif ($expr instanceof Node\Expr\Array_) {
 			$items = [];
@@ -657,10 +657,10 @@ final class Analyzer
 			return $this->processExpr(Node\Scalar\LNumber::fromString($expr->value));
 
 		} elseif ($expr instanceof ConstExprFloatNode) {
-			return new FloatExprInfo(Node\Scalar\DNumber::parse($expr->value));
+			return new FloatExprInfo(Node\Scalar\DNumber::parse($expr->value), $expr->value);
 
 		} elseif ($expr instanceof ConstExprStringNode) {
-			return new StringExprInfo(Node\Scalar\String_::parse($expr->value));
+			return new StringExprInfo(Node\Scalar\String_::parse($expr->value), $expr->value);
 
 		} elseif ($expr instanceof ConstExprArrayNode) {
 			$items = [];

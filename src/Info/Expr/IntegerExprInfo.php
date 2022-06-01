@@ -10,6 +10,7 @@ final class IntegerExprInfo implements ExprInfo
 	public function __construct(
 		public int $value,
 		public int $base,
+		public string $raw,
 	) {
 	}
 

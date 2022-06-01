@@ -4,9 +4,9 @@
 	*}{if $expr instanceof ApiGenX\Info\Expr\BooleanExprInfo || $expr instanceof ApiGenX\Info\Expr\NullExprInfo}{*
 		*}<span class="php-kw">{$expr->toString()}</span>{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\IntegerExprInfo || $expr instanceof ApiGenX\Info\Expr\FloatExprInfo}{*
-		*}<span class="php-num">{$expr->toString()}</span>{*
+		*}<span class="php-num">{$expr->raw}</span>{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\StringExprInfo}{*
-		*}<span class="php-str">{$expr->toString()}</span>{*
+		*}<span class="php-str">{$expr->raw}</span>{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ArrayExprInfo}{*
 		*}{embed autoBreakingLine, items: $expr->items, maxWidth: 100, indent: $indent}{*
 			*}{block before}{="["}{/block}{*
