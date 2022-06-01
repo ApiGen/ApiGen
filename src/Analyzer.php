@@ -73,6 +73,21 @@ use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use Symfony\Component\Console\Helper\ProgressBar;
 use UnitEnum;
 
+use function array_column;
+use function array_map;
+use function assert;
+use function count;
+use function get_debug_type;
+use function implode;
+use function is_array;
+use function is_scalar;
+use function is_string;
+use function iterator_to_array;
+use function sprintf;
+use function strtolower;
+use function substr;
+use function trim;
+
 
 final class Analyzer
 {

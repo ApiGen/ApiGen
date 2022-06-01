@@ -7,6 +7,14 @@ use ApiGenX\Index\Index;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function array_column;
+use function array_slice;
+use function count;
+use function hrtime;
+use function implode;
+use function memory_get_peak_usage;
+use function sprintf;
+
 
 final class ApiGen
 {

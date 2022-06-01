@@ -5,6 +5,8 @@ namespace ApiGenX\Info;
 use ApiGenX\Index\Index;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
+use function strtolower;
+
 
 final class MethodInfo extends MemberInfo
 {

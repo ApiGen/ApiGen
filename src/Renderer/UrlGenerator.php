@@ -10,6 +10,14 @@ use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
 use ApiGenX\Info\PropertyInfo;
 
+use function assert;
+use function get_debug_type;
+use function sprintf;
+use function str_starts_with;
+use function strlen;
+use function strtr;
+use function substr;
+
 
 final class UrlGenerator
 {

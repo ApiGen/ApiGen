@@ -4,6 +4,18 @@ namespace ApiGenX\Info\Expr;
 
 use ApiGenX\Info\ExprInfo;
 
+use function dechex;
+use function ltrim;
+use function mb_ord;
+use function ord;
+use function preg_match;
+use function preg_replace_callback;
+use function str_pad;
+use function strlen;
+use function strtoupper;
+
+use const STR_PAD_LEFT;
+
 
 final class StringExprInfo implements ExprInfo
 {

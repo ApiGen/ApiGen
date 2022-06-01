@@ -2,6 +2,10 @@
 
 namespace ApiGenX\Info;
 
+use function strrpos;
+use function strtolower;
+use function substr;
+
 
 final class NameInfo
 {

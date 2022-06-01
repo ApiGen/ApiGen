@@ -10,6 +10,14 @@ use Nette\Utils\Finder;
 use PHPStan\Php8StubsMap;
 use Symfony\Component\Console\Style\OutputStyle;
 
+use function dirname;
+use function is_dir;
+use function pathinfo;
+use function strtolower;
+
+use const PATHINFO_FILENAME;
+use const PHP_VERSION_ID;
+
 
 final class Locator
 {

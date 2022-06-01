@@ -4,6 +4,12 @@ namespace ApiGenX\Info\Expr;
 
 use ApiGenX\Info\ExprInfo;
 
+use function is_finite;
+use function json_encode;
+use function str_contains;
+
+use const JSON_THROW_ON_ERROR;
+
 
 final class FloatExprInfo implements ExprInfo
 {

@@ -20,6 +20,23 @@ use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use Symfony\Component\Console\Helper\ProgressBar;
 
+use function array_filter;
+use function array_key_first;
+use function basename;
+use function count;
+use function dirname;
+use function extension_loaded;
+use function pcntl_fork;
+use function pcntl_waitpid;
+use function pcntl_wexitstatus;
+use function pcntl_wifexited;
+use function pcntl_wifsignaled;
+use function pcntl_wtermsig;
+use function strlen;
+use function substr;
+
+use const PHP_SAPI;
+
 
 final class LatteRenderer implements Renderer
 {

@@ -4,6 +4,8 @@ namespace ApiGenX;
 
 use ReflectionClass;
 
+use function realpath;
+
 
 final class Helpers
 {

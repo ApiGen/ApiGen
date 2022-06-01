@@ -27,6 +27,10 @@ use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 
+use function get_class;
+use function strtolower;
+use function substr;
+
 
 final class PhpDocResolver extends NodeVisitorAbstract
 {

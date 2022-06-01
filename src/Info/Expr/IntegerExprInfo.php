@@ -4,6 +4,9 @@ namespace ApiGenX\Info\Expr;
 
 use ApiGenX\Info\ExprInfo;
 
+use function abs;
+use function base_convert;
+
 
 final class IntegerExprInfo implements ExprInfo
 {

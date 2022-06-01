@@ -13,6 +13,13 @@ use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
+use function array_keys;
+use function array_map;
+use function array_merge_recursive;
+use function count;
+use function implode;
+use function ksort;
+
 
 final class Indexer
 {

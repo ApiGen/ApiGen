@@ -15,6 +15,15 @@ use Latte\Runtime\Html;
 use League\CommonMark\ConverterInterface;
 use Nette\Utils\Strings;
 
+use function get_debug_type;
+use function html_entity_decode;
+use function sprintf;
+use function strip_tags;
+use function substr_count;
+
+use const ENT_HTML5;
+use const ENT_QUOTES;
+
 
 final class LatteFunctions
 {
