@@ -13,8 +13,6 @@
 				{include elementSummaryGroup, heading: 'Traits', elements: $namespace->trait, onlyPrimary: $namespace->primary}
 				{include elementSummaryGroup, heading: 'Enums', elements: $namespace->enum, onlyPrimary: $namespace->primary}
 				{include elementSummaryGroup, heading: 'Exceptions', elements: $namespace->exception, onlyPrimary: $namespace->primary}
-{*				{include elementSummaryGroup, heading: 'Constants', elements: $namespace->constant, onlyPrimary: $namespace->primary}*}
-{*				{include elementSummaryGroup, heading: 'Functions', elements: $namespace->function, onlyPrimary: $namespace->primary}*}
 				{include elementSummaryGroup, heading: 'Namespaces', elements: $namespace->children, showDescription: false, onlyPrimary: $namespace->primary}
 			{/block}
 		{/embed}

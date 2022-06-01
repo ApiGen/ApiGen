@@ -5,7 +5,7 @@
 		<div class="classLikeRelatedGroup">
 			<h4>{include title}</h4>
 
-			{foreach $items as $item}{* TODO: SORT *}
+			{foreach $items as $item}
 				<a href="{classLikeUrl($item)}"><span n:tag-if="$item->isDeprecated()" class="deprecated">{$item->name->full}</span></a>{sep}, {/sep}
 			{else}
 				{rollback}
