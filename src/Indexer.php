@@ -102,7 +102,7 @@ final class Indexer
 		$this->indexDirectedAcyclicGraph($index);
 
 		// instance of
-		foreach ([$index->class, $index->interface] as $infos) {
+		foreach ([$index->class, $index->interface, $index->enum] as $infos) {
 			foreach ($infos as $info) {
 				$this->indexInstanceOf($index, $info);
 			}
