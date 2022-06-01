@@ -520,10 +520,7 @@ final class Analyzer
 	}
 
 
-	/**
-	 * @param null|Identifier|Name|ComplexType $node
-	 */
-	private function processTypeOrNull(?Node $node): ?TypeNode
+	private function processTypeOrNull(Identifier|Name|ComplexType|null $node): ?TypeNode
 	{
 		return $node ? $this->processType($node) : null;
 	}
