@@ -21,7 +21,7 @@
 		*}{if $expr->classLike->fullLower === 'self' && $scope}{*
 			*}{var $memberClassLike = $scope}{*
 			*}{include classLikeLink, classLike: $memberClassLike, text: $expr->classLike->fullLower}{*
-		*}{elseif $expr->classLike->fullLower === 'parent' && $scope && $scope->class && $scope->extends}{*
+		*}{elseif $expr->classLike->fullLower === 'parent' && $scope && isClass($scope) && $scope->extends}{*
 			*}{var $memberClassLike = $global->index->classLike[$scope->extends->fullLower]}{*
 			*}{include classLikeLink, classLike: $memberClassLike, text: $expr->classLike->fullLower}{*
 		*}{elseif isset($global->index->classLike[$expr->classLike->fullLower])}{*
