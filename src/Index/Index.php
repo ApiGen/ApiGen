@@ -47,7 +47,7 @@ final class Index
 	/** @var EnumInfo[][] indexed by [classLikeName][classLikeName] */
 	public array $enumImplements = [];
 
-	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName] classExtends + classImplements + classUses + interfaceExtends */
+	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName] classExtends + classImplements + classUses + interfaceExtends + enumImplements */
 	public array $dag = [];
 
 	/** @var ClassLikeInfo[][] indexed by [classLikeName][classLikeName], e.g. ['a']['b'] means that B instance of A */
