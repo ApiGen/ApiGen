@@ -5,9 +5,6 @@ namespace ApiGenX\Index;
 use ApiGenX\Info\ClassLikeInfo;
 
 
-/**
- * TODO: FileTree
- */
 final class FileIndex
 {
 	/** @var ClassLikeInfo[] indexed by [classLikeName] */

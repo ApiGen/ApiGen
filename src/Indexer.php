@@ -240,7 +240,7 @@ final class Indexer
 			$interface = $index->interface[array_shift($queue)] ?? null;
 
 			if ($interface === null) {
-				continue; // TODO: missing guard
+				continue;
 			}
 
 			foreach ($interface->methods as $method) {

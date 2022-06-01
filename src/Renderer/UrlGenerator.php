@@ -113,7 +113,7 @@ final class UrlGenerator
 			return '$' . $member->name;
 
 		} elseif ($member instanceof MethodInfo) {
-			return '_' . $member->name; // TODO: try $member->name . '()'
+			return '_' . $member->name;
 
 		} else {
 			throw new \LogicException(sprintf('Unexpected member type %s', get_debug_type($member)));

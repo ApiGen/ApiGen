@@ -3,9 +3,6 @@
 namespace ApiGenX\Info;
 
 
-/**
- * @TODO replace string $namespace with NameInfo $parent?
- */
 final class NameInfo
 {
 	/** @var string e.g. 'ApiGenX\Info\Traits\HasName' */
