@@ -6,7 +6,7 @@
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\IntegerExprInfo || $expr instanceof ApiGenX\Info\Expr\FloatExprInfo}{*
 		*}<span class="php-num">{$expr->raw}</span>{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\StringExprInfo}{*
-		*}<span class="php-str">{$expr->raw}</span>{*
+		*}<span class="php-str">{$expr->raw ?? $expr->toString()}</span>{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ArrayExprInfo}{*
 		*}{embed autoBreakingLine, items: $expr->items, maxWidth: 100, indent: $indent}{*
 			*}{block before}{="["}{/block}{*

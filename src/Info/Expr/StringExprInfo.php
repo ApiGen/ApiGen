@@ -9,7 +9,7 @@ final class StringExprInfo implements ExprInfo
 {
 	public function __construct(
 		public string $value,
-		public string $raw,
+		public ?string $raw,
 	) {
 	}
 
