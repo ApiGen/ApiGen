@@ -144,7 +144,7 @@ final class LatteRenderer implements Renderer
 			$pid = pcntl_fork();
 
 			if ($pid < 0) {
-				throw new \RuntimeException();
+				throw new \RuntimeException('Failed to fork process, try running ApiGen with --workers 1');
 
 			} elseif ($pid === 0) {
 				$workerId = $i;

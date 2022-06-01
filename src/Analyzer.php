@@ -132,7 +132,7 @@ final class Analyzer
 					$errors[$info->kind][] = $info;
 
 				} else {
-					throw new \LogicException();
+					throw new \LogicException(sprintf('Unexpected task result %s, expected either %s or %s', get_debug_type($info), ClassLikeInfo::class, EnumInfo::class));
 				}
 			}
 
@@ -238,7 +238,7 @@ final class Analyzer
 			$info->dependencies += $info->uses;
 
 		} else {
-			throw new \LogicException();
+			throw new \LogicException(sprintf('Unsupported ClassLike node %s', get_debug_type($node)));
 		}
 
 		$classDoc = $this->extractPhpDoc($node);
@@ -273,7 +273,7 @@ final class Analyzer
 				$info->dependencies += $this->extractExprDependencies($member->value);
 
 			} else {
-				throw new \LogicException();
+				throw new \LogicException(sprintf('Unexpected member type %s', get_debug_type($member)));
 			}
 		}
 
@@ -521,10 +521,7 @@ final class Analyzer
 	}
 
 
-	/**
-	 * @param Identifier|Name|ComplexType $node
-	 */
-	private function processType(Node $node): TypeNode
+	private function processType(Identifier|Name|ComplexType $node): TypeNode
 	{
 		if ($node instanceof ComplexType) {
 			if ($node instanceof NullableType) {
@@ -539,7 +536,7 @@ final class Analyzer
 				return new IntersectionTypeNode(array_map([$this, 'processType'], $node->types));
 			}
 
-			throw new \LogicException('Unsupported complex type');
+			throw new \LogicException(sprintf('Unsupported complex type %s', get_debug_type($node)));
 		}
 
 		return new IdentifierTypeNode($node->toString());
@@ -640,7 +637,7 @@ final class Analyzer
 			return new NewExprInfo($this->processName($expr->class), $args);
 
 		} else {
-			throw new \LogicException(get_class($expr));
+			throw new \LogicException(sprintf('Unsupported expr node %s used in constant expression', get_debug_type($expr)));
 		}
 	}
 
@@ -686,7 +683,7 @@ final class Analyzer
 			}
 
 		} else {
-			throw new \LogicException();
+			throw new \LogicException(sprintf('Unsupported const expr node %s used in PhpDoc', get_debug_type($expr)));
 		}
 	}
 

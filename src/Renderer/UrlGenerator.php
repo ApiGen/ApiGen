@@ -116,7 +116,7 @@ final class UrlGenerator
 			return '_' . $member->name; // TODO: try $member->name . '()'
 
 		} else {
-			throw new \LogicException();
+			throw new \LogicException(sprintf('Unexpected member type %s', get_debug_type($member)));
 		}
 	}
 

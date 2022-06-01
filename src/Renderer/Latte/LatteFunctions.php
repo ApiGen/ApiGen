@@ -90,7 +90,7 @@ final class LatteFunctions
 			return $info->name->full === '' ? 'none' : $info->name->full;
 
 		} else {
-			throw new \LogicException();
+			throw new \LogicException(sprintf('Unexpected element type %s', get_debug_type($info)));
 		}
 	}
 
@@ -104,7 +104,7 @@ final class LatteFunctions
 			return '';
 
 		} else {
-			throw new \LogicException();
+			throw new \LogicException(sprintf('Unexpected element type %s', get_debug_type($info)));
 		}
 	}
 
@@ -118,7 +118,7 @@ final class LatteFunctions
 			return $this->url->getNamespacePath($info);
 
 		} else {
-			throw new \LogicException();
+			throw new \LogicException(sprintf('Unexpected element type %s', get_debug_type($info)));
 		}
 	}
 }

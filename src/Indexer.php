@@ -197,7 +197,7 @@ final class Indexer
 				if (isset($visited[$childKey])) {
 					$path = [...array_keys($visited), $childKey];
 					$path = array_map(fn (string $item) => $index->classLike[$item]->name->full, $path);
-					throw new \LogicException("Invalid directed acyclic graph because it contains cycle:\n" . implode(' -> ', $path));
+					throw new \RuntimeException("Invalid directed acyclic graph because it contains cycle:\n" . implode(' -> ', $path));
 
 				} else {
 					$findCycle($dag[$childKey] ?? [], $visited + [$childKey => true]);
