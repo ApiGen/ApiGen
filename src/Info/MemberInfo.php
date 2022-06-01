@@ -14,6 +14,7 @@ abstract class MemberInfo
 	use HasLineLocation;
 	use HasVisibility;
 
+
 	/** @var string */
 	public string $name;
 

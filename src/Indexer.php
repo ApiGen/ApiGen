@@ -196,7 +196,7 @@ final class Indexer
 			foreach ($node as $childKey => $_) {
 				if (isset($visited[$childKey])) {
 					$path = [...array_keys($visited), $childKey];
-					$path = array_map(fn (string $item) => $index->classLike[$item]->name->full, $path);
+					$path = array_map(fn(string $item) => $index->classLike[$item]->name->full, $path);
 					throw new \RuntimeException("Invalid directed acyclic graph because it contains cycle:\n" . implode(' -> ', $path));
 
 				} else {

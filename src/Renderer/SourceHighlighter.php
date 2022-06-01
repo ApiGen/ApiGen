@@ -14,7 +14,7 @@ final class SourceHighlighter
 	public const PHP_VARIABLE = 'php-var';
 	public const PHP_COMMENT = 'php-comment';
 
-	/** @var string[] indexed by [tokenId]  */
+	/** @var string[] indexed by [tokenId] */
 	public array $tokenClass = [
 		T_OPEN_TAG => self::PHP_TAG,
 		T_OPEN_TAG_WITH_ECHO => self::PHP_TAG,

@@ -14,6 +14,7 @@ abstract class ClassLikeInfo implements ElementInfo
 	use HasLineLocation;
 	use HasDependencies;
 
+
 	/** @var string|null */
 	public ?string $file = null;
 

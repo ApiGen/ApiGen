@@ -257,16 +257,16 @@ final class Analyzer
 		$info->endLine = $node->getEndLine();
 
 		foreach ($this->extractMembers($info->tags, $node) as $member) {
-			if ($member instanceof ConstantInfo){
+			if ($member instanceof ConstantInfo) {
 				$info->constants[$member->name] = $member;
 				$info->dependencies += $this->extractExprDependencies($member->value);
 
-			} elseif ($member instanceof PropertyInfo){
+			} elseif ($member instanceof PropertyInfo) {
 				$info->properties[$member->name] = $member;
 				$info->dependencies += $this->extractExprDependencies($member->default);
 				$info->dependencies += $this->extractTypeDependencies($member->type);
 
-			} elseif ($member instanceof MethodInfo){
+			} elseif ($member instanceof MethodInfo) {
 				$info->methods[$member->nameLower] = $member;
 				$info->dependencies += $this->extractTypeDependencies($member->returnType);
 
@@ -275,7 +275,7 @@ final class Analyzer
 					$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
 				}
 
-			} elseif ($member instanceof EnumCaseInfo){
+			} elseif ($member instanceof EnumCaseInfo) {
 				assert($info instanceof EnumInfo);
 				$info->cases[$member->name] = $member;
 				$info->dependencies += $this->extractExprDependencies($member->value);
@@ -431,7 +431,7 @@ final class Analyzer
 
 		foreach ($propertyTags as $tag => [$readOnly, $writeOnly]) {
 			/** @var PropertyTagValueNode $value */
-			foreach ($tags[$tag] ?? [] as $value){
+			foreach ($tags[$tag] ?? [] as $value) {
 				$propertyInfo = new PropertyInfo(substr($value->propertyName, 1));
 				$propertyInfo->magic = true;
 				$propertyInfo->public = true;
@@ -445,7 +445,7 @@ final class Analyzer
 		}
 
 		/** @var MethodTagValueNode $value */
-		foreach ($tags['method'] ?? [] as $value){
+		foreach ($tags['method'] ?? [] as $value) {
 			$methodInfo = new MethodInfo($value->methodName);
 			$methodInfo->magic = true;
 			$methodInfo->public = true;

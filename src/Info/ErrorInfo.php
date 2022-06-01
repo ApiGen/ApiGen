@@ -6,7 +6,8 @@ namespace ApiGenX\Info;
 final class ErrorInfo
 {
 	public const KIND_SYNTAX_ERROR = 'Syntax error';
-	public const KIND_MISSING_SYMBOL = 'Missing class / trait / interface';
+	public const KIND_MISSING_SYMBOL = 'Missing class / trait / interface / enum';
+
 
 	public function __construct(
 		public string $kind,

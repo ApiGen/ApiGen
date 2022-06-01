@@ -10,7 +10,7 @@ trait HasTags
 	/** @var string */
 	public string $description = '';
 
-	/** @var PhpDocTagValueNode[][] indexed by [tagName][]  */
+	/** @var PhpDocTagValueNode[][] indexed by [tagName][] */
 	public array $tags = [];
 
 
