@@ -96,10 +96,15 @@ code, var, pre {
 	white-space: pre-wrap;
 }
 
-var {
+var, var a {
 	font-weight: bold;
 	font-style: normal;
 	color: #ca8a04;
+}
+
+var a:hover {
+	background-color: #ca8a04;
+	color: white;
 }
 
 code a b {

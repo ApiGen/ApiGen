@@ -9,7 +9,7 @@
 					<code>{*
 						*}{foreach $from->properties as $propertyName => $property}{*
 							*}{skipIf isset($overriden[$propertyName]) || $property->private}{*
-							*}{embed memberLink, $from, $property}{block content}<var>${$property->name}</var>{/block}{/embed}{*
+							*}<var>{embed memberLink, $from, $property}{block content}${$property->name}{/block}{/embed}</var>{*
 							*}{sep}, {/sep}{*
 						*}{else}{*
 							*}{rollback}{*
