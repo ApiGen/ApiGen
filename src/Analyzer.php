@@ -14,6 +14,7 @@ use ApiGenX\Info\ErrorInfo;
 use ApiGenX\Info\Expr\ArgExprInfo;
 use ApiGenX\Info\Expr\ArrayExprInfo;
 use ApiGenX\Info\Expr\ArrayItemExprInfo;
+use ApiGenX\Info\Expr\ArrayKeyFetchExprInfo;
 use ApiGenX\Info\Expr\BinaryOpExprInfo;
 use ApiGenX\Info\Expr\BooleanExprInfo;
 use ApiGenX\Info\Expr\ClassConstantFetchExprInfo;
@@ -23,6 +24,7 @@ use ApiGenX\Info\Expr\IntegerExprInfo;
 use ApiGenX\Info\Expr\NewExprInfo;
 use ApiGenX\Info\Expr\NullExprInfo;
 use ApiGenX\Info\Expr\StringExprInfo;
+use ApiGenX\Info\Expr\TernaryExprInfo;
 use ApiGenX\Info\Expr\UnaryOpExprInfo;
 use ApiGenX\Info\ExprInfo;
 use ApiGenX\Info\InterfaceInfo;
@@ -612,6 +614,20 @@ final class Analyzer
 				$this->processExpr($expr->right),
 			);
 
+		} elseif ($expr instanceof Node\Expr\Ternary) {
+			return new TernaryExprInfo(
+				$this->processExpr($expr->cond),
+				$this->processExprOrNull($expr->if),
+				$this->processExpr($expr->else),
+			);
+
+		} elseif ($expr instanceof Node\Expr\ArrayDimFetch) {
+			assert($expr->dim !== null);
+			return new ArrayKeyFetchExprInfo(
+				$this->processExpr($expr->var),
+				$this->processExpr($expr->dim),
+			);
+
 		} elseif ($expr instanceof Node\Expr\New_) {
 			assert($expr->class instanceof Name);
 
@@ -727,12 +743,21 @@ final class Analyzer
 				$dependencies += $this->extractExprDependencies($item->value);
 			}
 
+		} elseif ($expr instanceof UnaryOpExprInfo) {
+			$dependencies += $this->extractExprDependencies($expr->expr);
+
 		} elseif ($expr instanceof BinaryOpExprInfo) {
 			$dependencies += $this->extractExprDependencies($expr->left);
 			$dependencies += $this->extractExprDependencies($expr->right);
 
-		} elseif ($expr instanceof UnaryOpExprInfo) {
-			$dependencies += $this->extractExprDependencies($expr->expr);
+		} elseif ($expr instanceof TernaryExprInfo) {
+			$dependencies += $this->extractExprDependencies($expr->condition);
+			$dependencies += $this->extractExprDependencies($expr->if);
+			$dependencies += $this->extractExprDependencies($expr->else);
+
+		} elseif ($expr instanceof ArrayKeyFetchExprInfo) {
+			$dependencies += $this->extractExprDependencies($expr->array);
+			$dependencies += $this->extractExprDependencies($expr->key);
 
 		} elseif ($expr instanceof ClassConstantFetchExprInfo) {
 			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {

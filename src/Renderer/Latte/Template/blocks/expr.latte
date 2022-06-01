@@ -43,13 +43,20 @@
 		*}{/if}{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ConstantFetchExprInfo}{*
 		*}{$expr->name}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\UnaryOpExprInfo}{*
+		*}{$expr->op}{*
+		*}{include this, expr: $expr->expr, scope: $scope}{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\BinaryOpExprInfo}{*
 		*}{include this, expr: $expr->left, scope: $scope}{*
 		*} {$expr->op} {*
 		*}{include this, expr: $expr->right, scope: $scope}{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\UnaryOpExprInfo}{*
-		*}{$expr->op}{*
-		*}{include this, expr: $expr->expr, scope: $scope}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\TernaryExprInfo}{*
+		*}{include this, expr: $expr->condition, scope: $scope}{*
+		*}{if $expr->if} ? {include this, expr: $expr->if, scope: $scope} : {else} ?: {/if}{*
+		*}{include this, expr: $expr->else, scope: $scope}{*
+	*}{elseif $expr instanceof ApiGenX\Info\Expr\ArrayKeyFetchExprInfo}{*
+		*}{include this, expr: $expr->var, scope: $scope}{*
+		*}[{include this, expr: $expr->key, scope: $scope}]{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\NewExprInfo}{*
 		*}{var $classLike = $global->index->classLike[$expr->classLike->fullLower]}{*
 		*}<span class="php-kw">new</span> {include classLikeLink, classLike: $classLike, short: true}{*
