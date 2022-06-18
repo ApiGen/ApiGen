@@ -6,8 +6,8 @@ namespace ApiGenX\Info;
 final class MissingInfo extends ClassLikeInfo
 {
 	public function __construct(
-		ClassLikeNameInfo $name,
-		public ClassLikeNameInfo $referencedBy,
+		NameInfo $name,
+		public NameInfo $referencedBy,
 	) {
 		parent::__construct(
 			$name,

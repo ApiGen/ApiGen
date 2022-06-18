@@ -32,7 +32,7 @@ use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
 use ApiGenX\Info\MissingInfo;
-use ApiGenX\Info\ClassLikeNameInfo;
+use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\ParameterInfo;
 use ApiGenX\Info\PropertyInfo;
 use ApiGenX\Info\TraitInfo;
@@ -159,7 +159,7 @@ final class Analyzer
 		foreach ($missing as $fullLower => $referencedBy) {
 			$dependency = $referencedBy->dependencies[$fullLower];
 			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$referencedBy->name->full}");
-			$found[$dependency->fullLower] = new MissingInfo(new ClassLikeNameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
+			$found[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
 		}
 
 		return new AnalyzeResult($found, $errors);
@@ -223,7 +223,7 @@ final class Analyzer
 	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo // TODO: handle trait usage
 	{
 		assert($node->namespacedName !== null);
-		$name = new ClassLikeNameInfo($node->namespacedName->toString());
+		$name = new NameInfo($node->namespacedName->toString());
 
 		if ($node instanceof Node\Stmt\Class_) {
 			$info = new ClassInfo($name, $task->primary);

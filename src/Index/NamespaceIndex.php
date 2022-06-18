@@ -6,7 +6,7 @@ use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ElementInfo;
 use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\InterfaceInfo;
-use ApiGenX\Info\ClassLikeNameInfo;
+use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
 
@@ -32,7 +32,7 @@ final class NamespaceIndex implements ElementInfo
 
 
 	public function __construct(
-		public ClassLikeNameInfo $name,
+		public NameInfo $name,
 		public bool $primary,
 		public bool $deprecated,
 	) {

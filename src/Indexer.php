@@ -10,7 +10,7 @@ use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\EnumInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MissingInfo;
-use ApiGenX\Info\ClassLikeNameInfo;
+use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
 use function array_keys;
@@ -64,7 +64,7 @@ final class Indexer
 			return;
 		}
 
-		$info = new NamespaceIndex(new ClassLikeNameInfo($namespace, $namespaceLower), $primary, $deprecated);
+		$info = new NamespaceIndex(new NameInfo($namespace, $namespaceLower), $primary, $deprecated);
 
 		if ($namespaceLower !== '') {
 			$primary = $primary && $info->name->namespaceLower !== '';
