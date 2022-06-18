@@ -4,6 +4,7 @@ namespace ApiGenX;
 
 use ApiGenX\Analyzer\AnalyzeResult;
 use ApiGenX\Analyzer\AnalyzeTask;
+use ApiGenX\Analyzer\IdentifierKind;
 use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
@@ -267,6 +268,7 @@ final class Analyzer
 		}
 
 		$classDoc = $this->extractPhpDoc($node);
+		$info->genericParameters = $classDoc->getAttribute('genericNameContext') ?? [];
 		$info->description = $this->extractDescription($classDoc);
 		$info->tags = $this->extractTags($classDoc);
 		$info->file = $task->sourceFile;
@@ -377,6 +379,7 @@ final class Analyzer
 				$memberInfo->description = $description;
 				$memberInfo->tags = $tags;
 
+				$memberInfo->genericParameters = $memberDoc->getAttribute('genericNameContext') ?? [];
 				$memberInfo->parameters = $this->processParameters($memberDoc->getParamTagValues(), $member->params);
 				$memberInfo->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($member->returnType);
 				$memberInfo->byRef = $member->byRef;
@@ -806,7 +809,7 @@ final class Analyzer
 
 		if ($type !== null) {
 			foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
-				if ($identifier->getAttribute('kind') === 'classLike') {
+				if ($identifier->getAttribute('kind') === IdentifierKind::ClassLike) {
 					$lower = strtolower($identifier->name);
 					$dependencies[$lower] = new ClassLikeReferenceInfo($identifier->name, $lower);
 				}
