@@ -47,12 +47,35 @@ use function substr;
 
 final class PhpDocResolver extends NodeVisitorAbstract
 {
-	private const KEYWORDS = [
-		'int' => true, 'integer' => true, 'string' => true, 'bool' => true, 'boolean' => true, 'true' => true,
-		'false' => true, 'null' => true, 'float' => true, 'double' => true, 'array' => true, 'scalar' => true,
-		'number' => true, 'iterable' => true, 'callable' => true, 'resource' => true, 'mixed' => true,
-		'void' => true, 'object' => true, 'never' => true, 'self' => true, 'static' => true, 'parent' => true,
-		'class-string' => true, 'list' => true,
+	private const NATIVE_KEYWORDS = [
+		'array' => true,
+		'bool' => true,
+		'callable' => true,
+		'false' => true,
+		'float' => true,
+		'int' => true,
+		'iterable' => true,
+		'mixed' => true,
+		'never' => true,
+		'null' => true,
+		'object' => true,
+		'parent' => true,
+		'self' => true,
+		'static' => true,
+		'string' => true,
+		'true' => true,
+		'void' => true,
+	];
+
+	private const KEYWORDS = self::NATIVE_KEYWORDS + [
+		'boolean' => true,
+		'class-string' => true,
+		'double' => true,
+		'integer' => true,
+		'list' => true,
+		'number' => true,
+		'resource' => true,
+		'scalar' => true,
 	];
 
 	/** @var GenericParameterInfo[][] indexed by [][parameterName] */
