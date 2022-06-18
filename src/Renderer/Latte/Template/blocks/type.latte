@@ -2,8 +2,13 @@
 
 {define type, PHPStan\PhpDocParser\Ast\Type\TypeNode $type, bool $brackets = false, bool $short = true}{*
 	*}{if $type instanceof PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode}{*
-		*}{var string $lower = strtolower($type->name)}{*
-		*}{ifset $global->index->classLike[$lower]}{include classLikeLink, $global->index->classLike[$lower], $short}{else}{$type}{/ifset}{*
+		*}{var ApiGenX\Analyzer\IdentifierKind $kind = $type->getAttribute('kind')}{*
+		*}{if $kind === ApiGenX\Analyzer\IdentifierKind::ClassLike}{*
+			*}{var ApiGenX\Info\ClassLikeReferenceInfo $ref = $type->getAttribute('classLikeReference')}{*
+			*}{include classLikeLink, $global->index->classLike[$ref->fullLower], $short}{*
+		*}{else}{*
+			*}{$type}{*
+		*}{/if}{*
 
 	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode}{*
 		*}{include this, type: $type->type, brackets: true, short: $short}[]{*

@@ -571,6 +571,7 @@ final class Analyzer
 		} elseif ($node instanceof Name && !$node->isSpecialClassName()) {
 			$identifier = new IdentifierTypeNode($node->toString());
 			$identifier->setAttribute('kind', IdentifierKind::ClassLike);
+			$identifier->setAttribute('classLikeReference', new ClassLikeReferenceInfo($identifier->name));
 
 		} else {
 			$identifier = new IdentifierTypeNode($node->toString());
@@ -840,8 +841,9 @@ final class Analyzer
 		if ($type !== null) {
 			foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
 				if ($identifier->getAttribute('kind') === IdentifierKind::ClassLike) {
-					$lower = strtolower($identifier->name);
-					$dependencies[$lower] = new ClassLikeReferenceInfo($identifier->name, $lower);
+					$classLikeReference = $identifier->getAttribute('classLikeReference');
+					assert($classLikeReference instanceof ClassLikeReferenceInfo);
+					$dependencies[$classLikeReference->fullLower] = $classLikeReference;
 				}
 			}
 		}

@@ -3,6 +3,7 @@
 namespace ApiGenX\Analyzer\NodeVisitors;
 
 use ApiGenX\Analyzer\IdentifierKind;
+use ApiGenX\Info\ClassLikeReferenceInfo;
 use ApiGenX\Info\GenericParameterInfo;
 use ApiGenX\Info\GenericParameterVariance;
 use PhpParser\NameContext;
@@ -231,8 +232,9 @@ final class PhpDocResolver extends NodeVisitorAbstract
 					}
 				}
 
-				$identifier->name = $this->resolveIdentifier($identifier->name);
+				$classLikeReference = new ClassLikeReferenceInfo($this->resolveIdentifier($identifier->name));
 				$identifier->setAttribute('kind', IdentifierKind::ClassLike);
+				$identifier->setAttribute('classLikeReference', $classLikeReference);
 			}
 		}
 
