@@ -2,14 +2,14 @@
 
 namespace ApiGenX\Info\Expr;
 
+use ApiGenX\Info\ClassLikeReferenceInfo;
 use ApiGenX\Info\ExprInfo;
-use ApiGenX\Info\NameInfo;
 
 
 final class ClassConstantFetchExprInfo implements ExprInfo
 {
 	public function __construct(
-		public NameInfo $classLike,
+		public ClassLikeReferenceInfo $classLike,
 		public string $name,
 	) {
 	}

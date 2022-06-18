@@ -7,6 +7,7 @@ use ApiGenX\Analyzer\AnalyzeTask;
 use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\Info\ClassLikeReferenceInfo;
 use ApiGenX\Info\ConstantInfo;
 use ApiGenX\Info\EnumCaseInfo;
 use ApiGenX\Info\EnumInfo;
@@ -158,7 +159,7 @@ final class Analyzer
 		foreach ($missing as $fullLower => $referencedBy) {
 			$dependency = $referencedBy->dependencies[$fullLower];
 			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferences by {$referencedBy->name->full}");
-			$found[$dependency->fullLower] = new MissingInfo($dependency, $referencedBy->name);
+			$found[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
 		}
 
 		return new AnalyzeResult($found, $errors);
@@ -221,7 +222,8 @@ final class Analyzer
 
 	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo // TODO: handle trait usage
 	{
-		$name = $this->processName($node->namespacedName);
+		assert($node->namespacedName !== null);
+		$name = new NameInfo($node->namespacedName->toString());
 
 		if ($node instanceof Node\Stmt\Class_) {
 			$info = new ClassInfo($name, $task->primary);
@@ -247,7 +249,7 @@ final class Analyzer
 			$info = new TraitInfo($name, $task->primary);
 
 		} elseif ($node instanceof Node\Stmt\Enum_) {
-			$autoImplement = new NameInfo($node->scalarType ? BackedEnum::class : UnitEnum::class);
+			$autoImplement = new ClassLikeReferenceInfo($node->scalarType ? BackedEnum::class : UnitEnum::class);
 
 			$info = new EnumInfo($name, $task->primary);
 			$info->scalarType = $node->scalarType?->name;
@@ -512,15 +514,15 @@ final class Analyzer
 	}
 
 
-	private function processName(Node\Name $name): NameInfo
+	private function processName(Node\Name $name): ClassLikeReferenceInfo
 	{
-		return new NameInfo($name->toString());
+		return new ClassLikeReferenceInfo($name->toString());
 	}
 
 
 	/**
 	 * @param  Node\Name[] $names indexed by []
-	 * @return NameInfo[] indexed by [classLikeName]
+	 * @return ClassLikeReferenceInfo[] indexed by [classLikeName]
 	 */
 	private function processNameList(array $names): array
 	{
@@ -699,7 +701,7 @@ final class Analyzer
 				return new ConstantFetchExprInfo($expr->name);
 
 			} else {
-				return new ClassConstantFetchExprInfo(new NameInfo($expr->className), $expr->name);
+				return new ClassConstantFetchExprInfo(new ClassLikeReferenceInfo($expr->className), $expr->name);
 			}
 
 		} else {
@@ -748,7 +750,7 @@ final class Analyzer
 
 
 	/**
-	 * @return NameInfo[] indexed by [classLike]
+	 * @return ClassLikeReferenceInfo[] indexed by [classLike]
 	 */
 	private function extractExprDependencies(?ExprInfo $expr): array
 	{
@@ -796,7 +798,7 @@ final class Analyzer
 
 
 	/**
-	 * @return NameInfo[] indexed by [classLike]
+	 * @return ClassLikeReferenceInfo[] indexed by [classLike]
 	 */
 	private function extractTypeDependencies(?TypeNode $type): array
 	{
@@ -804,9 +806,9 @@ final class Analyzer
 
 		if ($type !== null) {
 			foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
-				$lower = strtolower($identifier->name);
-				if (!isset(PhpDocResolver::KEYWORDS[$lower])) {
-					$dependencies[$lower] = new NameInfo($identifier->name, $lower);
+				if ($identifier->getAttribute('kind') === 'classLike') {
+					$lower = strtolower($identifier->name);
+					$dependencies[$lower] = new ClassLikeReferenceInfo($identifier->name, $lower);
 				}
 			}
 		}

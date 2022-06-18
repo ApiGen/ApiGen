@@ -2,7 +2,7 @@
 
 namespace ApiGenX;
 
-use ApiGenX\Info\NameInfo;
+use ApiGenX\Info\ClassLikeReferenceInfo;
 use Composer\Autoload\ClassLoader;
 use JetBrains\PHPStormStub\PhpStormStubsMap;
 use League;
@@ -90,7 +90,7 @@ final class Locator
 	}
 
 
-	public function locate(NameInfo $name): ?string
+	public function locate(ClassLikeReferenceInfo $name): ?string
 	{
 		return $this->classLoader->findFile($name->full) ?: $this->stubsMap[$name->fullLower] ?? null;
 	}

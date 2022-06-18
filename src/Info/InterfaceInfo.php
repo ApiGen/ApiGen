@@ -7,7 +7,7 @@ use ApiGenX\Index\Index;
 
 final class InterfaceInfo extends ClassLikeInfo
 {
-	/** @var NameInfo[] indexed by [classLikeName] */
+	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $extends = [];
 
 

@@ -13,13 +13,13 @@ final class ClassInfo extends ClassLikeInfo
 	/** @var bool */
 	public bool $final = false;
 
-	/** @var NameInfo|null */
-	public ?NameInfo $extends = null;
+	/** @var ClassLikeReferenceInfo|null */
+	public ?ClassLikeReferenceInfo $extends = null;
 
-	/** @var NameInfo[] indexed by [classLikeName] */
+	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $implements = [];
 
-	/** @var NameInfo[] indexed by [classLikeName] */
+	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $uses = [];
 
 

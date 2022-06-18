@@ -8,10 +8,10 @@ final class EnumInfo extends ClassLikeInfo
 	/** @var string|null */
 	public ?string $scalarType;
 
-	/** @var NameInfo[] indexed by [classLikeName] */
+	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $implements = [];
 
-	/** @var NameInfo[] indexed by [classLikeName] */
+	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $uses = [];
 
 	/** @var EnumCaseInfo[] indexed by [caseName] */

@@ -3,7 +3,7 @@
 namespace ApiGenX\Info\Expr;
 
 use ApiGenX\Info\ExprInfo;
-use ApiGenX\Info\NameInfo;
+use ApiGenX\Info\ClassLikeReferenceInfo;
 
 
 final class NewExprInfo implements ExprInfo
@@ -12,7 +12,7 @@ final class NewExprInfo implements ExprInfo
 	 * @param ArgExprInfo[] $args
 	 */
 	public function __construct(
-		public NameInfo $classLike,
+		public ClassLikeReferenceInfo $classLike,
 		public array $args,
 	) {
 	}
