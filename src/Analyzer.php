@@ -568,9 +568,17 @@ final class Analyzer
 			}
 
 			throw new \LogicException(sprintf('Unsupported complex type %s', get_debug_type($node)));
+
+		} elseif ($node instanceof Name && !$node->isSpecialClassName()) {
+			$identifier = new IdentifierTypeNode($node->toString());
+			$identifier->setAttribute('kind', IdentifierKind::ClassLike);
+
+		} else {
+			$identifier = new IdentifierTypeNode($node->toString());
+			$identifier->setAttribute('kind', IdentifierKind::Keyword);
 		}
 
-		return new IdentifierTypeNode($node->toString());
+		return $identifier;
 	}
 
 
