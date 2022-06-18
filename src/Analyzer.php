@@ -296,6 +296,11 @@ final class Analyzer
 				$info->methods[$member->nameLower] = $member;
 				$info->dependencies += $this->extractTypeDependencies($member->returnType);
 
+				foreach ($member->tags['throws'] ?? [] as $tagValue) {
+					assert($tagValue instanceof ThrowsTagValueNode);
+					$info->dependencies += $this->extractTypeDependencies($tagValue->type);
+				}
+
 				foreach ($member->parameters as $parameterInfo) {
 					$info->dependencies += $this->extractTypeDependencies($parameterInfo->type);
 					$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
