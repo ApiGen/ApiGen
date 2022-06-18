@@ -3,7 +3,6 @@
 namespace ApiGenX\Analyzer\NodeVisitors;
 
 use PhpParser\Node;
-use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitorAbstract;
 
 
@@ -11,9 +10,11 @@ final class BodySkipper extends NodeVisitorAbstract
 {
 	public function enterNode(Node $node)
 	{
+		// It is not possible to return NodeTraverser::DONT_TRAVERSE_CHILDREN,
+		// because it would break PhpParser\NodeVisitor\NameResolver's resolution of Param nodes.
+
 		if ($node instanceof Node\FunctionLike && isset($node->stmts)) {
-			$node->stmts = []; // TODO: why? maybe to not skip param traversal?
-//			return NodeTraverser::DONT_TRAVERSE_CHILDREN;
+			$node->stmts = [];
 		}
 
 		return null;
