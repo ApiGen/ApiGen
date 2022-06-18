@@ -13,6 +13,8 @@
 			{include classLikeKind, $classLike} {include classLikeLinks, $classLike}
 		</h1>
 
+		<h2><code>{include genericParameters, $classLike->genericParameters}</code></h2>
+
 		{include classLikeDescription, $classLike}
 
 		{if !empty($global->index->dag[$classLike->name->fullLower]) || (isClass($classLike) && ($classLike->extends || $classLike->implements || $classLike->uses)) || (isInterface($classLike) && $classLike->extends) || (isTrait($classLike) && $classLike->uses) || (isEnum($classLike) && ($classLike->implements || $classLike->uses))}

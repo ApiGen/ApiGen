@@ -275,6 +275,12 @@ final class Analyzer
 		$info->startLine = $node->getStartLine();
 		$info->endLine = $node->getEndLine();
 
+		foreach ($info->genericParameters as $genericParameter) {
+			if ($genericParameter->bound !== null) {
+				$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
+			}
+		}
+
 		foreach ($this->extractMembers($info->tags, $node) as $member) {
 			if ($member instanceof ConstantInfo) {
 				$info->constants[$member->name] = $member;

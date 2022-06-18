@@ -33,6 +33,7 @@ use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 
 use function array_pop;
+use function assert;
 use function count;
 use function get_class;
 use function str_ends_with;
@@ -144,6 +145,14 @@ final class PhpDocResolver extends NodeVisitorAbstract
 						}
 					}
 					break;
+			}
+		}
+
+		foreach ($phpDocNode->getAttribute('genericNameContext') ?? [] as $genericParameter) {
+			assert($genericParameter instanceof GenericParameterInfo);
+
+			if ($genericParameter->bound !== null) {
+				yield $genericParameter->bound;
 			}
 		}
 	}

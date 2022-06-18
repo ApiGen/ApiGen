@@ -2,7 +2,11 @@
 
 {define methodSignature, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MethodInfo $method}{*
 	*}{embed autoBreakingLine, items: $method->parameters, maxWidth: 120}{*
-		*}{block before}{embed memberSourceLink, classLike: $classLike, member: $method}{block content}{$method->name}{/block}{/embed}({/block}{*
+		*}{block before}{*
+			*}{embed memberSourceLink, classLike: $classLike, member: $method}{block content}{$method->name}{/block}{/embed}{*
+			*}{include genericParameters, $method->genericParameters}{*
+			*}({*
+		*}{/block}{*
 		*}{block after}){if $method->returnType}: {include type, type: $method->returnType}{/if}{/block}{*
 		*}{block item}{include parameter, classLike: $classLike, parameter: $item}{/block}{*
 		*}{block sep},{/block}{*

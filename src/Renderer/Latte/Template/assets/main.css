@@ -57,6 +57,10 @@ h2 {
 	margin-top: .3em;
 }
 
+h1 + h2 {
+	margin-top: 0;
+}
+
 h3 {
 	font-size: 1.6em;
 	font-weight: normal;
