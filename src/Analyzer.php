@@ -62,6 +62,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
@@ -386,7 +387,7 @@ final class Analyzer
 				$memberInfo->tags = $tags;
 
 				$memberInfo->genericParameters = $memberDoc->getAttribute('genericNameContext') ?? [];
-				$memberInfo->parameters = $this->processParameters($memberDoc->getParamTagValues(), $member->params);
+				$memberInfo->parameters = $this->processParameters($this->extractParamTagValues($memberDoc), $member->params);
 				$memberInfo->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($member->returnType);
 				$memberInfo->byRef = $member->byRef;
 
@@ -495,14 +496,12 @@ final class Analyzer
 
 
 	/**
-	 * @param  ParamTagValueNode[] $paramTags
+	 * @param  ParamTagValueNode[] $paramTags indexed by [parameterName]
 	 * @param  Node\Param[]	       $parameters
 	 * @return ParameterInfo[]
 	 */
 	private function processParameters(array $paramTags, array $parameters): array
 	{
-		$paramTags = array_column($paramTags, null, 'parameterName');
-
 		$parameterInfos = [];
 		foreach ($parameters as $parameter) {
 			assert($parameter->var instanceof Node\Expr\Variable);
@@ -763,6 +762,23 @@ final class Analyzer
 		}
 
 		return $tags;
+	}
+
+
+	/**
+	 * @return ParamTagValueNode[] indexed by [parameterName]
+	 */
+	private function extractParamTagValues(PhpDocNode $node): array
+	{
+		$values = [];
+
+		foreach ($node->children as $child) {
+			if ($child instanceof PhpDocTagNode && $child->value instanceof ParamTagValueNode) {
+				$values[$child->value->parameterName] = $child->value;
+			}
+		}
+
+		return $values;
 	}
 
 
