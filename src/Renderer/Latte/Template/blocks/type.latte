@@ -1,9 +1,7 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
 {define type, PHPStan\PhpDocParser\Ast\Type\TypeNode $type, bool $brackets = false, bool $short = true}{*
-	*}{if $type === null}{*
-
-	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode}{*
+	*}{if $type instanceof PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode}{*
 		*}{var string $lower = strtolower($type->name)}{*
 		*}{ifset $global->index->classLike[$lower]}{include classLikeLink, $global->index->classLike[$lower], $short}{else}{$type}{/ifset}{*
 
