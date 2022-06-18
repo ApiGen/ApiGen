@@ -2,6 +2,8 @@
 
 namespace ApiGenX\Info;
 
+use PHPStan\PhpDocParser\Ast\Type\TypeNode;
+
 use function strtolower;
 
 
@@ -12,6 +14,9 @@ final class ClassLikeReferenceInfo
 
 	/** @var string e.g. 'apigenx\info\traits\hasname' */
 	public string $fullLower;
+
+	/** @var TypeNode[] */
+	public array $genericArgs = [];
 
 
 	public function __construct(string $full, ?string $fullLower = null)

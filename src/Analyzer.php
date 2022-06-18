@@ -58,6 +58,8 @@ use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNullNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprTrueNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ExtendsTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ImplementsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
@@ -67,6 +69,8 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\ThrowsTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\UsesTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
@@ -76,7 +80,6 @@ use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use Symfony\Component\Console\Helper\ProgressBar;
 use UnitEnum;
 
-use function array_column;
 use function array_map;
 use function assert;
 use function count;
@@ -87,7 +90,6 @@ use function is_scalar;
 use function is_string;
 use function iterator_to_array;
 use function sprintf;
-use function strtolower;
 use function substr;
 use function trim;
 
@@ -224,18 +226,25 @@ final class Analyzer
 
 	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo // TODO: handle trait usage
 	{
+		$extendsTagNames = ['extends', 'template-extends', 'phpstan-extends'];
+		$implementsTagNames = ['implements', 'template-implements', 'phpstan-implements'];
+		$useTagNames = ['use', 'template-use', 'phpstan-use'];
+
 		assert($node->namespacedName !== null);
 		$name = new NameInfo($node->namespacedName->toString());
+
+		$classDoc = $this->extractPhpDoc($node);
+		$tags = $this->extractTags($classDoc);
 
 		if ($node instanceof Node\Stmt\Class_) {
 			$info = new ClassInfo($name, $task->primary);
 			$info->abstract = $node->isAbstract();
 			$info->final = $node->isFinal();
-			$info->extends = $node->extends ? $this->processName($node->extends) : null;
-			$info->implements = $this->processNameList($node->implements);
+			$info->extends = $node->extends ? $this->processName($node->extends, $tags, $extendsTagNames) : null;
+			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames);
 
 			foreach ($node->getTraitUses() as $traitUse) {
-				$info->uses += $this->processNameList($traitUse->traits);
+				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
 			}
 
 			$info->dependencies += $info->extends ? [$info->extends->fullLower => $info->extends] : [];
@@ -244,7 +253,7 @@ final class Analyzer
 
 		} elseif ($node instanceof Node\Stmt\Interface_) {
 			$info = new InterfaceInfo($name, $task->primary);
-			$info->extends = $this->processNameList($node->extends);
+			$info->extends = $this->processNameList($node->extends, $tags, $extendsTagNames);
 			$info->dependencies += $info->extends;
 
 		} elseif ($node instanceof Node\Stmt\Trait_) {
@@ -255,10 +264,10 @@ final class Analyzer
 
 			$info = new EnumInfo($name, $task->primary);
 			$info->scalarType = $node->scalarType?->name;
-			$info->implements = $this->processNameList($node->implements) + [$autoImplement->fullLower => $autoImplement];
+			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames) + [$autoImplement->fullLower => $autoImplement];
 
 			foreach ($node->getTraitUses() as $traitUse) {
-				$info->uses += $this->processNameList($traitUse->traits);
+				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
 			}
 
 			$info->dependencies += $info->implements;
@@ -268,10 +277,9 @@ final class Analyzer
 			throw new \LogicException(sprintf('Unsupported ClassLike node %s', get_debug_type($node)));
 		}
 
-		$classDoc = $this->extractPhpDoc($node);
 		$info->genericParameters = $classDoc->getAttribute('genericNameContext') ?? [];
 		$info->description = $this->extractDescription($classDoc);
-		$info->tags = $this->extractTags($classDoc);
+		$info->tags = $tags;
 		$info->file = $task->sourceFile;
 		$info->startLine = $node->getStartLine();
 		$info->endLine = $node->getEndLine();
@@ -502,7 +510,7 @@ final class Analyzer
 
 	/**
 	 * @param  ParamTagValueNode[] $paramTags indexed by [parameterName]
-	 * @param  Node\Param[]	       $parameters
+	 * @param  Node\Param[]        $parameters
 	 * @return ParameterInfo[]
 	 */
 	private function processParameters(array $paramTags, array $parameters): array
@@ -527,23 +535,50 @@ final class Analyzer
 	}
 
 
-	private function processName(Node\Name $name): ClassLikeReferenceInfo
+	/**
+	 * @param PhpDocTagValueNode[][] $tagValues indexed by [tagName][]
+	 * @param string[]               $tagNames  indexed by []
+	 */
+	private function processName(Node\Name $name, array $tagValues = [], array $tagNames = []): ClassLikeReferenceInfo
 	{
-		return new ClassLikeReferenceInfo($name->toString());
+		$refInfo = new ClassLikeReferenceInfo($name->toString());
+
+		foreach ($tagNames as $tagName) {
+			foreach ($tagValues[$tagName] ?? [] as $tagValue) {
+				assert($tagValue instanceof ExtendsTagValueNode || $tagValue instanceof ImplementsTagValueNode || $tagValue instanceof UsesTagValueNode);
+				$refInfo = $tagValue->type->type->getAttribute('classLikeReference');
+				assert($refInfo instanceof ClassLikeReferenceInfo);
+				$refInfo->genericArgs = $tagValue->type->genericTypes;
+			}
+		}
+
+		return $refInfo;
 	}
 
 
 	/**
-	 * @param  Node\Name[] $names indexed by []
+	 * @param  Node\Name[]            $names     indexed by []
+	 * @param  PhpDocTagValueNode[][] $tagValues indexed by [tagName][]
+	 * @param  string[]               $tagNames  indexed by []
 	 * @return ClassLikeReferenceInfo[] indexed by [classLikeName]
 	 */
-	private function processNameList(array $names): array
+	private function processNameList(array $names, array $tagValues = [], array $tagNames = []): array
 	{
 		$nameMap = [];
 
 		foreach ($names as $name) {
-			$nameInfo = $this->processName($name);
+			$nameInfo = new ClassLikeReferenceInfo($name->toString());
 			$nameMap[$nameInfo->fullLower] = $nameInfo;
+		}
+
+		foreach ($tagNames as $tagName) {
+			foreach ($tagValues[$tagName] ?? [] as $tagValue) {
+				assert($tagValue instanceof ExtendsTagValueNode || $tagValue instanceof ImplementsTagValueNode || $tagValue instanceof UsesTagValueNode);
+				$refInfo = $tagValue->type->type->getAttribute('classLikeReference');
+				assert($refInfo instanceof ClassLikeReferenceInfo);
+				$refInfo->genericArgs = $tagValue->type->genericTypes;
+				$nameMap[$refInfo->fullLower] = $refInfo;
+			}
 		}
 
 		return $nameMap;
