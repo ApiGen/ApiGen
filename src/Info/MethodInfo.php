@@ -3,6 +3,7 @@
 namespace ApiGenX\Info;
 
 use ApiGenX\Index\Index;
+use ApiGenX\Info\Traits\HasGenericParameters;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 use function strtolower;
@@ -10,6 +11,9 @@ use function strtolower;
 
 final class MethodInfo extends MemberInfo
 {
+	use HasGenericParameters;
+
+
 	/** @var string */
 	public string $nameLower;
 

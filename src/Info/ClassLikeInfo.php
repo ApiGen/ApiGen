@@ -4,6 +4,7 @@ namespace ApiGenX\Info;
 
 use ApiGenX\Index\Index;
 use ApiGenX\Info\Traits\HasDependencies;
+use ApiGenX\Info\Traits\HasGenericParameters;
 use ApiGenX\Info\Traits\HasLineLocation;
 use ApiGenX\Info\Traits\HasTags;
 
@@ -13,6 +14,7 @@ abstract class ClassLikeInfo implements ElementInfo
 	use HasTags;
 	use HasLineLocation;
 	use HasDependencies;
+	use HasGenericParameters;
 
 
 	/** @var string|null */

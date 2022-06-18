@@ -10,7 +10,7 @@
 	],
 	"bin": ["bin/apigen"],
 	"require": {
-		"php": ">=8.0",
+		"php": ">=8.1",
 		"jetbrains/phpstorm-stubs": "^2022.1",
 		"latte/latte": "^3.0",
 		"league/commonmark": "^2.3",
