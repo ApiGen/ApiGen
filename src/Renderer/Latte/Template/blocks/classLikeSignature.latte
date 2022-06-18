@@ -1,26 +1,24 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
-
 {define classLikeSignature, ApiGenX\Info\ClassLikeInfo $classLike}
 	{include classLikeLink, $classLike}
 
 	{if isInterface($classLike) && $classLike->extends}
 		extends
-		{foreach $classLike->extends as $extends => $_}
-			{include classLikeLink, $global->index->classLike[$extends]}{sep}, {/sep}
+		{foreach $classLike->extends as $ref}
+			{include classLikeReference, $ref}{sep}, {/sep}
 		{/foreach}
 	{/if}
 
 	{if (isClass($classLike) || isEnum($classLike)) && $classLike->implements}
 		implements
-		{foreach $classLike->implements as $implements => $_}
-			{include classLikeLink, $global->index->classLike[$implements]}{sep}, {/sep}
+		{foreach $classLike->implements as $ref}
+			{include classLikeReference, $ref}{sep}, {/sep}
 		{/foreach}
 	{/if}
 
 	{if (isClass($classLike) || isEnum($classLike)) && $classLike->uses}
 		uses
-		{foreach $classLike->uses as $trait => $_}
-			{include classLikeLink, $global->index->classLike[$trait]}{sep}, {/sep}
+		{foreach $classLike->uses as $ref}
+			{include classLikeReference, $ref}{sep}, {/sep}
 		{/foreach}
 	{/if}
 {/define}
