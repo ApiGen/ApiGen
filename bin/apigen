@@ -5,7 +5,6 @@ use ApiGenX\ApiGen;
 use ApiGenX\Bootstrap;
 use Composer\InstalledVersions;
 use Nette\Schema\Helpers;
-use Nette\Utils\FileSystem;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -32,6 +31,7 @@ $app = new SingleCommandApplication();
 $app->setName('ApiGen');
 $app->setVersion(InstalledVersions::getPrettyVersion('apigen/apigen'));
 $app->addArgument('path', InputArgument::IS_ARRAY, 'path to analyze');
+$app->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'path to config file');
 $app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask');
 $app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask');
 $app->addOption('project-dir', 'p', InputOption::VALUE_REQUIRED, 'project directory, defaults to current working directory');
@@ -52,11 +52,9 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 
 	$tempDir = $options['temp'] ?? "$systemTempDir/apigen";
 
-	$config = [
-		'parameters' => [
-			'currentWorkingDir' => $currentWorkingDir,
-			'systemTempDir' => $systemTempDir,
-		],
+	$parameters = [
+		'currentWorkingDir' => $currentWorkingDir,
+		'systemTempDir' => $systemTempDir,
 	];
 
 	$optionsMapping = [
@@ -71,34 +69,26 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 		'output' => 'outputDir',
 	];
 
-	$pathParameters = [
-		'tempDir' => true,
-		'projectDir' => true,
-		'outputDir' => true,
-	];
-
 	foreach ($optionsMapping as $optionKey => $parameterKey) {
 		if (!isset($options[$optionKey])) {
 			continue;
 
 		} elseif (is_array($options[$optionKey])) {
-			$config['parameters'][$parameterKey] = $options[$optionKey];
-			$config['parameters'][$parameterKey][Helpers::PREVENT_MERGING] = true;
-
-		} elseif (!isset($pathParameters[$parameterKey]) || FileSystem::isAbsolute($options[$optionKey])) {
-			$config['parameters'][$parameterKey] = $options[$optionKey];
+			$parameters[$parameterKey] = $options[$optionKey];
+			$parameters[$parameterKey][Helpers::PREVENT_MERGING] = true;
 
 		} else {
-			$config['parameters'][$parameterKey] = FileSystem::joinPaths($currentWorkingDir, $options[$optionKey]);
+			$parameters[$parameterKey] = $options[$optionKey];
 		}
 	}
 
 	foreach ($paths as $path) {
-		$config['parameters']['paths'][] = FileSystem::isAbsolute($path) ? $path : FileSystem::joinPaths($currentWorkingDir, $path);
-		$config['parameters']['paths'][Helpers::PREVENT_MERGING] = true;
+		$parameters['paths'][] = $path;
+		$parameters['paths'][Helpers::PREVENT_MERGING] = true;
 	}
 
-	$container = Bootstrap::createContainer($style, $tempDir, $config);
+	$parameters = Bootstrap::resolvePaths($parameters, $currentWorkingDir);
+	$container = Bootstrap::createContainer($style, $tempDir, $parameters, $options['config'] ?? null);
 	$container->getByType(ApiGen::class)->generate($style);
 
 	return Command::SUCCESS;
