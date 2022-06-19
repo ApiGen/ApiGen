@@ -40,6 +40,7 @@ use function array_pop;
 use function assert;
 use function count;
 use function get_class;
+use function str_contains;
 use function str_ends_with;
 use function strtolower;
 use function substr;
@@ -68,14 +69,33 @@ final class PhpDocResolver extends NodeVisitorAbstract
 	];
 
 	private const KEYWORDS = self::NATIVE_KEYWORDS + [
+		'array-key' => true,
+		'associative-array' => true,
 		'boolean' => true,
+		'callable-string' => true,
 		'class-string' => true,
 		'double' => true,
 		'integer' => true,
+		'interface-string' => true,
+		'key-of' => true,
 		'list' => true,
+		'literal-string' => true,
+		'negative-int' => true,
+		'never-return' => true,
+		'never-returns' => true,
+		'no-return' => true,
+		'non-empty-array' => true,
+		'non-empty-list' => true,
+		'non-empty-string' => true,
+		'noreturn' => true,
 		'number' => true,
+		'numeric' => true,
+		'numeric-string' => true,
+		'positive-int' => true,
 		'resource' => true,
 		'scalar' => true,
+		'trait-string' => true,
+		'value-of' => true,
 	];
 
 	/** @var GenericParameterInfo[][] indexed by [][parameterName] */
@@ -249,7 +269,7 @@ final class PhpDocResolver extends NodeVisitorAbstract
 			foreach (self::getIdentifiers($type) as $identifier) {
 				$lower = strtolower($identifier->name);
 
-				if (isset(self::KEYWORDS[$lower])) {
+				if (isset(self::KEYWORDS[$identifier->name]) || isset(self::NATIVE_KEYWORDS[$lower]) || str_contains($lower, '-')) {
 					$identifier->setAttribute('kind', IdentifierKind::Keyword);
 					continue;
 				}
