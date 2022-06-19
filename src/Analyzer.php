@@ -314,6 +314,10 @@ final class Analyzer
 					$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
 				}
 
+				foreach ($member->genericParameters as $genericParameter) {
+					$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
+				}
+
 			} elseif ($member instanceof EnumCaseInfo) {
 				assert($info instanceof EnumInfo);
 				$info->cases[$member->name] = $member;
@@ -321,6 +325,12 @@ final class Analyzer
 
 			} else {
 				throw new \LogicException(sprintf('Unexpected member type %s', get_debug_type($member)));
+			}
+		}
+
+		foreach ($info->dependencies as $dependency) {
+			foreach ($dependency->genericArgs as $genericArg) {
+				$info->dependencies += $this->extractTypeDependencies($genericArg);
 			}
 		}
 
@@ -546,9 +556,16 @@ final class Analyzer
 		foreach ($tagNames as $tagName) {
 			foreach ($tagValues[$tagName] ?? [] as $tagValue) {
 				assert($tagValue instanceof ExtendsTagValueNode || $tagValue instanceof ImplementsTagValueNode || $tagValue instanceof UsesTagValueNode);
-				$refInfo = $tagValue->type->type->getAttribute('classLikeReference');
-				assert($refInfo instanceof ClassLikeReferenceInfo);
-				$refInfo->genericArgs = $tagValue->type->genericTypes;
+
+				$kind = $tagValue->type->type->getAttribute('kind');
+				assert($kind instanceof IdentifierKind);
+
+				if ($kind === IdentifierKind::ClassLike) {
+					$refInfo = $tagValue->type->type->getAttribute('classLikeReference');
+					assert($refInfo instanceof ClassLikeReferenceInfo);
+
+					$refInfo->genericArgs = $tagValue->type->genericTypes;
+				}
 			}
 		}
 
@@ -574,10 +591,17 @@ final class Analyzer
 		foreach ($tagNames as $tagName) {
 			foreach ($tagValues[$tagName] ?? [] as $tagValue) {
 				assert($tagValue instanceof ExtendsTagValueNode || $tagValue instanceof ImplementsTagValueNode || $tagValue instanceof UsesTagValueNode);
-				$refInfo = $tagValue->type->type->getAttribute('classLikeReference');
-				assert($refInfo instanceof ClassLikeReferenceInfo);
-				$refInfo->genericArgs = $tagValue->type->genericTypes;
-				$nameMap[$refInfo->fullLower] = $refInfo;
+
+				$kind = $tagValue->type->type->getAttribute('kind');
+				assert($kind instanceof IdentifierKind);
+
+				if ($kind === IdentifierKind::ClassLike) {
+					$refInfo = $tagValue->type->type->getAttribute('classLikeReference');
+					assert($refInfo instanceof ClassLikeReferenceInfo);
+
+					$refInfo->genericArgs = $tagValue->type->genericTypes;
+					$nameMap[$refInfo->fullLower] = $refInfo;
+				}
 			}
 		}
 
