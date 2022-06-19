@@ -136,6 +136,20 @@ code a b {
 }
 
 
+/* classLikeSignatureTable */
+.classLikeSignatureTable {
+	font-size: 16px;
+}
+
+.classLikeSignatureTable th {
+	font-weight: normal;
+	text-align: left;
+	color: #053368;
+	vertical-align: top;
+	padding-right: 12px;
+}
+
+
 /* classTree */
 .classTree .classTree li {
 	position: relative;

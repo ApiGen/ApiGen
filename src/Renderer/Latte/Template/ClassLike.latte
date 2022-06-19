@@ -13,18 +13,20 @@
 			{include classLikeKind, $classLike} {include classLikeLinks, $classLike}
 		</h1>
 
-		<h2><code>{include genericParameters, $classLike->genericParameters}</code></h2>
+		{if $classLike->genericParameters}
+			<h2><code>{include genericParameters, $classLike->genericParameters}</code></h2>
+		{/if}
 
+		{include classLikeSignatureTable, $classLike}
 		{include classLikeDescription, $classLike}
 
-		{if !empty($global->index->dag[$classLike->name->fullLower]) || (isClass($classLike) && ($classLike->extends || $classLike->implements || $classLike->uses)) || (isInterface($classLike) && $classLike->extends) || (isTrait($classLike) && $classLike->uses) || (isEnum($classLike) && ($classLike->implements || $classLike->uses))}
+		{if !empty($global->index->dag[$classLike->name->fullLower]) || (isClass($classLike) && $classLike->extends) || (isInterface($classLike) && $classLike->extends)}
 			<div class="classLikeSection">
 				{include classTree, $classLike, $global->index->dag}
 			</div>
 		{/if}
 
 		<div class="classLikeSection">
-			{if isClass($classLike) && ($classLike->abstract || $classLike->final)}<b>{if $classLike->abstract}Abstract{else}Final{/if}</b><br>{/if}
 			{if $classLike->file && $classLike->primary}<b>Located at</b> <a href="{classLikeSourceUrl($classLike)}" title="Go to source code">{relativePath($classLike->file)}</a><br>{/if}
 		</div>
 
