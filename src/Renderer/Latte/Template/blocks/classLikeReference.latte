@@ -1,6 +1,6 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
-{define classLikeReference, ApiGenX\Info\ClassLikeReferenceInfo $ref, bool $short = false}{*
+{define classLikeReference, ApiGenX\Info\ClassLikeReferenceInfo $ref, bool $short = true}{*
 	*}{include classLikeLink, $global->index->classLike[$ref->fullLower], short: $short}{*
 	*}{if $ref->genericArgs}{*
 		*}&lt;{*
