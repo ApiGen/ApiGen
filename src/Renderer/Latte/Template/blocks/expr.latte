@@ -55,7 +55,7 @@
 		*}{if $expr->if} ? {include this, expr: $expr->if, scope: $scope} : {else} ?: {/if}{*
 		*}{include this, expr: $expr->else, scope: $scope}{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\ArrayKeyFetchExprInfo}{*
-		*}{include this, expr: $expr->var, scope: $scope}{*
+		*}{include this, expr: $expr->array, scope: $scope}{*
 		*}[{include this, expr: $expr->key, scope: $scope}]{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\NewExprInfo}{*
 		*}{var $classLike = $global->index->classLike[$expr->classLike->fullLower]}{*
