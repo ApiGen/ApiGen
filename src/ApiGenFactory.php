@@ -45,7 +45,7 @@ final class ApiGenFactory
 		$nameContext = $nameResolver->getNameContext();
 
 		$phpDocLexer = new Lexer();
-		$phpDocParser = new PhpDocParser(new TypeParser(), new ConstExprParser());
+		$phpDocParser = new PhpDocParser(new TypeParser(), new ConstExprParser(), requireWhitespaceBeforeDescription: true);
 
 		$traverser = new NodeTraverser();
 		$traverser->addVisitor(new BodySkipper());
