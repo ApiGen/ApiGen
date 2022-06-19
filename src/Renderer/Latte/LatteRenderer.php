@@ -44,52 +44,54 @@ final class LatteRenderer implements Renderer
 		private Latte\Engine $latte,
 		private UrlGenerator $urlGenerator,
 		private int $workerCount,
+		private string $outputDir,
+		private string $title,
 	) {
 	}
 
 
-	public function render(ProgressBar $progressBar, Index $index, string $outputDir, string $title): void
+	public function render(ProgressBar $progressBar, Index $index): void
 	{
 		$templateDir = __DIR__ . '/Template';
 		$assetsDir = $templateDir . '/assets';
 
-		FileSystem::delete($outputDir);
-		FileSystem::createDir($outputDir);
+		FileSystem::delete($this->outputDir);
+		FileSystem::createDir($this->outputDir);
 
 		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
 			$name = substr($path, strlen($assetsDir) + 1);
-			$target = "$outputDir/" . $this->urlGenerator->getAssetPath($name);
+			$target = "$this->outputDir/" . $this->urlGenerator->getAssetPath($name);
 			FileSystem::copy($path, $target);
 		}
 
 		$primaryFiles = array_filter($index->files, fn(FileIndex $file) => $file->primary);
 		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($primaryFiles));
 
-		$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getIndexPath(), new IndexTemplate(
+		$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getIndexPath(), new IndexTemplate(
 			global: new GlobalParameters(
 				index: $index,
-				title: $title,
+				title: $this->title,
 				activePage: 'index',
 				activeNamespace: null,
 				activeClassLike: null,
 			),
 		));
 
-		$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getTreePath(), new TreeTemplate(
+		$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getTreePath(), new TreeTemplate(
 			global: new GlobalParameters(
 				index: $index,
-				title: $title,
+				title: $this->title,
 				activePage: 'tree',
 				activeNamespace: null,
 				activeClassLike: null,
 			),
 		));
 
-		$this->forkLoop($progressBar, $index->namespace, function (?ProgressBar $progressBar, NamespaceIndex $info) use ($outputDir, $index, $title) {
-			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
+		$this->forkLoop($progressBar, $index->namespace, function (?ProgressBar $progressBar, NamespaceIndex $info) use ($index) {
+			$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
-					title: $title,
+					title: $this->title,
 					activePage: 'namespace',
 					activeNamespace: $info,
 					activeClassLike: null,
@@ -98,11 +100,11 @@ final class LatteRenderer implements Renderer
 			));
 		});
 
-		$this->forkLoop($progressBar, $index->classLike, function (?ProgressBar $progressBar, ClassLikeInfo $info) use ($outputDir, $index, $title) {
-			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
+		$this->forkLoop($progressBar, $index->classLike, function (?ProgressBar $progressBar, ClassLikeInfo $info) use ($index) {
+			$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
 				global: new GlobalParameters(
 					index: $index,
-					title: $title,
+					title: $this->title,
 					activePage: 'classLike',
 					activeNamespace: $index->namespace[$info->name->namespaceLower],
 					activeClassLike: $info,
@@ -111,14 +113,14 @@ final class LatteRenderer implements Renderer
 			));
 		});
 
-		$this->forkLoop($progressBar, $primaryFiles, function (?ProgressBar $progressBar, FileIndex $file, string $path) use ($outputDir, $index, $title) {
+		$this->forkLoop($progressBar, $primaryFiles, function (?ProgressBar $progressBar, FileIndex $file, string $path) use ($index) {
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
-			$this->renderTemplate($progressBar, "$outputDir/" . $this->urlGenerator->getSourcePath($path), new SourceTemplate(
+			$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getSourcePath($path), new SourceTemplate(
 				global: new GlobalParameters(
 					index: $index,
-					title: $title,
+					title: $this->title,
 					activePage: 'source',
 					activeNamespace: $activeNamespace,
 					activeClassLike: $activeClassLike,

@@ -1,26 +1,19 @@
 #!/usr/bin/env php
 <?php declare(strict_types = 1);
 
-use ApiGenX\ApiGenFactory;
+use ApiGenX\ApiGen;
+use ApiGenX\Bootstrap;
 use Composer\InstalledVersions;
-use Nette\Utils\Finder;
-use Nette\Utils\Strings;
+use Nette\Schema\Helpers;
+use Nette\Utils\FileSystem;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Helper\TableSeparator;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\SingleCommandApplication;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
-error_reporting(E_ALL);
-ini_set('display_errors', 'stderr');
-
-set_error_handler(function (int $severity, string $message, string $file, int $line) {
-	if (error_reporting() & $severity) {
-		throw new ErrorException($message, 0, $severity, $file, $line);
-	}
-});
 
 if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 	require __DIR__ . '/../vendor/autoload.php';
@@ -33,86 +26,80 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 	exit(1);
 }
 
+Bootstrap::configureErrorHandling();
+
 $app = new SingleCommandApplication();
 $app->setName('ApiGen');
 $app->setVersion(InstalledVersions::getPrettyVersion('apigen/apigen'));
-
-$app->addOption('source', 's', InputOption::VALUE_REQUIRED, 'source directory');
-$app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask', ['*.php']);
-$app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask', ['temp/**', 'var/**', 'vendor/**']);
+$app->addArgument('path', InputArgument::IS_ARRAY, 'path to analyze');
+$app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask');
+$app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask');
+$app->addOption('project-dir', 'p', InputOption::VALUE_REQUIRED, 'project directory, defaults to current working directory');
+$app->addOption('temp', null, InputOption::VALUE_REQUIRED, 'temp directory, defaults to sys_get_temp_dir() . \'/apigen\'');
+$app->addOption('workers', 'w', InputOption::VALUE_REQUIRED, 'worker count');
+$app->addOption('memory-limit', null, InputOption::VALUE_REQUIRED, 'memory limit');
+$app->addOption('title', 't', InputOption::VALUE_REQUIRED, 'title');
+$app->addOption('base-url', null, InputOption::VALUE_REQUIRED, 'base URL');
 $app->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'output directory');
-$app->addOption('workers', 'w', InputOption::VALUE_REQUIRED, 'worker count', 8);
-$app->addOption('title', 't', InputOption::VALUE_REQUIRED, 'title', 'API Documentation');
-$app->addOption('base-url', null, InputOption::VALUE_REQUIRED, 'base URL', '');
-$app->addOption('memory-limit', null, InputOption::VALUE_REQUIRED, 'memory limit', '512M');
 
 $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): int {
 	$options = $input->getOptions();
-
-	$workingDir = getcwd();
-	$sourceDir = $options['source'] ?? $workingDir;
-	$include = $options['include'];
-	$exclude = $options['exclude'];
-	$outputDir = $options['output'] ?? sprintf('%s/api', $workingDir);
-	$workerCount = (int) $options['workers'];
-	$title = $options['title'];
-	$baseUrl = $options['base-url'];
-	$memoryLimit = $options['memory-limit'];
-
+	$paths = $input->getArgument('path');
 	$style = new SymfonyStyle($input, $output);
-	$style->title("ApiGen: Generating $title");
 
-	if (!is_dir($sourceDir)) {
-		$style->error(sprintf("Directory '%s' does not exist", $sourceDir));
-		return Command::FAILURE;
+	$systemTempDir = sys_get_temp_dir();
+	$currentWorkingDir = getcwd();
+
+	$tempDir = $options['temp'] ?? "$systemTempDir/apigen";
+
+	$config = [
+		'parameters' => [
+			'currentWorkingDir' => $currentWorkingDir,
+			'systemTempDir' => $systemTempDir,
+		],
+	];
+
+	$optionsMapping = [
+		'include' => 'include',
+		'exclude' => 'exclude',
+		'project-dir' => 'projectDir',
+		'temp' => 'tempDir',
+		'workers' => 'workerCount',
+		'memory-limit' => 'memoryLimit',
+		'title' => 'title',
+		'base-url' => 'baseUrl',
+		'output' => 'outputDir',
+	];
+
+	$pathParameters = [
+		'tempDir' => true,
+		'projectDir' => true,
+		'outputDir' => true,
+	];
+
+	foreach ($optionsMapping as $optionKey => $parameterKey) {
+		if (!isset($options[$optionKey])) {
+			continue;
+
+		} elseif (is_array($options[$optionKey])) {
+			$config['parameters'][$parameterKey] = $options[$optionKey];
+			$config['parameters'][$parameterKey][Helpers::PREVENT_MERGING] = true;
+
+		} elseif (!isset($pathParameters[$parameterKey]) || FileSystem::isAbsolute($options[$optionKey])) {
+			$config['parameters'][$parameterKey] = $options[$optionKey];
+
+		} else {
+			$config['parameters'][$parameterKey] = FileSystem::joinPaths($currentWorkingDir, $options[$optionKey]);
+		}
 	}
 
-	if (!is_dir(dirname($outputDir))) {
-		$style->error(sprintf("Directory '%s' does not exist", dirname($outputDir)));
-		return Command::FAILURE;
+	foreach ($paths as $path) {
+		$config['parameters']['paths'][] = FileSystem::isAbsolute($path) ? $path : FileSystem::joinPaths($currentWorkingDir, $path);
+		$config['parameters']['paths'][Helpers::PREVENT_MERGING] = true;
 	}
 
-	if (!ini_set('memory_limit', $memoryLimit)) {
-		$style->warning('Failed to configure memory limit');
-	}
-
-	$sourceDir = realpath($sourceDir);
-	$outputDir = realpath(dirname($outputDir)) . DIRECTORY_SEPARATOR . basename($outputDir);
-	$files = Finder::findFiles(...$include)->exclude(...$exclude)->from($sourceDir);
-	$files = array_keys(iterator_to_array($files));
-
-	if (!count($files)) {
-		$style->error('No source files found.');
-		return Command::FAILURE;
-
-	} elseif ($style->isDebug()) {
-		$style->text('<info>Matching source files:</info>');
-		$style->newLine();
-		$style->listing($files);
-
-	} elseif ($style->isVerbose()) {
-		$style->text(sprintf('Found %d source files.', count($files)));
-	}
-
-	$files = array_map('realpath', $files);
-	$baseDir = Strings::findPrefix($files);
-
-	if ($style->isDebug()) {
-		$style->definitionList(
-			'Resolved Configuration',
-			new TableSeparator(),
-			['sourceDir' => $sourceDir],
-			['outputDir' => $outputDir],
-			['baseDir' => $baseDir],
-			['baseUrl' => $baseUrl],
-			['memoryLimit' => $memoryLimit],
-			['workerCount' => $workerCount],
-		);
-	}
-
-	$apiGenFactory = new ApiGenFactory();
-	$apiGen = $apiGenFactory->create($style, $sourceDir, $baseDir, $baseUrl, $workerCount);
-	$apiGen->generate($style, $files, $outputDir, $title);
+	$container = Bootstrap::createContainer($style, $tempDir, $config);
+	$container->getByType(ApiGen::class)->generate($style);
 
 	return Command::SUCCESS;
 });

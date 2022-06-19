@@ -14,6 +14,7 @@
 		"jetbrains/phpstorm-stubs": "^2022.1",
 		"latte/latte": "^3.0",
 		"league/commonmark": "^2.3",
+		"nette/di": "^3.0",
 		"nette/finder": "^2.5",
 		"nette/utils": "^3.2",
 		"nikic/php-parser": "^4.14",

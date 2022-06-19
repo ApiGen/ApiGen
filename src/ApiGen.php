@@ -4,69 +4,118 @@ namespace ApiGenX;
 
 use ApiGenX\Analyzer\AnalyzeResult;
 use ApiGenX\Index\Index;
+use Nette\Utils\Finder;
 use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_column;
+use function array_keys;
+use function array_map;
 use function array_slice;
 use function count;
 use function hrtime;
 use function implode;
+use function iterator_to_array;
 use function memory_get_peak_usage;
 use function sprintf;
 
 
 final class ApiGen
 {
+	/**
+	 * @param string[] $paths   indexed by []
+	 * @param string[] $include indexed by []
+	 * @param string[] $exclude indexed by []
+	 */
 	public function __construct(
+		private OutputStyle $output,
 		private Analyzer $analyzer,
 		private Indexer $indexer,
 		private Renderer $renderer,
+		private string $memoryLimit,
+		private array $paths,
+		private array $include,
+		private array $exclude,
 	) {
 	}
 
 
-	/**
-	 * @param string[] $files indexed by []
-	 */
-	public function generate(SymfonyStyle $output, array $files, string $outputDir, string $title): void
+	public function generate(): void
 	{
+		$this->setMemoryLimit();
+		$files = $this->findFiles();
+
 		$analyzeTime = -hrtime(true);
-		$analyzeResult = $this->analyze($output, $files);
+		$analyzeResult = $this->analyze($files);
 		$analyzeTime += hrtime(true);
 
 		$indexTime = -hrtime(true);
-		$index = $this->index($output, $analyzeResult);
+		$index = $this->index($analyzeResult);
 		$indexTime += hrtime(true);
 
 		$renderTime = -hrtime(true);
-		$this->render($output, $index, $outputDir, $title);
+		$this->render($index);
 		$renderTime += hrtime(true);
 
-		$this->performance($output, $analyzeTime, $indexTime, $renderTime);
-		$this->finish($output, $analyzeResult);
+		$this->performance($analyzeTime, $indexTime, $renderTime);
+		$this->finish($analyzeResult);
+	}
+
+
+	private function setMemoryLimit(): void
+	{
+		if (!ini_set('memory_limit', $this->memoryLimit)) {
+			$this->output->warning('Failed to configure memory limit');
+		}
+	}
+
+
+	/**
+	 * @return string[] $files indexed by []
+	 */
+	private function findFiles(): array
+	{
+		$files = Finder::findFiles(...$this->include)
+			->exclude(...$this->exclude)
+			->from(...$this->paths);
+
+		$files = array_map('realpath', array_keys(iterator_to_array($files)));
+
+		if (!count($files)) {
+			throw new \RuntimeException('No source files found.');
+
+		} elseif ($this->output->isDebug()) {
+			$this->output->text('<info>Matching source files:</info>');
+			$this->output->newLine();
+			$this->output->listing($files);
+
+		} elseif ($this->output->isVerbose()) {
+			$this->output->text(sprintf('Found %d source files.', count($files)));
+		}
+
+		return $files;
 	}
 
 
 	/**
 	 * @param string[] $files indexed by []
 	 */
-	private function analyze(SymfonyStyle $output, array $files): AnalyzeResult
+	private function analyze(array $files): AnalyzeResult
 	{
-		$progressBar = $output->createProgressBar();
+		$progressBar = $this->output->createProgressBar();
 		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% [%bar%] %percent:3s%% %message%');
 
 		$analyzeResult = $this->analyzer->analyze($progressBar, $files);
 
 		$progressBar->setMessage('done');
 		$progressBar->finish();
-		$output->newLine(2);
+		$this->output->newLine(2);
 
 		return $analyzeResult;
 	}
 
 
-	private function index(SymfonyStyle $output, AnalyzeResult $analyzeResult): Index
+	private function index(AnalyzeResult $analyzeResult): Index
 	{
 		$index = new Index();
 
@@ -81,23 +130,23 @@ final class ApiGen
 	}
 
 
-	private function render(SymfonyStyle $output, Index $index, string $outputDir, string $title): void
+	private function render(Index $index): void
 	{
-		$progressBar = $output->createProgressBar();
+		$progressBar = $this->output->createProgressBar();
 		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% [%bar%] %percent:3s%% %message%');
 
-		$this->renderer->render($progressBar, $index, $outputDir, $title);
+		$this->renderer->render($progressBar, $index);
 
 		$progressBar->setMessage('done');
 		$progressBar->finish();
-		$output->newLine(2);
+		$this->output->newLine(2);
 	}
 
 
-	private function performance(SymfonyStyle $output, float $analyzeTime, float $indexTime, float $renderTime): void
+	private function performance(float $analyzeTime, float $indexTime, float $renderTime): void
 	{
-		if ($output->isDebug()) {
-			$output->definitionList(
+		if ($this->output->isDebug()) {
+			$this->output->definitionList(
 				'Performance',
 				new TableSeparator(),
 				['Analyze Time' => sprintf('%6.0f ms', $analyzeTime / 1e6)],
@@ -109,25 +158,25 @@ final class ApiGen
 	}
 
 
-	private function finish(SymfonyStyle $output, AnalyzeResult $analyzeResult): void
+	private function finish(AnalyzeResult $analyzeResult): void
 	{
 		if (!$analyzeResult->error) {
-			$output->success('Finished OK');
+			$this->output->success('Finished OK');
 			return;
 		}
 
 		foreach ($analyzeResult->error as $errorKind => $errorGroup) {
 			$errorLines = array_column($errorGroup, 'message');
 
-			if (!$output->isVerbose() && count($errorLines) > 5) {
+			if (!$this->output->isVerbose() && count($errorLines) > 5) {
 				$errorLines = array_slice($errorLines, 0, 5);
 				$errorLines[] = '...';
 				$errorLines[] = sprintf('and %d more (use --verbose to show all)', count($errorGroup) - 5);
 			}
 
-			$output->error(implode("\n\n", [sprintf('%dx %s:', count($errorGroup), $errorKind), ...$errorLines]));
+			$this->output->error(implode("\n\n", [sprintf('%dx %s:', count($errorGroup), $errorKind), ...$errorLines]));
 		}
 
-		$output->warning('Finished with errors');
+		$this->output->warning('Finished with errors');
 	}
 }

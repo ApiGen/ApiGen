@@ -8,5 +8,5 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 interface Renderer
 {
-	public function render(ProgressBar $progressBar, Index $index, string $outputDir, string $title): void;
+	public function render(ProgressBar $progressBar, Index $index): void;
 }

@@ -12,6 +12,7 @@ final class LatteEngineFactory
 	public function __construct(
 		private LatteFunctions $functions,
 		private UrlGenerator $url,
+		private ?string $tempDir,
 	) {
 	}
 
@@ -21,6 +22,7 @@ final class LatteEngineFactory
 		$latte = new Latte\Engine();
 		$latte->setStrictTypes();
 		$latte->setExceptionHandler(fn(Throwable $e) => throw $e);
+		$latte->setTempDirectory($this->tempDir);
 
 		$latte->addFunction('isClass', [$this->functions, 'isClass']);
 		$latte->addFunction('isInterface', [$this->functions, 'isInterface']);
