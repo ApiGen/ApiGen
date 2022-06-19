@@ -74,6 +74,32 @@
 	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ConstTypeNode}{*
 		*}{$type}{*
 
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode}{*
+		*}{include this, type: $type->type, short: $short}{*
+		*}[{include this, type: $type->offset, short: $short}]{*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode}{*
+		*}({*
+		*}{include this, type: $type->subjectType, short: $short}{*
+		*}{if $type->negated} is not {else} is {/if}{*
+		*}{include this, type: $type->targetType, short: $short}{*
+		*} ? {*
+		*}{include this, type: $type->if, short: $short}{*
+		*} : {*
+		*}{include this, type: $type->else, short: $short}{*
+		*}){*
+
+	*}{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode}{*
+		*}({*
+		*}{$type->parameterName}{*
+		*}{if $type->negated} is not {else} is {/if}{*
+		*}{include this, type: $type->targetType, short: $short}{*
+		*} ? {*
+		*}{include this, type: $type->if, short: $short}{*
+		*} : {*
+		*}{include this, type: $type->else, short: $short}{*
+		*}){*
+
 	*}{else}{*
 		*}UNRESOLVED{*
 	*}{/if}{*

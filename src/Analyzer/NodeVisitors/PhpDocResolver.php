@@ -26,10 +26,13 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\CallableTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
+use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
@@ -259,6 +262,21 @@ final class PhpDocResolver extends NodeVisitorAbstract
 			foreach ($typeNode->items as $item) {
 				yield from self::getIdentifiers($item->valueType);
 			}
+
+		} elseif ($typeNode instanceof OffsetAccessTypeNode) {
+			yield from self::getIdentifiers($typeNode->type);
+			yield from self::getIdentifiers($typeNode->offset);
+
+		} elseif ($typeNode instanceof ConditionalTypeNode) {
+			yield from self::getIdentifiers($typeNode->subjectType);
+			yield from self::getIdentifiers($typeNode->targetType);
+			yield from self::getIdentifiers($typeNode->if);
+			yield from self::getIdentifiers($typeNode->else);
+
+		} elseif ($typeNode instanceof ConditionalTypeForParameterNode) {
+			yield from self::getIdentifiers($typeNode->targetType);
+			yield from self::getIdentifiers($typeNode->if);
+			yield from self::getIdentifiers($typeNode->else);
 		}
 	}
 
