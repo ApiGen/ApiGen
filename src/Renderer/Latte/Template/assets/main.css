@@ -380,3 +380,17 @@ code a b {
 .table-spacer {
 	height: 30px
 }
+
+@media (max-width: 980px) {
+	.layout {
+		flex-direction: column-reverse;
+	}
+
+	.layout-aside {
+		position: static;
+	}
+
+	.layout-main {
+		margin-left: 10px;
+	}
+}
