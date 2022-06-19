@@ -194,7 +194,7 @@ final class Analyzer
 	 * @param  Node[] $nodes indexed by []
 	 * @return Iterator<ClassLikeInfo>
 	 */
-	private function processNodes(AnalyzeTask $task, array $nodes): Iterator // TODO: move to astTraverser?
+	private function processNodes(AnalyzeTask $task, array $nodes): Iterator
 	{
 		foreach ($nodes as $node) {
 			if ($node instanceof Node\Stmt\Namespace_) {

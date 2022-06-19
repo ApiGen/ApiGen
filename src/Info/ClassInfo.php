@@ -2,8 +2,6 @@
 
 namespace ApiGenX\Info;
 
-use ApiGenX\Index\Index;
-
 
 final class ClassInfo extends ClassLikeInfo
 {
@@ -21,30 +19,4 @@ final class ClassInfo extends ClassLikeInfo
 
 	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $uses = [];
-
-
-	/**
-	 * @return iterable<ClassInfo>
-	 */
-	public function ancestors(Index $index): iterable // TODO: remove?
-	{
-		if ($this->extends) {
-			$parent = $index->class[$this->extends->fullLower];
-
-			yield $parent;
-			yield from $parent->ancestors($index);
-		}
-	}
-
-
-	/**
-	 * @return iterable<ClassInfo>
-	 */
-	public function indirectDescendants(Index $index): iterable
-	{
-		foreach ($index->classExtends[$this->name->fullLower] ?? [] as $descendant) {
-			yield from $index->classExtends[$descendant->name->fullLower] ?? [];
-			yield from $descendant->indirectDescendants($index);
-		}
-	}
 }
