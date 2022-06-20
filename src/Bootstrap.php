@@ -75,7 +75,7 @@ final class Bootstrap
 	}
 
 
-	public static function validateParameters(array $parameters): void
+	private static function validateParameters(array $parameters): void
 	{
 		$schema = Expect::structure([
 			'currentWorkingDir' => Expect::string(),
