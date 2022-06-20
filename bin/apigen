@@ -70,15 +70,12 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 	];
 
 	foreach ($optionsMapping as $optionKey => $parameterKey) {
-		if (!isset($options[$optionKey])) {
-			continue;
+		if (is_string($options[$optionKey])) {
+			$parameters[$parameterKey] = $options[$optionKey];
 
-		} elseif (is_array($options[$optionKey])) {
+		} elseif (is_array($options[$optionKey]) && count($options[$optionKey]) > 0) {
 			$parameters[$parameterKey] = $options[$optionKey];
 			$parameters[$parameterKey][Helpers::PREVENT_MERGING] = true;
-
-		} else {
-			$parameters[$parameterKey] = $options[$optionKey];
 		}
 	}
 
