@@ -60,7 +60,9 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 	$parameters = [];
 	foreach ($optionsMapping as $optionKey => $parameterKey) {
 		if (is_string($options[$optionKey])) {
-			$parameters[$parameterKey] = $options[$optionKey];
+			$parameters[$parameterKey] = $optionKey === 'workers'
+				? (int) $options[$optionKey]
+				: $options[$optionKey];
 
 		} elseif (is_array($options[$optionKey]) && count($options[$optionKey]) > 0) {
 			$parameters[$parameterKey] = $options[$optionKey];
