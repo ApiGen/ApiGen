@@ -17,10 +17,17 @@ use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_map;
 use function dirname;
+use function error_reporting;
 use function getcwd;
+use function ini_set;
 use function is_int;
+use function set_error_handler;
 use function str_starts_with;
 use function sys_get_temp_dir;
+
+use const E_ALL;
+use const PHP_RELEASE_VERSION;
+use const PHP_VERSION_ID;
 
 
 final class Bootstrap
