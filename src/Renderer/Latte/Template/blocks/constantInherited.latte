@@ -8,7 +8,7 @@
 				<td class="table-cell">
 					<code>{*
 						*}{foreach $from->constants as $constantName => $constant}{*
-							*}{skipIf isset($overriden[$constantName]) || $constant->private}{*
+							*}{skipIf isset($overriden[$constantName])}{*
 							*}{embed memberLink, $from, $constant}{block content}<code>{$constant->name}</code>{/block}{/embed}{*
 							*}{sep}, {/sep}{*
 						*}{else}{*

@@ -1,18 +1,15 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
 {define propertySummary, ApiGenX\Info\ClassLikeInfo $classLike}
-	{try}
+	{if $classLike->properties}
 		<table class="table" id="properties">
 			<tr>
 				<th class="table-heading" colspan="4">Properties</th>
 			</tr>
 
 			{foreach $classLike->properties as $property}
-				{skipIf $property->private}
 				{include property, classLike: $classLike, property: $property}
-			{else}
-				{rollback}
 			{/foreach}
 		</table>
-	{/try}
+	{/if}
 {/define}

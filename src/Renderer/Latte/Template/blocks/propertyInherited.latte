@@ -8,7 +8,7 @@
 				<td class="table-cell">
 					<code>{*
 						*}{foreach $from->properties as $propertyName => $property}{*
-							*}{skipIf isset($overriden[$propertyName]) || $property->private}{*
+							*}{skipIf isset($overriden[$propertyName])}{*
 							*}<var>{embed memberLink, $from, $property}{block content}${$property->name}{/block}{/embed}</var>{*
 							*}{sep}, {/sep}{*
 						*}{else}{*
