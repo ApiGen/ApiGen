@@ -5,8 +5,8 @@ namespace ApiGenX\Info;
 
 final class ErrorInfo
 {
-	public const KIND_SYNTAX_ERROR = 'Syntax error';
-	public const KIND_MISSING_SYMBOL = 'Missing class / trait / interface / enum';
+	public const KIND_SYNTAX_ERROR = 'syntax_error';
+	public const KIND_MISSING_SYMBOL = 'missing_symbol';
 
 
 	public function __construct(

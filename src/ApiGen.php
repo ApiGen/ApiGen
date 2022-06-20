@@ -155,7 +155,7 @@ final class ApiGen
 			return;
 		}
 
-		foreach ($analyzeResult->error as $errorKind => $errorGroup) {
+		foreach ($analyzeResult->error as $errorGroup) {
 			$errorLines = array_column($errorGroup, 'message');
 
 			if (!$this->output->isVerbose() && count($errorLines) > 5) {
@@ -164,9 +164,9 @@ final class ApiGen
 				$errorLines[] = sprintf('and %d more (use --verbose to show all)', count($errorGroup) - 5);
 			}
 
-			$this->output->error(implode("\n\n", [sprintf('%dx %s:', count($errorGroup), $errorKind), ...$errorLines]));
+			$this->output->warning(implode("\n\n", $errorLines));
 		}
 
-		$this->output->warning('Finished with errors');
+		$this->output->success('Finished with errors');
 	}
 }
