@@ -29,6 +29,12 @@ parameters:
 	# string, --output in CLI
 	outputDir: '%currentWorkingDir%/api'
 
+	# array
+	filter:
+		excludeProtected: false
+		excludePrivate: true
+		excludeTagged: []
+
 
 php:
 	memory_limit: %memoryLimit%
@@ -57,6 +63,13 @@ services:
 			- addVisitor(@ApiGenX\Analyzer\NodeVisitors\BodySkipper)
 			- addVisitor(@PhpParser\NodeVisitor\NameResolver)
 			- addVisitor(@ApiGenX\Analyzer\NodeVisitors\PhpDocResolver)
+
+	analyzer.filter:
+		factory: ApiGenX\Analyzer\Filter(
+			excludeProtected: %filter.excludeProtected%,
+			excludePrivate: %filter.excludePrivate%,
+			excludeTagged: %filter.excludeTagged%,
+		)
 
 	analyzer:
 		factory: ApiGenX\Analyzer

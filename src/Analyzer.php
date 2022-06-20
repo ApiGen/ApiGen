@@ -6,6 +6,7 @@ use ApiGenX\Analyzer\AnalyzeResult;
 use ApiGenX\Analyzer\AnalyzeTask;
 use ApiGenX\Analyzer\IdentifierKind;
 use ApiGenX\Analyzer\NodeVisitors\PhpDocResolver;
+use ApiGenX\Analyzer\Filter;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ClassLikeReferenceInfo;
@@ -100,6 +101,7 @@ final class Analyzer
 		private Locator $locator,
 		private Parser $parser,
 		private NodeTraverserInterface $traverser,
+		private Filter $filter,
 	) {
 	}
 
@@ -210,14 +212,19 @@ final class Analyzer
 				yield from $this->processNodes($task, $node->stmts);
 
 			} elseif ($node instanceof Node\Stmt\ClassLike && $node->name !== null) {
+				if (!$this->filter->filterClassLikeNode($node)) {
+					continue;
+				}
+
 				try {
-					yield $this->processClassLike($task, $node); // TODO: functions, constants, class aliases
+					$classLike = $this->processClassLike($task, $node);
+					yield from $classLike ? [$classLike] : [];
 
 				} catch (\Throwable $e) {
 					throw new \LogicException("Failed to analyze $node->name", 0, $e);
 				}
 
-			} elseif ($node instanceof Node) {
+			} elseif ($node instanceof Node) { // TODO: functions, constants, class aliases
 				foreach ($node->getSubNodeNames() as $name) {
 					$subNode = $node->$name;
 
@@ -233,7 +240,7 @@ final class Analyzer
 	}
 
 
-	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo // TODO: handle trait usage
+	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ?ClassLikeInfo // TODO: handle trait usage
 	{
 		$extendsTagNames = ['extends', 'template-extends', 'phpstan-extends'];
 		$implementsTagNames = ['implements', 'template-implements', 'phpstan-implements'];
@@ -244,6 +251,10 @@ final class Analyzer
 
 		$classDoc = $this->extractPhpDoc($node);
 		$tags = $this->extractTags($classDoc);
+
+		if (!$this->filter->filterClassLikeTags($tags)) {
+			return null;
+		}
 
 		if ($node instanceof Node\Stmt\Class_) {
 			$info = new ClassInfo($name, $task->primary);
@@ -300,6 +311,10 @@ final class Analyzer
 		}
 
 		foreach ($this->extractMembers($info->tags, $node) as $member) {
+			if (!$this->filter->filterMemberInfo($member)) {
+				continue;
+			}
+
 			if ($member instanceof ConstantInfo) {
 				$info->constants[$member->name] = $member;
 				$info->dependencies += $this->extractExprDependencies($member->value);
@@ -343,6 +358,10 @@ final class Analyzer
 			}
 		}
 
+		if (!$this->filter->filterClassLikeInfo($info)) {
+			return null;
+		}
+
 		return $info;
 	}
 
@@ -368,7 +387,15 @@ final class Analyzer
 			$description = $this->extractDescription($memberDoc);
 			$tags = $this->extractTags($memberDoc);
 
+			if (!$this->filter->filterMemberTags($tags)) {
+				continue;
+			}
+
 			if ($member instanceof Node\Stmt\ClassConst) {
+				if (!$this->filter->filterConstantNode($member)) {
+					continue;
+				}
+
 				foreach ($member->consts as $constant) {
 					$memberInfo = new ConstantInfo($constant->name->name, $this->processExpr($constant->value));
 
@@ -387,6 +414,9 @@ final class Analyzer
 				}
 
 			} elseif ($member instanceof Node\Stmt\Property) {
+				if (!$this->filter->filterPropertyNode($member)) {
+					continue;
+				}
 				$varTag = isset($tags['var'][0]) && $tags['var'][0] instanceof VarTagValueNode ? $tags['var'][0] : null;
 
 				foreach ($member->props as $property) {
@@ -411,6 +441,10 @@ final class Analyzer
 				}
 
 			} elseif ($member instanceof Node\Stmt\ClassMethod) {
+				if (!$this->filter->filterMethodNode($member)) {
+					continue;
+				}
+
 				$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
 
 				$memberInfo = new MethodInfo($member->name->name);
@@ -462,6 +496,10 @@ final class Analyzer
 				}
 
 			} elseif ($member instanceof Node\Stmt\EnumCase) {
+				if (!$this->filter->filterEnumCaseNode($member)) {
+					continue;
+				}
+
 				$memberInfo = new EnumCaseInfo($member->name->name, $this->processExprOrNull($member->expr));
 
 				$memberInfo->description = $description;

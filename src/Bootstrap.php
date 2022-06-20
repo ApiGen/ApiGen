@@ -90,6 +90,11 @@ final class Bootstrap
 			'title' => Expect::string(),
 			'baseUrl' => Expect::string(),
 			'outputDir' => Expect::string(),
+			'filter' => Expect::structure([
+				'excludeProtected' => Expect::bool(),
+				'excludePrivate' => Expect::bool(),
+				'excludeTagged' => Expect::listOf('string'),
+			]),
 		]);
 
 		(new Processor)->process($schema, $parameters);
