@@ -93,7 +93,10 @@ final class ApiGen
 	private function analyze(array $files): AnalyzeResult
 	{
 		$progressBar = $this->output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% [%bar%] %percent:3s%% %message%');
+		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% %bar% %percent:3s%% %message%');
+		$progressBar->setBarCharacter("\u{2588}");
+		$progressBar->setProgressCharacter('_');
+		$progressBar->setEmptyBarCharacter('_');
 
 		$analyzeResult = $this->analyzer->analyze($progressBar, $files);
 
@@ -123,7 +126,10 @@ final class ApiGen
 	private function render(Index $index): void
 	{
 		$progressBar = $this->output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% [%bar%] %percent:3s%% %message%');
+		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% %bar% %percent:3s%% %message%');
+		$progressBar->setBarCharacter("\u{2588}");
+		$progressBar->setProgressCharacter('_');
+		$progressBar->setEmptyBarCharacter('_');
 
 		$this->renderer->render($progressBar, $index);
 
