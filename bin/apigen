@@ -26,9 +26,9 @@ if (is_file(__DIR__ . '/../vendor/autoload.php')) {
 
 Bootstrap::configureErrorHandling();
 
-$app = new SingleCommandApplication();
-$app->setName('ApiGen');
+$app = new SingleCommandApplication('ApiGen');
 $app->setVersion(InstalledVersions::getPrettyVersion('apigen/apigen'));
+
 $app->addArgument('path', InputArgument::IS_ARRAY, 'path to analyze');
 $app->addOption('config', 'c', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'path to config file');
 $app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask');
