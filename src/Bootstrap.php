@@ -7,6 +7,7 @@ use Nette\DI\Compiler;
 use Nette\DI\Config\Loader;
 use Nette\DI\ContainerLoader;
 use Nette\DI\Extensions\ExtensionsExtension;
+use Nette\DI\Extensions\PhpExtension;
 use Nette\DI\Helpers as DIHelpers;
 use Nette\Schema\Expect;
 use Nette\Schema\Helpers as SchemaHelpers;
@@ -55,6 +56,7 @@ final class Bootstrap
 
 		$containerGenerator = function (Compiler $compiler) use ($config) {
 			$compiler->addExtension('extensions', new ExtensionsExtension);
+			$compiler->addExtension('php', new PhpExtension);
 			$compiler->addConfig($config);
 		};
 
