@@ -1,7 +1,6 @@
 #!/usr/bin/env php
 <?php declare(strict_types = 1);
 
-use ApiGenX\ApiGen;
 use ApiGenX\Bootstrap;
 use Composer\InstalledVersions;
 use Nette\Schema\Helpers;
@@ -31,7 +30,7 @@ $app = new SingleCommandApplication();
 $app->setName('ApiGen');
 $app->setVersion(InstalledVersions::getPrettyVersion('apigen/apigen'));
 $app->addArgument('path', InputArgument::IS_ARRAY, 'path to analyze');
-$app->addOption('config', 'c', InputOption::VALUE_REQUIRED, 'path to config file');
+$app->addOption('config', 'c', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'path to config file');
 $app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask');
 $app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask');
 $app->addOption('project-dir', 'p', InputOption::VALUE_REQUIRED, 'project directory, defaults to current working directory');
@@ -43,19 +42,8 @@ $app->addOption('base-url', null, InputOption::VALUE_REQUIRED, 'base URL');
 $app->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'output directory');
 
 $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): int {
-	$options = $input->getOptions();
 	$paths = $input->getArgument('path');
-	$style = new SymfonyStyle($input, $output);
-
-	$systemTempDir = sys_get_temp_dir();
-	$currentWorkingDir = getcwd();
-
-	$tempDir = $options['temp'] ?? "$systemTempDir/apigen";
-
-	$parameters = [
-		'currentWorkingDir' => $currentWorkingDir,
-		'systemTempDir' => $systemTempDir,
-	];
+	$options = $input->getOptions();
 
 	$optionsMapping = [
 		'include' => 'include',
@@ -69,6 +57,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 		'output' => 'outputDir',
 	];
 
+	$parameters = [];
 	foreach ($optionsMapping as $optionKey => $parameterKey) {
 		if (is_string($options[$optionKey])) {
 			$parameters[$parameterKey] = $options[$optionKey];
@@ -79,14 +68,14 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 		}
 	}
 
-	foreach ($paths as $path) {
-		$parameters['paths'][] = $path;
+	if (count($paths) > 0) {
+		$parameters['paths'] = $paths;
 		$parameters['paths'][Helpers::PREVENT_MERGING] = true;
 	}
 
-	$parameters = Bootstrap::resolvePaths($parameters, $currentWorkingDir);
-	$container = Bootstrap::createContainer($style, $tempDir, $parameters, $options['config'] ?? null);
-	$container->getByType(ApiGen::class)->generate($style);
+	$style = new SymfonyStyle($input, $output);
+	$apiGen = Bootstrap::createApiGen($style, $parameters, $options['config']);
+	$apiGen->generate();
 
 	return Command::SUCCESS;
 });
