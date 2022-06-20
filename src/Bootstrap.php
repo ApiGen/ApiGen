@@ -59,9 +59,9 @@ final class Bootstrap
 
 		$containerClassName = $containerLoader->load($containerGenerator, $containerKey);
 
-		/** @var Container $container */
 		$container = new $containerClassName();
 		$container->addService('symfonyConsole.output', $output);
+		$container->initialize();
 
 		return $container;
 	}

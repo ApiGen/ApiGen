@@ -32,7 +32,6 @@ final class ApiGen
 		private Analyzer $analyzer,
 		private Indexer $indexer,
 		private Renderer $renderer,
-		private string $memoryLimit,
 		private array $paths,
 		private array $include,
 		private array $exclude,
@@ -42,7 +41,6 @@ final class ApiGen
 
 	public function generate(): void
 	{
-		$this->setMemoryLimit();
 		$files = $this->findFiles();
 
 		$analyzeTime = -hrtime(true);
@@ -59,14 +57,6 @@ final class ApiGen
 
 		$this->performance($analyzeTime, $indexTime, $renderTime);
 		$this->finish($analyzeResult);
-	}
-
-
-	private function setMemoryLimit(): void
-	{
-		if (!ini_set('memory_limit', $this->memoryLimit)) {
-			$this->output->warning('Failed to configure memory limit');
-		}
 	}
 
 

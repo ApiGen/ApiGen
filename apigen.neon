@@ -1,5 +1,6 @@
 extensions:
 	di: Nette\DI\Extensions\DIExtension
+	php: Nette\DI\Extensions\PhpExtension
 
 
 di:
@@ -7,6 +8,10 @@ di:
 		parameters: false
 		tags: false
 		types: [ApiGenX\ApiGen]
+
+
+php:
+	memory_limit: %memoryLimit%
 
 
 parameters:
@@ -44,12 +49,7 @@ parameters:
 services:
 	# ApiGen
 	apigen:
-		factory: ApiGenX\ApiGen(
-			memoryLimit: %memoryLimit%,
-			paths: %paths%,
-			include: %include%,
-			exclude: %exclude%,
-		)
+		factory: ApiGenX\ApiGen(paths: %paths%, include: %include%, exclude: %exclude%)
 
 	# Locator
 	locator:
