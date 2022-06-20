@@ -8,7 +8,9 @@ use Nette\DI\Config\Loader;
 use Nette\DI\ContainerLoader;
 use Nette\DI\Extensions\ExtensionsExtension;
 use Nette\DI\Helpers as DIHelpers;
+use Nette\Schema\Expect;
 use Nette\Schema\Helpers as SchemaHelpers;
+use Nette\Schema\Processor;
 use Nette\Utils\FileSystem;
 use Symfony\Component\Console\Style\OutputStyle;
 
@@ -47,6 +49,7 @@ final class Bootstrap
 			...[['parameters' => self::resolvePaths($parameters, $currentWorkingDir)]],
 		);
 
+		self::validateParameters($config['parameters']);
 		$tempDir = DIHelpers::expand($config['parameters']['tempDir'], $config['parameters']);
 		$containerLoader = new ContainerLoader($tempDir, autoRebuild: true);
 
@@ -67,6 +70,27 @@ final class Bootstrap
 		$container->initialize();
 
 		return $container->getByType(ApiGen::class);
+	}
+
+
+	public static function validateParameters(array $parameters): void
+	{
+		$schema = Expect::structure([
+			'currentWorkingDir' => Expect::string(),
+			'systemTempDir' => Expect::string(),
+			'paths' => Expect::listOf('string')->min(1),
+			'include' => Expect::listOf('string'),
+			'exclude' => Expect::listOf('string'),
+			'projectDir' => Expect::string(),
+			'tempDir' => Expect::string(),
+			'workerCount' => Expect::int()->min(1),
+			'memoryLimit' => Expect::string(),
+			'title' => Expect::string(),
+			'baseUrl' => Expect::string(),
+			'outputDir' => Expect::string(),
+		]);
+
+		(new Processor)->process($schema, $parameters);
 	}
 
 
