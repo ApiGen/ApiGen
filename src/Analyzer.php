@@ -145,8 +145,17 @@ final class Analyzer
 						}
 					}
 
+					if (isset($found[$info->name->fullLower])) {
+						$first = $found[$info->name->fullLower];
+						$errors[ErrorInfo::KIND_DUPLICATE_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_DUPLICATE_SYMBOL, implode("\n", [
+							"Multiple definitions of {$info->name->full}.",
+							"The first definition was found in {$first->file} on line {$first->startLine}",
+							"and then another one was found in {$info->file} on line {$info->startLine}",
+						]));
+					}
+
 					unset($missing[$info->name->fullLower]);
-					$found[$info->name->fullLower] = $info;
+					$found[$info->name->fullLower] ??= $info;
 
 				} elseif ($info instanceof ErrorInfo) {
 					$errors[$info->kind][] = $info;
