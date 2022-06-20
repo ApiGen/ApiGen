@@ -5,11 +5,11 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class ArrayKeyFetchExprInfo implements ExprInfo
+final class DimFetchExprInfo implements ExprInfo
 {
 	public function __construct(
-		public ExprInfo $array,
-		public ExprInfo $key,
+		public ExprInfo $expr,
+		public ExprInfo $dim,
 	) {
 	}
 }

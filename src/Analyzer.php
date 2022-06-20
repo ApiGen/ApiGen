@@ -16,7 +16,7 @@ use ApiGenX\Info\ErrorInfo;
 use ApiGenX\Info\Expr\ArgExprInfo;
 use ApiGenX\Info\Expr\ArrayExprInfo;
 use ApiGenX\Info\Expr\ArrayItemExprInfo;
-use ApiGenX\Info\Expr\ArrayKeyFetchExprInfo;
+use ApiGenX\Info\Expr\DimFetchExprInfo;
 use ApiGenX\Info\Expr\BinaryOpExprInfo;
 use ApiGenX\Info\Expr\BooleanExprInfo;
 use ApiGenX\Info\Expr\ClassConstantFetchExprInfo;
@@ -732,7 +732,7 @@ final class Analyzer
 
 		} elseif ($expr instanceof Node\Expr\ArrayDimFetch) {
 			assert($expr->dim !== null);
-			return new ArrayKeyFetchExprInfo(
+			return new DimFetchExprInfo(
 				$this->processExpr($expr->var),
 				$this->processExpr($expr->dim),
 			);
@@ -881,9 +881,9 @@ final class Analyzer
 			$dependencies += $this->extractExprDependencies($expr->if);
 			$dependencies += $this->extractExprDependencies($expr->else);
 
-		} elseif ($expr instanceof ArrayKeyFetchExprInfo) {
-			$dependencies += $this->extractExprDependencies($expr->array);
-			$dependencies += $this->extractExprDependencies($expr->key);
+		} elseif ($expr instanceof DimFetchExprInfo) {
+			$dependencies += $this->extractExprDependencies($expr->expr);
+			$dependencies += $this->extractExprDependencies($expr->dim);
 
 		} elseif ($expr instanceof ClassConstantFetchExprInfo) {
 			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {
