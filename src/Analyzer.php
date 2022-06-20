@@ -417,7 +417,9 @@ final class Analyzer
 				if (!$this->filter->filterPropertyNode($member)) {
 					continue;
 				}
+
 				$varTag = isset($tags['var'][0]) && $tags['var'][0] instanceof VarTagValueNode ? $tags['var'][0] : null;
+				unset($tags['var']);
 
 				foreach ($member->props as $property) {
 					$memberInfo = new PropertyInfo($property->name->name);
@@ -446,6 +448,7 @@ final class Analyzer
 				}
 
 				$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
+				unset($tags['param'], $tags['return']);
 
 				$memberInfo = new MethodInfo($member->name->name);
 
