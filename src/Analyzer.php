@@ -475,7 +475,7 @@ final class Analyzer
 
 				if ($member->name->toLowerString() === '__construct') {
 					foreach ($member->params as $param) {
-						if ($param->flags === 0) {
+						if ($param->flags === 0 || !$this->filter->filterPromotedPropertyNode($param)) {
 							continue;
 						}
 

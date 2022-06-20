@@ -63,6 +63,12 @@ class Filter
 	}
 
 
+	public function filterPromotedPropertyNode(Node\Param $node): bool
+	{
+		return ($node->flags & $this->excludedVisibilityMask) === 0;
+	}
+
+
 	public function filterMethodNode(Node\Stmt\ClassMethod $node): bool
 	{
 		return ($node->flags & $this->excludedVisibilityMask) === 0;
