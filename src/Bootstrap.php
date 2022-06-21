@@ -126,7 +126,7 @@ final class Bootstrap
 	private static function loadConfig(string $path): array
 	{
 		$data = (new Loader)->load($path);
-		$data['parameters'] = self::resolvePaths($data['parameters'] ?? [], dirname($path));
+		$data['parameters'] = self::resolvePaths($data['parameters'] ?? [], dirname(realpath($path)));
 
 		return $data;
 	}
