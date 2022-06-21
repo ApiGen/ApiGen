@@ -85,21 +85,26 @@ final class Bootstrap
 	private static function validateParameters(array $parameters): void
 	{
 		$schema = Expect::structure([
-			'workingDir' => Expect::string(),
-			'tempDir' => Expect::string(),
+			// input
 			'paths' => Expect::listOf('string')->min(1),
 			'include' => Expect::listOf('string'),
 			'exclude' => Expect::listOf('string'),
-			'workerCount' => Expect::int()->min(1),
-			'memoryLimit' => Expect::string(),
+
+			// analysis
+			'excludeProtected' => Expect::bool(),
+			'excludePrivate' => Expect::bool(),
+			'excludeTagged' => Expect::listOf('string'),
+
+			// output
+			'outputDir' => Expect::string(),
 			'title' => Expect::string(),
 			'baseUrl' => Expect::string(),
-			'outputDir' => Expect::string(),
-			'filter' => Expect::structure([
-				'excludeProtected' => Expect::bool(),
-				'excludePrivate' => Expect::bool(),
-				'excludeTagged' => Expect::listOf('string'),
-			]),
+
+			// system
+			'workingDir' => Expect::string(),
+			'tempDir' => Expect::string(),
+			'workerCount' => Expect::int()->min(1),
+			'memoryLimit' => Expect::string(),
 		]);
 
 		(new Processor)->process($schema, $parameters);
