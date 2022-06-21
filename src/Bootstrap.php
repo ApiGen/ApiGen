@@ -16,11 +16,14 @@ use Nette\Utils\FileSystem;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_map;
+use function count;
 use function dirname;
 use function error_reporting;
 use function getcwd;
 use function ini_set;
+use function is_file;
 use function is_int;
+use function realpath;
 use function set_error_handler;
 use function str_starts_with;
 use function sys_get_temp_dir;
@@ -49,6 +52,12 @@ final class Bootstrap
 	{
 		$workingDir = getcwd();
 		$tempDir = sys_get_temp_dir() . '/apigen';
+
+		$autoDiscoveryPath = "$workingDir/apigen.neon";
+		if (count($configPaths) === 0 && is_file($autoDiscoveryPath)) {
+			$output->text("Using configuration file $autoDiscoveryPath.\n");
+			$configPaths[] = $autoDiscoveryPath;
+		}
 
 		$config = self::mergeConfigs(
 			['parameters' => ['workingDir' => $workingDir, 'tempDir' => $tempDir]],
