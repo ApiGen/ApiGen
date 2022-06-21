@@ -33,6 +33,9 @@ class Filter
 	}
 
 
+	/**
+	 * @param PhpDocTagValueNode[][] $tags indexed by [tagName][]
+	 */
 	public function filterClassLikeTags(array $tags): bool
 	{
 		foreach ($this->excludeTagged as $tag) {
