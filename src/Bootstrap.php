@@ -47,14 +47,14 @@ final class Bootstrap
 
 	public static function createApiGen(OutputStyle $output, array $parameters, array $configPaths): ApiGen
 	{
-		$currentWorkingDir = getcwd();
-		$systemTempDir = sys_get_temp_dir();
+		$workingDir = getcwd();
+		$tempDir = sys_get_temp_dir() . '/apigen';
 
 		$config = self::mergeConfigs(
-			['parameters' => ['currentWorkingDir' => $currentWorkingDir, 'systemTempDir' => $systemTempDir]],
+			['parameters' => ['workingDir' => $workingDir, 'tempDir' => $tempDir]],
 			self::loadConfig(__DIR__ . '/../apigen.neon'),
 			...array_map(self::loadConfig(...), $configPaths),
-			...[['parameters' => self::resolvePaths($parameters, $currentWorkingDir)]],
+			...[['parameters' => self::resolvePaths($parameters, $workingDir)]],
 		);
 
 		self::validateParameters($config['parameters']);
@@ -85,13 +85,11 @@ final class Bootstrap
 	private static function validateParameters(array $parameters): void
 	{
 		$schema = Expect::structure([
-			'currentWorkingDir' => Expect::string(),
-			'systemTempDir' => Expect::string(),
+			'workingDir' => Expect::string(),
+			'tempDir' => Expect::string(),
 			'paths' => Expect::listOf('string')->min(1),
 			'include' => Expect::listOf('string'),
 			'exclude' => Expect::listOf('string'),
-			'projectDir' => Expect::string(),
-			'tempDir' => Expect::string(),
 			'workerCount' => Expect::int()->min(1),
 			'memoryLimit' => Expect::string(),
 			'title' => Expect::string(),
@@ -131,7 +129,7 @@ final class Bootstrap
 
 	private static function resolvePaths(array $parameters, string $base): array
 	{
-		foreach (['tempDir', 'projectDir', 'outputDir'] as $parameterKey) {
+		foreach (['tempDir', 'workingDir', 'outputDir'] as $parameterKey) {
 			if (isset($parameters[$parameterKey])) {
 				$parameters[$parameterKey] = self::resolvePath($parameters[$parameterKey], $base);
 			}

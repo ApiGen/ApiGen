@@ -29,11 +29,11 @@ Bootstrap::configureErrorHandling();
 $app = new SingleCommandApplication('ApiGen');
 $app->setVersion(InstalledVersions::getPrettyVersion('apigen/apigen'));
 
-$app->addArgument('path', InputArgument::IS_ARRAY, 'path to analyze');
+$app->addArgument('path', InputArgument::IS_ARRAY, 'path directory to analyze');
 $app->addOption('config', 'c', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'path to config file');
-$app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask');
-$app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask');
-$app->addOption('project-dir', 'p', InputOption::VALUE_REQUIRED, 'project directory, defaults to current working directory');
+$app->addOption('include', 'i', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'includes files mask, e.g. *.php');
+$app->addOption('exclude', 'e', InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'excluded files mask, e.g. tests/**');
+$app->addOption('working-dir', null, InputOption::VALUE_REQUIRED, 'project directory (containing composer.json), defaults to current working directory');
 $app->addOption('temp', null, InputOption::VALUE_REQUIRED, 'temp directory, defaults to sys_get_temp_dir() . \'/apigen\'');
 $app->addOption('workers', 'w', InputOption::VALUE_REQUIRED, 'worker count');
 $app->addOption('memory-limit', null, InputOption::VALUE_REQUIRED, 'memory limit');
@@ -48,7 +48,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 	$optionsMapping = [
 		'include' => 'include',
 		'exclude' => 'exclude',
-		'project-dir' => 'projectDir',
+		'working-dir' => 'workingDir',
 		'temp' => 'tempDir',
 		'workers' => 'workerCount',
 		'memory-limit' => 'memoryLimit',

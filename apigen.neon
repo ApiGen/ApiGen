@@ -8,12 +8,6 @@ parameters:
 	# string[], --exclude in CLI, excluded files mask, e.g. ['tests/**']
 	exclude: []
 
-	# string, --project-dir in CLI
-	projectDir: '%currentWorkingDir%'
-
-	# string, --temp in CLI
-	tempDir: '%systemTempDir%/apigen'
-
 	# int, --workers in CLI
 	workerCount: 8
 
@@ -27,7 +21,7 @@ parameters:
 	baseUrl: ''
 
 	# string, --output in CLI
-	outputDir: '%currentWorkingDir%/api'
+	outputDir: '%workingDir%/api'
 
 	# array
 	filter:
@@ -47,7 +41,7 @@ services:
 
 	# Locator
 	locator:
-		factory: ApiGenX\Locator::create(projectDir: %projectDir%)
+		factory: ApiGenX\Locator::create(projectDir: %workingDir%)
 
 	# Analyzer
 	analyzer.bodySkipper:
