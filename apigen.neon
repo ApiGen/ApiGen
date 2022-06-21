@@ -15,7 +15,7 @@ parameters:
 	excludePrivate: true
 
 	# string[], list of tags used for excluding class-likes and members
-	excludeTagged: []
+	excludeTagged: ['internal']
 
 	# string, --output in CLI
 	outputDir: '%workingDir%/api'
