@@ -71,7 +71,10 @@ final class Locator
 		$loader = new ClassLoader();
 
 		if (!is_dir($vendorDir)) {
-			$output->warning("Unable to use Composer autoloader for finding dependencies because directory\n$vendorDir does not exist.");
+			$output->warning(implode("\n", [
+				"Unable to use Composer autoloader for finding dependencies because directory",
+				"$vendorDir does not exist. Use --worker-dir to specify directory where vendor directory is located",
+			]));
 
 		} else {
 			$output->text("Using Composer autoloader for finding dependencies in $vendorDir.\n");
