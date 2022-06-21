@@ -1,3 +1,5 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
 {define memberSourceLink, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MemberInfo $member}{*
 	*}<a n:tag-if="$classLike->file && $classLike->primary" href="{memberSourceUrl($classLike, $member)}" title="Go to source code">{*
 		*}<span n:tag-if="$member->isDeprecated()" class="deprecated">{include content}</span>{*

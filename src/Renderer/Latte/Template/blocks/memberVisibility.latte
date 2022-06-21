@@ -1,3 +1,5 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
 {define memberVisibility, ApiGenX\Info\MemberInfo $member}
 	{if $member->protected}protected{elseif $member->private}private{else}public{/if}
 {/define}

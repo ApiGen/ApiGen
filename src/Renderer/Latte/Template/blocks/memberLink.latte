@@ -1,3 +1,5 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
 {define memberLink, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MemberInfo $member}{*
 	*}<a href="{memberUrl($classLike, $member)}" n:class="$member->isDeprecated() ? deprecated">{include content}</a>{*
 *}{/define}
