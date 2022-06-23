@@ -16,14 +16,15 @@ use Nette\Utils\FileSystem;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_map;
+use function assert;
 use function count;
 use function dirname;
 use function error_reporting;
 use function getcwd;
 use function ini_set;
+use function is_array;
 use function is_file;
 use function is_int;
-use function realpath;
 use function set_error_handler;
 use function str_starts_with;
 use function sys_get_temp_dir;
@@ -40,18 +41,28 @@ final class Bootstrap
 		error_reporting(E_ALL);
 		ini_set('display_errors', 'stderr');
 
-		set_error_handler(function (int $severity, string $message, string $file, int $line) {
+		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
 			if (error_reporting() & $severity) {
 				throw new ErrorException($message, 0, $severity, $file, $line);
+
+			} else {
+				return false;
 			}
 		});
 	}
 
 
+	/**
+	 * @param string[] $configPaths indexed by []
+	 */
 	public static function createApiGen(OutputStyle $output, array $parameters, array $configPaths): ApiGen
 	{
 		$workingDir = getcwd();
 		$tempDir = sys_get_temp_dir() . '/apigen';
+
+		if ($workingDir === false) {
+			throw new \RuntimeException('Unable to get current working directory.');
+		}
 
 		$autoDiscoveryPath = "$workingDir/apigen.neon";
 		if (count($configPaths) === 0 && is_file($autoDiscoveryPath)) {
@@ -126,6 +137,7 @@ final class Bootstrap
 
 		foreach ($configs as $config) {
 			$mergedConfig = SchemaHelpers::merge($config, $mergedConfig);
+			assert(is_array($mergedConfig));
 		}
 
 		return $mergedConfig;
@@ -135,7 +147,7 @@ final class Bootstrap
 	private static function loadConfig(string $path): array
 	{
 		$data = (new Loader)->load($path);
-		$data['parameters'] = self::resolvePaths($data['parameters'] ?? [], dirname(realpath($path)));
+		$data['parameters'] = self::resolvePaths($data['parameters'] ?? [], Helpers::realPath(dirname($path)));
 
 		return $data;
 	}
