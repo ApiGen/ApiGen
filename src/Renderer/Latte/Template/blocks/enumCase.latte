@@ -5,11 +5,11 @@
 		{block cells}
 			<td class="table-cell">
 				<code>{*
-					*}{embed memberSourceLink, classLike: $enum, member: $enumCase}{block content}{$enumCase->name}{/block}{/embed}{*
-					*}{if $enumCase->value} = {include expr, expr: $enumCase->value, scope: $enum}{/if}{*
+					*}{embed memberSourceLink, classLike: $classLike, member: $enumCase}{block content}{$enumCase->name}{/block}{/embed}{*
+					*}{if $enumCase->value} = {include expr, expr: $enumCase->value, scope: $classLike}{/if}{*
 				*}</code>
 
-				{embed memberDescription, classLike: $enum, member: $enumCase}
+				{embed memberDescription, classLike: $classLike, member: $enumCase}
 					{block details}{* TODO: other tags (uses, internal...) *}{/block}
 				{/embed}
 			</td>
