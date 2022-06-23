@@ -15,8 +15,11 @@ use function get_debug_type;
 use function sprintf;
 use function str_starts_with;
 use function strlen;
+use function strrpos;
 use function strtr;
 use function substr;
+
+use const DIRECTORY_SEPARATOR;
 
 
 final class UrlGenerator
@@ -154,6 +157,8 @@ final class UrlGenerator
 
 	public function getSourcePath(string $path): string
 	{
-		return 'source-' . substr(strtr($this->getRelativePath($path), '\\/', '..'), 0, -4) . '.html';
+		$relativePath = $this->getRelativePath($path);
+		$relativePathWithoutExtension = substr($relativePath, 0, strrpos($relativePath, '.'));
+		return 'source-' . strtr($relativePathWithoutExtension, DIRECTORY_SEPARATOR, '.') . '.html';
 	}
 }
