@@ -73,7 +73,7 @@ services:
 
 	# Renderer
 	renderer.urlGenerator:
-		factory: ApiGenX\Renderer\UrlGenerator(Nette\Utils\Strings::findPrefix(%paths%), %baseUrl%)
+		factory: ApiGenX\Renderer\UrlGenerator(ApiGenX\Helpers::baseDir(%paths%), %baseUrl%)
 
 	renderer.sourceHighlighter:
 		factory: ApiGenX\Renderer\SourceHighlighter
