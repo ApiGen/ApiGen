@@ -10,7 +10,6 @@ use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_column;
 use function array_keys;
-use function array_map;
 use function array_slice;
 use function count;
 use function hrtime;
@@ -65,11 +64,11 @@ final class ApiGen
 	 */
 	private function findFiles(): array
 	{
-		$files = Finder::findFiles(...$this->include)
+		$finder = Finder::findFiles(...$this->include)
 			->exclude(...$this->exclude)
 			->from(...$this->paths);
 
-		$files = array_map('realpath', array_keys(iterator_to_array($files)));
+		$files = array_keys(iterator_to_array($finder));
 
 		if (!count($files)) {
 			throw new \RuntimeException('No source files found.');
