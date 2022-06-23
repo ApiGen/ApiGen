@@ -5,7 +5,6 @@ namespace ApiGenX;
 use ApiGenX\Analyzer\AnalyzeResult;
 use ApiGenX\Index\Index;
 use Nette\Utils\Finder;
-use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_column;
@@ -141,14 +140,16 @@ final class ApiGen
 	private function performance(float $analyzeTime, float $indexTime, float $renderTime): void
 	{
 		if ($this->output->isDebug()) {
-			$this->output->definitionList(
-				'Performance',
-				new TableSeparator(),
-				['Analyze Time' => sprintf('%6.0f ms', $analyzeTime / 1e6)],
-				['Index Time' => sprintf('%6.0f ms', $indexTime / 1e6)],
-				['Render Time' => sprintf('%6.0f ms', $renderTime / 1e6)],
-				['Peak Memory' => sprintf('%6.0f MB', memory_get_peak_usage() / 1e6)],
-			);
+			$lines = [
+				'Analyze time' => sprintf('%6.0f ms', $analyzeTime / 1e6),
+				'Index time' => sprintf('%6.0f ms', $indexTime / 1e6),
+				'Render time' => sprintf('%6.0f ms', $renderTime / 1e6),
+				'Peak memory' => sprintf('%6.0f MB', memory_get_peak_usage() / 1e6),
+			];
+
+			foreach ($lines as $label => $value) {
+				$this->output->text(sprintf('<info>%-20s</info> %s', $label, $value));
+			}
 		}
 	}
 
