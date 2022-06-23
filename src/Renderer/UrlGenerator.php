@@ -34,7 +34,7 @@ final class UrlGenerator
 	public function getRelativePath(string $path): string
 	{
 		if (str_starts_with($path, $this->baseDir)) {
-			return substr($path, strlen($this->baseDir));
+			return substr($path, strlen($this->baseDir) + 1);
 
 		} else {
 			throw new \LogicException("{$path} does not start with {$this->baseDir}");
