@@ -142,6 +142,12 @@ class Bootstrap
 		$mergedConfig = [];
 
 		foreach ($configs as $config) {
+			foreach ($config['parameters'] ?? [] as $key => $value) {
+				if (is_array($value)) {
+					$config['parameters'][$key][SchemaHelpers::PREVENT_MERGING] = true;
+				}
+			}
+
 			$mergedConfig = SchemaHelpers::merge($config, $mergedConfig);
 			assert(is_array($mergedConfig));
 		}

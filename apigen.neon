@@ -1,12 +1,12 @@
 parameters:
 	# string[], passed as arguments in CLI, e.g. ['src']
-	paths!: []
+	paths: []
 
 	# string[], --include in CLI, included files mask, e.g. ['*.php']
-	include!: ['*.php']
+	include: ['*.php']
 
 	# string[], --exclude in CLI, excluded files mask, e.g. ['tests/**']
-	exclude!: []
+	exclude: []
 
 	# bool, should protected members be excluded?
 	excludeProtected: false
@@ -15,7 +15,7 @@ parameters:
 	excludePrivate: true
 
 	# string[], list of tags used for excluding class-likes and members
-	excludeTagged!: ['internal']
+	excludeTagged: ['internal']
 
 	# string, --output in CLI
 	outputDir: '%workingDir%/api'

@@ -66,13 +66,11 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 
 		} elseif (is_array($options[$optionKey]) && count($options[$optionKey]) > 0) {
 			$parameters[$parameterKey] = $options[$optionKey];
-			$parameters[$parameterKey][Helpers::PREVENT_MERGING] = true;
 		}
 	}
 
 	if (count($paths) > 0) {
 		$parameters['paths'] = $paths;
-		$parameters['paths'][Helpers::PREVENT_MERGING] = true;
 	}
 
 	$style = new SymfonyStyle($input, $output);
