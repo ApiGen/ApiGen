@@ -8,7 +8,7 @@
 {*	<meta name="robots" content="noindex" n:if="!$robots">*}
 	<title>{ifset title}{include title} | {/ifset}{$global->title}</title>
 	<link rel="stylesheet" href="{assetUrl('main.css')}">
-	<script type="module" src="{assetUrl('main.js')}"></script>
+	<script src="{assetUrl('main.js')}" defer></script>
 </head>
 
 <body class="layout">
