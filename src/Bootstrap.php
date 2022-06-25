@@ -5,6 +5,7 @@ namespace ApiGenX;
 use ErrorException;
 use Nette\DI\Compiler;
 use Nette\DI\Config\Loader;
+use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
 use Nette\DI\Extensions\ExtensionsExtension;
 use Nette\DI\Extensions\PhpExtension;
@@ -25,6 +26,7 @@ use function ini_set;
 use function is_array;
 use function is_file;
 use function is_int;
+use function method_exists;
 use function set_error_handler;
 use function str_starts_with;
 use function sys_get_temp_dir;
@@ -95,10 +97,13 @@ final class Bootstrap
 		$containerClassName = $containerLoader->load($containerGenerator, $containerKey);
 
 		$container = new $containerClassName();
+		assert($container instanceof Container);
+		assert(method_exists($container, 'initialize'));
+
 		$container->addService('symfonyConsole.output', $output);
 		$container->initialize();
 
-		return $container->getByType(ApiGen::class);
+		return $container->getByType(ApiGen::class) ?? throw new \LogicException();
 	}
 
 
