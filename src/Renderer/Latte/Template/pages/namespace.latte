@@ -1,5 +1,5 @@
 {templateType ApiGenX\Renderer\Latte\Template\NamespaceTemplate}
-{import '../blocks/@index.latte'}}
+{import '../blocks/@index.latte'}
 
 {embed layout}
 	{block title}{if $namespace != ''}Namespace {$namespace->name->full}{else}No namespace{/if}{/block}
