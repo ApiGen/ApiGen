@@ -224,7 +224,7 @@ class SourceHighlighter
 	/**
 	 * @return iterable<int, string>
 	 */
-	private function tokenize(string $source): iterable
+	protected function tokenize(string $source): iterable
 	{
 		foreach (PhpToken::tokenize($source, TOKEN_PARSE) as $token) {
 			$lines = explode("\n", $token->text);

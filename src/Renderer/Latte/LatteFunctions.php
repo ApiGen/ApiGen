@@ -28,9 +28,9 @@ use const ENT_QUOTES;
 class LatteFunctions
 {
 	public function __construct(
-		private UrlGenerator $url,
-		private SourceHighlighter $sourceHighlighter,
-		private ConverterInterface $markdown,
+		protected UrlGenerator $url,
+		protected SourceHighlighter $sourceHighlighter,
+		protected ConverterInterface $markdown,
 	) {
 	}
 

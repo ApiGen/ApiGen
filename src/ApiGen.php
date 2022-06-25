@@ -26,13 +26,13 @@ class ApiGen
 	 * @param string[] $exclude indexed by []
 	 */
 	public function __construct(
-		private OutputStyle $output,
-		private Analyzer $analyzer,
-		private Indexer $indexer,
-		private Renderer $renderer,
-		private array $paths,
-		private array $include,
-		private array $exclude,
+		protected OutputStyle $output,
+		protected Analyzer $analyzer,
+		protected Indexer $indexer,
+		protected Renderer $renderer,
+		protected array $paths,
+		protected array $include,
+		protected array $exclude,
 	) {
 	}
 
@@ -61,7 +61,7 @@ class ApiGen
 	/**
 	 * @return string[] list of files, indexed by []
 	 */
-	private function findFiles(): array
+	protected function findFiles(): array
 	{
 		$finder = Finder::findFiles(...$this->include)
 			->exclude(...$this->exclude)
@@ -88,7 +88,7 @@ class ApiGen
 	/**
 	 * @param string[] $files indexed by []
 	 */
-	private function analyze(array $files): AnalyzeResult
+	protected function analyze(array $files): AnalyzeResult
 	{
 		$progressBar = $this->output->createProgressBar();
 		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% %bar% %percent:3s%% %message%');
@@ -106,7 +106,7 @@ class ApiGen
 	}
 
 
-	private function index(AnalyzeResult $analyzeResult): Index
+	protected function index(AnalyzeResult $analyzeResult): Index
 	{
 		$index = new Index();
 
@@ -121,7 +121,7 @@ class ApiGen
 	}
 
 
-	private function render(Index $index): void
+	protected function render(Index $index): void
 	{
 		$progressBar = $this->output->createProgressBar();
 		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% %bar% %percent:3s%% %message%');
@@ -137,7 +137,7 @@ class ApiGen
 	}
 
 
-	private function performance(float $analyzeTime, float $indexTime, float $renderTime): void
+	protected function performance(float $analyzeTime, float $indexTime, float $renderTime): void
 	{
 		if ($this->output->isDebug()) {
 			$lines = [
@@ -154,7 +154,7 @@ class ApiGen
 	}
 
 
-	private function finish(AnalyzeResult $analyzeResult): void
+	protected function finish(AnalyzeResult $analyzeResult): void
 	{
 		if (!$analyzeResult->error) {
 			$this->output->success('Finished OK');

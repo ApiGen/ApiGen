@@ -12,7 +12,7 @@ class LatteCascadingLoader extends Latte\Loaders\FileLoader
 	/**
 	 * @param string[] $baseDirs
 	 */
-	public function __construct(private array $baseDirs)
+	public function __construct(protected array $baseDirs)
 	{
 		parent::__construct();
 	}

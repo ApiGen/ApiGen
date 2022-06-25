@@ -40,11 +40,11 @@ use const PHP_SAPI;
 class LatteRenderer implements Renderer
 {
 	public function __construct(
-		private Latte\Engine $latte,
-		private UrlGenerator $urlGenerator,
-		private int $workerCount,
-		private string $title,
-		private string $outputDir,
+		protected Latte\Engine $latte,
+		protected UrlGenerator $urlGenerator,
+		protected int $workerCount,
+		protected string $title,
+		protected string $outputDir,
 	) {
 	}
 
@@ -123,7 +123,7 @@ class LatteRenderer implements Renderer
 	}
 
 
-	private function copyAssets(): void
+	protected function copyAssets(): void
 	{
 		$assetsDir = __DIR__ . '/Template/assets';
 		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
@@ -134,7 +134,7 @@ class LatteRenderer implements Renderer
 	}
 
 
-	private function renderTemplate(?ProgressBar $progressBar, string $outputPath, object $template): void
+	protected function renderTemplate(?ProgressBar $progressBar, string $outputPath, object $template): void
 	{
 		if ($progressBar !== null) {
 			$progressBar->setMessage($outputPath);
@@ -154,7 +154,7 @@ class LatteRenderer implements Renderer
 	 * @param iterable<K, V>                     $it
 	 * @param callable(?ProgressBar, V, K): void $handle
 	 */
-	private function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle): void
+	protected function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle): void
 	{
 		$workerCount = PHP_SAPI === 'cli' && extension_loaded('pcntl') ? $this->workerCount : 1;
 

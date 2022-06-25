@@ -12,10 +12,10 @@ use function array_filter;
 class LatteEngineFactory
 {
 	public function __construct(
-		private LatteFunctions $functions,
-		private UrlGenerator $url,
-		private ?string $tempDir,
-		private ?string $templatesDir,
+		protected LatteFunctions $functions,
+		protected UrlGenerator $url,
+		protected ?string $tempDir,
+		protected ?string $templatesDir,
 	) {
 	}
 

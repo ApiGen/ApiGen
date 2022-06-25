@@ -51,7 +51,7 @@ use function substr;
 
 class PhpDocResolver extends NodeVisitorAbstract
 {
-	private const NATIVE_KEYWORDS = [
+	protected const NATIVE_KEYWORDS = [
 		'array' => true,
 		'bool' => true,
 		'callable' => true,
@@ -71,7 +71,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 		'void' => true,
 	];
 
-	private const KEYWORDS = self::NATIVE_KEYWORDS + [
+	protected const KEYWORDS = self::NATIVE_KEYWORDS + [
 		'array-key' => true,
 		'associative-array' => true,
 		'boolean' => true,
@@ -102,13 +102,13 @@ class PhpDocResolver extends NodeVisitorAbstract
 	];
 
 	/** @var GenericParameterInfo[][] indexed by [][parameterName] */
-	private array $genericNameContextStack = [];
+	protected array $genericNameContextStack = [];
 
 
 	public function __construct(
-		private Lexer $lexer,
-		private PhpDocParser $parser,
-		private NameContext $nameContext,
+		protected Lexer $lexer,
+		protected PhpDocParser $parser,
+		protected NameContext $nameContext,
 	) {
 	}
 
@@ -153,7 +153,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 	/**
 	 * @return GenericParameterInfo[] indexed by [parameterName]
 	 */
-	private function resolveGenericNameContext(PhpDocNode $doc): array
+	protected function resolveGenericNameContext(PhpDocNode $doc): array
 	{
 		$context = [];
 
@@ -281,7 +281,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 	}
 
 
-	private function resolvePhpDoc(PhpDocNode $phpDoc): void
+	protected function resolvePhpDoc(PhpDocNode $phpDoc): void
 	{
 		foreach (self::getTypes($phpDoc) as $type) {
 			foreach (self::getIdentifiers($type) as $identifier) {
@@ -313,7 +313,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 	}
 
 
-	private function resolveIdentifier(string $identifier): string
+	protected function resolveIdentifier(string $identifier): string
 	{
 		if ($identifier[0] === '\\') {
 			return substr($identifier, 1);

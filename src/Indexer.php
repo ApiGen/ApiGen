@@ -146,7 +146,7 @@ class Indexer
 	}
 
 
-	private function indexClass(ClassInfo $info, Index $index): void
+	protected function indexClass(ClassInfo $info, Index $index): void
 	{
 		$index->class[$info->name->fullLower] = $info;
 		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
@@ -163,7 +163,7 @@ class Indexer
 	}
 
 
-	private function indexInterface(InterfaceInfo $info, Index $index): void
+	protected function indexInterface(InterfaceInfo $info, Index $index): void
 	{
 		$index->interface[$info->name->fullLower] = $info;
 		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
@@ -180,7 +180,7 @@ class Indexer
 	}
 
 
-	private function indexTrait(TraitInfo $info, Index $index): void
+	protected function indexTrait(TraitInfo $info, Index $index): void
 	{
 		$index->trait[$info->name->fullLower] = $info;
 		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
@@ -188,7 +188,7 @@ class Indexer
 	}
 
 
-	private function indexEnum(EnumInfo $info, Index $index): void
+	protected function indexEnum(EnumInfo $info, Index $index): void
 	{
 		$index->enum[$info->name->fullLower] = $info;
 		$index->files[$info->file ?? '']->classLike[$info->name->fullLower] = $info;
@@ -200,13 +200,13 @@ class Indexer
 	}
 
 
-	private function indexMissing(MissingInfo $info, Index $index): void
+	protected function indexMissing(MissingInfo $info, Index $index): void
 	{
 		// nothing to index
 	}
 
 
-	private function indexDirectedAcyclicGraph(Index $index): void
+	protected function indexDirectedAcyclicGraph(Index $index): void
 	{
 		$dag = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends, $index->enumImplements);
 
@@ -231,7 +231,7 @@ class Indexer
 	}
 
 
-	private function indexInstanceOf(Index $index, ClassLikeInfo $info): void
+	protected function indexInstanceOf(Index $index, ClassLikeInfo $info): void
 	{
 		if (isset($index->instanceOf[$info->name->fullLower])) {
 			return; // already computed
@@ -251,7 +251,7 @@ class Indexer
 	 * @param ClassInfo[]     $normal   indexed by [methodName]
 	 * @param ClassLikeInfo[] $abstract indexed by [methodName]
 	 */
-	private function indexClassMethodOverrides(Index $index, ClassInfo $info, array $normal, array $abstract): void
+	protected function indexClassMethodOverrides(Index $index, ClassInfo $info, array $normal, array $abstract): void
 	{
 		$stack = array_keys($info->implements);
 		$stackIndex = count($stack);
@@ -303,7 +303,7 @@ class Indexer
 	}
 
 
-	private function sort(Index $index): void
+	protected function sort(Index $index): void
 	{
 		ksort($index->files);
 		ksort($index->namespace);

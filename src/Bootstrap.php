@@ -107,7 +107,7 @@ class Bootstrap
 	}
 
 
-	private static function validateParameters(array $parameters): void
+	protected static function validateParameters(array $parameters): void
 	{
 		$schema = Expect::structure([
 			// input
@@ -137,7 +137,7 @@ class Bootstrap
 	}
 
 
-	private static function mergeConfigs(array...$configs): array
+	protected static function mergeConfigs(array...$configs): array
 	{
 		$mergedConfig = [];
 
@@ -150,7 +150,7 @@ class Bootstrap
 	}
 
 
-	private static function loadConfig(string $path): array
+	protected static function loadConfig(string $path): array
 	{
 		$data = (new Loader)->load($path);
 		$data['parameters'] = self::resolvePaths($data['parameters'] ?? [], Helpers::realPath(dirname($path)));
@@ -159,7 +159,7 @@ class Bootstrap
 	}
 
 
-	private static function resolvePaths(array $parameters, string $base): array
+	protected static function resolvePaths(array $parameters, string $base): array
 	{
 		foreach (['tempDir', 'workingDir', 'outputDir', 'templatesDir'] as $parameterKey) {
 			if (isset($parameters[$parameterKey])) {
@@ -177,7 +177,7 @@ class Bootstrap
 	}
 
 
-	private static function resolvePath(string $path, string $base): string
+	protected static function resolvePath(string $path, string $base): string
 	{
 		return (FileSystem::isAbsolute($path) || str_starts_with($path, '%'))
 			? $path

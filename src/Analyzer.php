@@ -98,10 +98,10 @@ use function trim;
 class Analyzer
 {
 	public function __construct(
-		private Locator $locator,
-		private Parser $parser,
-		private NodeTraverserInterface $traverser,
-		private Filter $filter,
+		protected Locator $locator,
+		protected Parser $parser,
+		protected NodeTraverserInterface $traverser,
+		protected Filter $filter,
 	) {
 	}
 
@@ -184,7 +184,7 @@ class Analyzer
 	/**
 	 * @return ClassLikeInfo[]|ErrorInfo[]
 	 */
-	private function processTask(AnalyzeTask $task): array
+	protected function processTask(AnalyzeTask $task): array
 	{
 		try {
 			$ast = $this->parser->parse(FileSystem::read($task->sourceFile)) ?? throw new \LogicException();
@@ -205,7 +205,7 @@ class Analyzer
 	 * @param  Node[] $nodes indexed by []
 	 * @return Iterator<ClassLikeInfo>
 	 */
-	private function processNodes(AnalyzeTask $task, array $nodes): Iterator
+	protected function processNodes(AnalyzeTask $task, array $nodes): Iterator
 	{
 		foreach ($nodes as $node) {
 			if ($node instanceof Node\Stmt\Namespace_) {
@@ -236,7 +236,7 @@ class Analyzer
 	}
 
 
-	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo
+	protected function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo
 	{
 		$extendsTagNames = ['extends', 'template-extends', 'phpstan-extends'];
 		$implementsTagNames = ['implements', 'template-implements', 'phpstan-implements'];
@@ -365,7 +365,7 @@ class Analyzer
 	 * @param  PhpDocTagValueNode[][] $tags indexed by [tagName][]
 	 * @return iterable<MemberInfo>
 	 */
-	private function extractMembers(array $tags, Node\Stmt\ClassLike $node): iterable
+	protected function extractMembers(array $tags, Node\Stmt\ClassLike $node): iterable
 	{
 		yield from $this->extractMembersClassLikeBody($node);
 		yield from $this->extractMembersClassLikeTags($tags);
@@ -375,7 +375,7 @@ class Analyzer
 	/**
 	 * @return iterable<MemberInfo>
 	 */
-	private function extractMembersClassLikeBody(Node\Stmt\ClassLike $node): iterable
+	protected function extractMembersClassLikeBody(Node\Stmt\ClassLike $node): iterable
 	{
 		foreach ($node->stmts as $member) {
 			$memberDoc = $this->extractPhpDoc($member);
@@ -516,7 +516,7 @@ class Analyzer
 	 * @param  PhpDocTagValueNode[][] $tags indexed by [tagName][]
 	 * @return iterable<MemberInfo>
 	 */
-	private function extractMembersClassLikeTags(array $tags): iterable
+	protected function extractMembersClassLikeTags(array $tags): iterable
 	{
 		$propertyTags = [
 			'property' => [false, false],
@@ -568,7 +568,7 @@ class Analyzer
 	 * @param  Node\Param[]        $parameters
 	 * @return ParameterInfo[]
 	 */
-	private function processParameters(array $paramTags, array $parameters): array
+	protected function processParameters(array $paramTags, array $parameters): array
 	{
 		$parameterInfos = [];
 		foreach ($parameters as $parameter) {
@@ -594,7 +594,7 @@ class Analyzer
 	 * @param PhpDocTagValueNode[][] $tagValues indexed by [tagName][]
 	 * @param string[]               $tagNames  indexed by []
 	 */
-	private function processName(Node\Name $name, array $tagValues = [], array $tagNames = []): ClassLikeReferenceInfo
+	protected function processName(Node\Name $name, array $tagValues = [], array $tagNames = []): ClassLikeReferenceInfo
 	{
 		$refInfo = new ClassLikeReferenceInfo($name->toString());
 
@@ -624,7 +624,7 @@ class Analyzer
 	 * @param  string[]               $tagNames  indexed by []
 	 * @return ClassLikeReferenceInfo[] indexed by [classLikeName]
 	 */
-	private function processNameList(array $names, array $tagValues = [], array $tagNames = []): array
+	protected function processNameList(array $names, array $tagValues = [], array $tagNames = []): array
 	{
 		$nameMap = [];
 
@@ -654,13 +654,13 @@ class Analyzer
 	}
 
 
-	private function processTypeOrNull(Identifier|Name|ComplexType|null $node): ?TypeNode
+	protected function processTypeOrNull(Identifier|Name|ComplexType|null $node): ?TypeNode
 	{
 		return $node ? $this->processType($node) : null;
 	}
 
 
-	private function processType(Identifier|Name|ComplexType $node): TypeNode
+	protected function processType(Identifier|Name|ComplexType $node): TypeNode
 	{
 		if ($node instanceof ComplexType) {
 			if ($node instanceof NullableType) {
@@ -691,13 +691,13 @@ class Analyzer
 	}
 
 
-	private function processExprOrNull(?Node\Expr $expr): ?ExprInfo
+	protected function processExprOrNull(?Node\Expr $expr): ?ExprInfo
 	{
 		return $expr ? $this->processExpr($expr) : null;
 	}
 
 
-	private function processExpr(Node\Expr $expr): ExprInfo
+	protected function processExpr(Node\Expr $expr): ExprInfo
 	{
 		if ($expr instanceof Node\Scalar\LNumber) {
 			return new IntegerExprInfo($expr->value, $expr->getAttribute('kind'), $expr->getAttribute('rawValue'));
@@ -790,7 +790,7 @@ class Analyzer
 	}
 
 
-	private function processPhpStanExpr(ConstExprNode $expr): ExprInfo
+	protected function processPhpStanExpr(ConstExprNode $expr): ExprInfo
 	{
 		if ($expr instanceof ConstExprTrueNode) {
 			return new BooleanExprInfo(true);
@@ -836,13 +836,13 @@ class Analyzer
 	}
 
 
-	private function extractPhpDoc(Node $node): PhpDocNode
+	protected function extractPhpDoc(Node $node): PhpDocNode
 	{
 		return $node->getAttribute('phpDoc') ?? new PhpDocNode([]);
 	}
 
 
-	private function extractDescription(PhpDocNode $node): string
+	protected function extractDescription(PhpDocNode $node): string
 	{
 		$lines = [];
 		foreach ($node->children as $child) {
@@ -861,7 +861,7 @@ class Analyzer
 	/**
 	 * @return PhpDocTagValueNode[][] indexed by [tagName][]
 	 */
-	private function extractTags(PhpDocNode $node): array
+	protected function extractTags(PhpDocNode $node): array
 	{
 		$tags = [];
 
@@ -878,7 +878,7 @@ class Analyzer
 	/**
 	 * @return ParamTagValueNode[] indexed by [parameterName]
 	 */
-	private function extractParamTagValues(PhpDocNode $node): array
+	protected function extractParamTagValues(PhpDocNode $node): array
 	{
 		$values = [];
 
@@ -895,7 +895,7 @@ class Analyzer
 	/**
 	 * @return ClassLikeReferenceInfo[] indexed by [classLike]
 	 */
-	private function extractExprDependencies(?ExprInfo $expr): array
+	protected function extractExprDependencies(?ExprInfo $expr): array
 	{
 		$dependencies = [];
 
@@ -943,7 +943,7 @@ class Analyzer
 	/**
 	 * @return ClassLikeReferenceInfo[] indexed by [classLike]
 	 */
-	private function extractTypeDependencies(?TypeNode $type): array
+	protected function extractTypeDependencies(?TypeNode $type): array
 	{
 		$dependencies = [];
 

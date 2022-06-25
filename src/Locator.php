@@ -26,8 +26,8 @@ class Locator
 	 * @param string[] $stubsMap indexed by [classLikeName]
 	 */
 	public function __construct(
-		private array $stubsMap,
-		private ClassLoader $classLoader,
+		protected array $stubsMap,
+		protected ClassLoader $classLoader,
 	) {
 	}
 
@@ -44,7 +44,7 @@ class Locator
 	/**
 	 * @return string[] indexed by [classLikeName]
 	 */
-	private static function createStubsMap(): array
+	protected static function createStubsMap(): array
 	{
 		$stubsMap = [];
 
@@ -66,7 +66,7 @@ class Locator
 	}
 
 
-	private static function createComposerClassLoader(OutputStyle $output, string $projectDir): ClassLoader
+	protected static function createComposerClassLoader(OutputStyle $output, string $projectDir): ClassLoader
 	{
 		$vendorDir = "$projectDir/vendor";
 		$loader = new ClassLoader();

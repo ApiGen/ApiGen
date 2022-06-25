@@ -11,7 +11,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 class Filter
 {
 	/** @var int */
-	private int $excludedVisibilityMask = 0;
+	protected int $excludedVisibilityMask = 0;
 
 
 	/**
@@ -20,7 +20,7 @@ class Filter
 	public function __construct(
 		bool $excludeProtected,
 		bool $excludePrivate,
-		private array $excludeTagged,
+		protected array $excludeTagged,
 	) {
 		$this->excludedVisibilityMask |= ($excludeProtected ? Node\Stmt\Class_::MODIFIER_PROTECTED : 0);
 		$this->excludedVisibilityMask |= ($excludePrivate ? Node\Stmt\Class_::MODIFIER_PRIVATE : 0);

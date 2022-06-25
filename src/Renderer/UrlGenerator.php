@@ -25,8 +25,8 @@ use const DIRECTORY_SEPARATOR;
 class UrlGenerator
 {
 	public function __construct(
-		private string $baseDir,
-		private string $baseUrl,
+		protected string $baseDir,
+		protected string $baseUrl,
 	) {
 	}
 
