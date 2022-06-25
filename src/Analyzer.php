@@ -212,13 +212,9 @@ final class Analyzer
 				yield from $this->processNodes($task, $node->stmts);
 
 			} elseif ($node instanceof Node\Stmt\ClassLike && $node->name !== null) {
-				if (!$this->filter->filterClassLikeNode($node)) {
-					continue;
-				}
-
 				try {
-					$classLike = $this->processClassLike($task, $node);
-					yield from $classLike ? [$classLike] : [];
+					$task->primary = $task->primary && $this->filter->filterClassLikeNode($node);
+					yield $this->processClassLike($task, $node);
 
 				} catch (\Throwable $e) {
 					throw new \LogicException("Failed to analyze $node->name", 0, $e);
@@ -240,7 +236,7 @@ final class Analyzer
 	}
 
 
-	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ?ClassLikeInfo // TODO: handle trait usage
+	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo // TODO: handle trait usage
 	{
 		$extendsTagNames = ['extends', 'template-extends', 'phpstan-extends'];
 		$implementsTagNames = ['implements', 'template-implements', 'phpstan-implements'];
@@ -252,8 +248,8 @@ final class Analyzer
 		$classDoc = $this->extractPhpDoc($node);
 		$tags = $this->extractTags($classDoc);
 
-		if (!$this->filter->filterClassLikeTags($tags)) {
-			return null;
+		if ($task->primary && !$this->filter->filterClassLikeTags($tags)) {
+			$task->primary = false;
 		}
 
 		if ($node instanceof Node\Stmt\Class_) {
@@ -358,8 +354,8 @@ final class Analyzer
 			}
 		}
 
-		if (!$this->filter->filterClassLikeInfo($info)) {
-			return null;
+		if ($info->primary && !$this->filter->filterClassLikeInfo($info)) {
+			$info->primary = false;
 		}
 
 		return $info;
