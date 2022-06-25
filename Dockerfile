@@ -1,4 +1,4 @@
-FROM alpine:3.16
+FROM alpine:3.16 as php-prod
 
 RUN addgroup --system --gid 1000 docker && \
 	adduser --system --uid 1000 --ingroup docker docker && \
@@ -20,6 +20,19 @@ RUN apk add --no-cache \
 
 COPY php.ini           /etc/php81/php.ini
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
+
+
+FROM php-prod as php-dev
+
+COPY --from=blackfire/blackfire /usr/local/bin/blackfire /usr/local/bin/blackfire
+
+RUN apk add --no-cache php81-session && \
+	wget -O /usr/lib/php81/modules/blackfire.so https://packages.blackfire.io/binaries/blackfire-php/1.79.0/blackfire-php-alpine_amd64-php-81.so && \
+	echo "extension = blackfire" >> /etc/php81/conf.d/blackfire.ini && \
+	echo "opcache.jit_buffer_size = 0" >> /etc/php81/conf.d/blackfire.ini
+
+
+FROM php-prod as apigen
 
 WORKDIR /src
 USER docker
