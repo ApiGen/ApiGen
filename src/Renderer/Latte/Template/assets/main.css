@@ -191,8 +191,8 @@ code a b {
 
 
 /* expandable */
-.expandable.collapsed .expandable-expandedView,
-.expandable:not(.collapsed) .expandable-collapsedView {
+.expandable.collapsed:not(:target) .expandable-expandedView,
+.expandable:not(.collapsed:not(:target)) .expandable-collapsedView {
 	display: none;
 }
 
