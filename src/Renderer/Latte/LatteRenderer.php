@@ -37,7 +37,7 @@ use function substr;
 use const PHP_SAPI;
 
 
-final class LatteRenderer implements Renderer
+class LatteRenderer implements Renderer
 {
 	public function __construct(
 		private Latte\Engine $latte,

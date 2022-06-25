@@ -3,7 +3,7 @@
 namespace ApiGenX\Info;
 
 
-final class EnumInfo extends ClassLikeInfo
+class EnumInfo extends ClassLikeInfo
 {
 	/** @var string|null */
 	public ?string $scalarType;

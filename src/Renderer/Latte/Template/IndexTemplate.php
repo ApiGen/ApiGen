@@ -3,7 +3,7 @@
 namespace ApiGenX\Renderer\Latte\Template;
 
 
-final class IndexTemplate
+class IndexTemplate
 {
 	public function __construct(
 		public GlobalParameters $global,

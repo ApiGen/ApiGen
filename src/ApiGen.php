@@ -18,7 +18,7 @@ use function memory_get_peak_usage;
 use function sprintf;
 
 
-final class ApiGen
+class ApiGen
 {
 	/**
 	 * @param string[] $paths   indexed by []

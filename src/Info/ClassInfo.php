@@ -3,7 +3,7 @@
 namespace ApiGenX\Info;
 
 
-final class ClassInfo extends ClassLikeInfo
+class ClassInfo extends ClassLikeInfo
 {
 	/** @var bool */
 	public bool $abstract = false;

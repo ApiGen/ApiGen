@@ -6,7 +6,7 @@ use ApiGenX\Info\ClassLikeReferenceInfo;
 use ApiGenX\Info\ExprInfo;
 
 
-final class ClassConstantFetchExprInfo implements ExprInfo
+class ClassConstantFetchExprInfo implements ExprInfo
 {
 	public function __construct(
 		public ClassLikeReferenceInfo $classLike,

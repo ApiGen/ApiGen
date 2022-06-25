@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class ArrayExprInfo implements ExprInfo
+class ArrayExprInfo implements ExprInfo
 {
 	/**
 	 * @param ArrayItemExprInfo[] $items

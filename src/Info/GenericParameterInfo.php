@@ -5,7 +5,7 @@ namespace ApiGenX\Info;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 
-final class GenericParameterInfo
+class GenericParameterInfo
 {
 	public function __construct(
 		public string $name,

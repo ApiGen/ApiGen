@@ -9,7 +9,7 @@ use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use function strtolower;
 
 
-final class MethodInfo extends MemberInfo
+class MethodInfo extends MemberInfo
 {
 	use HasGenericParameters;
 

@@ -8,7 +8,7 @@ use function abs;
 use function base_convert;
 
 
-final class IntegerExprInfo implements ExprInfo
+class IntegerExprInfo implements ExprInfo
 {
 	public function __construct(
 		public int $value,

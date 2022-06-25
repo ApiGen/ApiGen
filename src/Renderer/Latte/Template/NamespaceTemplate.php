@@ -5,7 +5,7 @@ namespace ApiGenX\Renderer\Latte\Template;
 use ApiGenX\Index\NamespaceIndex;
 
 
-final class NamespaceTemplate
+class NamespaceTemplate
 {
 	public function __construct(
 		public GlobalParameters $global,

@@ -6,7 +6,7 @@ use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
 
 
-final class BodySkipper extends NodeVisitorAbstract
+class BodySkipper extends NodeVisitorAbstract
 {
 	public function enterNode(Node $node)
 	{

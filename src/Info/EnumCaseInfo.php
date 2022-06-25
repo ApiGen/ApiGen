@@ -3,7 +3,7 @@
 namespace ApiGenX\Info;
 
 
-final class EnumCaseInfo extends MemberInfo
+class EnumCaseInfo extends MemberInfo
 {
 	public function __construct(
 		string $name,

@@ -95,7 +95,7 @@ use function substr;
 use function trim;
 
 
-final class Analyzer
+class Analyzer
 {
 	public function __construct(
 		private Locator $locator,

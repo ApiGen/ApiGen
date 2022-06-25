@@ -5,7 +5,7 @@ namespace ApiGenX\Info;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 
-final class ParameterInfo
+class ParameterInfo
 {
 	/** @var string */
 	public string $name;

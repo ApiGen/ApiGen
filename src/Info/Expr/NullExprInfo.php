@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class NullExprInfo implements ExprInfo
+class NullExprInfo implements ExprInfo
 {
 	public function toString(): string
 	{

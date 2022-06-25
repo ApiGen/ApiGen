@@ -21,7 +21,7 @@ use function implode;
 use function ksort;
 
 
-final class Indexer
+class Indexer
 {
 	public function indexFile(Index $index, ?string $file, bool $primary): void
 	{

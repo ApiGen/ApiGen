@@ -9,7 +9,7 @@ use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\TraitInfo;
 
 
-final class Index
+class Index
 {
 	/** @var FileIndex[] indexed by [filePath] */
 	public array $files = [];

@@ -10,7 +10,7 @@ use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
 
 
-final class NamespaceIndex implements ElementInfo
+class NamespaceIndex implements ElementInfo
 {
 	/** @var ClassInfo[] indexed by [classShortName] (excludes exceptions) */
 	public array $class = [];

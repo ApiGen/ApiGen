@@ -6,7 +6,7 @@ use ApiGenX\Info\ExprInfo;
 use ApiGenX\Info\ClassLikeReferenceInfo;
 
 
-final class NewExprInfo implements ExprInfo
+class NewExprInfo implements ExprInfo
 {
 	/**
 	 * @param ArgExprInfo[] $args

@@ -5,7 +5,7 @@ namespace ApiGenX\Index;
 use ApiGenX\Info\ClassLikeInfo;
 
 
-final class FileIndex
+class FileIndex
 {
 	/** @var ClassLikeInfo[] indexed by [classLikeName] */
 	public array $classLike = [];

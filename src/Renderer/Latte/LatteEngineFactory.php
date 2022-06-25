@@ -9,7 +9,7 @@ use Throwable;
 use function array_filter;
 
 
-final class LatteEngineFactory
+class LatteEngineFactory
 {
 	public function __construct(
 		private LatteFunctions $functions,

@@ -7,7 +7,7 @@ use Latte;
 use function is_file;
 
 
-final class LatteCascadingLoader extends Latte\Loaders\FileLoader
+class LatteCascadingLoader extends Latte\Loaders\FileLoader
 {
 	/**
 	 * @param string[] $baseDirs

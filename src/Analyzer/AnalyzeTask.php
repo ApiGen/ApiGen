@@ -3,7 +3,7 @@
 namespace ApiGenX\Analyzer;
 
 
-final class AnalyzeTask
+class AnalyzeTask
 {
 	public function __construct(
 		public string $sourceFile,

@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class DimFetchExprInfo implements ExprInfo
+class DimFetchExprInfo implements ExprInfo
 {
 	public function __construct(
 		public ExprInfo $expr,

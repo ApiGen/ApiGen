@@ -25,7 +25,7 @@ use const ENT_HTML5;
 use const ENT_QUOTES;
 
 
-final class LatteFunctions
+class LatteFunctions
 {
 	public function __construct(
 		private UrlGenerator $url,

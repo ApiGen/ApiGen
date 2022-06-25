@@ -7,7 +7,7 @@ use function strtolower;
 use function substr;
 
 
-final class NameInfo
+class NameInfo
 {
 	/** @var string e.g. 'ApiGenX\Info\Traits\HasName' */
 	public string $full;

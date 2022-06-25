@@ -15,7 +15,7 @@ use function substr;
 use const DIRECTORY_SEPARATOR;
 
 
-final class Helpers
+class Helpers
 {
 	/**
 	 * @param string[] $paths indexed by [], non-empty

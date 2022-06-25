@@ -3,7 +3,7 @@
 namespace ApiGenX\Info;
 
 
-final class InterfaceInfo extends ClassLikeInfo
+class InterfaceInfo extends ClassLikeInfo
 {
 	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $extends = [];

@@ -20,7 +20,7 @@ use const PATHINFO_FILENAME;
 use const PHP_VERSION_ID;
 
 
-final class Locator
+class Locator
 {
 	/**
 	 * @param string[] $stubsMap indexed by [classLikeName]

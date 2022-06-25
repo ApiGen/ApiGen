@@ -7,7 +7,7 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 
 
-final class GlobalParameters
+class GlobalParameters
 {
 	public function __construct(
 		public Index $index,

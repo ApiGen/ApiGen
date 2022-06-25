@@ -49,7 +49,7 @@ use function strtolower;
 use function substr;
 
 
-final class PhpDocResolver extends NodeVisitorAbstract
+class PhpDocResolver extends NodeVisitorAbstract
 {
 	private const NATIVE_KEYWORDS = [
 		'array' => true,

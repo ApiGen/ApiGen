@@ -3,7 +3,7 @@
 namespace ApiGenX\Info;
 
 
-final class ConstantInfo extends MemberInfo
+class ConstantInfo extends MemberInfo
 {
 	/** @var ExprInfo */
 	public ExprInfo $value;

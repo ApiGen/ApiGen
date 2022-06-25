@@ -22,7 +22,7 @@ use function substr;
 use const DIRECTORY_SEPARATOR;
 
 
-final class UrlGenerator
+class UrlGenerator
 {
 	public function __construct(
 		private string $baseDir,

@@ -17,7 +17,7 @@ use function strtoupper;
 use const STR_PAD_LEFT;
 
 
-final class StringExprInfo implements ExprInfo
+class StringExprInfo implements ExprInfo
 {
 	public function __construct(
 		public string $value,

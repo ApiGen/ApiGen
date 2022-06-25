@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class ArgExprInfo
+class ArgExprInfo
 {
 	public function __construct(
 		public ?string $name,

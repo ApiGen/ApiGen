@@ -5,7 +5,7 @@ namespace ApiGenX\Renderer\Latte\Template;
 use ApiGenX\Info\ClassLikeInfo;
 
 
-final class ClassLikeTemplate
+class ClassLikeTemplate
 {
 	public function __construct(
 		public GlobalParameters $global,

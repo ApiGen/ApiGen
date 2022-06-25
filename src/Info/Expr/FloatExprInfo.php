@@ -11,7 +11,7 @@ use function str_contains;
 use const JSON_THROW_ON_ERROR;
 
 
-final class FloatExprInfo implements ExprInfo
+class FloatExprInfo implements ExprInfo
 {
 	public function __construct(
 		public float $value,

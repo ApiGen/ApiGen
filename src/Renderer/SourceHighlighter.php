@@ -97,7 +97,7 @@ use const T_YIELD;
 use const T_YIELD_FROM;
 
 
-final class SourceHighlighter
+class SourceHighlighter
 {
 	public const PHP_TAG = 'php-tag';
 	public const PHP_KEYWORD = 'php-kw';

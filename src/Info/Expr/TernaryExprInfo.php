@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class TernaryExprInfo implements ExprInfo
+class TernaryExprInfo implements ExprInfo
 {
 	public function __construct(
 		public ExprInfo $condition,

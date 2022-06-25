@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class ConstantFetchExprInfo implements ExprInfo
+class ConstantFetchExprInfo implements ExprInfo
 {
 	public function __construct(
 		public string $name,

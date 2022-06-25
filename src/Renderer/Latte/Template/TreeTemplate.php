@@ -3,7 +3,7 @@
 namespace ApiGenX\Renderer\Latte\Template;
 
 
-final class TreeTemplate
+class TreeTemplate
 {
 	public function __construct(
 		public GlobalParameters $global,

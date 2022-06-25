@@ -7,7 +7,7 @@ use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use function strtolower;
 
 
-final class ClassLikeReferenceInfo
+class ClassLikeReferenceInfo
 {
 	/** @var string e.g. 'ApiGenX\Info\Traits\HasName' */
 	public string $full;

@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class ArrayItemExprInfo
+class ArrayItemExprInfo
 {
 	public function __construct(
 		public ?ExprInfo $key,

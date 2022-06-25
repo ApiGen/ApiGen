@@ -36,7 +36,7 @@ use const PHP_RELEASE_VERSION;
 use const PHP_VERSION_ID;
 
 
-final class Bootstrap
+class Bootstrap
 {
 	public static function configureErrorHandling(): void
 	{

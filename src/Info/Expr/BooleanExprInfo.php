@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class BooleanExprInfo implements ExprInfo
+class BooleanExprInfo implements ExprInfo
 {
 	public function __construct(
 		public bool $value,

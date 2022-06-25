@@ -5,7 +5,7 @@ namespace ApiGenX\Info\Expr;
 use ApiGenX\Info\ExprInfo;
 
 
-final class UnaryOpExprInfo implements ExprInfo
+class UnaryOpExprInfo implements ExprInfo
 {
 	public function __construct(
 		public string $op,
