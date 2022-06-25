@@ -1,7 +1,7 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
 {define member, ApiGenX\Info\MemberInfo $member}
-	<tr class="expandable collapsed" id="{memberAnchor($member)}">
+	<tr class="expandable collapsed" data-order="{$member->name}" id="{memberAnchor($member)}">
 		{include cells}
 		<td class="table-anchor">
 			<a href="#{memberAnchor($member)}">#</a>
