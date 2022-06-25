@@ -4,7 +4,9 @@ namespace ApiGenX;
 
 use ReflectionClass;
 
+use function array_map;
 use function array_shift;
+use function assert;
 use function realpath;
 use function strlen;
 use function substr;
@@ -19,6 +21,8 @@ final class Helpers
 	 */
 	public static function baseDir(array $paths): string
 	{
+		assert(count($paths) > 0);
+
 		$paths = array_map(self::realPath(...), $paths);
 		$first = array_shift($paths);
 		$j = 0;

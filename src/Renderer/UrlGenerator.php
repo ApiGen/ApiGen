@@ -158,7 +158,7 @@ final class UrlGenerator
 	public function getSourcePath(string $path): string
 	{
 		$relativePath = $this->getRelativePath($path);
-		$relativePathWithoutExtension = substr($relativePath, 0, strrpos($relativePath, '.'));
+		$relativePathWithoutExtension = substr($relativePath, 0, strrpos($relativePath, '.') ?: null);
 		return 'source-' . strtr($relativePathWithoutExtension, DIRECTORY_SEPARATOR, '.') . '.html';
 	}
 }
