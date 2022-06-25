@@ -7,6 +7,7 @@ use ReflectionClass;
 use function array_map;
 use function array_shift;
 use function assert;
+use function count;
 use function realpath;
 use function strlen;
 use function substr;

@@ -236,7 +236,7 @@ final class Analyzer
 	}
 
 
-	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo // TODO: handle trait usage
+	private function processClassLike(AnalyzeTask $task, Node\Stmt\ClassLike $node): ClassLikeInfo
 	{
 		$extendsTagNames = ['extends', 'template-extends', 'phpstan-extends'];
 		$implementsTagNames = ['implements', 'template-implements', 'phpstan-implements'];
@@ -259,7 +259,7 @@ final class Analyzer
 			$info->extends = $node->extends ? $this->processName($node->extends, $tags, $extendsTagNames) : null;
 			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames);
 
-			foreach ($node->getTraitUses() as $traitUse) {
+			foreach ($node->getTraitUses() as $traitUse) { // TODO: trait adaptations
 				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
 			}
 
@@ -309,9 +309,8 @@ final class Analyzer
 		foreach ($this->extractMembers($info->tags, $node) as $member) {
 			if (!$this->filter->filterMemberInfo($member)) {
 				continue;
-			}
 
-			if ($member instanceof ConstantInfo) {
+			} elseif ($member instanceof ConstantInfo) {
 				$info->constants[$member->name] = $member;
 				$info->dependencies += $this->extractExprDependencies($member->value);
 

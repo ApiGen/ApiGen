@@ -11,6 +11,7 @@ use PHPStan\Php8StubsMap;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function dirname;
+use function implode;
 use function is_dir;
 use function pathinfo;
 use function strtolower;
