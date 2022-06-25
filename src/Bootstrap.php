@@ -161,7 +161,7 @@ final class Bootstrap
 
 	private static function resolvePaths(array $parameters, string $base): array
 	{
-		foreach (['tempDir', 'workingDir', 'outputDir'] as $parameterKey) {
+		foreach (['tempDir', 'workingDir', 'outputDir', 'templatesDir'] as $parameterKey) {
 			if (isset($parameters[$parameterKey])) {
 				$parameters[$parameterKey] = self::resolvePath($parameters[$parameterKey], $base);
 			}
