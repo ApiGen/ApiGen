@@ -85,7 +85,7 @@ services:
 		factory: ApiGenX\Renderer\Latte\LatteFunctions
 
 	renderer.latte.engineFactory:
-		factory: ApiGenX\Renderer\Latte\LatteEngineFactory(tempDir: %tempDir%)
+		factory: ApiGenX\Renderer\Latte\LatteEngineFactory(tempDir: %tempDir%, templatesDir: %templatesDir%)
 
 	renderer.latte.engine:
 		factory: @ApiGenX\Renderer\Latte\LatteEngineFactory::create()

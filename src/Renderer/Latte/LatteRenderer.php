@@ -2,7 +2,6 @@
 
 namespace ApiGenX\Renderer\Latte;
 
-use ApiGenX\Helpers;
 use ApiGenX\Index\FileIndex;
 use ApiGenX\Index\Index;
 use ApiGenX\Index\NamespaceIndex;
@@ -18,13 +17,12 @@ use ApiGenX\Renderer\UrlGenerator;
 use Latte;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
+use ReflectionClass;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 use function array_filter;
 use function array_key_first;
-use function basename;
 use function count;
-use function dirname;
 use function extension_loaded;
 use function lcfirst;
 use function pcntl_fork;
@@ -47,7 +45,6 @@ final class LatteRenderer implements Renderer
 		private int $workerCount,
 		private string $title,
 		private string $outputDir,
-		private ?string $templatesDir = null,
 	) {
 	}
 
@@ -56,14 +53,7 @@ final class LatteRenderer implements Renderer
 	{
 		FileSystem::delete($this->outputDir);
 		FileSystem::createDir($this->outputDir);
-
-		$templatesDir = $this->templatesDir ?? __DIR__ . '/Template';
-		$assetsDir = "$templatesDir/assets";
-		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
-			$assetName = substr($path, strlen($assetsDir) + 1);
-			$assetPath = $this->urlGenerator->getAssetPath($assetName);
-			FileSystem::copy($path, "$this->outputDir/$assetPath");
-		}
+		$this->copyAssets();
 
 		$primaryFiles = array_filter($index->files, fn(FileIndex $file) => $file->primary);
 		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($primaryFiles));
@@ -133,6 +123,17 @@ final class LatteRenderer implements Renderer
 	}
 
 
+	private function copyAssets(): void
+	{
+		$assetsDir = __DIR__ . '/Template/assets';
+		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
+			$assetName = substr($path, strlen($assetsDir) + 1);
+			$assetPath = $this->urlGenerator->getAssetPath($assetName);
+			FileSystem::copy($path, "$this->outputDir/$assetPath");
+		}
+	}
+
+
 	private function renderTemplate(?ProgressBar $progressBar, string $outputPath, object $template): void
 	{
 		if ($progressBar !== null) {
@@ -140,11 +141,8 @@ final class LatteRenderer implements Renderer
 			$progressBar->advance();
 		}
 
-		$classPath = Helpers::classLikePath($template::class);
-		$fileName = lcfirst(basename($classPath, 'Template.php')) . '.latte';
-
-		$templatesDir = $this->templatesDir ?? __DIR__ . '/Template';
-		$lattePath = "$templatesDir/pages/$fileName";
+		$className = (new ReflectionClass($template))->getShortName();
+		$lattePath = 'pages/' . lcfirst(substr($className, 0, -8)) . '.latte';
 		FileSystem::write("$this->outputDir/$outputPath", $this->latte->renderToString($lattePath, $template));
 	}
 

@@ -6,6 +6,8 @@ use ApiGenX\Renderer\UrlGenerator;
 use Latte;
 use Throwable;
 
+use function array_filter;
+
 
 final class LatteEngineFactory
 {
@@ -13,6 +15,7 @@ final class LatteEngineFactory
 		private LatteFunctions $functions,
 		private UrlGenerator $url,
 		private ?string $tempDir,
+		private ?string $templatesDir,
 	) {
 	}
 
@@ -23,6 +26,9 @@ final class LatteEngineFactory
 		$latte->setStrictTypes();
 		$latte->setExceptionHandler(fn(Throwable $e) => throw $e);
 		$latte->setTempDirectory($this->tempDir);
+
+		$loader = new LatteCascadingLoader(array_filter([$this->templatesDir, __DIR__ . '/Template']));
+		$latte->setLoader($loader);
 
 		$latte->addFunction('isClass', [$this->functions, 'isClass']);
 		$latte->addFunction('isInterface', [$this->functions, 'isInterface']);
