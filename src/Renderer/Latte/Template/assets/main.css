@@ -224,7 +224,7 @@ tr:target {
 .layout {
 	display: flex;
 	flex-direction: row;
-	min-width: min(1400px, 100vw);
+	min-width: min(1400px, 100%);
 	max-width: fit-content;
 }
 
