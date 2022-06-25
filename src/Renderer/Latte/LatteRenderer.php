@@ -26,6 +26,7 @@ use function basename;
 use function count;
 use function dirname;
 use function extension_loaded;
+use function lcfirst;
 use function pcntl_fork;
 use function pcntl_waitpid;
 use function pcntl_wexitstatus;
@@ -52,22 +53,20 @@ final class LatteRenderer implements Renderer
 
 	public function render(ProgressBar $progressBar, Index $index): void
 	{
-		$templateDir = __DIR__ . '/Template';
-		$assetsDir = $templateDir . '/assets';
-
 		FileSystem::delete($this->outputDir);
 		FileSystem::createDir($this->outputDir);
 
+		$assetsDir = __DIR__ . '/Template/assets';
 		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
-			$name = substr($path, strlen($assetsDir) + 1);
-			$target = "$this->outputDir/" . $this->urlGenerator->getAssetPath($name);
-			FileSystem::copy($path, $target);
+			$assetName = substr($path, strlen($assetsDir) + 1);
+			$assetPath = $this->urlGenerator->getAssetPath($assetName);
+			FileSystem::copy($path, "$this->outputDir/$assetPath");
 		}
 
 		$primaryFiles = array_filter($index->files, fn(FileIndex $file) => $file->primary);
 		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($primaryFiles));
 
-		$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getIndexPath(), new IndexTemplate(
+		$this->renderTemplate($progressBar, $this->urlGenerator->getIndexPath(), new IndexTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $this->title,
@@ -77,7 +76,7 @@ final class LatteRenderer implements Renderer
 			),
 		));
 
-		$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getTreePath(), new TreeTemplate(
+		$this->renderTemplate($progressBar, $this->urlGenerator->getTreePath(), new TreeTemplate(
 			global: new GlobalParameters(
 				index: $index,
 				title: $this->title,
@@ -88,7 +87,7 @@ final class LatteRenderer implements Renderer
 		));
 
 		$this->forkLoop($progressBar, $index->namespace, function (?ProgressBar $progressBar, NamespaceIndex $info) use ($index) {
-			$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
+			$this->renderTemplate($progressBar, $this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $this->title,
@@ -101,7 +100,7 @@ final class LatteRenderer implements Renderer
 		});
 
 		$this->forkLoop($progressBar, $index->classLike, function (?ProgressBar $progressBar, ClassLikeInfo $info) use ($index) {
-			$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
+			$this->renderTemplate($progressBar, $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $this->title,
@@ -117,7 +116,7 @@ final class LatteRenderer implements Renderer
 			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
 			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
 
-			$this->renderTemplate($progressBar, "$this->outputDir/" . $this->urlGenerator->getSourcePath($path), new SourceTemplate(
+			$this->renderTemplate($progressBar, $this->urlGenerator->getSourcePath($path), new SourceTemplate(
 				global: new GlobalParameters(
 					index: $index,
 					title: $this->title,
@@ -140,8 +139,8 @@ final class LatteRenderer implements Renderer
 		}
 
 		$classPath = Helpers::classLikePath($template::class);
-		$lattePath = dirname($classPath) . '/' . basename($classPath, 'Template.php') . '.latte';
-		FileSystem::write($outputPath, $this->latte->renderToString($lattePath, $template));
+		$lattePath = dirname($classPath) . '/pages/' . lcfirst(basename($classPath, 'Template.php')) . '.latte';
+		FileSystem::write("$this->outputDir/$outputPath", $this->latte->renderToString($lattePath, $template));
 	}
 
 

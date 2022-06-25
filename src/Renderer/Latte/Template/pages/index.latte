@@ -1,5 +1,6 @@
 {templateType ApiGenX\Renderer\Latte\Template\TreeTemplate}
-{import 'blocks/@index.latte'}
+{import '../blocks/@index.latte'}
+
 {embed layout}
 	{block content}
 		<h1>{$global->title}</h1>
