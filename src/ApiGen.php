@@ -59,7 +59,7 @@ final class ApiGen
 
 
 	/**
-	 * @return string[] $files indexed by []
+	 * @return string[] list of files, indexed by []
 	 */
 	private function findFiles(): array
 	{
