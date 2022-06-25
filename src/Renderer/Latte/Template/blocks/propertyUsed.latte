@@ -1,0 +1,26 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define propertyUsed, ApiGenX\Info\ClassLikeInfo $from, array $overriden}
+	{try}
+		<table class="table" n:if="isTrait($from)">
+			<tr>
+				<th class="table-heading">Properties used from {include classLikeLink, $from}</th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code>{*
+						*}{foreach $from->properties as $propertyName => $property}{*
+							*}{skipIf isset($overriden[$propertyName])}{*
+							*}<var>{embed memberLink, $from, $property}{block content}${$property->name}{/block}{/embed}</var>{*
+							*}{sep}, {/sep}{*
+						*}{else}{*
+							*}{rollback}{*
+						*}{/foreach}{*
+					*}</code>
+				</td>
+			</tr>
+		</table>
+	{/try}
+
+	{include propertyUsedSummary, $from, $overriden}
+{/define}
