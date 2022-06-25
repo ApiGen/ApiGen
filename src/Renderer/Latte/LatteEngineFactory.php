@@ -15,7 +15,7 @@ class LatteEngineFactory
 		protected LatteFunctions $functions,
 		protected UrlGenerator $url,
 		protected ?string $tempDir,
-		protected ?string $templatesDir,
+		protected ?string $themeDir,
 	) {
 	}
 
@@ -27,7 +27,7 @@ class LatteEngineFactory
 		$latte->setExceptionHandler(fn(Throwable $e) => throw $e);
 		$latte->setTempDirectory($this->tempDir);
 
-		$loader = new LatteCascadingLoader(array_filter([$this->templatesDir, __DIR__ . '/Template']));
+		$loader = new LatteCascadingLoader(array_filter([$this->themeDir, __DIR__ . '/Template']));
 		$latte->setLoader($loader);
 
 		$latte->addFunction('isClass', [$this->functions, 'isClass']);

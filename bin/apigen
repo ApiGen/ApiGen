@@ -3,7 +3,6 @@
 
 use ApiGenX\Bootstrap;
 use Composer\InstalledVersions;
-use Nette\Schema\Helpers;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,6 +39,7 @@ $app->addOption('memory-limit', null, InputOption::VALUE_REQUIRED, 'memory limit
 $app->addOption('title', 't', InputOption::VALUE_REQUIRED, 'title');
 $app->addOption('base-url', null, InputOption::VALUE_REQUIRED, 'base URL');
 $app->addOption('output', 'o', InputOption::VALUE_REQUIRED, 'output directory');
+$app->addOption('theme', null, InputOption::VALUE_REQUIRED, 'theme directory');
 
 $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): int {
 	$paths = $input->getArgument('path');
@@ -55,6 +55,7 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 		'title' => 'title',
 		'base-url' => 'baseUrl',
 		'output' => 'outputDir',
+		'theme' => 'themeDir',
 	];
 
 	$parameters = [];

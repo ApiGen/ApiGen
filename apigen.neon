@@ -21,7 +21,7 @@ parameters:
 	outputDir: '%workingDir%/api'
 
 	# string | null
-	templatesDir: null
+	themeDir: null
 
 	# string, --title in CLI
 	title: 'API Documentation'
@@ -85,7 +85,7 @@ services:
 		factory: ApiGenX\Renderer\Latte\LatteFunctions
 
 	renderer.latte.engineFactory:
-		factory: ApiGenX\Renderer\Latte\LatteEngineFactory(tempDir: %tempDir%, templatesDir: %templatesDir%)
+		factory: ApiGenX\Renderer\Latte\LatteEngineFactory(tempDir: %tempDir%, themeDir: %themeDir%)
 
 	renderer.latte.engine:
 		factory: @ApiGenX\Renderer\Latte\LatteEngineFactory::create()

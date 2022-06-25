@@ -122,7 +122,7 @@ class Bootstrap
 
 			// output
 			'outputDir' => Expect::string(),
-			'templatesDir' => Expect::string()->nullable(),
+			'themeDir' => Expect::string()->nullable(),
 			'title' => Expect::string(),
 			'baseUrl' => Expect::string(),
 
@@ -167,7 +167,7 @@ class Bootstrap
 
 	protected static function resolvePaths(array $parameters, string $base): array
 	{
-		foreach (['tempDir', 'workingDir', 'outputDir', 'templatesDir'] as $parameterKey) {
+		foreach (['tempDir', 'workingDir', 'outputDir', 'themeDir'] as $parameterKey) {
 			if (isset($parameters[$parameterKey])) {
 				$parameters[$parameterKey] = self::resolvePath($parameters[$parameterKey], $base);
 			}
