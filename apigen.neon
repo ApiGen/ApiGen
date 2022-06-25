@@ -92,7 +92,7 @@ services:
 
 	renderer:
 		type: ApiGenX\Renderer
-		factory: ApiGenX\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%, templatesDir: %templatesDir%)
+		factory: ApiGenX\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%)
 
 	# league/commonmark
 	commonMark:
