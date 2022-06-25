@@ -86,7 +86,7 @@ final class UrlGenerator
 
 	public function getNamespacePath(NamespaceIndex $namespace): string
 	{
-		return 'namespace-' . strtr($namespace->name->full, '\\', '.') . '.html';
+		return 'namespace-' . strtr($namespace->name->full ?: 'none', '\\', '.') . '.html';
 	}
 
 
