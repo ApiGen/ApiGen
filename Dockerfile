@@ -31,6 +31,20 @@ RUN apk add --no-cache php81-session && \
 	echo "extension = blackfire" >> /etc/php81/conf.d/blackfire.ini && \
 	echo "opcache.jit_buffer_size = 0" >> /etc/php81/conf.d/blackfire.ini
 
+RUN apk add --no-cache make git php81-dev gcc g++ && \
+	ln -s /usr/bin/phpize81 /usr/bin/phpize && \
+	ln -s /usr/bin/php-config81 /usr/bin/php-config
+
+RUN wget -O /tmp/meminfo.tar.gz https://github.com/BitOne/php-meminfo/archive/master.tar.gz && \
+	tar zxpf /tmp/meminfo.tar.gz -C /tmp && \
+	rm /tmp/meminfo.tar.gz && \
+	cd /tmp/php-meminfo-master/extension && phpize && ./configure --enable-meminfo && make && make install && \
+	echo "extension = meminfo" >> /etc/php81/conf.d/meminfo.ini
+
+RUN cd /tmp/php-meminfo-master/analyzer && \
+	composer install && \
+	ln -s /tmp/php-meminfo-master/analyzer/bin/analyzer /usr/bin/meminfo-analyzer
+
 
 FROM php-prod as apigen
 
