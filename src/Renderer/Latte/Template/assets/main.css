@@ -1,3 +1,16 @@
+/* variables */
+:root {
+	--font-family-text: Verdana, Geneva CE, lucida, sans-serif;
+	--font-family-heading: Trebuchet MS, Geneva CE, lucida, sans-serif;
+	--font-family-code: Consolas, monospace;
+	--color-heading-dark: #053368;
+	--color-heading-light: #1e5eb6;
+	--color-link: #006aeb;
+	--color-selected: #fffbdd;
+	--border-color: #cccccc;
+}
+
+
 /* reset */
 *,
 *::before,
@@ -33,25 +46,25 @@ ul, ol {
 /* base */
 body {
 	min-height: 100vh;
-	font: 13px/1.5 Verdana, 'Geneva CE', lucida, sans-serif;
+	font: 13px/1.5 var(--font-family-text);
 	background: #ffffff;
 	color: #333333;
 }
 
 h1, h2, h3, h4 {
-	font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
-	color: #053368;
+	font-family: var(--font-family-heading);
+	color: var(--color-heading-dark);
 }
 
 h1 {
-	color: #1e5eb6;
+	color: var(--color-heading-light);
 	font-size: 230%;
 	font-weight: normal;
 	margin-top: .3em;
 }
 
 h2 {
-	color: #1e5eb6;
+	color: var(--color-heading-light);
 	font-size: 150%;
 	font-weight: normal;
 	margin-top: .3em;
@@ -80,22 +93,22 @@ h4 + * {
 }
 
 a {
-	color: #006aeb;
+	color: var(--color-link);
 	padding: 3px 1px;
 	text-decoration: none;
 }
 
 h1 a {
-	color: #1e5eb6;
+	color: var(--color-heading-light);
 }
 
 a:hover, a:active, a:focus, a:hover b, a:hover var {
-	background-color: #006aeb;
+	background-color: var(--color-link);
 	color: #ffffff !important;
 }
 
 code, var, pre {
-	font-family: monospace;
+	font-family: var(--font-family-code);
 	tab-size: 4;
 	white-space: pre-wrap;
 }
@@ -124,7 +137,7 @@ code a b {
 /* classLikeDescription */
 .classLikeDescription {
 	margin-top: 1em;
-	border: 1px solid #cccccc;
+	border: 1px solid var(--border-color);
 	background-color: #ecede5;
 	padding: 10px;
 }
@@ -144,7 +157,7 @@ code a b {
 .classLikeSignatureTable th {
 	font-weight: normal;
 	text-align: left;
-	color: #053368;
+	color: var(--color-heading-dark);
 	vertical-align: top;
 	padding-right: 12px;
 }
@@ -274,7 +287,7 @@ code a b {
 .menu .active > a:hover,
 .menu .active > a:active,
 .menu .active > a:focus {
-	background-color: #006aeb;
+	background-color: var(--color-link);
 }
 
 
@@ -309,7 +322,7 @@ code a b {
 
 /* source */
 .source {
-	font-family: monospace;
+	font-family: var(--font-family-code);
 	tab-size: 4;
 	white-space: pre-wrap;
 }
@@ -319,7 +332,7 @@ code a b {
 }
 
 .source-line.selected {
-	background: #fffbdd;
+	background: var(--color-selected);
 }
 
 .source-lineNum {
@@ -341,11 +354,11 @@ code a b {
 }
 
 .table-heading {
-	border: 1px solid #cccccc;
+	border: 1px solid var(--border-color);
 	padding: 3px 5px;
 	background: #ecede5;
-	color: #053368;
-	font-family: 'Trebuchet MS', 'Geneva CE', lucida, sans-serif;
+	color: var(--color-heading-dark);
+	font-family: var(--font-family-heading);
 	font-size: 1.2em;
 	font-weight: bold;
 	text-align: left;
@@ -354,7 +367,7 @@ code a b {
 .table-cell,
 .table-anchor {
 	margin: 0;
-	border: 1px solid #cccccc;
+	border: 1px solid var(--border-color);
 	padding: 3px 10px;
 	vertical-align: top;
 }
