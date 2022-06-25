@@ -367,6 +367,13 @@ tr:target {
 	text-align: left;
 }
 
+.table-heading.sortable {
+	cursor: pointer;
+	background-image: url(data:image/data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAJAQMAAADnzfU1AAAABlBMVEUAAAAjLTCZnys1AAAAAXRSTlMAQObYZgAAAB5JREFUCNdjYFBgYGAoAOIfDAyMfxiAAEr/AIuD5AFa2gULVBsRKgAAAABJRU5ErkJggg==);
+	background-position: center right;
+	background-repeat: no-repeat;
+}
+
 .table-cell,
 .table-anchor {
 	margin: 0;

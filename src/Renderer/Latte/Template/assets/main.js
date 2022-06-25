@@ -6,6 +6,24 @@ document.querySelectorAll('.expandable').forEach(el => {
 })
 
 
+// table sort
+document.querySelectorAll('.sortable').forEach(el => {
+	const table = el.closest('table')
+	const items = Array.from(table.querySelectorAll('[data-order]'))
+	let orderBy = 'order'
+
+	items.forEach((item, i) => {
+		item.dataset.orderNatural = i.toString(10).padStart(3, '0')
+	})
+
+	el.addEventListener('click', () => {
+		items.sort((a, b) => a.dataset[orderBy].localeCompare(b.dataset[orderBy]))
+		table.append(...items)
+		orderBy = orderBy === 'order' ? 'orderNatural' : 'order'
+	})
+})
+
+
 // line selection
 let ranges = []
 let last = null
