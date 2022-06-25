@@ -1,0 +1,26 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define methodUsed, ApiGenX\Info\ClassLikeInfo $from, array $overriden}
+	{try}
+		<table class="table" n:if="isTrait($from)">
+			<tr>
+				<th class="table-heading">Methods used from {include classLikeLink, $from}</th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code>{*
+						*}{foreach $from->methods as $methodName => $method}{*
+							*}{skipIf isset($overriden[$methodName])}{*
+							*}{embed memberLink, $from, $method}{block content}{$method->name}(){/block}{/embed}{*
+							*}{sep}, {/sep}{*
+						*}{else}{*
+							*}{rollback}{*
+						*}{/foreach}{*
+					*}</code>
+				</td>
+			</tr>
+		</table>
+	{/try}
+
+	{include methodUsedSummary, $from, $overriden}
+{/define}
