@@ -117,6 +117,7 @@ final class Bootstrap
 
 			// output
 			'outputDir' => Expect::string(),
+			'templatesDir' => Expect::string()->nullable(),
 			'title' => Expect::string(),
 			'baseUrl' => Expect::string(),
 

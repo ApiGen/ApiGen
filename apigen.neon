@@ -20,6 +20,9 @@ parameters:
 	# string, --output in CLI
 	outputDir: '%workingDir%/api'
 
+	# string | null
+	templatesDir: null
+
 	# string, --title in CLI
 	title: 'API Documentation'
 
@@ -89,7 +92,7 @@ services:
 
 	renderer:
 		type: ApiGenX\Renderer
-		factory: ApiGenX\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%)
+		factory: ApiGenX\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%, templatesDir: %templatesDir%)
 
 	# league/commonmark
 	commonMark:

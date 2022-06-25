@@ -45,8 +45,9 @@ final class LatteRenderer implements Renderer
 		private Latte\Engine $latte,
 		private UrlGenerator $urlGenerator,
 		private int $workerCount,
-		private string $outputDir,
 		private string $title,
+		private string $outputDir,
+		private ?string $templatesDir = null,
 	) {
 	}
 
@@ -56,7 +57,8 @@ final class LatteRenderer implements Renderer
 		FileSystem::delete($this->outputDir);
 		FileSystem::createDir($this->outputDir);
 
-		$assetsDir = __DIR__ . '/Template/assets';
+		$templatesDir = $this->templatesDir ?? __DIR__ . '/Template';
+		$assetsDir = "$templatesDir/assets";
 		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
 			$assetName = substr($path, strlen($assetsDir) + 1);
 			$assetPath = $this->urlGenerator->getAssetPath($assetName);
@@ -139,7 +141,10 @@ final class LatteRenderer implements Renderer
 		}
 
 		$classPath = Helpers::classLikePath($template::class);
-		$lattePath = dirname($classPath) . '/pages/' . lcfirst(basename($classPath, 'Template.php')) . '.latte';
+		$fileName = lcfirst(basename($classPath, 'Template.php')) . '.latte';
+
+		$templatesDir = $this->templatesDir ?? __DIR__ . '/Template';
+		$lattePath = "$templatesDir/pages/$fileName";
 		FileSystem::write("$this->outputDir/$outputPath", $this->latte->renderToString($lattePath, $template));
 	}
 
