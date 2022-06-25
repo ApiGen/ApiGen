@@ -381,9 +381,12 @@ code a b {
 	height: 30px
 }
 
+
+/* mobile */
 @media (max-width: 980px) {
 	.layout {
 		flex-direction: column-reverse;
+		justify-content: flex-end;
 	}
 
 	.layout-aside {
@@ -392,5 +395,6 @@ code a b {
 
 	.layout-main {
 		margin-left: 10px;
+		flex-grow: 0;
 	}
 }
