@@ -24,7 +24,7 @@ parameters:
 	themeDir: null
 
 	# string, --title in CLI
-	title: 'API Documentation'
+	title: ''
 
 	# string, --base-url in CLI
 	baseUrl: ''
@@ -92,7 +92,7 @@ services:
 
 	renderer:
 		type: ApiGenX\Renderer
-		factory: ApiGenX\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%)
+		factory: ApiGenX\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%, version: %version%)
 
 	# league/commonmark
 	commonMark:

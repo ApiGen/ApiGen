@@ -2,6 +2,7 @@
 
 namespace ApiGenX;
 
+use Composer\InstalledVersions;
 use ErrorException;
 use Nette\DI\Compiler;
 use Nette\DI\Config\Loader;
@@ -61,6 +62,7 @@ class Bootstrap
 	{
 		$workingDir = getcwd();
 		$tempDir = sys_get_temp_dir() . '/apigen';
+		$version = InstalledVersions::getPrettyVersion('apigen/apigen');
 
 		if ($workingDir === false) {
 			throw new \RuntimeException('Unable to get current working directory.');
@@ -73,7 +75,7 @@ class Bootstrap
 		}
 
 		$config = self::mergeConfigs(
-			['parameters' => ['workingDir' => $workingDir, 'tempDir' => $tempDir]],
+			['parameters' => ['workingDir' => $workingDir, 'tempDir' => $tempDir, 'version' => $version]],
 			self::loadConfig(__DIR__ . '/../apigen.neon'),
 			...array_map(self::loadConfig(...), $configPaths),
 			...[['parameters' => self::resolvePaths($parameters, $workingDir)]],
@@ -124,6 +126,7 @@ class Bootstrap
 			'outputDir' => Expect::string(),
 			'themeDir' => Expect::string()->nullable(),
 			'title' => Expect::string(),
+			'version' => Expect::string(),
 			'baseUrl' => Expect::string(),
 
 			// system

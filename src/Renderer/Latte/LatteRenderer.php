@@ -44,6 +44,7 @@ class LatteRenderer implements Renderer
 		protected UrlGenerator $urlGenerator,
 		protected int $workerCount,
 		protected string $title,
+		protected string $version,
 		protected string $outputDir,
 	) {
 	}
@@ -62,6 +63,7 @@ class LatteRenderer implements Renderer
 			global: new GlobalParameters(
 				index: $index,
 				title: $this->title,
+				version: $this->version,
 				activePage: 'index',
 				activeNamespace: null,
 				activeClassLike: null,
@@ -72,6 +74,7 @@ class LatteRenderer implements Renderer
 			global: new GlobalParameters(
 				index: $index,
 				title: $this->title,
+				version: $this->version,
 				activePage: 'tree',
 				activeNamespace: null,
 				activeClassLike: null,
@@ -83,6 +86,7 @@ class LatteRenderer implements Renderer
 				global: new GlobalParameters(
 					index: $index,
 					title: $this->title,
+					version: $this->version,
 					activePage: 'namespace',
 					activeNamespace: $info,
 					activeClassLike: null,
@@ -96,6 +100,7 @@ class LatteRenderer implements Renderer
 				global: new GlobalParameters(
 					index: $index,
 					title: $this->title,
+					version: $this->version,
 					activePage: 'classLike',
 					activeNamespace: $index->namespace[$info->name->namespaceLower],
 					activeClassLike: $info,
@@ -112,6 +117,7 @@ class LatteRenderer implements Renderer
 				global: new GlobalParameters(
 					index: $index,
 					title: $this->title,
+					version: $this->version,
 					activePage: 'source',
 					activeNamespace: $activeNamespace,
 					activeClassLike: $activeClassLike,

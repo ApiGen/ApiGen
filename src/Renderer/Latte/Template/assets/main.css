@@ -255,7 +255,8 @@ tr:target {
 }
 
 .layout-footer {
-	flex: 0 0 auto;
+	margin: 20px auto;
+	color: #929292;
 }
 
 
