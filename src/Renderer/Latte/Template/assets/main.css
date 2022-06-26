@@ -334,6 +334,7 @@ tr:target {
 	font-family: var(--font-family-code);
 	tab-size: 4;
 	white-space: pre-wrap;
+	width: 100%;
 }
 
 .source td {
