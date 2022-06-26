@@ -548,8 +548,8 @@ class Analyzer
 			$methodInfo->returnType = $value->returnType;
 			$methodInfo->description = $value->description;
 
-			foreach ($value->parameters as $parameter) {
-				$parameterInfo = new ParameterInfo(substr($parameter->parameterName, 1));
+			foreach ($value->parameters as $position => $parameter) {
+				$parameterInfo = new ParameterInfo(substr($parameter->parameterName, 1), $position);
 				$parameterInfo->type = $parameter->type;
 				$parameterInfo->byRef = $parameter->isReference;
 				$parameterInfo->variadic = $parameter->isVariadic;
@@ -564,19 +564,19 @@ class Analyzer
 
 
 	/**
-	 * @param  ParamTagValueNode[] $paramTags indexed by [parameterName]
-	 * @param  Node\Param[]        $parameters
+	 * @param  ParamTagValueNode[] $paramTags  indexed by [parameterName]
+	 * @param  Node\Param[]        $parameters indexed by []
 	 * @return ParameterInfo[]
 	 */
 	protected function processParameters(array $paramTags, array $parameters): array
 	{
 		$parameterInfos = [];
-		foreach ($parameters as $parameter) {
+		foreach ($parameters as $position => $parameter) {
 			assert($parameter->var instanceof Node\Expr\Variable);
 			assert(is_scalar($parameter->var->name));
 
 			$paramTag = $paramTags["\${$parameter->var->name}"] ?? null;
-			$parameterInfo = new ParameterInfo($parameter->var->name);
+			$parameterInfo = new ParameterInfo($parameter->var->name, $position);
 			$parameterInfo->description = $paramTag ? $paramTag->description : '';
 			$parameterInfo->type = $paramTag ? $paramTag->type : $this->processTypeOrNull($parameter->type);
 			$parameterInfo->byRef = $parameter->byRef;

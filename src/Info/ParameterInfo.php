@@ -5,11 +5,16 @@ namespace ApiGenX\Info;
 use ApiGenX\Index\Index;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
+use function array_values;
+
 
 class ParameterInfo
 {
 	/** @var string */
 	public string $name;
+
+	/** @var int */
+	public int $position;
 
 	/** @var string */
 	public string $description = '';
@@ -27,9 +32,10 @@ class ParameterInfo
 	public ?ExprInfo $default = null;
 
 
-	public function __construct(string $name)
+	public function __construct(string $name, int $position)
 	{
 		$this->name = $name;
+		$this->position = $position;
 	}
 
 
@@ -49,7 +55,7 @@ class ParameterInfo
 		foreach ($ancestorLists as $ancestorList) {
 			foreach ($ancestorList as $ancestor) {
 				$ancestorMethod = $ancestor->methods[$method->nameLower];
-				$ancestorParameter = $ancestorMethod->parameters[$this->name] ?? null;
+				$ancestorParameter = array_values($ancestorMethod->parameters)[$this->position] ?? null;
 				$description = $ancestorParameter?->getEffectiveDescription($index, $ancestor, $ancestorMethod) ?? '';
 
 				if ($description !== '') {
