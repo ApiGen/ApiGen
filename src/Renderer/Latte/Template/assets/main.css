@@ -239,6 +239,7 @@ tr:target {
 	bottom: 0;
 	overflow-y: auto;
 	scrollbar-width: none;
+	background-color: white;
 }
 
 .layout-aside::-webkit-scrollbar {
