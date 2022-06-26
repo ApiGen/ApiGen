@@ -53,11 +53,14 @@
 
 						{if !empty($method->tags['throws'])}
 							<h4>Throws</h4>
-							<div>
+							<table>
 								{foreach $method->tags['throws'] as $tag}
-									<code>{include type, type: $tag->type, short: false}</code> {longDescription($tag->description)}{sep}<br>{/sep}
+									<tr>
+										<td><code>{include type, type: $tag->type, short: false}</code>&nbsp;</td>
+										<td>{longDescription($tag->description)}</td>
+									</tr>
 								{/foreach}
-							</div>
+							</table>
 						{/if}
 
 						{* TODO: other tags (uses, internal...) *}
