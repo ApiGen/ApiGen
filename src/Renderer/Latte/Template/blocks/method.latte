@@ -4,7 +4,7 @@
 	{embed member, $method}
 		{block cells}
 			<td class="table-cell table-shrink">
-				<code style="white-space: nowrap">
+				<code class="nowrap">
 					{if !isInterface($classLike) && $method->abstract}abstract{elseif $method->final}final{/if}
 					{include memberVisibility, $method}
 					{if $method->static}static{/if}

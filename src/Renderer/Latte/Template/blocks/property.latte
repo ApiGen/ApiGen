@@ -4,7 +4,7 @@
 	{embed member, $property}
 		{block cells}
 			<td class="table-cell table-shrink">
-				<code style="white-space: nowrap">
+				<code class="nowrap">
 					{include memberVisibility, $property}
 					{if $property->static}static{/if}
 					{if $property->readOnly}readonly{elseif $property->writeOnly}writeonly{/if}
@@ -12,7 +12,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code>{if $property->type}{include type, $property->type}{/if}</code>
+				<code class="nowrap">{if $property->type}{include type, $property->type}{/if}</code>
 			</td>
 
 			<td class="table-cell">

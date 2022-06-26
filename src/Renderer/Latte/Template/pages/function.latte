@@ -29,7 +29,9 @@
 
 			{foreach $function->parameters as $parameter}
 				<tr id="{parameterAnchor($parameter)}">
-					<td class="table-cell table-shrink">{if $parameter->type}{include type, $parameter->type}{/if}</td>
+					<td class="table-cell table-shrink">
+						<code class="nowrap">{if $parameter->type}{include type, $parameter->type}{/if}</code>
+					</td>
 					<td class="table-cell table-shrink">
 						<code class="nowrap">{*
 							*}{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>{*
