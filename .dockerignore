@@ -1,0 +1,7 @@
+*
+!/bin
+!/src
+!/stubs
+!/apigen.neon
+!/composer.json
+!/php.ini
