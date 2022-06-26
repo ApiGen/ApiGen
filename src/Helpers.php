@@ -9,6 +9,7 @@ use function array_shift;
 use function assert;
 use function count;
 use function realpath;
+use function str_starts_with;
 use function strlen;
 use function substr;
 
@@ -45,6 +46,10 @@ class Helpers
 
 	public static function realPath(string $path): string
 	{
+		if (str_starts_with($path, 'phar://')) {
+			return $path;
+		}
+
 		$realPath = realpath($path);
 
 		if ($realPath === false) {
