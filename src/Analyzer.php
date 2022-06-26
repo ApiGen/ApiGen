@@ -443,7 +443,7 @@ class Analyzer
 				}
 
 				$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
-				unset($tags['param'], $tags['return']);
+				unset($tags['param']);
 
 				$memberInfo = new MethodInfo($member->name->name);
 
