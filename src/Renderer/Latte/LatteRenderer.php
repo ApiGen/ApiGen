@@ -6,8 +6,10 @@ use ApiGenX\Index\FileIndex;
 use ApiGenX\Index\Index;
 use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Renderer;
 use ApiGenX\Renderer\Latte\Template\ClassLikeTemplate;
+use ApiGenX\Renderer\Latte\Template\FunctionTemplate;
 use ApiGenX\Renderer\Latte\Template\GlobalParameters;
 use ApiGenX\Renderer\Latte\Template\IndexTemplate;
 use ApiGenX\Renderer\Latte\Template\NamespaceTemplate;
@@ -57,7 +59,7 @@ class LatteRenderer implements Renderer
 		$this->copyAssets();
 
 		$primaryFiles = array_filter($index->files, fn(FileIndex $file) => $file->primary);
-		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($primaryFiles));
+		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($index->function) + count($primaryFiles));
 
 		$this->renderTemplate($progressBar, $this->urlGenerator->getIndexPath(), new IndexTemplate(
 			global: new GlobalParameters(
@@ -66,7 +68,7 @@ class LatteRenderer implements Renderer
 				version: $this->version,
 				activePage: 'index',
 				activeNamespace: null,
-				activeClassLike: null,
+				activeElement: null,
 			),
 		));
 
@@ -77,7 +79,7 @@ class LatteRenderer implements Renderer
 				version: $this->version,
 				activePage: 'tree',
 				activeNamespace: null,
-				activeClassLike: null,
+				activeElement: null,
 			),
 		));
 
@@ -89,7 +91,7 @@ class LatteRenderer implements Renderer
 					version: $this->version,
 					activePage: 'namespace',
 					activeNamespace: $info,
-					activeClassLike: null,
+					activeElement: null,
 				),
 				namespace: $info,
 			));
@@ -103,15 +105,29 @@ class LatteRenderer implements Renderer
 					version: $this->version,
 					activePage: 'classLike',
 					activeNamespace: $index->namespace[$info->name->namespaceLower],
-					activeClassLike: $info,
+					activeElement: $info,
 				),
 				classLike: $info,
 			));
 		});
 
+		$this->forkLoop($progressBar, $index->function, function (?ProgressBar $progressBar, FunctionInfo $info) use ($index) {
+			$this->renderTemplate($progressBar, $this->urlGenerator->getFunctionPath($info), new FunctionTemplate(
+				global: new GlobalParameters(
+					index: $index,
+					title: $this->title,
+					version: $this->version,
+					activePage: 'function',
+					activeNamespace: $index->namespace[$info->name->namespaceLower],
+					activeElement: $info,
+				),
+				function: $info,
+			));
+		});
+
 		$this->forkLoop($progressBar, $primaryFiles, function (?ProgressBar $progressBar, FileIndex $file, string $path) use ($index) {
-			$activeClassLike = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
-			$activeNamespace = $activeClassLike ? $index->namespace[$activeClassLike->name->namespaceLower] : null;
+			$activeElement = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
+			$activeNamespace = $activeElement ? $index->namespace[$activeElement->name->namespaceLower] : null;
 
 			$this->renderTemplate($progressBar, $this->urlGenerator->getSourcePath($path), new SourceTemplate(
 				global: new GlobalParameters(
@@ -120,7 +136,7 @@ class LatteRenderer implements Renderer
 					version: $this->version,
 					activePage: 'source',
 					activeNamespace: $activeNamespace,
-					activeClassLike: $activeClassLike,
+					activeElement: $activeElement,
 				),
 				path: $path,
 				source: FileSystem::read($path),

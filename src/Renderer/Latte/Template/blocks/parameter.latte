@@ -1,6 +1,6 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
-{define parameter, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\ParameterInfo $parameter}{*
+{define parameter, ApiGenX\Info\ParameterInfo $parameter, ?ApiGenX\Info\ClassLikeInfo $classLike = null}{*
 	*}<span>{*
 		*}{if $parameter->type}{include type, type: $parameter->type} {/if}{*
 		*}{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>{*

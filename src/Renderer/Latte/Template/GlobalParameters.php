@@ -4,7 +4,7 @@ namespace ApiGenX\Renderer\Latte\Template;
 
 use ApiGenX\Index\Index;
 use ApiGenX\Index\NamespaceIndex;
-use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\Info\ElementInfo;
 
 
 class GlobalParameters
@@ -15,7 +15,7 @@ class GlobalParameters
 		public string $version,
 		public string $activePage,
 		public ?NamespaceIndex $activeNamespace,
-		public ?ClassLikeInfo $activeClassLike,
+		public ?ElementInfo $activeElement,
 	) {
 	}
 }

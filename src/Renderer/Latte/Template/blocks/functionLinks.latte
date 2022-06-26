@@ -1,0 +1,6 @@
+{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+
+{define functionLinks, ApiGenX\Info\FunctionInfo $function}{*
+	*}{if $function->name->namespaceLower}{include namespaceLinks, $global->index->namespace[$function->name->namespaceLower]}\{/if}{*
+	*}<a href="{functionUrl($function)}">{$function->name->short}</a>{*
+*}{/define}

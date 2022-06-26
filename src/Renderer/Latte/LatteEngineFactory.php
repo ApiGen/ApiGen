@@ -55,6 +55,9 @@ class LatteEngineFactory
 		$latte->addFunction('memberUrl', [$this->url, 'getMemberUrl']);
 		$latte->addFunction('memberAnchor', [$this->url, 'getMemberAnchor']);
 		$latte->addFunction('memberSourceUrl', [$this->url, 'getMemberSourceUrl']);
+		$latte->addFunction('functionUrl', [$this->url, 'getFunctionUrl']);
+		$latte->addFunction('functionSourceUrl', [$this->url, 'getFunctionSourceUrl']);
+		$latte->addFunction('parameterAnchor', [$this->url, 'getParameterAnchor']);
 		$latte->addFunction('sourceUrl', [$this->url, 'getSourceUrl']);
 
 		return $latte;

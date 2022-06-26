@@ -113,6 +113,10 @@ code, var, pre {
 	white-space: pre-wrap;
 }
 
+code.nowrap {
+	white-space: nowrap;
+}
+
 var, var a {
 	font-weight: bold;
 	font-style: normal;

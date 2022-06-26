@@ -5,6 +5,7 @@ namespace ApiGenX\Index;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ElementInfo;
 use ApiGenX\Info\EnumInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\NameInfo;
 use ApiGenX\Info\TraitInfo;
@@ -26,6 +27,9 @@ class NamespaceIndex implements ElementInfo
 
 	/** @var ClassInfo[] indexed by [exceptionShortName] */
 	public array $exception = [];
+
+	/** @var FunctionInfo[] indexed by [functionShortName] */
+	public array $function = [];
 
 	/** @var NamespaceIndex[] indexed by [namespaceShortName] */
 	public array $children = [];

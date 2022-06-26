@@ -1,7 +1,7 @@
 {varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
 
 {define classLikeLink, ApiGenX\Info\ClassLikeInfo $classLike, bool $short = false, ?string $text = null}{*
-	*}{var bool $active = $classLike === $global->activeClassLike}{*
+	*}{var bool $active = $classLike === $global->activeElement}{*
 	*}<a n:tag-if="!$active" href="{classLikeUrl($classLike)}">{*
 		*}<b n:tag-if="$active">{*
 			*}<span n:class="$classLike->isDeprecated() ? deprecated, $active ? active" n:attr="title: ($short || $text) ? $classLike->name->full">{*

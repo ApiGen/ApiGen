@@ -5,6 +5,7 @@ namespace ApiGenX\Index;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\EnumInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\TraitInfo;
 
@@ -31,6 +32,9 @@ class Index
 
 	/** @var EnumInfo[] indexed by [enumName] */
 	public array $enum = [];
+
+	/** @var FunctionInfo[] indexed by [functionName] */
+	public array $function = [];
 
 	/** @var ClassInfo[][] indexed by [classLikeName][classLikeName] */
 	public array $classExtends = [];

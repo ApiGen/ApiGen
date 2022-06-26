@@ -30,6 +30,7 @@ use ApiGenX\Info\Expr\StringExprInfo;
 use ApiGenX\Info\Expr\TernaryExprInfo;
 use ApiGenX\Info\Expr\UnaryOpExprInfo;
 use ApiGenX\Info\ExprInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
@@ -114,11 +115,14 @@ class Analyzer
 		/** @var AnalyzeTask[] $tasks indexed by [path] */
 		$tasks = [];
 
-		/** @var ClassLikeInfo[] $found indexed by [classLikeName] */
-		$found = [];
+		/** @var ClassLikeInfo[] $classLike indexed by [classLikeName] */
+		$classLike = [];
 
 		/** @var ClassLikeInfo[] $missing indexed by [classLikeName] */
 		$missing = [];
+
+		/** @var FunctionInfo[] $functions indexed by [functionName] */
+		$functions = [];
 
 		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
 		$errors = [];
@@ -135,9 +139,9 @@ class Analyzer
 
 		foreach ($tasks as &$task) {
 			foreach ($this->processTask($task) as $info) {
-				if ($info instanceof ClassLikeInfo) {
+				if ($info instanceof ClassLikeInfo || $info instanceof FunctionInfo) {
 					foreach ($info->dependencies as $dependency) {
-						if (!isset($found[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
+						if (!isset($classLike[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
 							$missing[$dependency->fullLower] = $info;
 							$file = $this->locator->locate($dependency);
 
@@ -146,18 +150,24 @@ class Analyzer
 							}
 						}
 					}
+				}
 
-					if (isset($found[$info->name->fullLower])) {
-						$first = $found[$info->name->fullLower];
-						$errors[ErrorInfo::KIND_DUPLICATE_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_DUPLICATE_SYMBOL, implode("\n", [
-							"Multiple definitions of {$info->name->full}.",
-							"The first definition was found in {$first->file} on line {$first->startLine}",
-							"and then another one was found in {$info->file} on line {$info->startLine}",
-						]));
+				if ($info instanceof ClassLikeInfo) {
+					if (isset($classLike[$info->name->fullLower])) {
+						$errors[ErrorInfo::KIND_DUPLICATE_SYMBOL][] = $this->createDuplicateSymbolError($info, $classLike[$info->name->fullLower]);
+
+					} else {
+						unset($missing[$info->name->fullLower]);
+						$classLike[$info->name->fullLower] = $info;
 					}
 
-					unset($missing[$info->name->fullLower]);
-					$found[$info->name->fullLower] ??= $info;
+				} elseif ($info instanceof FunctionInfo) {
+					if (isset($functions[$info->name->fullLower])) {
+						$errors[ErrorInfo::KIND_DUPLICATE_SYMBOL][] = $this->createDuplicateSymbolError($info, $functions[$info->name->fullLower]);
+
+					} else {
+						$functions[$info->name->fullLower] = $info;
+					}
 
 				} elseif ($info instanceof ErrorInfo) {
 					$errors[$info->kind][] = $info;
@@ -174,15 +184,15 @@ class Analyzer
 		foreach ($missing as $fullLower => $referencedBy) {
 			$dependency = $referencedBy->dependencies[$fullLower];
 			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferenced by {$referencedBy->name->full}");
-			$found[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
+			$classLike[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
 		}
 
-		return new AnalyzeResult($found, $errors);
+		return new AnalyzeResult($classLike, $functions, $errors);
 	}
 
 
 	/**
-	 * @return ClassLikeInfo[]|ErrorInfo[]
+	 * @return array<ClassLikeInfo | FunctionInfo | ErrorInfo>
 	 */
 	protected function processTask(AnalyzeTask $task): array
 	{
@@ -203,7 +213,7 @@ class Analyzer
 
 	/**
 	 * @param  Node[] $nodes indexed by []
-	 * @return Iterator<ClassLikeInfo>
+	 * @return Iterator<ClassLikeInfo | FunctionInfo>
 	 */
 	protected function processNodes(AnalyzeTask $task, array $nodes): Iterator
 	{
@@ -217,7 +227,16 @@ class Analyzer
 					yield $this->processClassLike($task, $node);
 
 				} catch (\Throwable $e) {
-					throw new \LogicException("Failed to analyze $node->name", 0, $e);
+					throw new \LogicException("Failed to analyze $node->namespacedName", 0, $e);
+				}
+
+			} elseif ($node instanceof Node\Stmt\Function_) {
+				try {
+					$functionInfo = $this->processFunction($task, $node);
+					yield from $functionInfo ? [$functionInfo] : [];
+
+				} catch (\Throwable $e) {
+					throw new \LogicException("Failed to analyze $node->namespacedName", 0, $e);
 				}
 
 			} elseif ($node instanceof Node) { // TODO: functions, constants, class aliases
@@ -301,9 +320,7 @@ class Analyzer
 		$info->endLine = $node->getEndLine();
 
 		foreach ($info->genericParameters as $genericParameter) {
-			if ($genericParameter->bound !== null) {
-				$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
-			}
+			$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
 		}
 
 		foreach ($this->extractMembers($info->tags, $node) as $member) {
@@ -562,6 +579,63 @@ class Analyzer
 
 			yield $methodInfo;
 		}
+	}
+
+
+	protected function processFunction(AnalyzeTask $task, Node\Stmt\Function_ $node): ?FunctionInfo
+	{
+		if (!$this->filter->filterFunctionNode($node)) {
+			return null;
+		}
+
+		$phpDoc = $this->extractPhpDoc($node);
+		$tags = $this->extractTags($phpDoc);
+
+		if (!$this->filter->filterFunctionTags($tags)) {
+			return null;
+		}
+
+		assert($node->namespacedName !== null);
+		$name = new NameInfo($node->namespacedName->toString());
+		$info = new FunctionInfo($name, $task->primary);
+
+		$info->description = $this->extractDescription($phpDoc);
+		$info->tags = $tags;
+		$info->file = $task->sourceFile;
+		$info->startLine = $node->getStartLine();
+		$info->endLine = $node->getEndLine();
+
+		/** @var ?ReturnTagValueNode $returnTag */
+		$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
+		unset($tags['param'], $tags['return']);
+
+		$info->genericParameters = $phpDoc->getAttribute('genericNameContext') ?? [];
+		$info->parameters = $this->processParameters($this->extractParamTagValues($phpDoc), $node->params);
+		$info->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($node->returnType);
+		$info->returnDescription = $returnTag?->description ?? '';
+		$info->byRef = $node->byRef;
+
+		$info->dependencies += $this->extractTypeDependencies($info->returnType);
+
+		foreach ($info->tags['throws'] ?? [] as $tagValue) {
+			assert($tagValue instanceof ThrowsTagValueNode);
+			$info->dependencies += $this->extractTypeDependencies($tagValue->type);
+		}
+
+		foreach ($info->parameters as $parameterInfo) {
+			$info->dependencies += $this->extractTypeDependencies($parameterInfo->type);
+			$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
+		}
+
+		foreach ($info->genericParameters as $genericParameter) {
+			$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
+		}
+
+		if (!$this->filter->filterFunctionInfo($info)) {
+			return null;
+		}
+
+		return $info;
 	}
 
 
@@ -960,5 +1034,15 @@ class Analyzer
 		}
 
 		return $dependencies;
+	}
+
+
+	protected function createDuplicateSymbolError(ClassLikeInfo | FunctionInfo $info, ClassLikeInfo | FunctionInfo $first): ErrorInfo
+	{
+		return new ErrorInfo(ErrorInfo::KIND_DUPLICATE_SYMBOL, implode("\n", [
+			"Multiple definitions of {$info->name->full}.",
+			"The first definition was found in {$first->file} on line {$first->startLine}",
+			"and then another one was found in {$info->file} on line {$info->startLine}",
+		]));
 	}
 }

@@ -7,6 +7,7 @@ use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ElementInfo;
 use ApiGenX\Info\EnumInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\TraitInfo;
 use ApiGenX\Renderer\SourceHighlighter;
@@ -92,7 +93,7 @@ class LatteFunctions
 
 	public function elementName(ElementInfo $info): string
 	{
-		if ($info instanceof ClassLikeInfo) {
+		if ($info instanceof ClassLikeInfo || $info instanceof FunctionInfo) {
 			return $info->name->short;
 
 		} elseif ($info instanceof NamespaceIndex) {
@@ -106,7 +107,7 @@ class LatteFunctions
 
 	public function elementShortDescription(ElementInfo $info): string
 	{
-		if ($info instanceof ClassLikeInfo) {
+		if ($info instanceof ClassLikeInfo || $info instanceof FunctionInfo) {
 			return $this->shortDescription($info->description);
 
 		} elseif ($info instanceof NamespaceIndex) {
@@ -125,6 +126,9 @@ class LatteFunctions
 
 		} elseif ($info instanceof NamespaceIndex) {
 			return $this->url->getNamespacePath($info);
+
+		} elseif ($info instanceof FunctionInfo) {
+			return $this->url->getFunctionPath($info);
 
 		} else {
 			throw new \LogicException(sprintf('Unexpected element type %s', get_debug_type($info)));

@@ -8,6 +8,7 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassInfo;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\EnumInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Info\InterfaceInfo;
 use ApiGenX\Info\MissingInfo;
 use ApiGenX\Info\NameInfo;
@@ -44,8 +45,8 @@ class Indexer
 			if ($primary) {
 				for (
 					$info = $index->namespace[$namespaceLower];
-					!$info->primary && $info->name->full !== '';
-					$info = $index->namespace[$info->name->namespaceLower]
+					$info !== null && !$info->primary;
+					$info = $info->name->fullLower === '' ? null : $index->namespace[$info->name->namespaceLower]
 				) {
 					$info->primary = true;
 				}
@@ -54,8 +55,8 @@ class Indexer
 			if (!$deprecated) {
 				for (
 					$info = $index->namespace[$namespaceLower];
-					$info->deprecated && $info->name->full !== '';
-					$info = $index->namespace[$info->name->namespaceLower]
+					$info !== null && $info->deprecated;
+					$info = $info->name->fullLower === '' ? null : $index->namespace[$info->name->namespaceLower]
 				) {
 					$info->deprecated = false;
 				}
@@ -111,6 +112,14 @@ class Indexer
 		} else {
 			throw new \LogicException();
 		}
+	}
+
+
+	public function indexFunction(Index $index, FunctionInfo $info): void
+	{
+		$index->function[$info->name->fullLower] = $info;
+		$index->files[$info->file ?? '']->function[$info->name->fullLower] = $info;
+		$index->namespace[$info->name->namespaceLower]->function[$info->name->shortLower] = $info;
 	}
 
 

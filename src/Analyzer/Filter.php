@@ -3,6 +3,7 @@
 namespace ApiGenX\Analyzer;
 
 use ApiGenX\Info\ClassLikeInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Info\MemberInfo;
 use PhpParser\Node;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
@@ -49,6 +50,33 @@ class Filter
 
 
 	public function filterClassLikeInfo(ClassLikeInfo $info): bool
+	{
+		return true;
+	}
+
+
+	public function filterFunctionNode(Node\Stmt\Function_ $node): bool
+	{
+		return true;
+	}
+
+
+	/**
+	 * @param PhpDocTagValueNode[][] $tags indexed by [tagName][]
+	 */
+	public function filterFunctionTags(array $tags): bool
+	{
+		foreach ($this->excludeTagged as $tag) {
+			if (isset($tags[$tag])) {
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+
+	public function filterFunctionInfo(FunctionInfo $info): bool
 	{
 		return true;
 	}

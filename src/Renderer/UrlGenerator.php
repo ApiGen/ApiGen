@@ -6,8 +6,10 @@ use ApiGenX\Index\NamespaceIndex;
 use ApiGenX\Info\ClassLikeInfo;
 use ApiGenX\Info\ConstantInfo;
 use ApiGenX\Info\EnumCaseInfo;
+use ApiGenX\Info\FunctionInfo;
 use ApiGenX\Info\MemberInfo;
 use ApiGenX\Info\MethodInfo;
+use ApiGenX\Info\ParameterInfo;
 use ApiGenX\Info\PropertyInfo;
 
 use function assert;
@@ -136,6 +138,31 @@ class UrlGenerator
 	{
 		assert($classLike->file !== null);
 		return $this->getSourceUrl($classLike->file, $member->startLine, $member->endLine);
+	}
+
+
+	public function getFunctionUrl(FunctionInfo $function): string
+	{
+		return $this->baseUrl . $this->getFunctionPath($function);
+	}
+
+
+	public function getFunctionPath(FunctionInfo $function): string
+	{
+		return 'function-' . strtr($function->name->full, '\\', '.') . '.html';
+	}
+
+
+	public function getFunctionSourceUrl(FunctionInfo $function): string
+	{
+		assert($function->file !== null);
+		return $this->getSourceUrl($function->file, $function->startLine, $function->endLine);
+	}
+
+
+	public function getParameterAnchor(ParameterInfo $parameter): string
+	{
+		return '$' . $parameter->name;
 	}
 
 
