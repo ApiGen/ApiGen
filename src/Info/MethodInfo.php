@@ -23,6 +23,9 @@ class MethodInfo extends MemberInfo
 	/** @var TypeNode|null */
 	public ?TypeNode $returnType = null;
 
+	/** @var string */
+	public string $returnDescription = '';
+
 	/** @var bool */
 	public bool $byRef = false;
 
@@ -59,6 +62,33 @@ class MethodInfo extends MemberInfo
 		foreach ($ancestorLists as $ancestorList) {
 			foreach ($ancestorList as $ancestor) {
 				$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
+
+				if ($description !== '') {
+					return $description;
+				}
+			}
+		}
+
+		return '';
+	}
+
+
+	public function getEffectiveReturnDescription(Index $index, ClassLikeInfo $classLike): string
+	{
+		$description = $this->returnDescription;
+
+		if ($description !== '') {
+			return $description;
+		}
+
+		$ancestorLists = [
+			$index->methodOverrides[$classLike->name->fullLower][$this->nameLower] ?? [],
+			$index->methodImplements[$classLike->name->fullLower][$this->nameLower] ?? [],
+		];
+
+		foreach ($ancestorLists as $ancestorList) {
+			foreach ($ancestorList as $ancestor) {
+				$description = $ancestor->methods[$this->nameLower]->getEffectiveReturnDescription($index, $ancestor);
 
 				if ($description !== '') {
 					return $description;

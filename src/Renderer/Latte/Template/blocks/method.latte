@@ -45,18 +45,11 @@
 							</table>
 						{/try}
 
-						{try}
+						{var string $returnDescription = $method->getEffectiveReturnDescription($global->index, $classLike)}
+						{if $returnDescription !== ''}
 							<h4>Returns</h4>
-							<div>
-								{foreach $method->tags['return'] ?? [] as $tag}
-									{skipIf !$tag->description}
-									{longDescription($tag->description)}{sep}<br>{/sep}
-								{else}
-									{rollback}
-
-								{/foreach}
-							</div>
-						{/try}
+							<div>{longDescription($returnDescription)}</div>
+						{/if}
 
 						{if !empty($method->tags['throws'])}
 							<h4>Throws</h4>

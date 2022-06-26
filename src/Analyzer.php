@@ -442,8 +442,9 @@ class Analyzer
 					continue;
 				}
 
+				/** @var ?ReturnTagValueNode $returnTag */
 				$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
-				unset($tags['param']);
+				unset($tags['param'], $tags['return']);
 
 				$memberInfo = new MethodInfo($member->name->name);
 
@@ -453,6 +454,7 @@ class Analyzer
 				$memberInfo->genericParameters = $memberDoc->getAttribute('genericNameContext') ?? [];
 				$memberInfo->parameters = $this->processParameters($this->extractParamTagValues($memberDoc), $member->params);
 				$memberInfo->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($member->returnType);
+				$memberInfo->returnDescription = $returnTag?->description ?? '';
 				$memberInfo->byRef = $member->byRef;
 
 				$memberInfo->startLine = $member->getComments() ? $member->getComments()[0]->getStartLine() : $member->getStartLine();
