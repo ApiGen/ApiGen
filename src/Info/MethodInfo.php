@@ -48,24 +48,15 @@ class MethodInfo extends MemberInfo
 
 	public function getEffectiveDescription(Index $index, ClassLikeInfo $classLike): string
 	{
-		$description = parent::getEffectiveDescription($index, $classLike);
-
-		if ($description !== '') {
-			return $description;
+		if ($this->description !== '') {
+			return $this->description;
 		}
 
-		$ancestorLists = [
-			$index->methodOverrides[$classLike->name->fullLower][$this->nameLower] ?? [],
-			$index->methodImplements[$classLike->name->fullLower][$this->nameLower] ?? [],
-		];
+		foreach ($this->ancestors($index, $classLike) as $ancestor) {
+			$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
 
-		foreach ($ancestorLists as $ancestorList) {
-			foreach ($ancestorList as $ancestor) {
-				$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
-
-				if ($description !== '') {
-					return $description;
-				}
+			if ($description !== '') {
+				return $description;
 			}
 		}
 
@@ -75,27 +66,28 @@ class MethodInfo extends MemberInfo
 
 	public function getEffectiveReturnDescription(Index $index, ClassLikeInfo $classLike): string
 	{
-		$description = $this->returnDescription;
-
-		if ($description !== '') {
-			return $description;
+		if ($this->returnDescription !== '') {
+			return $this->returnDescription;
 		}
 
-		$ancestorLists = [
-			$index->methodOverrides[$classLike->name->fullLower][$this->nameLower] ?? [],
-			$index->methodImplements[$classLike->name->fullLower][$this->nameLower] ?? [],
-		];
+		foreach ($this->ancestors($index, $classLike) as $ancestor) {
+			$description = $ancestor->methods[$this->nameLower]->getEffectiveReturnDescription($index, $ancestor);
 
-		foreach ($ancestorLists as $ancestorList) {
-			foreach ($ancestorList as $ancestor) {
-				$description = $ancestor->methods[$this->nameLower]->getEffectiveReturnDescription($index, $ancestor);
-
-				if ($description !== '') {
-					return $description;
-				}
+			if ($description !== '') {
+				return $description;
 			}
 		}
 
 		return '';
+	}
+
+
+	/**
+	 * @return iterable<ClassLikeInfo>
+	 */
+	public function ancestors(Index $index, ClassLikeInfo $classLike): iterable
+	{
+		yield from $index->methodOverrides[$classLike->name->fullLower][$this->nameLower] ?? [];
+		yield from $index->methodImplements[$classLike->name->fullLower][$this->nameLower] ?? [];
 	}
 }

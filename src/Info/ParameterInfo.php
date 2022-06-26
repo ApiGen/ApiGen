@@ -41,26 +41,17 @@ class ParameterInfo
 
 	public function getEffectiveDescription(Index $index, ClassLikeInfo $classLike, MethodInfo $method): string
 	{
-		$description = $this->description;
-
-		if ($description !== '') {
-			return $description;
+		if ($this->description !== '') {
+			return $this->description;
 		}
 
-		$ancestorLists = [
-			$index->methodOverrides[$classLike->name->fullLower][$method->nameLower] ?? [],
-			$index->methodImplements[$classLike->name->fullLower][$method->nameLower] ?? [],
-		];
+		foreach ($method->ancestors($index, $classLike) as $ancestor) {
+			$ancestorMethod = $ancestor->methods[$method->nameLower];
+			$ancestorParameter = array_values($ancestorMethod->parameters)[$this->position] ?? null;
+			$description = $ancestorParameter?->getEffectiveDescription($index, $ancestor, $ancestorMethod) ?? '';
 
-		foreach ($ancestorLists as $ancestorList) {
-			foreach ($ancestorList as $ancestor) {
-				$ancestorMethod = $ancestor->methods[$method->nameLower];
-				$ancestorParameter = array_values($ancestorMethod->parameters)[$this->position] ?? null;
-				$description = $ancestorParameter?->getEffectiveDescription($index, $ancestor, $ancestorMethod) ?? '';
-
-				if ($description !== '') {
-					return $description;
-				}
+			if ($description !== '') {
+				return $description;
 			}
 		}
 
