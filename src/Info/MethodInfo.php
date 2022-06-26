@@ -51,19 +51,18 @@ class MethodInfo extends MemberInfo
 			return $description;
 		}
 
-		foreach ($index->methodOverrides[$classLike->name->fullLower][$this->nameLower] ?? [] as $ancestor) {
-			$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
+		$ancestorLists = [
+			$index->methodOverrides[$classLike->name->fullLower][$this->nameLower] ?? [],
+			$index->methodImplements[$classLike->name->fullLower][$this->nameLower] ?? [],
+		];
 
-			if ($description !== '') {
-				return $description;
-			}
-		}
+		foreach ($ancestorLists as $ancestorList) {
+			foreach ($ancestorList as $ancestor) {
+				$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
 
-		foreach ($index->methodImplements[$classLike->name->fullLower][$this->nameLower] ?? [] as $ancestor) {
-			$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
-
-			if ($description !== '') {
-				return $description;
+				if ($description !== '') {
+					return $description;
+				}
 			}
 		}
 
