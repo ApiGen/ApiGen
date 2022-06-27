@@ -337,6 +337,11 @@ tr:target {
 	width: 100%;
 }
 
+.source td:first-child {
+	width: 0;
+	white-space: pre;
+}
+
 .source td {
 	vertical-align: top;
 }
