@@ -30,8 +30,8 @@ $stub = <<<'STUB'
 $rootDir = __DIR__ . '/..';
 $files = Nette\Utils\Finder::findFiles(...$include)->from($rootDir);
 
-@unlink(__DIR__ . '/apigen.phar');
 $phar = new Phar(__DIR__ . '/apigen.phar');
 $phar->buildFromIterator($files, $rootDir);
 $phar->setStub($stub);
-chmod(__DIR__ . '/apigen.phar', 0755);
+rename(__DIR__ . '/apigen.phar', __DIR__ . '/apigen');
+chmod(__DIR__ . '/apigen', 0755);
