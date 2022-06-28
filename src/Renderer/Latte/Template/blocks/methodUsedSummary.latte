@@ -1,23 +1,25 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define methodUsedSummary, ApiGenX\Info\ClassLikeInfo $classLike, array $overriden}
 	{if isClass($classLike)}
 		{if $classLike->extends}
-			{include methodUsed, $global->index->classLike[$classLike->extends->fullLower], $overriden + $classLike->methods}
+			{include methodUsed, $index->classLike[$classLike->extends->fullLower], $overriden + $classLike->methods}
 		{/if}
 
 		{foreach $classLike->uses as $use}
-			{include methodUsed, $global->index->classLike[$use->fullLower], $overriden + $classLike->methods}
+			{include methodUsed, $index->classLike[$use->fullLower], $overriden + $classLike->methods}
 		{/foreach}
 
 	{elseif isInterface($classLike)}
 		{foreach $classLike->extends as $parent}
-			{include methodUsed, $global->index->classLike[$parent->fullLower], $overriden + $classLike->methods}
+			{include methodUsed, $index->classLike[$parent->fullLower], $overriden + $classLike->methods}
 		{/foreach}
 
 	{elseif isTrait($classLike) || isEnum($classLike)}
 		{foreach $classLike->uses as $use}
-			{include methodUsed, $global->index->classLike[$use->fullLower], $overriden + $classLike->methods}
+			{include methodUsed, $index->classLike[$use->fullLower], $overriden + $classLike->methods}
 		{/foreach}
 	{/if}
 {/define}

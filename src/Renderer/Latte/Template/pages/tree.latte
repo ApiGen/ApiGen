@@ -7,24 +7,24 @@
 	{block content}
 		<h1>{include title}</h1>
 
-		{ifset $global->index->classExtends['']}
+		{ifset $index->classExtends['']}
 			<h3>Classes</h3>
-			{include classTreeList, $global->index->classExtends[''], $global->index->classExtends}
+			{include classTreeList, $index->classExtends[''], $index->classExtends}
 		{/ifset}
 
-		{if $global->index->interface}
+		{if $index->interface}
 			<h3>Interfaces</h3>
-			{include classTreeList, $global->index->interface, []}
+			{include classTreeList, $index->interface, []}
 		{/if}
 
-		{if $global->index->trait}
+		{if $index->trait}
 			<h3>Traits</h3>
-			{include classTreeList, $global->index->trait, []}
+			{include classTreeList, $index->trait, []}
 		{/if}
 
-		{if $global->index->enum}
+		{if $index->enum}
 			<h3>Enums</h3>
-			{include classTreeList, $global->index->enum, []}
+			{include classTreeList, $index->enum, []}
 		{/if}
 	{/block}
 {/embed}

@@ -20,9 +20,9 @@
 		{include classLikeSignatureTable, $classLike}
 		{include classLikeDescription, $classLike}
 
-		{if !empty($global->index->dag[$classLike->name->fullLower]) || (isClass($classLike) && $classLike->extends) || (isInterface($classLike) && $classLike->extends)}
+		{if !empty($index->dag[$classLike->name->fullLower]) || (isClass($classLike) && $classLike->extends) || (isInterface($classLike) && $classLike->extends)}
 			<div class="classLikeSection">
-				{include classTree, $classLike, $global->index->dag}
+				{include classTree, $classLike, $index->dag}
 			</div>
 		{/if}
 

@@ -2,11 +2,15 @@
 
 namespace ApiGenX\Renderer\Latte\Template;
 
+use ApiGenX\Index\Index;
+
 
 class TreeTemplate
 {
 	public function __construct(
-		public GlobalParameters $global,
+		public Index $index,
+		public ConfigParameters $config,
+		public LayoutParameters $layout,
 	) {
 	}
 }

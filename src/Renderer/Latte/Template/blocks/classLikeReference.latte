@@ -1,7 +1,9 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define classLikeReference, ApiGenX\Info\ClassLikeReferenceInfo $ref, bool $short = true}{*
-	*}{include classLikeLink, $global->index->classLike[$ref->fullLower], short: $short}{*
+	*}{include classLikeLink, $index->classLike[$ref->fullLower], short: $short}{*
 	*}{if $ref->genericArgs}{*
 		*}&lt;{*
 		*}{foreach $ref->genericArgs as $arg}{*

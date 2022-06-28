@@ -1,4 +1,6 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define expr, ApiGenX\Info\ExprInfo $expr, ?ApiGenX\Info\ClassLikeInfo $scope, string $indent = ''}{*
 	*}{if $expr instanceof ApiGenX\Info\Expr\BooleanExprInfo || $expr instanceof ApiGenX\Info\Expr\NullExprInfo}{*
@@ -22,10 +24,10 @@
 			*}{var $memberClassLike = $scope}{*
 			*}{include classLikeLink, classLike: $memberClassLike, text: $expr->classLike->fullLower}{*
 		*}{elseif $expr->classLike->fullLower === 'parent' && $scope && isClass($scope) && $scope->extends}{*
-			*}{var $memberClassLike = $global->index->classLike[$scope->extends->fullLower]}{*
+			*}{var $memberClassLike = $index->classLike[$scope->extends->fullLower]}{*
 			*}{include classLikeLink, classLike: $memberClassLike, text: $expr->classLike->fullLower}{*
-		*}{elseif isset($global->index->classLike[$expr->classLike->fullLower])}{*
-			*}{var $memberClassLike = $global->index->classLike[$expr->classLike->fullLower]}{*
+		*}{elseif isset($index->classLike[$expr->classLike->fullLower])}{*
+			*}{var $memberClassLike = $index->classLike[$expr->classLike->fullLower]}{*
 			*}{include classLikeLink, classLike: $memberClassLike, short: true}{*
 		*}{else}{*
 			*}{var $memberClassLike = null}{*
@@ -58,7 +60,7 @@
 		*}{include this, expr: $expr->expr, scope: $scope}{*
 		*}[{include this, expr: $expr->dim, scope: $scope}]{*
 	*}{elseif $expr instanceof ApiGenX\Info\Expr\NewExprInfo}{*
-		*}{var $classLike = $global->index->classLike[$expr->classLike->fullLower]}{*
+		*}{var $classLike = $index->classLike[$expr->classLike->fullLower]}{*
 		*}<span class="php-kw">new</span> {include classLikeLink, classLike: $classLike, short: true}{*
 		*}({*
 		*}{foreach $expr->args as $arg}{*

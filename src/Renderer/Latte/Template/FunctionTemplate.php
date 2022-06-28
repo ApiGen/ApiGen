@@ -2,13 +2,16 @@
 
 namespace ApiGenX\Renderer\Latte\Template;
 
+use ApiGenX\Index\Index;
 use ApiGenX\Info\FunctionInfo;
 
 
 class FunctionTemplate
 {
 	public function __construct(
-		public GlobalParameters $global,
+		public Index $index,
+		public ConfigParameters $config,
+		public LayoutParameters $layout,
 		public FunctionInfo $function,
 	) {
 	}

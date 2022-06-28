@@ -1,11 +1,13 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define menuElements, ApiGenX\Info\ElementInfo[] $elements, string $heading, bool $onlyPrimary = true}
 	{try}
 		<h3>{$heading}</h3>
 		<ul>
 			{foreach $elements as $element}
-				<li n:class="$element === $global->activeElement ? active">
+				<li n:class="$element === $layout->activeElement ? active">
 					{skipIf $onlyPrimary && !$element->primary}
 					<a n:class="$element->isDeprecated() ? deprecated" href="{elementUrl($element)}">
 						{elementName($element)}

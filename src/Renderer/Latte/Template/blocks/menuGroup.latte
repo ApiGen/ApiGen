@@ -1,9 +1,11 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define menuGroup, ApiGenX\Index\NamespaceIndex $namespace, int $level = 0}
 	<ul>
 		{foreach $namespace->children as $child}
-			{var bool $isActive = $global->activeNamespace && str_starts_with("{$global->activeNamespace->name->fullLower}\\", "{$child->name->fullLower}\\")}
+			{var bool $isActive = $layout->activeNamespace && str_starts_with("{$layout->activeNamespace->name->fullLower}\\", "{$child->name->fullLower}\\")}
 			{var bool $isCollapsed = $level > 0 && !$isActive}
 			{skipIf !$child->primary && !$isActive}
 			<li n:class="menuGroup-item, $isActive ? active">

@@ -1,35 +1,37 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define menu}
 	<div class="menu">
-		{if $global->index->namespace['']}
+		{if $index->namespace['']}
 			<h3>Namespaces</h3>
-			{include menuGroup, namespace: $global->index->namespace['']}
+			{include menuGroup, namespace: $index->namespace['']}
 		{/if}
 
-		{if $global->activeNamespace}
-			{if $global->activeNamespace->class}
-				{include menuElements, elements: $global->activeNamespace->class, heading: 'Classes', onlyPrimary: $global->activeNamespace->primary}
+		{if $layout->activeNamespace}
+			{if $layout->activeNamespace->class}
+				{include menuElements, elements: $layout->activeNamespace->class, heading: 'Classes', onlyPrimary: $layout->activeNamespace->primary}
 			{/if}
 
-			{if $global->activeNamespace->interface}
-				{include menuElements, elements: $global->activeNamespace->interface, heading: 'Interfaces', onlyPrimary: $global->activeNamespace->primary}
+			{if $layout->activeNamespace->interface}
+				{include menuElements, elements: $layout->activeNamespace->interface, heading: 'Interfaces', onlyPrimary: $layout->activeNamespace->primary}
 			{/if}
 
-			{if $global->activeNamespace->trait}
-				{include menuElements, elements: $global->activeNamespace->trait, heading: 'Traits', onlyPrimary: $global->activeNamespace->primary}
+			{if $layout->activeNamespace->trait}
+				{include menuElements, elements: $layout->activeNamespace->trait, heading: 'Traits', onlyPrimary: $layout->activeNamespace->primary}
 			{/if}
 
-			{if $global->activeNamespace->enum}
-				{include menuElements, elements: $global->activeNamespace->enum, heading: 'Enums', onlyPrimary: $global->activeNamespace->primary}
+			{if $layout->activeNamespace->enum}
+				{include menuElements, elements: $layout->activeNamespace->enum, heading: 'Enums', onlyPrimary: $layout->activeNamespace->primary}
 			{/if}
 
-			{if $global->activeNamespace->exception}
-				{include menuElements, elements: $global->activeNamespace->exception, heading: 'Exceptions', onlyPrimary: $global->activeNamespace->primary}
+			{if $layout->activeNamespace->exception}
+				{include menuElements, elements: $layout->activeNamespace->exception, heading: 'Exceptions', onlyPrimary: $layout->activeNamespace->primary}
 			{/if}
 
-			{if $global->activeNamespace->function}
-				{include menuElements, elements: $global->activeNamespace->function, heading: 'Functions', onlyPrimary: $global->activeNamespace->primary}
+			{if $layout->activeNamespace->function}
+				{include menuElements, elements: $layout->activeNamespace->function, heading: 'Functions', onlyPrimary: $layout->activeNamespace->primary}
 			{/if}
 		{/if}
 	</div>

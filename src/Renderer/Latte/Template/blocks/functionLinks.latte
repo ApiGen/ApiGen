@@ -1,6 +1,8 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define functionLinks, ApiGenX\Info\FunctionInfo $function}{*
-	*}{if $function->name->namespaceLower}{include namespaceLinks, $global->index->namespace[$function->name->namespaceLower]}\{/if}{*
+	*}{if $function->name->namespaceLower}{include namespaceLinks, $index->namespace[$function->name->namespaceLower]}\{/if}{*
 	*}<a href="{functionUrl($function)}">{$function->name->short}</a>{*
 *}{/define}

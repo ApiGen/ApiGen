@@ -2,13 +2,16 @@
 
 namespace ApiGenX\Renderer\Latte\Template;
 
+use ApiGenX\Index\Index;
 use ApiGenX\Info\ClassLikeInfo;
 
 
 class ClassLikeTemplate
 {
 	public function __construct(
-		public GlobalParameters $global,
+		public Index $index,
+		public ConfigParameters $config,
+		public LayoutParameters $layout,
 		public ClassLikeInfo $classLike,
 	) {
 	}

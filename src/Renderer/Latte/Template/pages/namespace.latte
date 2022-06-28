@@ -2,10 +2,10 @@
 {import '../blocks/@index.latte'}
 
 {embed layout}
-	{block title}{if $namespace != ''}Namespace {$namespace->name->full}{else}No namespace{/if}{/block}
+	{block title}{if $namespace->name->full !== ''}Namespace {$namespace->name->full}{else}No namespace{/if}{/block}
 
 	{block content}
-		<h1>{if $namespace != ''}Namespace {include namespaceLinks, $namespace}{else}No namespace{/if}</h1>
+		<h1>{if $namespace->name->full !== ''}Namespace {include namespaceLinks, $namespace}{else}No namespace{/if}</h1>
 
 		{embed elementSummary}
 			{block elementSummaryContent}

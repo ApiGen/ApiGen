@@ -3,11 +3,11 @@
 
 {embed layout}
 	{block content}
-		<h1>{$global->title} API documentation</h1>
+		<h1>{$config->title} API documentation</h1>
 
 		{embed elementSummary}
 			{block elementSummaryContent}
-				{include elementSummaryGroup, heading: 'Namespaces', elements: $global->index->namespace, showDescription: false, onlyPrimary: true}
+				{include elementSummaryGroup, heading: 'Namespaces', elements: $index->namespace, showDescription: false, onlyPrimary: true}
 			{/block}
 		{/embed}
 	{/block}

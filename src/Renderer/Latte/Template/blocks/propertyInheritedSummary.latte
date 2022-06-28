@@ -1,13 +1,15 @@
-{varType ApiGenX\Renderer\Latte\Template\GlobalParameters $global}
+{varType ApiGenX\Index\Index $index}
+{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define propertyInheritedSummary, ApiGenX\Info\ClassLikeInfo $classLike, array $overriden}
 	{if isClass($classLike)}
 		{if $classLike->extends}
-			{include propertyInherited, $global->index->classLike[$classLike->extends->fullLower], $overriden + $classLike->properties}
+			{include propertyInherited, $index->classLike[$classLike->extends->fullLower], $overriden + $classLike->properties}
 		{/if}
 	{elseif isInterface($classLike)}
 		{foreach $classLike->extends as $parent}
-			{include propertyInherited, $global->index->classLike[$parent->fullLower], $overriden + $classLike->properties}
+			{include propertyInherited, $index->classLike[$parent->fullLower], $overriden + $classLike->properties}
 		{/foreach}
 	{/if}
 {/define}
