@@ -409,7 +409,13 @@ code a b {
 }
 
 .table-spacer {
-	height: 30px
+	height: 30px;
+	background: transparent;
+}
+
+.table tr:hover td {
+	background-color: #f6f6f4;
+}
 
 .table tr:target td {
 	background-color: var(--color-selected);
