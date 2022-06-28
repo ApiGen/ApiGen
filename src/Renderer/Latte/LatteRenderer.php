@@ -111,7 +111,7 @@ class LatteRenderer implements Renderer
 		});
 
 		$this->forkLoop($progressBar, $primaryFiles, function (?ProgressBar $progressBar, FileIndex $file, string $path) use ($configParameters, $index) {
-			$activeElement = $file->classLike ? $file->classLike[array_key_first($file->classLike)] : null;
+			$activeElement = $file->classLike[array_key_first($file->classLike)] ?? $file->function[array_key_first($file->function)] ?? null;
 			$activeNamespace = $activeElement ? $index->namespace[$activeElement->name->namespaceLower] : null;
 
 			$this->renderTemplate($progressBar, $this->urlGenerator->getSourcePath($path), new SourceTemplate(
