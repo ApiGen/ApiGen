@@ -2,8 +2,8 @@
 
 namespace ApiGenX\Info\Expr;
 
-use ApiGenX\Info\ExprInfo;
 use ApiGenX\Info\ClassLikeReferenceInfo;
+use ApiGenX\Info\ExprInfo;
 
 
 class NewExprInfo implements ExprInfo

@@ -11,8 +11,8 @@ use ApiGenX\Renderer;
 use ApiGenX\Renderer\Latte\Template\ClassLikeTemplate;
 use ApiGenX\Renderer\Latte\Template\ConfigParameters;
 use ApiGenX\Renderer\Latte\Template\FunctionTemplate;
-use ApiGenX\Renderer\Latte\Template\LayoutParameters;
 use ApiGenX\Renderer\Latte\Template\IndexTemplate;
+use ApiGenX\Renderer\Latte\Template\LayoutParameters;
 use ApiGenX\Renderer\Latte\Template\NamespaceTemplate;
 use ApiGenX\Renderer\Latte\Template\SourceTemplate;
 use ApiGenX\Renderer\Latte\Template\TreeTemplate;
@@ -94,7 +94,7 @@ class LatteRenderer implements Renderer
 			$this->renderTemplate($progressBar, $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
 				index: $index,
 				config: $configParameters,
-				layout: new LayoutParameters('classLike',$activeNamespace, $info),
+				layout: new LayoutParameters('classLike', $activeNamespace, $info),
 				classLike: $info,
 			));
 		});
