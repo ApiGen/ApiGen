@@ -132,10 +132,6 @@ code a b {
 	color: #000000;
 }
 
-tr:target {
-	background-color: var(--color-selected);
-}
-
 .deprecated {
 	text-decoration: line-through;
 	opacity: 50%;
@@ -414,6 +410,9 @@ tr:target {
 
 .table-spacer {
 	height: 30px
+
+.table tr:target td {
+	background-color: var(--color-selected);
 }
 
 
