@@ -1,0 +1,653 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class ApiGen\Analyzer\NodeVisitors\PhpDocResolver | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Analyzer.NodeVisitors.html">NodeVisitors</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Analyzer.NodeVisitors.BodySkipper.html">
+						BodySkipper
+					</a>
+				</li>
+				<li class="active">
+					<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html">
+						PhpDocResolver
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>\<a href="namespace-ApiGen.Analyzer.NodeVisitors.html">NodeVisitors</a>\<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html">PhpDocResolver</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+				<code><a href="PhpParser.NodeVisitorAbstract.html"><span title="PhpParser\NodeVisitorAbstract">NodeVisitorAbstract</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.NodeVisitorAbstract.html"><span>PhpParser\NodeVisitorAbstract</span></a>
+
+		implements
+			<a href="PhpParser.NodeVisitor.html"><span title="PhpParser\NodeVisitor">NodeVisitor</span></a>
+
+	<ul class="classTree">
+	<li>
+<b><span class="active">ApiGen\Analyzer\NodeVisitors\PhpDocResolver</span></b>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#52" title="Go to source code">Analyzer/NodeVisitors/PhpDocResolver.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#108-113" title="Go to source code">__construct</a>(<span><a href="PHPStan.PhpDocParser.Lexer.Lexer.html"><span title="PHPStan\PhpDocParser\Lexer\Lexer">Lexer</span></a> <var>$lexer</var></span>, <span><a href="PHPStan.PhpDocParser.Parser.PhpDocParser.html"><span title="PHPStan\PhpDocParser\Parser\PhpDocParser">PhpDocParser</span></a> <var>$parser</var></span>, <span><a href="PhpParser.NameContext.html"><span title="PhpParser\NameContext">NameContext</span></a> <var>$nameContext</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterNode" id="_enterNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#116-138" title="Go to source code">enterNode</a>(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Called when entering a node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Called when entering a node.</p>
+<p>Return value semantics:</p>
+<ul>
+<li>null
+=&gt; $node stays as-is</li>
+<li>NodeTraverser::DONT_TRAVERSE_CHILDREN
+=&gt; Children of $node are not traversed. $node stays as-is</li>
+<li>NodeTraverser::STOP_TRAVERSAL
+=&gt; Traversal is aborted. $node stays as-is</li>
+<li>otherwise
+=&gt; $node is set to the return value</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$node</var>&nbsp;&nbsp;</td>
+										<td><p>Node</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Replacement node (or special return value)</p>
+</div>
+
+
+		<h4>Overrides</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeVisitorAbstract.html#_enterNode">						<code>PhpParser\NodeVisitorAbstract::enterNode()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="leaveNode" id="_leaveNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#141-150" title="Go to source code">leaveNode</a>(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>|array</code>
+
+
+	<div class="expandable-collapsedView">
+		Called when leaving a node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Called when leaving a node.</p>
+<p>Return value semantics:</p>
+<ul>
+<li>null
+=&gt; $node stays as-is</li>
+<li>NodeTraverser::REMOVE_NODE
+=&gt; $node is removed from the parent array</li>
+<li>NodeTraverser::STOP_TRAVERSAL
+=&gt; Traversal is aborted. $node stays as-is</li>
+<li>array (of Nodes)
+=&gt; The return value is merged into the parent array (at the position of the $node)</li>
+<li>otherwise
+=&gt; $node is set to the return value</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$node</var>&nbsp;&nbsp;</td>
+										<td><p>Node</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Replacement node (or special return value)</p>
+</div>
+
+
+		<h4>Overrides</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeVisitorAbstract.html#_leaveNode">						<code>PhpParser\NodeVisitorAbstract::leaveNode()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_leaveNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="resolveGenericNameContext" id="_resolveGenericNameContext">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#153-169" title="Go to source code">resolveGenericNameContext</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$doc</var></span>): <a href="ApiGen.Info.GenericParameterInfo.html"><span title="ApiGen\Info\GenericParameterInfo">GenericParameterInfo</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+							<h4>Returns</h4>
+							<div><p>indexed by [parameterName]</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_resolveGenericNameContext">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTypes" id="_getTypes">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#172-211" title="Go to source code">getTypes</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$phpDocNode</var></span>): iterable&lt;<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a>&gt;</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTypes">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getExpressions" id="_getExpressions">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#214-228" title="Go to source code">getExpressions</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$phpDocNode</var></span>): iterable&lt;<a href="PHPStan.PhpDocParser.Ast.ConstExpr.ConstExprNode.html"><span title="PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode">ConstExprNode</span></a>&gt;</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getExpressions">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getIdentifiers" id="_getIdentifiers">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#231-281" title="Go to source code">getIdentifiers</a>(<span><a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a> <var>$typeNode</var></span>): iterable&lt;<a href="PHPStan.PhpDocParser.Ast.Type.IdentifierTypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode">IdentifierTypeNode</span></a>&gt;</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getIdentifiers">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="resolvePhpDoc" id="_resolvePhpDoc">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#284-313" title="Go to source code">resolvePhpDoc</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$phpDoc</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_resolvePhpDoc">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="resolveIdentifier" id="_resolveIdentifier">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#316-324" title="Go to source code">resolveIdentifier</a>(<span>string <var>$identifier</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_resolveIdentifier">#</a>
+		</td>
+	</tr>
+		</table>
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="PhpParser.NodeVisitorAbstract.html"><span>PhpParser\NodeVisitorAbstract</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="PhpParser.NodeVisitorAbstract.html#_beforeTraverse">beforeTraverse()</a>, <a href="PhpParser.NodeVisitorAbstract.html#_afterTraverse">afterTraverse()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="NATIVE_KEYWORDS" id="NATIVE_KEYWORDS">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#54-72" title="Go to source code">NATIVE_KEYWORDS</a> = [
+	<span class="php-str">'array'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'bool'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'callable'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'false'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'float'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'int'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'iterable'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'mixed'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'never'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'null'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'object'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'parent'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'self'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'static'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'true'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'void'</span> =&gt; <span class="php-kw">true</span>,
+]</code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#NATIVE_KEYWORDS">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="KEYWORDS" id="KEYWORDS">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#74-102" title="Go to source code">KEYWORDS</a> = <b><span class="active" title="ApiGen\Analyzer\NodeVisitors\PhpDocResolver">self</span></b>::<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html#NATIVE_KEYWORDS">NATIVE_KEYWORDS</a> + [
+	<span class="php-str">'array-key'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'associative-array'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'boolean'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'callable-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'class-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'double'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'integer'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'interface-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'key-of'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'list'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'literal-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'negative-int'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'never-return'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'never-returns'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'no-return'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'non-empty-array'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'non-empty-list'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'non-empty-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'noreturn'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'number'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'numeric'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'numeric-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'positive-int'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'resource'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'scalar'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'trait-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'value-of'</span> =&gt; <span class="php-kw">true</span>,
+]</code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#KEYWORDS">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="genericNameContextStack" id="$genericNameContextStack">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.GenericParameterInfo.html"><span title="ApiGen\Info\GenericParameterInfo">GenericParameterInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#104-105" title="Go to source code">$genericNameContextStack</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [][parameterName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [][parameterName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$genericNameContextStack">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="lexer" id="$lexer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PHPStan.PhpDocParser.Lexer.Lexer.html"><span title="PHPStan\PhpDocParser\Lexer\Lexer">Lexer</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#109" title="Go to source code">$lexer</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$lexer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parser" id="$parser">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PHPStan.PhpDocParser.Parser.PhpDocParser.html"><span title="PHPStan\PhpDocParser\Parser\PhpDocParser">PhpDocParser</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#110" title="Go to source code">$parser</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$parser">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="nameContext" id="$nameContext">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.NameContext.html"><span title="PhpParser\NameContext">NameContext</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#111" title="Go to source code">$nameContext</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$nameContext">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

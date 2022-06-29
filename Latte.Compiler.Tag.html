@@ -1,0 +1,804 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class Latte\Compiler\Tag | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.html">Latte</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.Compiler.html">Compiler</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="Latte.Compiler.Block.html">
+						Block
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Escaper.html">
+						Escaper
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Position.html">
+						Position
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.PrintContext.html">
+						PrintContext
+					</a>
+				</li>
+				<li class="active">
+					<a href="Latte.Compiler.Tag.html">
+						Tag
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParser.html">
+						TagParser
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParserData.html">
+						TagParserData
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateLexer.html">
+						TemplateLexer
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateParser.html">
+						TemplateParser
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Token.html">
+						Token
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TokenStream.html">
+						TokenStream
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Compiler.html">Compiler</a>\<a href="Latte.Compiler.Tag.html">Tag</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+			<tr><th><code>final</code></th></tr>
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+				<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>Latte tag or n:attribute.</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(
+	<span>string <var>$name</var></span>,
+	<span>array <var>$tokens</var></span>,
+	<span><a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var></span>,
+	<span>bool <var>$void</var> = <span class="php-kw">false</span></span>,
+	<span>bool <var>$closing</var> = <span class="php-kw">false</span></span>,
+	<span>int <var>$location</var> = <span class="php-num">0</span></span>,
+	<span>?<a href="Latte.Compiler.Nodes.Html.ElementNode.html"><span title="Latte\Compiler\Nodes\Html\ElementNode">ElementNode</span></a> <var>$htmlElement</var> = <span class="php-kw">null</span></span>,
+	<span>?self <var>$parent</var> = <span class="php-kw">null</span></span>,
+	<span>?string <var>$prefix</var> = <span class="php-kw">null</span></span>,
+	<span>?<a href="stdClass.html"><span title="stdClass">stdClass</span></a> <var>$data</var> = <span class="php-kw">null</span></span>,
+)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isInHead" id="_isInHead">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isInHead(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isInHead">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isInText" id="_isInText">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isInText(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isInText">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isNAttribute" id="_isNAttribute">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isNAttribute(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isNAttribute">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getNotation" id="_getNotation">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getNotation(<span>bool <var>$withArgs</var> = <span class="php-kw">false</span></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getNotation">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="closestTag" id="_closestTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>closestTag(<span>string[] <var>$names</var></span>, <span>?callable <var>$condition</var> = <span class="php-kw">null</span></span>): ?self</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_closestTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="expectArguments" id="_expectArguments">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>expectArguments(<span>string <var>$what</var> = <span class="php-str">'arguments'</span></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_expectArguments">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="replaceNAttribute" id="_replaceNAttribute">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>replaceNAttribute(<span><a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a> <var>$node</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_replaceNAttribute">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="PrefixInner" id="PrefixInner">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>PrefixInner = <span class="php-str">'inner'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PrefixInner">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="PrefixTag" id="PrefixTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>PrefixTag = <span class="php-str">'tag'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PrefixTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="PrefixNone" id="PrefixNone">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>PrefixNone = <span class="php-str">''</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PrefixNone">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="OutputNone" id="OutputNone">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>OutputNone = <span class="php-num">0</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#OutputNone">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="OutputKeepIndentation" id="OutputKeepIndentation">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>OutputKeepIndentation = <span class="php-num">1</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#OutputKeepIndentation">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="OutputRemoveIndentation" id="OutputRemoveIndentation">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>OutputRemoveIndentation = <span class="php-num">2</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#OutputRemoveIndentation">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="parser" id="$parser">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Latte.Compiler.TagParser.html"><span title="Latte\Compiler\TagParser">TagParser</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$parser</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$parser">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="outputMode" id="$outputMode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">int</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$outputMode</var> = <b><span class="active" title="Latte\Compiler\Tag">self</span></b>::<a href="Latte.Compiler.Tag.html#OutputNone">OutputNone</a></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$outputMode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="name" id="$name">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$name</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$name">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="position" id="$position">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$position</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$position">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="void" id="$void">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$void</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$void">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="closing" id="$closing">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$closing</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$closing">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="location" id="$location">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">int</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$location</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$location">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="htmlElement" id="$htmlElement">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">?<a href="Latte.Compiler.Nodes.Html.ElementNode.html"><span title="Latte\Compiler\Nodes\Html\ElementNode">ElementNode</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$htmlElement</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$htmlElement">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parent" id="$parent">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">?self</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$parent</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$parent">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="prefix" id="$prefix">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">?string</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$prefix</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$prefix">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="data" id="$data">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">?<a href="stdClass.html"><span title="stdClass">stdClass</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$data</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$data">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

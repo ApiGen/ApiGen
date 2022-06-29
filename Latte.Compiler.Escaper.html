@@ -1,0 +1,788 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class Latte\Compiler\Escaper | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.html">Latte</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.Compiler.html">Compiler</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="Latte.Compiler.Block.html">
+						Block
+					</a>
+				</li>
+				<li class="active">
+					<a href="Latte.Compiler.Escaper.html">
+						Escaper
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Position.html">
+						Position
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.PrintContext.html">
+						PrintContext
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Tag.html">
+						Tag
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParser.html">
+						TagParser
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParserData.html">
+						TagParserData
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateLexer.html">
+						TemplateLexer
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateParser.html">
+						TemplateParser
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Token.html">
+						Token
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TokenStream.html">
+						TokenStream
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Compiler.html">Compiler</a>\<a href="Latte.Compiler.Escaper.html">Escaper</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+			<tr><th><code>final</code></th></tr>
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+				<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>Context-aware escaping.</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>string <var>$contentType</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getContentType" id="_getContentType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getContentType(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getContentType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getState" id="_getState">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getState(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getState">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="export" id="_export">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>export(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_export">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterContentType" id="_enterContentType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterContentType(<span>string <var>$type</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterContentType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterHtmlText" id="_enterHtmlText">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterHtmlText(<span>?<a href="Latte.Compiler.Nodes.Html.ElementNode.html"><span title="Latte\Compiler\Nodes\Html\ElementNode">ElementNode</span></a> <var>$node</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterHtmlText">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterHtmlTag" id="_enterHtmlTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterHtmlTag(<span>string <var>$name</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterHtmlTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterHtmlAttribute" id="_enterHtmlAttribute">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterHtmlAttribute(<span>?string <var>$name</var> = <span class="php-kw">null</span></span>, <span>string <var>$quote</var> = <span class="php-str">''</span></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterHtmlAttribute">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterHtmlAttributeQuote" id="_enterHtmlAttributeQuote">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterHtmlAttributeQuote(<span>string <var>$quote</var> = <span class="php-str">'"'</span></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterHtmlAttributeQuote">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterHtmlBogusTag" id="_enterHtmlBogusTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterHtmlBogusTag(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterHtmlBogusTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterHtmlComment" id="_enterHtmlComment">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterHtmlComment(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterHtmlComment">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="escape" id="_escape">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>escape(<span>string <var>$str</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_escape">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="check" id="_check">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>check(<span>string <var>$str</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_check">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getConvertor" id="_getConvertor">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getConvertor(<span>string <var>$source</var></span>, <span>string <var>$dest</var></span>): ?callable</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getConvertor">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="Text" id="Text">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Text = <span class="php-str">'text'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Text">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="JavaScript" id="JavaScript">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>JavaScript = <span class="php-str">'js'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#JavaScript">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Css" id="Css">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Css = <span class="php-str">'css'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Css">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="ICal" id="ICal">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>ICal = <span class="php-str">'ical'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#ICal">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Url" id="Url">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Url = <span class="php-str">'url'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Url">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HtmlText" id="HtmlText">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>HtmlText = <span class="php-str">'html'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HtmlText">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HtmlComment" id="HtmlComment">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>HtmlComment = <span class="php-str">'html/comment'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HtmlComment">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HtmlBogusTag" id="HtmlBogusTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>HtmlBogusTag = <span class="php-str">'html/bogus'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HtmlBogusTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HtmlCss" id="HtmlCss">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>HtmlCss = <span class="php-str">'html/css'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HtmlCss">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HtmlJavaScript" id="HtmlJavaScript">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>HtmlJavaScript = <span class="php-str">'html/js'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HtmlJavaScript">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HtmlTag" id="HtmlTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>HtmlTag = <span class="php-str">'html/tag'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HtmlTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="HtmlAttribute" id="HtmlAttribute">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>HtmlAttribute = <span class="php-str">'html/attr'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#HtmlAttribute">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

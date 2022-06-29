@@ -1,0 +1,393 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Interface PhpParser\NodeVisitor | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Comment.html">
+						Comment
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NameContext.html">
+						NameContext
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeAbstract.html">
+						NodeAbstract
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeVisitorAbstract.html">
+						NodeVisitorAbstract
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.ErrorHandler.html">
+						ErrorHandler
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeTraverserInterface.html">
+						NodeTraverserInterface
+					</a>
+				</li>
+				<li class="active">
+					<a href="PhpParser.NodeVisitor.html">
+						NodeVisitor
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Parser.html">
+						Parser
+					</a>
+				</li>
+		</ul>
+
+
+
+		<h3>Exceptions</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Error.html">
+						Error
+					</a>
+				</li>
+		</ul>
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Interface <a href="namespace-PhpParser.html">PhpParser</a>\<a href="PhpParser.NodeVisitor.html">NodeVisitor</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\NodeVisitor</span></b>
+
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.NodeVisitorAbstract.html"><span>PhpParser\NodeVisitorAbstract</span></a>
+
+		implements
+			<b><span class="active" title="PhpParser\NodeVisitor">NodeVisitor</span></b>
+
+	<ul class="classTree">
+	<li>
+<a href="ApiGen.Analyzer.NodeVisitors.BodySkipper.html"><span>ApiGen\Analyzer\NodeVisitors\BodySkipper</span></a>
+
+
+	</li>
+	<li>
+<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html"><span>ApiGen\Analyzer\NodeVisitors\PhpDocResolver</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="beforeTraverse" id="_beforeTraverse">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>beforeTraverse(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[] <var>$nodes</var></span>): null|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[]</code>
+
+
+	<div class="expandable-collapsedView">
+		Called once before traversal.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Called once before traversal.</p>
+<p>Return value semantics:</p>
+<ul>
+<li>null:      $nodes stays as-is</li>
+<li>otherwise: $nodes is set to the return value</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$nodes</var>&nbsp;&nbsp;</td>
+										<td><p>Array of nodes</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Array of nodes</p>
+</div>
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeVisitorAbstract.html#_beforeTraverse">						<code>PhpParser\NodeVisitorAbstract::beforeTraverse()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_beforeTraverse">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterNode" id="_enterNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterNode(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Called when entering a node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Called when entering a node.</p>
+<p>Return value semantics:</p>
+<ul>
+<li>null
+=&gt; $node stays as-is</li>
+<li>NodeTraverser::DONT_TRAVERSE_CHILDREN
+=&gt; Children of $node are not traversed. $node stays as-is</li>
+<li>NodeTraverser::STOP_TRAVERSAL
+=&gt; Traversal is aborted. $node stays as-is</li>
+<li>otherwise
+=&gt; $node is set to the return value</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$node</var>&nbsp;&nbsp;</td>
+										<td><p>Node</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Replacement node (or special return value)</p>
+</div>
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeVisitorAbstract.html#_enterNode">						<code>PhpParser\NodeVisitorAbstract::enterNode()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="leaveNode" id="_leaveNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>leaveNode(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[]</code>
+
+
+	<div class="expandable-collapsedView">
+		Called when leaving a node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Called when leaving a node.</p>
+<p>Return value semantics:</p>
+<ul>
+<li>null
+=&gt; $node stays as-is</li>
+<li>NodeTraverser::REMOVE_NODE
+=&gt; $node is removed from the parent array</li>
+<li>NodeTraverser::STOP_TRAVERSAL
+=&gt; Traversal is aborted. $node stays as-is</li>
+<li>array (of Nodes)
+=&gt; The return value is merged into the parent array (at the position of the $node)</li>
+<li>otherwise
+=&gt; $node is set to the return value</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$node</var>&nbsp;&nbsp;</td>
+										<td><p>Node</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Replacement node (or special return value)</p>
+</div>
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeVisitorAbstract.html#_leaveNode">						<code>PhpParser\NodeVisitorAbstract::leaveNode()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_leaveNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="afterTraverse" id="_afterTraverse">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>afterTraverse(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[] <var>$nodes</var></span>): null|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[]</code>
+
+
+	<div class="expandable-collapsedView">
+		Called once after traversal.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Called once after traversal.</p>
+<p>Return value semantics:</p>
+<ul>
+<li>null:      $nodes stays as-is</li>
+<li>otherwise: $nodes is set to the return value</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$nodes</var>&nbsp;&nbsp;</td>
+										<td><p>Array of nodes</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Array of nodes</p>
+</div>
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeVisitorAbstract.html#_afterTraverse">						<code>PhpParser\NodeVisitorAbstract::afterTraverse()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_afterTraverse">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

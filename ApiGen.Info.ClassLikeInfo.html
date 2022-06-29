@@ -1,0 +1,568 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class ApiGen\Info\ClassLikeInfo | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.Expr.html">Expr</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.Traits.html">Traits</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Info.ClassInfo.html">
+						ClassInfo
+					</a>
+				</li>
+				<li class="active">
+					<a href="ApiGen.Info.ClassLikeInfo.html">
+						ClassLikeInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.ClassLikeReferenceInfo.html">
+						ClassLikeReferenceInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.ConstantInfo.html">
+						ConstantInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.EnumCaseInfo.html">
+						EnumCaseInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.EnumInfo.html">
+						EnumInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.ErrorInfo.html">
+						ErrorInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.FunctionInfo.html">
+						FunctionInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.GenericParameterInfo.html">
+						GenericParameterInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.InterfaceInfo.html">
+						InterfaceInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.MemberInfo.html">
+						MemberInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.MethodInfo.html">
+						MethodInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.MissingInfo.html">
+						MissingInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.NameInfo.html">
+						NameInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.ParameterInfo.html">
+						ParameterInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.PropertyInfo.html">
+						PropertyInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.TraitInfo.html">
+						TraitInfo
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Info.ElementInfo.html">
+						ElementInfo
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Info.ExprInfo.html">
+						ExprInfo
+					</a>
+				</li>
+		</ul>
+
+
+		<h3>Enums</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Info.GenericParameterVariance.html">
+						GenericParameterVariance
+					</a>
+				</li>
+		</ul>
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Info.html">Info</a>\<a href="ApiGen.Info.ClassLikeInfo.html">ClassLikeInfo</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+			<tr><th><code>abstract</code></th></tr>
+
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+				<code><a href="ApiGen.Info.ElementInfo.html"><span title="ApiGen\Info\ElementInfo">ElementInfo</span></a></code>
+			</td>
+		</tr>
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+				<code><a href="ApiGen.Info.Traits.HasTags.html"><span title="ApiGen\Info\Traits\HasTags">HasTags</span></a>, <a href="ApiGen.Info.Traits.HasLineLocation.html"><span title="ApiGen\Info\Traits\HasLineLocation">HasLineLocation</span></a>, <a href="ApiGen.Info.Traits.HasDependencies.html"><span title="ApiGen\Info\Traits\HasDependencies">HasDependencies</span></a>, <a href="ApiGen.Info.Traits.HasGenericParameters.html"><span title="ApiGen\Info\Traits\HasGenericParameters">HasGenericParameters</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<b><span class="active">ApiGen\Info\ClassLikeInfo</span></b>
+
+		implements
+			<a href="ApiGen.Info.ElementInfo.html"><span title="ApiGen\Info\ElementInfo">ElementInfo</span></a>
+
+		uses
+			<a href="ApiGen.Info.Traits.HasTags.html"><span title="ApiGen\Info\Traits\HasTags">HasTags</span></a>, 
+			<a href="ApiGen.Info.Traits.HasLineLocation.html"><span title="ApiGen\Info\Traits\HasLineLocation">HasLineLocation</span></a>, 
+			<a href="ApiGen.Info.Traits.HasDependencies.html"><span title="ApiGen\Info\Traits\HasDependencies">HasDependencies</span></a>, 
+			<a href="ApiGen.Info.Traits.HasGenericParameters.html"><span title="ApiGen\Info\Traits\HasGenericParameters">HasGenericParameters</span></a>
+	<ul class="classTree">
+	<li>
+<a href="ApiGen.Info.InterfaceInfo.html"><span>ApiGen\Info\InterfaceInfo</span></a>
+
+
+	</li>
+	<li>
+<a href="ApiGen.Info.ClassInfo.html"><span>ApiGen\Info\ClassInfo</span></a>
+
+
+	</li>
+	<li>
+<a href="ApiGen.Info.EnumInfo.html"><span>ApiGen\Info\EnumInfo</span></a>
+
+
+	</li>
+	<li>
+<a href="ApiGen.Info.TraitInfo.html"><span>ApiGen\Info\TraitInfo</span></a>
+
+
+	</li>
+	<li>
+<a href="ApiGen.Info.MissingInfo.html"><span>ApiGen\Info\MissingInfo</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Info.ClassLikeInfo.html#12" title="Go to source code">Info/ClassLikeInfo.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Info.ClassLikeInfo.html#33-37" title="Go to source code">__construct</a>(<span><a href="ApiGen.Info.NameInfo.html"><span title="ApiGen\Info\NameInfo">NameInfo</span></a> <var>$name</var></span>, <span>bool <var>$primary</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Overriden by</h4>
+		<ul>
+				<li>
+<a href="ApiGen.Info.MissingInfo.html#___construct">						<code>ApiGen\Info\MissingInfo::__construct()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isInstanceOf" id="_isInstanceOf">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Info.ClassLikeInfo.html#40-43" title="Go to source code">isInstanceOf</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span>string <var>$type</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isInstanceOf">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isThrowable" id="_isThrowable">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Info.ClassLikeInfo.html#46-49" title="Go to source code">isThrowable</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isThrowable">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="ApiGen.Info.Traits.HasTags.html"><span>ApiGen\Info\Traits\HasTags</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="ApiGen.Info.Traits.HasTags.html#_isDeprecated">isDeprecated()</a>, <a href="ApiGen.Info.Traits.HasTags.html#_isInternal">isInternal()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="file" id="$file">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string|null</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Info.ClassLikeInfo.html#20-21" title="Go to source code">$file</a></var> = <span class="php-kw">null</span></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$file">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="constants" id="$constants">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ConstantInfo.html"><span title="ApiGen\Info\ConstantInfo">ConstantInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Info.ClassLikeInfo.html#23-24" title="Go to source code">$constants</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [constantName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [constantName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$constants">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="properties" id="$properties">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.PropertyInfo.html"><span title="ApiGen\Info\PropertyInfo">PropertyInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Info.ClassLikeInfo.html#26-27" title="Go to source code">$properties</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [propertyName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [propertyName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$properties">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="methods" id="$methods">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.MethodInfo.html"><span title="ApiGen\Info\MethodInfo">MethodInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Info.ClassLikeInfo.html#29-30" title="Go to source code">$methods</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [methodName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [methodName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$methods">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="name" id="$name">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.NameInfo.html"><span title="ApiGen\Info\NameInfo">NameInfo</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Info.ClassLikeInfo.html#34" title="Go to source code">$name</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$name">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="primary" id="$primary">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Info.ClassLikeInfo.html#35" title="Go to source code">$primary</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$primary">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties used from <a href="ApiGen.Info.Traits.HasTags.html"><span>ApiGen\Info\Traits\HasTags</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="ApiGen.Info.Traits.HasTags.html#$description">$description</a></var>, <var><a href="ApiGen.Info.Traits.HasTags.html#$tags">$tags</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties used from <a href="ApiGen.Info.Traits.HasLineLocation.html"><span>ApiGen\Info\Traits\HasLineLocation</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="ApiGen.Info.Traits.HasLineLocation.html#$startLine">$startLine</a></var>, <var><a href="ApiGen.Info.Traits.HasLineLocation.html#$endLine">$endLine</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties used from <a href="ApiGen.Info.Traits.HasDependencies.html"><span>ApiGen\Info\Traits\HasDependencies</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="ApiGen.Info.Traits.HasDependencies.html#$dependencies">$dependencies</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties used from <a href="ApiGen.Info.Traits.HasGenericParameters.html"><span>ApiGen\Info\Traits\HasGenericParameters</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="ApiGen.Info.Traits.HasGenericParameters.html#$genericParameters">$genericParameters</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

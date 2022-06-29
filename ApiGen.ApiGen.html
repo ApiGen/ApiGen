@@ -1,0 +1,565 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class ApiGen\ApiGen | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Analyzer.html">
+						Analyzer
+					</a>
+				</li>
+				<li class="active">
+					<a href="ApiGen.ApiGen.html">
+						ApiGen
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Bootstrap.html">
+						Bootstrap
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Helpers.html">
+						Helpers
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Indexer.html">
+						Indexer
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Locator.html">
+						Locator
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Renderer.html">
+						Renderer
+					</a>
+				</li>
+		</ul>
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="ApiGen.ApiGen.html">ApiGen</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-ApiGen.html#21" title="Go to source code">ApiGen.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#23-37" title="Go to source code">__construct</a>(
+	<span><a href="Symfony.Component.Console.Style.OutputStyle.html"><span title="Symfony\Component\Console\Style\OutputStyle">OutputStyle</span></a> <var>$output</var></span>,
+	<span><a href="ApiGen.Analyzer.html"><span title="ApiGen\Analyzer">Analyzer</span></a> <var>$analyzer</var></span>,
+	<span><a href="ApiGen.Indexer.html"><span title="ApiGen\Indexer">Indexer</span></a> <var>$indexer</var></span>,
+	<span><a href="ApiGen.Renderer.html"><span title="ApiGen\Renderer">Renderer</span></a> <var>$renderer</var></span>,
+	<span>string[] <var>$paths</var></span>,
+	<span>string[] <var>$include</var></span>,
+	<span>string[] <var>$exclude</var></span>,
+)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$paths</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by []</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$include</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by []</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$exclude</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by []</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="generate" id="_generate">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#40-58" title="Go to source code">generate</a>(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_generate">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="findFiles" id="_findFiles">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#61-85" title="Go to source code">findFiles</a>(): string[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+							<h4>Returns</h4>
+							<div><p>list of files, indexed by []</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_findFiles">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="analyze" id="_analyze">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#88-106" title="Go to source code">analyze</a>(<span>string[] <var>$files</var></span>): <a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$files</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by []</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_analyze">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="index" id="_index">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#109-127" title="Go to source code">index</a>(<span><a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a> <var>$analyzeResult</var></span>): <a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_index">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="render" id="_render">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#130-143" title="Go to source code">render</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_render">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="performance" id="_performance">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#146-160" title="Go to source code">performance</a>(<span>float <var>$analyzeTime</var></span>, <span>float <var>$indexTime</var></span>, <span>float <var>$renderTime</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_performance">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="finish" id="_finish">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#163-183" title="Go to source code">finish</a>(<span><a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a> <var>$analyzeResult</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_finish">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="output" id="$output">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Symfony.Component.Console.Style.OutputStyle.html"><span title="Symfony\Component\Console\Style\OutputStyle">OutputStyle</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-ApiGen.html#29" title="Go to source code">$output</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$output">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="analyzer" id="$analyzer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Analyzer.html"><span title="ApiGen\Analyzer">Analyzer</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-ApiGen.html#30" title="Go to source code">$analyzer</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$analyzer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="indexer" id="$indexer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Indexer.html"><span title="ApiGen\Indexer">Indexer</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-ApiGen.html#31" title="Go to source code">$indexer</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$indexer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderer" id="$renderer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Renderer.html"><span title="ApiGen\Renderer">Renderer</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-ApiGen.html#32" title="Go to source code">$renderer</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$renderer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="paths" id="$paths">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-ApiGen.html#33" title="Go to source code">$paths</a></var></code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by []
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by []</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$paths">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="include" id="$include">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-ApiGen.html#34" title="Go to source code">$include</a></var></code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by []
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by []</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$include">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="exclude" id="$exclude">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-ApiGen.html#35" title="Go to source code">$exclude</a></var></code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by []
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by []</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$exclude">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

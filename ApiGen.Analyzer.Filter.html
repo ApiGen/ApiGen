@@ -1,0 +1,571 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class ApiGen\Analyzer\Filter | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.NodeVisitors.html">NodeVisitors</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Analyzer.AnalyzeResult.html">
+						AnalyzeResult
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Analyzer.AnalyzeTask.html">
+						AnalyzeTask
+					</a>
+				</li>
+				<li class="active">
+					<a href="ApiGen.Analyzer.Filter.html">
+						Filter
+					</a>
+				</li>
+		</ul>
+
+
+
+		<h3>Enums</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Analyzer.IdentifierKind.html">
+						IdentifierKind
+					</a>
+				</li>
+		</ul>
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>\<a href="ApiGen.Analyzer.Filter.html">Filter</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Analyzer.Filter.html#12" title="Go to source code">Analyzer/Filter.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#18-28" title="Go to source code">__construct</a>(<span>bool <var>$excludeProtected</var></span>, <span>bool <var>$excludePrivate</var></span>, <span>string[] <var>$excludeTagged</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$excludeTagged</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by []</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterClassLikeNode" id="_filterClassLikeNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#31-34" title="Go to source code">filterClassLikeNode</a>(<span><a href="PhpParser.Node.Stmt.ClassLike.html"><span title="PhpParser\Node\Stmt\ClassLike">ClassLike</span></a> <var>$node</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterClassLikeNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterClassLikeTags" id="_filterClassLikeTags">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#37-49" title="Go to source code">filterClassLikeTags</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][] <var>$tags</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$tags</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by [tagName][]</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterClassLikeTags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterClassLikeInfo" id="_filterClassLikeInfo">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#52-55" title="Go to source code">filterClassLikeInfo</a>(<span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a> <var>$info</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterClassLikeInfo">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterFunctionNode" id="_filterFunctionNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#58-61" title="Go to source code">filterFunctionNode</a>(<span><a href="PhpParser.Node.Stmt.Function_.html"><span title="PhpParser\Node\Stmt\Function_">Function_</span></a> <var>$node</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterFunctionNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterFunctionTags" id="_filterFunctionTags">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#64-76" title="Go to source code">filterFunctionTags</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][] <var>$tags</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$tags</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by [tagName][]</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterFunctionTags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterFunctionInfo" id="_filterFunctionInfo">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#79-82" title="Go to source code">filterFunctionInfo</a>(<span><a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterFunctionInfo">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterConstantNode" id="_filterConstantNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#85-88" title="Go to source code">filterConstantNode</a>(<span><a href="PhpParser.Node.Stmt.ClassConst.html"><span title="PhpParser\Node\Stmt\ClassConst">ClassConst</span></a> <var>$node</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterConstantNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterPropertyNode" id="_filterPropertyNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#91-94" title="Go to source code">filterPropertyNode</a>(<span><a href="PhpParser.Node.Stmt.Property.html"><span title="PhpParser\Node\Stmt\Property">Property</span></a> <var>$node</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterPropertyNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterPromotedPropertyNode" id="_filterPromotedPropertyNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#97-100" title="Go to source code">filterPromotedPropertyNode</a>(<span><a href="PhpParser.Node.Param.html"><span title="PhpParser\Node\Param">Param</span></a> <var>$node</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterPromotedPropertyNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterMethodNode" id="_filterMethodNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#103-106" title="Go to source code">filterMethodNode</a>(<span><a href="PhpParser.Node.Stmt.ClassMethod.html"><span title="PhpParser\Node\Stmt\ClassMethod">ClassMethod</span></a> <var>$node</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterMethodNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterEnumCaseNode" id="_filterEnumCaseNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#109-112" title="Go to source code">filterEnumCaseNode</a>(<span><a href="PhpParser.Node.Stmt.EnumCase.html"><span title="PhpParser\Node\Stmt\EnumCase">EnumCase</span></a> <var>$node</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterEnumCaseNode">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterMemberTags" id="_filterMemberTags">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#115-127" title="Go to source code">filterMemberTags</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][] <var>$tags</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$tags</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by [tagName][]</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterMemberTags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filterMemberInfo" id="_filterMemberInfo">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.Filter.html#130-133" title="Go to source code">filterMemberInfo</a>(<span><a href="ApiGen.Info.MemberInfo.html"><span title="ApiGen\Info\MemberInfo">MemberInfo</span></a> <var>$member</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_filterMemberInfo">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="excludedVisibilityMask" id="$excludedVisibilityMask">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">int</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Analyzer.Filter.html#14-15" title="Go to source code">$excludedVisibilityMask</a></var> = <span class="php-num">0</span></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$excludedVisibilityMask">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="excludeTagged" id="$excludeTagged">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Analyzer.Filter.html#24" title="Go to source code">$excludeTagged</a></var></code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by []
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by []</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$excludeTagged">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

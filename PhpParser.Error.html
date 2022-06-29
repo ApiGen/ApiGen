@@ -1,0 +1,743 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PhpParser\Error | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Comment.html">
+						Comment
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NameContext.html">
+						NameContext
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeAbstract.html">
+						NodeAbstract
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeVisitorAbstract.html">
+						NodeVisitorAbstract
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.ErrorHandler.html">
+						ErrorHandler
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeTraverserInterface.html">
+						NodeTraverserInterface
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeVisitor.html">
+						NodeVisitor
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Parser.html">
+						Parser
+					</a>
+				</li>
+		</ul>
+
+
+
+		<h3>Exceptions</h3>
+		<ul>
+				<li class="active">
+					<a href="PhpParser.Error.html">
+						Error
+					</a>
+				</li>
+		</ul>
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="PhpParser.Error.html">Error</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+				<code><a href="RuntimeException.html"><span title="RuntimeException">RuntimeException</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<a href="Exception.html"><span>Exception</span></a>
+
+		implements
+			<a href="Throwable.html"><span title="Throwable">Throwable</span></a>
+
+	<ul class="classTree">
+	<li>
+<a href="RuntimeException.html"><span>RuntimeException</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\Error</span></b>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>string <var>$message</var></span>, <span>array|int <var>$attributes</var> = []</span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Creates an Exception signifying a parse error.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Creates an Exception signifying a parse error.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$message</var>&nbsp;&nbsp;</td>
+										<td><p>Error message</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$attributes</var>&nbsp;&nbsp;</td>
+										<td><p>Attributes of node/token where error occurred
+(or start line of error -- deprecated)</p>
+</td>
+									</tr>
+							</table>
+
+
+
+		<h4>Overrides</h4>
+		<ul>
+				<li>
+<a href="Exception.html#___construct">						<code>Exception::__construct()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getRawMessage" id="_getRawMessage">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getRawMessage(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the error message
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the error message</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Error message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getRawMessage">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStartLine" id="_getStartLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStartLine(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the line the error starts in.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the line the error starts in.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Error start line</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStartLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEndLine" id="_getEndLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEndLine(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the line the error ends in.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the line the error ends in.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Error end line</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEndLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getAttributes" id="_getAttributes">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getAttributes(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the attributes of the node/token the error occurred at.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the attributes of the node/token the error occurred at.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getAttributes">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setAttributes" id="_setAttributes">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setAttributes(<span>array <var>$attributes</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the attributes of the node/token the error occurred at.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the attributes of the node/token the error occurred at.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setAttributes">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setRawMessage" id="_setRawMessage">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setRawMessage(<span>string <var>$message</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the line of the PHP file the error occurred in.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the line of the PHP file the error occurred in.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$message</var>&nbsp;&nbsp;</td>
+										<td><p>Error message</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setRawMessage">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setStartLine" id="_setStartLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setStartLine(<span>int <var>$line</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the line the error starts in.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the line the error starts in.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$line</var>&nbsp;&nbsp;</td>
+										<td><p>Error start line</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setStartLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hasColumnInfo" id="_hasColumnInfo">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>hasColumnInfo(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns whether the error has start and end column information.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns whether the error has start and end column information.</p>
+<p>For column information enable the startFilePos and endFilePos in the lexer options.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_hasColumnInfo">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStartColumn" id="_getStartColumn">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStartColumn(<span>string <var>$code</var></span>): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the start column (1-based) into the line where the error started.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the start column (1-based) into the line where the error started.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$code</var>&nbsp;&nbsp;</td>
+										<td><p>Source code of the file</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStartColumn">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEndColumn" id="_getEndColumn">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEndColumn(<span>string <var>$code</var></span>): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the end column (1-based) into the line where the error ended.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the end column (1-based) into the line where the error ended.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$code</var>&nbsp;&nbsp;</td>
+										<td><p>Source code of the file</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEndColumn">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getMessageWithColumnInfo" id="_getMessageWithColumnInfo">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getMessageWithColumnInfo(<span>string <var>$code</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Formats message including line and column information.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Formats message including line and column information.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$code</var>&nbsp;&nbsp;</td>
+										<td><p>Source code associated with the error, for calculation of the columns</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Formatted message</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getMessageWithColumnInfo">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="updateMessage" id="_updateMessage">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>updateMessage()</code>
+
+
+	<div class="expandable-collapsedView">
+		Updates the exception message after a change to rawMessage or rawLine.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Updates the exception message after a change to rawMessage or rawLine.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_updateMessage">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="Exception.html"><span>Exception</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="Exception.html#___wakeup">__wakeup()</a>, <a href="Exception.html#_getMessage">getMessage()</a>, <a href="Exception.html#_getCode">getCode()</a>, <a href="Exception.html#_getFile">getFile()</a>, <a href="Exception.html#_getLine">getLine()</a>, <a href="Exception.html#_getTrace">getTrace()</a>, <a href="Exception.html#_getPrevious">getPrevious()</a>, <a href="Exception.html#_getTraceAsString">getTraceAsString()</a>, <a href="Exception.html#___toString">__toString()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="rawMessage" id="$rawMessage">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$rawMessage</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$rawMessage">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="attributes" id="$attributes">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$attributes</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$attributes">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

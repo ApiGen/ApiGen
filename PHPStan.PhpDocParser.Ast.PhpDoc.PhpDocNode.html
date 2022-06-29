@@ -1,0 +1,845 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.html">PHPStan</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.PhpDocParser.html">PhpDocParser</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.PhpDocParser.Ast.html">Ast</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.PhpDocParser.Ast.PhpDoc.html">PhpDoc</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.AssertTagValueNode.html">
+						AssertTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.DeprecatedTagValueNode.html">
+						DeprecatedTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ExtendsTagValueNode.html">
+						ExtendsTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ImplementsTagValueNode.html">
+						ImplementsTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.MethodTagValueNode.html">
+						MethodTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.MethodTagValueParameterNode.html">
+						MethodTagValueParameterNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.MixinTagValueNode.html">
+						MixinTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamTagValueNode.html">
+						ParamTagValueNode
+					</a>
+				</li>
+				<li class="active">
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html">
+						PhpDocNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagNode.html">
+						PhpDocTagNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PropertyTagValueNode.html">
+						PropertyTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ReturnTagValueNode.html">
+						ReturnTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.TemplateTagValueNode.html">
+						TemplateTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ThrowsTagValueNode.html">
+						ThrowsTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.TypeAliasImportTagValueNode.html">
+						TypeAliasImportTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.TypeAliasTagValueNode.html">
+						TypeAliasTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.TypelessParamTagValueNode.html">
+						TypelessParamTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.UsesTagValueNode.html">
+						UsesTagValueNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.VarTagValueNode.html">
+						VarTagValueNode
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocChildNode.html">
+						PhpDocChildNode
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html">
+						PhpDocTagValueNode
+					</a>
+				</li>
+		</ul>
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PHPStan.html">PHPStan</a>\<a href="namespace-PHPStan.PhpDocParser.html">PhpDocParser</a>\<a href="namespace-PHPStan.PhpDocParser.Ast.html">Ast</a>\<a href="namespace-PHPStan.PhpDocParser.Ast.PhpDoc.html">PhpDoc</a>\<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html">PhpDocNode</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+				<code><a href="PHPStan.PhpDocParser.Ast.Node.html"><span title="PHPStan\PhpDocParser\Ast\Node">Node</span></a></code>
+			</td>
+		</tr>
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+				<code><a href="PHPStan.PhpDocParser.Ast.NodeAttributes.html"><span title="PHPStan\PhpDocParser\Ast\NodeAttributes">NodeAttributes</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocChildNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode">PhpDocChildNode</span></a>[] <var>$children</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTags" id="_getTags">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTags(): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode">PhpDocTagNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTagsByName" id="_getTagsByName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTagsByName(<span>string <var>$tagName</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode">PhpDocTagNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTagsByName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getVarTagValues" id="_getVarTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getVarTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@var'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.VarTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode">VarTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getVarTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getParamTagValues" id="_getParamTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getParamTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@param'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode">ParamTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getParamTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTypelessParamTagValues" id="_getTypelessParamTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTypelessParamTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@param'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.TypelessParamTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\TypelessParamTagValueNode">TypelessParamTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTypelessParamTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTemplateTagValues" id="_getTemplateTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTemplateTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@template'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.TemplateTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode">TemplateTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTemplateTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getExtendsTagValues" id="_getExtendsTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getExtendsTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@extends'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.ExtendsTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\ExtendsTagValueNode">ExtendsTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getExtendsTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getImplementsTagValues" id="_getImplementsTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getImplementsTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@implements'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.ImplementsTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\ImplementsTagValueNode">ImplementsTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getImplementsTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getUsesTagValues" id="_getUsesTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getUsesTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@use'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.UsesTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\UsesTagValueNode">UsesTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getUsesTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getReturnTagValues" id="_getReturnTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getReturnTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@return'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.ReturnTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode">ReturnTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getReturnTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getThrowsTagValues" id="_getThrowsTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getThrowsTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@throws'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.ThrowsTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\ThrowsTagValueNode">ThrowsTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getThrowsTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getMixinTagValues" id="_getMixinTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getMixinTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@mixin'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.MixinTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\MixinTagValueNode">MixinTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getMixinTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getDeprecatedTagValues" id="_getDeprecatedTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getDeprecatedTagValues(): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.DeprecatedTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\DeprecatedTagValueNode">DeprecatedTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getDeprecatedTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPropertyTagValues" id="_getPropertyTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPropertyTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@property'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PropertyTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode">PropertyTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPropertyTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPropertyReadTagValues" id="_getPropertyReadTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPropertyReadTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@property-read'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PropertyTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode">PropertyTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPropertyReadTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPropertyWriteTagValues" id="_getPropertyWriteTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPropertyWriteTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@property-write'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PropertyTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode">PropertyTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPropertyWriteTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getMethodTagValues" id="_getMethodTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getMethodTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@method'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.MethodTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode">MethodTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getMethodTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTypeAliasTagValues" id="_getTypeAliasTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTypeAliasTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@phpstan-type'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.TypeAliasTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode">TypeAliasTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTypeAliasTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTypeAliasImportTagValues" id="_getTypeAliasImportTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTypeAliasImportTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@phpstan-import-type'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.TypeAliasImportTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasImportTagValueNode">TypeAliasImportTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTypeAliasImportTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getAssertTagValues" id="_getAssertTagValues">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getAssertTagValues(<span>string <var>$tagName</var> = <span class="php-str">'@phpstan-assert'</span></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.AssertTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\AssertTagValueNode">AssertTagValueNode</span></a>[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getAssertTagValues">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="__toString" id="___toString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__toString(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PHPStan.PhpDocParser.Ast.Node.html#___toString">						<code>PHPStan\PhpDocParser\Ast\Node::__toString()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___toString">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="PHPStan.PhpDocParser.Ast.NodeAttributes.html"><span>PHPStan\PhpDocParser\Ast\NodeAttributes</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="PHPStan.PhpDocParser.Ast.NodeAttributes.html#_setAttribute">setAttribute()</a>, <a href="PHPStan.PhpDocParser.Ast.NodeAttributes.html#_hasAttribute">hasAttribute()</a>, <a href="PHPStan.PhpDocParser.Ast.NodeAttributes.html#_getAttribute">getAttribute()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="children" id="$children">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocChildNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocChildNode">PhpDocChildNode</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$children</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$children">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,425 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class ApiGen\Renderer\SourceHighlighter | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.Latte.html">Latte</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li class="active">
+					<a href="ApiGen.Renderer.SourceHighlighter.html">
+						SourceHighlighter
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Renderer.UrlGenerator.html">
+						UrlGenerator
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Renderer.html">Renderer</a>\<a href="ApiGen.Renderer.SourceHighlighter.html">SourceHighlighter</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Renderer.SourceHighlighter.html#100" title="Go to source code">Renderer/SourceHighlighter.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="highlight" id="_highlight">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#200-221" title="Go to source code">highlight</a>(<span>string <var>$source</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_highlight">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="tokenize" id="_tokenize">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#224-241" title="Go to source code">tokenize</a>(<span>string <var>$source</var></span>): iterable&lt;int, string&gt;</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_tokenize">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="PHP_TAG" id="PHP_TAG">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#102" title="Go to source code">PHP_TAG</a> = <span class="php-str">'php-tag'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PHP_TAG">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="PHP_KEYWORD" id="PHP_KEYWORD">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#103" title="Go to source code">PHP_KEYWORD</a> = <span class="php-str">'php-kw'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PHP_KEYWORD">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="PHP_NUMBER" id="PHP_NUMBER">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#104" title="Go to source code">PHP_NUMBER</a> = <span class="php-str">'php-num'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PHP_NUMBER">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="PHP_STRING" id="PHP_STRING">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#105" title="Go to source code">PHP_STRING</a> = <span class="php-str">'php-str'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PHP_STRING">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="PHP_VARIABLE" id="PHP_VARIABLE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#106" title="Go to source code">PHP_VARIABLE</a> = <span class="php-str">'php-var'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PHP_VARIABLE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="PHP_COMMENT" id="PHP_COMMENT">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#107" title="Go to source code">PHP_COMMENT</a> = <span class="php-str">'php-comment'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PHP_COMMENT">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="tokenClass" id="$tokenClass">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Renderer.SourceHighlighter.html#109-190" title="Go to source code">$tokenClass</a></var> = [
+	T_OPEN_TAG =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
+	T_OPEN_TAG_WITH_ECHO =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
+	T_CLOSE_TAG =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
+	T_INCLUDE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_INCLUDE_ONCE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_REQUIRE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_REQUIRE_ONCE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_LOGICAL_OR =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_LOGICAL_XOR =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_LOGICAL_AND =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_PRINT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_YIELD =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_YIELD_FROM =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_INSTANCEOF =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_NEW =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_CLONE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ELSEIF =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ELSE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_EVAL =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_EXIT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_IF =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ENDIF =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ECHO =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_DO =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_WHILE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ENDWHILE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_FOR =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ENDFOR =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_FOREACH =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ENDFOREACH =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_DECLARE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ENDDECLARE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_AS =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_SWITCH =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ENDSWITCH =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_CASE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_DEFAULT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_BREAK =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_CONTINUE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_GOTO =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_FUNCTION =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_FN =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_CONST =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_RETURN =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_CATCH =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_TRY =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_FINALLY =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_THROW =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_USE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_INSTEADOF =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_GLOBAL =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_STATIC =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ABSTRACT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_FINAL =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_PRIVATE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_PROTECTED =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_PUBLIC =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_VAR =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_UNSET =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ISSET =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_EMPTY =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_HALT_COMPILER =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_CLASS =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_TRAIT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_INTERFACE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_EXTENDS =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_IMPLEMENTS =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_LIST =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ARRAY =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_NAMESPACE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_ENUM =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_READONLY =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_LNUMBER =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_NUMBER">PHP_NUMBER</a>,
+	T_DNUMBER =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_NUMBER">PHP_NUMBER</a>,
+	T_CONSTANT_ENCAPSED_STRING =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_STRING">PHP_STRING</a>,
+	T_ENCAPSED_AND_WHITESPACE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_STRING">PHP_STRING</a>,
+	T_VARIABLE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_VARIABLE">PHP_VARIABLE</a>,
+	T_COMMENT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_COMMENT">PHP_COMMENT</a>,
+	T_DOC_COMMENT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_COMMENT">PHP_COMMENT</a>,
+]</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [tokenId]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [tokenId]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$tokenClass">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="identifierClass" id="$identifierClass">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Renderer.SourceHighlighter.html#192-197" title="Go to source code">$identifierClass</a></var> = [<span class="php-str">'true'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'false'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'null'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>]</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [identifierName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [identifierName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$identifierClass">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

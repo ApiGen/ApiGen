@@ -1,0 +1,301 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PhpParser\Node\VarLikeIdentifier | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.Node.html">Node</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Node.Arg.html">
+						Arg
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Attribute.html">
+						Attribute
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.AttributeGroup.html">
+						AttributeGroup
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.ComplexType.html">
+						ComplexType
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Const_.html">
+						Const_
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Expr.html">
+						Expr
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Identifier.html">
+						Identifier
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Name.html">
+						Name
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Param.html">
+						Param
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.html">
+						Stmt
+					</a>
+				</li>
+				<li class="active">
+					<a href="PhpParser.Node.VarLikeIdentifier.html">
+						VarLikeIdentifier
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Node.FunctionLike.html">
+						FunctionLike
+					</a>
+				</li>
+		</ul>
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Node.html">Node</a>\<a href="PhpParser.Node.VarLikeIdentifier.html">VarLikeIdentifier</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+				<code><a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>Represents a name that is written in source code with a leading dollar,
+but is not a proper variable. The leading dollar is not stored as part of the name.</p>
+<p>Examples: Names in property declarations are formatted as variables. Names in static property
+lookups are also formatted as variables.</p>
+</div>
+		</div>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a>
+
+		implements
+			<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>, 
+			<a href="JsonSerializable.html"><span title="JsonSerializable">JsonSerializable</span></a>
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Node.Identifier.html"><span>PhpParser\Node\Identifier</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\Node\VarLikeIdentifier</span></b>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="getType" id="_getType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getType(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the type of the node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the type of the node.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Type of the node</p>
+</div>
+
+
+		<h4>Overrides</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.Identifier.html#_getType">						<code>PhpParser\Node\Identifier::getType()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getType">#</a>
+		</td>
+	</tr>
+		</table>
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="PhpParser.Node.Identifier.html"><span>PhpParser\Node\Identifier</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="PhpParser.Node.Identifier.html#___construct">__construct()</a>, <a href="PhpParser.Node.Identifier.html#_getSubNodeNames">getSubNodeNames()</a>, <a href="PhpParser.Node.Identifier.html#_toString">toString()</a>, <a href="PhpParser.Node.Identifier.html#_toLowerString">toLowerString()</a>, <a href="PhpParser.Node.Identifier.html#_isSpecialClassName">isSpecialClassName()</a>, <a href="PhpParser.Node.Identifier.html#___toString">__toString()</a>, </code>
+				</td>
+			</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="PhpParser.NodeAbstract.html#_getLine">getLine()</a>, <a href="PhpParser.NodeAbstract.html#_getStartLine">getStartLine()</a>, <a href="PhpParser.NodeAbstract.html#_getEndLine">getEndLine()</a>, <a href="PhpParser.NodeAbstract.html#_getStartTokenPos">getStartTokenPos()</a>, <a href="PhpParser.NodeAbstract.html#_getEndTokenPos">getEndTokenPos()</a>, <a href="PhpParser.NodeAbstract.html#_getStartFilePos">getStartFilePos()</a>, <a href="PhpParser.NodeAbstract.html#_getEndFilePos">getEndFilePos()</a>, <a href="PhpParser.NodeAbstract.html#_getComments">getComments()</a>, <a href="PhpParser.NodeAbstract.html#_getDocComment">getDocComment()</a>, <a href="PhpParser.NodeAbstract.html#_setDocComment">setDocComment()</a>, <a href="PhpParser.NodeAbstract.html#_setAttribute">setAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_hasAttribute">hasAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_getAttribute">getAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_getAttributes">getAttributes()</a>, <a href="PhpParser.NodeAbstract.html#_setAttributes">setAttributes()</a>, <a href="PhpParser.NodeAbstract.html#_jsonSerialize">jsonSerialize()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties inherited from <a href="PhpParser.Node.Identifier.html"><span>PhpParser\Node\Identifier</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="PhpParser.Node.Identifier.html#$name">$name</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="PhpParser.NodeAbstract.html#$attributes">$attributes</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

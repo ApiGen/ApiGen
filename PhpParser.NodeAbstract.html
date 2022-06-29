@@ -1,0 +1,1007 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PhpParser\NodeAbstract | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Comment.html">
+						Comment
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NameContext.html">
+						NameContext
+					</a>
+				</li>
+				<li class="active">
+					<a href="PhpParser.NodeAbstract.html">
+						NodeAbstract
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeVisitorAbstract.html">
+						NodeVisitorAbstract
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.ErrorHandler.html">
+						ErrorHandler
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeTraverserInterface.html">
+						NodeTraverserInterface
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeVisitor.html">
+						NodeVisitor
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Parser.html">
+						Parser
+					</a>
+				</li>
+		</ul>
+
+
+
+		<h3>Exceptions</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Error.html">
+						Error
+					</a>
+				</li>
+		</ul>
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="PhpParser.NodeAbstract.html">NodeAbstract</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+			<tr><th><code>abstract</code></th></tr>
+
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+				<code><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>, <a href="JsonSerializable.html"><span title="JsonSerializable">JsonSerializable</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\NodeAbstract</span></b>
+
+		implements
+			<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>, 
+			<a href="JsonSerializable.html"><span title="JsonSerializable">JsonSerializable</span></a>
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Node.Param.html"><span>PhpParser\Node\Param</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Name.html"><span>PhpParser\Node\Name</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Identifier.html"><span>PhpParser\Node\Identifier</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Node.VarLikeIdentifier.html"><span>PhpParser\Node\VarLikeIdentifier</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	<li>
+<a href="PhpParser.Node.ComplexType.html"><span>PhpParser\Node\ComplexType</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Expr.html"><span>PhpParser\Node\Expr</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Node.Expr.Variable.html"><span>PhpParser\Node\Expr\Variable</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Expr.Error.html"><span>PhpParser\Node\Expr\Error</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.html"><span>PhpParser\Node\Stmt</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Node.Stmt.ClassLike.html"><span>PhpParser\Node\Stmt\ClassLike</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.Function_.html"><span>PhpParser\Node\Stmt\Function_</span></a>
+
+		implements
+			<a href="PhpParser.Node.FunctionLike.html"><span title="PhpParser\Node\FunctionLike">FunctionLike</span></a>
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.ClassConst.html"><span>PhpParser\Node\Stmt\ClassConst</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.Property.html"><span>PhpParser\Node\Stmt\Property</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.ClassMethod.html"><span>PhpParser\Node\Stmt\ClassMethod</span></a>
+
+		implements
+			<a href="PhpParser.Node.FunctionLike.html"><span title="PhpParser\Node\FunctionLike">FunctionLike</span></a>
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.EnumCase.html"><span>PhpParser\Node\Stmt\EnumCase</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.TraitUse.html"><span>PhpParser\Node\Stmt\TraitUse</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.PropertyProperty.html"><span>PhpParser\Node\Stmt\PropertyProperty</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Stmt.TraitUseAdaptation.html"><span>PhpParser\Node\Stmt\TraitUseAdaptation</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	<li>
+<a href="PhpParser.Node.AttributeGroup.html"><span>PhpParser\Node\AttributeGroup</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Const_.html"><span>PhpParser\Node\Const_</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Attribute.html"><span>PhpParser\Node\Attribute</span></a>
+
+
+	</li>
+	<li>
+<a href="PhpParser.Node.Arg.html"><span>PhpParser\Node\Arg</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>array <var>$attributes</var> = []</span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Creates a Node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Creates a Node.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$attributes</var>&nbsp;&nbsp;</td>
+										<td><p>Array of attributes</p>
+</td>
+									</tr>
+							</table>
+
+
+
+		<h4>Overriden by</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.Param.html#___construct">						<code>PhpParser\Node\Param::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Name.html#___construct">						<code>PhpParser\Node\Name::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Identifier.html#___construct">						<code>PhpParser\Node\Identifier::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Expr.Variable.html#___construct">						<code>PhpParser\Node\Expr\Variable::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Expr.Error.html#___construct">						<code>PhpParser\Node\Expr\Error::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Stmt.Function_.html#___construct">						<code>PhpParser\Node\Stmt\Function_::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Stmt.ClassConst.html#___construct">						<code>PhpParser\Node\Stmt\ClassConst::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Stmt.Property.html#___construct">						<code>PhpParser\Node\Stmt\Property::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Stmt.ClassMethod.html#___construct">						<code>PhpParser\Node\Stmt\ClassMethod::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Stmt.EnumCase.html#___construct">						<code>PhpParser\Node\Stmt\EnumCase::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Stmt.TraitUse.html#___construct">						<code>PhpParser\Node\Stmt\TraitUse::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Stmt.PropertyProperty.html#___construct">						<code>PhpParser\Node\Stmt\PropertyProperty::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.AttributeGroup.html#___construct">						<code>PhpParser\Node\AttributeGroup::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Const_.html#___construct">						<code>PhpParser\Node\Const_::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Attribute.html#___construct">						<code>PhpParser\Node\Attribute::__construct()</code></a>				</li>
+				<li>
+<a href="PhpParser.Node.Arg.html#___construct">						<code>PhpParser\Node\Arg::__construct()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getLine" id="_getLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getLine(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets line the node started in (alias of getStartLine).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets line the node started in (alias of getStartLine).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Start line (or -1 if not available)</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getLine">						<code>PhpParser\Node::getLine()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStartLine" id="_getStartLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStartLine(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets line the node started in.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets line the node started in.</p>
+<p>Requires the 'startLine' attribute to be enabled in the lexer (enabled by default).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Start line (or -1 if not available)</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getStartLine">						<code>PhpParser\Node::getStartLine()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStartLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEndLine" id="_getEndLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEndLine(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the line the node ended in.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the line the node ended in.</p>
+<p>Requires the 'endLine' attribute to be enabled in the lexer (enabled by default).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>End line (or -1 if not available)</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getEndLine">						<code>PhpParser\Node::getEndLine()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEndLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStartTokenPos" id="_getStartTokenPos">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStartTokenPos(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the token offset of the first token that is part of this node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the token offset of the first token that is part of this node.</p>
+<p>The offset is an index into the array returned by Lexer::getTokens().</p>
+<p>Requires the 'startTokenPos' attribute to be enabled in the lexer (DISABLED by default).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Token start position (or -1 if not available)</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getStartTokenPos">						<code>PhpParser\Node::getStartTokenPos()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStartTokenPos">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEndTokenPos" id="_getEndTokenPos">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEndTokenPos(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the token offset of the last token that is part of this node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the token offset of the last token that is part of this node.</p>
+<p>The offset is an index into the array returned by Lexer::getTokens().</p>
+<p>Requires the 'endTokenPos' attribute to be enabled in the lexer (DISABLED by default).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Token end position (or -1 if not available)</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getEndTokenPos">						<code>PhpParser\Node::getEndTokenPos()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEndTokenPos">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStartFilePos" id="_getStartFilePos">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStartFilePos(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the file offset of the first character that is part of this node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the file offset of the first character that is part of this node.</p>
+<p>Requires the 'startFilePos' attribute to be enabled in the lexer (DISABLED by default).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>File start position (or -1 if not available)</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getStartFilePos">						<code>PhpParser\Node::getStartFilePos()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStartFilePos">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEndFilePos" id="_getEndFilePos">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEndFilePos(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the file offset of the last character that is part of this node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the file offset of the last character that is part of this node.</p>
+<p>Requires the 'endFilePos' attribute to be enabled in the lexer (DISABLED by default).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>File end position (or -1 if not available)</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getEndFilePos">						<code>PhpParser\Node::getEndFilePos()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEndFilePos">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getComments" id="_getComments">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getComments(): <a href="PhpParser.Comment.html"><span title="PhpParser\Comment">Comment</span></a>[]</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets all comments directly preceding this node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets all comments directly preceding this node.</p>
+<p>The comments are also available through the &quot;comments&quot; attribute.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getComments">						<code>PhpParser\Node::getComments()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getComments">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getDocComment" id="_getDocComment">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getDocComment(): null|<a href="PhpParser.Comment.Doc.html"><span title="PhpParser\Comment\Doc">Doc</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the doc comment of the node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the doc comment of the node.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Doc comment object or null</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getDocComment">						<code>PhpParser\Node::getDocComment()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getDocComment">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setDocComment" id="_setDocComment">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setDocComment(<span><a href="PhpParser.Comment.Doc.html"><span title="PhpParser\Comment\Doc">Doc</span></a> <var>$docComment</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the doc comment of the node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the doc comment of the node.</p>
+<p>This will either replace an existing doc comment or add it to the comments array.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$docComment</var>&nbsp;&nbsp;</td>
+										<td><p>Doc comment to set</p>
+</td>
+									</tr>
+							</table>
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_setDocComment">						<code>PhpParser\Node::setDocComment()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setDocComment">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setAttribute" id="_setAttribute">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setAttribute(<span>string <var>$key</var></span>, <span><var>$value</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets an attribute on a node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets an attribute on a node.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_setAttribute">						<code>PhpParser\Node::setAttribute()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setAttribute">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hasAttribute" id="_hasAttribute">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>hasAttribute(<span>string <var>$key</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns whether an attribute exists.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns whether an attribute exists.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_hasAttribute">						<code>PhpParser\Node::hasAttribute()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_hasAttribute">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getAttribute" id="_getAttribute">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getAttribute(<span>string <var>$key</var></span>, <span><var>$default</var> = <span class="php-kw">null</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns the value of an attribute.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns the value of an attribute.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getAttribute">						<code>PhpParser\Node::getAttribute()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getAttribute">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getAttributes" id="_getAttributes">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getAttributes(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns all the attributes of this node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns all the attributes of this node.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getAttributes">						<code>PhpParser\Node::getAttributes()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getAttributes">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setAttributes" id="_setAttributes">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setAttributes(<span>array <var>$attributes</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Replaces all the attributes of this node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Replaces all the attributes of this node.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_setAttributes">						<code>PhpParser\Node::setAttributes()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setAttributes">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="jsonSerialize" id="_jsonSerialize">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>jsonSerialize(): array</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="JsonSerializable.html#_jsonSerialize">						<code>JsonSerializable::jsonSerialize()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_jsonSerialize">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="attributes" id="$attributes">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$attributes</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$attributes">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

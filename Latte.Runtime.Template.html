@@ -1,0 +1,765 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class Latte\Runtime\Template | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.html">Latte</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.Runtime.html">Runtime</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="Latte.Runtime.Block.html">
+						Block
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Runtime.FilterExecutor.html">
+						FilterExecutor
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Runtime.FilterInfo.html">
+						FilterInfo
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Runtime.Html.html">
+						Html
+					</a>
+				</li>
+				<li class="active">
+					<a href="Latte.Runtime.Template.html">
+						Template
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="Latte.Runtime.HtmlStringable.html">
+						HtmlStringable
+					</a>
+				</li>
+		</ul>
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Runtime.html">Runtime</a>\<a href="Latte.Runtime.Template.html">Template</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+				<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>Template.</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span><a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a> <var>$engine</var></span>, <span>mixed[] <var>$params</var></span>, <span><a href="Latte.Runtime.FilterExecutor.html"><span title="Latte\Runtime\FilterExecutor">FilterExecutor</span></a> <var>$filters</var></span>, <span>mixed[] <var>$providers</var></span>, <span>string <var>$name</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEngine" id="_getEngine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEngine(): <a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEngine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getName" id="_getName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getName(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getParameters" id="_getParameters">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getParameters(): mixed[]</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns array of all parameters.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns array of all parameters.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getParameters">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getBlockNames" id="_getBlockNames">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getBlockNames(<span>int|string <var>$layer</var> = <b><span class="active" title="Latte\Runtime\Template">self</span></b>::<a href="Latte.Runtime.Template.html#LayerTop">LayerTop</a></span>): string[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getBlockNames">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getParentName" id="_getParentName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getParentName(): ?string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getParentName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getReferringTemplate" id="_getReferringTemplate">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getReferringTemplate(): ?self</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getReferringTemplate">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getReferenceType" id="_getReferenceType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getReferenceType(): ?string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getReferenceType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="prepare" id="_prepare">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>prepare(): mixed[]</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_prepare">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="main" id="_main">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>main(<span>mixed[] <var>$params</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_main">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enterBlockLayer" id="_enterBlockLayer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enterBlockLayer(<span>int <var>$staticId</var></span>, <span>array <var>$vars</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enterBlockLayer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="copyBlockLayer" id="_copyBlockLayer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>copyBlockLayer(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_copyBlockLayer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="leaveBlockLayer" id="_leaveBlockLayer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>leaveBlockLayer(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_leaveBlockLayer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hasBlock" id="_hasBlock">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>hasBlock(<span>string <var>$name</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_hasBlock">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="LayerTop" id="LayerTop">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>LayerTop = <span class="php-num">0</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#LayerTop">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="LayerSnippet" id="LayerSnippet">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>LayerSnippet = <span class="php-str">'snippet'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#LayerSnippet">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="LayerLocal" id="LayerLocal">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>LayerLocal = <span class="php-str">'local'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#LayerLocal">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="ContentType" id="ContentType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>ContentType = <a href="Latte.ContentType.html"><span title="Latte\ContentType">ContentType</span></a>::<a href="Latte.ContentType.html#Html">Html</a></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#ContentType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Blocks" id="Blocks">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Blocks = []</code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Blocks">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="global" id="$global">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="stdClass.html"><span title="stdClass">stdClass</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$global</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		global accumulators for intermediate results
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>global accumulators for intermediate results</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$global">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="params" id="$params">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">mixed[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$params</var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		@internal
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>@internal</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$params">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filters" id="$filters">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Latte.Runtime.FilterExecutor.html"><span title="Latte\Runtime\FilterExecutor">FilterExecutor</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$filters</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$filters">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="varStack" id="$varStack">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">mixed[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$varStack</var> = []</code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$varStack">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="blocks" id="$blocks">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Latte.Runtime.Block.html"><span title="Latte\Runtime\Block">Block</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$blocks</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$blocks">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

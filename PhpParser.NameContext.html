@@ -1,0 +1,623 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PhpParser\NameContext | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Comment.html">
+						Comment
+					</a>
+				</li>
+				<li class="active">
+					<a href="PhpParser.NameContext.html">
+						NameContext
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeAbstract.html">
+						NodeAbstract
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeVisitorAbstract.html">
+						NodeVisitorAbstract
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.ErrorHandler.html">
+						ErrorHandler
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeTraverserInterface.html">
+						NodeTraverserInterface
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.NodeVisitor.html">
+						NodeVisitor
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Parser.html">
+						Parser
+					</a>
+				</li>
+		</ul>
+
+
+
+		<h3>Exceptions</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Error.html">
+						Error
+					</a>
+				</li>
+		</ul>
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="PhpParser.NameContext.html">NameContext</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span><a href="PhpParser.ErrorHandler.html"><span title="PhpParser\ErrorHandler">ErrorHandler</span></a> <var>$errorHandler</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Create a name context.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Create a name context.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$errorHandler</var>&nbsp;&nbsp;</td>
+										<td><p>Error handling used to report errors</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="startNamespace" id="_startNamespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>startNamespace(<span><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|null <var>$namespace</var> = <span class="php-kw">null</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Start a new namespace.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Start a new namespace.</p>
+<p>This also resets the alias table.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$namespace</var>&nbsp;&nbsp;</td>
+										<td><p>Null is the global namespace</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_startNamespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="addAlias" id="_addAlias">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>addAlias(<span><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a> <var>$name</var></span>, <span>string <var>$aliasName</var></span>, <span>int <var>$type</var></span>, <span>array <var>$errorAttrs</var> = []</span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Add an alias / import.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Add an alias / import.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Original name</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$aliasName</var>&nbsp;&nbsp;</td>
+										<td><p>Aliased name</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$type</var>&nbsp;&nbsp;</td>
+										<td><p>One of Stmt\Use_::TYPE_*</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$errorAttrs</var>&nbsp;&nbsp;</td>
+										<td><p>Attributes to use to report an error</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_addAlias">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getNamespace" id="_getNamespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getNamespace(): null|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Get current namespace.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get current namespace.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Namespace (or null if global namespace)</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getNamespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getResolvedName" id="_getResolvedName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getResolvedName(<span><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a> <var>$name</var></span>, <span>int <var>$type</var></span>): null|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Get resolved name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get resolved name.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Name to resolve</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$type</var>&nbsp;&nbsp;</td>
+										<td><p>One of Stmt\Use_::TYPE_{FUNCTION|CONSTANT}</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Resolved name, or null if static resolution is not possible</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getResolvedName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getResolvedClassName" id="_getResolvedClassName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getResolvedClassName(<span><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a> <var>$name</var></span>): <a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Get resolved class name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get resolved class name.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Class ame to resolve</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Resolved name</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getResolvedClassName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPossibleNames" id="_getPossibleNames">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPossibleNames(<span>string <var>$name</var></span>, <span>int <var>$type</var></span>): <a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>[]</code>
+
+
+	<div class="expandable-collapsedView">
+		Get possible ways of writing a fully qualified name (e.g., by making use of aliases).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get possible ways of writing a fully qualified name (e.g., by making use of aliases).</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Fully-qualified name (without leading namespace separator)</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$type</var>&nbsp;&nbsp;</td>
+										<td><p>One of Stmt\Use_::TYPE_*</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Possible representations of the name</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPossibleNames">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getShortName" id="_getShortName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getShortName(<span>string <var>$name</var></span>, <span>int <var>$type</var></span>): <a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Get shortest representation of this fully-qualified name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get shortest representation of this fully-qualified name.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Fully-qualified name (without leading namespace separator)</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$type</var>&nbsp;&nbsp;</td>
+										<td><p>One of Stmt\Use_::TYPE_*</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Shortest representation</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getShortName">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="namespace" id="$namespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">null|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$namespace</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Current namespace
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Current namespace</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$namespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="aliases" id="$aliases">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$aliases</var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		Map of format [aliasType =&gt; [aliasName =&gt; originalName]]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Map of format [aliasType =&gt; [aliasName =&gt; originalName]]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$aliases">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="origAliases" id="$origAliases">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$origAliases</var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		Same as $aliases but preserving original case
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Same as $aliases but preserving original case</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$origAliases">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="errorHandler" id="$errorHandler">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.ErrorHandler.html"><span title="PhpParser\ErrorHandler">ErrorHandler</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$errorHandler</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Error handler
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Error handler</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$errorHandler">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,349 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class ApiGen\Renderer\Latte\LatteCascadingLoader | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Renderer.Latte.html">Latte</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.Latte.Template.html">Template</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li class="active">
+					<a href="ApiGen.Renderer.Latte.LatteCascadingLoader.html">
+						LatteCascadingLoader
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Renderer.Latte.LatteEngineFactory.html">
+						LatteEngineFactory
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Renderer.Latte.LatteFunctions.html">
+						LatteFunctions
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Renderer.Latte.LatteRenderer.html">
+						LatteRenderer
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Renderer.html">Renderer</a>\<a href="namespace-ApiGen.Renderer.Latte.html">Latte</a>\<a href="ApiGen.Renderer.Latte.LatteCascadingLoader.html">LatteCascadingLoader</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+				<code><a href="Latte.Loader.html"><span title="Latte\Loader">Loader</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Renderer.Latte.LatteCascadingLoader.html#10" title="Go to source code">Renderer/Latte/LatteCascadingLoader.php</a><br>
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteCascadingLoader.html#12-19" title="Go to source code">__construct</a>(<span>string[] <var>$baseDirs</var></span>, <span><a href="Latte.Loader.html"><span title="Latte\Loader">Loader</span></a> <var>$inner</var> = <span class="php-kw">new</span> <a href="Latte.Loaders.FileLoader.html"><span title="Latte\Loaders\FileLoader">FileLoader</span></a>()</span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getContent" id="_getContent">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteCascadingLoader.html#22-33" title="Go to source code">getContent</a>(<span>string <var>$name</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns template source code.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns template source code.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="Latte.Loader.html#_getContent">						<code>Latte\Loader::getContent()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getContent">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isExpired" id="_isExpired">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteCascadingLoader.html#36-47" title="Go to source code">isExpired</a>(<span>string <var>$name</var></span>, <span>int <var>$time</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Checks whether template is expired.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Checks whether template is expired.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="Latte.Loader.html#_isExpired">						<code>Latte\Loader::isExpired()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isExpired">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getReferredName" id="_getReferredName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteCascadingLoader.html#50-53" title="Go to source code">getReferredName</a>(<span>string <var>$name</var></span>, <span>string <var>$referringName</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns referred template name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns referred template name.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="Latte.Loader.html#_getReferredName">						<code>Latte\Loader::getReferredName()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getReferredName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getUniqueId" id="_getUniqueId">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteCascadingLoader.html#56-67" title="Go to source code">getUniqueId</a>(<span>string <var>$name</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns unique identifier for caching.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns unique identifier for caching.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="Latte.Loader.html#_getUniqueId">						<code>Latte\Loader::getUniqueId()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getUniqueId">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="baseDirs" id="$baseDirs">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Renderer.Latte.LatteCascadingLoader.html#16" title="Go to source code">$baseDirs</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$baseDirs">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="inner" id="$inner">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Latte.Loader.html"><span title="Latte\Loader">Loader</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Renderer.Latte.LatteCascadingLoader.html#17" title="Go to source code">$inner</a></var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$inner">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

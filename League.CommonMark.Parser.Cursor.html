@@ -1,0 +1,901 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class League\CommonMark\Parser\Cursor | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-League.html">League</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-League.CommonMark.html">CommonMark</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-League.CommonMark.Parser.html">Parser</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li class="active">
+					<a href="League.CommonMark.Parser.Cursor.html">
+						Cursor
+					</a>
+				</li>
+				<li>
+					<a href="League.CommonMark.Parser.CursorState.html">
+						CursorState
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-League.html">League</a>\<a href="namespace-League.CommonMark.html">CommonMark</a>\<a href="namespace-League.CommonMark.Parser.html">Parser</a>\<a href="League.CommonMark.Parser.Cursor.html">Cursor</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>string <var>$line</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$line</var>&nbsp;&nbsp;</td>
+										<td><p>The line being parsed (ASCII or UTF-8)</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getNextNonSpacePosition" id="_getNextNonSpacePosition">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getNextNonSpacePosition(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns the position of the next character which is not a space (or tab)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns the position of the next character which is not a space (or tab)</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getNextNonSpacePosition">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getNextNonSpaceCharacter" id="_getNextNonSpaceCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getNextNonSpaceCharacter(): ?string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns the next character which isn't a space (or tab)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns the next character which isn't a space (or tab)</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getNextNonSpaceCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getIndent" id="_getIndent">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getIndent(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Calculates the current indent (number of spaces after current position)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Calculates the current indent (number of spaces after current position)</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getIndent">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isIndented" id="_isIndented">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isIndented(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the cursor is indented to INDENT_LEVEL
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the cursor is indented to INDENT_LEVEL</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isIndented">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getCharacter" id="_getCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getCharacter(<span>?int <var>$index</var> = <span class="php-kw">null</span></span>): ?string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getCurrentCharacter" id="_getCurrentCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getCurrentCharacter(): ?string</code>
+
+
+	<div class="expandable-collapsedView">
+		Slightly-optimized version of getCurrent(null)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Slightly-optimized version of getCurrent(null)</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getCurrentCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="peek" id="_peek">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>peek(<span>int <var>$offset</var> = <span class="php-num">1</span></span>): ?string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns the next character (or null, if none) without advancing forwards
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns the next character (or null, if none) without advancing forwards</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_peek">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isBlank" id="_isBlank">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isBlank(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the remainder is blank
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the remainder is blank</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isBlank">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="advance" id="_advance">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>advance(): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Move the cursor forwards
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Move the cursor forwards</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_advance">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="advanceBy" id="_advanceBy">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>advanceBy(<span>int <var>$characters</var></span>, <span>bool <var>$advanceByColumns</var> = <span class="php-kw">false</span></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Move the cursor forwards
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Move the cursor forwards</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$characters</var>&nbsp;&nbsp;</td>
+										<td><p>Number of characters to advance by</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$advanceByColumns</var>&nbsp;&nbsp;</td>
+										<td><p>Whether to advance by columns instead of spaces</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_advanceBy">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="advanceBySpaceOrTab" id="_advanceBySpaceOrTab">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>advanceBySpaceOrTab(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Advances the cursor by a single space or tab, if present
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Advances the cursor by a single space or tab, if present</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_advanceBySpaceOrTab">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="advanceToNextNonSpaceOrTab" id="_advanceToNextNonSpaceOrTab">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>advanceToNextNonSpaceOrTab(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Parse zero or more space/tab characters
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Parse zero or more space/tab characters</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Number of positions moved</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_advanceToNextNonSpaceOrTab">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="advanceToNextNonSpaceOrNewline" id="_advanceToNextNonSpaceOrNewline">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>advanceToNextNonSpaceOrNewline(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Parse zero or more space characters, including at most one newline.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Parse zero or more space characters, including at most one newline.</p>
+<p>Tab characters are not parsed with this function.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Number of positions moved</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_advanceToNextNonSpaceOrNewline">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="advanceToEnd" id="_advanceToEnd">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>advanceToEnd(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Move the position to the very end of the line
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Move the position to the very end of the line</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>The number of characters moved</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_advanceToEnd">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getRemainder" id="_getRemainder">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getRemainder(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getRemainder">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getLine" id="_getLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getLine(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isAtEnd" id="_isAtEnd">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isAtEnd(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isAtEnd">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="match" id="_match">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>match(<span>string <var>$regex</var></span>): ?string</code>
+
+
+	<div class="expandable-collapsedView">
+		Try to match a regular expression
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Try to match a regular expression</p>
+<p>Returns the matching text and advances to the end of that match</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_match">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="saveState" id="_saveState">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>saveState(): <a href="League.CommonMark.Parser.CursorState.html"><span title="League\CommonMark\Parser\CursorState">CursorState</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Encapsulates the current state of this cursor in case you need to rollback later.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Encapsulates the current state of this cursor in case you need to rollback later.</p>
+<p>WARNING: Do not parse or use the return value for ANYTHING except for
+passing it back into restoreState(), as the number of values and their
+contents may change in any future release without warning.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_saveState">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="restoreState" id="_restoreState">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>restoreState(<span><a href="League.CommonMark.Parser.CursorState.html"><span title="League\CommonMark\Parser\CursorState">CursorState</span></a> <var>$state</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Restore the cursor to a previous state.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Restore the cursor to a previous state.</p>
+<p>Pass in the value previously obtained by calling saveState().</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_restoreState">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPosition" id="_getPosition">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPosition(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPosition">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPreviousText" id="_getPreviousText">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPreviousText(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPreviousText">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getSubstring" id="_getSubstring">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getSubstring(<span>int <var>$start</var></span>, <span>?int <var>$length</var> = <span class="php-kw">null</span></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getSubstring">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getColumn" id="_getColumn">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getColumn(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getColumn">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="INDENT_LEVEL" id="INDENT_LEVEL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>INDENT_LEVEL = <span class="php-num">4</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#INDENT_LEVEL">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

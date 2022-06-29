@@ -1,0 +1,981 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PhpParser\Node\Stmt\ClassMethod | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.Node.html">Node</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.Node.Stmt.html">Stmt</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Node.Stmt.ClassConst.html">
+						ClassConst
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.ClassLike.html">
+						ClassLike
+					</a>
+				</li>
+				<li class="active">
+					<a href="PhpParser.Node.Stmt.ClassMethod.html">
+						ClassMethod
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.EnumCase.html">
+						EnumCase
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.Function_.html">
+						Function_
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.Property.html">
+						Property
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.PropertyProperty.html">
+						PropertyProperty
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.TraitUse.html">
+						TraitUse
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.TraitUseAdaptation.html">
+						TraitUseAdaptation
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Node.html">Node</a>\<a href="namespace-PhpParser.Node.Stmt.html">Stmt</a>\<a href="PhpParser.Node.Stmt.ClassMethod.html">ClassMethod</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+				<code><a href="PhpParser.Node.Stmt.html"><span title="PhpParser\Node\Stmt">Stmt</span></a></code>
+			</td>
+		</tr>
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+				<code><a href="PhpParser.Node.FunctionLike.html"><span title="PhpParser\Node\FunctionLike">FunctionLike</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a>
+
+		implements
+			<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>, 
+			<a href="JsonSerializable.html"><span title="JsonSerializable">JsonSerializable</span></a>
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Node.Stmt.html"><span>PhpParser\Node\Stmt</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\Node\Stmt\ClassMethod</span></b>
+
+		implements
+			<a href="PhpParser.Node.FunctionLike.html"><span title="PhpParser\Node\FunctionLike">FunctionLike</span></a>
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>string|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a> <var>$name</var></span>, <span>array <var>$subNodes</var> = []</span>, <span>array <var>$attributes</var> = []</span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Constructs a class method node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Constructs a class method node.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Name</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$subNodes</var>&nbsp;&nbsp;</td>
+										<td><p>Array of the following optional subnodes:
+'flags       =&gt; MODIFIER_PUBLIC: Flags
+'byRef'      =&gt; false          : Whether to return by reference
+'params'     =&gt; array()        : Parameters
+'returnType' =&gt; null           : Return type
+'stmts'      =&gt; array()        : Statements
+'attrGroups' =&gt; array()        : PHP attribute groups</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$attributes</var>&nbsp;&nbsp;</td>
+										<td><p>Additional attributes</p>
+</td>
+									</tr>
+							</table>
+
+
+
+		<h4>Overrides</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeAbstract.html#___construct">						<code>PhpParser\NodeAbstract::__construct()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getSubNodeNames" id="_getSubNodeNames">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getSubNodeNames(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the names of the sub nodes.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the names of the sub nodes.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Names of sub nodes</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getSubNodeNames">						<code>PhpParser\Node::getSubNodeNames()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getSubNodeNames">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="returnsByRef" id="_returnsByRef">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>returnsByRef(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether to return by reference
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether to return by reference</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_returnsByRef">						<code>PhpParser\Node\FunctionLike::returnsByRef()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_returnsByRef">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getParams" id="_getParams">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getParams(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		List of parameters
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>List of parameters</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getParams">						<code>PhpParser\Node\FunctionLike::getParams()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getParams">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getReturnType" id="_getReturnType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getReturnType()</code>
+
+
+	<div class="expandable-collapsedView">
+		Get the declared return type or null
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get the declared return type or null</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getReturnType">						<code>PhpParser\Node\FunctionLike::getReturnType()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getReturnType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStmts" id="_getStmts">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStmts()</code>
+
+
+	<div class="expandable-collapsedView">
+		The function body
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>The function body</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getStmts">						<code>PhpParser\Node\FunctionLike::getStmts()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStmts">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getAttrGroups" id="_getAttrGroups">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getAttrGroups(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Get PHP attribute groups.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get PHP attribute groups.</p>
+</div>
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getAttrGroups">						<code>PhpParser\Node\FunctionLike::getAttrGroups()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getAttrGroups">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPublic" id="_isPublic">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPublic(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the method is explicitly or implicitly public.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the method is explicitly or implicitly public.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPublic">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isProtected" id="_isProtected">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isProtected(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the method is protected.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the method is protected.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isProtected">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPrivate" id="_isPrivate">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPrivate(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the method is private.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the method is private.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPrivate">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isAbstract" id="_isAbstract">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isAbstract(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the method is abstract.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the method is abstract.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isAbstract">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isFinal" id="_isFinal">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isFinal(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the method is final.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the method is final.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isFinal">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isStatic" id="_isStatic">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isStatic(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the method is static.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the method is static.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isStatic">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isMagic" id="_isMagic">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isMagic(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Whether the method is magic.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the method is magic.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isMagic">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getType" id="_getType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getType(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the type of the node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the type of the node.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Type of the node</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getType">						<code>PhpParser\Node::getType()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getType">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="PhpParser.NodeAbstract.html#_getLine">getLine()</a>, <a href="PhpParser.NodeAbstract.html#_getStartLine">getStartLine()</a>, <a href="PhpParser.NodeAbstract.html#_getEndLine">getEndLine()</a>, <a href="PhpParser.NodeAbstract.html#_getStartTokenPos">getStartTokenPos()</a>, <a href="PhpParser.NodeAbstract.html#_getEndTokenPos">getEndTokenPos()</a>, <a href="PhpParser.NodeAbstract.html#_getStartFilePos">getStartFilePos()</a>, <a href="PhpParser.NodeAbstract.html#_getEndFilePos">getEndFilePos()</a>, <a href="PhpParser.NodeAbstract.html#_getComments">getComments()</a>, <a href="PhpParser.NodeAbstract.html#_getDocComment">getDocComment()</a>, <a href="PhpParser.NodeAbstract.html#_setDocComment">setDocComment()</a>, <a href="PhpParser.NodeAbstract.html#_setAttribute">setAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_hasAttribute">hasAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_getAttribute">getAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_getAttributes">getAttributes()</a>, <a href="PhpParser.NodeAbstract.html#_setAttributes">setAttributes()</a>, <a href="PhpParser.NodeAbstract.html#_jsonSerialize">jsonSerialize()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="flags" id="$flags">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">int</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$flags</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Flags
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Flags</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$flags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="byRef" id="$byRef">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$byRef</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Whether to return by reference
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether to return by reference</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$byRef">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="name" id="$name">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$name</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Name
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Name</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$name">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="params" id="$params">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Param.html"><span title="PhpParser\Node\Param">Param</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$params</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Parameters
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Parameters</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$params">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="returnType" id="$returnType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">null|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$returnType</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Return type
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Return type</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$returnType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="stmts" id="$stmts">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Stmt.html"><span title="PhpParser\Node\Stmt">Stmt</span></a>[]|null</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$stmts</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Statements
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Statements</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$stmts">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="attrGroups" id="$attrGroups">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$attrGroups</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		PHP attribute groups
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>PHP attribute groups</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$attrGroups">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="PhpParser.NodeAbstract.html#$attributes">$attributes</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

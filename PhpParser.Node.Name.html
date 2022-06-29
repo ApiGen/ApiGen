@@ -1,0 +1,872 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PhpParser\Node\Name | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.Node.html">Node</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Node.Arg.html">
+						Arg
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Attribute.html">
+						Attribute
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.AttributeGroup.html">
+						AttributeGroup
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.ComplexType.html">
+						ComplexType
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Const_.html">
+						Const_
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Expr.html">
+						Expr
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Identifier.html">
+						Identifier
+					</a>
+				</li>
+				<li class="active">
+					<a href="PhpParser.Node.Name.html">
+						Name
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Param.html">
+						Param
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.Stmt.html">
+						Stmt
+					</a>
+				</li>
+				<li>
+					<a href="PhpParser.Node.VarLikeIdentifier.html">
+						VarLikeIdentifier
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="PhpParser.Node.FunctionLike.html">
+						FunctionLike
+					</a>
+				</li>
+		</ul>
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Node.html">Node</a>\<a href="PhpParser.Node.Name.html">Name</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+				<code><a href="PhpParser.NodeAbstract.html"><span title="PhpParser\NodeAbstract">NodeAbstract</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a>
+
+		implements
+			<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>, 
+			<a href="JsonSerializable.html"><span title="JsonSerializable">JsonSerializable</span></a>
+
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\Node\Name</span></b>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>string|string[]|self <var>$name</var></span>, <span>array <var>$attributes</var> = []</span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Constructs a name node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Constructs a name node.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Name as string, part array or Name instance (copy ctor)</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$attributes</var>&nbsp;&nbsp;</td>
+										<td><p>Additional attributes</p>
+</td>
+									</tr>
+							</table>
+
+
+
+		<h4>Overrides</h4>
+		<ul>
+				<li>
+<a href="PhpParser.NodeAbstract.html#___construct">						<code>PhpParser\NodeAbstract::__construct()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getSubNodeNames" id="_getSubNodeNames">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getSubNodeNames(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the names of the sub nodes.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the names of the sub nodes.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Names of sub nodes</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getSubNodeNames">						<code>PhpParser\Node::getSubNodeNames()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getSubNodeNames">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getFirst" id="_getFirst">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getFirst(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the first part of the name, i.e. everything before the first namespace separator.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the first part of the name, i.e. everything before the first namespace separator.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>First part of the name</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getFirst">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getLast" id="_getLast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getLast(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the last part of the name, i.e. everything after the last namespace separator.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the last part of the name, i.e. everything after the last namespace separator.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Last part of the name</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getLast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isUnqualified" id="_isUnqualified">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isUnqualified(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Checks whether the name is unqualified. (E.g. Name)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Checks whether the name is unqualified. (E.g. Name)</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Whether the name is unqualified</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isUnqualified">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isQualified" id="_isQualified">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isQualified(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Checks whether the name is qualified. (E.g. Name\Name)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Checks whether the name is qualified. (E.g. Name\Name)</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Whether the name is qualified</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isQualified">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isFullyQualified" id="_isFullyQualified">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isFullyQualified(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Checks whether the name is fully qualified. (E.g. \Name)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Checks whether the name is fully qualified. (E.g. \Name)</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Whether the name is fully qualified</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isFullyQualified">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isRelative" id="_isRelative">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isRelative(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Checks whether the name is explicitly relative to the current namespace. (E.g. namespace\Name)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Checks whether the name is explicitly relative to the current namespace. (E.g. namespace\Name)</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Whether the name is relative</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isRelative">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="toString" id="_toString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>toString(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a string representation of the name itself, without taking the name type into
+account (e.g., not including a…
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a string representation of the name itself, without taking the name type into
+account (e.g., not including a leading backslash for fully qualified names).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>String representation</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_toString">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="toCodeString" id="_toCodeString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>toCodeString(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a string representation of the name as it would occur in code (e.g., including
+leading backslash for fully…
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a string representation of the name as it would occur in code (e.g., including
+leading backslash for fully qualified names.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>String representation</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_toCodeString">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="toLowerString" id="_toLowerString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>toLowerString(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns lowercased string representation of the name, without taking the name type into
+account (e.g., no leading…
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns lowercased string representation of the name, without taking the name type into
+account (e.g., no leading backslash for fully qualified names).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Lowercased string representation</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_toLowerString">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isSpecialClassName" id="_isSpecialClassName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isSpecialClassName(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Checks whether the identifier is a special class name (self, parent or static).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Checks whether the identifier is a special class name (self, parent or static).</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Whether identifier is a special class name</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isSpecialClassName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="__toString" id="___toString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__toString(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a string representation of the name by imploding the namespace parts with the
+namespace separator.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a string representation of the name by imploding the namespace parts with the
+namespace separator.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>String representation</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___toString">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="slice" id="_slice">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>slice(<span>int <var>$offset</var></span>, <span>int|null <var>$length</var> = <span class="php-kw">null</span></span>): static|null</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets a slice of a name (similar to array_slice).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets a slice of a name (similar to array_slice).</p>
+<p>This method returns a new instance of the same type as the original and with the same
+attributes.</p>
+<p>If the slice is empty, null is returned. The null value will be correctly handled in
+concatenations using concat().</p>
+<p>Offset and length have the same meaning as in array_slice().</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$offset</var>&nbsp;&nbsp;</td>
+										<td><p>Offset to start the slice at (may be negative)</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$length</var>&nbsp;&nbsp;</td>
+										<td><p>Length of the slice (may be negative)</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Sliced name</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_slice">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="concat" id="_concat">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>concat(<span>string|string[]|self|null <var>$name1</var></span>, <span>string|string[]|self|null <var>$name2</var></span>, <span>array <var>$attributes</var> = []</span>): static|null</code>
+
+
+	<div class="expandable-collapsedView">
+		Concatenate two names, yielding a new Name instance.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Concatenate two names, yielding a new Name instance.</p>
+<p>The type of the generated instance depends on which class this method is called on, for
+example Name\FullyQualified::concat() will yield a Name\FullyQualified instance.</p>
+<p>If one of the arguments is null, a new instance of the other name will be returned. If both
+arguments are null, null will be returned. As such, writing
+Name::concat($namespace, $shortName)
+where $namespace is a Name node or null will work as expected.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name1</var>&nbsp;&nbsp;</td>
+										<td><p>The first name</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$name2</var>&nbsp;&nbsp;</td>
+										<td><p>The second name</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$attributes</var>&nbsp;&nbsp;</td>
+										<td><p>Attributes to assign to concatenated name</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Concatenated name</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_concat">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getType" id="_getType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getType(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the type of the node.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the type of the node.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Type of the node</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getType">						<code>PhpParser\Node::getType()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getType">#</a>
+		</td>
+	</tr>
+		</table>
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="PhpParser.NodeAbstract.html#_getLine">getLine()</a>, <a href="PhpParser.NodeAbstract.html#_getStartLine">getStartLine()</a>, <a href="PhpParser.NodeAbstract.html#_getEndLine">getEndLine()</a>, <a href="PhpParser.NodeAbstract.html#_getStartTokenPos">getStartTokenPos()</a>, <a href="PhpParser.NodeAbstract.html#_getEndTokenPos">getEndTokenPos()</a>, <a href="PhpParser.NodeAbstract.html#_getStartFilePos">getStartFilePos()</a>, <a href="PhpParser.NodeAbstract.html#_getEndFilePos">getEndFilePos()</a>, <a href="PhpParser.NodeAbstract.html#_getComments">getComments()</a>, <a href="PhpParser.NodeAbstract.html#_getDocComment">getDocComment()</a>, <a href="PhpParser.NodeAbstract.html#_setDocComment">setDocComment()</a>, <a href="PhpParser.NodeAbstract.html#_setAttribute">setAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_hasAttribute">hasAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_getAttribute">getAttribute()</a>, <a href="PhpParser.NodeAbstract.html#_getAttributes">getAttributes()</a>, <a href="PhpParser.NodeAbstract.html#_setAttributes">setAttributes()</a>, <a href="PhpParser.NodeAbstract.html#_jsonSerialize">jsonSerialize()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="parts" id="$parts">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$parts</var></code>
+
+				
+	<div class="expandable-collapsedView">
+		Parts of the name
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Parts of the name</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$parts">#</a>
+		</td>
+	</tr>
+		</table>
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><var><a href="PhpParser.NodeAbstract.html#$attributes">$attributes</a></var></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

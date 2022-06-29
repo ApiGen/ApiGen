@@ -1,0 +1,438 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class Latte\Extension | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.html">Latte</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="Latte.ContentType.html">
+						ContentType
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Engine.html">
+						Engine
+					</a>
+				</li>
+				<li class="active">
+					<a href="Latte.Extension.html">
+						Extension
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li>
+					<a href="Latte.Exception.html">
+						Exception
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Loader.html">
+						Loader
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Policy.html">
+						Policy
+					</a>
+				</li>
+		</ul>
+
+		<h3>Traits</h3>
+		<ul>
+				<li>
+					<a href="Latte.PositionAwareException.html">
+						PositionAwareException
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Strict.html">
+						Strict
+					</a>
+				</li>
+		</ul>
+
+
+		<h3>Exceptions</h3>
+		<ul>
+				<li>
+					<a href="Latte.CompileException.html">
+						CompileException
+					</a>
+				</li>
+				<li>
+					<a href="Latte.RegexpException.html">
+						RegexpException
+					</a>
+				</li>
+				<li>
+					<a href="Latte.RuntimeException.html">
+						RuntimeException
+					</a>
+				</li>
+				<li>
+					<a href="Latte.SecurityViolationException.html">
+						SecurityViolationException
+					</a>
+				</li>
+		</ul>
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Latte.html">Latte</a>\<a href="Latte.Extension.html">Extension</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+			<tr><th><code>abstract</code></th></tr>
+
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>Latte extension.</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="beforeCompile" id="_beforeCompile">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>beforeCompile(<span><a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a> <var>$engine</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Initializes before template is compiler.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Initializes before template is compiler.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_beforeCompile">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTags" id="_getTags">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTags(): array&lt;string, (callable(<a href="Latte.Compiler.Tag.html"><span title="Latte\Compiler\Tag">Tag</span></a>, <a href="Latte.Compiler.TemplateParser.html"><span title="Latte\Compiler\TemplateParser">TemplateParser</span></a>):&nbsp;(<a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a>|<a href="Generator.html"><span title="Generator">Generator</span></a>|void))|<a href="stdClass.html"><span title="stdClass">stdClass</span></a>&gt;</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a list of parsers for Latte tags.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a list of parsers for Latte tags.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPasses" id="_getPasses">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPasses(): array&lt;string, (callable(<a href="Latte.Compiler.Nodes.TemplateNode.html"><span title="Latte\Compiler\Nodes\TemplateNode">TemplateNode</span></a>):&nbsp;void)|<a href="stdClass.html"><span title="stdClass">stdClass</span></a>&gt;</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a list of parsers for Latte tags.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a list of parsers for Latte tags.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPasses">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getFilters" id="_getFilters">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getFilters(): array&lt;string, callable&gt;</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a list of |filters.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a list of |filters.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getFilters">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getFunctions" id="_getFunctions">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getFunctions(): array&lt;string, callable&gt;</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a list of functions used in templates.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a list of functions used in templates.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getFunctions">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getProviders" id="_getProviders">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getProviders(): array&lt;mixed&gt;</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a list of providers.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a list of providers.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getProviders">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getCacheKey" id="_getCacheKey">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getCacheKey(<span><a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a> <var>$engine</var></span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns a value to distinguish multiple versions of the template.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns a value to distinguish multiple versions of the template.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getCacheKey">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="beforeRender" id="_beforeRender">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>beforeRender(<span><a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a> <var>$engine</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Initializes before template is rendered.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Initializes before template is rendered.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_beforeRender">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="order" id="_order">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>order(<span>callable <var>$subject</var></span>, <span>array|string <var>$before</var> = []</span>, <span>array|string <var>$after</var> = []</span>): <a href="stdClass.html"><span title="stdClass">stdClass</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_order">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

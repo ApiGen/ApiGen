@@ -1,0 +1,235 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PHPStan\PhpDocParser\Parser\PhpDocParser | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.html">PHPStan</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.PhpDocParser.html">PhpDocParser</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.PhpDocParser.Parser.html">Parser</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="PHPStan.PhpDocParser.Parser.ConstExprParser.html">
+						ConstExprParser
+					</a>
+				</li>
+				<li class="active">
+					<a href="PHPStan.PhpDocParser.Parser.PhpDocParser.html">
+						PhpDocParser
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Parser.TokenIterator.html">
+						TokenIterator
+					</a>
+				</li>
+				<li>
+					<a href="PHPStan.PhpDocParser.Parser.TypeParser.html">
+						TypeParser
+					</a>
+				</li>
+		</ul>
+
+
+
+
+		<h3>Exceptions</h3>
+		<ul>
+				<li>
+					<a href="PHPStan.PhpDocParser.Parser.ParserException.html">
+						ParserException
+					</a>
+				</li>
+		</ul>
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PHPStan.html">PHPStan</a>\<a href="namespace-PHPStan.PhpDocParser.html">PhpDocParser</a>\<a href="namespace-PHPStan.PhpDocParser.Parser.html">Parser</a>\<a href="PHPStan.PhpDocParser.Parser.PhpDocParser.html">PhpDocParser</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(
+	<span><a href="PHPStan.PhpDocParser.Parser.TypeParser.html"><span title="PHPStan\PhpDocParser\Parser\TypeParser">TypeParser</span></a> <var>$typeParser</var></span>,
+	<span><a href="PHPStan.PhpDocParser.Parser.ConstExprParser.html"><span title="PHPStan\PhpDocParser\Parser\ConstExprParser">ConstExprParser</span></a> <var>$constantExprParser</var></span>,
+	<span>bool <var>$requireWhitespaceBeforeDescription</var> = <span class="php-kw">false</span></span>,
+)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parse" id="_parse">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>parse(<span><a href="PHPStan.PhpDocParser.Parser.TokenIterator.html"><span title="PHPStan\PhpDocParser\Parser\TokenIterator">TokenIterator</span></a> <var>$tokens</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_parse">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parseTag" id="_parseTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>parseTag(<span><a href="PHPStan.PhpDocParser.Parser.TokenIterator.html"><span title="PHPStan\PhpDocParser\Parser\TokenIterator">TokenIterator</span></a> <var>$tokens</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode">PhpDocTagNode</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_parseTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parseTagValue" id="_parseTagValue">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>parseTagValue(<span><a href="PHPStan.PhpDocParser.Parser.TokenIterator.html"><span title="PHPStan\PhpDocParser\Parser\TokenIterator">TokenIterator</span></a> <var>$tokens</var></span>, <span>string <var>$tag</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_parseTagValue">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

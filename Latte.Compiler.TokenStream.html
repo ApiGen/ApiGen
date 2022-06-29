@@ -1,0 +1,431 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class Latte\Compiler\TokenStream | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.html">Latte</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.Compiler.html">Compiler</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="Latte.Compiler.Block.html">
+						Block
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Escaper.html">
+						Escaper
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Position.html">
+						Position
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.PrintContext.html">
+						PrintContext
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Tag.html">
+						Tag
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParser.html">
+						TagParser
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParserData.html">
+						TagParserData
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateLexer.html">
+						TemplateLexer
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateParser.html">
+						TemplateParser
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Token.html">
+						Token
+					</a>
+				</li>
+				<li class="active">
+					<a href="Latte.Compiler.TokenStream.html">
+						TokenStream
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Compiler.html">Compiler</a>\<a href="Latte.Compiler.TokenStream.html">TokenStream</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+			<tr><th><code>final</code></th></tr>
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+				<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>TokenStream loads tokens from $source iterator on-demand, and places them in a buffer to provide access
+to any previous token by index.</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span><a href="Iterator.html"><span title="Iterator">Iterator</span></a> <var>$source</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="is" id="_is">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>is(<span>int|string ...<var>$kind</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Tells whether the token at current position is of given kind.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Tells whether the token at current position is of given kind.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_is">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="peek" id="_peek">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>peek(<span>int <var>$offset</var> = <span class="php-num">0</span></span>): ?<a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the token at $offset from the current position.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the token at $offset from the current position.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_peek">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="consume" id="_consume">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>consume(<span>int|string ...<var>$kind</var></span>): <a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Consumes the current token (if is of given kind) or throws exception on end.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Consumes the current token (if is of given kind) or throws exception on end.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Latte.CompileException.html"><span>Latte\CompileException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_consume">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="tryConsume" id="_tryConsume">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>tryConsume(<span>int|string ...<var>$kind</var></span>): ?<a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Consumes the current token of given kind or returns null.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Consumes the current token of given kind or returns null.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_tryConsume">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="seek" id="_seek">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>seek(<span>int <var>$index</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the input cursor to the position.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the input cursor to the position.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_seek">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getIndex" id="_getIndex">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getIndex(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns the cursor position.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns the cursor position.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getIndex">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="throwUnexpectedException" id="_throwUnexpectedException">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>throwUnexpectedException(<span>array <var>$expected</var> = []</span>, <span>string <var>$addendum</var> = <span class="php-str">''</span></span>): never</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Latte.CompileException.html"><span>Latte\CompileException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_throwUnexpectedException">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

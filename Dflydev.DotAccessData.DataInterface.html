@@ -1,0 +1,581 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Interface Dflydev\DotAccessData\DataInterface | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Dflydev.html">Dflydev</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Dflydev.DotAccessData.html">DotAccessData</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="Dflydev.DotAccessData.Data.html">
+						Data
+					</a>
+				</li>
+		</ul>
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li class="active">
+					<a href="Dflydev.DotAccessData.DataInterface.html">
+						DataInterface
+					</a>
+				</li>
+		</ul>
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Interface <a href="namespace-Dflydev.html">Dflydev</a>\<a href="namespace-Dflydev.DotAccessData.html">DotAccessData</a>\<a href="Dflydev.DotAccessData.DataInterface.html">DataInterface</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<b><span class="active">Dflydev\DotAccessData\DataInterface</span></b>
+
+
+	<ul class="classTree">
+	<li>
+<a href="Dflydev.DotAccessData.Data.html"><span>Dflydev\DotAccessData\Data</span></a>
+
+		implements
+			<b><span class="active" title="Dflydev\DotAccessData\DataInterface">DataInterface</span></b>, 
+			<a href="ArrayAccess.html"><span title="ArrayAccess">ArrayAccess</span></a>&lt;string, mixed&gt;
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="append" id="_append">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>append(<span>string <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-kw">null</span></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Append a value to a key (assumes key refers to an array value)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Append a value to a key (assumes key refers to an array value)</p>
+<p>If the key does not yet exist it will be created.
+If the key references a non-array it's existing contents will be added into a new array before appending the new value.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.InvalidPathException.html"><span>Dflydev\DotAccessData\Exception\InvalidPathException</span></a></code>&nbsp;</td>
+										<td><p>if the given key is empty</p>
+</td>
+									</tr>
+							</table>
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_append">						<code>Dflydev\DotAccessData\Data::append()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_append">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="set" id="_set">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>set(<span>string <var>$key</var></span>, <span>mixed <var>$value</var> = <span class="php-kw">null</span></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Set a value for a key
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Set a value for a key</p>
+<p>If the key does not yet exist it will be created.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.InvalidPathException.html"><span>Dflydev\DotAccessData\Exception\InvalidPathException</span></a></code>&nbsp;</td>
+										<td><p>if the given key is empty</p>
+</td>
+									</tr>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.DataException.html"><span>Dflydev\DotAccessData\Exception\DataException</span></a></code>&nbsp;</td>
+										<td><p>if the given key does not target an array</p>
+</td>
+									</tr>
+							</table>
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_set">						<code>Dflydev\DotAccessData\Data::set()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_set">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="remove" id="_remove">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>remove(<span>string <var>$key</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Remove a key
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Remove a key</p>
+<p>No exception will be thrown if the key does not exist</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.InvalidPathException.html"><span>Dflydev\DotAccessData\Exception\InvalidPathException</span></a></code>&nbsp;</td>
+										<td><p>if the given key is empty</p>
+</td>
+									</tr>
+							</table>
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_remove">						<code>Dflydev\DotAccessData\Data::remove()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_remove">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="get" id="_get">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>get(<span>string <var>$key</var></span>, <span>mixed <var>$default</var> = <span class="php-kw">null</span></span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Get the raw value for a key
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get the raw value for a key</p>
+<p>If the key does not exist, an optional default value can be returned instead.
+If no default is provided then an exception will be thrown instead.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.InvalidPathException.html"><span>Dflydev\DotAccessData\Exception\InvalidPathException</span></a></code>&nbsp;</td>
+										<td><p>if the given key is empty</p>
+</td>
+									</tr>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.InvalidPathException.html"><span>Dflydev\DotAccessData\Exception\InvalidPathException</span></a></code>&nbsp;</td>
+										<td><p>if the given key does not exist and no default value was given</p>
+</td>
+									</tr>
+							</table>
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_get">						<code>Dflydev\DotAccessData\Data::get()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_get">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="has" id="_has">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>has(<span>string <var>$key</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Check if the key exists
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Check if the key exists</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.InvalidPathException.html"><span>Dflydev\DotAccessData\Exception\InvalidPathException</span></a></code>&nbsp;</td>
+										<td><p>if the given key is empty</p>
+</td>
+									</tr>
+							</table>
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_has">						<code>Dflydev\DotAccessData\Data::has()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_has">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getData" id="_getData">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getData(<span>string <var>$key</var></span>): <b><span class="active" title="Dflydev\DotAccessData\DataInterface">DataInterface</span></b></code>
+
+
+	<div class="expandable-collapsedView">
+		Get a data instance for a key
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get a data instance for a key</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.InvalidPathException.html"><span>Dflydev\DotAccessData\Exception\InvalidPathException</span></a></code>&nbsp;</td>
+										<td><p>if the given key is empty</p>
+</td>
+									</tr>
+									<tr>
+										<td><code><a href="Dflydev.DotAccessData.Exception.DataException.html"><span>Dflydev\DotAccessData\Exception\DataException</span></a></code>&nbsp;</td>
+										<td><p>if the given key does not reference an array</p>
+</td>
+									</tr>
+							</table>
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_getData">						<code>Dflydev\DotAccessData\Data::getData()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getData">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="import" id="_import">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>import(<span>array&lt;string, mixed&gt; <var>$data</var></span>, <span>self::PRESERVE|self::REPLACE|self::MERGE <var>$mode</var> = <b><span class="active" title="Dflydev\DotAccessData\DataInterface">self</span></b>::<a href="Dflydev.DotAccessData.DataInterface.html#REPLACE">REPLACE</a></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Import data into existing data
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Import data into existing data</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_import">						<code>Dflydev\DotAccessData\Data::import()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_import">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="importData" id="_importData">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>importData(<span><b><span class="active" title="Dflydev\DotAccessData\DataInterface">DataInterface</span></b> <var>$data</var></span>, <span>self::PRESERVE|self::REPLACE|self::MERGE <var>$mode</var> = <b><span class="active" title="Dflydev\DotAccessData\DataInterface">self</span></b>::<a href="Dflydev.DotAccessData.DataInterface.html#REPLACE">REPLACE</a></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Import data from an external data into existing data
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Import data from an external data into existing data</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_importData">						<code>Dflydev\DotAccessData\Data::importData()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_importData">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="export" id="_export">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>export(): array&lt;string, mixed&gt;</code>
+
+
+	<div class="expandable-collapsedView">
+		Export data as raw data
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Export data as raw data</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Dflydev.DotAccessData.Data.html#_export">						<code>Dflydev\DotAccessData\Data::export()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_export">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="PRESERVE" id="PRESERVE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>PRESERVE = <span class="php-num">0</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#PRESERVE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="REPLACE" id="REPLACE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>REPLACE = <span class="php-num">1</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#REPLACE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="MERGE" id="MERGE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>MERGE = <span class="php-num">2</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#MERGE">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

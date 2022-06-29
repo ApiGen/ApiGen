@@ -1,0 +1,1277 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class Symfony\Component\Console\Helper\ProgressBar | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.html">Symfony</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.Component.html">Component</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.Component.Console.html">Console</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.Component.Console.Helper.html">Helper</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li class="active">
+					<a href="Symfony.Component.Console.Helper.ProgressBar.html">
+						ProgressBar
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Symfony.html">Symfony</a>\<a href="namespace-Symfony.Component.html">Component</a>\<a href="namespace-Symfony.Component.Console.html">Console</a>\<a href="namespace-Symfony.Component.Console.Helper.html">Helper</a>\<a href="Symfony.Component.Console.Helper.ProgressBar.html">ProgressBar</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+			<tr><th><code>final</code></th></tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>The ProgressBar provides helpers to display progress output.</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span><a href="Symfony.Component.Console.Output.OutputInterface.html"><span title="Symfony\Component\Console\Output\OutputInterface">OutputInterface</span></a> <var>$output</var></span>, <span>int <var>$max</var> = <span class="php-num">0</span></span>, <span>float <var>$minSecondsBetweenRedraws</var> = <span class="php-num">1</span> / <span class="php-num">25</span></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$max</var>&nbsp;&nbsp;</td>
+										<td><p>Maximum steps (0 if unknown)</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setPlaceholderFormatterDefinition" id="_setPlaceholderFormatterDefinition">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setPlaceholderFormatterDefinition(<span>string <var>$name</var></span>, <span>callable <var>$callable</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets a placeholder formatter for a given name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets a placeholder formatter for a given name.</p>
+<p>This method also allow you to override an existing placeholder.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>The placeholder name (including the delimiter char like %)</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$callable</var>&nbsp;&nbsp;</td>
+										<td><p>A PHP callable</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setPlaceholderFormatterDefinition">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPlaceholderFormatterDefinition" id="_getPlaceholderFormatterDefinition">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPlaceholderFormatterDefinition(<span>string <var>$name</var></span>): ?callable</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the placeholder formatter for a given name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the placeholder formatter for a given name.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>The placeholder name (including the delimiter char like %)</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPlaceholderFormatterDefinition">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setFormatDefinition" id="_setFormatDefinition">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setFormatDefinition(<span>string <var>$name</var></span>, <span>string <var>$format</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets a format for a given name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets a format for a given name.</p>
+<p>This method also allow you to override an existing format.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>The format name</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$format</var>&nbsp;&nbsp;</td>
+										<td><p>A format string</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setFormatDefinition">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getFormatDefinition" id="_getFormatDefinition">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getFormatDefinition(<span>string <var>$name</var></span>): ?string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the format for a given name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the format for a given name.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>The format name</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getFormatDefinition">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setMessage" id="_setMessage">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setMessage(<span>string <var>$message</var></span>, <span>string <var>$name</var> = <span class="php-str">'message'</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Associates a text with a named placeholder.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Associates a text with a named placeholder.</p>
+<p>The text is displayed when the progress bar is rendered but only
+when the corresponding placeholder is part of the custom format line
+(by wrapping the name with %).</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$message</var>&nbsp;&nbsp;</td>
+										<td><p>The text to associate with the placeholder</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>The name of the placeholder</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setMessage">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getMessage" id="_getMessage">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getMessage(<span>string <var>$name</var> = <span class="php-str">'message'</span></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getMessage">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStartTime" id="_getStartTime">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStartTime(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStartTime">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getMaxSteps" id="_getMaxSteps">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getMaxSteps(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getMaxSteps">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getProgress" id="_getProgress">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getProgress(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getProgress">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getProgressPercent" id="_getProgressPercent">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getProgressPercent(): float</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getProgressPercent">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getBarOffset" id="_getBarOffset">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getBarOffset(): float</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getBarOffset">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEstimated" id="_getEstimated">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEstimated(): float</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEstimated">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getRemaining" id="_getRemaining">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getRemaining(): float</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getRemaining">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setBarWidth" id="_setBarWidth">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setBarWidth(<span>int <var>$size</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setBarWidth">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getBarWidth" id="_getBarWidth">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getBarWidth(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getBarWidth">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setBarCharacter" id="_setBarCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setBarCharacter(<span>string <var>$char</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setBarCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getBarCharacter" id="_getBarCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getBarCharacter(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getBarCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setEmptyBarCharacter" id="_setEmptyBarCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setEmptyBarCharacter(<span>string <var>$char</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setEmptyBarCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getEmptyBarCharacter" id="_getEmptyBarCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getEmptyBarCharacter(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getEmptyBarCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setProgressCharacter" id="_setProgressCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setProgressCharacter(<span>string <var>$char</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setProgressCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getProgressCharacter" id="_getProgressCharacter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getProgressCharacter(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getProgressCharacter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setFormat" id="_setFormat">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setFormat(<span>string <var>$format</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setFormat">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setRedrawFrequency" id="_setRedrawFrequency">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setRedrawFrequency(<span>int|null <var>$freq</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the redraw frequency.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the redraw frequency.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$freq</var>&nbsp;&nbsp;</td>
+										<td><p>The frequency in steps</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setRedrawFrequency">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="minSecondsBetweenRedraws" id="_minSecondsBetweenRedraws">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>minSecondsBetweenRedraws(<span>float <var>$seconds</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_minSecondsBetweenRedraws">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="maxSecondsBetweenRedraws" id="_maxSecondsBetweenRedraws">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>maxSecondsBetweenRedraws(<span>float <var>$seconds</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_maxSecondsBetweenRedraws">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="iterate" id="_iterate">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>iterate(<span>iterable <var>$iterable</var></span>, <span>int|null <var>$max</var> = <span class="php-kw">null</span></span>): iterable</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns an iterator that will automatically update the progress bar when iterated.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns an iterator that will automatically update the progress bar when iterated.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$max</var>&nbsp;&nbsp;</td>
+										<td><p>Number of steps to complete the bar (0 if indeterminate), if null it will be inferred from $iterable</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_iterate">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="start" id="_start">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>start(<span>int|null <var>$max</var> = <span class="php-kw">null</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Starts the progress output.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Starts the progress output.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$max</var>&nbsp;&nbsp;</td>
+										<td><p>Number of steps to complete the bar (0 if indeterminate), null to leave unchanged</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_start">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="advance" id="_advance">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>advance(<span>int <var>$step</var> = <span class="php-num">1</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Advances the progress output X steps.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Advances the progress output X steps.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$step</var>&nbsp;&nbsp;</td>
+										<td><p>Number of steps to advance</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_advance">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setOverwrite" id="_setOverwrite">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setOverwrite(<span>bool <var>$overwrite</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets whether to overwrite the progressbar, false for new line.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets whether to overwrite the progressbar, false for new line.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setOverwrite">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setProgress" id="_setProgress">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setProgress(<span>int <var>$step</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setProgress">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setMaxSteps" id="_setMaxSteps">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setMaxSteps(<span>int <var>$max</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setMaxSteps">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="finish" id="_finish">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>finish(): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Finishes the progress output.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Finishes the progress output.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_finish">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="display" id="_display">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>display(): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Outputs the current progress string.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Outputs the current progress string.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_display">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="clear" id="_clear">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>clear(): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Removes the progress bar from the current line.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Removes the progress bar from the current line.</p>
+<p>This is useful if you wish to write some output
+while a progress bar is running.
+Call display() to show the progress bar again.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_clear">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="FORMAT_VERBOSE" id="FORMAT_VERBOSE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>FORMAT_VERBOSE = <span class="php-str">'verbose'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#FORMAT_VERBOSE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="FORMAT_VERY_VERBOSE" id="FORMAT_VERY_VERBOSE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>FORMAT_VERY_VERBOSE = <span class="php-str">'very_verbose'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#FORMAT_VERY_VERBOSE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="FORMAT_DEBUG" id="FORMAT_DEBUG">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>FORMAT_DEBUG = <span class="php-str">'debug'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#FORMAT_DEBUG">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="FORMAT_NORMAL" id="FORMAT_NORMAL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>FORMAT_NORMAL = <span class="php-str">'normal'</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#FORMAT_NORMAL">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

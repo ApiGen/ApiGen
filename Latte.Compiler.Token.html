@@ -1,0 +1,2486 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class Latte\Compiler\Token | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.html">Latte</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Latte.Compiler.html">Compiler</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="Latte.Compiler.Block.html">
+						Block
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Escaper.html">
+						Escaper
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Node.html">
+						Node
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Position.html">
+						Position
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.PrintContext.html">
+						PrintContext
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.Tag.html">
+						Tag
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParser.html">
+						TagParser
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TagParserData.html">
+						TagParserData
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateLexer.html">
+						TemplateLexer
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TemplateParser.html">
+						TemplateParser
+					</a>
+				</li>
+				<li class="active">
+					<a href="Latte.Compiler.Token.html">
+						Token
+					</a>
+				</li>
+				<li>
+					<a href="Latte.Compiler.TokenStream.html">
+						TokenStream
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Compiler.html">Compiler</a>\<a href="Latte.Compiler.Token.html">Token</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+			<tr><th><code>final</code></th></tr>
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+				<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>
+			</td>
+		</tr>
+
+	</table>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>int <var>$type</var></span>, <span>string <var>$text</var></span>, <span>?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var> = <span class="php-kw">null</span></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="is" id="_is">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>is(<span>int|string ...<var>$kind</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_is">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isEnd" id="_isEnd">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isEnd(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isEnd">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPhpKind" id="_isPhpKind">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPhpKind(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPhpKind">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+					<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>
+				</td>
+			</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="End" id="End">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>End = <span class="php-num">0</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#End">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Text" id="Text">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Text = <span class="php-num">10000</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Text">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Whitespace" id="Whitespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Whitespace = <span class="php-num">10002</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Whitespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Newline" id="Newline">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Newline = <span class="php-num">10003</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Newline">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Indentation" id="Indentation">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Indentation = <span class="php-num">10004</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Indentation">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Slash" id="Slash">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Slash = <span class="php-num">10005</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Slash">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Equals" id="Equals">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Equals = <span class="php-num">10006</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Equals">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Quote" id="Quote">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Quote = <span class="php-num">10007</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Quote">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Latte_TagOpen" id="Latte_TagOpen">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Latte_TagOpen = <span class="php-num">10010</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Latte_TagOpen">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Latte_TagClose" id="Latte_TagClose">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Latte_TagClose = <span class="php-num">10011</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Latte_TagClose">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Latte_Name" id="Latte_Name">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Latte_Name = <span class="php-num">10012</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Latte_Name">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Latte_CommentOpen" id="Latte_CommentOpen">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Latte_CommentOpen = <span class="php-num">10014</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Latte_CommentOpen">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Latte_CommentClose" id="Latte_CommentClose">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Latte_CommentClose = <span class="php-num">10015</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Latte_CommentClose">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Html_TagOpen" id="Html_TagOpen">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Html_TagOpen = <span class="php-num">10020</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Html_TagOpen">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Html_TagClose" id="Html_TagClose">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Html_TagClose = <span class="php-num">10021</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Html_TagClose">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Html_CommentOpen" id="Html_CommentOpen">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Html_CommentOpen = <span class="php-num">10022</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Html_CommentOpen">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Html_CommentClose" id="Html_CommentClose">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Html_CommentClose = <span class="php-num">10023</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Html_CommentClose">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Html_BogusOpen" id="Html_BogusOpen">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Html_BogusOpen = <span class="php-num">10024</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Html_BogusOpen">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Html_Name" id="Html_Name">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Html_Name = <span class="php-num">10025</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Html_Name">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_LogicalOr" id="Php_LogicalOr">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_LogicalOr = <span class="php-num">257</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_LogicalOr">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_LogicalXor" id="Php_LogicalXor">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_LogicalXor = <span class="php-num">258</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_LogicalXor">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_LogicalAnd" id="Php_LogicalAnd">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_LogicalAnd = <span class="php-num">259</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_LogicalAnd">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_DoubleArrow" id="Php_DoubleArrow">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_DoubleArrow = <span class="php-num">260</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_DoubleArrow">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_PlusEqual" id="Php_PlusEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_PlusEqual = <span class="php-num">261</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_PlusEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_MinusEqual" id="Php_MinusEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_MinusEqual = <span class="php-num">262</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_MinusEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_MulEqual" id="Php_MulEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_MulEqual = <span class="php-num">263</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_MulEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_DivEqual" id="Php_DivEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_DivEqual = <span class="php-num">264</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_DivEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_ConcatEqual" id="Php_ConcatEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_ConcatEqual = <span class="php-num">265</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_ConcatEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_ModEqual" id="Php_ModEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_ModEqual = <span class="php-num">266</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_ModEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_AndEqual" id="Php_AndEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_AndEqual = <span class="php-num">267</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_AndEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_OrEqual" id="Php_OrEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_OrEqual = <span class="php-num">268</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_OrEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_XorEqual" id="Php_XorEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_XorEqual = <span class="php-num">269</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_XorEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_SlEqual" id="Php_SlEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_SlEqual = <span class="php-num">270</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_SlEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_SrEqual" id="Php_SrEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_SrEqual = <span class="php-num">271</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_SrEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_PowEqual" id="Php_PowEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_PowEqual = <span class="php-num">272</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_PowEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_CoalesceEqual" id="Php_CoalesceEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_CoalesceEqual = <span class="php-num">273</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_CoalesceEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Coalesce" id="Php_Coalesce">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Coalesce = <span class="php-num">274</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Coalesce">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_BooleanOr" id="Php_BooleanOr">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_BooleanOr = <span class="php-num">275</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_BooleanOr">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_BooleanAnd" id="Php_BooleanAnd">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_BooleanAnd = <span class="php-num">276</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_BooleanAnd">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_AmpersandNotFollowed" id="Php_AmpersandNotFollowed">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_AmpersandNotFollowed = <span class="php-num">277</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_AmpersandNotFollowed">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_AmpersandFollowed" id="Php_AmpersandFollowed">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_AmpersandFollowed = <span class="php-num">278</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_AmpersandFollowed">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_IsEqual" id="Php_IsEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_IsEqual = <span class="php-num">279</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_IsEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_IsNotEqual" id="Php_IsNotEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_IsNotEqual = <span class="php-num">280</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_IsNotEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_IsIdentical" id="Php_IsIdentical">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_IsIdentical = <span class="php-num">281</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_IsIdentical">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_IsNotIdentical" id="Php_IsNotIdentical">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_IsNotIdentical = <span class="php-num">282</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_IsNotIdentical">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Spaceship" id="Php_Spaceship">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Spaceship = <span class="php-num">283</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Spaceship">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_IsSmallerOrEqual" id="Php_IsSmallerOrEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_IsSmallerOrEqual = <span class="php-num">284</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_IsSmallerOrEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_IsGreaterOrEqual" id="Php_IsGreaterOrEqual">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_IsGreaterOrEqual = <span class="php-num">285</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_IsGreaterOrEqual">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Sl" id="Php_Sl">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Sl = <span class="php-num">286</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Sl">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Sr" id="Php_Sr">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Sr = <span class="php-num">287</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Sr">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_In" id="Php_In">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_In = <span class="php-num">288</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_In">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Instanceof" id="Php_Instanceof">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Instanceof = <span class="php-num">289</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Instanceof">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Inc" id="Php_Inc">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Inc = <span class="php-num">290</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Inc">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Dec" id="Php_Dec">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Dec = <span class="php-num">291</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Dec">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_IntCast" id="Php_IntCast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_IntCast = <span class="php-num">292</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_IntCast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_FloatCast" id="Php_FloatCast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_FloatCast = <span class="php-num">293</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_FloatCast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_StringCast" id="Php_StringCast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_StringCast = <span class="php-num">294</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_StringCast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_ArrayCast" id="Php_ArrayCast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_ArrayCast = <span class="php-num">295</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_ArrayCast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_ObjectCast" id="Php_ObjectCast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_ObjectCast = <span class="php-num">296</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_ObjectCast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_BoolCast" id="Php_BoolCast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_BoolCast = <span class="php-num">297</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_BoolCast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Pow" id="Php_Pow">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Pow = <span class="php-num">298</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Pow">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_New" id="Php_New">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_New = <span class="php-num">299</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_New">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Clone" id="Php_Clone">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Clone = <span class="php-num">300</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Clone">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Integer" id="Php_Integer">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Integer = <span class="php-num">301</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Integer">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Float" id="Php_Float">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Float = <span class="php-num">302</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Float">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Identifier" id="Php_Identifier">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Identifier = <span class="php-num">303</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Identifier">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_StringVarname" id="Php_StringVarname">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_StringVarname = <span class="php-num">304</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_StringVarname">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Constant" id="Php_Constant">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Constant = <span class="php-num">305</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Constant">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Variable" id="Php_Variable">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Variable = <span class="php-num">306</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Variable">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_NumString" id="Php_NumString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_NumString = <span class="php-num">307</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_NumString">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_EncapsedAndWhitespace" id="Php_EncapsedAndWhitespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_EncapsedAndWhitespace = <span class="php-num">308</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_EncapsedAndWhitespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_ConstantEncapsedString" id="Php_ConstantEncapsedString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_ConstantEncapsedString = <span class="php-num">309</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_ConstantEncapsedString">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Match" id="Php_Match">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Match = <span class="php-num">310</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Match">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Default" id="Php_Default">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Default = <span class="php-num">311</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Default">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Function" id="Php_Function">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Function = <span class="php-num">312</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Function">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Fn" id="Php_Fn">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Fn = <span class="php-num">313</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Fn">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Return" id="Php_Return">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Return = <span class="php-num">314</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Return">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Use" id="Php_Use">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Use = <span class="php-num">315</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Use">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Isset" id="Php_Isset">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Isset = <span class="php-num">316</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Isset">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Empty" id="Php_Empty">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Empty = <span class="php-num">317</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Empty">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_ObjectOperator" id="Php_ObjectOperator">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_ObjectOperator = <span class="php-num">318</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_ObjectOperator">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_NullsafeObjectOperator" id="Php_NullsafeObjectOperator">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_NullsafeObjectOperator = <span class="php-num">319</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_NullsafeObjectOperator">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_UndefinedsafeObjectOperator" id="Php_UndefinedsafeObjectOperator">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_UndefinedsafeObjectOperator = <span class="php-num">320</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_UndefinedsafeObjectOperator">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_List" id="Php_List">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_List = <span class="php-num">321</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_List">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Array" id="Php_Array">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Array = <span class="php-num">322</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Array">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_StartHeredoc" id="Php_StartHeredoc">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_StartHeredoc = <span class="php-num">323</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_StartHeredoc">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_EndHeredoc" id="Php_EndHeredoc">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_EndHeredoc = <span class="php-num">324</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_EndHeredoc">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_DollarOpenCurlyBraces" id="Php_DollarOpenCurlyBraces">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_DollarOpenCurlyBraces = <span class="php-num">325</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_DollarOpenCurlyBraces">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_CurlyOpen" id="Php_CurlyOpen">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_CurlyOpen = <span class="php-num">326</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_CurlyOpen">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_PaamayimNekudotayim" id="Php_PaamayimNekudotayim">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_PaamayimNekudotayim = <span class="php-num">327</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_PaamayimNekudotayim">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_NsSeparator" id="Php_NsSeparator">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_NsSeparator = <span class="php-num">328</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_NsSeparator">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Ellipsis" id="Php_Ellipsis">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Ellipsis = <span class="php-num">329</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Ellipsis">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_ExpandCast" id="Php_ExpandCast">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_ExpandCast = <span class="php-num">330</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_ExpandCast">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_NameFullyQualified" id="Php_NameFullyQualified">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_NameFullyQualified = <span class="php-num">331</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_NameFullyQualified">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_NameQualified" id="Php_NameQualified">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_NameQualified = <span class="php-num">332</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_NameQualified">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Whitespace" id="Php_Whitespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Whitespace = <span class="php-num">333</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Whitespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Comment" id="Php_Comment">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Comment = <span class="php-num">334</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Comment">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_Null" id="Php_Null">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_Null = <span class="php-num">335</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_Null">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_True" id="Php_True">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_True = <span class="php-num">336</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_True">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="Php_False" id="Php_False">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>Php_False = <span class="php-num">337</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Php_False">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="NAMES" id="NAMES">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>NAMES = [
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#End">End</a> =&gt; <span class="php-str">'[EOF]'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Text">Text</a> =&gt; <span class="php-str">'text'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Whitespace">Whitespace</a> =&gt; <span class="php-str">'whitespace'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Newline">Newline</a> =&gt; <span class="php-str">'newline'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Indentation">Indentation</a> =&gt; <span class="php-str">'indentation'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Slash">Slash</a> =&gt; <span class="php-str">"'/'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Equals">Equals</a> =&gt; <span class="php-str">"'='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Quote">Quote</a> =&gt; <span class="php-str">'quote'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Latte_TagOpen">Latte_TagOpen</a> =&gt; <span class="php-str">"'&#123;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Latte_TagClose">Latte_TagClose</a> =&gt; <span class="php-str">"'}'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Latte_Name">Latte_Name</a> =&gt; <span class="php-str">'tag name'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Latte_CommentOpen">Latte_CommentOpen</a> =&gt; <span class="php-str">"'&#123;*'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Latte_CommentClose">Latte_CommentClose</a> =&gt; <span class="php-str">"'*}'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Html_TagOpen">Html_TagOpen</a> =&gt; <span class="php-str">'HTML tag'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Html_TagClose">Html_TagClose</a> =&gt; <span class="php-str">'end of HTML tag'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Html_CommentOpen">Html_CommentOpen</a> =&gt; <span class="php-str">'HTML comment'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Html_CommentClose">Html_CommentClose</a> =&gt; <span class="php-str">'end of HTML comment'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Html_BogusOpen">Html_BogusOpen</a> =&gt; <span class="php-str">'HTML bogus tag'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Html_Name">Html_Name</a> =&gt; <span class="php-str">'HTML name'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_LogicalOr">Php_LogicalOr</a> =&gt; <span class="php-str">"'or'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_LogicalXor">Php_LogicalXor</a> =&gt; <span class="php-str">"'xor'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_LogicalAnd">Php_LogicalAnd</a> =&gt; <span class="php-str">"'and'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_DoubleArrow">Php_DoubleArrow</a> =&gt; <span class="php-str">"'=&gt;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_PlusEqual">Php_PlusEqual</a> =&gt; <span class="php-str">"'+='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_MinusEqual">Php_MinusEqual</a> =&gt; <span class="php-str">"'-='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_MulEqual">Php_MulEqual</a> =&gt; <span class="php-str">"'*='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_DivEqual">Php_DivEqual</a> =&gt; <span class="php-str">"'/='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_ConcatEqual">Php_ConcatEqual</a> =&gt; <span class="php-str">"'.='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_ModEqual">Php_ModEqual</a> =&gt; <span class="php-str">"'%='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_AndEqual">Php_AndEqual</a> =&gt; <span class="php-str">"'&amp;='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_OrEqual">Php_OrEqual</a> =&gt; <span class="php-str">"'|='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_XorEqual">Php_XorEqual</a> =&gt; <span class="php-str">"'^='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_SlEqual">Php_SlEqual</a> =&gt; <span class="php-str">"'&lt;&lt;='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_SrEqual">Php_SrEqual</a> =&gt; <span class="php-str">"'&gt;&gt;='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_PowEqual">Php_PowEqual</a> =&gt; <span class="php-str">"'**='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_CoalesceEqual">Php_CoalesceEqual</a> =&gt; <span class="php-str">"'??='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Coalesce">Php_Coalesce</a> =&gt; <span class="php-str">"'??'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_BooleanOr">Php_BooleanOr</a> =&gt; <span class="php-str">"'||'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_BooleanAnd">Php_BooleanAnd</a> =&gt; <span class="php-str">"'&amp;&amp;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_AmpersandNotFollowed">Php_AmpersandNotFollowed</a> =&gt; <span class="php-str">"'&amp;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_AmpersandFollowed">Php_AmpersandFollowed</a> =&gt; <span class="php-str">"'&amp;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_IsEqual">Php_IsEqual</a> =&gt; <span class="php-str">"'=='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_IsNotEqual">Php_IsNotEqual</a> =&gt; <span class="php-str">"'!='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_IsIdentical">Php_IsIdentical</a> =&gt; <span class="php-str">"'==='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_IsNotIdentical">Php_IsNotIdentical</a> =&gt; <span class="php-str">"'!=='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Spaceship">Php_Spaceship</a> =&gt; <span class="php-str">"'&lt;=&gt;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_IsSmallerOrEqual">Php_IsSmallerOrEqual</a> =&gt; <span class="php-str">"'&lt;='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_IsGreaterOrEqual">Php_IsGreaterOrEqual</a> =&gt; <span class="php-str">"'&gt;='"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Sl">Php_Sl</a> =&gt; <span class="php-str">"'&lt;&lt;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Sr">Php_Sr</a> =&gt; <span class="php-str">"'&gt;&gt;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_In">Php_In</a> =&gt; <span class="php-str">"'in'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Instanceof">Php_Instanceof</a> =&gt; <span class="php-str">"'instanceof'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Inc">Php_Inc</a> =&gt; <span class="php-str">"'++'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Dec">Php_Dec</a> =&gt; <span class="php-str">"'--'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_IntCast">Php_IntCast</a> =&gt; <span class="php-str">"'(int)'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_FloatCast">Php_FloatCast</a> =&gt; <span class="php-str">"'(float)'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_StringCast">Php_StringCast</a> =&gt; <span class="php-str">"'(string)'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_ArrayCast">Php_ArrayCast</a> =&gt; <span class="php-str">"'(array)'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_ObjectCast">Php_ObjectCast</a> =&gt; <span class="php-str">"'(object)'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_BoolCast">Php_BoolCast</a> =&gt; <span class="php-str">"'(bool)'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Pow">Php_Pow</a> =&gt; <span class="php-str">"'**'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_New">Php_New</a> =&gt; <span class="php-str">"'new'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Clone">Php_Clone</a> =&gt; <span class="php-str">"'clone'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Integer">Php_Integer</a> =&gt; <span class="php-str">'integer'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Float">Php_Float</a> =&gt; <span class="php-str">'floating-point number'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Identifier">Php_Identifier</a> =&gt; <span class="php-str">'identifier'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_StringVarname">Php_StringVarname</a> =&gt; <span class="php-str">'variable name'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Constant">Php_Constant</a> =&gt; <span class="php-str">'constant'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Variable">Php_Variable</a> =&gt; <span class="php-str">'variable'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_NumString">Php_NumString</a> =&gt; <span class="php-str">'number'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_EncapsedAndWhitespace">Php_EncapsedAndWhitespace</a> =&gt; <span class="php-str">'string content'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_ConstantEncapsedString">Php_ConstantEncapsedString</a> =&gt; <span class="php-str">'quoted string'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Match">Php_Match</a> =&gt; <span class="php-str">"'match'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Default">Php_Default</a> =&gt; <span class="php-str">"'default'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Function">Php_Function</a> =&gt; <span class="php-str">"'function'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Fn">Php_Fn</a> =&gt; <span class="php-str">"'fn'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Return">Php_Return</a> =&gt; <span class="php-str">"'return'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Use">Php_Use</a> =&gt; <span class="php-str">"'use'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Isset">Php_Isset</a> =&gt; <span class="php-str">"'isset'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Empty">Php_Empty</a> =&gt; <span class="php-str">"'empty'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_ObjectOperator">Php_ObjectOperator</a> =&gt; <span class="php-str">"'-&gt;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_NullsafeObjectOperator">Php_NullsafeObjectOperator</a> =&gt; <span class="php-str">"'?-&gt;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_UndefinedsafeObjectOperator">Php_UndefinedsafeObjectOperator</a> =&gt; <span class="php-str">"'??-&gt;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_List">Php_List</a> =&gt; <span class="php-str">"'list'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Array">Php_Array</a> =&gt; <span class="php-str">"'array'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_StartHeredoc">Php_StartHeredoc</a> =&gt; <span class="php-str">'heredoc start'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_EndHeredoc">Php_EndHeredoc</a> =&gt; <span class="php-str">'heredoc end'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_DollarOpenCurlyBraces">Php_DollarOpenCurlyBraces</a> =&gt; <span class="php-str">"'\$&#123;'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_CurlyOpen">Php_CurlyOpen</a> =&gt; <span class="php-str">"'&#123;\$'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_PaamayimNekudotayim">Php_PaamayimNekudotayim</a> =&gt; <span class="php-str">"'::'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_NsSeparator">Php_NsSeparator</a> =&gt; <span class="php-str">"'\\'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Ellipsis">Php_Ellipsis</a> =&gt; <span class="php-str">"'...'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_ExpandCast">Php_ExpandCast</a> =&gt; <span class="php-str">"'(expand)'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_NameFullyQualified">Php_NameFullyQualified</a> =&gt; <span class="php-str">'fully qualified name'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_NameQualified">Php_NameQualified</a> =&gt; <span class="php-str">'namespaced name'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Whitespace">Php_Whitespace</a> =&gt; <span class="php-str">'whitespace'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Comment">Php_Comment</a> =&gt; <span class="php-str">'comment'</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_Null">Php_Null</a> =&gt; <span class="php-str">"'null'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_True">Php_True</a> =&gt; <span class="php-str">"'true'"</span>,
+	<b><span class="active" title="Latte\Compiler\Token">self</span></b>::<a href="Latte.Compiler.Token.html#Php_False">Php_False</a> =&gt; <span class="php-str">"'false'"</span>,
+]</code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#NAMES">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="type" id="$type">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">int</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$type</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$type">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="text" id="$text">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$text</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$text">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="position" id="$position">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a></code>
+			</td>
+
+			<td class="table-cell">
+				<code><var>$position</var></code>
+
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$position">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

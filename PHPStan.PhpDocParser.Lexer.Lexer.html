@@ -1,0 +1,915 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class PHPStan\PhpDocParser\Lexer\Lexer | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.html">PHPStan</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.PhpDocParser.html">PhpDocParser</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-PHPStan.PhpDocParser.Lexer.html">Lexer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li class="active">
+					<a href="PHPStan.PhpDocParser.Lexer.Lexer.html">
+						Lexer
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PHPStan.html">PHPStan</a>\<a href="namespace-PHPStan.PhpDocParser.html">PhpDocParser</a>\<a href="namespace-PHPStan.PhpDocParser.Lexer.html">Lexer</a>\<a href="PHPStan.PhpDocParser.Lexer.Lexer.html">Lexer</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>Implementation based on Nette Tokenizer (New BSD License; <a href="https://github.com/nette/tokenizer">https://github.com/nette/tokenizer</a>)</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="tokenize" id="_tokenize">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>tokenize(<span>string <var>$s</var></span>): array</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_tokenize">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="TOKEN_REFERENCE" id="TOKEN_REFERENCE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_REFERENCE = <span class="php-num">0</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_REFERENCE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_UNION" id="TOKEN_UNION">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_UNION = <span class="php-num">1</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_UNION">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_INTERSECTION" id="TOKEN_INTERSECTION">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_INTERSECTION = <span class="php-num">2</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_INTERSECTION">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_NULLABLE" id="TOKEN_NULLABLE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_NULLABLE = <span class="php-num">3</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_NULLABLE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_OPEN_PARENTHESES" id="TOKEN_OPEN_PARENTHESES">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_OPEN_PARENTHESES = <span class="php-num">4</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_OPEN_PARENTHESES">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_CLOSE_PARENTHESES" id="TOKEN_CLOSE_PARENTHESES">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_CLOSE_PARENTHESES = <span class="php-num">5</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_CLOSE_PARENTHESES">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_OPEN_ANGLE_BRACKET" id="TOKEN_OPEN_ANGLE_BRACKET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_OPEN_ANGLE_BRACKET = <span class="php-num">6</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_OPEN_ANGLE_BRACKET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_CLOSE_ANGLE_BRACKET" id="TOKEN_CLOSE_ANGLE_BRACKET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_CLOSE_ANGLE_BRACKET = <span class="php-num">7</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_CLOSE_ANGLE_BRACKET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_OPEN_SQUARE_BRACKET" id="TOKEN_OPEN_SQUARE_BRACKET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_OPEN_SQUARE_BRACKET = <span class="php-num">8</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_OPEN_SQUARE_BRACKET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_CLOSE_SQUARE_BRACKET" id="TOKEN_CLOSE_SQUARE_BRACKET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_CLOSE_SQUARE_BRACKET = <span class="php-num">9</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_CLOSE_SQUARE_BRACKET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_COMMA" id="TOKEN_COMMA">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_COMMA = <span class="php-num">10</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_COMMA">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_VARIADIC" id="TOKEN_VARIADIC">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_VARIADIC = <span class="php-num">11</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_VARIADIC">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_DOUBLE_COLON" id="TOKEN_DOUBLE_COLON">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_DOUBLE_COLON = <span class="php-num">12</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_DOUBLE_COLON">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_DOUBLE_ARROW" id="TOKEN_DOUBLE_ARROW">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_DOUBLE_ARROW = <span class="php-num">13</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_DOUBLE_ARROW">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_EQUAL" id="TOKEN_EQUAL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_EQUAL = <span class="php-num">14</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_EQUAL">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_OPEN_PHPDOC" id="TOKEN_OPEN_PHPDOC">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_OPEN_PHPDOC = <span class="php-num">15</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_OPEN_PHPDOC">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_CLOSE_PHPDOC" id="TOKEN_CLOSE_PHPDOC">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_CLOSE_PHPDOC = <span class="php-num">16</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_CLOSE_PHPDOC">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_PHPDOC_TAG" id="TOKEN_PHPDOC_TAG">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_PHPDOC_TAG = <span class="php-num">17</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_PHPDOC_TAG">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_FLOAT" id="TOKEN_FLOAT">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_FLOAT = <span class="php-num">18</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_FLOAT">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_INTEGER" id="TOKEN_INTEGER">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_INTEGER = <span class="php-num">19</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_INTEGER">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_SINGLE_QUOTED_STRING" id="TOKEN_SINGLE_QUOTED_STRING">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_SINGLE_QUOTED_STRING = <span class="php-num">20</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_SINGLE_QUOTED_STRING">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_DOUBLE_QUOTED_STRING" id="TOKEN_DOUBLE_QUOTED_STRING">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_DOUBLE_QUOTED_STRING = <span class="php-num">21</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_DOUBLE_QUOTED_STRING">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_IDENTIFIER" id="TOKEN_IDENTIFIER">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_IDENTIFIER = <span class="php-num">22</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_IDENTIFIER">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_THIS_VARIABLE" id="TOKEN_THIS_VARIABLE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_THIS_VARIABLE = <span class="php-num">23</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_THIS_VARIABLE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_VARIABLE" id="TOKEN_VARIABLE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_VARIABLE = <span class="php-num">24</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_VARIABLE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_HORIZONTAL_WS" id="TOKEN_HORIZONTAL_WS">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_HORIZONTAL_WS = <span class="php-num">25</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_HORIZONTAL_WS">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_PHPDOC_EOL" id="TOKEN_PHPDOC_EOL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_PHPDOC_EOL = <span class="php-num">26</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_PHPDOC_EOL">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_OTHER" id="TOKEN_OTHER">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_OTHER = <span class="php-num">27</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_OTHER">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_END" id="TOKEN_END">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_END = <span class="php-num">28</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_END">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_COLON" id="TOKEN_COLON">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_COLON = <span class="php-num">29</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_COLON">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_WILDCARD" id="TOKEN_WILDCARD">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_WILDCARD = <span class="php-num">30</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_WILDCARD">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_OPEN_CURLY_BRACKET" id="TOKEN_OPEN_CURLY_BRACKET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_OPEN_CURLY_BRACKET = <span class="php-num">31</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_OPEN_CURLY_BRACKET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_CLOSE_CURLY_BRACKET" id="TOKEN_CLOSE_CURLY_BRACKET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_CLOSE_CURLY_BRACKET = <span class="php-num">32</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_CLOSE_CURLY_BRACKET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_NEGATED" id="TOKEN_NEGATED">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_NEGATED = <span class="php-num">33</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_NEGATED">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TOKEN_LABELS" id="TOKEN_LABELS">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TOKEN_LABELS = [
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_REFERENCE">TOKEN_REFERENCE</a> =&gt; <span class="php-str">'\'&amp;\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_UNION">TOKEN_UNION</a> =&gt; <span class="php-str">'\'|\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_INTERSECTION">TOKEN_INTERSECTION</a> =&gt; <span class="php-str">'\'&amp;\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_NULLABLE">TOKEN_NULLABLE</a> =&gt; <span class="php-str">'\'?\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_NEGATED">TOKEN_NEGATED</a> =&gt; <span class="php-str">'\'!\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_OPEN_PARENTHESES">TOKEN_OPEN_PARENTHESES</a> =&gt; <span class="php-str">'\'(\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_CLOSE_PARENTHESES">TOKEN_CLOSE_PARENTHESES</a> =&gt; <span class="php-str">'\')\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_OPEN_ANGLE_BRACKET">TOKEN_OPEN_ANGLE_BRACKET</a> =&gt; <span class="php-str">'\'&lt;\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_CLOSE_ANGLE_BRACKET">TOKEN_CLOSE_ANGLE_BRACKET</a> =&gt; <span class="php-str">'\'&gt;\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_OPEN_SQUARE_BRACKET">TOKEN_OPEN_SQUARE_BRACKET</a> =&gt; <span class="php-str">'\'[\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_CLOSE_SQUARE_BRACKET">TOKEN_CLOSE_SQUARE_BRACKET</a> =&gt; <span class="php-str">'\']\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_OPEN_CURLY_BRACKET">TOKEN_OPEN_CURLY_BRACKET</a> =&gt; <span class="php-str">'\'&#123;\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_CLOSE_CURLY_BRACKET">TOKEN_CLOSE_CURLY_BRACKET</a> =&gt; <span class="php-str">'\'}\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_COMMA">TOKEN_COMMA</a> =&gt; <span class="php-str">'\',\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_COLON">TOKEN_COLON</a> =&gt; <span class="php-str">'\':\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_VARIADIC">TOKEN_VARIADIC</a> =&gt; <span class="php-str">'\'...\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_DOUBLE_COLON">TOKEN_DOUBLE_COLON</a> =&gt; <span class="php-str">'\'::\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_DOUBLE_ARROW">TOKEN_DOUBLE_ARROW</a> =&gt; <span class="php-str">'\'=&gt;\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_EQUAL">TOKEN_EQUAL</a> =&gt; <span class="php-str">'\'=\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_OPEN_PHPDOC">TOKEN_OPEN_PHPDOC</a> =&gt; <span class="php-str">'\'/**\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_CLOSE_PHPDOC">TOKEN_CLOSE_PHPDOC</a> =&gt; <span class="php-str">'\'*/\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_PHPDOC_TAG">TOKEN_PHPDOC_TAG</a> =&gt; <span class="php-str">'TOKEN_PHPDOC_TAG'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_PHPDOC_EOL">TOKEN_PHPDOC_EOL</a> =&gt; <span class="php-str">'TOKEN_PHPDOC_EOL'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_FLOAT">TOKEN_FLOAT</a> =&gt; <span class="php-str">'TOKEN_FLOAT'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_INTEGER">TOKEN_INTEGER</a> =&gt; <span class="php-str">'TOKEN_INTEGER'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_SINGLE_QUOTED_STRING">TOKEN_SINGLE_QUOTED_STRING</a> =&gt; <span class="php-str">'TOKEN_SINGLE_QUOTED_STRING'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_DOUBLE_QUOTED_STRING">TOKEN_DOUBLE_QUOTED_STRING</a> =&gt; <span class="php-str">'TOKEN_DOUBLE_QUOTED_STRING'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_IDENTIFIER">TOKEN_IDENTIFIER</a> =&gt; <span class="php-str">'type'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_THIS_VARIABLE">TOKEN_THIS_VARIABLE</a> =&gt; <span class="php-str">'\'$this\''</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_VARIABLE">TOKEN_VARIABLE</a> =&gt; <span class="php-str">'variable'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_HORIZONTAL_WS">TOKEN_HORIZONTAL_WS</a> =&gt; <span class="php-str">'TOKEN_HORIZONTAL_WS'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_OTHER">TOKEN_OTHER</a> =&gt; <span class="php-str">'TOKEN_OTHER'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_END">TOKEN_END</a> =&gt; <span class="php-str">'TOKEN_END'</span>,
+	<b><span class="active" title="PHPStan\PhpDocParser\Lexer\Lexer">self</span></b>::<a href="PHPStan.PhpDocParser.Lexer.Lexer.html#TOKEN_WILDCARD">TOKEN_WILDCARD</a> =&gt; <span class="php-str">'*'</span>,
+]</code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TOKEN_LABELS">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="VALUE_OFFSET" id="VALUE_OFFSET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>VALUE_OFFSET = <span class="php-num">0</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#VALUE_OFFSET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="TYPE_OFFSET" id="TYPE_OFFSET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>TYPE_OFFSET = <span class="php-num">1</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#TYPE_OFFSET">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

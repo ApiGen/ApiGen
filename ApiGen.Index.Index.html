@@ -1,0 +1,761 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Class ApiGen\Index\Index | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Index.FileIndex.html">
+						FileIndex
+					</a>
+				</li>
+				<li class="active">
+					<a href="ApiGen.Index.Index.html">
+						Index
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Index.NamespaceIndex.html">
+						NamespaceIndex
+					</a>
+				</li>
+		</ul>
+
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Index.html">Index</a>\<a href="ApiGen.Index.Index.html">Index</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+	</table>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Index.Index.html#13" title="Go to source code">Index/Index.php</a><br>
+		</div>
+
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="files" id="$files">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Index.FileIndex.html"><span title="ApiGen\Index\FileIndex">FileIndex</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#15-16" title="Go to source code">$files</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [filePath]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [filePath]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$files">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="namespace" id="$namespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Index.NamespaceIndex.html"><span title="ApiGen\Index\NamespaceIndex">NamespaceIndex</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#18-19" title="Go to source code">$namespace</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [namespaceName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [namespaceName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$namespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="classLike" id="$classLike">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#21-22" title="Go to source code">$classLike</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$classLike">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="class" id="$class">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassInfo.html"><span title="ApiGen\Info\ClassInfo">ClassInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#24-25" title="Go to source code">$class</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [className]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [className]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$class">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="interface" id="$interface">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.InterfaceInfo.html"><span title="ApiGen\Info\InterfaceInfo">InterfaceInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#27-28" title="Go to source code">$interface</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [interfaceName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [interfaceName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$interface">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="trait" id="$trait">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.TraitInfo.html"><span title="ApiGen\Info\TraitInfo">TraitInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#30-31" title="Go to source code">$trait</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [traitName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [traitName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$trait">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enum" id="$enum">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.EnumInfo.html"><span title="ApiGen\Info\EnumInfo">EnumInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#33-34" title="Go to source code">$enum</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [enumName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [enumName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$enum">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="function" id="$function">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#36-37" title="Go to source code">$function</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [functionName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [functionName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$function">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="classExtends" id="$classExtends">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassInfo.html"><span title="ApiGen\Info\ClassInfo">ClassInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#39-40" title="Go to source code">$classExtends</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][classLikeName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][classLikeName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$classExtends">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="classImplements" id="$classImplements">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassInfo.html"><span title="ApiGen\Info\ClassInfo">ClassInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#42-43" title="Go to source code">$classImplements</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][classLikeName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][classLikeName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$classImplements">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="classUses" id="$classUses">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassInfo.html"><span title="ApiGen\Info\ClassInfo">ClassInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#45-46" title="Go to source code">$classUses</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][classLikeName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][classLikeName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$classUses">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="interfaceExtends" id="$interfaceExtends">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.InterfaceInfo.html"><span title="ApiGen\Info\InterfaceInfo">InterfaceInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#48-49" title="Go to source code">$interfaceExtends</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][classLikeName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][classLikeName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$interfaceExtends">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="enumImplements" id="$enumImplements">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.EnumInfo.html"><span title="ApiGen\Info\EnumInfo">EnumInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#51-52" title="Go to source code">$enumImplements</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][classLikeName]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][classLikeName]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$enumImplements">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="dag" id="$dag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#54-55" title="Go to source code">$dag</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][classLikeName] classExtends + classImplements + classUses + interfaceExtends + enumImplements
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][classLikeName] classExtends + classImplements + classUses + interfaceExtends + enumImplements</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$dag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="instanceOf" id="$instanceOf">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#57-58" title="Go to source code">$instanceOf</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][classLikeName], e.g. ['a']['b'] means that B instance of A
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][classLikeName], e.g. ['a']['b'] means that B instance of A</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$instanceOf">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="constants" id="$constants">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#60-61" title="Go to source code">$constants</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [constantName][]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [constantName][]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$constants">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="properties" id="$properties">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#63-64" title="Go to source code">$properties</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [propertyName][]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [propertyName][]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$properties">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="methods" id="$methods">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#66-67" title="Go to source code">$methods</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [methodName][]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [methodName][]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$methods">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="methodOverrides" id="$methodOverrides">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#69-70" title="Go to source code">$methodOverrides</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][methodName], e.g. ['a']['b'] = [C] means method A::b is overriding C::b
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][methodName], e.g. ['a']['b'] = [C] means method A::b is overriding C::b</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$methodOverrides">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="methodOverriddenBy" id="$methodOverriddenBy">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#72-73" title="Go to source code">$methodOverriddenBy</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][methodName][], e.g. ['c']['b'] = [A] means method C::b is overridden by A::b
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][methodName][], e.g. ['c']['b'] = [A] means method C::b is overridden by A::b</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$methodOverriddenBy">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="methodImplements" id="$methodImplements">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#75-76" title="Go to source code">$methodImplements</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][methodName], e.g. ['a']['b'] = [C] means method A::b is implementing C::b
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][methodName], e.g. ['a']['b'] = [C] means method A::b is implementing C::b</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$methodImplements">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="methodImplementedBy" id="$methodImplementedBy">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>[][][]</code>
+			</td>
+
+			<td class="table-cell">
+				<code><var><a href="source-Index.Index.html#78-79" title="Go to source code">$methodImplementedBy</a></var> = []</code>
+
+				
+	<div class="expandable-collapsedView">
+		indexed by [classLikeName][methodName][], e.g. ['c']['b'] = [A] means method C::b is implemented by A::b
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [classLikeName][methodName][], e.g. ['c']['b'] = [A] means method C::b is implemented by A::b</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$methodImplementedBy">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

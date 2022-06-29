@@ -1,0 +1,719 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Interface Symfony\Component\Console\Output\OutputInterface | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.html">Symfony</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.Component.html">Component</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.Component.Console.html">Console</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Symfony.Component.Console.Output.html">Output</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+
+		<h3>Interfaces</h3>
+		<ul>
+				<li class="active">
+					<a href="Symfony.Component.Console.Output.OutputInterface.html">
+						OutputInterface
+					</a>
+				</li>
+		</ul>
+
+
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+		<h1>
+			Interface <a href="namespace-Symfony.html">Symfony</a>\<a href="namespace-Symfony.Component.html">Component</a>\<a href="namespace-Symfony.Component.Console.html">Console</a>\<a href="namespace-Symfony.Component.Console.Output.html">Output</a>\<a href="Symfony.Component.Console.Output.OutputInterface.html">OutputInterface</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>OutputInterface is the interface implemented by all Output classes.</p>
+</div>
+		</div>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<b><span class="active">Symfony\Component\Console\Output\OutputInterface</span></b>
+
+
+	<ul class="classTree">
+	<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html"><span>Symfony\Component\Console\Style\OutputStyle</span></a>
+
+		implements
+			<b><span class="active" title="Symfony\Component\Console\Output\OutputInterface">OutputInterface</span></b>, 
+			<a href="Symfony.Component.Console.Style.StyleInterface.html"><span title="Symfony\Component\Console\Style\StyleInterface">StyleInterface</span></a>
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="write" id="_write">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>write(<span>string|iterable <var>$messages</var></span>, <span>bool <var>$newline</var> = <span class="php-kw">false</span></span>, <span>int <var>$options</var> = <span class="php-num">0</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Writes a message to the output.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Writes a message to the output.</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_write">						<code>Symfony\Component\Console\Style\OutputStyle::write()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_write">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="writeln" id="_writeln">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>writeln(<span>string|iterable <var>$messages</var></span>, <span>int <var>$options</var> = <span class="php-num">0</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Writes a message to the output and adds a newline at the end.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Writes a message to the output and adds a newline at the end.</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_writeln">						<code>Symfony\Component\Console\Style\OutputStyle::writeln()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_writeln">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setVerbosity" id="_setVerbosity">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setVerbosity(<span>int <var>$level</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the verbosity of the output.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the verbosity of the output.</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_setVerbosity">						<code>Symfony\Component\Console\Style\OutputStyle::setVerbosity()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setVerbosity">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getVerbosity" id="_getVerbosity">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getVerbosity(): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the current verbosity of the output.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the current verbosity of the output.</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_getVerbosity">						<code>Symfony\Component\Console\Style\OutputStyle::getVerbosity()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getVerbosity">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isQuiet" id="_isQuiet">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isQuiet(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns whether verbosity is quiet (-q).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns whether verbosity is quiet (-q).</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_isQuiet">						<code>Symfony\Component\Console\Style\OutputStyle::isQuiet()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isQuiet">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isVerbose" id="_isVerbose">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isVerbose(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns whether verbosity is verbose (-v).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns whether verbosity is verbose (-v).</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_isVerbose">						<code>Symfony\Component\Console\Style\OutputStyle::isVerbose()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isVerbose">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isVeryVerbose" id="_isVeryVerbose">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isVeryVerbose(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns whether verbosity is very verbose (-vv).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns whether verbosity is very verbose (-vv).</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_isVeryVerbose">						<code>Symfony\Component\Console\Style\OutputStyle::isVeryVerbose()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isVeryVerbose">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isDebug" id="_isDebug">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isDebug(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns whether verbosity is debug (-vvv).
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns whether verbosity is debug (-vvv).</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_isDebug">						<code>Symfony\Component\Console\Style\OutputStyle::isDebug()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isDebug">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setDecorated" id="_setDecorated">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setDecorated(<span>bool <var>$decorated</var></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Sets the decorated flag.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the decorated flag.</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_setDecorated">						<code>Symfony\Component\Console\Style\OutputStyle::setDecorated()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setDecorated">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isDecorated" id="_isDecorated">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isDecorated(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the decorated flag.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the decorated flag.</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_isDecorated">						<code>Symfony\Component\Console\Style\OutputStyle::isDecorated()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isDecorated">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setFormatter" id="_setFormatter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setFormatter(<span><a href="Symfony.Component.Console.Formatter.OutputFormatterInterface.html"><span title="Symfony\Component\Console\Formatter\OutputFormatterInterface">OutputFormatterInterface</span></a> <var>$formatter</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_setFormatter">						<code>Symfony\Component\Console\Style\OutputStyle::setFormatter()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setFormatter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getFormatter" id="_getFormatter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getFormatter(): <a href="Symfony.Component.Console.Formatter.OutputFormatterInterface.html"><span title="Symfony\Component\Console\Formatter\OutputFormatterInterface">OutputFormatterInterface</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Returns current output formatter instance.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns current output formatter instance.</p>
+</div>
+
+
+
+
+		<h4>Implemented by</h4>
+		<ul>
+				<li>
+<a href="Symfony.Component.Console.Style.OutputStyle.html#_getFormatter">						<code>Symfony\Component\Console\Style\OutputStyle::getFormatter()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getFormatter">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="VERBOSITY_QUIET" id="VERBOSITY_QUIET">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>VERBOSITY_QUIET = <span class="php-num">16</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#VERBOSITY_QUIET">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="VERBOSITY_NORMAL" id="VERBOSITY_NORMAL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>VERBOSITY_NORMAL = <span class="php-num">32</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#VERBOSITY_NORMAL">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="VERBOSITY_VERBOSE" id="VERBOSITY_VERBOSE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>VERBOSITY_VERBOSE = <span class="php-num">64</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#VERBOSITY_VERBOSE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="VERBOSITY_VERY_VERBOSE" id="VERBOSITY_VERY_VERBOSE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>VERBOSITY_VERY_VERBOSE = <span class="php-num">128</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#VERBOSITY_VERY_VERBOSE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="VERBOSITY_DEBUG" id="VERBOSITY_DEBUG">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>VERBOSITY_DEBUG = <span class="php-num">256</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#VERBOSITY_DEBUG">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="OUTPUT_NORMAL" id="OUTPUT_NORMAL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>OUTPUT_NORMAL = <span class="php-num">1</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#OUTPUT_NORMAL">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="OUTPUT_RAW" id="OUTPUT_RAW">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>OUTPUT_RAW = <span class="php-num">2</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#OUTPUT_RAW">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="OUTPUT_PLAIN" id="OUTPUT_PLAIN">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>OUTPUT_PLAIN = <span class="php-num">4</span></code>
+
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#OUTPUT_PLAIN">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>

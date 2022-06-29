@@ -1,0 +1,84 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>File Analyzer/AnalyzeResult.php | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.NodeVisitors.html">NodeVisitors</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+
+		<h3>Classes</h3>
+		<ul>
+				<li class="active">
+					<a href="ApiGen.Analyzer.AnalyzeResult.html">
+						AnalyzeResult
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Analyzer.AnalyzeTask.html">
+						AnalyzeTask
+					</a>
+				</li>
+				<li>
+					<a href="ApiGen.Analyzer.Filter.html">
+						Filter
+					</a>
+				</li>
+		</ul>
+
+
+
+		<h3>Enums</h3>
+		<ul>
+				<li>
+					<a href="ApiGen.Analyzer.IdentifierKind.html">
+						IdentifierKind
+					</a>
+				</li>
+		</ul>
+
+
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-content">
+	<table class="source"><tr id="1" class="source-line"><td><a class="source-lineNum" href="#1"> 1: </a></td><td><span class="php-tag">&lt;?php </span><span class="php-kw">declare</span>(strict_types = <span class="php-num">1</span>);</td></tr><tr id="2" class="source-line"><td><a class="source-lineNum" href="#2"> 2: </a></td><td></td></tr><tr id="3" class="source-line"><td><a class="source-lineNum" href="#3"> 3: </a></td><td><span class="php-kw">namespace</span> ApiGen\Analyzer;</td></tr><tr id="4" class="source-line"><td><a class="source-lineNum" href="#4"> 4: </a></td><td></td></tr><tr id="5" class="source-line"><td><a class="source-lineNum" href="#5"> 5: </a></td><td><span class="php-kw">use</span> ApiGen\Info\ClassLikeInfo;</td></tr><tr id="6" class="source-line"><td><a class="source-lineNum" href="#6"> 6: </a></td><td><span class="php-kw">use</span> ApiGen\Info\ErrorInfo;</td></tr><tr id="7" class="source-line"><td><a class="source-lineNum" href="#7"> 7: </a></td><td><span class="php-kw">use</span> ApiGen\Info\FunctionInfo;</td></tr><tr id="8" class="source-line"><td><a class="source-lineNum" href="#8"> 8: </a></td><td></td></tr><tr id="9" class="source-line"><td><a class="source-lineNum" href="#9"> 9: </a></td><td></td></tr><tr id="10" class="source-line"><td><a class="source-lineNum" href="#10">10: </a></td><td><span class="php-kw">class</span> AnalyzeResult</td></tr><tr id="11" class="source-line"><td><a class="source-lineNum" href="#11">11: </a></td><td>{</td></tr><tr id="12" class="source-line"><td><a class="source-lineNum" href="#12">12: </a></td><td>	<span class="php-comment">/**</span></td></tr><tr id="13" class="source-line"><td><a class="source-lineNum" href="#13">13: </a></td><td><span class="php-comment">	 * @param ClassLikeInfo[] $classLike indexed by [classLikeName]</span></td></tr><tr id="14" class="source-line"><td><a class="source-lineNum" href="#14">14: </a></td><td><span class="php-comment">	 * @param FunctionInfo[]  $function  indexed by [functionName]</span></td></tr><tr id="15" class="source-line"><td><a class="source-lineNum" href="#15">15: </a></td><td><span class="php-comment">	 * @param ErrorInfo[][]   $error     indexed by [errorKind][]</span></td></tr><tr id="16" class="source-line"><td><a class="source-lineNum" href="#16">16: </a></td><td><span class="php-comment">	 */</span></td></tr><tr id="17" class="source-line"><td><a class="source-lineNum" href="#17">17: </a></td><td>	<span class="php-kw">public</span> <span class="php-kw">function</span> __construct(</td></tr><tr id="18" class="source-line"><td><a class="source-lineNum" href="#18">18: </a></td><td>		<span class="php-kw">public</span> <span class="php-kw">array</span> <span class="php-var">$classLike</span>,</td></tr><tr id="19" class="source-line"><td><a class="source-lineNum" href="#19">19: </a></td><td>		<span class="php-kw">public</span> <span class="php-kw">array</span> <span class="php-var">$function</span>,</td></tr><tr id="20" class="source-line"><td><a class="source-lineNum" href="#20">20: </a></td><td>		<span class="php-kw">public</span> <span class="php-kw">array</span> <span class="php-var">$error</span>,</td></tr><tr id="21" class="source-line"><td><a class="source-lineNum" href="#21">21: </a></td><td>	) {</td></tr><tr id="22" class="source-line"><td><a class="source-lineNum" href="#22">22: </a></td><td>	}</td></tr><tr id="23" class="source-line"><td><a class="source-lineNum" href="#23">23: </a></td><td>}</td></tr><tr id="24" class="source-line"><td><a class="source-lineNum" href="#24">24: </a></td><td></td></tr></table>
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+</body>
+</html>
