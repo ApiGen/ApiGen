@@ -173,7 +173,7 @@ class Analyzer
 					$errors[$info->kind][] = $info;
 
 				} else {
-					throw new \LogicException(sprintf('Unexpected task result %s, expected either %s or %s', get_debug_type($info), ClassLikeInfo::class, ErrorInfo::class));
+					throw new \LogicException(sprintf('Unexpected task result %s', get_debug_type($info)));
 				}
 			}
 
