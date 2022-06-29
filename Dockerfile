@@ -60,6 +60,7 @@ COPY bin                     /src/bin
 COPY src                     /src/src
 COPY stubs                   /src/stubs
 COPY apigen.neon             /src/apigen.neon
+COPY LICENSE                 /src/LICENSE
 RUN composer dump-autoload --classmap-authoritative
 
 

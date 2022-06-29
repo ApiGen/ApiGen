@@ -3,5 +3,6 @@
 !/src
 !/stubs
 !/apigen.neon
+!/LICENSE
 !/composer.json
 !/php.ini
