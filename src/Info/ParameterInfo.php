@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info;
+namespace ApiGen\Info;
 
-use ApiGenX\Index\Index;
+use ApiGen\Index\Index;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 use function array_values;

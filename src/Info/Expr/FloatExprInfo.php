@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info\Expr;
+namespace ApiGen\Info\Expr;
 
-use ApiGenX\Info\ExprInfo;
+use ApiGen\Info\ExprInfo;
 
 use function is_finite;
 use function json_encode;

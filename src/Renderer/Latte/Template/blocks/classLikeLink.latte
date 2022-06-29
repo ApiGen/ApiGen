@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define classLikeLink, ApiGenX\Info\ClassLikeInfo $classLike, bool $short = false, ?string $text = null}{*
+{define classLikeLink, ApiGen\Info\ClassLikeInfo $classLike, bool $short = false, ?string $text = null}{*
 	*}{var bool $active = $classLike === $layout->activeElement}{*
 	*}<a n:tag-if="!$active" href="{classLikeUrl($classLike)}">{*
 		*}<b n:tag-if="$active">{*

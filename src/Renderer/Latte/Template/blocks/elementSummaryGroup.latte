@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define elementSummaryGroup, string $heading, ApiGenX\Info\ElementInfo[] $elements, bool $showDescription = true, bool $onlyPrimary = false}
+{define elementSummaryGroup, string $heading, ApiGen\Info\ElementInfo[] $elements, bool $showDescription = true, bool $onlyPrimary = false}
 	{try}
 		<tr>
 			<th class="table-heading" colspan="2">{$heading}</th>

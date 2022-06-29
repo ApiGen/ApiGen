@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte\Template;
+namespace ApiGen\Renderer\Latte\Template;
 
 
 class ConfigParameters

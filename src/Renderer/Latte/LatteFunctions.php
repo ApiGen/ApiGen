@@ -1,17 +1,17 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte;
+namespace ApiGen\Renderer\Latte;
 
-use ApiGenX\Index\NamespaceIndex;
-use ApiGenX\Info\ClassInfo;
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\ElementInfo;
-use ApiGenX\Info\EnumInfo;
-use ApiGenX\Info\FunctionInfo;
-use ApiGenX\Info\InterfaceInfo;
-use ApiGenX\Info\TraitInfo;
-use ApiGenX\Renderer\SourceHighlighter;
-use ApiGenX\Renderer\UrlGenerator;
+use ApiGen\Index\NamespaceIndex;
+use ApiGen\Info\ClassInfo;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\ElementInfo;
+use ApiGen\Info\EnumInfo;
+use ApiGen\Info\FunctionInfo;
+use ApiGen\Info\InterfaceInfo;
+use ApiGen\Info\TraitInfo;
+use ApiGen\Renderer\SourceHighlighter;
+use ApiGen\Renderer\UrlGenerator;
 use Latte\Runtime\Html;
 use League\CommonMark\ConverterInterface;
 use Nette\Utils\Strings;

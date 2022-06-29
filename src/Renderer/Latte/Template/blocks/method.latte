@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define method, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MethodInfo $method}
+{define method, ApiGen\Info\ClassLikeInfo $classLike, ApiGen\Info\MethodInfo $method}
 	{embed member, $method}
 		{block cells}
 			<td class="table-cell table-shrink">

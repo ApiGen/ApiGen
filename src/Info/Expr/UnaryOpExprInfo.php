@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info\Expr;
+namespace ApiGen\Info\Expr;
 
-use ApiGenX\Info\ExprInfo;
+use ApiGen\Info\ExprInfo;
 
 
 class UnaryOpExprInfo implements ExprInfo

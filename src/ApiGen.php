@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX;
+namespace ApiGen;
 
-use ApiGenX\Analyzer\AnalyzeResult;
-use ApiGenX\Index\Index;
+use ApiGen\Analyzer\AnalyzeResult;
+use ApiGen\Index\Index;
 use Nette\Utils\Finder;
 use Symfony\Component\Console\Style\OutputStyle;
 

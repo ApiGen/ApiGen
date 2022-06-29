@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define parameter, ApiGenX\Info\ParameterInfo $parameter, ?ApiGenX\Info\ClassLikeInfo $classLike = null}{*
+{define parameter, ApiGen\Info\ParameterInfo $parameter, ?ApiGen\Info\ClassLikeInfo $classLike = null}{*
 	*}<span>{*
 		*}{if $parameter->type}{include type, type: $parameter->type} {/if}{*
 		*}{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>{*

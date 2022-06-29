@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define genericParameters, ApiGenX\Info\GenericParameterInfo[] $genericParameters}{*
+{define genericParameters, ApiGen\Info\GenericParameterInfo[] $genericParameters}{*
 	*}{if $genericParameters}{*
 		*}&lt;{*
 		*}{foreach $genericParameters as $genericParameter}{*
@@ -13,14 +13,14 @@
 	*}{/if}{*
 *}{/define}
 
-{define genericParameter, ApiGenX\Info\GenericParameterInfo $genericParameter}{*
+{define genericParameter, ApiGen\Info\GenericParameterInfo $genericParameter}{*
 	*}{include genericParameterVariance, $genericParameter->variance}{*
 	*}<span title="{$genericParameter->description}">{$genericParameter->name}</span>{*
 	*}{if $genericParameter->bound} is {include type, $genericParameter->bound}{/if}{*
 *}{/define}
 
-{define genericParameterVariance, ApiGenX\Info\GenericParameterVariance $variance}{*
-	*}{if $variance === ApiGenX\Info\GenericParameterVariance::Covariant}out {*
-	*}{elseif $variance === ApiGenX\Info\GenericParameterVariance::Contravariant}in {*
+{define genericParameterVariance, ApiGen\Info\GenericParameterVariance $variance}{*
+	*}{if $variance === ApiGen\Info\GenericParameterVariance::Covariant}out {*
+	*}{elseif $variance === ApiGen\Info\GenericParameterVariance::Contravariant}in {*
 	*}{/if}{*
 *}{/define}

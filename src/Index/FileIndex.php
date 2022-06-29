@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Index;
+namespace ApiGen\Index;
 
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\FunctionInfo;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\FunctionInfo;
 
 
 class FileIndex

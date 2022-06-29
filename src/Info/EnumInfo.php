@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info;
+namespace ApiGen\Info;
 
 
 class EnumInfo extends ClassLikeInfo

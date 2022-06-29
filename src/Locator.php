@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX;
+namespace ApiGen;
 
-use ApiGenX\Info\ClassLikeReferenceInfo;
+use ApiGen\Info\ClassLikeReferenceInfo;
 use Composer\Autoload\ClassLoader;
 use JetBrains\PHPStormStub\PhpStormStubsMap;
 use League;

@@ -1,22 +1,22 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte;
+namespace ApiGen\Renderer\Latte;
 
-use ApiGenX\Index\FileIndex;
-use ApiGenX\Index\Index;
-use ApiGenX\Index\NamespaceIndex;
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\FunctionInfo;
-use ApiGenX\Renderer;
-use ApiGenX\Renderer\Latte\Template\ClassLikeTemplate;
-use ApiGenX\Renderer\Latte\Template\ConfigParameters;
-use ApiGenX\Renderer\Latte\Template\FunctionTemplate;
-use ApiGenX\Renderer\Latte\Template\IndexTemplate;
-use ApiGenX\Renderer\Latte\Template\LayoutParameters;
-use ApiGenX\Renderer\Latte\Template\NamespaceTemplate;
-use ApiGenX\Renderer\Latte\Template\SourceTemplate;
-use ApiGenX\Renderer\Latte\Template\TreeTemplate;
-use ApiGenX\Renderer\UrlGenerator;
+use ApiGen\Index\FileIndex;
+use ApiGen\Index\Index;
+use ApiGen\Index\NamespaceIndex;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\FunctionInfo;
+use ApiGen\Renderer;
+use ApiGen\Renderer\Latte\Template\ClassLikeTemplate;
+use ApiGen\Renderer\Latte\Template\ConfigParameters;
+use ApiGen\Renderer\Latte\Template\FunctionTemplate;
+use ApiGen\Renderer\Latte\Template\IndexTemplate;
+use ApiGen\Renderer\Latte\Template\LayoutParameters;
+use ApiGen\Renderer\Latte\Template\NamespaceTemplate;
+use ApiGen\Renderer\Latte\Template\SourceTemplate;
+use ApiGen\Renderer\Latte\Template\TreeTemplate;
+use ApiGen\Renderer\UrlGenerator;
 use Latte;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;

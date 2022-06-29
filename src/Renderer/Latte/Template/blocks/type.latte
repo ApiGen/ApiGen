@@ -1,12 +1,12 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define type, PHPStan\PhpDocParser\Ast\Type\TypeNode $type, bool $brackets = false, bool $short = true}{*
 	*}{if $type instanceof PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode}{*
-		*}{var ApiGenX\Analyzer\IdentifierKind $kind = $type->getAttribute('kind')}{*
-		*}{if $kind === ApiGenX\Analyzer\IdentifierKind::ClassLike}{*
-			*}{var ApiGenX\Info\ClassLikeReferenceInfo $ref = $type->getAttribute('classLikeReference')}{*
+		*}{var ApiGen\Analyzer\IdentifierKind $kind = $type->getAttribute('kind')}{*
+		*}{if $kind === ApiGen\Analyzer\IdentifierKind::ClassLike}{*
+			*}{var ApiGen\Info\ClassLikeReferenceInfo $ref = $type->getAttribute('classLikeReference')}{*
 			*}{include classLikeLink, $index->classLike[$ref->fullLower], $short}{*
 		*}{else}{*
 			*}{$type}{*

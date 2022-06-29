@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte\Template;
+namespace ApiGen\Renderer\Latte\Template;
 
-use ApiGenX\Index\NamespaceIndex;
-use ApiGenX\Info\ElementInfo;
+use ApiGen\Index\NamespaceIndex;
+use ApiGen\Info\ElementInfo;
 
 
 class LayoutParameters

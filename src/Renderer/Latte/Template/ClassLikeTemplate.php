@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte\Template;
+namespace ApiGen\Renderer\Latte\Template;
 
-use ApiGenX\Index\Index;
-use ApiGenX\Info\ClassLikeInfo;
+use ApiGen\Index\Index;
+use ApiGen\Info\ClassLikeInfo;
 
 
 class ClassLikeTemplate

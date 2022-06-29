@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX;
+namespace ApiGen;
 
-use ApiGenX\Index\Index;
+use ApiGen\Index\Index;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 

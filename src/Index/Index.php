@@ -1,13 +1,13 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Index;
+namespace ApiGen\Index;
 
-use ApiGenX\Info\ClassInfo;
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\EnumInfo;
-use ApiGenX\Info\FunctionInfo;
-use ApiGenX\Info\InterfaceInfo;
-use ApiGenX\Info\TraitInfo;
+use ApiGen\Info\ClassInfo;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\EnumInfo;
+use ApiGen\Info\FunctionInfo;
+use ApiGen\Info\InterfaceInfo;
+use ApiGen\Info\TraitInfo;
 
 
 class Index

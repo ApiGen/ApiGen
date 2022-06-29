@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Analyzer;
+namespace ApiGen\Analyzer;
 
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\ErrorInfo;
-use ApiGenX\Info\FunctionInfo;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\ErrorInfo;
+use ApiGen\Info\FunctionInfo;
 
 
 class AnalyzeResult

@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define enumCase, ApiGenX\Info\EnumInfo $enum, ApiGenX\Info\EnumCaseInfo $enumCase}
+{define enumCase, ApiGen\Info\EnumInfo $enum, ApiGen\Info\EnumCaseInfo $enumCase}
 	{embed member, $enumCase}
 		{block cells}
 			<td class="table-cell">

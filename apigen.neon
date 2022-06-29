@@ -43,56 +43,56 @@ php:
 services:
 	# ApiGen
 	apigen:
-		factory: ApiGenX\ApiGen(paths: %paths%, include: %include%, exclude: %exclude%)
+		factory: ApiGen\ApiGen(paths: %paths%, include: %include%, exclude: %exclude%)
 
 	# Locator
 	locator:
-		factory: ApiGenX\Locator::create(projectDir: %workingDir%)
+		factory: ApiGen\Locator::create(projectDir: %workingDir%)
 
 	# Analyzer
 	analyzer.bodySkipper:
-		factory: ApiGenX\Analyzer\NodeVisitors\BodySkipper
+		factory: ApiGen\Analyzer\NodeVisitors\BodySkipper
 
 	analyze.phpDocResolver:
-		factory: ApiGenX\Analyzer\NodeVisitors\PhpDocResolver
+		factory: ApiGen\Analyzer\NodeVisitors\PhpDocResolver
 
 	analyzer.nodeTraverser:
 		type: PhpParser\NodeTraverserInterface
 		factory: PhpParser\NodeTraverser
 		setup!:
-			- addVisitor(@ApiGenX\Analyzer\NodeVisitors\BodySkipper)
+			- addVisitor(@ApiGen\Analyzer\NodeVisitors\BodySkipper)
 			- addVisitor(@PhpParser\NodeVisitor\NameResolver)
-			- addVisitor(@ApiGenX\Analyzer\NodeVisitors\PhpDocResolver)
+			- addVisitor(@ApiGen\Analyzer\NodeVisitors\PhpDocResolver)
 
 	analyzer.filter:
-		factory: ApiGenX\Analyzer\Filter(excludeProtected: %excludeProtected%, excludePrivate: %excludePrivate%, excludeTagged: %excludeTagged%)
+		factory: ApiGen\Analyzer\Filter(excludeProtected: %excludeProtected%, excludePrivate: %excludePrivate%, excludeTagged: %excludeTagged%)
 
 	analyzer:
-		factory: ApiGenX\Analyzer
+		factory: ApiGen\Analyzer
 
 	# Indexer
 	indexer:
-		factory: ApiGenX\Indexer
+		factory: ApiGen\Indexer
 
 	# Renderer
 	renderer.urlGenerator:
-		factory: ApiGenX\Renderer\UrlGenerator(ApiGenX\Helpers::baseDir(%paths%), %baseUrl%)
+		factory: ApiGen\Renderer\UrlGenerator(ApiGen\Helpers::baseDir(%paths%), %baseUrl%)
 
 	renderer.sourceHighlighter:
-		factory: ApiGenX\Renderer\SourceHighlighter
+		factory: ApiGen\Renderer\SourceHighlighter
 
 	renderer.latte.functions:
-		factory: ApiGenX\Renderer\Latte\LatteFunctions
+		factory: ApiGen\Renderer\Latte\LatteFunctions
 
 	renderer.latte.engineFactory:
-		factory: ApiGenX\Renderer\Latte\LatteEngineFactory(tempDir: %tempDir%, themeDir: %themeDir%)
+		factory: ApiGen\Renderer\Latte\LatteEngineFactory(tempDir: %tempDir%, themeDir: %themeDir%)
 
 	renderer.latte.engine:
-		factory: @ApiGenX\Renderer\Latte\LatteEngineFactory::create()
+		factory: @ApiGen\Renderer\Latte\LatteEngineFactory::create()
 
 	renderer:
-		type: ApiGenX\Renderer
-		factory: ApiGenX\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%, version: %version%)
+		type: ApiGen\Renderer
+		factory: ApiGen\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%, version: %version%)
 
 	# league/commonmark
 	commonMark:

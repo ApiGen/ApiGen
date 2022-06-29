@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte;
+namespace ApiGen\Renderer\Latte;
 
-use ApiGenX\Renderer\UrlGenerator;
+use ApiGen\Renderer\UrlGenerator;
 use Latte;
 use Throwable;
 

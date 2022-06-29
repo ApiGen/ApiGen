@@ -1,16 +1,16 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer;
+namespace ApiGen\Renderer;
 
-use ApiGenX\Index\NamespaceIndex;
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\ConstantInfo;
-use ApiGenX\Info\EnumCaseInfo;
-use ApiGenX\Info\FunctionInfo;
-use ApiGenX\Info\MemberInfo;
-use ApiGenX\Info\MethodInfo;
-use ApiGenX\Info\ParameterInfo;
-use ApiGenX\Info\PropertyInfo;
+use ApiGen\Index\NamespaceIndex;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\ConstantInfo;
+use ApiGen\Info\EnumCaseInfo;
+use ApiGen\Info\FunctionInfo;
+use ApiGen\Info\MemberInfo;
+use ApiGen\Info\MethodInfo;
+use ApiGen\Info\ParameterInfo;
+use ApiGen\Info\PropertyInfo;
 
 use function assert;
 use function get_debug_type;

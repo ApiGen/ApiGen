@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define memberSourceLink, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MemberInfo $member}{*
+{define memberSourceLink, ApiGen\Info\ClassLikeInfo $classLike, ApiGen\Info\MemberInfo $member}{*
 	*}<a n:tag-if="$classLike->file && $classLike->primary" href="{memberSourceUrl($classLike, $member)}" title="Go to source code">{*
 		*}<span n:tag-if="$member->isDeprecated()" class="deprecated">{include content}</span>{*
 	*}</a>{*

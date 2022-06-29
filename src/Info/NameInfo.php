@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info;
+namespace ApiGen\Info;
 
 use function strrpos;
 use function strtolower;
@@ -9,10 +9,10 @@ use function substr;
 
 class NameInfo
 {
-	/** @var string e.g. 'ApiGenX\Info\Traits\HasName' */
+	/** @var string e.g. 'ApiGen\Info\Traits\HasName' */
 	public string $full;
 
-	/** @var string e.g. 'apigenx\info\traits\hasname' */
+	/** @var string e.g. 'apigen\info\traits\hasname' */
 	public string $fullLower;
 
 	/** @var string e.g. 'HasName' */
@@ -21,10 +21,10 @@ class NameInfo
 	/** @var string e.g. 'hasname' */
 	public string $shortLower;
 
-	/** @var string e.g. 'ApiGenX\Info\Traits' */
+	/** @var string e.g. 'ApiGen\Info\Traits' */
 	public string $namespace;
 
-	/** @var string e.g. 'apigenx\info\traits' */
+	/** @var string e.g. 'apigen\info\traits' */
 	public string $namespaceLower;
 
 

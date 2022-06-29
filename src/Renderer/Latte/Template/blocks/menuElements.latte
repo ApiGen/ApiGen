@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define menuElements, ApiGenX\Info\ElementInfo[] $elements, string $heading, bool $onlyPrimary = true}
+{define menuElements, ApiGen\Info\ElementInfo[] $elements, string $heading, bool $onlyPrimary = true}
 	{try}
 		<h3>{$heading}</h3>
 		<ul>

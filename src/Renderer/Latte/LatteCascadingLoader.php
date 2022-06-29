@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte;
+namespace ApiGen\Renderer\Latte;
 
 use Latte;
 

@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Analyzer\NodeVisitors;
+namespace ApiGen\Analyzer\NodeVisitors;
 
-use ApiGenX\Analyzer\IdentifierKind;
-use ApiGenX\Info\ClassLikeReferenceInfo;
-use ApiGenX\Info\GenericParameterInfo;
-use ApiGenX\Info\GenericParameterVariance;
+use ApiGen\Analyzer\IdentifierKind;
+use ApiGen\Info\ClassLikeReferenceInfo;
+use ApiGen\Info\GenericParameterInfo;
+use ApiGen\Info\GenericParameterVariance;
 use PhpParser\NameContext;
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;

@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define classLikeKind, ApiGenX\Info\ClassLikeInfo $classLike}{*
+{define classLikeKind, ApiGen\Info\ClassLikeInfo $classLike}{*
 	*}{if isInterface($classLike)}Interface{*
 	*}{elseif isTrait($classLike)}Trait{*
 	*}{elseif isClass($classLike)}Class{*

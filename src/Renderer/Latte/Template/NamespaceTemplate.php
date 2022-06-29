@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Renderer\Latte\Template;
+namespace ApiGen\Renderer\Latte\Template;
 
-use ApiGenX\Index\Index;
-use ApiGenX\Index\NamespaceIndex;
+use ApiGen\Index\Index;
+use ApiGen\Index\NamespaceIndex;
 
 
 class NamespaceTemplate

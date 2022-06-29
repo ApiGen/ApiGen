@@ -1,7 +1,7 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define memberLink, ApiGenX\Info\ClassLikeInfo $classLike, ApiGenX\Info\MemberInfo $member}{*
+{define memberLink, ApiGen\Info\ClassLikeInfo $classLike, ApiGen\Info\MemberInfo $member}{*
 	*}<a href="{memberUrl($classLike, $member)}" n:class="$member->isDeprecated() ? deprecated">{include content}</a>{*
 *}{/define}

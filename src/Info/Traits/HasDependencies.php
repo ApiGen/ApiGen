@@ -1,8 +1,8 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info\Traits;
+namespace ApiGen\Info\Traits;
 
-use ApiGenX\Info\ClassLikeReferenceInfo;
+use ApiGen\Info\ClassLikeReferenceInfo;
 
 
 trait HasDependencies

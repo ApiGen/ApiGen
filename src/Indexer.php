@@ -1,18 +1,18 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX;
+namespace ApiGen;
 
-use ApiGenX\Index\FileIndex;
-use ApiGenX\Index\Index;
-use ApiGenX\Index\NamespaceIndex;
-use ApiGenX\Info\ClassInfo;
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\EnumInfo;
-use ApiGenX\Info\FunctionInfo;
-use ApiGenX\Info\InterfaceInfo;
-use ApiGenX\Info\MissingInfo;
-use ApiGenX\Info\NameInfo;
-use ApiGenX\Info\TraitInfo;
+use ApiGen\Index\FileIndex;
+use ApiGen\Index\Index;
+use ApiGen\Index\NamespaceIndex;
+use ApiGen\Info\ClassInfo;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\EnumInfo;
+use ApiGen\Info\FunctionInfo;
+use ApiGen\Info\InterfaceInfo;
+use ApiGen\Info\MissingInfo;
+use ApiGen\Info\NameInfo;
+use ApiGen\Info\TraitInfo;
 
 use function array_keys;
 use function array_map;

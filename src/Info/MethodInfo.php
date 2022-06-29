@@ -1,9 +1,9 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info;
+namespace ApiGen\Info;
 
-use ApiGenX\Index\Index;
-use ApiGenX\Info\Traits\HasGenericParameters;
+use ApiGen\Index\Index;
+use ApiGen\Info\Traits\HasGenericParameters;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 use function strtolower;

@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define propertyUsed, ApiGenX\Info\ClassLikeInfo $from, array $overriden}
+{define propertyUsed, ApiGen\Info\ClassLikeInfo $from, array $overriden}
 	{try}
 		<table class="table" n:if="isTrait($from)">
 			<tr>

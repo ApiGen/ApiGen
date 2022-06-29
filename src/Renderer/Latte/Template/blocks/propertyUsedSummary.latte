@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define propertyUsedSummary, ApiGenX\Info\ClassLikeInfo $classLike, array $overriden}
+{define propertyUsedSummary, ApiGen\Info\ClassLikeInfo $classLike, array $overriden}
 	{if isClass($classLike)}
 		{if $classLike->extends}
 			{include propertyUsed, $index->classLike[$classLike->extends->fullLower], $overriden + $classLike->properties}

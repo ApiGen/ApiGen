@@ -1,11 +1,11 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info;
+namespace ApiGen\Info;
 
-use ApiGenX\Index\Index;
-use ApiGenX\Info\Traits\HasLineLocation;
-use ApiGenX\Info\Traits\HasTags;
-use ApiGenX\Info\Traits\HasVisibility;
+use ApiGen\Index\Index;
+use ApiGen\Info\Traits\HasLineLocation;
+use ApiGen\Info\Traits\HasTags;
+use ApiGen\Info\Traits\HasVisibility;
 
 
 abstract class MemberInfo

@@ -1,10 +1,10 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Analyzer;
+namespace ApiGen\Analyzer;
 
-use ApiGenX\Info\ClassLikeInfo;
-use ApiGenX\Info\FunctionInfo;
-use ApiGenX\Info\MemberInfo;
+use ApiGen\Info\ClassLikeInfo;
+use ApiGen\Info\FunctionInfo;
+use ApiGen\Info\MemberInfo;
 use PhpParser\Node;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 

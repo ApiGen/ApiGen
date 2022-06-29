@@ -1,8 +1,8 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define menuGroup, ApiGenX\Index\NamespaceIndex $namespace, int $level = 0}
+{define menuGroup, ApiGen\Index\NamespaceIndex $namespace, int $level = 0}
 	<ul>
 		{foreach $namespace->children as $child}
 			{var bool $isActive = $layout->activeNamespace && str_starts_with("{$layout->activeNamespace->name->fullLower}\\", "{$child->name->fullLower}\\")}

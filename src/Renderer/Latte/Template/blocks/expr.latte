@@ -1,15 +1,15 @@
-{varType ApiGenX\Index\Index $index}
-{varType ApiGenX\Renderer\Latte\Template\ConfigParameters $config}
-{varType ApiGenX\Renderer\Latte\Template\LayoutParameters $layout}
+{varType ApiGen\Index\Index $index}
+{varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
+{varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define expr, ApiGenX\Info\ExprInfo $expr, ?ApiGenX\Info\ClassLikeInfo $scope, string $indent = ''}{*
-	*}{if $expr instanceof ApiGenX\Info\Expr\BooleanExprInfo || $expr instanceof ApiGenX\Info\Expr\NullExprInfo}{*
+{define expr, ApiGen\Info\ExprInfo $expr, ?ApiGen\Info\ClassLikeInfo $scope, string $indent = ''}{*
+	*}{if $expr instanceof ApiGen\Info\Expr\BooleanExprInfo || $expr instanceof ApiGen\Info\Expr\NullExprInfo}{*
 		*}<span class="php-kw">{$expr->toString()}</span>{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\IntegerExprInfo || $expr instanceof ApiGenX\Info\Expr\FloatExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\IntegerExprInfo || $expr instanceof ApiGen\Info\Expr\FloatExprInfo}{*
 		*}<span class="php-num">{$expr->raw}</span>{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\StringExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\StringExprInfo}{*
 		*}<span class="php-str">{$expr->raw ?? $expr->toString()}</span>{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\ArrayExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\ArrayExprInfo}{*
 		*}{embed autoBreakingLine, items: $expr->items, maxWidth: 100, indent: $indent}{*
 			*}{block before}{="["}{/block}{*
 			*}{block after}{="]"}{/block}{*
@@ -19,7 +19,7 @@
 			*}{/block}{*
 			*}{block sep},{/block}{*
 		*}{/embed}{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\ClassConstantFetchExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\ClassConstantFetchExprInfo}{*
 		*}{if $expr->classLike->fullLower === 'self' && $scope}{*
 			*}{var $memberClassLike = $scope}{*
 			*}{include classLikeLink, classLike: $memberClassLike, text: $expr->classLike->fullLower}{*
@@ -43,23 +43,23 @@
 		*}{else}{*
 			*}{$expr->name}{*
 		*}{/if}{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\ConstantFetchExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\ConstantFetchExprInfo}{*
 		*}{$expr->name}{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\UnaryOpExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\UnaryOpExprInfo}{*
 		*}{$expr->op}{*
 		*}{include this, expr: $expr->expr, scope: $scope}{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\BinaryOpExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\BinaryOpExprInfo}{*
 		*}{include this, expr: $expr->left, scope: $scope}{*
 		*} {$expr->op} {*
 		*}{include this, expr: $expr->right, scope: $scope}{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\TernaryExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\TernaryExprInfo}{*
 		*}{include this, expr: $expr->condition, scope: $scope}{*
 		*}{if $expr->if} ? {include this, expr: $expr->if, scope: $scope} : {else} ?: {/if}{*
 		*}{include this, expr: $expr->else, scope: $scope}{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\DimFetchExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\DimFetchExprInfo}{*
 		*}{include this, expr: $expr->expr, scope: $scope}{*
 		*}[{include this, expr: $expr->dim, scope: $scope}]{*
-	*}{elseif $expr instanceof ApiGenX\Info\Expr\NewExprInfo}{*
+	*}{elseif $expr instanceof ApiGen\Info\Expr\NewExprInfo}{*
 		*}{var $classLike = $index->classLike[$expr->classLike->fullLower]}{*
 		*}<span class="php-kw">new</span> {include classLikeLink, classLike: $classLike, short: true}{*
 		*}({*

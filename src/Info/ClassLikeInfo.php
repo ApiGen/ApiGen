@@ -1,12 +1,12 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenX\Info;
+namespace ApiGen\Info;
 
-use ApiGenX\Index\Index;
-use ApiGenX\Info\Traits\HasDependencies;
-use ApiGenX\Info\Traits\HasGenericParameters;
-use ApiGenX\Info\Traits\HasLineLocation;
-use ApiGenX\Info\Traits\HasTags;
+use ApiGen\Index\Index;
+use ApiGen\Info\Traits\HasDependencies;
+use ApiGen\Info\Traits\HasGenericParameters;
+use ApiGen\Info\Traits\HasLineLocation;
+use ApiGen\Info\Traits\HasTags;
 
 
 abstract class ClassLikeInfo implements ElementInfo
