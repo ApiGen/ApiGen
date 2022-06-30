@@ -47,7 +47,7 @@ if (match) {
 	handleLinesSelectionChange()
 
 	const first = Math.max(1, Math.min(...ranges.flat()) - 3)
-	document.getElementById(`${first}`).scrollIntoView()
+	requestAnimationFrame(() => document.getElementById(`${first}`).scrollIntoView())
 }
 
 document.querySelectorAll('.source-lineNum').forEach(a => {
