@@ -125,10 +125,10 @@ class LatteFunctions
 			return $this->url->getClassLikeUrl($info);
 
 		} elseif ($info instanceof NamespaceIndex) {
-			return $this->url->getNamespacePath($info);
+			return $this->url->getNamespaceUrl($info);
 
 		} elseif ($info instanceof FunctionInfo) {
-			return $this->url->getFunctionPath($info);
+			return $this->url->getFunctionUrl($info);
 
 		} else {
 			throw new \LogicException(sprintf('Unexpected element type %s', get_debug_type($info)));
