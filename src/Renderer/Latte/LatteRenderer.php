@@ -21,12 +21,17 @@ use Latte;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use ReflectionClass;
+use SplFileInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
 
+use function array_column;
 use function array_filter;
 use function array_key_first;
-use function count;
+use function array_keys;
+use function array_map;
+use function array_sum;
 use function extension_loaded;
+use function iterator_to_array;
 use function lcfirst;
 use function pcntl_fork;
 use function pcntl_waitpid;
@@ -34,7 +39,6 @@ use function pcntl_wexitstatus;
 use function pcntl_wifexited;
 use function pcntl_wifsignaled;
 use function pcntl_wtermsig;
-use function strlen;
 use function substr;
 
 use const PHP_SAPI;
@@ -57,92 +61,108 @@ class LatteRenderer implements Renderer
 	{
 		FileSystem::delete($this->outputDir);
 		FileSystem::createDir($this->outputDir);
-		$this->copyAssets();
 
-		$primaryFiles = array_filter($index->files, fn(FileIndex $file) => $file->primary);
-		$progressBar->setMaxSteps(2 + count($index->namespace) + count($index->classLike) + count($index->function) + count($primaryFiles));
+		$config = new ConfigParameters($this->title, $this->version);
+		$assets = iterator_to_array(Finder::findFiles()->from(__DIR__ . '/Template/assets'));
+		$primaryFiles = array_keys(array_filter($index->files, fn(FileIndex $file) => $file->primary));
 
-		$configParameters = new ConfigParameters(
-			title: $this->title,
-			version: $this->version,
-		);
+		$tasks = [
+			[$this->copyAsset(...), $assets],
+			[$this->renderIndex(...), [null]],
+			[$this->renderTree(...), [null]],
+			[$this->renderNamespace(...), $index->namespace],
+			[$this->renderClassLike(...), $index->classLike],
+			[$this->renderFunction(...), $index->function],
+			[$this->renderSource(...), $primaryFiles],
+		];
 
-		$this->renderTemplate($progressBar, $this->urlGenerator->getIndexPath(), new IndexTemplate(
+		$progressBar->setMaxSteps(array_sum(array_map('count', array_column($tasks, 1))));
+		$this->forkLoop($progressBar, $this->createTaskIterator($index, $config, $tasks));
+	}
+
+
+	protected function copyAsset(Index $index, ConfigParameters $config, SplFileInfo $file): void
+	{
+		$assetName = $file->getFilename();
+		$assetPath = $this->urlGenerator->getAssetPath($assetName);
+		FileSystem::copy($file->getPathname(), "$this->outputDir/$assetPath");
+	}
+
+
+	protected function renderIndex(Index $index, ConfigParameters $config): void
+	{
+		$this->renderTemplate($this->urlGenerator->getIndexPath(), new IndexTemplate(
 			index: $index,
-			config: $configParameters,
+			config: $config,
 			layout: new LayoutParameters(activePage: 'index', activeNamespace: null, activeElement: null),
 		));
+	}
 
-		$this->renderTemplate($progressBar, $this->urlGenerator->getTreePath(), new TreeTemplate(
+
+	protected function renderTree(Index $index, ConfigParameters $config): void
+	{
+		$this->renderTemplate($this->urlGenerator->getTreePath(), new TreeTemplate(
 			index: $index,
-			config: $configParameters,
+			config: $config,
 			layout: new LayoutParameters(activePage: 'tree', activeNamespace: null, activeElement: null),
 		));
-
-		$this->forkLoop($progressBar, $index->namespace, function (?ProgressBar $progressBar, NamespaceIndex $info) use ($configParameters, $index) {
-			$this->renderTemplate($progressBar, $this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
-				index: $index,
-				config: $configParameters,
-				layout: new LayoutParameters('namespace', $info, activeElement: null),
-				namespace: $info,
-			));
-		});
-
-		$this->forkLoop($progressBar, $index->classLike, function (?ProgressBar $progressBar, ClassLikeInfo $info) use ($configParameters, $index) {
-			$activeNamespace = $index->namespace[$info->name->namespaceLower];
-
-			$this->renderTemplate($progressBar, $this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
-				index: $index,
-				config: $configParameters,
-				layout: new LayoutParameters('classLike', $activeNamespace, $info),
-				classLike: $info,
-			));
-		});
-
-		$this->forkLoop($progressBar, $index->function, function (?ProgressBar $progressBar, FunctionInfo $info) use ($configParameters, $index) {
-			$activeNamespace = $index->namespace[$info->name->namespaceLower];
-
-			$this->renderTemplate($progressBar, $this->urlGenerator->getFunctionPath($info), new FunctionTemplate(
-				index: $index,
-				config: $configParameters,
-				layout: new LayoutParameters('function', $activeNamespace, $info),
-				function: $info,
-			));
-		});
-
-		$this->forkLoop($progressBar, $primaryFiles, function (?ProgressBar $progressBar, FileIndex $file, string $path) use ($configParameters, $index) {
-			$activeElement = $file->classLike[array_key_first($file->classLike)] ?? $file->function[array_key_first($file->function)] ?? null;
-			$activeNamespace = $activeElement ? $index->namespace[$activeElement->name->namespaceLower] : null;
-
-			$this->renderTemplate($progressBar, $this->urlGenerator->getSourcePath($path), new SourceTemplate(
-				index: $index,
-				config: $configParameters,
-				layout: new LayoutParameters('source', $activeNamespace, $activeElement),
-				path: $path,
-				source: FileSystem::read($path),
-			));
-		});
 	}
 
 
-	protected function copyAssets(): void
+	protected function renderNamespace(Index $index, ConfigParameters $config, NamespaceIndex $info): void
 	{
-		$assetsDir = __DIR__ . '/Template/assets';
-		foreach (Finder::findFiles()->from($assetsDir) as $path => $_) {
-			$assetName = substr($path, strlen($assetsDir) + 1);
-			$assetPath = $this->urlGenerator->getAssetPath($assetName);
-			FileSystem::copy($path, "$this->outputDir/$assetPath");
-		}
+		$this->renderTemplate($this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
+			index: $index,
+			config: $config,
+			layout: new LayoutParameters('namespace', $info, activeElement: null),
+			namespace: $info,
+		));
 	}
 
 
-	protected function renderTemplate(?ProgressBar $progressBar, string $outputPath, object $template): void
+	protected function renderClassLike(Index $index, ConfigParameters $config, ClassLikeInfo $info): void
 	{
-		if ($progressBar !== null) {
-			$progressBar->setMessage($outputPath);
-			$progressBar->advance();
-		}
+		$activeNamespace = $index->namespace[$info->name->namespaceLower];
 
+		$this->renderTemplate($this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
+			index: $index,
+			config: $config,
+			layout: new LayoutParameters('classLike', $activeNamespace, $info),
+			classLike: $info,
+		));
+	}
+
+
+	protected function renderFunction(Index $index, ConfigParameters $config, FunctionInfo $info): void
+	{
+		$activeNamespace = $index->namespace[$info->name->namespaceLower];
+
+		$this->renderTemplate($this->urlGenerator->getFunctionPath($info), new FunctionTemplate(
+			index: $index,
+			config: $config,
+			layout: new LayoutParameters('function', $activeNamespace, $info),
+			function: $info,
+		));
+	}
+
+
+	protected function renderSource(Index $index, ConfigParameters $config, string $path): void
+	{
+		$activeElement = $index->classLike[array_key_first($index->classLike)] ?? $index->function[array_key_first($index->function)] ?? null;
+		$activeNamespace = $activeElement ? $index->namespace[$activeElement->name->namespaceLower] : null;
+
+		$this->renderTemplate($this->urlGenerator->getSourcePath($path), new SourceTemplate(
+			index: $index,
+			config: $config,
+			layout: new LayoutParameters('source', $activeNamespace, $activeElement),
+			path: $path,
+			source: FileSystem::read($path),
+		));
+	}
+
+
+	protected function renderTemplate(string $outputPath, object $template): void
+	{
 		$className = (new ReflectionClass($template))->getShortName();
 		$lattePath = 'pages/' . lcfirst(substr($className, 0, -8)) . '.latte';
 		FileSystem::write("$this->outputDir/$outputPath", $this->latte->renderToString($lattePath, $template));
@@ -150,13 +170,23 @@ class LatteRenderer implements Renderer
 
 
 	/**
-	 * @template K
-	 * @template V
-	 *
-	 * @param iterable<K, V>                     $it
-	 * @param callable(?ProgressBar, V, K): void $handle
+	 * @param  array<array{callable(Index, ConfigParameters, mixed): void, array}> $taskSets
+	 * @return iterable<callable(): void>
 	 */
-	protected function forkLoop(ProgressBar $progressBar, iterable $it, callable $handle): void
+	protected function createTaskIterator(Index $index, ConfigParameters $config, array $taskSets): iterable
+	{
+		foreach ($taskSets as [$renderer, $tasks]) {
+			foreach ($tasks as $task) {
+				yield fn() => $renderer($index, $config, $task);
+			}
+		}
+	}
+
+
+	/**
+	 * @param iterable<callable(): void> $it
+	 */
+	protected function forkLoop(ProgressBar $progressBar, iterable $it): void
 	{
 		$workerCount = PHP_SAPI === 'cli' && extension_loaded('pcntl') ? $this->workerCount : 1;
 
@@ -180,13 +210,12 @@ class LatteRenderer implements Renderer
 		}
 
 		$index = 0;
-		foreach ($it as $key => $value) {
+		foreach ($it as $handle) {
 			if ((($index++) % $workerCount) === $workerId) {
-				$handle($progressBar, $value, $key);
-
-			} elseif ($progressBar !== null) {
-				$progressBar->advance();
+				$handle();
 			}
+
+			$progressBar?->advance();
 		}
 
 		if ($workerId !== 0) {
