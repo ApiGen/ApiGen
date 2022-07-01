@@ -2,7 +2,9 @@
 {varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
 {varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define functionLinks, ApiGen\Info\FunctionInfo $function}{*
-	*}{if $function->name->namespaceLower}{include namespaceLinks, $index->namespace[$function->name->namespaceLower]}\{/if}{*
-	*}<a href="{functionUrl($function)}">{$function->name->short}</a>{*
-*}{/define}
+{define functionLinks, ApiGen\Info\FunctionInfo $function}
+	{pre}
+		{if $function->name->namespaceLower}{include namespaceLinks, $index->namespace[$function->name->namespaceLower]}\{/if}
+		<a href="{functionUrl($function)}">{$function->name->short}</a>
+	{/pre}
+{/define}

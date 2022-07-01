@@ -29,11 +29,11 @@
 		<tr>
 			<th><code>{$label}</code></th>
 			<td>
-				<code>{*
-					*}{foreach $refs as $ref}{*
-						*}{include classLikeReference, $ref}{sep}, {/sep}{*
-					*}{/foreach}{*
-				*}</code>
+				<code n:pre>
+					{foreach $refs as $ref}
+						{include classLikeReference, $ref}{sep}, {/sep}
+					{/foreach}
+				</code>
 			</td>
 		</tr>
 	{/if}

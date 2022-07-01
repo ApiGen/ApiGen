@@ -81,6 +81,9 @@ services:
 	renderer.sourceHighlighter:
 		factory: ApiGen\Renderer\SourceHighlighter
 
+	renderer.latte.extension:
+		factory: ApiGen\Renderer\Latte\LatteExtension
+
 	renderer.latte.functions:
 		factory: ApiGen\Renderer\Latte\LatteFunctions
 

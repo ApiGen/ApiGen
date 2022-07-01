@@ -33,10 +33,10 @@
 						<code class="nowrap">{if $parameter->type}{include type, $parameter->type}{/if}</code>
 					</td>
 					<td class="table-cell table-shrink">
-						<code class="nowrap">{*
-							*}{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>{*
-							*}{if $parameter->default} = {include expr, expr: $parameter->default}{/if}{*
-						*}</code>
+						<code class="nowrap" n:pre>
+							{if $parameter->byRef}&amp;{/if}{if $parameter->variadic}...{/if}<var>${$parameter->name}</var>
+							{if $parameter->default} = {include expr, expr: $parameter->default}{/if}
+						</code>
 					</td>
 					<td class="table-cell">{longDescription($parameter->description)}</td>
 					<td class="table-anchor">

@@ -2,9 +2,11 @@
 {varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
 {varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define namespaceLinks, ApiGen\Index\NamespaceIndex $namespace}{*
-	*}{if $namespace->name->namespaceLower !== ''}{*
-		*}{include this, $index->namespace[$namespace->name->namespaceLower]}\{*
-	*}{/if}{*
-	*}<a href="{namespaceUrl($namespace)}">{$namespace->name->short}</a>{*
-*}{/define}
+{define namespaceLinks, ApiGen\Index\NamespaceIndex $namespace}
+	{pre}
+		{if $namespace->name->namespaceLower !== ''}
+			{include this, $index->namespace[$namespace->name->namespaceLower]}\
+		{/if}
+		<a href="{namespaceUrl($namespace)}">{$namespace->name->short}</a>
+	{/pre}
+{/define}

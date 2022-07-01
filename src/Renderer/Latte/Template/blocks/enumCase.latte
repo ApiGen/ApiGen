@@ -6,10 +6,10 @@
 	{embed member, $enumCase}
 		{block cells}
 			<td class="table-cell">
-				<code>{*
-					*}{embed memberSourceLink, classLike: $enum, member: $enumCase}{block content}{$enumCase->name}{/block}{/embed}{*
-					*}{if $enumCase->value} = {include expr, expr: $enumCase->value, scope: $enum}{/if}{*
-				*}</code>
+				<code n:pre>
+					{embed memberSourceLink, classLike: $enum, member: $enumCase}{block content}{$enumCase->name}{/block}{/embed}
+					{if $enumCase->value} = {include expr, expr: $enumCase->value, scope: $enum}{/if}
+				</code>
 
 				{embed memberDescription, classLike: $enum, member: $enumCase}
 					{block details}{* TODO: other tags (uses, internal...) *}{/block}

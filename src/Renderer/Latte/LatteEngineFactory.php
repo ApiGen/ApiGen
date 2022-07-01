@@ -12,6 +12,7 @@ use function array_filter;
 class LatteEngineFactory
 {
 	public function __construct(
+		protected LatteExtension $extension,
 		protected LatteFunctions $functions,
 		protected UrlGenerator $url,
 		protected ?string $tempDir,
@@ -29,6 +30,7 @@ class LatteEngineFactory
 
 		$loader = new LatteCascadingLoader(array_filter([$this->themeDir, __DIR__ . '/Template']));
 		$latte->setLoader($loader);
+		$latte->addExtension($this->extension);
 
 		$latte->addFunction('isClass', [$this->functions, 'isClass']);
 		$latte->addFunction('isInterface', [$this->functions, 'isInterface']);

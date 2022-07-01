@@ -13,10 +13,10 @@
 			</td>
 
 			<td class="table-cell">
-				<code>{*
-					*}{embed memberSourceLink, classLike: $classLike, member: $constant}{block content}{$constant->name}{/block}{/embed}{*
-					*} = {include expr, expr: $constant->value, scope: $classLike}{*
-				*}</code>
+				<code n:pre>
+					{embed memberSourceLink, classLike: $classLike, member: $constant}{block content}{$constant->name}{/block}{/embed}
+					 = {include expr, expr: $constant->value, scope: $classLike}
+				</code>
 
 				{embed memberDescription, classLike: $classLike, member: $constant}
 					{block details}{* TODO: other tags (uses, internal...) *}{/block}

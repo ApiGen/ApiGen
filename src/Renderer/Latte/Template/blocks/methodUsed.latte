@@ -10,15 +10,15 @@
 			</tr>
 			<tr>
 				<td class="table-cell">
-					<code>{*
-						*}{foreach $from->methods as $methodName => $method}{*
-							*}{skipIf isset($overriden[$methodName])}{*
-							*}{embed memberLink, $from, $method}{block content}{$method->name}(){/block}{/embed}{*
-							*}{sep}, {/sep}{*
-						*}{else}{*
-							*}{rollback}{*
-						*}{/foreach}{*
-					*}</code>
+					<code n:pre>
+						{foreach $from->methods as $methodName => $method}
+							{skipIf isset($overriden[$methodName])}
+							{embed memberLink, $from, $method}{block content}{$method->name}(){/block}{/embed}
+							{sep}, {/sep}
+						{else}
+							{rollback}
+						{/foreach}
+					</code>
 				</td>
 			</tr>
 		</table>
