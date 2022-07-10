@@ -414,7 +414,7 @@ code a b {
 
 .table-spacer {
 	height: 30px;
-	background: transparent;
+	background: transparent !important;
 }
 
 .table tr:hover td {
