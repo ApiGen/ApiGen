@@ -34,10 +34,36 @@ ApiGen is easy to use and modern API doc generator **supporting all PHP 8.1 feat
 
 ## Install
 
-This will install ApiGen to `tools/apigen` directory.
+### With Docker
+
+ApiGen is available as [apigen/apigen](https://hub.docker.com/r/apigen/apigen) Docker image which you can directly use.
 
 ```bash
-composer create-project apigen/apigen tools/apigen
+docker run --rm --interactive --tty --volume "$PWD:$PWD" --workdir "$PWD" \
+  apigen/apigen \
+  src --output docs
+```
+
+
+### With Phar
+
+This will install ApiGen phar binary to `tools/apigen`.
+
+```bash
+mkdir -p tools
+curl -L https://github.com/ApiGen/ApiGen/releases/download/v7.0.0-alpha/apigen.phar -o tools/apigen
+chmod +x tools/apigen
+tools/apigen src --output docs
+```
+
+
+### With Composer
+
+This will install ApiGen to `tools/apigen` directory with executable entry point available in `tools/apigen/bin/apigen`.
+
+```bash
+composer create-project --no-dev apigen/apigen:^7.0@alpha tools/apigen
+tools/apigen/bin/apigen src --output docs
 ```
 
 
@@ -46,7 +72,7 @@ composer create-project apigen/apigen tools/apigen
 Generate API docs by passing source directories and destination option:
 
 ```bash
-tools/apigen/bin/apigen src --output docs
+apigen src --output docs
 ```
 
 
