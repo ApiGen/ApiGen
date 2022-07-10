@@ -24,6 +24,131 @@ document.querySelectorAll('.sortable').forEach(el => {
 })
 
 
+// search
+document.querySelectorAll('.search').forEach(el => {
+	function tokenize(s, offset = 0) {
+		return Array.from(s.matchAll(/[A-Z]{2,}|[a-zA-Z][a-z]*|\S/g)).map(it => ([it.index + offset, it[0].toLowerCase()]))
+	}
+
+	function prefix(a, aa, b, bb) {
+		let len = 0
+		while (aa < a.length && bb < b.length && a[aa++] === b[bb++]) len++
+		return len
+	}
+
+	function matchTokens(elementTokens, queryTokens, i = 0, ii = 0, j = 0, jj = 0) {
+		if (i === queryTokens.length) {
+			return []
+
+		} else if (j === elementTokens.length) {
+			return null
+		}
+
+		const [elementOffset, elementToken] = elementTokens[j]
+		const [, queryToken] = queryTokens[i]
+		const prefixLength = prefix(queryToken, ii, elementToken, jj)
+
+		const subMatches = ii + prefixLength === queryToken.length
+			? matchTokens(elementTokens, queryTokens, i + 1, 0, j, jj + prefixLength)
+			: jj + prefixLength === elementToken.length
+			? matchTokens(elementTokens, queryTokens, i, ii + prefixLength, j + 1, 0)
+			: null
+
+		return subMatches
+			? [[elementOffset + jj, prefixLength], ...subMatches]
+			: matchTokens(elementTokens, queryTokens, i, ii, j + 1, 0)
+	}
+
+	const searchInput = el.querySelector('.search-input')
+	const resultsDiv = el.querySelector('.search-results')
+
+	let dataset = null
+	let datasetPromise = null
+
+	searchInput.addEventListener('input', async () => {
+		dataset ??= await (datasetPromise ??= new Promise(resolve => {
+			const script = document.createElement('script')
+			script.src = el.dataset.elements
+			document.head.appendChild(script)
+			window.ApiGen ??= {}
+			window.ApiGen.resolveElements = (elements) => {
+				const unified = [
+					...(elements.namespace ?? []).map(([name, path]) => [name, path, tokenize(name)]),
+					...(elements.function ?? []).map(([name, path]) => [name, path, tokenize(name)]),
+					...(elements.classLike ?? []).flatMap(([classLikeName, path, members]) => [
+						[classLikeName, path, tokenize(classLikeName)],
+						...(members.constant ?? []).map(([constantName, anchor]) => [`${classLikeName}::${constantName}`, `${path}#${anchor}`, tokenize(`${constantName}`, classLikeName.length + 2)]),
+						...(members.property ?? []).map(([propertyName, anchor]) => [`${classLikeName}::\$${propertyName}`, `${path}#${anchor}`, tokenize(`\$${propertyName}`, classLikeName.length + 2)]),
+						...(members.method ?? []).map(([methodName, anchor]) => [`${classLikeName}::${methodName}()`, `${path}#${anchor}`, tokenize(`${methodName}()`, classLikeName.length + 2)]),
+					]),
+				]
+
+				resolve(unified.sort((a, b) => a[0].localeCompare(b[0])))
+			}
+		}))
+
+		const queryTokens = tokenize(searchInput.value)
+		const results = []
+
+		for (const [name, path, tokens] of dataset) {
+			const matches = matchTokens(tokens, queryTokens)
+
+			if (matches) {
+				results.push([name, path, matches])
+
+				if (results.length === 20) {
+					break
+				}
+			}
+		}
+
+		resultsDiv.replaceChildren(...results.map(([name, path, matches]) => {
+			const li = document.createElement('li')
+			const anchor = li.appendChild(document.createElement('a'))
+			anchor.href = path
+
+			let i = 0
+			for (const [matchOffset, matchLength] of matches) {
+				anchor.append(name.slice(i, matchOffset))
+				anchor.appendChild(document.createElement('b')).innerText = name.slice(matchOffset, matchOffset + matchLength)
+				i = matchOffset + matchLength
+			}
+
+			if (i < name.length) {
+				anchor.append(name.slice(i))
+			}
+
+			return li
+		}))
+	})
+
+	searchInput.addEventListener('keydown', e => {
+		if (e.key === 'Escape') {
+			searchInput.blur()
+
+		} else if (e.key === 'ArrowUp') {
+			e.preventDefault()
+			const active = resultsDiv.querySelector('.active')
+			const prev = active?.previousElementSibling ?? resultsDiv.lastElementChild
+			active?.classList.remove('active')
+			prev?.classList.add('active')
+
+		} else if (e.key === 'ArrowDown') {
+			e.preventDefault()
+			const active = resultsDiv.querySelector('.active')
+			const next = active?.nextElementSibling ?? resultsDiv.firstElementChild
+			active?.classList.remove('active')
+			next?.classList.add('active')
+
+		} else if (e.key === 'Enter') {
+			e.preventDefault()
+			const active = resultsDiv.querySelector('.active') ?? resultsDiv.firstElementChild
+			active?.querySelector('a').click()
+		}
+	})
+})
+
+
 // line selection
 let ranges = []
 let last = null
