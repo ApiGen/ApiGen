@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>Trait Latte\Strict | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
@@ -11,7 +12,8 @@
 <body class="layout">
 	<div class="layout-aside">
 	<div class="menu">
-			<h3>Namespaces</h3>
+			<div class="menu-section">
+				<h3>Namespaces</h3>
 	<ul>
 			<li class="menuGroup-item">
 				<a href="namespace-ApiGen.html">ApiGen</a>
@@ -36,88 +38,123 @@
 	</ul>
 			</li>
 	</ul>
+			</div>
 
-		<h3>Classes</h3>
-		<ul>
-				<li>
-					<a href="Latte.ContentType.html">
-						ContentType
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Engine.html">
-						Engine
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Extension.html">
-						Extension
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li>
+						<a href="Latte.ContentType.html">
+							ContentType
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Engine.html">
+							Engine
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Extension.html">
+							Extension
+						</a>
+					</li>
+			</ul>
+		</div>
 
-		<h3>Interfaces</h3>
-		<ul>
-				<li>
-					<a href="Latte.Exception.html">
-						Exception
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Loader.html">
-						Loader
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Policy.html">
-						Policy
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Interfaces</h3>
+			<ul>
+					<li>
+						<a href="Latte.Exception.html">
+							Exception
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Loader.html">
+							Loader
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Policy.html">
+							Policy
+						</a>
+					</li>
+			</ul>
+		</div>
 
-		<h3>Traits</h3>
-		<ul>
-				<li>
-					<a href="Latte.PositionAwareException.html">
-						PositionAwareException
-					</a>
-				</li>
-				<li class="active">
-					<a href="Latte.Strict.html">
-						Strict
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Traits</h3>
+			<ul>
+					<li>
+						<a href="Latte.PositionAwareException.html">
+							PositionAwareException
+						</a>
+					</li>
+					<li class="active">
+						<a href="Latte.Strict.html">
+							Strict
+						</a>
+					</li>
+			</ul>
+		</div>
 
 
-		<h3>Exceptions</h3>
-		<ul>
-				<li>
-					<a href="Latte.CompileException.html">
-						CompileException
-					</a>
-				</li>
-				<li>
-					<a href="Latte.RegexpException.html">
-						RegexpException
-					</a>
-				</li>
-				<li>
-					<a href="Latte.RuntimeException.html">
-						RuntimeException
-					</a>
-				</li>
-				<li>
-					<a href="Latte.SecurityViolationException.html">
-						SecurityViolationException
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Exceptions</h3>
+			<ul>
+					<li>
+						<a href="Latte.CompileException.html">
+							CompileException
+						</a>
+					</li>
+					<li>
+						<a href="Latte.RegexpException.html">
+							RegexpException
+						</a>
+					</li>
+					<li>
+						<a href="Latte.RuntimeException.html">
+							RuntimeException
+						</a>
+					</li>
+					<li>
+						<a href="Latte.SecurityViolationException.html">
+							SecurityViolationException
+						</a>
+					</li>
+			</ul>
+		</div>
 
 	</div>
 	</div>
 
 	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-Latte.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="Latte.Strict.html">Trait</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
 		<div class="layout-content">
 		<h1>
 			Trait <a href="namespace-Latte.html">Latte</a>\<a href="Latte.Strict.html">Strict</a>
@@ -156,23 +193,21 @@
 			<b><span class="active" title="Latte\Strict">Strict</span></b>
 	</li>
 	<li>
-<a href="Latte.Runtime.Html.html"><span>Latte\Runtime\Html</span></a>
-
-		implements
-			<a href="Latte.Runtime.HtmlStringable.html"><span title="Latte\Runtime\HtmlStringable">HtmlStringable</span></a>
-
-		uses
-			<b><span class="active" title="Latte\Strict">Strict</span></b>
-	</li>
-	<li>
-<a href="Latte.Runtime.Template.html"><span>Latte\Runtime\Template</span></a>
+<a href="Latte.Compiler.Tag.html"><span>Latte\Compiler\Tag</span></a>
 
 
 		uses
 			<b><span class="active" title="Latte\Strict">Strict</span></b>
 	</li>
 	<li>
-<a href="Latte.Runtime.Block.html"><span>Latte\Runtime\Block</span></a>
+<a href="Latte.Compiler.TemplateParser.html"><span>Latte\Compiler\TemplateParser</span></a>
+
+
+		uses
+			<b><span class="active" title="Latte\Strict">Strict</span></b>
+	</li>
+	<li>
+<a href="Latte.Compiler.PrintContext.html"><span>Latte\Compiler\PrintContext</span></a>
 
 
 		uses
@@ -188,19 +223,21 @@
 			<b><span class="active" title="Latte\Strict">Strict</span></b>
 	<ul class="classTree">
 	<li>
-<a href="Latte.Compiler.Nodes.TemplateNode.html"><span>Latte\Compiler\Nodes\TemplateNode</span></a>
-
-
-	</li>
-	<li>
 <a href="Latte.Compiler.Nodes.AreaNode.html"><span>Latte\Compiler\Nodes\AreaNode</span></a>
 
 
 	<ul class="classTree">
 	<li>
-<a href="Latte.Compiler.Nodes.FragmentNode.html"><span>Latte\Compiler\Nodes\FragmentNode</span></a>
+<a href="Latte.Compiler.Nodes.StatementNode.html"><span>Latte\Compiler\Nodes\StatementNode</span></a>
 
 
+	<ul class="classTree">
+	<li>
+<a href="ApiGen.Renderer.Latte.LattePreNode.html"><span>ApiGen\Renderer\Latte\LattePreNode</span></a>
+
+
+	</li>
+	</ul>
 	</li>
 	<li>
 <a href="Latte.Compiler.Nodes.Html.ElementNode.html"><span>Latte\Compiler\Nodes\Html\ElementNode</span></a>
@@ -213,6 +250,11 @@
 
 	</li>
 	<li>
+<a href="Latte.Compiler.Nodes.FragmentNode.html"><span>Latte\Compiler\Nodes\FragmentNode</span></a>
+
+
+	</li>
+	<li>
 <a href="Latte.Compiler.Nodes.NopNode.html"><span>Latte\Compiler\Nodes\NopNode</span></a>
 
 
@@ -220,7 +262,7 @@
 	</ul>
 	</li>
 	<li>
-<a href="Latte.Compiler.Nodes.Php.ParameterNode.html"><span>Latte\Compiler\Nodes\Php\ParameterNode</span></a>
+<a href="Latte.Compiler.Nodes.TemplateNode.html"><span>Latte\Compiler\Nodes\TemplateNode</span></a>
 
 
 	</li>
@@ -231,11 +273,6 @@
 	<ul class="classTree">
 	<li>
 <a href="Latte.Compiler.Nodes.Php.Expression.ArrayNode.html"><span>Latte\Compiler\Nodes\Php\Expression\ArrayNode</span></a>
-
-
-	</li>
-	<li>
-<a href="Latte.Compiler.Nodes.Php.Expression.VariableNode.html"><span>Latte\Compiler\Nodes\Php\Expression\VariableNode</span></a>
 
 
 	</li>
@@ -261,6 +298,11 @@
 	</li>
 	</ul>
 	</li>
+	<li>
+<a href="Latte.Compiler.Nodes.Php.Expression.VariableNode.html"><span>Latte\Compiler\Nodes\Php\Expression\VariableNode</span></a>
+
+
+	</li>
 	</ul>
 	</li>
 	<li>
@@ -279,6 +321,16 @@
 
 	</li>
 	<li>
+<a href="Latte.Compiler.Nodes.Php.ParameterNode.html"><span>Latte\Compiler\Nodes\Php\ParameterNode</span></a>
+
+
+	</li>
+	<li>
+<a href="Latte.Compiler.Nodes.Php.ArgumentNode.html"><span>Latte\Compiler\Nodes\Php\ArgumentNode</span></a>
+
+
+	</li>
+	<li>
 <a href="Latte.Compiler.Nodes.Php.ComplexTypeNode.html"><span>Latte\Compiler\Nodes\Php\ComplexTypeNode</span></a>
 
 
@@ -290,57 +342,19 @@
 	</li>
 	</ul>
 	</li>
-	<li>
-<a href="Latte.Compiler.Nodes.Php.ArgumentNode.html"><span>Latte\Compiler\Nodes\Php\ArgumentNode</span></a>
-
-
-	</li>
 	</ul>
 	</li>
 	<li>
-<a href="Latte.Compiler.PrintContext.html"><span>Latte\Compiler\PrintContext</span></a>
+<a href="Latte.Runtime.Html.html"><span>Latte\Runtime\Html</span></a>
 
-
-		uses
-			<b><span class="active" title="Latte\Strict">Strict</span></b>
-	</li>
-	<li>
-<a href="Latte.Compiler.Tag.html"><span>Latte\Compiler\Tag</span></a>
-
+		implements
+			<a href="Latte.Runtime.HtmlStringable.html"><span title="Latte\Runtime\HtmlStringable">HtmlStringable</span></a>
 
 		uses
 			<b><span class="active" title="Latte\Strict">Strict</span></b>
 	</li>
 	<li>
-<a href="Latte.Compiler.TemplateParser.html"><span>Latte\Compiler\TemplateParser</span></a>
-
-
-		uses
-			<b><span class="active" title="Latte\Strict">Strict</span></b>
-	</li>
-	<li>
-<a href="Latte.Runtime.FilterInfo.html"><span>Latte\Runtime\FilterInfo</span></a>
-
-
-		uses
-			<b><span class="active" title="Latte\Strict">Strict</span></b>
-	</li>
-	<li>
-<a href="Latte.Compiler.Position.html"><span>Latte\Compiler\Position</span></a>
-
-
-		uses
-			<b><span class="active" title="Latte\Strict">Strict</span></b>
-	</li>
-	<li>
-<a href="Latte.Compiler.Escaper.html"><span>Latte\Compiler\Escaper</span></a>
-
-
-		uses
-			<b><span class="active" title="Latte\Strict">Strict</span></b>
-	</li>
-	<li>
-<a href="Latte.Compiler.Block.html"><span>Latte\Compiler\Block</span></a>
+<a href="Latte.Runtime.Template.html"><span>Latte\Runtime\Template</span></a>
 
 
 		uses
@@ -354,7 +368,35 @@
 			<b><span class="active" title="Latte\Strict">Strict</span></b>
 	</li>
 	<li>
+<a href="Latte.Compiler.Position.html"><span>Latte\Compiler\Position</span></a>
+
+
+		uses
+			<b><span class="active" title="Latte\Strict">Strict</span></b>
+	</li>
+	<li>
+<a href="Latte.Compiler.Block.html"><span>Latte\Compiler\Block</span></a>
+
+
+		uses
+			<b><span class="active" title="Latte\Strict">Strict</span></b>
+	</li>
+	<li>
 <a href="Latte.Compiler.TemplateLexer.html"><span>Latte\Compiler\TemplateLexer</span></a>
+
+
+		uses
+			<b><span class="active" title="Latte\Strict">Strict</span></b>
+	</li>
+	<li>
+<a href="Latte.Compiler.Escaper.html"><span>Latte\Compiler\Escaper</span></a>
+
+
+		uses
+			<b><span class="active" title="Latte\Strict">Strict</span></b>
+	</li>
+	<li>
+<a href="Latte.Runtime.Block.html"><span>Latte\Runtime\Block</span></a>
 
 
 		uses
@@ -369,6 +411,13 @@
 	</li>
 	<li>
 <a href="Latte.Compiler.Token.html"><span>Latte\Compiler\Token</span></a>
+
+
+		uses
+			<b><span class="active" title="Latte\Strict">Strict</span></b>
+	</li>
+	<li>
+<a href="Latte.Runtime.FilterInfo.html"><span>Latte\Runtime\FilterInfo</span></a>
 
 
 		uses
@@ -611,8 +660,12 @@
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
 		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
 	</div>
 </body>
 </html>

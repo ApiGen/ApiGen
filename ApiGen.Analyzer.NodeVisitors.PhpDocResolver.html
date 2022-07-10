@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>Class ApiGen\Analyzer\NodeVisitors\PhpDocResolver | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
@@ -11,7 +12,8 @@
 <body class="layout">
 	<div class="layout-aside">
 	<div class="menu">
-			<h3>Namespaces</h3>
+			<div class="menu-section">
+				<h3>Namespaces</h3>
 	<ul>
 			<li class="menuGroup-item active">
 				<a href="namespace-ApiGen.html">ApiGen</a>
@@ -36,20 +38,23 @@
 	</ul>
 			</li>
 	</ul>
+			</div>
 
-		<h3>Classes</h3>
-		<ul>
-				<li>
-					<a href="ApiGen.Analyzer.NodeVisitors.BodySkipper.html">
-						BodySkipper
-					</a>
-				</li>
-				<li class="active">
-					<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html">
-						PhpDocResolver
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li>
+						<a href="ApiGen.Analyzer.NodeVisitors.BodySkipper.html">
+							BodySkipper
+						</a>
+					</li>
+					<li class="active">
+						<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html">
+							PhpDocResolver
+						</a>
+					</li>
+			</ul>
+		</div>
 
 
 
@@ -59,6 +64,32 @@
 	</div>
 
 	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-ApiGen.Analyzer.NodeVisitors.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
 		<div class="layout-content">
 		<h1>
 			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>\<a href="namespace-ApiGen.Analyzer.NodeVisitors.html">NodeVisitors</a>\<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html">PhpDocResolver</a>
@@ -71,8 +102,7 @@
 		<tr>
 			<th><code>extends</code></th>
 			<td>
-				<code><a href="PhpParser.NodeVisitorAbstract.html"><span title="PhpParser\NodeVisitorAbstract">NodeVisitorAbstract</span></a></code>
-			</td>
+<code><a href="PhpParser.NodeVisitorAbstract.html"><span title="PhpParser\NodeVisitorAbstract">NodeVisitorAbstract</span></a></code>			</td>
 		</tr>
 
 	</table>
@@ -416,8 +446,7 @@
 			</tr>
 			<tr>
 				<td class="table-cell">
-					<code><a href="PhpParser.NodeVisitorAbstract.html#_beforeTraverse">beforeTraverse()</a>, <a href="PhpParser.NodeVisitorAbstract.html#_afterTraverse">afterTraverse()</a></code>
-				</td>
+<code><a href="PhpParser.NodeVisitorAbstract.html#_beforeTraverse">beforeTraverse()</a>, <a href="PhpParser.NodeVisitorAbstract.html#_afterTraverse">afterTraverse()</a></code>				</td>
 			</tr>
 		</table>
 
@@ -441,7 +470,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#54-72" title="Go to source code">NATIVE_KEYWORDS</a> = [
+<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#54-72" title="Go to source code">NATIVE_KEYWORDS</a> = [
 	<span class="php-str">'array'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'bool'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'callable'</span> =&gt; <span class="php-kw">true</span>,
@@ -462,7 +491,6 @@
 ]</code>
 
 
-
 	<div class="expandable-expandedView">
 	</div>
 			</td>
@@ -479,7 +507,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#74-102" title="Go to source code">KEYWORDS</a> = <b><span class="active" title="ApiGen\Analyzer\NodeVisitors\PhpDocResolver">self</span></b>::<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html#NATIVE_KEYWORDS">NATIVE_KEYWORDS</a> + [
+<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#74-102" title="Go to source code">KEYWORDS</a> = <b><span class="active" title="ApiGen\Analyzer\NodeVisitors\PhpDocResolver">self</span></b>::<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html#NATIVE_KEYWORDS">NATIVE_KEYWORDS</a>+[
 	<span class="php-str">'array-key'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'associative-array'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'boolean'</span> =&gt; <span class="php-kw">true</span>,
@@ -508,7 +536,6 @@
 	<span class="php-str">'trait-string'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'value-of'</span> =&gt; <span class="php-kw">true</span>,
 ]</code>
-
 
 
 	<div class="expandable-expandedView">
@@ -545,8 +572,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#104-105" title="Go to source code">$genericNameContextStack</a></var> = []</code>
-
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#104-105" title="Go to source code">$genericNameContextStack</a></var> = []</code>
 				
 	<div class="expandable-collapsedView">
 		indexed by [][parameterName]
@@ -575,8 +601,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#109" title="Go to source code">$lexer</a></var></code>
-
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#109" title="Go to source code">$lexer</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -600,8 +625,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#110" title="Go to source code">$parser</a></var></code>
-
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#110" title="Go to source code">$parser</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -625,8 +649,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#111" title="Go to source code">$nameContext</a></var></code>
-
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#111" title="Go to source code">$nameContext</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -646,8 +669,12 @@
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
 		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
 	</div>
 </body>
 </html>

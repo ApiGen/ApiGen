@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>Class ApiGen\Renderer\SourceHighlighter | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
@@ -11,7 +12,8 @@
 <body class="layout">
 	<div class="layout-aside">
 	<div class="menu">
-			<h3>Namespaces</h3>
+			<div class="menu-section">
+				<h3>Namespaces</h3>
 	<ul>
 			<li class="menuGroup-item active">
 				<a href="namespace-ApiGen.html">ApiGen</a>
@@ -36,20 +38,23 @@
 	</ul>
 			</li>
 	</ul>
+			</div>
 
-		<h3>Classes</h3>
-		<ul>
-				<li class="active">
-					<a href="ApiGen.Renderer.SourceHighlighter.html">
-						SourceHighlighter
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Renderer.UrlGenerator.html">
-						UrlGenerator
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li class="active">
+						<a href="ApiGen.Renderer.SourceHighlighter.html">
+							SourceHighlighter
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.UrlGenerator.html">
+							UrlGenerator
+						</a>
+					</li>
+			</ul>
+		</div>
 
 
 
@@ -59,6 +64,32 @@
 	</div>
 
 	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-ApiGen.Renderer.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="ApiGen.Renderer.SourceHighlighter.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
 		<div class="layout-content">
 		<h1>
 			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Renderer.html">Renderer</a>\<a href="ApiGen.Renderer.SourceHighlighter.html">SourceHighlighter</a>
@@ -152,8 +183,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#102" title="Go to source code">PHP_TAG</a> = <span class="php-str">'php-tag'</span></code>
-
+<code><a href="source-Renderer.SourceHighlighter.html#102" title="Go to source code">PHP_TAG</a> = <span class="php-str">'php-tag'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -172,8 +202,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#103" title="Go to source code">PHP_KEYWORD</a> = <span class="php-str">'php-kw'</span></code>
-
+<code><a href="source-Renderer.SourceHighlighter.html#103" title="Go to source code">PHP_KEYWORD</a> = <span class="php-str">'php-kw'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -192,8 +221,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#104" title="Go to source code">PHP_NUMBER</a> = <span class="php-str">'php-num'</span></code>
-
+<code><a href="source-Renderer.SourceHighlighter.html#104" title="Go to source code">PHP_NUMBER</a> = <span class="php-str">'php-num'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -212,8 +240,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#105" title="Go to source code">PHP_STRING</a> = <span class="php-str">'php-str'</span></code>
-
+<code><a href="source-Renderer.SourceHighlighter.html#105" title="Go to source code">PHP_STRING</a> = <span class="php-str">'php-str'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -232,8 +259,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#106" title="Go to source code">PHP_VARIABLE</a> = <span class="php-str">'php-var'</span></code>
-
+<code><a href="source-Renderer.SourceHighlighter.html#106" title="Go to source code">PHP_VARIABLE</a> = <span class="php-str">'php-var'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -252,8 +278,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#107" title="Go to source code">PHP_COMMENT</a> = <span class="php-str">'php-comment'</span></code>
-
+<code><a href="source-Renderer.SourceHighlighter.html#107" title="Go to source code">PHP_COMMENT</a> = <span class="php-str">'php-comment'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -286,7 +311,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><var><a href="source-Renderer.SourceHighlighter.html#109-190" title="Go to source code">$tokenClass</a></var> = [
+<code><var><a href="source-Renderer.SourceHighlighter.html#109-190" title="Go to source code">$tokenClass</a></var> = [
 	T_OPEN_TAG =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
 	T_OPEN_TAG_WITH_ECHO =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
 	T_CLOSE_TAG =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
@@ -367,7 +392,6 @@
 	T_COMMENT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_COMMENT">PHP_COMMENT</a>,
 	T_DOC_COMMENT =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_COMMENT">PHP_COMMENT</a>,
 ]</code>
-
 				
 	<div class="expandable-collapsedView">
 		indexed by [tokenId]
@@ -396,8 +420,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><var><a href="source-Renderer.SourceHighlighter.html#192-197" title="Go to source code">$identifierClass</a></var> = [<span class="php-str">'true'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'false'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'null'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>]</code>
-
+<code><var><a href="source-Renderer.SourceHighlighter.html#192-197" title="Go to source code">$identifierClass</a></var> = [<span class="php-str">'true'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'false'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'null'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>]</code>
 				
 	<div class="expandable-collapsedView">
 		indexed by [identifierName]
@@ -418,8 +441,12 @@
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
 		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
 	</div>
 </body>
 </html>

@@ -8,6 +8,7 @@
 	--color-link: #006aeb;
 	--color-selected: #fffbdd;
 	--border-color: #cccccc;
+	--background-color: #ecede5;
 }
 
 
@@ -142,7 +143,7 @@ code a b {
 .classLikeDescription {
 	margin-top: 1em;
 	border: 1px solid var(--border-color);
-	background-color: #ecede5;
+	background-color: var(--background-color);
 	padding: 10px;
 }
 
@@ -224,8 +225,6 @@ code a b {
 .layout {
 	display: flex;
 	flex-direction: row;
-	min-width: min(1400px, 100%);
-	max-width: fit-content;
 }
 
 .layout-aside {
@@ -236,6 +235,7 @@ code a b {
 	overflow-y: auto;
 	scrollbar-width: none;
 	background-color: white;
+	border-right: 1px solid var(--border-color);
 }
 
 .layout-aside::-webkit-scrollbar {
@@ -247,27 +247,37 @@ code a b {
 	flex: 1 1 0;
 	display: flex;
 	flex-direction: column;
-	margin-left: 320px;
-	margin-right: 10px;
+	min-width: calc(min(1300px, 100%) - 300px);
+	max-width: fit-content;
+	margin-left: 300px;
+	margin-right: 0;
 }
 
 .layout-content {
 	flex: 1 1 0;
+	padding: 0 20px;
 }
 
 .layout-footer {
 	margin: 20px auto;
+	padding: 0 20px;
 	color: #929292;
 }
 
+.layout-rest {
+	flex: 1 1 0;
+}
+
+.layout-rest > .navbar {
+	height: 40px;
+}
 
 /* menu */
 .menu {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 	padding: 10px;
-}
-
-.menu > *:first-child {
-	margin-top: 0;
 }
 
 .menu ul ul {
@@ -293,6 +303,58 @@ code a b {
 .menu .active > a:active,
 .menu .active > a:focus {
 	background-color: var(--color-link);
+}
+
+.menu-section > *:first-child {
+	margin-top: 0;
+}
+
+
+/* navbar */
+.navbar {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 10px 20px;
+	padding: 4px 8px 4px 8px;
+	border-bottom: 1px solid var(--border-color);
+	background-color: var(--background-color);
+	font-size: 14px;
+}
+
+.navbar-links {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 8px;
+	font-family: var(--font-family-heading);
+	font-weight: bold;
+}
+
+.navbar-links li.active {
+	background-color: var(--color-heading-dark);
+	color: white;
+}
+
+.navbar-links li > * {
+	display: block;
+	padding: 6px 6px;
+	line-height: 1;
+}
+
+.navbar-links li > a {
+	color: inherit;
+}
+
+.navbar-links li > span {
+	cursor: default;
+	color: #888;
+}
+
+.navbar-right {
+	flex: 0 1 300px;
 }
 
 
@@ -322,6 +384,56 @@ code a b {
 
 .php-comment {
 	color: #929292;
+}
+
+
+/* search */
+.search {
+	position: relative;
+}
+
+.search-input {
+	display: flex;
+	width: 100%;
+	border: 1px solid var(--border-color);
+	border-radius: 0;
+	padding: 6px;
+	outline: none;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 1;
+}
+
+.search-input:focus {
+	border-color: var(--color-heading-dark);
+}
+
+.search-results {
+	display: none;
+	position: absolute;
+	top: 30px;
+	width: fit-content;
+	min-width: 100%;
+	max-width: calc(100vw - 16px);
+	overflow: hidden;
+	background-color: white;
+	border: 1px solid #888;
+	z-index: 1;
+}
+
+.search:focus-within .search-results:not(:empty) {
+	display: block;
+}
+
+.search-results a {
+	display: block;
+	color: inherit;
+	padding: 0 8px;
+}
+
+.search-results li:hover, .search-results li.active {
+	background-color: var(--color-link);
+	color: white;
 }
 
 
@@ -368,7 +480,7 @@ code a b {
 .table-heading {
 	border: 1px solid var(--border-color);
 	padding: 3px 5px;
-	background: #ecede5;
+	background: var(--background-color);
 	color: var(--color-heading-dark);
 	font-family: var(--font-family-heading);
 	font-size: 1.2em;
@@ -411,7 +523,7 @@ code a b {
 
 .table-spacer {
 	height: 30px;
-	background: transparent;
+	background: transparent !important;
 }
 
 .table tr:hover td {
@@ -426,16 +538,32 @@ code a b {
 /* mobile */
 @media (max-width: 980px) {
 	.layout {
-		flex-direction: column-reverse;
-		justify-content: flex-end;
+		flex-direction: column;
 	}
 
 	.layout-aside {
 		position: static;
+		border-right: none;
+		width: auto;
+	}
+
+	.layout-rest {
+		display: none;
 	}
 
 	.layout-main {
-		margin-left: 10px;
+		min-width: 100%;
+		margin-left: 0;
 		flex-grow: 0;
+		order: -1;
+	}
+
+	.menu {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.menu-section {
+		flex: 1 1 200px;
 	}
 }

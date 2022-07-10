@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>File Info/ErrorInfo.php | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
@@ -11,7 +12,8 @@
 <body class="layout">
 	<div class="layout-aside">
 	<div class="menu">
-			<h3>Namespaces</h3>
+			<div class="menu-section">
+				<h3>Namespaces</h3>
 	<ul>
 			<li class="menuGroup-item active">
 				<a href="namespace-ApiGen.html">ApiGen</a>
@@ -22,16 +24,8 @@
 			<li class="menuGroup-item">
 				<a href="namespace-ApiGen.Index.html">Index</a>
 			</li>
-			<li class="menuGroup-item active">
+			<li class="menuGroup-item">
 				<a href="namespace-ApiGen.Info.html">Info</a>
-	<ul>
-			<li class="menuGroup-item">
-				<a href="namespace-ApiGen.Info.Expr.html">Expr</a>
-			</li>
-			<li class="menuGroup-item">
-				<a href="namespace-ApiGen.Info.Traits.html">Traits</a>
-			</li>
-	</ul>
 			</li>
 			<li class="menuGroup-item">
 				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
@@ -39,132 +33,99 @@
 	</ul>
 			</li>
 	</ul>
+			</div>
 
-		<h3>Classes</h3>
-		<ul>
-				<li>
-					<a href="ApiGen.Info.ClassInfo.html">
-						ClassInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.ClassLikeInfo.html">
-						ClassLikeInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.ClassLikeReferenceInfo.html">
-						ClassLikeReferenceInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.ConstantInfo.html">
-						ConstantInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.EnumCaseInfo.html">
-						EnumCaseInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.EnumInfo.html">
-						EnumInfo
-					</a>
-				</li>
-				<li class="active">
-					<a href="ApiGen.Info.ErrorInfo.html">
-						ErrorInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.FunctionInfo.html">
-						FunctionInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.GenericParameterInfo.html">
-						GenericParameterInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.InterfaceInfo.html">
-						InterfaceInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.MemberInfo.html">
-						MemberInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.MethodInfo.html">
-						MethodInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.MissingInfo.html">
-						MissingInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.NameInfo.html">
-						NameInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.ParameterInfo.html">
-						ParameterInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.PropertyInfo.html">
-						PropertyInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.TraitInfo.html">
-						TraitInfo
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li class="active">
+						<a href="ApiGen.Analyzer.html">
+							Analyzer
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.ApiGen.html">
+							ApiGen
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Bootstrap.html">
+							Bootstrap
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Helpers.html">
+							Helpers
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Indexer.html">
+							Indexer
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Locator.html">
+							Locator
+						</a>
+					</li>
+			</ul>
+		</div>
 
-		<h3>Interfaces</h3>
-		<ul>
-				<li>
-					<a href="ApiGen.Info.ElementInfo.html">
-						ElementInfo
-					</a>
-				</li>
-				<li>
-					<a href="ApiGen.Info.ExprInfo.html">
-						ExprInfo
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Interfaces</h3>
+			<ul>
+					<li>
+						<a href="ApiGen.Renderer.html">
+							Renderer
+						</a>
+					</li>
+			</ul>
+		</div>
 
 
-		<h3>Enums</h3>
-		<ul>
-				<li>
-					<a href="ApiGen.Info.GenericParameterVariance.html">
-						GenericParameterVariance
-					</a>
-				</li>
-		</ul>
 
 
 	</div>
 	</div>
 
 	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-ApiGen.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="ApiGen.Analyzer.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
 		<div class="layout-content">
 	<table class="source"><tr id="1" class="source-line"><td><a class="source-lineNum" href="#1"> 1: </a></td><td><span class="php-tag">&lt;?php </span><span class="php-kw">declare</span>(strict_types = <span class="php-num">1</span>);</td></tr><tr id="2" class="source-line"><td><a class="source-lineNum" href="#2"> 2: </a></td><td></td></tr><tr id="3" class="source-line"><td><a class="source-lineNum" href="#3"> 3: </a></td><td><span class="php-kw">namespace</span> ApiGen\Info;</td></tr><tr id="4" class="source-line"><td><a class="source-lineNum" href="#4"> 4: </a></td><td></td></tr><tr id="5" class="source-line"><td><a class="source-lineNum" href="#5"> 5: </a></td><td></td></tr><tr id="6" class="source-line"><td><a class="source-lineNum" href="#6"> 6: </a></td><td><span class="php-kw">class</span> ErrorInfo</td></tr><tr id="7" class="source-line"><td><a class="source-lineNum" href="#7"> 7: </a></td><td>{</td></tr><tr id="8" class="source-line"><td><a class="source-lineNum" href="#8"> 8: </a></td><td>	<span class="php-kw">public</span> <span class="php-kw">const</span> KIND_SYNTAX_ERROR = <span class="php-str">&#039;syntax_error&#039;</span>;</td></tr><tr id="9" class="source-line"><td><a class="source-lineNum" href="#9"> 9: </a></td><td>	<span class="php-kw">public</span> <span class="php-kw">const</span> KIND_MISSING_SYMBOL = <span class="php-str">&#039;missing_symbol&#039;</span>;</td></tr><tr id="10" class="source-line"><td><a class="source-lineNum" href="#10">10: </a></td><td>	<span class="php-kw">public</span> <span class="php-kw">const</span> KIND_DUPLICATE_SYMBOL = <span class="php-str">&#039;duplicate_symbol&#039;</span>;</td></tr><tr id="11" class="source-line"><td><a class="source-lineNum" href="#11">11: </a></td><td></td></tr><tr id="12" class="source-line"><td><a class="source-lineNum" href="#12">12: </a></td><td></td></tr><tr id="13" class="source-line"><td><a class="source-lineNum" href="#13">13: </a></td><td>	<span class="php-kw">public</span> <span class="php-kw">function</span> __construct(</td></tr><tr id="14" class="source-line"><td><a class="source-lineNum" href="#14">14: </a></td><td>		<span class="php-kw">public</span> string <span class="php-var">$kind</span>,</td></tr><tr id="15" class="source-line"><td><a class="source-lineNum" href="#15">15: </a></td><td>		<span class="php-kw">public</span> string <span class="php-var">$message</span>,</td></tr><tr id="16" class="source-line"><td><a class="source-lineNum" href="#16">16: </a></td><td>	) {</td></tr><tr id="17" class="source-line"><td><a class="source-lineNum" href="#17">17: </a></td><td>	}</td></tr><tr id="18" class="source-line"><td><a class="source-lineNum" href="#18">18: </a></td><td>}</td></tr><tr id="19" class="source-line"><td><a class="source-lineNum" href="#19">19: </a></td><td></td></tr></table>
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
 		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
 	</div>
 </body>
 </html>

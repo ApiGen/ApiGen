@@ -3,6 +3,7 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
 	<title>Class Latte\Compiler\TagParserData | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
@@ -11,7 +12,8 @@
 <body class="layout">
 	<div class="layout-aside">
 	<div class="menu">
-			<h3>Namespaces</h3>
+			<div class="menu-section">
+				<h3>Namespaces</h3>
 	<ul>
 			<li class="menuGroup-item">
 				<a href="namespace-ApiGen.html">ApiGen</a>
@@ -41,70 +43,73 @@
 	</ul>
 			</li>
 	</ul>
+			</div>
 
-		<h3>Classes</h3>
-		<ul>
-				<li>
-					<a href="Latte.Compiler.Block.html">
-						Block
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.Escaper.html">
-						Escaper
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.Node.html">
-						Node
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.Position.html">
-						Position
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.PrintContext.html">
-						PrintContext
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.Tag.html">
-						Tag
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.TagParser.html">
-						TagParser
-					</a>
-				</li>
-				<li class="active">
-					<a href="Latte.Compiler.TagParserData.html">
-						TagParserData
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.TemplateLexer.html">
-						TemplateLexer
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.TemplateParser.html">
-						TemplateParser
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.Token.html">
-						Token
-					</a>
-				</li>
-				<li>
-					<a href="Latte.Compiler.TokenStream.html">
-						TokenStream
-					</a>
-				</li>
-		</ul>
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li>
+						<a href="Latte.Compiler.Block.html">
+							Block
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.Escaper.html">
+							Escaper
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.Node.html">
+							Node
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.Position.html">
+							Position
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.PrintContext.html">
+							PrintContext
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.Tag.html">
+							Tag
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.TagParser.html">
+							TagParser
+						</a>
+					</li>
+					<li class="active">
+						<a href="Latte.Compiler.TagParserData.html">
+							TagParserData
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.TemplateLexer.html">
+							TemplateLexer
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.TemplateParser.html">
+							TemplateParser
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.Token.html">
+							Token
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.TokenStream.html">
+							TokenStream
+						</a>
+					</li>
+			</ul>
+		</div>
 
 
 
@@ -114,6 +119,32 @@
 	</div>
 
 	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-Latte.Compiler.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="Latte.Compiler.TagParserData.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
 		<div class="layout-content">
 		<h1>
 			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Compiler.html">Compiler</a>\<a href="Latte.Compiler.TagParserData.html">TagParserData</a>
@@ -199,8 +230,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>ErrorSymbol = <span class="php-num">1</span></code>
-
+<code>ErrorSymbol = <span class="php-num">1</span></code>
 
 	<div class="expandable-collapsedView">
 		Symbol number of error recovery token
@@ -224,8 +254,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>DefaultAction = -<span class="php-num">8190</span></code>
-
+<code>DefaultAction = -<span class="php-num">8190</span></code>
 
 	<div class="expandable-collapsedView">
 		Action number signifying default action
@@ -249,8 +278,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>UnexpectedTokenRule = <span class="php-num">8191</span></code>
-
+<code>UnexpectedTokenRule = <span class="php-num">8191</span></code>
 
 	<div class="expandable-collapsedView">
 		Rule number signifying that an unexpected token was encountered
@@ -274,8 +302,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>Yy2Tblstate = <span class="php-num">257</span></code>
-
+<code>Yy2Tblstate = <span class="php-num">257</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -294,8 +321,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>NumNonLeafStates = <span class="php-num">350</span></code>
-
+<code>NumNonLeafStates = <span class="php-num">350</span></code>
 
 	<div class="expandable-collapsedView">
 		Number of non-leaf states
@@ -319,7 +345,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>TokenToSymbol = [
+<code>TokenToSymbol = [
 	<span class="php-num">0</span>,
 	<span class="php-num">112</span>,
 	<span class="php-num">112</span>,
@@ -660,7 +686,6 @@
 	<span class="php-num">97</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of lexer tokens to internal symbols
 	</div>
@@ -683,7 +708,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>ActionBase = [
+<code>ActionBase = [
 	<span class="php-num">97</span>,
 	<span class="php-num">305</span>,
 	<span class="php-num">305</span>,
@@ -1293,7 +1318,6 @@
 	<span class="php-num">228</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of states to a displacement into the self::Action table. The corresponding action for this
  state/symbol pair is…
@@ -1319,7 +1343,7 @@ action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p
 			</td>
 
 			<td class="table-cell">
-				<code>Action = [
+<code>Action = [
 	<span class="php-num">34</span>,
 	<span class="php-num">35</span>,
 	<span class="php-num">376</span>,
@@ -1902,7 +1926,6 @@ action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p
 	<span class="php-num">103</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Table of actions. Indexed according to self::ActionBase comment.
 	</div>
@@ -1925,7 +1948,7 @@ action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p
 			</td>
 
 			<td class="table-cell">
-				<code>ActionCheck = [
+<code>ActionCheck = [
 	<span class="php-num">42</span>,
 	<span class="php-num">43</span>,
 	<span class="php-num">69</span>,
@@ -2508,7 +2531,6 @@ action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p
 	<span class="php-num">22</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Table indexed analogously to self::Action. If self::ActionCheck[self::ActionBase[$state] + $symbol] != $symbol
  then…
@@ -2533,7 +2555,7 @@ then the action is defaulted, i.e. self::ActionDefault[$state] should be used in
 			</td>
 
 			<td class="table-cell">
-				<code>ActionDefault = [
+<code>ActionDefault = [
 	<span class="php-num">8191</span>,
 	<span class="php-num">252</span>,
 	<span class="php-num">252</span>,
@@ -2886,7 +2908,6 @@ then the action is defaulted, i.e. self::ActionDefault[$state] should be used in
 	<span class="php-num">8191</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of states to their default action
 	</div>
@@ -2909,7 +2930,7 @@ then the action is defaulted, i.e. self::ActionDefault[$state] should be used in
 			</td>
 
 			<td class="table-cell">
-				<code>GotoBase = [
+<code>GotoBase = [
 	<span class="php-num">0</span>,
 	<span class="php-num">0</span>,
 	-<span class="php-num">1</span>,
@@ -2985,7 +3006,6 @@ then the action is defaulted, i.e. self::ActionDefault[$state] should be used in
 	<span class="php-num">0</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of non-terminals to a displacement into the self::Goto table. The corresponding goto state for this
  non-terminal…
@@ -3010,7 +3030,7 @@ non-terminal/state pair is self::Goto[self::GotoBase[$nonTerminal] + $state] (un
 			</td>
 
 			<td class="table-cell">
-				<code>Goto = [
+<code>Goto = [
 	<span class="php-num">110</span>,
 	<span class="php-num">110</span>,
 	<span class="php-num">110</span>,
@@ -3366,7 +3386,6 @@ non-terminal/state pair is self::Goto[self::GotoBase[$nonTerminal] + $state] (un
 	<span class="php-num">384</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Table of states to goto after reduction. Indexed according to self::GotoBase comment.
 	</div>
@@ -3389,7 +3408,7 @@ non-terminal/state pair is self::Goto[self::GotoBase[$nonTerminal] + $state] (un
 			</td>
 
 			<td class="table-cell">
-				<code>GotoCheck = [
+<code>GotoCheck = [
 	<span class="php-num">2</span>,
 	<span class="php-num">2</span>,
 	<span class="php-num">2</span>,
@@ -3745,7 +3764,6 @@ non-terminal/state pair is self::Goto[self::GotoBase[$nonTerminal] + $state] (un
 	<span class="php-num">5</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Table indexed analogously to self::Goto. If self::GotoCheck[self::GotoBase[$nonTerminal] + $state] != $nonTerminal
 …
@@ -3770,7 +3788,7 @@ then the goto state is defaulted, i.e. self::GotoDefault[$nonTerminal] should be
 			</td>
 
 			<td class="table-cell">
-				<code>GotoDefault = [
+<code>GotoDefault = [
 	-<span class="php-num">8192</span>,
 	<span class="php-num">283</span>,
 	<span class="php-num">124</span>,
@@ -3846,7 +3864,6 @@ then the goto state is defaulted, i.e. self::GotoDefault[$nonTerminal] should be
 	<span class="php-num">337</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of non-terminals to the default state to goto after their reduction
 	</div>
@@ -3869,7 +3886,7 @@ then the goto state is defaulted, i.e. self::GotoDefault[$nonTerminal] should be
 			</td>
 
 			<td class="table-cell">
-				<code>RuleToNonTerminal = [
+<code>RuleToNonTerminal = [
 	<span class="php-num">0</span>,
 	<span class="php-num">1</span>,
 	<span class="php-num">1</span>,
@@ -4154,7 +4171,6 @@ then the goto state is defaulted, i.e. self::GotoDefault[$nonTerminal] should be
 	<span class="php-num">72</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of rules to the non-terminal on their left-hand side, i.e. the non-terminal to use for
  determining the state to…
@@ -4179,7 +4195,7 @@ determining the state to goto after reduction.</p>
 			</td>
 
 			<td class="table-cell">
-				<code>RuleToLength = [
+<code>RuleToLength = [
 	<span class="php-num">1</span>,
 	<span class="php-num">2</span>,
 	<span class="php-num">2</span>,
@@ -4464,7 +4480,6 @@ determining the state to goto after reduction.</p>
 	<span class="php-num">1</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of rules to the length of their right-hand side, which is the number of elements that have to
  be popped from the…
@@ -4489,7 +4504,7 @@ be popped from the stack(s) on reduction.</p>
 			</td>
 
 			<td class="table-cell">
-				<code>SymbolToName = [
+<code>SymbolToName = [
 	<span class="php-str">'end'</span>,
 	<span class="php-str">'error'</span>,
 	<span class="php-str">"','"</span>,
@@ -4604,7 +4619,6 @@ be popped from the stack(s) on reduction.</p>
 	<span class="php-str">'comment'</span>,
 ]</code>
 
-
 	<div class="expandable-collapsedView">
 		Map of symbols to their names
 	</div>
@@ -4641,8 +4655,7 @@ be popped from the stack(s) on reduction.</p>
 			</td>
 
 			<td class="table-cell">
-				<code><var>$semValue</var> = <span class="php-kw">null</span></code>
-
+<code><var>$semValue</var> = <span class="php-kw">null</span></code>
 				
 	<div class="expandable-collapsedView">
 		Temporary value containing the result of last semantic action (reduction)
@@ -4671,8 +4684,7 @@ be popped from the stack(s) on reduction.</p>
 			</td>
 
 			<td class="table-cell">
-				<code><var>$semStack</var></code>
-
+<code><var>$semStack</var></code>
 				
 	<div class="expandable-collapsedView">
 		Semantic value stack (contains values of tokens and semantic action results)
@@ -4701,8 +4713,7 @@ be popped from the stack(s) on reduction.</p>
 			</td>
 
 			<td class="table-cell">
-				<code><var>$startTokenStack</var></code>
-
+<code><var>$startTokenStack</var></code>
 				
 	<div class="expandable-collapsedView">
 		Start attribute stack
@@ -4723,8 +4734,12 @@ be popped from the stack(s) on reduction.</p>
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://apigen.org">ApiGen dev-master</a>
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
 		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
 	</div>
 </body>
 </html>
