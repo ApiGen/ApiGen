@@ -324,7 +324,7 @@ class Analyzer
 		}
 
 		foreach ($this->extractMembers($info->tags, $node) as $member) {
-			if (!$this->filter->filterMemberInfo($member)) {
+			if (!$this->filter->filterMemberInfo($info, $member)) {
 				continue;
 
 			} elseif ($member instanceof ConstantInfo) {

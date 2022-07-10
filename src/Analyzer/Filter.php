@@ -127,7 +127,7 @@ class Filter
 	}
 
 
-	public function filterMemberInfo(MemberInfo $member): bool
+	public function filterMemberInfo(ClassLikeInfo $classLike, MemberInfo $member): bool
 	{
 		return true;
 	}
