@@ -84,15 +84,17 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function copyAsset(Index $index, ConfigParameters $config, SplFileInfo $file): void
+	protected function copyAsset(Index $index, ConfigParameters $config, SplFileInfo $file): string
 	{
 		$assetName = $file->getFilename();
 		$assetPath = $this->urlGenerator->getAssetPath($assetName);
 		FileSystem::copy($file->getPathname(), "$this->outputDir/$assetPath");
+
+		return $assetPath;
 	}
 
 
-	protected function renderElementsJs(Index $index, ConfigParameters $config): void
+	protected function renderElementsJs(Index $index, ConfigParameters $config): string
 	{
 		$elements = [];
 
@@ -125,12 +127,14 @@ class LatteRenderer implements Renderer
 		$js = sprintf('window.ApiGen?.resolveElements(%s)', Json::encode($elements));
 		$assetPath = $this->urlGenerator->getAssetPath('elements.js');
 		FileSystem::write("$this->outputDir/$assetPath", $js);
+
+		return $assetPath;
 	}
 
 
-	protected function renderIndex(Index $index, ConfigParameters $config): void
+	protected function renderIndex(Index $index, ConfigParameters $config): string
 	{
-		$this->renderTemplate($this->urlGenerator->getIndexPath(), new IndexTemplate(
+		return $this->renderTemplate($this->urlGenerator->getIndexPath(), new IndexTemplate(
 			index: $index,
 			config: $config,
 			layout: new LayoutParameters(activePage: 'index', activeNamespace: null, activeElement: null),
@@ -138,9 +142,9 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function renderTree(Index $index, ConfigParameters $config): void
+	protected function renderTree(Index $index, ConfigParameters $config): string
 	{
-		$this->renderTemplate($this->urlGenerator->getTreePath(), new TreeTemplate(
+		return $this->renderTemplate($this->urlGenerator->getTreePath(), new TreeTemplate(
 			index: $index,
 			config: $config,
 			layout: new LayoutParameters(activePage: 'tree', activeNamespace: null, activeElement: null),
@@ -148,9 +152,9 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function renderNamespace(Index $index, ConfigParameters $config, NamespaceIndex $info): void
+	protected function renderNamespace(Index $index, ConfigParameters $config, NamespaceIndex $info): string
 	{
-		$this->renderTemplate($this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
+		return $this->renderTemplate($this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
 			index: $index,
 			config: $config,
 			layout: new LayoutParameters('namespace', $info, activeElement: null),
@@ -159,11 +163,11 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function renderClassLike(Index $index, ConfigParameters $config, ClassLikeInfo $info): void
+	protected function renderClassLike(Index $index, ConfigParameters $config, ClassLikeInfo $info): string
 	{
 		$activeNamespace = $index->namespace[$info->name->namespaceLower];
 
-		$this->renderTemplate($this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
+		return $this->renderTemplate($this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
 			index: $index,
 			config: $config,
 			layout: new LayoutParameters('classLike', $activeNamespace, $info),
@@ -172,11 +176,11 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function renderFunction(Index $index, ConfigParameters $config, FunctionInfo $info): void
+	protected function renderFunction(Index $index, ConfigParameters $config, FunctionInfo $info): string
 	{
 		$activeNamespace = $index->namespace[$info->name->namespaceLower];
 
-		$this->renderTemplate($this->urlGenerator->getFunctionPath($info), new FunctionTemplate(
+		return $this->renderTemplate($this->urlGenerator->getFunctionPath($info), new FunctionTemplate(
 			index: $index,
 			config: $config,
 			layout: new LayoutParameters('function', $activeNamespace, $info),
@@ -185,12 +189,12 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function renderSource(Index $index, ConfigParameters $config, string $path): void
+	protected function renderSource(Index $index, ConfigParameters $config, string $path): string
 	{
 		$activeElement = $index->classLike[array_key_first($index->classLike)] ?? $index->function[array_key_first($index->function)] ?? null;
 		$activeNamespace = $activeElement ? $index->namespace[$activeElement->name->namespaceLower] : null;
 
-		$this->renderTemplate($this->urlGenerator->getSourcePath($path), new SourceTemplate(
+		return $this->renderTemplate($this->urlGenerator->getSourcePath($path), new SourceTemplate(
 			index: $index,
 			config: $config,
 			layout: new LayoutParameters('source', $activeNamespace, $activeElement),
@@ -200,17 +204,19 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function renderTemplate(string $outputPath, object $template): void
+	protected function renderTemplate(string $outputPath, object $template): string
 	{
 		$className = (new ReflectionClass($template))->getShortName();
 		$lattePath = 'pages/' . lcfirst(substr($className, 0, -8)) . '.latte';
 		FileSystem::write("$this->outputDir/$outputPath", $this->latte->renderToString($lattePath, $template));
+
+		return $outputPath;
 	}
 
 
 	/**
-	 * @param  array<array{callable(Index, ConfigParameters, mixed): void, array}> $taskSets
-	 * @return iterable<callable(): void>
+	 * @param  array<array{callable(Index, ConfigParameters, mixed): string, array}> $taskSets
+	 * @return iterable<callable(): string>
 	 */
 	protected function createTaskIterator(Index $index, ConfigParameters $config, array $taskSets): iterable
 	{
@@ -223,7 +229,7 @@ class LatteRenderer implements Renderer
 
 
 	/**
-	 * @param iterable<callable(): void> $it
+	 * @param iterable<callable(): string> $it
 	 */
 	protected function forkLoop(ProgressBar $progressBar, iterable $it): void
 	{
@@ -251,7 +257,8 @@ class LatteRenderer implements Renderer
 		$index = 0;
 		foreach ($it as $handle) {
 			if ((($index++) % $workerCount) === $workerId) {
-				$handle();
+				$message = $handle();
+				$progressBar?->setMessage($message);
 			}
 
 			$progressBar?->advance();
