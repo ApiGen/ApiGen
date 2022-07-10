@@ -5,8 +5,10 @@
 {define menu}
 	<div class="menu">
 		{if $index->namespace['']}
-			<h3>Namespaces</h3>
-			{include menuGroup, namespace: $index->namespace['']}
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+				{include menuGroup, namespace: $index->namespace['']}
+			</div>
 		{/if}
 
 		{if $layout->activeNamespace}

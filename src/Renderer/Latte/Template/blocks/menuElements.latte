@@ -4,18 +4,20 @@
 
 {define menuElements, ApiGen\Info\ElementInfo[] $elements, string $heading, bool $onlyPrimary = true}
 	{try}
-		<h3>{$heading}</h3>
-		<ul>
-			{foreach $elements as $element}
-				<li n:class="$element === $layout->activeElement ? active">
-					{skipIf $onlyPrimary && !$element->primary}
-					<a n:class="$element->isDeprecated() ? deprecated" href="{elementUrl($element)}">
-						{elementName($element)}
-					</a>
-				</li>
-			{else}
-				{rollback}
-			{/foreach}
-		</ul>
+		<div class="menu-section">
+			<h3>{$heading}</h3>
+			<ul>
+				{foreach $elements as $element}
+					<li n:class="$element === $layout->activeElement ? active">
+						{skipIf $onlyPrimary && !$element->primary}
+						<a n:class="$element->isDeprecated() ? deprecated" href="{elementUrl($element)}">
+							{elementName($element)}
+						</a>
+					</li>
+				{else}
+					{rollback}
+				{/foreach}
+			</ul>
+		</div>
 	{/try}
 {/define}

@@ -263,11 +263,10 @@ code a b {
 
 /* menu */
 .menu {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
 	padding: 10px;
-}
-
-.menu > *:first-child {
-	margin-top: 0;
 }
 
 .menu ul ul {
@@ -293,6 +292,10 @@ code a b {
 .menu .active > a:active,
 .menu .active > a:focus {
 	background-color: var(--color-link);
+}
+
+.menu-section > *:first-child {
+	margin-top: 0;
 }
 
 
@@ -426,16 +429,27 @@ code a b {
 /* mobile */
 @media (max-width: 980px) {
 	.layout {
-		flex-direction: column-reverse;
-		justify-content: flex-end;
+		flex-direction: column;
 	}
 
 	.layout-aside {
 		position: static;
+		width: auto;
 	}
 
 	.layout-main {
 		margin-left: 10px;
+		min-width: 100%;
 		flex-grow: 0;
+		order: -1;
+	}
+
+	.menu {
+		flex-direction: row;
+		flex-wrap: wrap;
+	}
+
+	.menu-section {
+		flex: 1 1 200px;
 	}
 }
