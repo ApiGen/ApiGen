@@ -26,8 +26,8 @@ document.querySelectorAll('.sortable').forEach(el => {
 
 // search
 document.querySelectorAll('.search').forEach(el => {
-	function tokenize(s) {
-		return Array.from(s.matchAll(/[a-zA-Z][a-z]*|\S/g)).map(it => ([it.index, it[0].toLowerCase()]))
+	function tokenize(s, offset = 0) {
+		return Array.from(s.matchAll(/[A-Z]{2,}|[a-zA-Z][a-z]*|\S/g)).map(it => ([it.index + offset, it[0].toLowerCase()]))
 	}
 
 	function prefix(a, aa, b, bb) {
@@ -72,8 +72,18 @@ document.querySelectorAll('.search').forEach(el => {
 			document.head.appendChild(script)
 			window.ApiGen ??= {}
 			window.ApiGen.resolveElements = (elements) => {
-				const unified = [...elements.namespace ?? [], ...elements.classLike ?? [], ...elements.function ?? []]
-				resolve(unified.sort((a, b) => a[0].localeCompare(b[0])).map(([name, path]) => [name, path, tokenize(name)]))
+				const unified = [
+					...(elements.namespace ?? []).map(([name, path]) => [name, path, tokenize(name)]),
+					...(elements.function ?? []).map(([name, path]) => [name, path, tokenize(name)]),
+					...(elements.classLike ?? []).flatMap(([classLikeName, path, members]) => [
+						[classLikeName, path, tokenize(classLikeName)],
+						...(members.constant ?? []).map(([constantName, anchor]) => [`${classLikeName}::${constantName}`, `${path}#${anchor}`, tokenize(`${constantName}`, classLikeName.length + 2)]),
+						...(members.property ?? []).map(([propertyName, anchor]) => [`${classLikeName}::\$${propertyName}`, `${path}#${anchor}`, tokenize(`\$${propertyName}`, classLikeName.length + 2)]),
+						...(members.method ?? []).map(([methodName, anchor]) => [`${classLikeName}::${methodName}()`, `${path}#${anchor}`, tokenize(`${methodName}()`, classLikeName.length + 2)]),
+					]),
+				]
+
+				resolve(unified.sort((a, b) => a[0].localeCompare(b[0])))
 			}
 		}))
 

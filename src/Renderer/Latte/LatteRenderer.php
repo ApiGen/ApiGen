@@ -101,7 +101,21 @@ class LatteRenderer implements Renderer
 		}
 
 		foreach ($index->classLike as $classLike) {
-			$elements['classLike'][] = [$classLike->name->full, $this->urlGenerator->getClassLikeUrl($classLike)];
+			$members = [];
+
+			foreach ($classLike->constants as $constant) {
+				$members['constant'][] = [$constant->name, $this->urlGenerator->getMemberAnchor($constant)];
+			}
+
+			foreach ($classLike->properties as $property) {
+				$members['property'][] = [$property->name, $this->urlGenerator->getMemberAnchor($property)];
+			}
+
+			foreach ($classLike->methods as $method) {
+				$members['method'][] = [$method->name, $this->urlGenerator->getMemberAnchor($method)];
+			}
+
+			$elements['classLike'][] = [$classLike->name->full, $this->urlGenerator->getClassLikeUrl($classLike), $members];
 		}
 
 		foreach ($index->function as $function) {
