@@ -318,7 +318,7 @@ code a b {
 	flex-wrap: wrap;
 	align-items: center;
 	gap: 10px 20px;
-	padding: 4px 20px 4px 8px;
+	padding: 4px 8px 4px 8px;
 	border-bottom: 1px solid var(--border-color);
 	background-color: var(--background-color);
 	font-size: 14px;
@@ -384,6 +384,56 @@ code a b {
 
 .php-comment {
 	color: #929292;
+}
+
+
+/* search */
+.search {
+	position: relative;
+}
+
+.search-input {
+	display: flex;
+	width: 100%;
+	border: 1px solid var(--border-color);
+	border-radius: 0;
+	padding: 6px;
+	outline: none;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: 1;
+}
+
+.search-input:focus {
+	border-color: var(--color-heading-dark);
+}
+
+.search-results {
+	display: none;
+	position: absolute;
+	top: 30px;
+	width: fit-content;
+	min-width: 100%;
+	max-width: calc(100vw - 16px);
+	overflow: hidden;
+	background-color: white;
+	border: 1px solid #888;
+	z-index: 1;
+}
+
+.search:focus-within .search-results:not(:empty) {
+	display: block;
+}
+
+.search-results a {
+	display: block;
+	color: inherit;
+	padding: 0 8px;
+}
+
+.search-results li:hover, .search-results li.active {
+	background-color: var(--color-link);
+	color: white;
 }
 
 

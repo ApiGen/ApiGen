@@ -20,6 +20,7 @@ use ApiGen\Renderer\UrlGenerator;
 use Latte;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
+use Nette\Utils\Json;
 use ReflectionClass;
 use SplFileInfo;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -39,6 +40,7 @@ use function pcntl_wexitstatus;
 use function pcntl_wifexited;
 use function pcntl_wifsignaled;
 use function pcntl_wtermsig;
+use function sprintf;
 use function substr;
 
 use const PHP_SAPI;
@@ -68,6 +70,7 @@ class LatteRenderer implements Renderer
 
 		$tasks = [
 			[$this->copyAsset(...), $assets],
+			[$this->renderElementsJs(...), [null]],
 			[$this->renderIndex(...), [null]],
 			[$this->renderTree(...), [null]],
 			[$this->renderNamespace(...), $index->namespace],
@@ -86,6 +89,28 @@ class LatteRenderer implements Renderer
 		$assetName = $file->getFilename();
 		$assetPath = $this->urlGenerator->getAssetPath($assetName);
 		FileSystem::copy($file->getPathname(), "$this->outputDir/$assetPath");
+	}
+
+
+	protected function renderElementsJs(Index $index, ConfigParameters $config): void
+	{
+		$elements = [];
+
+		foreach ($index->namespace as $namespace) {
+			$elements['namespace'][] = [$namespace->name->full, $this->urlGenerator->getNamespaceUrl($namespace)];
+		}
+
+		foreach ($index->classLike as $classLike) {
+			$elements['classLike'][] = [$classLike->name->full, $this->urlGenerator->getClassLikeUrl($classLike)];
+		}
+
+		foreach ($index->function as $function) {
+			$elements['function'][] = [$function->name->full, $this->urlGenerator->getFunctionUrl($function)];
+		}
+
+		$js = sprintf('window.ApiGen?.resolveElements(%s)', Json::encode($elements));
+		$assetPath = $this->urlGenerator->getAssetPath('elements.js');
+		FileSystem::write("$this->outputDir/$assetPath", $js);
 	}
 
 
