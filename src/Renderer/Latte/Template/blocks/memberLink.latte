@@ -3,5 +3,5 @@
 {varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
 {define memberLink, ApiGen\Info\ClassLikeInfo $classLike, ApiGen\Info\MemberInfo $member}
-	<a n:pre href="{memberUrl($classLike, $member)}" n:class="$member->isDeprecated() ? deprecated">{include content}</a>
+	<a n:pre n:tag-if="classLikePageExists($classLike)" href="{memberUrl($classLike, $member)}" n:class="$member->isDeprecated() ? deprecated">{include content}</a>
 {/define}

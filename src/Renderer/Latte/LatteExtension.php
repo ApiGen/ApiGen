@@ -2,6 +2,7 @@
 
 namespace ApiGen\Renderer\Latte;
 
+use ApiGen\Renderer\Filter;
 use ApiGen\Renderer\UrlGenerator;
 use Latte;
 
@@ -10,6 +11,7 @@ class LatteExtension extends Latte\Extension
 {
 	public function __construct(
 		protected LatteFunctions $functions,
+		protected Filter $filter,
 		protected UrlGenerator $url,
 	) {
 	}
@@ -29,8 +31,15 @@ class LatteExtension extends Latte\Extension
 			'shortDescription' => $this->functions->shortDescription(...),
 			'longDescription' => $this->functions->longDescription(...),
 
+			'treePageExists' => $this->filter->filterTreePage(...),
+			'namespacePageExists' => $this->filter->filterNamespacePage(...),
+			'classLikePageExists' => $this->filter->filterClassLikePage(...),
+			'functionPageExists' => $this->filter->filterFunctionPage(...),
+			'sourcePageExists' => $this->filter->filterSourcePage(...),
+
 			'elementName' => $this->functions->elementName(...),
 			'elementShortDescription' => $this->functions->elementShortDescription(...),
+			'elementPageExists' => $this->functions->elementPageExists(...),
 			'elementUrl' => $this->functions->elementUrl(...),
 
 			'relativePath' => $this->url->getRelativePath(...),

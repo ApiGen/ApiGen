@@ -18,7 +18,7 @@
 
 		{include classLikeDescription, $function}
 
-		<div class="classLikeSection" n:if="$function->file && $function->primary">
+		<div class="classLikeSection" n:if="$function->file && sourcePageExists($index->files[$function->file])">
 			<b>Located at</b> <a href="{functionSourceUrl($function)}" title="Go to source code">{relativePath($function->file)}</a>
 		</div>
 

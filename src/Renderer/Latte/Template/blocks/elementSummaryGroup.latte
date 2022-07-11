@@ -10,6 +10,7 @@
 
 		{foreach $elements as $element}
 			{skipIf $onlyPrimary && !$element->primary}
+			{skipIf !elementPageExists($element)}
 			<tr>
 				<td class="table-cell" colspan="{$showDescription ? 1 : 2}"><a href="{elementUrl($element)}" n:class="$element->isDeprecated() ? deprecated">{elementName($element)}</a></td>
 				<td class="table-cell" n:if="$showDescription">{elementShortDescription($element)}</td>

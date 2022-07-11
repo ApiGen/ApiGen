@@ -8,8 +8,9 @@
 			<h3>{$heading}</h3>
 			<ul>
 				{foreach $elements as $element}
+					{skipIf $onlyPrimary && !$element->primary}
+					{skipIf !elementPageExists($element)}
 					<li n:class="$element === $layout->activeElement ? active">
-						{skipIf $onlyPrimary && !$element->primary}
 						<a n:class="$element->isDeprecated() ? deprecated" href="{elementUrl($element)}">
 							{elementName($element)}
 						</a>

@@ -10,6 +10,7 @@ use ApiGen\Info\EnumInfo;
 use ApiGen\Info\FunctionInfo;
 use ApiGen\Info\InterfaceInfo;
 use ApiGen\Info\TraitInfo;
+use ApiGen\Renderer\Filter;
 use ApiGen\Renderer\SourceHighlighter;
 use ApiGen\Renderer\UrlGenerator;
 use Latte\Runtime\Html;
@@ -29,6 +30,7 @@ use const ENT_QUOTES;
 class LatteFunctions
 {
 	public function __construct(
+		protected Filter $filter,
 		protected UrlGenerator $url,
 		protected SourceHighlighter $sourceHighlighter,
 		protected ConverterInterface $markdown,
@@ -112,6 +114,23 @@ class LatteFunctions
 
 		} elseif ($info instanceof NamespaceIndex) {
 			return '';
+
+		} else {
+			throw new \LogicException(sprintf('Unexpected element type %s', get_debug_type($info)));
+		}
+	}
+
+
+	public function elementPageExists(ElementInfo $info): bool
+	{
+		if ($info instanceof ClassLikeInfo) {
+			return $this->filter->filterClassLikePage($info);
+
+		} elseif ($info instanceof NamespaceIndex) {
+			return $this->filter->filterNamespacePage($info);
+
+		} elseif ($info instanceof FunctionInfo) {
+			return $this->filter->filterFunctionPage($info);
 
 		} else {
 			throw new \LogicException(sprintf('Unexpected element type %s', get_debug_type($info)));

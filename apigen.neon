@@ -75,6 +75,9 @@ services:
 		factory: ApiGen\Indexer
 
 	# Renderer
+	renderer.filter:
+		factory: ApiGen\Renderer\Filter
+
 	renderer.urlGenerator:
 		factory: ApiGen\Renderer\UrlGenerator(ApiGen\Helpers::baseDir(%paths%), %baseUrl%)
 

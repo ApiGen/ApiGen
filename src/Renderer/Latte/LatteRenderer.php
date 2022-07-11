@@ -2,12 +2,12 @@
 
 namespace ApiGen\Renderer\Latte;
 
-use ApiGen\Index\FileIndex;
 use ApiGen\Index\Index;
 use ApiGen\Index\NamespaceIndex;
 use ApiGen\Info\ClassLikeInfo;
 use ApiGen\Info\FunctionInfo;
 use ApiGen\Renderer;
+use ApiGen\Renderer\Filter;
 use ApiGen\Renderer\Latte\Template\ClassLikeTemplate;
 use ApiGen\Renderer\Latte\Template\ConfigParameters;
 use ApiGen\Renderer\Latte\Template\FunctionTemplate;
@@ -50,6 +50,7 @@ class LatteRenderer implements Renderer
 {
 	public function __construct(
 		protected Latte\Engine $latte,
+		protected Filter $filter,
 		protected UrlGenerator $urlGenerator,
 		protected int $workerCount,
 		protected string $title,
@@ -66,17 +67,16 @@ class LatteRenderer implements Renderer
 
 		$config = new ConfigParameters($this->title, $this->version);
 		$assets = iterator_to_array(Finder::findFiles()->from(__DIR__ . '/Template/assets'));
-		$primaryFiles = array_keys(array_filter($index->files, fn(FileIndex $file) => $file->primary));
 
 		$tasks = [
 			[$this->copyAsset(...), $assets],
 			[$this->renderElementsJs(...), [null]],
 			[$this->renderIndex(...), [null]],
-			[$this->renderTree(...), [null]],
-			[$this->renderNamespace(...), $index->namespace],
-			[$this->renderClassLike(...), $index->classLike],
-			[$this->renderFunction(...), $index->function],
-			[$this->renderSource(...), $primaryFiles],
+			[$this->renderTree(...), $this->filter->filterTreePage() ? [null] : []],
+			[$this->renderNamespace(...), array_filter($index->namespace, $this->filter->filterNamespacePage(...))],
+			[$this->renderClassLike(...), array_filter($index->classLike, $this->filter->filterClassLikePage(...))],
+			[$this->renderFunction(...), array_filter($index->function, $this->filter->filterFunctionPage(...))],
+			[$this->renderSource(...), array_keys(array_filter($index->files, $this->filter->filterSourcePage(...)))],
 		];
 
 		$progressBar->setMaxSteps(array_sum(array_map('count', array_column($tasks, 1))));
@@ -99,10 +99,16 @@ class LatteRenderer implements Renderer
 		$elements = [];
 
 		foreach ($index->namespace as $namespace) {
-			$elements['namespace'][] = [$namespace->name->full, $this->urlGenerator->getNamespaceUrl($namespace)];
+			if ($this->filter->filterNamespacePage($namespace)) {
+				$elements['namespace'][] = [$namespace->name->full, $this->urlGenerator->getNamespaceUrl($namespace)];
+			}
 		}
 
 		foreach ($index->classLike as $classLike) {
+			if (!$this->filter->filterClassLikePage($classLike)) {
+				continue;
+			}
+
 			$members = [];
 
 			foreach ($classLike->constants as $constant) {
@@ -121,7 +127,9 @@ class LatteRenderer implements Renderer
 		}
 
 		foreach ($index->function as $function) {
-			$elements['function'][] = [$function->name->full, $this->urlGenerator->getFunctionUrl($function)];
+			if ($this->filter->filterFunctionPage($function)) {
+				$elements['function'][] = [$function->name->full, $this->urlGenerator->getFunctionUrl($function)];
+			}
 		}
 
 		$js = sprintf('window.ApiGen?.resolveElements(%s)', Json::encode($elements));

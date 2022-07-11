@@ -7,6 +7,6 @@
 		{if $namespace->name->namespaceLower !== ''}
 			{include this, $index->namespace[$namespace->name->namespaceLower]}\
 		{/if}
-		<a href="{namespaceUrl($namespace)}">{$namespace->name->short}</a>
+		<a n:tag-if="namespacePageExists($namespace)" href="{namespaceUrl($namespace)}">{$namespace->name->short}</a>
 	{/pre}
 {/define}

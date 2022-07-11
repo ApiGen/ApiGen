@@ -27,7 +27,7 @@
 		{/if}
 
 		<div class="classLikeSection">
-			{if $classLike->file && $classLike->primary}<b>Located at</b> <a href="{classLikeSourceUrl($classLike)}" title="Go to source code">{relativePath($classLike->file)}</a><br>{/if}
+			{if $classLike->file && sourcePageExists($index->files[$classLike->file])}<b>Located at</b> <a href="{classLikeSourceUrl($classLike)}" title="Go to source code">{relativePath($classLike->file)}</a><br>{/if}
 		</div>
 
 		{if isEnum($classLike)}

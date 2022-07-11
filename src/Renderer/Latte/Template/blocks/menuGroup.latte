@@ -8,6 +8,7 @@
 			{var bool $isActive = $layout->activeNamespace && str_starts_with("{$layout->activeNamespace->name->fullLower}\\", "{$child->name->fullLower}\\")}
 			{var bool $isCollapsed = $level > 0 && !$isActive}
 			{skipIf !$child->primary && !$isActive}
+			{skipIf !namespacePageExists($child)}
 			<li n:class="menuGroup-item, $isActive ? active">
 				<a href="{namespaceUrl($child)}" n:class="$child->deprecated ? deprecated">{$child->name->short ?: 'none'}</a>
 				{if !$isCollapsed && $child->children && $child->name->short !== ''}
