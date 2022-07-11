@@ -51,7 +51,7 @@
 			{include this, expr: $expr->expr, scope: $scope}
 		{elseif $expr instanceof ApiGen\Info\Expr\BinaryOpExprInfo}
 			{include this, expr: $expr->left, scope: $scope}
-			{$expr->op}
+			{=" "}{$expr->op}{=" "}
 			{include this, expr: $expr->right, scope: $scope}
 		{elseif $expr instanceof ApiGen\Info\Expr\TernaryExprInfo}
 			{include this, expr: $expr->condition, scope: $scope}
