@@ -191,7 +191,8 @@ class LatteRenderer implements Renderer
 
 	protected function renderSource(Index $index, ConfigParameters $config, string $path): string
 	{
-		$activeElement = $index->classLike[array_key_first($index->classLike)] ?? $index->function[array_key_first($index->function)] ?? null;
+		$file = $index->files[$path];
+		$activeElement = $file->classLike[array_key_first($file->classLike)] ?? $file->function[array_key_first($file->function)] ?? null;
 		$activeNamespace = $activeElement ? $index->namespace[$activeElement->name->namespaceLower] : null;
 
 		return $this->renderTemplate($this->urlGenerator->getSourcePath($path), new SourceTemplate(
