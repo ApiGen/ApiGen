@@ -6,13 +6,13 @@
 	{if isClass($classLike) && $classLike->extends}
 		{include this, classLike: $index->classLike[$classLike->extends->fullLower], children: [$classLike->extends->fullLower => [$classLike]] + $children}
 	{else}
-		{include classTreeList, classes: [$classLike], children: $children}
+		{include classTreeList, classLikes: [$classLike], children: $children}
 	{/if}
 {/define}
 
-{define classTreeList, ApiGen\Info\ClassLikeInfo[] $classes, ApiGen\Info\ClassLikeInfo[][] $children}
+{define classTreeList, ApiGen\Info\ClassLikeInfo[] $classLikes, ApiGen\Info\ClassLikeInfo[][] $children}
 	<ul class="classTree">
-		{foreach $classes as $classLike}
+		{foreach $classLikes as $classLike}
 			{include classTreeItem, classLike: $classLike, children: $children}
 		{/foreach}
 	</ul>
@@ -22,7 +22,7 @@
 	<li>
 		{include classLikeSignature, $classLike}
 		{if !empty($children[$classLike->name->fullLower])}
-			{include classTreeList, classes: $children[$classLike->name->fullLower], children: $children}
+			{include classTreeList, classLikes: $children[$classLike->name->fullLower], children: $children}
 		{/if}
 	</li>
 {/define}
