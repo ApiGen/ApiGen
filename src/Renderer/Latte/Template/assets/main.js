@@ -155,7 +155,7 @@ let last = null
 const match = window.location.hash.slice(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/)
 
 const handleLinesSelectionChange = () => {
-	history.replaceState({}, '', '#' + ranges.map(([a, b]) => a === b ? a : `${a}-${b}`).join(','));
+	history.replaceState({}, '', '#' + ranges.map(([a, b]) => a === b ? a : `${a}-${b}`).join(','))
 	document.querySelectorAll('.source-line.selected').forEach(el => el.classList.remove('selected'))
 
 	for (let [a, b] of ranges) {
