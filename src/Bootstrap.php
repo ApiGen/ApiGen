@@ -33,6 +33,8 @@ use function str_starts_with;
 use function sys_get_temp_dir;
 
 use const E_ALL;
+use const E_DEPRECATED;
+use const E_USER_DEPRECATED;
 use const PHP_RELEASE_VERSION;
 use const PHP_VERSION_ID;
 
@@ -46,7 +48,7 @@ class Bootstrap
 		ini_set('log_errors', '0');
 
 		set_error_handler(function (int $severity, string $message, string $file, int $line): bool {
-			if (error_reporting() & $severity) {
+			if (error_reporting() & $severity && $severity !== E_DEPRECATED && $severity !== E_USER_DEPRECATED) {
 				throw new ErrorException($message, 0, $severity, $file, $line);
 
 			} else {
