@@ -36,10 +36,6 @@ parameters:
 	memoryLimit: '512M'
 
 
-php:
-	memory_limit: %memoryLimit%
-
-
 services:
 	# ApiGen
 	apigen:

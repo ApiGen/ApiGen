@@ -9,7 +9,6 @@ use Nette\DI\Config\Loader;
 use Nette\DI\Container;
 use Nette\DI\ContainerLoader;
 use Nette\DI\Extensions\ExtensionsExtension;
-use Nette\DI\Extensions\PhpExtension;
 use Nette\DI\Helpers as DIHelpers;
 use Nette\Schema\Expect;
 use Nette\Schema\Helpers as SchemaHelpers;
@@ -90,7 +89,6 @@ class Bootstrap
 
 		$containerGenerator = function (Compiler $compiler) use ($config) {
 			$compiler->addExtension('extensions', new ExtensionsExtension);
-			$compiler->addExtension('php', new PhpExtension);
 			$compiler->addConfig($config);
 		};
 
@@ -107,6 +105,7 @@ class Bootstrap
 
 		$container->addService('symfonyConsole.output', $output);
 		$container->initialize();
+		ini_set('memory_limit', $container->parameters['memoryLimit']);
 
 		return $container->getByType(ApiGen::class) ?? throw new \LogicException();
 	}
