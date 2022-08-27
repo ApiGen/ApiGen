@@ -145,8 +145,12 @@ class Indexer
 			}
 		}
 
-		// method overrides
+		// method overrides & implements
 		foreach ($index->classExtends[''] as $info) {
+			$this->indexClassMethodOverrides($index, $info, [], []);
+		}
+
+		foreach ($index->enum as $info) {
 			$this->indexClassMethodOverrides($index, $info, [], []);
 		}
 
@@ -257,10 +261,10 @@ class Indexer
 
 
 	/**
-	 * @param ClassInfo[]     $normal   indexed by [methodName]
+	 * @param ClassLikeInfo[] $normal   indexed by [methodName]
 	 * @param ClassLikeInfo[] $abstract indexed by [methodName]
 	 */
-	protected function indexClassMethodOverrides(Index $index, ClassInfo $info, array $normal, array $abstract): void
+	protected function indexClassMethodOverrides(Index $index, ClassInfo|EnumInfo $info, array $normal, array $abstract): void
 	{
 		$stack = array_keys($info->implements);
 		$stackIndex = count($stack);
