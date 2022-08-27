@@ -506,6 +506,7 @@ class Analyzer
 						$propertyInfo->protected = (bool) ($param->flags & Node\Stmt\Class_::MODIFIER_PROTECTED);
 						$propertyInfo->private = (bool) ($param->flags & Node\Stmt\Class_::MODIFIER_PRIVATE);
 
+						$propertyInfo->readOnly = (bool) ($param->flags & Node\Stmt\Class_::MODIFIER_READONLY);
 						$propertyInfo->type = $memberInfo->parameters[$propertyInfo->name]->type;
 
 						yield $propertyInfo;
