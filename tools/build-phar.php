@@ -77,5 +77,3 @@ $phar->buildFromIterator($files, $rootDir);
 $phar->setStub($stub);
 
 Nette\Utils\FileSystem::write($phar->getPath(), $setPharTimestamps(Nette\Utils\FileSystem::read($phar->getPath())));
-rename($phar->getPath(), __DIR__ . '/apigen');
-chmod(__DIR__ . '/apigen', 0755);
