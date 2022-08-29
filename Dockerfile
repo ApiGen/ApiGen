@@ -54,6 +54,7 @@ FROM php-dev as apigen-builder
 WORKDIR /src
 
 COPY composer.json           /src/composer.json
+COPY composer.lock           /src/composer.lock
 RUN composer install --no-dev --no-progress --no-cache
 
 COPY bin                     /src/bin

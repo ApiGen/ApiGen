@@ -5,4 +5,5 @@
 !/apigen.neon
 !/LICENSE
 !/composer.json
+!/composer.lock
 !/php.ini

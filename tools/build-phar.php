@@ -9,6 +9,7 @@ $include = [
 	'/vendor/**',
 	'/apigen.neon',
 	'/composer.json',
+	'/composer.lock',
 	'/LICENSE',
 	'/README.md',
 ];
