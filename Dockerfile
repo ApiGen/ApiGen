@@ -19,6 +19,7 @@ COPY php.ini           /etc/php81/php.ini
 
 
 FROM php-base as php-dev
+ARG TARGETARCH
 
 COPY --from=blackfire/blackfire /usr/local/bin/blackfire /usr/local/bin/blackfire
 COPY --from=composer:2          /usr/bin/composer        /usr/bin/composer
@@ -30,7 +31,7 @@ RUN apk add --no-cache \
 		php81-phar \
 		php81-session
 
-RUN wget -O /usr/lib/php81/modules/blackfire.so https://packages.blackfire.io/binaries/blackfire-php/1.79.0/blackfire-php-alpine_amd64-php-81.so && \
+RUN wget -O /usr/lib/php81/modules/blackfire.so https://packages.blackfire.io/binaries/blackfire-php/1.79.0/blackfire-php-alpine_${TARGETARCH:-amd64}-php-81.so && \
 	echo "extension = blackfire" >> /etc/php81/conf.d/blackfire.ini && \
 	echo "opcache.jit_buffer_size = 0" >> /etc/php81/conf.d/blackfire.ini
 
