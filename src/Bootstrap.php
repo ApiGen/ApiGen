@@ -87,7 +87,7 @@ class Bootstrap
 		$tempDir = DIHelpers::expand($config['parameters']['tempDir'], $config['parameters']);
 		$containerLoader = new ContainerLoader($tempDir, autoRebuild: true);
 
-		$containerGenerator = function (Compiler $compiler) use ($config) {
+		$containerGenerator = function (Compiler $compiler) use ($config): void {
 			$compiler->addExtension('extensions', new ExtensionsExtension);
 			$compiler->addConfig($config);
 		};
