@@ -50,6 +50,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           tags: ${{ steps.meta.outputs.tags }}
+          build-args: COMPOSER_ROOT_VERSION=${{ github.ref_typ == 'tag' && github.ref_name || 'dev-master' }}
           platforms: linux/amd64,linux/arm64
           cache-from: type=gha
           cache-to: type=gha,mode=max

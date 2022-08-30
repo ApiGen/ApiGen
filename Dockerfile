@@ -53,6 +53,7 @@ RUN cd /tmp/php-meminfo-master/analyzer && \
 FROM php-dev as apigen-builder
 
 WORKDIR /src
+ARG COMPOSER_ROOT_VERSION
 
 COPY composer.json           /src/composer.json
 COPY composer.lock           /src/composer.lock
