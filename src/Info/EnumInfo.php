@@ -6,7 +6,7 @@ namespace ApiGen\Info;
 class EnumInfo extends ClassLikeInfo
 {
 	/** @var string|null */
-	public ?string $scalarType;
+	public ?string $scalarType = null;
 
 	/** @var ClassLikeReferenceInfo[] indexed by [classLikeName] */
 	public array $implements = [];
