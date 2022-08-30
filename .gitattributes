@@ -1,0 +1,9 @@
+/.dockerignore  export-ignore
+/.gitattributes export-ignore
+/.github        export-ignore
+/.gitignore     export-ignore
+/Dockerfile     export-ignore
+/php.ini        export-ignore
+/phpstan.neon   export-ignore
+/tests          export-ignore
+/tools          export-ignore
