@@ -11,6 +11,9 @@ class ClassInfo extends ClassLikeInfo
 	/** @var bool */
 	public bool $final = false;
 
+	/** @var bool */
+	public bool $readOnly = false;
+
 	/** @var ClassLikeReferenceInfo|null */
 	public ?ClassLikeReferenceInfo $extends = null;
 

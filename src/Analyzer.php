@@ -277,6 +277,7 @@ class Analyzer
 			$info = new ClassInfo($name, $task->primary);
 			$info->abstract = $node->isAbstract();
 			$info->final = $node->isFinal();
+			$info->readOnly = $node->isReadonly();
 			$info->extends = $node->extends ? $this->processName($node->extends, $tags, $extendsTagNames) : null;
 			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames);
 
