@@ -75,9 +75,9 @@ class LatteFunctions
 	}
 
 
-	public function highlight(string $s): Html
+	public function highlight(string $path): Html
 	{
-		return new Html($this->sourceHighlighter->highlight($s));
+		return new Html($this->sourceHighlighter->highlight($path));
 	}
 
 

@@ -2,7 +2,9 @@
 
 namespace ApiGen\Renderer;
 
+use Nette\Utils\FileSystem;
 use PhpToken;
+use Symfony\Component\Console\Style\OutputStyle;
 
 use function count;
 use function explode;
@@ -197,8 +199,15 @@ class SourceHighlighter
 	];
 
 
-	public function highlight(string $source): string
+	public function __construct(
+		protected OutputStyle $output,
+	) {
+	}
+
+
+	public function highlight(string $path): string
 	{
+		$source = FileSystem::read($path);
 		$align = strlen(strval(1 + substr_count($source, "\n")));
 		$lineStart = "<tr id=\"%1\$d\" class=\"source-line\"><td><a class=\"source-lineNum\" href=\"#%1\$d\">%1\${$align}d: </a></td><td>";
 		$lineEnd = '</td></tr>';
@@ -206,7 +215,7 @@ class SourceHighlighter
 		$line = 1;
 		$out = sprintf($lineStart, $line);
 
-		foreach ($this->tokenize($source) as $id => $text) {
+		foreach ($this->tokenize($path, $source) as $id => $text) {
 			if ($text === "\n") {
 				$out .= $lineEnd . sprintf($lineStart, ++$line);
 
@@ -224,9 +233,18 @@ class SourceHighlighter
 	/**
 	 * @return iterable<int, string>
 	 */
-	protected function tokenize(string $source): iterable
+	protected function tokenize(string $path, string $source): iterable
 	{
-		foreach (PhpToken::tokenize($source, TOKEN_PARSE) as $token) {
+		try {
+			$tokens = PhpToken::tokenize($source, TOKEN_PARSE);
+
+		} catch (\ParseError $e) {
+			$this->output->newLine();
+			$this->output->warning(sprintf("Parse error in %s:%d\n%s", $path, $e->getLine(), $e->getMessage()));
+			$tokens = [new PhpToken(T_INLINE_HTML, $source)];
+		}
+
+		foreach ($tokens as $token) {
 			$lines = explode("\n", $token->text);
 			$lastLine = count($lines) - 1;
 

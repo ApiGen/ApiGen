@@ -208,7 +208,6 @@ class LatteRenderer implements Renderer
 			config: $config,
 			layout: new LayoutParameters('source', $activeNamespace, $activeElement),
 			path: $path,
-			source: FileSystem::read($path),
 		));
 	}
 

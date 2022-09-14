@@ -2,6 +2,6 @@
 {varType ApiGen\Renderer\Latte\Template\ConfigParameters $config}
 {varType ApiGen\Renderer\Latte\Template\LayoutParameters $layout}
 
-{define source, string $source}
-	<table class="source">{highlight($source)}</table>
+{define source, string $path}
+	<table class="source">{highlight($path)}</table>
 {/define}

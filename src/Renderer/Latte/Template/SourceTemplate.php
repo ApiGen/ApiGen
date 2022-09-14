@@ -12,7 +12,6 @@ class SourceTemplate
 		public ConfigParameters $config,
 		public LayoutParameters $layout,
 		public string $path,
-		public string $source,
 	) {
 	}
 }
