@@ -8,12 +8,12 @@ use Nette\Utils\Finder;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_column;
-use function array_keys;
 use function array_slice;
 use function count;
 use function hrtime;
 use function implode;
-use function iterator_to_array;
+use function is_dir;
+use function is_file;
 use function memory_get_peak_usage;
 use function sprintf;
 
@@ -63,11 +63,30 @@ class ApiGen
 	 */
 	protected function findFiles(): array
 	{
-		$finder = Finder::findFiles(...$this->include)
-			->exclude(...$this->exclude)
-			->from(...$this->paths);
+		$files = [];
+		$dirs = [];
 
-		$files = array_keys(iterator_to_array($finder));
+		foreach ($this->paths as $path) {
+			if (is_file($path)) {
+				$files[] = $path;
+
+			} elseif (is_dir($path)) {
+				$dirs[] = $path;
+
+			} else {
+				$this->output->error(sprintf('Path "%s" does not exist.', $path));
+			}
+		}
+
+		if (count($dirs) > 0) {
+			$finder = Finder::findFiles(...$this->include)
+				->exclude(...$this->exclude)
+				->from(...$dirs);
+
+			foreach ($finder as $file => $_) {
+				$files[] = $file;
+			}
+		}
 
 		if (!count($files)) {
 			throw new \RuntimeException('No source files found.');
