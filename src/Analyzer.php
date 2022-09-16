@@ -241,7 +241,7 @@ class Analyzer
 					throw new \LogicException("Failed to analyze $node->namespacedName", 0, $e);
 				}
 
-			} elseif ($node instanceof Node) { // TODO: functions, constants, class aliases
+			} elseif ($node instanceof Node\Stmt) { // TODO: constants, class aliases
 				foreach ($node->getSubNodeNames() as $name) {
 					$subNode = $node->$name;
 
