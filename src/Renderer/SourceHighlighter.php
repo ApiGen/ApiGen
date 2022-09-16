@@ -62,6 +62,7 @@ use const T_IF;
 use const T_IMPLEMENTS;
 use const T_INCLUDE;
 use const T_INCLUDE_ONCE;
+use const T_INLINE_HTML;
 use const T_INSTANCEOF;
 use const T_INSTEADOF;
 use const T_INTERFACE;

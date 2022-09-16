@@ -923,7 +923,7 @@ class Analyzer
 			}
 
 		} else {
-			throw new \LogicException(sprintf('Unsupported const expr node %s used in PhpDoc', get_debug_type($expr)));
+			throw new \LogicException(sprintf('Unsupported const expr node %s used in PHPDoc', get_debug_type($expr)));
 		}
 	}
 
