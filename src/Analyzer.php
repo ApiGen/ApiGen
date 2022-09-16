@@ -26,6 +26,8 @@ use ApiGen\Info\Expr\FloatExprInfo;
 use ApiGen\Info\Expr\IntegerExprInfo;
 use ApiGen\Info\Expr\NewExprInfo;
 use ApiGen\Info\Expr\NullExprInfo;
+use ApiGen\Info\Expr\NullSafePropertyFetchExprInfo;
+use ApiGen\Info\Expr\PropertyFetchExprInfo;
 use ApiGen\Info\Expr\StringExprInfo;
 use ApiGen\Info\Expr\TernaryExprInfo;
 use ApiGen\Info\Expr\UnaryOpExprInfo;
@@ -275,6 +277,7 @@ class Analyzer
 			$info = new ClassInfo($name, $task->primary);
 			$info->abstract = $node->isAbstract();
 			$info->final = $node->isFinal();
+			$info->readOnly = $node->isReadonly();
 			$info->extends = $node->extends ? $this->processName($node->extends, $tags, $extendsTagNames) : null;
 			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames);
 
@@ -850,6 +853,18 @@ class Analyzer
 				$this->processExpr($expr->dim),
 			);
 
+		} elseif ($expr instanceof Node\Expr\PropertyFetch) {
+			return new PropertyFetchExprInfo(
+				$this->processExpr($expr->var),
+				$expr->name instanceof Node\Expr ? $this->processExpr($expr->name) : $expr->name->name,
+			);
+
+		} elseif ($expr instanceof Node\Expr\NullsafePropertyFetch) {
+			return new NullSafePropertyFetchExprInfo(
+				$this->processExpr($expr->var),
+				$expr->name instanceof Node\Expr ? $this->processExpr($expr->name) : $expr->name->name,
+			);
+
 		} elseif ($expr instanceof Node\Expr\New_) {
 			assert($expr->class instanceof Name);
 
@@ -997,6 +1012,10 @@ class Analyzer
 		} elseif ($expr instanceof DimFetchExprInfo) {
 			$dependencies += $this->extractExprDependencies($expr->expr);
 			$dependencies += $this->extractExprDependencies($expr->dim);
+
+		} elseif ($expr instanceof PropertyFetchExprInfo || $expr instanceof NullSafePropertyFetchExprInfo) {
+			$dependencies += $this->extractExprDependencies($expr->expr);
+			$dependencies += is_string($expr->property) ? [] : $this->extractExprDependencies($expr->property);
 
 		} elseif ($expr instanceof ClassConstantFetchExprInfo) {
 			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {

@@ -28,6 +28,9 @@ jobs:
       - name: Build PHAR
         run: php tools/build-phar.php
 
+      - name: Test PHAR
+        run: php tools/apigen.phar --version && php tools/apigen.phar src
+
       - name: Release
         uses: softprops/action-gh-release@v1
         with:

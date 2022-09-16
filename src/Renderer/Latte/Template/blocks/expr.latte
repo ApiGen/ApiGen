@@ -60,6 +60,22 @@
 		{elseif $expr instanceof ApiGen\Info\Expr\DimFetchExprInfo}
 			{include this, expr: $expr->expr, scope: $scope}
 			[{include this, expr: $expr->dim, scope: $scope}]
+		{elseif $expr instanceof ApiGen\Info\Expr\PropertyFetchExprInfo}
+			{include this, expr: $expr->expr, scope: $scope}
+			-&gt;
+			{if is_string($expr->property)}
+				{$expr->property}
+			{else}
+				{{include this, expr: $expr->property, scope: $scope}}
+			{/if}
+		{elseif $expr instanceof ApiGen\Info\Expr\NullSafePropertyFetchExprInfo}
+			{include this, expr: $expr->expr, scope: $scope}
+			?-&gt;
+			{if is_string($expr->property)}
+				{$expr->property}
+			{else}
+				{{include this, expr: $expr->property, scope: $scope}}
+			{/if}
 		{elseif $expr instanceof ApiGen\Info\Expr\NewExprInfo}
 			{var $classLike = $index->classLike[$expr->classLike->fullLower]}
 			<span class="php-kw">new</span> {include classLikeLink, classLike: $classLike, short: true}

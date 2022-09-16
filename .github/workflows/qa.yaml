@@ -10,9 +10,22 @@ jobs:
       - uses: actions/checkout@v3
       - uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.1
+          php-version: '8.2'
           coverage: none
-
-      - run: composer install --no-progress
+      - run: composer install --no-progress --ignore-platform-reqs
       - run: vendor/bin/phpstan
+
+  apigen:
+    name: ApiGen
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php: ['8.1', '8.2']
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          coverage: none
+      - run: composer install --no-progress --ignore-platform-reqs
       - run: bin/apigen src tests

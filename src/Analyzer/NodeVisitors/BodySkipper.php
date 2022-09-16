@@ -13,7 +13,7 @@ class BodySkipper extends NodeVisitorAbstract
 		// It is not possible to return NodeTraverser::DONT_TRAVERSE_CHILDREN,
 		// because it would break PhpParser\NodeVisitor\NameResolver's resolution of Param nodes.
 
-		if ($node instanceof Node\FunctionLike && isset($node->stmts)) {
+		if (($node instanceof Node\Stmt\Function_ || $node instanceof Node\Stmt\ClassMethod) && $node->stmts !== null) {
 			$node->stmts = [];
 		}
 
