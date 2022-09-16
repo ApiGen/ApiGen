@@ -387,15 +387,15 @@ class Analyzer
 	 */
 	protected function extractMembers(array $tags, Node\Stmt\ClassLike $node): iterable
 	{
-		yield from $this->extractMembersClassLikeBody($node);
-		yield from $this->extractMembersClassLikeTags($tags);
+		yield from $this->extractMembersFromBody($node);
+		yield from $this->extractMembersFromTags($tags);
 	}
 
 
 	/**
 	 * @return iterable<MemberInfo>
 	 */
-	protected function extractMembersClassLikeBody(Node\Stmt\ClassLike $node): iterable
+	protected function extractMembersFromBody(Node\Stmt\ClassLike $node): iterable
 	{
 		foreach ($node->stmts as $member) {
 			$memberDoc = $this->extractPhpDoc($member);
@@ -539,7 +539,7 @@ class Analyzer
 	 * @param  PhpDocTagValueNode[][] $tags indexed by [tagName][]
 	 * @return iterable<MemberInfo>
 	 */
-	protected function extractMembersClassLikeTags(array $tags): iterable
+	protected function extractMembersFromTags(array $tags): iterable
 	{
 		$propertyTags = [
 			'property' => [false, false],
@@ -576,7 +576,7 @@ class Analyzer
 				$parameterInfo->type = $parameter->type;
 				$parameterInfo->byRef = $parameter->isReference;
 				$parameterInfo->variadic = $parameter->isVariadic;
-				$parameterInfo->default = $parameter->defaultValue ? $this->processPhpStanExpr($parameter->defaultValue) : null;
+				$parameterInfo->default = $parameter->defaultValue ? $this->processPhpDocExpr($parameter->defaultValue) : null;
 
 				$methodInfo->parameters[$parameterInfo->name] = $parameterInfo;
 			}
@@ -882,7 +882,7 @@ class Analyzer
 	}
 
 
-	protected function processPhpStanExpr(ConstExprNode $expr): ExprInfo
+	protected function processPhpDocExpr(ConstExprNode $expr): ExprInfo
 	{
 		if ($expr instanceof ConstExprTrueNode) {
 			return new BooleanExprInfo(true);
@@ -907,8 +907,8 @@ class Analyzer
 
 			foreach ($expr->items as $item) {
 				$items[] = new ArrayItemExprInfo(
-					$item->key ? $this->processPhpStanExpr($item->key) : null,
-					$this->processPhpStanExpr($item->value),
+					$item->key ? $this->processPhpDocExpr($item->key) : null,
+					$this->processPhpDocExpr($item->value),
 				);
 			}
 
