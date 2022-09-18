@@ -1,6 +1,6 @@
 # Smart and Readable Documentation for PHP projects
 
-ApiGen is easy to use and modern API doc generator **supporting all PHP 8.1 features**.
+ApiGen is easy to use and modern API doc generator **supporting all PHP 8.2 features**.
 
 
 ## Features
@@ -8,6 +8,12 @@ ApiGen is easy to use and modern API doc generator **supporting all PHP 8.1 feat
 - phpDoc
   - [all types supported by PHPStan](https://phpstan.org/writing-php-code/phpdoc-types)
   - [generic class declarations](https://phpstan.org/blog/generics-in-php-using-phpdocs)
+- PHP 8.2
+  - [constants in traits](https://wiki.php.net/rfc/constants_in_traits)
+  - [fetch enum properties in const expressions](https://wiki.php.net/rfc/fetch_property_in_const_expressions)
+  - [disjunctive normal form types](https://wiki.php.net/rfc/dnf_types)
+  - [readonly classes](https://wiki.php.net/rfc/readonly_classes)
+  - [true](https://wiki.php.net/rfc/true-type), [false and null types](https://wiki.php.net/rfc/null-false-standalone-types)
 - PHP 8.1
   - [enums](https://wiki.php.net/rfc/enumerations)
   - [pure intersection types](https://wiki.php.net/rfc/pure-intersection-types)
