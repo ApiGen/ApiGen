@@ -29,6 +29,9 @@ abstract class ClassLikeInfo implements ElementInfo
 	/** @var MethodInfo[] indexed by [methodName] */
 	public array $methods = [];
 
+	/** @var ClassLikeReferenceInfo[] indexed by [classLike] */
+	public array $mixins = [];
+
 
 	public function __construct(
 		public NameInfo $name,

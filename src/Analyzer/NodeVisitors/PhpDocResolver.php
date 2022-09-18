@@ -14,6 +14,7 @@ use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ExtendsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ImplementsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\MixinTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
@@ -184,6 +185,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 				case ExtendsTagValueNode::class:
 				case ImplementsTagValueNode::class:
 				case UsesTagValueNode::class:
+				case MixinTagValueNode::class:
 					yield $tag->value->type;
 					break;
 

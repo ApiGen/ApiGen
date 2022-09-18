@@ -66,6 +66,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\ExtendsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ImplementsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\MixinTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
@@ -321,6 +322,9 @@ class Analyzer
 		$info->file = $task->sourceFile;
 		$info->startLine = $node->getStartLine();
 		$info->endLine = $node->getEndLine();
+
+		$info->mixins = $this->processMixinTags($tags['mixin'] ?? []);
+		$info->dependencies += $info->mixins;
 
 		foreach ($info->genericParameters as $genericParameter) {
 			$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
@@ -725,6 +729,32 @@ class Analyzer
 					assert($refInfo instanceof ClassLikeReferenceInfo);
 
 					$refInfo->genericArgs = $tagValue->type->genericTypes;
+					$nameMap[$refInfo->fullLower] = $refInfo;
+				}
+			}
+		}
+
+		return $nameMap;
+	}
+
+
+	/**
+	 * @param  PhpDocTagValueNode[] $values indexed by []
+	 * @return ClassLikeReferenceInfo[] indexed by [classLikeName]
+	 */
+	protected function processMixinTags(array $values): array
+	{
+		$nameMap = [];
+
+		foreach ($values as $value) {
+			if ($value instanceof MixinTagValueNode && $value->type instanceof IdentifierTypeNode) {
+				$kind = $value->type->getAttribute('kind');
+				assert($kind instanceof IdentifierKind);
+
+				if ($kind === IdentifierKind::ClassLike) {
+					$refInfo = $value->type->getAttribute('classLikeReference');
+					assert($refInfo instanceof ClassLikeReferenceInfo);
+
 					$nameMap[$refInfo->fullLower] = $refInfo;
 				}
 			}
