@@ -57,7 +57,7 @@ This will install ApiGen phar binary to `tools/apigen`.
 
 ```bash
 mkdir -p tools
-curl -L https://github.com/ApiGen/ApiGen/releases/download/v7.0.0-alpha.2/apigen.phar -o tools/apigen
+curl -L https://github.com/ApiGen/ApiGen/releases/download/v7.0.0-alpha.3/apigen.phar -o tools/apigen
 chmod +x tools/apigen
 tools/apigen src --output docs
 ```
