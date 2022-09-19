@@ -58,15 +58,18 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 		'theme' => 'themeDir',
 	];
 
+	$numericOptions = [
+		'workers' => true,
+	];
+
 	$parameters = [];
 	foreach ($optionsMapping as $optionKey => $parameterKey) {
-		if (is_string($options[$optionKey])) {
-			$parameters[$parameterKey] = $optionKey === 'workers'
-				? (int) $options[$optionKey]
-				: $options[$optionKey];
+		$optionValue = $options[$optionKey];
+		if (is_string($optionValue)) {
+			$parameters[$parameterKey] = isset($numericOptions[$optionKey]) ? (int) $optionValue : $optionValue;
 
-		} elseif (is_array($options[$optionKey]) && count($options[$optionKey]) > 0) {
-			$parameters[$parameterKey] = $options[$optionKey];
+		} elseif (is_array($optionValue) && count($optionValue) > 0) {
+			$parameters[$parameterKey] = $optionValue;
 		}
 	}
 
