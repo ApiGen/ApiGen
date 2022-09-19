@@ -66,9 +66,20 @@ class LatteRenderer implements Renderer
 		FileSystem::createDir($this->outputDir);
 
 		$config = new ConfigParameters($this->title, $this->version);
+		$tasks = $this->getTaskGroups($index);
+		$progressBar->setMaxSteps(array_sum(array_map('count', array_column($tasks, 1))));
+		$this->forkLoop($progressBar, $this->createTaskIterator($index, $config, $tasks));
+	}
+
+
+	/**
+	 * @return array<array{callable(Index, ConfigParameters, mixed): string, array}>
+	 */
+	protected function getTaskGroups(Index $index): array
+	{
 		$assets = iterator_to_array(Finder::findFiles()->from(__DIR__ . '/Template/assets'));
 
-		$tasks = [
+		return [
 			[$this->copyAsset(...), $assets],
 			[$this->renderElementsJs(...), [null]],
 			[$this->renderIndex(...), [null]],
@@ -78,9 +89,6 @@ class LatteRenderer implements Renderer
 			[$this->renderFunction(...), array_filter($index->function, $this->filter->filterFunctionPage(...))],
 			[$this->renderSource(...), array_keys(array_filter($index->files, $this->filter->filterSourcePage(...)))],
 		];
-
-		$progressBar->setMaxSteps(array_sum(array_map('count', array_column($tasks, 1))));
-		$this->forkLoop($progressBar, $this->createTaskIterator($index, $config, $tasks));
 	}
 
 
