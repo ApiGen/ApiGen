@@ -12,7 +12,7 @@ jobs:
         with:
           php-version: '8.2'
           coverage: none
-      - run: composer install --no-progress --ignore-platform-reqs
+      - run: composer install --no-progress
       - run: vendor/bin/phpstan
 
   apigen:
@@ -27,5 +27,5 @@ jobs:
         with:
           php-version: ${{ matrix.php }}
           coverage: none
-      - run: composer install --no-progress --ignore-platform-reqs
+      - run: composer install --no-progress
       - run: bin/apigen src tests

@@ -36,7 +36,7 @@ ARG COMPOSER_ROOT_VERSION
 
 COPY composer.json           /src/composer.json
 COPY composer.lock           /src/composer.lock
-RUN composer install --no-dev --no-progress --no-cache --ignore-platform-reqs
+RUN composer install --no-dev --no-progress --no-cache
 
 COPY bin                     /src/bin
 COPY src                     /src/src
