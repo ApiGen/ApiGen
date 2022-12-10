@@ -2,9 +2,9 @@
 
 namespace ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr;
 
-enum Color
+enum Color: string
 {
-	case Red;
-	case Blue;
-	case Green;
+	case Red = '#FF0000';
+	case Blue = '#0000FF';
+	case Green = '#00FF00';
 }
