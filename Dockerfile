@@ -5,7 +5,7 @@ RUN addgroup --system --gid 1000 docker && \
 	mkdir /src && \
 	chown docker:docker /src
 
-RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted \
+RUN apk add --no-cache \
 		php82 \
 		php82-ctype \
 		php82-json \
@@ -23,7 +23,7 @@ ARG TARGETARCH
 
 COPY --from=composer:2          /usr/bin/composer        /usr/bin/composer
 
-RUN apk add --no-cache --repository https://dl-cdn.alpinelinux.org/alpine/edge/testing/ --allow-untrusted \
+RUN apk add --no-cache \
 		php82-curl \
 		php82-openssl \
 		php82-phar
