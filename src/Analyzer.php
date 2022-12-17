@@ -186,8 +186,14 @@ class Analyzer
 
 		foreach ($missing as $fullLower => $referencedBy) {
 			$dependency = $referencedBy->dependencies[$fullLower];
-			$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(ErrorInfo::KIND_MISSING_SYMBOL, "Missing {$dependency->full}\nreferenced by {$referencedBy->name->full}");
 			$classLike[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
+
+			if ($referencedBy->primary) {
+				$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(
+					ErrorInfo::KIND_MISSING_SYMBOL,
+					"Missing {$dependency->full}\nreferenced by {$referencedBy->name->full}",
+				);
+			}
 		}
 
 		return new AnalyzeResult($classLike, $functions, $errors);
