@@ -7,6 +7,7 @@ use ApiGen\Analyzer\AnalyzeTask;
 use ApiGen\Analyzer\Filter;
 use ApiGen\Analyzer\IdentifierKind;
 use ApiGen\Analyzer\NodeVisitors\PhpDocResolver;
+use ApiGen\Info\AliasInfo;
 use ApiGen\Info\ClassInfo;
 use ApiGen\Info\ClassLikeInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
@@ -33,6 +34,7 @@ use ApiGen\Info\Expr\TernaryExprInfo;
 use ApiGen\Info\Expr\UnaryOpExprInfo;
 use ApiGen\Info\ExprInfo;
 use ApiGen\Info\FunctionInfo;
+use ApiGen\Info\GenericParameterInfo;
 use ApiGen\Info\InterfaceInfo;
 use ApiGen\Info\MemberInfo;
 use ApiGen\Info\MethodInfo;
@@ -287,6 +289,7 @@ class Analyzer
 			$info->readOnly = $node->isReadonly();
 			$info->extends = $node->extends ? $this->processName($node->extends, $tags, $extendsTagNames) : null;
 			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames);
+			$info->aliases = $this->extractAliases($classDoc);
 
 			foreach ($node->getTraitUses() as $traitUse) { // TODO: trait adaptations
 				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
@@ -322,7 +325,7 @@ class Analyzer
 			throw new \LogicException(sprintf('Unsupported ClassLike node %s', get_debug_type($node)));
 		}
 
-		$info->genericParameters = $classDoc->getAttribute('genericNameContext') ?? [];
+		$info->genericParameters = $this->extractGenericParameters($classDoc);
 		$info->description = $this->extractDescription($classDoc);
 		$info->tags = $tags;
 		$info->file = $task->sourceFile;
@@ -481,7 +484,7 @@ class Analyzer
 				$memberInfo->description = $description;
 				$memberInfo->tags = $tags;
 
-				$memberInfo->genericParameters = $memberDoc->getAttribute('genericNameContext') ?? [];
+				$memberInfo->genericParameters = $this->extractGenericParameters($memberDoc);
 				$memberInfo->parameters = $this->processParameters($this->extractParamTagValues($memberDoc), $member->params);
 				$memberInfo->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($member->returnType);
 				$memberInfo->returnDescription = $returnTag?->description ?? '';
@@ -623,7 +626,7 @@ class Analyzer
 		$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
 		unset($tags['param'], $tags['return']);
 
-		$info->genericParameters = $phpDoc->getAttribute('genericNameContext') ?? [];
+		$info->genericParameters = $this->extractGenericParameters($phpDoc);
 		$info->parameters = $this->processParameters($this->extractParamTagValues($phpDoc), $node->params);
 		$info->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($node->returnType);
 		$info->returnDescription = $returnTag?->description ?? '';
@@ -987,6 +990,40 @@ class Analyzer
 
 
 	/**
+	 * @return GenericParameterInfo[] indexed by [name]
+	 */
+	protected function extractGenericParameters(PhpDocNode $node): array
+	{
+		$genericParameters = [];
+
+		foreach ($node->getAttribute('nameContext')?->names ?? [] as $nameLower => $nameDef) {
+			if ($nameDef instanceof GenericParameterInfo) {
+				$genericParameters[$nameLower] = $nameDef;
+			}
+		}
+
+		return $genericParameters;
+	}
+
+
+	/**
+	 * @return AliasInfo[] indexed by [name]
+	 */
+	protected function extractAliases(PhpDocNode $node): array
+	{
+		$aliases = [];
+
+		foreach ($node->getAttribute('nameContext')?->names ?? [] as $nameLower => $nameDef) {
+			if ($nameDef instanceof AliasInfo) {
+				$aliases[$nameLower] = $nameDef;
+			}
+		}
+
+		return $aliases;
+	}
+
+
+	/**
 	 * @return PhpDocTagValueNode[][] indexed by [tagName][]
 	 */
 	protected function extractTags(PhpDocNode $node): array
@@ -1081,10 +1118,18 @@ class Analyzer
 
 		if ($type !== null) {
 			foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
-				if ($identifier->getAttribute('kind') === IdentifierKind::ClassLike) {
+				$kind = $identifier->getAttribute('kind');
+				assert($kind instanceof IdentifierKind);
+
+				if ($kind === IdentifierKind::ClassLike) {
 					$classLikeReference = $identifier->getAttribute('classLikeReference');
 					assert($classLikeReference instanceof ClassLikeReferenceInfo);
 					$dependencies[$classLikeReference->fullLower] = $classLikeReference;
+
+				} elseif ($kind === IdentifierKind::Alias) {
+					$alias = $identifier->getAttribute('aliasReference');
+					assert($alias instanceof AliasReferenceInfo);
+					$dependencies[$alias->classLike->fullLower] = $alias->classLike;
 				}
 			}
 		}

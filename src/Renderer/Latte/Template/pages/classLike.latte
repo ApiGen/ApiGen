@@ -30,6 +30,8 @@
 			{if $classLike->file && sourcePageExists($index->files[$classLike->file])}<b>Located at</b> <a href="{classLikeSourceUrl($classLike)}" title="Go to source code">{relativePath($classLike->file)}</a><br>{/if}
 		</div>
 
+		{include aliasSummary, $classLike}
+
 		{if isEnum($classLike)}
 			{include enumCaseSummary, $classLike}
 		{/if}

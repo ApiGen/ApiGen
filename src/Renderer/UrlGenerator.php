@@ -3,6 +3,7 @@
 namespace ApiGen\Renderer;
 
 use ApiGen\Index\NamespaceIndex;
+use ApiGen\Info\AliasInfo;
 use ApiGen\Info\ClassLikeInfo;
 use ApiGen\Info\ConstantInfo;
 use ApiGen\Info\EnumCaseInfo;
@@ -138,6 +139,25 @@ class UrlGenerator
 	{
 		assert($classLike->file !== null);
 		return $this->getSourceUrl($classLike->file, $member->startLine, $member->endLine);
+	}
+
+
+	public function getAliasUrl(ClassLikeInfo $classLike, AliasInfo $alias): string
+	{
+		return $this->getClassLikeUrl($classLike) . '#' . $this->getAliasAnchor($alias);
+	}
+
+
+	public function getAliasAnchor(AliasInfo $alias): string
+	{
+		return '~' . $alias->name;
+	}
+
+
+	public function getAliasSourceUrl(ClassLikeInfo $classLike, AliasInfo $alias): string
+	{
+		assert($classLike->file !== null);
+		return $this->getSourceUrl($classLike->file, $alias->startLine, $alias->endLine);
 	}
 
 

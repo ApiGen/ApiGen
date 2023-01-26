@@ -3,6 +3,9 @@
 namespace ApiGen\Analyzer\NodeVisitors;
 
 use ApiGen\Analyzer\IdentifierKind;
+use ApiGen\Analyzer\NameContextFrame;
+use ApiGen\Info\AliasInfo;
+use ApiGen\Info\AliasReferenceInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
 use ApiGen\Info\GenericParameterInfo;
 use ApiGen\Info\GenericParameterVariance;
@@ -22,6 +25,8 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ThrowsTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasImportTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\UsesTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
@@ -40,10 +45,9 @@ use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 
-use function array_pop;
-use function assert;
-use function count;
 use function get_class;
+use function get_debug_type;
+use function sprintf;
 use function str_contains;
 use function str_ends_with;
 use function strtolower;
@@ -102,8 +106,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 		'value-of' => true,
 	];
 
-	/** @var GenericParameterInfo[][] indexed by [][parameterName] */
-	protected array $genericNameContextStack = [];
+	protected NameContextFrame $nameContextFrame;
 
 
 	public function __construct(
@@ -111,6 +114,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 		protected PhpDocParser $parser,
 		protected NameContext $nameContext,
 	) {
+		$this->nameContextFrame = new NameContextFrame(parent: null);
 	}
 
 
@@ -123,16 +127,20 @@ class PhpDocResolver extends NodeVisitorAbstract
 			$phpDoc = $this->parser->parse(new TokenIterator($tokens));
 
 			if ($node instanceof Node\Stmt\ClassLike || $node instanceof Node\FunctionLike) {
-				$genericNameContext = $this->resolveGenericNameContext($phpDoc);
-				$phpDoc->setAttribute('genericNameContext', $genericNameContext);
-				$this->genericNameContextStack[] = $genericNameContext;
+				$this->nameContextFrame = $this->resolveNameContext($phpDoc, $this->nameContextFrame, $doc->getStartLine(), $doc->getEndLine());
+
+				if ($node instanceof Node\Stmt\ClassLike && $node->namespacedName !== null) {
+					$this->nameContextFrame->scope = new ClassLikeReferenceInfo($node->namespacedName->toString());
+				}
+
+				$phpDoc->setAttribute('nameContext', $this->nameContextFrame);
 			}
 
 			$this->resolvePhpDoc($phpDoc);
 			$node->setAttribute('phpDoc', $phpDoc);
 
 		} elseif ($node instanceof Node\Stmt\ClassLike || $node instanceof Node\FunctionLike) {
-			$this->genericNameContextStack[] = [];
+			$this->nameContextFrame = new NameContextFrame($this->nameContextFrame);
 		}
 
 		return null;
@@ -142,8 +150,11 @@ class PhpDocResolver extends NodeVisitorAbstract
 	public function leaveNode(Node $node): null|int|Node|array
 	{
 		if ($node instanceof Node\Stmt\ClassLike || $node instanceof Node\FunctionLike) {
-			if (array_pop($this->genericNameContextStack) === null) {
-				throw new \LogicException();
+			if ($this->nameContextFrame->parent === null) {
+				throw new \LogicException('Name context stack is empty.');
+
+			} else {
+				$this->nameContextFrame = $this->nameContextFrame->parent;
 			}
 		}
 
@@ -151,22 +162,33 @@ class PhpDocResolver extends NodeVisitorAbstract
 	}
 
 
-	/**
-	 * @return GenericParameterInfo[] indexed by [parameterName]
-	 */
-	protected function resolveGenericNameContext(PhpDocNode $doc): array
+	protected function resolveNameContext(PhpDocNode $doc, NameContextFrame $parent, ?int $startLine, ?int $endLine): NameContextFrame
 	{
-		$context = [];
+		$frame = new NameContextFrame($parent);
 
 		foreach ($doc->children as $child) {
-			if ($child instanceof PhpDocTagNode && $child->value instanceof TemplateTagValueNode) {
-				$lower = strtolower($child->value->name);
-				$variance = str_ends_with($child->name, '-covariant') ? GenericParameterVariance::Covariant : GenericParameterVariance::Invariant;
-				$context[$lower] = new GenericParameterInfo($child->value->name, $variance, $child->value->bound, $child->value->description);
+			if ($child instanceof PhpDocTagNode) {
+				if ($child->value instanceof TypeAliasTagValueNode) {
+					$lower = strtolower($child->value->alias);
+					$frame->names[$lower] = new AliasInfo($child->value->alias, $child->value->type);
+					$frame->names[$lower]->startLine = $startLine;
+					$frame->names[$lower]->endLine = $endLine;
+
+				} elseif ($child->value instanceof TypeAliasImportTagValueNode) {
+					$classLike = new ClassLikeReferenceInfo($this->resolveIdentifier($child->value->importedFrom->name));
+					$alias = $child->value->importedAs ?? $child->value->importedAlias;
+					$lower = strtolower($alias);
+					$frame->names[$lower] = new AliasReferenceInfo($classLike, $child->value->importedAlias);
+
+				} elseif ($child->value instanceof TemplateTagValueNode) {
+					$lower = strtolower($child->value->name);
+					$variance = str_ends_with($child->name, '-covariant') ? GenericParameterVariance::Covariant : GenericParameterVariance::Invariant;
+					$frame->names[$lower] = new GenericParameterInfo($child->value->name, $variance, $child->value->bound, $child->value->description);
+				}
 			}
 		}
 
-		return $context;
+		return $frame;
 	}
 
 
@@ -186,7 +208,12 @@ class PhpDocResolver extends NodeVisitorAbstract
 				case ImplementsTagValueNode::class:
 				case UsesTagValueNode::class:
 				case MixinTagValueNode::class:
+				case TypeAliasTagValueNode::class:
 					yield $tag->value->type;
+					break;
+
+				case TypeAliasImportTagValueNode::class:
+					yield $tag->value->importedFrom;
 					break;
 
 				case MethodTagValueNode::class:
@@ -203,11 +230,14 @@ class PhpDocResolver extends NodeVisitorAbstract
 			}
 		}
 
-		foreach ($phpDocNode->getAttribute('genericNameContext') ?? [] as $genericParameter) {
-			assert($genericParameter instanceof GenericParameterInfo);
+		foreach ($phpDocNode->getAttribute('nameContext') ?? [] as $nameDef) {
+			if ($nameDef instanceof GenericParameterInfo) {
+				if ($nameDef->bound !== null) {
+					yield $nameDef->bound;
+				}
 
-			if ($genericParameter->bound !== null) {
-				yield $genericParameter->bound;
+			} elseif ($nameDef instanceof AliasInfo) {
+				yield $nameDef->type;
 			}
 		}
 	}
@@ -294,16 +324,33 @@ class PhpDocResolver extends NodeVisitorAbstract
 					continue;
 				}
 
-				for ($i = count($this->genericNameContextStack) - 1; $i >= 0; $i--) {
-					if (isset($this->genericNameContextStack[$i][$lower])) {
-						$identifier->setAttribute('kind', IdentifierKind::Generic);
-						continue 2;
-					}
-				}
+				$nameDef = $this->nameContextFrame->names[$lower] ?? null;
 
-				$classLikeReference = new ClassLikeReferenceInfo($this->resolveIdentifier($identifier->name));
-				$identifier->setAttribute('kind', IdentifierKind::ClassLike);
-				$identifier->setAttribute('classLikeReference', $classLikeReference);
+				if ($nameDef === null) {
+					$classLikeReference = new ClassLikeReferenceInfo($this->resolveIdentifier($identifier->name));
+					$identifier->setAttribute('kind', IdentifierKind::ClassLike);
+					$identifier->setAttribute('classLikeReference', $classLikeReference);
+
+				} elseif ($nameDef instanceof GenericParameterInfo) {
+					$identifier->setAttribute('kind', IdentifierKind::Generic);
+
+				} elseif ($nameDef instanceof AliasInfo) {
+					if ($this->nameContextFrame->scope !== null) {
+						$scope = $this->nameContextFrame->scope;
+						$identifier->setAttribute('kind', IdentifierKind::Alias);
+						$identifier->setAttribute('aliasReference', new AliasReferenceInfo($scope, $nameDef->name));
+
+					} else {
+						throw new \LogicException(sprintf('Unexpected alias %s in global scope for type %s', $nameDef->name, $nameDef->type));
+					}
+
+				} elseif ($nameDef instanceof AliasReferenceInfo) {
+					$identifier->setAttribute('kind', IdentifierKind::Alias);
+					$identifier->setAttribute('aliasReference', $nameDef);
+
+				} else {
+					throw new \LogicException(sprintf('Unexpected name definition %s', get_debug_type($nameDef)));
+				}
 			}
 		}
 

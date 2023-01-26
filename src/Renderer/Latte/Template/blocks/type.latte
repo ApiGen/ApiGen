@@ -9,6 +9,15 @@
 			{if $kind === ApiGen\Analyzer\IdentifierKind::ClassLike}
 				{var ApiGen\Info\ClassLikeReferenceInfo $ref = $type->getAttribute('classLikeReference')}
 				{include classLikeLink, $index->classLike[$ref->fullLower], $short}
+			{elseif $kind === ApiGen\Analyzer\IdentifierKind::Alias}
+				{var ApiGen\Info\AliasReferenceInfo $ref = $type->getAttribute('aliasReference')}
+				{var ApiGen\Info\ClassLikeInfo $classLike = $index->classLike[$ref->classLike->fullLower]}
+				{var ApiGen\Info\AliasInfo $alias = $classLike->aliases[$ref->aliasLower] ?? null}
+				{if $alias !== null}
+					{include aliasLink, classLike: $classLike, alias: $alias}
+				{else}
+					<span title="Alias">{$type}</span>
+				{/if}
 			{else}
 				{$type}
 			{/if}

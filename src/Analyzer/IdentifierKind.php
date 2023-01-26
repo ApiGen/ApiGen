@@ -8,4 +8,5 @@ enum IdentifierKind
 	case Keyword;
 	case ClassLike;
 	case Generic;
+	case Alias;
 }
