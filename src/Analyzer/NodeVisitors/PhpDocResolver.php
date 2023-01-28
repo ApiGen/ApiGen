@@ -4,52 +4,49 @@ namespace ApiGen\Analyzer\NodeVisitors;
 
 use ApiGen\Analyzer\IdentifierKind;
 use ApiGen\Analyzer\NameContextFrame;
-use ApiGen\Info\AliasInfo;
 use ApiGen\Info\AliasReferenceInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
-use ApiGen\Info\GenericParameterInfo;
-use ApiGen\Info\GenericParameterVariance;
+use ApiGen\Info\Expr\ArrayExprInfo;
+use ApiGen\Info\Expr\ArrayItemExprInfo;
+use ApiGen\Info\Expr\BooleanExprInfo;
+use ApiGen\Info\Expr\ClassConstantFetchExprInfo;
+use ApiGen\Info\Expr\ConstantFetchExprInfo;
+use ApiGen\Info\Expr\FloatExprInfo;
+use ApiGen\Info\Expr\IntegerExprInfo;
+use ApiGen\Info\Expr\NullExprInfo;
+use ApiGen\Info\Expr\StringExprInfo;
+use ApiGen\Info\ExprInfo;
 use PhpParser\NameContext;
 use PhpParser\Node;
 use PhpParser\NodeVisitorAbstract;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprArrayNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFalseNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFloatNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprIntegerNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNullNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
+use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprTrueNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\ExtendsTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\ImplementsTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\MixinTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\ThrowsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasImportTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\UsesTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
-use PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode;
-use PHPStan\PhpDocParser\Ast\Type\ArrayTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\CallableTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeForParameterNode;
-use PHPStan\PhpDocParser\Ast\Type\ConditionalTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\GenericTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode;
-use PHPStan\PhpDocParser\Ast\Type\TypeNode;
-use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
+use SplQueue;
 
-use function get_class;
+use function assert;
 use function get_debug_type;
+use function get_object_vars;
+use function is_array;
+use function is_object;
 use function sprintf;
 use function str_contains;
-use function str_ends_with;
 use function strtolower;
 use function substr;
 
@@ -127,13 +124,13 @@ class PhpDocResolver extends NodeVisitorAbstract
 			$phpDoc = $this->parser->parse(new TokenIterator($tokens));
 
 			if ($node instanceof Node\Stmt\ClassLike || $node instanceof Node\FunctionLike) {
-				$this->nameContextFrame = $this->resolveNameContext($phpDoc, $this->nameContextFrame, $doc->getStartLine(), $doc->getEndLine());
+				$scope = $this->nameContextFrame->scope;
 
 				if ($node instanceof Node\Stmt\ClassLike && $node->namespacedName !== null) {
-					$this->nameContextFrame->scope = new ClassLikeReferenceInfo($node->namespacedName->toString());
+					$scope = new ClassLikeReferenceInfo($node->namespacedName->toString());
 				}
 
-				$phpDoc->setAttribute('nameContext', $this->nameContextFrame);
+				$this->nameContextFrame = $this->resolveNameContext($phpDoc, $this->nameContextFrame, $scope);
 			}
 
 			$this->resolvePhpDoc($phpDoc);
@@ -162,28 +159,25 @@ class PhpDocResolver extends NodeVisitorAbstract
 	}
 
 
-	protected function resolveNameContext(PhpDocNode $doc, NameContextFrame $parent, ?int $startLine, ?int $endLine): NameContextFrame
+	protected function resolveNameContext(PhpDocNode $doc, NameContextFrame $parent, ?ClassLikeReferenceInfo $scope): NameContextFrame
 	{
 		$frame = new NameContextFrame($parent);
 
 		foreach ($doc->children as $child) {
 			if ($child instanceof PhpDocTagNode) {
 				if ($child->value instanceof TypeAliasTagValueNode) {
+					assert($scope !== null);
 					$lower = strtolower($child->value->alias);
-					$frame->names[$lower] = new AliasInfo($child->value->alias, $child->value->type);
-					$frame->names[$lower]->startLine = $startLine;
-					$frame->names[$lower]->endLine = $endLine;
+					$frame->aliases[$lower] = new AliasReferenceInfo($scope, $child->value->alias);
 
 				} elseif ($child->value instanceof TypeAliasImportTagValueNode) {
-					$classLike = new ClassLikeReferenceInfo($this->resolveIdentifier($child->value->importedFrom->name));
-					$alias = $child->value->importedAs ?? $child->value->importedAlias;
-					$lower = strtolower($alias);
-					$frame->names[$lower] = new AliasReferenceInfo($classLike, $child->value->importedAlias);
+					$classLike = new ClassLikeReferenceInfo($this->resolveClassLikeIdentifier($child->value->importedFrom->name));
+					$lower = strtolower($child->value->importedAs ?? $child->value->importedAlias);
+					$frame->aliases[$lower] = new AliasReferenceInfo($classLike, $child->value->importedAlias);
 
 				} elseif ($child->value instanceof TemplateTagValueNode) {
 					$lower = strtolower($child->value->name);
-					$variance = str_ends_with($child->name, '-covariant') ? GenericParameterVariance::Covariant : GenericParameterVariance::Invariant;
-					$frame->names[$lower] = new GenericParameterInfo($child->value->name, $variance, $child->value->bound, $child->value->description);
+					$frame->genericParameters[$lower] = true;
 				}
 			}
 		}
@@ -192,183 +186,115 @@ class PhpDocResolver extends NodeVisitorAbstract
 	}
 
 
-	/**
-	 * @return iterable<TypeNode>
-	 */
-	public static function getTypes(PhpDocNode $phpDocNode): iterable
-	{
-		foreach ($phpDocNode->getTags() as $tag) {
-			switch (get_class($tag->value)) {
-				case ParamTagValueNode::class:
-				case PropertyTagValueNode::class:
-				case ReturnTagValueNode::class:
-				case ThrowsTagValueNode::class:
-				case VarTagValueNode::class:
-				case ExtendsTagValueNode::class:
-				case ImplementsTagValueNode::class:
-				case UsesTagValueNode::class:
-				case MixinTagValueNode::class:
-				case TypeAliasTagValueNode::class:
-					yield $tag->value->type;
-					break;
-
-				case TypeAliasImportTagValueNode::class:
-					yield $tag->value->importedFrom;
-					break;
-
-				case MethodTagValueNode::class:
-					if ($tag->value->returnType !== null) {
-						yield $tag->value->returnType;
-					}
-
-					foreach ($tag->value->parameters as $parameter) {
-						if ($parameter->type !== null) {
-							yield $parameter->type;
-						}
-					}
-					break;
-			}
-		}
-
-		foreach ($phpDocNode->getAttribute('nameContext') ?? [] as $nameDef) {
-			if ($nameDef instanceof GenericParameterInfo) {
-				if ($nameDef->bound !== null) {
-					yield $nameDef->bound;
-				}
-
-			} elseif ($nameDef instanceof AliasInfo) {
-				yield $nameDef->type;
-			}
-		}
-	}
-
-
-	/**
-	 * @return iterable<ConstExprNode>
-	 */
-	public static function getExpressions(PhpDocNode $phpDocNode): iterable
-	{
-		foreach ($phpDocNode->getTags() as $tag) {
-			if ($tag->value instanceof MethodTagValueNode) {
-				foreach ($tag->value->parameters as $parameter) {
-					if ($parameter->defaultValue) {
-						yield $parameter->defaultValue;
-					}
-				}
-			}
-		}
-	}
-
-
-	/**
-	 * @return iterable<IdentifierTypeNode>
-	 */
-	public static function getIdentifiers(TypeNode $typeNode): iterable
-	{
-		if ($typeNode instanceof IdentifierTypeNode) {
-			yield $typeNode;
-
-		} elseif ($typeNode instanceof NullableTypeNode || $typeNode instanceof ArrayTypeNode) {
-			yield from self::getIdentifiers($typeNode->type);
-
-		} elseif ($typeNode instanceof UnionTypeNode || $typeNode instanceof IntersectionTypeNode) {
-			foreach ($typeNode->types as $innerType) {
-				yield from self::getIdentifiers($innerType);
-			}
-
-		} elseif ($typeNode instanceof GenericTypeNode) {
-			yield from self::getIdentifiers($typeNode->type);
-			foreach ($typeNode->genericTypes as $innerType) {
-				yield from self::getIdentifiers($innerType);
-			}
-
-		} elseif ($typeNode instanceof CallableTypeNode) {
-			yield $typeNode->identifier;
-			yield from self::getIdentifiers($typeNode->returnType);
-
-			foreach ($typeNode->parameters as $parameter) {
-				yield from self::getIdentifiers($parameter->type);
-			}
-
-		} elseif ($typeNode instanceof ArrayShapeNode) {
-			foreach ($typeNode->items as $item) {
-				yield from self::getIdentifiers($item->valueType);
-			}
-
-		} elseif ($typeNode instanceof OffsetAccessTypeNode) {
-			yield from self::getIdentifiers($typeNode->type);
-			yield from self::getIdentifiers($typeNode->offset);
-
-		} elseif ($typeNode instanceof ConditionalTypeNode) {
-			yield from self::getIdentifiers($typeNode->subjectType);
-			yield from self::getIdentifiers($typeNode->targetType);
-			yield from self::getIdentifiers($typeNode->if);
-			yield from self::getIdentifiers($typeNode->else);
-
-		} elseif ($typeNode instanceof ConditionalTypeForParameterNode) {
-			yield from self::getIdentifiers($typeNode->targetType);
-			yield from self::getIdentifiers($typeNode->if);
-			yield from self::getIdentifiers($typeNode->else);
-		}
-	}
-
-
 	protected function resolvePhpDoc(PhpDocNode $phpDoc): void
 	{
-		foreach (self::getTypes($phpDoc) as $type) {
-			foreach (self::getIdentifiers($type) as $identifier) {
-				$lower = strtolower($identifier->name);
+		$queue = new SplQueue();
+		$queue->push($phpDoc);
 
-				if (isset(self::KEYWORDS[$identifier->name]) || isset(self::NATIVE_KEYWORDS[$lower]) || str_contains($lower, '-')) {
-					$identifier->setAttribute('kind', IdentifierKind::Keyword);
-					continue;
+		while (!$queue->isEmpty()) {
+			$value = $queue->pop();
+
+			if (is_array($value)) {
+				foreach ($value as $item) {
+					$queue->push($item);
 				}
 
-				$nameDef = $this->nameContextFrame->names[$lower] ?? null;
+			} elseif (is_object($value)) {
+				if ($value instanceof IdentifierTypeNode) {
+					$this->resolveIdentifier($value);
 
-				if ($nameDef === null) {
-					$classLikeReference = new ClassLikeReferenceInfo($this->resolveIdentifier($identifier->name));
-					$identifier->setAttribute('kind', IdentifierKind::ClassLike);
-					$identifier->setAttribute('classLikeReference', $classLikeReference);
+				} elseif ($value instanceof ConstExprNode) {
+					$value->setAttribute('info', $this->resolveConstExpr($value));
 
-				} elseif ($nameDef instanceof GenericParameterInfo) {
-					$identifier->setAttribute('kind', IdentifierKind::Generic);
-
-				} elseif ($nameDef instanceof AliasInfo) {
-					if ($this->nameContextFrame->scope !== null) {
-						$scope = $this->nameContextFrame->scope;
-						$identifier->setAttribute('kind', IdentifierKind::Alias);
-						$identifier->setAttribute('aliasReference', new AliasReferenceInfo($scope, $nameDef->name));
-
-					} else {
-						throw new \LogicException(sprintf('Unexpected alias %s in global scope for type %s', $nameDef->name, $nameDef->type));
-					}
-
-				} elseif ($nameDef instanceof AliasReferenceInfo) {
-					$identifier->setAttribute('kind', IdentifierKind::Alias);
-					$identifier->setAttribute('aliasReference', $nameDef);
+				} elseif ($value instanceof ArrayShapeItemNode) {
+					$queue->push($value->valueType); // intentionally not pushing $value->keyName
 
 				} else {
-					throw new \LogicException(sprintf('Unexpected name definition %s', get_debug_type($nameDef)));
+					foreach (get_object_vars($value) as $item) {
+						$queue->push($item);
+					}
 				}
-			}
-		}
-
-		foreach (self::getExpressions($phpDoc) as $expr) {
-			if ($expr instanceof ConstFetchNode && $expr->className !== '') {
-				$expr->className = $this->resolveIdentifier($expr->className);
 			}
 		}
 	}
 
 
-	protected function resolveIdentifier(string $identifier): string
+	protected function resolveIdentifier(IdentifierTypeNode $identifier): void
+	{
+		$lower = strtolower($identifier->name);
+
+		if (isset(self::KEYWORDS[$identifier->name]) || isset(self::NATIVE_KEYWORDS[$lower]) || str_contains($lower, '-')) {
+			$identifier->setAttribute('kind', IdentifierKind::Keyword);
+
+		} elseif (isset($this->nameContextFrame->genericParameters[$lower])) {
+			$identifier->setAttribute('kind', IdentifierKind::Generic);
+
+		} elseif (isset($this->nameContextFrame->aliases[$lower])) {
+			$identifier->setAttribute('kind', IdentifierKind::Alias);
+			$identifier->setAttribute('aliasReference', $this->nameContextFrame->aliases[$lower]);
+
+		} else {
+			$classLikeReference = new ClassLikeReferenceInfo($this->resolveClassLikeIdentifier($identifier->name));
+			$identifier->setAttribute('kind', IdentifierKind::ClassLike);
+			$identifier->setAttribute('classLikeReference', $classLikeReference);
+		}
+	}
+
+
+	protected function resolveClassLikeIdentifier(string $identifier): string
 	{
 		if ($identifier[0] === '\\') {
 			return substr($identifier, 1);
 
 		} else {
 			return $this->nameContext->getResolvedClassName(new Node\Name($identifier))->toString();
+		}
+	}
+
+
+	protected function resolveConstExpr(ConstExprNode $expr): ExprInfo
+	{
+		if ($expr instanceof ConstExprTrueNode) {
+			return new BooleanExprInfo(true);
+
+		} elseif ($expr instanceof ConstExprFalseNode) {
+			return new BooleanExprInfo(false);
+
+		} elseif ($expr instanceof ConstExprNullNode) {
+			return new NullExprInfo();
+
+		} elseif ($expr instanceof ConstExprIntegerNode) {
+			$node = Node\Scalar\LNumber::fromString($expr->value);
+			return new IntegerExprInfo($node->value, $node->getAttribute('kind'), $expr->value);
+
+		} elseif ($expr instanceof ConstExprFloatNode) {
+			return new FloatExprInfo(Node\Scalar\DNumber::parse($expr->value), $expr->value);
+
+		} elseif ($expr instanceof ConstExprStringNode) {
+			return new StringExprInfo($expr->value, raw: null);
+
+		} elseif ($expr instanceof ConstExprArrayNode) {
+			$items = [];
+
+			foreach ($expr->items as $item) {
+				$items[] = new ArrayItemExprInfo(
+					$item->key ? $this->resolveConstExpr($item->key) : null,
+					$this->resolveConstExpr($item->value),
+				);
+			}
+
+			return new ArrayExprInfo($items);
+
+		} elseif ($expr instanceof ConstFetchNode) {
+			if ($expr->className === '') {
+				return new ConstantFetchExprInfo($expr->name);
+
+			} else {
+				return new ClassConstantFetchExprInfo(new ClassLikeReferenceInfo($this->resolveClassLikeIdentifier($expr->className)), $expr->name);
+			}
+
+		} else {
+			throw new \LogicException(sprintf('Unsupported const expr node %s used in PHPDoc', get_debug_type($expr)));
 		}
 	}
 }

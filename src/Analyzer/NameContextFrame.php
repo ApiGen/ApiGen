@@ -2,10 +2,8 @@
 
 namespace ApiGen\Analyzer;
 
-use ApiGen\Info\AliasInfo;
 use ApiGen\Info\AliasReferenceInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
-use ApiGen\Info\GenericParameterInfo;
 
 
 class NameContextFrame
@@ -16,14 +14,18 @@ class NameContextFrame
 	/** @var null|ClassLikeReferenceInfo */
 	public ?ClassLikeReferenceInfo $scope = null;
 
-	/** @var (AliasInfo|AliasReferenceInfo|GenericParameterInfo)[] indexed by [name] */
-	public array $names = [];
+	/** @var true[] indexed by [name] */
+	public array $genericParameters = [];
+
+	/** @var AliasReferenceInfo[] indexed by [name]  */
+	public array $aliases = [];
 
 
 	public function __construct(?NameContextFrame $parent)
 	{
 		$this->parent = $parent;
 		$this->scope = $parent?->scope;
-		$this->names = $parent?->names ?? [];
+		$this->genericParameters = $parent?->genericParameters ?? [];
+		$this->aliases = $parent?->aliases ?? [];
 	}
 }
