@@ -205,7 +205,7 @@ class Analyzer
 	/**
 	 * @return array<ClassLikeInfo | FunctionInfo | ErrorInfo>
 	 */
-	protected function processTask(AnalyzeTask $task): array
+	public function processTask(AnalyzeTask $task): array
 	{
 		try {
 			$ast = $this->parser->parse(FileSystem::read($task->sourceFile)) ?? throw new \LogicException();
