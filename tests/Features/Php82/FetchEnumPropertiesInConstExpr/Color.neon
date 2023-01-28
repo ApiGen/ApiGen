@@ -1,0 +1,51 @@
+[
+  @ApiGen\Info\EnumInfo(
+    scalarType: 'string'
+    implements: {
+      backedenum: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'BackedEnum'
+        fullLower: 'backedenum'
+      )
+    }
+    cases: {
+      Red: @ApiGen\Info\EnumCaseInfo(
+        value: @ApiGen\Info\Expr\StringExprInfo(
+          value: '#FF0000'
+          raw: '''#FF0000'''
+        )
+        name: 'Red'
+        startLine: 7
+        endLine: 7
+      )
+      Blue: @ApiGen\Info\EnumCaseInfo(
+        value: @ApiGen\Info\Expr\StringExprInfo(
+          value: '#0000FF'
+          raw: '''#0000FF'''
+        )
+        name: 'Blue'
+        startLine: 8
+        endLine: 8
+      )
+      Green: @ApiGen\Info\EnumCaseInfo(
+        value: @ApiGen\Info\Expr\StringExprInfo(
+          value: '#00FF00'
+          raw: '''#00FF00'''
+        )
+        name: 'Green'
+        startLine: 9
+        endLine: 9
+      )
+    }
+    file: '%rootDir%/tests/Features/Php82/FetchEnumPropertiesInConstExpr/Color.php'
+    name: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
+    primary: true
+    startLine: 5
+    endLine: 10
+    dependencies: {
+      backedenum: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'BackedEnum'
+        fullLower: 'backedenum'
+      )
+    }
+  ),
+]

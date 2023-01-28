@@ -1,0 +1,26 @@
+[
+  @ApiGen\Info\ClassInfo(
+    readOnly: true
+    file: '%rootDir%/tests/Features/Php82/ReadOnlyClasses/ReadOnlyClasses.php'
+    properties: {
+      value: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'value'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php82\ReadOnlyClasses\ReadOnlyClasses'
+    primary: true
+    startLine: 6
+    endLine: 9
+  ),
+]

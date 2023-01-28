@@ -1,0 +1,40 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php82/NullType/NullType.php'
+    methods: {
+      test: @ApiGen\Info\MethodInfo(
+        nameLower: 'test'
+        parameters: {
+          value: @ApiGen\Info\ParameterInfo(
+            name: 'value'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'null'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'null'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'test'
+        startLine: 8
+        endLine: 11
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php82\NullType\NullType'
+    primary: true
+    startLine: 6
+    endLine: 12
+  ),
+]

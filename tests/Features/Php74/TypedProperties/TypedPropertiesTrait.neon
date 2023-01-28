@@ -1,0 +1,337 @@
+[
+  @ApiGen\Info\TraitInfo(
+    file: '%rootDir%/tests/Features/Php74/TypedProperties/TypedPropertiesTrait.php'
+    properties: {
+      bool: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\BooleanExprInfo(
+          value: true
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'bool'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'bool'
+        startLine: 10
+        endLine: 10
+        public: true
+      )
+      boolNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'bool'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'boolNullable'
+        startLine: 12
+        endLine: 12
+        public: true
+      )
+      int: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\IntegerExprInfo(
+          value: 123
+          base: 10
+          raw: '123'
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'int'
+        startLine: 14
+        endLine: 14
+        public: true
+      )
+      intNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'int'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'intNullable'
+        startLine: 16
+        endLine: 16
+        public: true
+      )
+      float: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\FloatExprInfo(
+          value: 1.23
+          raw: '1.23'
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'float'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'float'
+        startLine: 18
+        endLine: 18
+        public: true
+      )
+      floatNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'float'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'floatNullable'
+        startLine: 20
+        endLine: 20
+        public: true
+      )
+      string: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'string'
+        startLine: 22
+        endLine: 22
+        public: true
+      )
+      stringNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'string'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'stringNullable'
+        startLine: 24
+        endLine: 24
+        public: true
+      )
+      array: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'array'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'array'
+        startLine: 26
+        endLine: 26
+        public: true
+      )
+      arrayNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'array'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'arrayNullable'
+        startLine: 28
+        endLine: 28
+        public: true
+      )
+      object: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'object'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'object'
+        startLine: 30
+        endLine: 30
+        public: true
+      )
+      objectNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'object'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'objectNullable'
+        startLine: 32
+        endLine: 32
+        public: true
+      )
+      iterable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'iterable'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'iterable'
+        startLine: 34
+        endLine: 34
+        public: true
+      )
+      iterableNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'iterable'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'iterableNullable'
+        startLine: 36
+        endLine: 36
+        public: true
+      )
+      dateTime: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'DateTimeInterface'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'ClassLike'
+            )
+            classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+              full: 'DateTimeInterface'
+              fullLower: 'datetimeinterface'
+            )
+          }
+        )
+        name: 'dateTime'
+        startLine: 38
+        endLine: 38
+        public: true
+      )
+      dateTimeNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'DateTimeInterface'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'ClassLike'
+              )
+              classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                full: 'DateTimeInterface'
+                fullLower: 'datetimeinterface'
+              )
+            }
+          )
+        )
+        name: 'dateTimeNullable'
+        startLine: 40
+        endLine: 40
+        public: true
+      )
+      self: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'self'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'self'
+        startLine: 42
+        endLine: 42
+        public: true
+      )
+      selfNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'self'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'selfNullable'
+        startLine: 44
+        endLine: 44
+        public: true
+      )
+      parent: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'parent'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'parent'
+        startLine: 46
+        endLine: 46
+        public: true
+      )
+      parentNullable: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'parent'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+        )
+        name: 'parentNullable'
+        startLine: 48
+        endLine: 48
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php74\TypedProperties\TypedPropertiesTrait'
+    primary: true
+    startLine: 8
+    endLine: 49
+    dependencies: {
+      datetimeinterface: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'DateTimeInterface'
+        fullLower: 'datetimeinterface'
+      )
+    }
+  ),
+]

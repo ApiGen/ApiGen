@@ -3,6 +3,18 @@ name: Checks
 on: [push, pull_request]
 
 jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          coverage: none
+      - run: composer install --no-progress
+      - run: vendor/bin/tester -C tests
+
   phpstan:
     name: PHPStan
     runs-on: ubuntu-latest
