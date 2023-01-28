@@ -5,7 +5,7 @@
 {define aliasLink, ApiGen\Info\ClassLikeInfo $classLike, ApiGen\Info\AliasInfo $alias, ?string $text = null}
 	{pre}
 		<a n:tag-if="classLikePageExists($classLike)" href="{aliasUrl($classLike, $alias)}">
-			{if $text}{$text}{else}{$alias->name}{/if}
+			<span title="{$alias->type}">{if $text}{$text}{else}{$alias->name}{/if}</span>
 		</a>
 	{/pre}
 {/define}
