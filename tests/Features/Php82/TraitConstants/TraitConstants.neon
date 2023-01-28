@@ -1,0 +1,33 @@
+[
+  @ApiGen\Info\TraitInfo(
+    file: '%rootDir%/tests/Features/Php82/TraitConstants/TraitConstants.php'
+    constants: {
+      A: @ApiGen\Info\ConstantInfo(
+        value: @ApiGen\Info\Expr\IntegerExprInfo(
+          value: 1
+          base: 10
+          raw: '1'
+        )
+        name: 'A'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+      B: @ApiGen\Info\ConstantInfo(
+        value: @ApiGen\Info\Expr\IntegerExprInfo(
+          value: 2
+          base: 10
+          raw: '2'
+        )
+        name: 'B'
+        startLine: 9
+        endLine: 9
+        protected: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php82\TraitConstants\TraitConstants'
+    primary: true
+    startLine: 6
+    endLine: 11
+  ),
+]

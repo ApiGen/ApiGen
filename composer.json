@@ -28,6 +28,7 @@
 		"symfony/console": "^6.0"
 	},
 	"require-dev": {
+		"nette/tester": "^2.4",
 		"phpstan/phpstan": "^1.7",
 		"tracy/tracy": "^2.9"
 	},

@@ -1,0 +1,87 @@
+[
+  @ApiGen\Info\EnumInfo(
+    implements: {
+      apigentests\features\php81\enum\colorful: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php81\Enum\Colorful'
+        fullLower: 'apigentests\features\php81\enum\colorful'
+      )
+      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'UnitEnum'
+        fullLower: 'unitenum'
+      )
+    }
+    cases: {
+      Hearts: @ApiGen\Info\EnumCaseInfo(
+        value: null
+        name: 'Hearts'
+        startLine: 8
+        endLine: 8
+      )
+      Diamonds: @ApiGen\Info\EnumCaseInfo(
+        value: null
+        name: 'Diamonds'
+        startLine: 9
+        endLine: 9
+      )
+      Clubs: @ApiGen\Info\EnumCaseInfo(
+        value: null
+        name: 'Clubs'
+        startLine: 10
+        endLine: 10
+      )
+      Spades: @ApiGen\Info\EnumCaseInfo(
+        value: null
+        name: 'Spades'
+        startLine: 11
+        endLine: 11
+      )
+    }
+    file: '%rootDir%/tests/Features/Php81/Enum/UnitEnum.php'
+    methods: {
+      color: @ApiGen\Info\MethodInfo(
+        nameLower: 'color'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'color'
+        startLine: 14
+        endLine: 20
+        public: true
+      )
+      shape: @ApiGen\Info\MethodInfo(
+        nameLower: 'shape'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'shape'
+        startLine: 23
+        endLine: 26
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php81\Enum\UnitEnum'
+    primary: true
+    startLine: 6
+    endLine: 27
+    dependencies: {
+      apigentests\features\php81\enum\colorful: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php81\Enum\Colorful'
+        fullLower: 'apigentests\features\php81\enum\colorful'
+      )
+      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'UnitEnum'
+        fullLower: 'unitenum'
+      )
+    }
+  ),
+]

@@ -1,0 +1,22 @@
+[
+  @ApiGen\Info\InterfaceInfo(
+    file: '%rootDir%/tests/Features/Php81/FinalClassConstants/FinalClassConstantsInInterface.php'
+    constants: {
+      FINAL_CONSTANT: @ApiGen\Info\ConstantInfo(
+        value: @ApiGen\Info\Expr\StringExprInfo(
+          value: 'final constant'
+          raw: '''final constant'''
+        )
+        final: true
+        name: 'FINAL_CONSTANT'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php81\FinalClassConstants\FinalClassConstantsInInterface'
+    primary: true
+    startLine: 6
+    endLine: 9
+  ),
+]

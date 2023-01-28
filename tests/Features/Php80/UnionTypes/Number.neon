@@ -1,0 +1,107 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php80/UnionTypes/Number.php'
+    properties: {
+      number: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\UnionTypeNode(
+          types: [
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'float'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+          ]
+        )
+        name: 'number'
+        startLine: 8
+        endLine: 8
+        protected: true
+      )
+    }
+    methods: {
+      setnumber: @ApiGen\Info\MethodInfo(
+        nameLower: 'setnumber'
+        parameters: {
+          number: @ApiGen\Info\ParameterInfo(
+            name: 'number'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\UnionTypeNode(
+              types: [
+                @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                  name: 'int'
+                  attributes: {
+                    kind: @ApiGen\Analyzer\IdentifierKind(
+                      name: 'Keyword'
+                    )
+                  }
+                ),
+                @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                  name: 'float'
+                  attributes: {
+                    kind: @ApiGen\Analyzer\IdentifierKind(
+                      name: 'Keyword'
+                    )
+                  }
+                ),
+              ]
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'void'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'setNumber'
+        startLine: 11
+        endLine: 14
+        public: true
+      )
+      getnumber: @ApiGen\Info\MethodInfo(
+        nameLower: 'getnumber'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\UnionTypeNode(
+          types: [
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'float'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+          ]
+        )
+        name: 'getNumber'
+        startLine: 17
+        endLine: 20
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php80\UnionTypes\Number'
+    primary: true
+    startLine: 6
+    endLine: 21
+  ),
+]

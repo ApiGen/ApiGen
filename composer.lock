@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fc7a53c4f0cded0a761fc936df1ffc60",
+    "content-hash": "c7866db0669413e5fb44b985145f444d",
     "packages": [
         {
             "name": "dflydev/dot-access-data",
@@ -1879,6 +1879,81 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "nette/tester",
+            "version": "v2.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nette/tester.git",
+                "reference": "451f6e97b117797e817446de8d19fe06e54fd33f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nette/tester/zipball/451f6e97b117797e817446de8d19fe06e54fd33f",
+                "reference": "451f6e97b117797e817446de8d19fe06e54fd33f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2 <8.3"
+            },
+            "require-dev": {
+                "ext-simplexml": "*",
+                "phpstan/phpstan": "^1.0"
+            },
+            "bin": [
+                "src/tester"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                }
+            },
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause",
+                "GPL-2.0-only",
+                "GPL-3.0-only"
+            ],
+            "authors": [
+                {
+                    "name": "David Grudl",
+                    "homepage": "https://davidgrudl.com"
+                },
+                {
+                    "name": "Miloslav Hůla",
+                    "homepage": "https://github.com/milo"
+                },
+                {
+                    "name": "Nette Community",
+                    "homepage": "https://nette.org/contributors"
+                }
+            ],
+            "description": "Nette Tester: enjoyable unit testing in PHP with code coverage reporter. 🍏🍏🍎🍏",
+            "homepage": "https://tester.nette.org",
+            "keywords": [
+                "Xdebug",
+                "assertions",
+                "clover",
+                "code coverage",
+                "nette",
+                "pcov",
+                "phpdbg",
+                "phpunit",
+                "testing",
+                "unit"
+            ],
+            "support": {
+                "issues": "https://github.com/nette/tester/issues",
+                "source": "https://github.com/nette/tester/tree/v2.4.3"
+            },
+            "time": "2022-08-29T16:39:38+00:00"
+        },
         {
             "name": "phpstan/phpstan",
             "version": "1.9.2",

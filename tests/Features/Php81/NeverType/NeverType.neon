@@ -1,0 +1,26 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php81/NeverType/NeverType.php'
+    methods: {
+      throwerror: @ApiGen\Info\MethodInfo(
+        nameLower: 'throwerror'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'never'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'throwError'
+        startLine: 10
+        endLine: 13
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php81\NeverType\NeverType'
+    primary: true
+    startLine: 8
+    endLine: 14
+  ),
+]

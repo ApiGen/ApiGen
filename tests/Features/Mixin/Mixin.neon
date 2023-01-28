@@ -1,0 +1,79 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Mixin/Mixin.php'
+    properties: {
+      name: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\StringExprInfo(
+          value: 'Hello'
+          raw: '''Hello'''
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'name'
+        startLine: 10
+        endLine: 10
+        public: true
+      )
+    }
+    methods: {
+      hello: @ApiGen\Info\MethodInfo(
+        nameLower: 'hello'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'void'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'hello'
+        startLine: 13
+        endLine: 15
+        public: true
+      )
+      getfoo: @ApiGen\Info\MethodInfo(
+        nameLower: 'getfoo'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'getFoo'
+        magic: true
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Mixin\Mixin'
+    primary: true
+    tags: {
+      method: [
+        @PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode(
+          isStatic: false
+          returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'string'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'Keyword'
+              )
+            }
+          )
+          methodName: 'getFoo'
+          templateTypes: []
+          parameters: []
+          description: ''
+        ),
+      ]
+    }
+    startLine: 8
+    endLine: 16
+  ),
+]

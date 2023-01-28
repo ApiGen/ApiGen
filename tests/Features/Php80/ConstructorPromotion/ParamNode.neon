@@ -1,0 +1,232 @@
+[
+  @ApiGen\Info\ClassInfo(
+    extends: @ApiGen\Info\ClassLikeReferenceInfo(
+      full: 'ApiGenTests\Features\Php80\ConstructorPromotion\Node'
+      fullLower: 'apigentests\features\php80\constructorpromotion\node'
+    )
+    file: '%rootDir%/tests/Features/Php80/ConstructorPromotion/ParamNode.php'
+    properties: {
+      name: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'name'
+        startLine: 12
+        endLine: 12
+        public: true
+      )
+      default: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'ApiGen\Info\ExprInfo'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'ClassLike'
+              )
+              classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                full: 'ApiGen\Info\ExprInfo'
+                fullLower: 'apigen\info\exprinfo'
+              )
+            }
+          )
+        )
+        name: 'default'
+        startLine: 13
+        endLine: 13
+        public: true
+      )
+      type: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            name: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+            attributes: {
+              kind: @ApiGen\Analyzer\IdentifierKind(
+                name: 'ClassLike'
+              )
+              classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+                fullLower: 'phpstan\phpdocparser\ast\type\typenode'
+              )
+            }
+          )
+        )
+        name: 'type'
+        startLine: 14
+        endLine: 14
+        public: true
+      )
+      byRef: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'bool'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'byRef'
+        startLine: 15
+        endLine: 15
+        public: true
+      )
+      variadic: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'bool'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'variadic'
+        startLine: 16
+        endLine: 16
+        public: true
+      )
+    }
+    methods: {
+      __construct: @ApiGen\Info\MethodInfo(
+        nameLower: '__construct'
+        parameters: {
+          name: @ApiGen\Info\ParameterInfo(
+            name: 'name'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+          default: @ApiGen\Info\ParameterInfo(
+            name: 'default'
+            position: 1
+            type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+              type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                name: 'ApiGen\Info\ExprInfo'
+                attributes: {
+                  kind: @ApiGen\Analyzer\IdentifierKind(
+                    name: 'ClassLike'
+                  )
+                  classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                    full: 'ApiGen\Info\ExprInfo'
+                    fullLower: 'apigen\info\exprinfo'
+                  )
+                }
+              )
+            )
+            default: @ApiGen\Info\Expr\NullExprInfo(
+            )
+          )
+          type: @ApiGen\Info\ParameterInfo(
+            name: 'type'
+            position: 2
+            type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
+              type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                name: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+                attributes: {
+                  kind: @ApiGen\Analyzer\IdentifierKind(
+                    name: 'ClassLike'
+                  )
+                  classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                    full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+                    fullLower: 'phpstan\phpdocparser\ast\type\typenode'
+                  )
+                }
+              )
+            )
+            default: @ApiGen\Info\Expr\NullExprInfo(
+            )
+          )
+          byRef: @ApiGen\Info\ParameterInfo(
+            name: 'byRef'
+            position: 3
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'bool'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+            default: @ApiGen\Info\Expr\BooleanExprInfo(
+              value: false
+            )
+          )
+          variadic: @ApiGen\Info\ParameterInfo(
+            name: 'variadic'
+            position: 4
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'bool'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+            default: @ApiGen\Info\Expr\BooleanExprInfo(
+              value: false
+            )
+          )
+          startLoc: @ApiGen\Info\ParameterInfo(
+            name: 'startLoc'
+            position: 5
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+            default: @ApiGen\Info\Expr\NullExprInfo(
+            )
+          )
+          endLoc: @ApiGen\Info\ParameterInfo(
+            name: 'endLoc'
+            position: 6
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+            default: @ApiGen\Info\Expr\NullExprInfo(
+            )
+          )
+        }
+        name: '__construct'
+        startLine: 11
+        endLine: 21
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php80\ConstructorPromotion\ParamNode'
+    primary: true
+    startLine: 9
+    endLine: 22
+    dependencies: {
+      apigentests\features\php80\constructorpromotion\node: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php80\ConstructorPromotion\Node'
+        fullLower: 'apigentests\features\php80\constructorpromotion\node'
+      )
+      apigen\info\exprinfo: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGen\Info\ExprInfo'
+        fullLower: 'apigen\info\exprinfo'
+      )
+      phpstan\phpdocparser\ast\type\typenode: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+        fullLower: 'phpstan\phpdocparser\ast\type\typenode'
+      )
+    }
+  ),
+]

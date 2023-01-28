@@ -1,0 +1,26 @@
+[
+  @ApiGen\Info\InterfaceInfo(
+    file: '%rootDir%/tests/Features/Php81/Enum/Colorful.php'
+    methods: {
+      color: @ApiGen\Info\MethodInfo(
+        nameLower: 'color'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'color'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php81\Enum\Colorful'
+    primary: true
+    startLine: 6
+    endLine: 9
+  ),
+]

@@ -1,0 +1,64 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php81/ReadOnlyProperties/ReadOnlyProperties.php'
+    properties: {
+      a: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        readOnly: true
+        name: 'a'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+      b: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        readOnly: true
+        name: 'b'
+        startLine: 11
+        endLine: 11
+        public: true
+      )
+    }
+    methods: {
+      __construct: @ApiGen\Info\MethodInfo(
+        nameLower: '__construct'
+        parameters: {
+          b: @ApiGen\Info\ParameterInfo(
+            name: 'b'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        name: '__construct'
+        startLine: 10
+        endLine: 13
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php81\ReadOnlyProperties\ReadOnlyProperties'
+    primary: true
+    startLine: 6
+    endLine: 14
+  ),
+]

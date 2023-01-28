@@ -1,0 +1,88 @@
+[
+  @ApiGen\Info\EnumInfo(
+    implements: {
+      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'UnitEnum'
+        fullLower: 'unitenum'
+      )
+    }
+    cases: {
+      Small: @ApiGen\Info\EnumCaseInfo(
+        value: null
+        name: 'Small'
+        startLine: 8
+        endLine: 8
+      )
+      Medium: @ApiGen\Info\EnumCaseInfo(
+        value: null
+        name: 'Medium'
+        startLine: 9
+        endLine: 9
+      )
+      Large: @ApiGen\Info\EnumCaseInfo(
+        value: null
+        name: 'Large'
+        startLine: 10
+        endLine: 10
+      )
+    }
+    file: '%rootDir%/tests/Features/Php81/Enum/Size.php'
+    constants: {
+      Huge: @ApiGen\Info\ConstantInfo(
+        value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
+          classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            full: 'self'
+            fullLower: 'self'
+          )
+          name: 'Large'
+        )
+        name: 'Huge'
+        startLine: 13
+        endLine: 13
+        public: true
+      )
+    }
+    methods: {
+      fromlength: @ApiGen\Info\MethodInfo(
+        nameLower: 'fromlength'
+        parameters: {
+          cm: @ApiGen\Info\ParameterInfo(
+            name: 'cm'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'self'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        static: true
+        name: 'fromLength'
+        startLine: 16
+        endLine: 23
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php81\Enum\Size'
+    primary: true
+    startLine: 6
+    endLine: 24
+    dependencies: {
+      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'UnitEnum'
+        fullLower: 'unitenum'
+      )
+    }
+  ),
+]
