@@ -1,6 +1,6 @@
 [
   @ApiGen\Info\ClassInfo(
-    file: '%rootDir%/tests/Features/Mixin/Mixin.php'
+    file: '%rootDir%/tests/Features/PhpDoc/Mixin/Mixin.php'
     properties: {
       name: @ApiGen\Info\PropertyInfo(
         default: @ApiGen\Info\Expr\StringExprInfo(
@@ -52,7 +52,7 @@
         public: true
       )
     }
-    name: 'ApiGenTests\Features\Mixin\Mixin'
+    name: 'ApiGenTests\Features\PhpDoc\Mixin\Mixin'
     primary: true
     tags: {
       method: [

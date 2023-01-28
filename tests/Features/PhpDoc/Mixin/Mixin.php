@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenTests\Features\Mixin;
+namespace ApiGenTests\Features\PhpDoc\Mixin;
 
 /**
  * @method string getFoo()

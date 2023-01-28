@@ -1,6 +1,6 @@
 <?php declare(strict_types = 1);
 
-namespace ApiGenTests\Features\Alias;
+namespace ApiGenTests\Features\PhpDoc\Alias;
 
 use DateTimeImmutable;
 

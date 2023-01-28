@@ -1,6 +1,6 @@
 [
   @ApiGen\Info\ClassInfo(
-    file: '%rootDir%/tests/Features/Alias/LocalTypeAlias.php'
+    file: '%rootDir%/tests/Features/PhpDoc/Alias/LocalTypeAlias.php'
     properties: {
       address: @ApiGen\Info\PropertyInfo(
         type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
@@ -11,8 +11,8 @@
             )
             aliasReference: @ApiGen\Info\AliasReferenceInfo(
               classLike: @ApiGen\Info\ClassLikeReferenceInfo(
-                full: 'ApiGenTests\Features\Alias\LocalTypeAlias'
-                fullLower: 'apigentests\features\alias\localtypealias'
+                full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
+                fullLower: 'apigentests\features\phpdoc\alias\localtypealias'
               )
               alias: 'UserAddress'
               aliasLower: 'useraddress'
@@ -82,7 +82,7 @@
         endLine: 10
       )
     }
-    name: 'ApiGenTests\Features\Alias\LocalTypeAlias'
+    name: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
     primary: true
     tags: {
       phpstan-type: [
@@ -144,9 +144,9 @@
     startLine: 11
     endLine: 15
     dependencies: {
-      apigentests\features\alias\localtypealias: @ApiGen\Info\ClassLikeReferenceInfo(
-        full: 'ApiGenTests\Features\Alias\LocalTypeAlias'
-        fullLower: 'apigentests\features\alias\localtypealias'
+      apigentests\features\phpdoc\alias\localtypealias: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
+        fullLower: 'apigentests\features\phpdoc\alias\localtypealias'
       )
     }
   ),
