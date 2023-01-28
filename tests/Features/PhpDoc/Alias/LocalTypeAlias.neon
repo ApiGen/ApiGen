@@ -84,63 +84,6 @@
     }
     name: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
     primary: true
-    tags: {
-      phpstan-type: [
-        @PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode(
-          alias: 'UserAddress'
-          type: @PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode(
-            items: [
-              @PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode(
-                keyName: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
-                  name: 'street'
-                )
-                optional: false
-                valueType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
-                  name: 'string'
-                  attributes: {
-                    kind: @ApiGen\Analyzer\IdentifierKind(
-                      name: 'Keyword'
-                    )
-                  }
-                )
-              ),
-              @PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode(
-                keyName: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
-                  name: 'city'
-                )
-                optional: false
-                valueType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
-                  name: 'string'
-                  attributes: {
-                    kind: @ApiGen\Analyzer\IdentifierKind(
-                      name: 'Keyword'
-                    )
-                  }
-                )
-              ),
-              @PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode(
-                keyName: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
-                  name: 'zip'
-                )
-                optional: false
-                valueType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
-                  name: 'DateTimeImmutable'
-                  attributes: {
-                    kind: @ApiGen\Analyzer\IdentifierKind(
-                      name: 'ClassLike'
-                    )
-                    classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
-                      full: 'DateTimeImmutable'
-                      fullLower: 'datetimeimmutable'
-                    )
-                  }
-                )
-              ),
-            ]
-          )
-        ),
-      ]
-    }
     startLine: 11
     endLine: 15
     dependencies: {

@@ -287,7 +287,9 @@ class Analyzer
 			$info->readOnly = $node->isReadonly();
 			$info->extends = $node->extends ? $this->processName($node->extends, $tags, $extendsTagNames) : null;
 			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames);
+
 			$info->aliases = $this->extractAliases($classDoc, $node->getDocComment()?->getStartLine(), $node->getDocComment()?->getEndLine());
+			unset($tags['phpstan-type'], $tags['phpstan-import-type']);
 
 			foreach ($node->getTraitUses() as $traitUse) { // TODO: trait adaptations
 				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
