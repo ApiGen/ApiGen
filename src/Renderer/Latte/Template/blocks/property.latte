@@ -14,7 +14,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">{if $property->type}{include type, $property->type}{/if}</code>
+				<code class="nowrap">{if $property->type}{include type, $property->type, scope: $classLike}{/if}</code>
 			</td>
 
 			<td class="table-cell">

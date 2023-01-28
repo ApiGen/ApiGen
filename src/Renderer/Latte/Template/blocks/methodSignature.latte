@@ -10,7 +10,7 @@
 				{include genericParameters, $method->genericParameters}
 				(
 			{/block}
-			{block after}){if $method->returnType}: {include type, type: $method->returnType}{/if}{/block}
+			{block after}){if $method->returnType}: {include type, type: $method->returnType, scope: $classLike}{/if}{/block}
 			{block item}{include parameter, classLike: $classLike, parameter: $item}{/block}
 			{block sep},{/block}
 		{/embed}

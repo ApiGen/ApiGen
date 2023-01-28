@@ -58,7 +58,7 @@
 							<table>
 								{foreach $method->tags['throws'] as $tag}
 									<tr>
-										<td><code>{include type, type: $tag->type, short: false}</code>&nbsp;</td>
+										<td><code>{include type, type: $tag->type, scope: $classLike, short: false}</code>&nbsp;</td>
 										<td>{longDescription($tag->description)}</td>
 									</tr>
 								{/foreach}
