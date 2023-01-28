@@ -6,7 +6,7 @@ use ApiGen\Analyzer\AnalyzeResult;
 use ApiGen\Analyzer\AnalyzeTask;
 use ApiGen\Analyzer\Filter;
 use ApiGen\Analyzer\IdentifierKind;
-use ApiGen\Analyzer\NodeVisitors\PhpDocResolver;
+use ApiGen\Info\AliasInfo;
 use ApiGen\Info\ClassInfo;
 use ApiGen\Info\ClassLikeInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
@@ -33,6 +33,8 @@ use ApiGen\Info\Expr\TernaryExprInfo;
 use ApiGen\Info\Expr\UnaryOpExprInfo;
 use ApiGen\Info\ExprInfo;
 use ApiGen\Info\FunctionInfo;
+use ApiGen\Info\GenericParameterInfo;
+use ApiGen\Info\GenericParameterVariance;
 use ApiGen\Info\InterfaceInfo;
 use ApiGen\Info\MemberInfo;
 use ApiGen\Info\MethodInfo;
@@ -53,15 +55,6 @@ use PhpParser\Node\NullableType;
 use PhpParser\Node\UnionType;
 use PhpParser\NodeTraverserInterface;
 use PhpParser\Parser;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprArrayNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFalseNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFloatNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprIntegerNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNullNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprStringNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprTrueNode;
-use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ExtendsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ImplementsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\InvalidTagValueNode;
@@ -74,7 +67,9 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ThrowsTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\UsesTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
@@ -82,6 +77,7 @@ use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
+use SplQueue;
 use Symfony\Component\Console\Helper\ProgressBar;
 use UnitEnum;
 
@@ -89,12 +85,16 @@ use function array_map;
 use function assert;
 use function count;
 use function get_debug_type;
+use function get_mangled_object_vars;
 use function implode;
 use function is_array;
+use function is_object;
 use function is_scalar;
 use function is_string;
 use function iterator_to_array;
 use function sprintf;
+use function str_ends_with;
+use function strtolower;
 use function substr;
 use function trim;
 
@@ -203,7 +203,7 @@ class Analyzer
 	/**
 	 * @return array<ClassLikeInfo | FunctionInfo | ErrorInfo>
 	 */
-	protected function processTask(AnalyzeTask $task): array
+	public function processTask(AnalyzeTask $task): array
 	{
 		try {
 			$ast = $this->parser->parse(FileSystem::read($task->sourceFile)) ?? throw new \LogicException();
@@ -287,6 +287,7 @@ class Analyzer
 			$info->readOnly = $node->isReadonly();
 			$info->extends = $node->extends ? $this->processName($node->extends, $tags, $extendsTagNames) : null;
 			$info->implements = $this->processNameList($node->implements, $tags, $implementsTagNames);
+			$info->aliases = $this->extractAliases($classDoc, $node->getDocComment()?->getStartLine(), $node->getDocComment()?->getEndLine());
 
 			foreach ($node->getTraitUses() as $traitUse) { // TODO: trait adaptations
 				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
@@ -322,7 +323,7 @@ class Analyzer
 			throw new \LogicException(sprintf('Unsupported ClassLike node %s', get_debug_type($node)));
 		}
 
-		$info->genericParameters = $classDoc->getAttribute('genericNameContext') ?? [];
+		$info->genericParameters = $this->extractGenericParameters($classDoc);
 		$info->description = $this->extractDescription($classDoc);
 		$info->tags = $tags;
 		$info->file = $task->sourceFile;
@@ -481,7 +482,7 @@ class Analyzer
 				$memberInfo->description = $description;
 				$memberInfo->tags = $tags;
 
-				$memberInfo->genericParameters = $memberDoc->getAttribute('genericNameContext') ?? [];
+				$memberInfo->genericParameters = $this->extractGenericParameters($memberDoc);
 				$memberInfo->parameters = $this->processParameters($this->extractParamTagValues($memberDoc), $member->params);
 				$memberInfo->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($member->returnType);
 				$memberInfo->returnDescription = $returnTag?->description ?? '';
@@ -586,7 +587,7 @@ class Analyzer
 				$parameterInfo->type = $parameter->type;
 				$parameterInfo->byRef = $parameter->isReference;
 				$parameterInfo->variadic = $parameter->isVariadic;
-				$parameterInfo->default = $parameter->defaultValue ? $this->processPhpDocExpr($parameter->defaultValue) : null;
+				$parameterInfo->default = $parameter->defaultValue?->getAttribute('info');
 
 				$methodInfo->parameters[$parameterInfo->name] = $parameterInfo;
 			}
@@ -623,7 +624,7 @@ class Analyzer
 		$returnTag = isset($tags['return'][0]) && $tags['return'][0] instanceof ReturnTagValueNode ? $tags['return'][0] : null;
 		unset($tags['param'], $tags['return']);
 
-		$info->genericParameters = $phpDoc->getAttribute('genericNameContext') ?? [];
+		$info->genericParameters = $this->extractGenericParameters($phpDoc);
 		$info->parameters = $this->processParameters($this->extractParamTagValues($phpDoc), $node->params);
 		$info->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($node->returnType);
 		$info->returnDescription = $returnTag?->description ?? '';
@@ -918,52 +919,6 @@ class Analyzer
 	}
 
 
-	protected function processPhpDocExpr(ConstExprNode $expr): ExprInfo
-	{
-		if ($expr instanceof ConstExprTrueNode) {
-			return new BooleanExprInfo(true);
-
-		} elseif ($expr instanceof ConstExprFalseNode) {
-			return new BooleanExprInfo(false);
-
-		} elseif ($expr instanceof ConstExprNullNode) {
-			return new NullExprInfo();
-
-		} elseif ($expr instanceof ConstExprIntegerNode) {
-			return $this->processExpr(Node\Scalar\LNumber::fromString($expr->value));
-
-		} elseif ($expr instanceof ConstExprFloatNode) {
-			return new FloatExprInfo(Node\Scalar\DNumber::parse($expr->value), $expr->value);
-
-		} elseif ($expr instanceof ConstExprStringNode) {
-			return new StringExprInfo(Node\Scalar\String_::parse($expr->value), $expr->value);
-
-		} elseif ($expr instanceof ConstExprArrayNode) {
-			$items = [];
-
-			foreach ($expr->items as $item) {
-				$items[] = new ArrayItemExprInfo(
-					$item->key ? $this->processPhpDocExpr($item->key) : null,
-					$this->processPhpDocExpr($item->value),
-				);
-			}
-
-			return new ArrayExprInfo($items);
-
-		} elseif ($expr instanceof ConstFetchNode) {
-			if ($expr->className === '') {
-				return new ConstantFetchExprInfo($expr->name);
-
-			} else {
-				return new ClassConstantFetchExprInfo(new ClassLikeReferenceInfo($expr->className), $expr->name);
-			}
-
-		} else {
-			throw new \LogicException(sprintf('Unsupported const expr node %s used in PHPDoc', get_debug_type($expr)));
-		}
-	}
-
-
 	protected function extractPhpDoc(Node $node): PhpDocNode
 	{
 		return $node->getAttribute('phpDoc') ?? new PhpDocNode([]);
@@ -983,6 +938,45 @@ class Analyzer
 		}
 
 		return trim(implode("\n", $lines));
+	}
+
+
+	/**
+	 * @return GenericParameterInfo[] indexed by [name]
+	 */
+	protected function extractGenericParameters(PhpDocNode $node): array
+	{
+		$genericParameters = [];
+
+		foreach ($node->children as $child) {
+			if ($child instanceof PhpDocTagNode && $child->value instanceof TemplateTagValueNode) {
+				$lower = strtolower($child->value->name);
+				$variance = str_ends_with($child->name, '-covariant') ? GenericParameterVariance::Covariant : GenericParameterVariance::Invariant;
+				$genericParameters[$lower] = new GenericParameterInfo($child->value->name, $variance, $child->value->bound, $child->value->description);
+			}
+		}
+
+		return $genericParameters;
+	}
+
+
+	/**
+	 * @return AliasInfo[] indexed by [name]
+	 */
+	protected function extractAliases(PhpDocNode $node, ?int $startLine, ?int $endLine): array
+	{
+		$aliases = [];
+
+		foreach ($node->children as $child) {
+			if ($child instanceof PhpDocTagNode && $child->value instanceof TypeAliasTagValueNode) {
+				$lower = strtolower($child->value->alias);
+				$aliases[$lower] = new AliasInfo($child->value->alias, $child->value->type);
+				$aliases[$lower]->startLine = $startLine;
+				$aliases[$lower]->endLine = $endLine;
+			}
+		}
+
+		return $aliases;
 	}
 
 
@@ -1080,11 +1074,29 @@ class Analyzer
 		$dependencies = [];
 
 		if ($type !== null) {
-			foreach (PhpDocResolver::getIdentifiers($type) as $identifier) {
-				if ($identifier->getAttribute('kind') === IdentifierKind::ClassLike) {
-					$classLikeReference = $identifier->getAttribute('classLikeReference');
-					assert($classLikeReference instanceof ClassLikeReferenceInfo);
-					$dependencies[$classLikeReference->fullLower] = $classLikeReference;
+			$queue = new SplQueue();
+			$queue->push($type);
+
+			while (!$queue->isEmpty()) {
+				$value = $queue->pop();
+
+				if (is_array($value)) {
+					foreach ($value as $item) {
+						$queue->push($item);
+					}
+
+				} elseif (is_object($value)) {
+					if ($value instanceof ExprInfo) {
+						$dependencies += $this->extractExprDependencies($value);
+
+					} elseif ($value instanceof ClassLikeReferenceInfo) {
+						$dependencies[$value->fullLower] = $value;
+
+					} else {
+						foreach (get_mangled_object_vars($value) as $item) {
+							$queue->push($item);
+						}
+					}
 				}
 			}
 		}
