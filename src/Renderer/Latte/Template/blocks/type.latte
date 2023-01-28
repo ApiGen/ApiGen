@@ -84,7 +84,8 @@
 			{$type}
 
 		{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ConstTypeNode}
-			{$type}
+			{var ApiGen\Info\ExprInfo $expr = $type->constExpr->getAttribute('info')}
+			{include expr, expr: $expr}
 
 		{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\OffsetAccessTypeNode}
 			{include this, type: $type->type, short: $short}
