@@ -77,6 +77,8 @@
               )
             ),
           ]
+          sealed: true
+          kind: 'array'
         )
         startLine: 8
         endLine: 10
