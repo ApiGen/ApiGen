@@ -1,14 +1,26 @@
 <?php declare(strict_types = 1);
 
-require __DIR__ . '/../vendor/autoload.php';
+namespace ApiGenTests;
 
 use ApiGen\Analyzer;
+use ApiGen\Analyzer\AnalyzeTask;
+use ApiGen\Analyzer\Filter;
+use ApiGen\Analyzer\NodeVisitors\BodySkipper;
+use ApiGen\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGen\Info\NameInfo;
+use ApiGen\Locator;
+use Composer;
 use Nette\Neon\Node;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
+use PhpParser;
+use PHPStan;
+use SplFileInfo;
 use Tester\Assert;
+use Tester\Environment;
 use Tester\TestCase;
+
+require __DIR__ . '/../vendor/autoload.php';
 
 
 /**
@@ -23,7 +35,7 @@ class AnalyzerTest extends TestCase
 	public function testSnapshots(SplFileInfo $file): void
 	{
 		$analyzer = $this->createAnalyzer();
-		$result = $analyzer->processTask(new ApiGen\Analyzer\AnalyzeTask($file->getRealPath(), primary: true));
+		$result = $analyzer->processTask(new AnalyzeTask($file->getRealPath(), primary: true));
 		$serialized = self::dump($result) . "\n";
 		$serialized = str_replace(dirname(__DIR__), '%rootDir%', $serialized);
 
@@ -50,25 +62,25 @@ class AnalyzerTest extends TestCase
 
 	private function createAnalyzer(): Analyzer
 	{
-		$locator = new ApiGen\Locator([], new Composer\Autoload\ClassLoader());
+		$locator = new Locator([], new Composer\Autoload\ClassLoader());
 		$phpParserFactory = new PhpParser\ParserFactory();
 		$phpParser = $phpParserFactory->create(PhpParser\ParserFactory::PREFER_PHP7);
 
 		$traverser = new PhpParser\NodeTraverser();
-		$bodySkipper = new ApiGen\Analyzer\NodeVisitors\BodySkipper();
+		$bodySkipper = new BodySkipper();
 		$nameResolver = new PhpParser\NodeVisitor\NameResolver();
 
 		$phpDocLexer = new PHPStan\PhpDocParser\Lexer\Lexer();
 		$phpDocExprParser = new PHPStan\PhpDocParser\Parser\ConstExprParser();
 		$phpDocTypeParser = new PHPStan\PhpDocParser\Parser\TypeParser($phpDocExprParser);
 		$phpDocParser = new PHPStan\PhpDocParser\Parser\PhpDocParser($phpDocTypeParser, $phpDocExprParser);
-		$phpDocResolver = new ApiGen\Analyzer\NodeVisitors\PhpDocResolver($phpDocLexer, $phpDocParser, $nameResolver->getNameContext());
+		$phpDocResolver = new PhpDocResolver($phpDocLexer, $phpDocParser, $nameResolver->getNameContext());
 
 		$traverser->addVisitor($bodySkipper);
 		$traverser->addVisitor($nameResolver);
 		$traverser->addVisitor($phpDocResolver);
 
-		$filter = new ApiGen\Analyzer\Filter(excludeProtected: false, excludePrivate: true, excludeTagged: []);
+		$filter = new Filter(excludeProtected: false, excludePrivate: true, excludeTagged: []);
 
 		return new Analyzer($locator, $phpParser, $traverser, $filter);
 	}
@@ -76,11 +88,11 @@ class AnalyzerTest extends TestCase
 
 	private static function dump(mixed $value, string $indentation = ''): string
 	{
-		if ($value instanceof NameInfo) {
-			return self::dump($value->full);
-		}
-
 		if (is_object($value)) {
+			if ($value instanceof NameInfo) {
+				return self::dump($value->full);
+			}
+
 			$s = '@' . $value::class . "(\n";
 			$ref = new \ReflectionClass($value);
 
@@ -136,5 +148,5 @@ class AnalyzerTest extends TestCase
 }
 
 
-Tester\Environment::setup();
+Environment::setup();
 (new AnalyzerTest)->run();
