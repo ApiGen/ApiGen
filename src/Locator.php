@@ -6,17 +6,14 @@ use ApiGen\Info\ClassLikeReferenceInfo;
 use Composer\Autoload\ClassLoader;
 use JetBrains\PHPStormStub\PhpStormStubsMap;
 use League;
-use Nette\Utils\Finder;
 use PHPStan\Php8StubsMap;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function dirname;
 use function implode;
 use function is_dir;
-use function pathinfo;
 use function strtolower;
 
-use const PATHINFO_FILENAME;
 use const PHP_VERSION_ID;
 
 
@@ -56,10 +53,6 @@ class Locator
 		$phpStanStubsDir = dirname(Helpers::classLikePath(Php8StubsMap::class));
 		foreach ((new Php8StubsMap(PHP_VERSION_ID))->classes as $class => $path) {
 			$stubsMap[$class] = "$phpStanStubsDir/$path";
-		}
-
-		foreach (Finder::findFiles('*.php')->in(__DIR__ . '/../stubs') as $path => $_) {
-			$stubsMap[strtolower(pathinfo($path, PATHINFO_FILENAME))] = $path;
 		}
 
 		return $stubsMap;
