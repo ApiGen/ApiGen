@@ -6,6 +6,7 @@ namespace ApiGen\Info;
 enum ErrorKind
 {
 	case SyntaxError;
+	case InvalidEncoding;
 	case MissingSymbol;
 	case DuplicateSymbol;
 }

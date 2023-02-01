@@ -93,6 +93,7 @@ use function is_object;
 use function is_scalar;
 use function is_string;
 use function iterator_to_array;
+use function mb_check_encoding;
 use function sprintf;
 use function str_ends_with;
 use function strtolower;
@@ -207,7 +208,14 @@ class Analyzer
 	public function processTask(AnalyzeTask $task): array
 	{
 		try {
-			$ast = $this->parser->parse(FileSystem::read($task->sourceFile)) ?? throw new \LogicException();
+			$content = FileSystem::read($task->sourceFile);
+
+			if (!mb_check_encoding($content, 'UTF-8')) {
+				$error = new ErrorInfo(ErrorKind::InvalidEncoding, "File {$task->sourceFile} is not UTF-8 encoded");
+				return [$error];
+			}
+
+			$ast = $this->parser->parse($content) ?? throw new \LogicException();
 			$ast = $this->traverser->traverse($ast);
 			return iterator_to_array($this->processNodes($task, $ast), preserve_keys: false);
 

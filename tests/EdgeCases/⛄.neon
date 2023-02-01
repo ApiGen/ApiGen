@@ -1,0 +1,66 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/EdgeCases/⛄.php'
+    properties: {
+      ⛄: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: '⛄'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+    }
+    methods: {
+      ⛄: @ApiGen\Info\MethodInfo(
+        nameLower: '⛄'
+        parameters: {
+          ⛄: @ApiGen\Info\ParameterInfo(
+            name: '⛄'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'ApiGenTests\EdgeCases\⛄'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'ClassLike'
+            )
+            classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+              full: 'ApiGenTests\EdgeCases\⛄'
+              fullLower: 'apigentests\edgecases\⛄'
+            )
+          }
+        )
+        name: '⛄'
+        startLine: 10
+        endLine: 13
+        public: true
+      )
+    }
+    name: 'ApiGenTests\EdgeCases\⛄'
+    primary: true
+    startLine: 6
+    endLine: 14
+    dependencies: {
+      apigentests\edgecases\⛄: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\EdgeCases\⛄'
+        fullLower: 'apigentests\edgecases\⛄'
+      )
+    }
+  ),
+]

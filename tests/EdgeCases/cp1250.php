@@ -1,0 +1,14 @@
+<?php declare(strict_types = 1);
+
+namespace ApiGenTests\EdgeCases;
+
+
+class ìšèøžýáíé
+{
+	public int $ìšèøžýáíé;
+
+	public function ìšèøžýáíé(int $ìšèøžýáíé): ìšèøžýáíé
+	{
+		return $this;
+	}
+}

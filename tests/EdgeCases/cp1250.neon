@@ -1,0 +1,8 @@
+[
+  @ApiGen\Info\ErrorInfo(
+    kind: @ApiGen\Info\ErrorKind(
+      name: 'InvalidEncoding'
+    )
+    message: 'File %rootDir%/tests/EdgeCases/cp1250.php is not UTF-8 encoded'
+  ),
+]
