@@ -14,6 +14,7 @@ use ApiGen\Info\ConstantInfo;
 use ApiGen\Info\EnumCaseInfo;
 use ApiGen\Info\EnumInfo;
 use ApiGen\Info\ErrorInfo;
+use ApiGen\Info\ErrorKind;
 use ApiGen\Info\Expr\ArgExprInfo;
 use ApiGen\Info\Expr\ArrayExprInfo;
 use ApiGen\Info\Expr\ArrayItemExprInfo;
@@ -157,7 +158,7 @@ class Analyzer
 
 				if ($info instanceof ClassLikeInfo) {
 					if (isset($classLike[$info->name->fullLower])) {
-						$errors[ErrorInfo::KIND_DUPLICATE_SYMBOL][] = $this->createDuplicateSymbolError($info, $classLike[$info->name->fullLower]);
+						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $classLike[$info->name->fullLower]);
 
 					} else {
 						unset($missing[$info->name->fullLower]);
@@ -166,14 +167,14 @@ class Analyzer
 
 				} elseif ($info instanceof FunctionInfo) {
 					if (isset($functions[$info->name->fullLower])) {
-						$errors[ErrorInfo::KIND_DUPLICATE_SYMBOL][] = $this->createDuplicateSymbolError($info, $functions[$info->name->fullLower]);
+						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $functions[$info->name->fullLower]);
 
 					} else {
 						$functions[$info->name->fullLower] = $info;
 					}
 
 				} elseif ($info instanceof ErrorInfo) {
-					$errors[$info->kind][] = $info;
+					$errors[$info->kind->name][] = $info;
 
 				} else {
 					throw new \LogicException(sprintf('Unexpected task result %s', get_debug_type($info)));
@@ -189,8 +190,8 @@ class Analyzer
 			$classLike[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
 
 			if ($referencedBy->primary) {
-				$errors[ErrorInfo::KIND_MISSING_SYMBOL][] = new ErrorInfo(
-					ErrorInfo::KIND_MISSING_SYMBOL,
+				$errors[ErrorKind::MissingSymbol->name][] = new ErrorInfo(
+					ErrorKind::MissingSymbol,
 					"Missing {$dependency->full}\nreferenced by {$referencedBy->name->full}",
 				);
 			}
@@ -211,7 +212,7 @@ class Analyzer
 			return iterator_to_array($this->processNodes($task, $ast), preserve_keys: false);
 
 		} catch (\PhpParser\Error $e) {
-			$error = new ErrorInfo(ErrorInfo::KIND_SYNTAX_ERROR, "Parse error in file {$task->sourceFile}:\n{$e->getMessage()}");
+			$error = new ErrorInfo(ErrorKind::SyntaxError, "Parse error in file {$task->sourceFile}:\n{$e->getMessage()}");
 			return [$error];
 
 		} catch (\Throwable $e) {
@@ -1109,7 +1110,7 @@ class Analyzer
 
 	protected function createDuplicateSymbolError(ClassLikeInfo | FunctionInfo $info, ClassLikeInfo | FunctionInfo $first): ErrorInfo
 	{
-		return new ErrorInfo(ErrorInfo::KIND_DUPLICATE_SYMBOL, implode("\n", [
+		return new ErrorInfo(ErrorKind::DuplicateSymbol, implode("\n", [
 			"Multiple definitions of {$info->name->full}.",
 			"The first definition was found in {$first->file} on line {$first->startLine}",
 			"and then another one was found in {$info->file} on line {$info->startLine}",
