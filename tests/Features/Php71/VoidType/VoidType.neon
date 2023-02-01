@@ -1,0 +1,40 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php71/VoidType/VoidType.php'
+    methods: {
+      say: @ApiGen\Info\MethodInfo(
+        nameLower: 'say'
+        parameters: {
+          name: @ApiGen\Info\ParameterInfo(
+            name: 'name'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'void'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'say'
+        startLine: 8
+        endLine: 11
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php71\VoidType\VoidType'
+    primary: true
+    startLine: 6
+    endLine: 12
+  ),
+]
