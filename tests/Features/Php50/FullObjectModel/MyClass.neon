@@ -1,0 +1,294 @@
+[
+  @ApiGen\Info\ClassInfo(
+    final: true
+    extends: @ApiGen\Info\ClassLikeReferenceInfo(
+      full: 'ApiGenTests\Features\Php50\FullObjectModel\MyClassParent'
+      fullLower: 'apigentests\features\php50\fullobjectmodel\myclassparent'
+    )
+    implements: {
+      apigentests\features\php50\fullobjectmodel\myinterface: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+        fullLower: 'apigentests\features\php50\fullobjectmodel\myinterface'
+      )
+    }
+    file: '%rootDir%/tests/Features/Php50/FullObjectModel/MyClass.php'
+    constants: {
+      A: @ApiGen\Info\ConstantInfo(
+        value: @ApiGen\Info\Expr\IntegerExprInfo(
+          value: 1
+          base: 10
+          raw: '1'
+        )
+        name: 'A'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+    }
+    properties: {
+      aStatic: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\IntegerExprInfo(
+          value: 1
+          base: 10
+          raw: '1'
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        static: true
+        name: 'aStatic'
+        startLine: 10
+        endLine: 11
+        public: true
+      )
+      bStatic: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\NullExprInfo(
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\UnionTypeNode(
+          types: [
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'null'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+          ]
+        )
+        static: true
+        name: 'bStatic'
+        startLine: 13
+        endLine: 14
+        protected: true
+      )
+      a: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\IntegerExprInfo(
+          value: 1
+          base: 10
+          raw: '1'
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'a'
+        startLine: 19
+        endLine: 20
+        public: true
+      )
+      b: @ApiGen\Info\PropertyInfo(
+        default: @ApiGen\Info\Expr\NullExprInfo(
+        )
+        type: @PHPStan\PhpDocParser\Ast\Type\UnionTypeNode(
+          types: [
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'null'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            ),
+          ]
+        )
+        name: 'b'
+        startLine: 22
+        endLine: 23
+        protected: true
+      )
+    }
+    methods: {
+      __construct: @ApiGen\Info\MethodInfo(
+        nameLower: '__construct'
+        parameters: {
+          a: @ApiGen\Info\ParameterInfo(
+            name: 'a'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+          b: @ApiGen\Info\ParameterInfo(
+            name: 'b'
+            position: 1
+            type: @PHPStan\PhpDocParser\Ast\Type\UnionTypeNode(
+              types: [
+                @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                  name: 'string'
+                  attributes: {
+                    kind: @ApiGen\Analyzer\IdentifierKind(
+                      name: 'Keyword'
+                    )
+                  }
+                ),
+                @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                  name: 'null'
+                  attributes: {
+                    kind: @ApiGen\Analyzer\IdentifierKind(
+                      name: 'Keyword'
+                    )
+                  }
+                ),
+              ]
+            )
+          )
+          c: @ApiGen\Info\ParameterInfo(
+            name: 'c'
+            position: 2
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'MyInterface'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'ClassLike'
+                )
+                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                  full: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+                  fullLower: 'apigentests\features\php50\fullobjectmodel\myinterface'
+                )
+              }
+            )
+          )
+        }
+        name: '__construct'
+        startLine: 29
+        endLine: 41
+        public: true
+      )
+      createfrominterface: @ApiGen\Info\MethodInfo(
+        nameLower: 'createfrominterface'
+        parameters: {
+          c: @ApiGen\Info\ParameterInfo(
+            name: 'c'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'ClassLike'
+                )
+                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                  full: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+                  fullLower: 'apigentests\features\php50\fullobjectmodel\myinterface'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'self'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        static: true
+        name: 'createFromInterface'
+        startLine: 44
+        endLine: 50
+        public: true
+      )
+      a: @ApiGen\Info\MethodInfo(
+        nameLower: 'a'
+        parameters: {
+          c: @ApiGen\Info\ParameterInfo(
+            name: 'c'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'ClassLike'
+                )
+                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                  full: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+                  fullLower: 'apigentests\features\php50\fullobjectmodel\myinterface'
+                )
+              }
+            )
+          )
+        }
+        final: true
+        name: 'a'
+        startLine: 53
+        endLine: 56
+        public: true
+      )
+      getname: @ApiGen\Info\MethodInfo(
+        nameLower: 'getname'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'getName'
+        startLine: 59
+        endLine: 65
+        public: true
+      )
+      getnumber: @ApiGen\Info\MethodInfo(
+        nameLower: 'getnumber'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'getNumber'
+        startLine: 68
+        endLine: 74
+        protected: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php50\FullObjectModel\MyClass'
+    primary: true
+    startLine: 6
+    endLine: 84
+    dependencies: {
+      apigentests\features\php50\fullobjectmodel\myclassparent: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php50\FullObjectModel\MyClassParent'
+        fullLower: 'apigentests\features\php50\fullobjectmodel\myclassparent'
+      )
+      apigentests\features\php50\fullobjectmodel\myinterface: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+        fullLower: 'apigentests\features\php50\fullobjectmodel\myinterface'
+      )
+    }
+  ),
+]

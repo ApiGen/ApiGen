@@ -1,0 +1,26 @@
+[
+  @ApiGen\Info\InterfaceInfo(
+    file: '%rootDir%/tests/Features/Php50/FullObjectModel/MyInterface.php'
+    methods: {
+      getname: @ApiGen\Info\MethodInfo(
+        nameLower: 'getname'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'getName'
+        startLine: 7
+        endLine: 10
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+    primary: true
+    startLine: 5
+    endLine: 11
+  ),
+]

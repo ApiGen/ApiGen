@@ -1,0 +1,77 @@
+[
+  @ApiGen\Info\ClassInfo(
+    abstract: true
+    file: '%rootDir%/tests/Features/Php50/FullObjectModel/MyClassParent.php'
+    properties: {
+      string: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'string'
+        startLine: 11
+        endLine: 12
+        protected: true
+      )
+    }
+    methods: {
+      __construct: @ApiGen\Info\MethodInfo(
+        nameLower: '__construct'
+        parameters: {
+          int: @ApiGen\Info\ParameterInfo(
+            name: 'int'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+          string: @ApiGen\Info\ParameterInfo(
+            name: 'string'
+            position: 1
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        name: '__construct'
+        startLine: 15
+        endLine: 23
+        public: true
+      )
+      getnumber: @ApiGen\Info\MethodInfo(
+        nameLower: 'getnumber'
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        abstract: true
+        name: 'getNumber'
+        startLine: 26
+        endLine: 29
+        protected: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php50\FullObjectModel\MyClassParent'
+    primary: true
+    startLine: 6
+    endLine: 30
+  ),
+]
