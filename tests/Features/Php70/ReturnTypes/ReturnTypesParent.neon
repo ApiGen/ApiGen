@@ -1,0 +1,9 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php70/ReturnTypes/ReturnTypesParent.php'
+    name: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypesParent'
+    primary: true
+    startLine: 6
+    endLine: 8
+  ),
+]

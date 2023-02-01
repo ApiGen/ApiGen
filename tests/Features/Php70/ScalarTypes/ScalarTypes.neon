@@ -1,0 +1,298 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php70/ScalarTypes/ScalarTypes.php'
+    properties: {
+      boolProperty: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'bool'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'boolProperty'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+      intProperty: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'intProperty'
+        startLine: 10
+        endLine: 10
+        public: true
+      )
+      floatProperty: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'float'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'floatProperty'
+        startLine: 12
+        endLine: 12
+        public: true
+      )
+      stringProperty: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'stringProperty'
+        startLine: 14
+        endLine: 14
+        public: true
+      )
+      boolPromoted: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'bool'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'boolPromoted'
+        startLine: 18
+        endLine: 18
+        public: true
+      )
+      intPromoted: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'intPromoted'
+        startLine: 19
+        endLine: 19
+        public: true
+      )
+      floatPromoted: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'float'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'floatPromoted'
+        startLine: 20
+        endLine: 20
+        public: true
+      )
+      stringPromoted: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'stringPromoted'
+        startLine: 21
+        endLine: 21
+        public: true
+      )
+    }
+    methods: {
+      __construct: @ApiGen\Info\MethodInfo(
+        nameLower: '__construct'
+        parameters: {
+          boolPromoted: @ApiGen\Info\ParameterInfo(
+            name: 'boolPromoted'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'bool'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+          intPromoted: @ApiGen\Info\ParameterInfo(
+            name: 'intPromoted'
+            position: 1
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+          floatPromoted: @ApiGen\Info\ParameterInfo(
+            name: 'floatPromoted'
+            position: 2
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'float'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+          stringPromoted: @ApiGen\Info\ParameterInfo(
+            name: 'stringPromoted'
+            position: 3
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        name: '__construct'
+        startLine: 17
+        endLine: 23
+        public: true
+      )
+      boolmethod: @ApiGen\Info\MethodInfo(
+        nameLower: 'boolmethod'
+        parameters: {
+          bool: @ApiGen\Info\ParameterInfo(
+            name: 'bool'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'bool'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'bool'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'boolMethod'
+        startLine: 26
+        endLine: 29
+        public: true
+      )
+      intmethod: @ApiGen\Info\MethodInfo(
+        nameLower: 'intmethod'
+        parameters: {
+          int: @ApiGen\Info\ParameterInfo(
+            name: 'int'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'int'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'int'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'intMethod'
+        startLine: 32
+        endLine: 35
+        public: true
+      )
+      floatmethod: @ApiGen\Info\MethodInfo(
+        nameLower: 'floatmethod'
+        parameters: {
+          float: @ApiGen\Info\ParameterInfo(
+            name: 'float'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'float'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'float'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'floatMethod'
+        startLine: 38
+        endLine: 41
+        public: true
+      )
+      stringmethod: @ApiGen\Info\MethodInfo(
+        nameLower: 'stringmethod'
+        parameters: {
+          string: @ApiGen\Info\ParameterInfo(
+            name: 'string'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'string'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'string'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'stringMethod'
+        startLine: 44
+        endLine: 47
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php70\ScalarTypes\ScalarTypes'
+    primary: true
+    startLine: 6
+    endLine: 48
+  ),
+]
