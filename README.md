@@ -39,6 +39,9 @@ ApiGen is easy to use and modern API doc generator **supporting all PHP 8.2 feat
 - PHP 7.0
   - [scalar types](https://wiki.php.net/rfc/scalar_type_hints_v5)
   - [return types](https://wiki.php.net/rfc/return_types)
+- PHP 5.6
+  - [constant scalar expressions](https://wiki.php.net/rfc/const_scalar_exprs)
+  - [variadic functions](https://wiki.php.net/rfc/variadics)
 
 
 ## Built on Shoulders of Giants
