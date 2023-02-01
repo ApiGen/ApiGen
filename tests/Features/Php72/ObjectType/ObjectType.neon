@@ -1,0 +1,91 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php72/ObjectType/ObjectType.php'
+    properties: {
+      objectProperty: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'object'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'objectProperty'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+      objectPromoted: @ApiGen\Info\PropertyInfo(
+        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'object'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'objectPromoted'
+        startLine: 12
+        endLine: 12
+        public: true
+      )
+    }
+    methods: {
+      __construct: @ApiGen\Info\MethodInfo(
+        nameLower: '__construct'
+        parameters: {
+          objectPromoted: @ApiGen\Info\ParameterInfo(
+            name: 'objectPromoted'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'object'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        name: '__construct'
+        startLine: 11
+        endLine: 14
+        public: true
+      )
+      test: @ApiGen\Info\MethodInfo(
+        nameLower: 'test'
+        parameters: {
+          object: @ApiGen\Info\ParameterInfo(
+            name: 'object'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'object'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          name: 'object'
+          attributes: {
+            kind: @ApiGen\Analyzer\IdentifierKind(
+              name: 'Keyword'
+            )
+          }
+        )
+        name: 'test'
+        startLine: 17
+        endLine: 20
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php72\ObjectType\ObjectType'
+    primary: true
+    startLine: 6
+    endLine: 21
+  ),
+]

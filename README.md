@@ -29,6 +29,8 @@ ApiGen is easy to use and modern API doc generator **supporting all PHP 8.2 feat
   - [static return type](https://wiki.php.net/rfc/static_return_type)
 - PHP 7.4
   - [typed properties](https://wiki.php.net/rfc/typed_properties_v2)
+- PHP 7.2
+  - [object type](https://wiki.php.net/rfc/object-typehint)
 
 
 ## Built on Shoulders of Giants
