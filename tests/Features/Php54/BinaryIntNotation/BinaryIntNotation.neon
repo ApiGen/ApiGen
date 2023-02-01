@@ -1,0 +1,22 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php54/BinaryIntNotation/BinaryIntNotation.php'
+    constants: {
+      BINARY_NUMBER: @ApiGen\Info\ConstantInfo(
+        value: @ApiGen\Info\Expr\IntegerExprInfo(
+          value: 2010
+          base: 2
+          raw: '0b11111011010'
+        )
+        name: 'BINARY_NUMBER'
+        startLine: 8
+        endLine: 8
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php54\BinaryIntNotation\BinaryIntNotation'
+    primary: true
+    startLine: 6
+    endLine: 9
+  ),
+]

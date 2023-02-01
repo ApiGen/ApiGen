@@ -1,0 +1,32 @@
+[
+  @ApiGen\Info\ClassInfo(
+    file: '%rootDir%/tests/Features/Php54/CallableType/CallableType.php'
+    methods: {
+      test: @ApiGen\Info\MethodInfo(
+        nameLower: 'test'
+        parameters: {
+          callable: @ApiGen\Info\ParameterInfo(
+            name: 'callable'
+            position: 0
+            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              name: 'callable'
+              attributes: {
+                kind: @ApiGen\Analyzer\IdentifierKind(
+                  name: 'Keyword'
+                )
+              }
+            )
+          )
+        }
+        name: 'test'
+        startLine: 8
+        endLine: 11
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php54\CallableType\CallableType'
+    primary: true
+    startLine: 6
+    endLine: 12
+  ),
+]

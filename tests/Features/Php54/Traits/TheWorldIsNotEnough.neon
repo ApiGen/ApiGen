@@ -1,0 +1,30 @@
+[
+  @ApiGen\Info\ClassInfo(
+    uses: {
+      apigentests\features\php54\traits\helloworld: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php54\Traits\HelloWorld'
+        fullLower: 'apigentests\features\php54\traits\helloworld'
+      )
+    }
+    file: '%rootDir%/tests/Features/Php54/Traits/TheWorldIsNotEnough.php'
+    methods: {
+      sayhello: @ApiGen\Info\MethodInfo(
+        nameLower: 'sayhello'
+        name: 'sayHello'
+        startLine: 11
+        endLine: 14
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\Php54\Traits\TheWorldIsNotEnough'
+    primary: true
+    startLine: 6
+    endLine: 15
+    dependencies: {
+      apigentests\features\php54\traits\helloworld: @ApiGen\Info\ClassLikeReferenceInfo(
+        full: 'ApiGenTests\Features\Php54\Traits\HelloWorld'
+        fullLower: 'apigentests\features\php54\traits\helloworld'
+      )
+    }
+  ),
+]

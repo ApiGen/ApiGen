@@ -42,6 +42,10 @@ ApiGen is easy to use and modern API doc generator **supporting all PHP 8.2 feat
 - PHP 5.6
   - [constant scalar expressions](https://wiki.php.net/rfc/const_scalar_exprs)
   - [variadic functions](https://wiki.php.net/rfc/variadics)
+- PHP 5.4
+  - [traits](https://wiki.php.net/rfc/horizontalreuse)
+  - [callable type](https://wiki.php.net/rfc/callable)
+  - [binary integer notation](https://wiki.php.net/rfc/binnotation4ints)
 
 
 ## Built on Shoulders of Giants
