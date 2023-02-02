@@ -20,6 +20,7 @@
 		{include genericParameterVariance, $genericParameter->variance}
 		<span title="{$genericParameter->description}">{$genericParameter->name}</span>
 		{if $genericParameter->bound} is {include type, $genericParameter->bound}{/if}
+		{if $genericParameter->default} = {include type, $genericParameter->default}{/if}
 	{/pre}
 {/define}
 

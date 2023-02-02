@@ -969,7 +969,13 @@ class Analyzer
 					default => GenericParameterVariance::Invariant,
 				};
 
-				$genericParameters[$lower] = new GenericParameterInfo($child->value->name, $variance, $child->value->bound, $child->value->description);
+				$genericParameters[$lower] = new GenericParameterInfo(
+					name: $child->value->name,
+					variance: $variance,
+					bound: $child->value->bound,
+					default: $child->value->default,
+					description: $child->value->description,
+				);
 			}
 		}
 
