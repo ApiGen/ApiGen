@@ -30,7 +30,7 @@
 			{include this, type: $type->type, scope: $scope, brackets: true, short: $short}[]
 
 		{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode}
-			array{
+			{$type->kind}{
 			{foreach $type->items as $item}
 				{if $item->keyName}
 					{$item->keyName}
