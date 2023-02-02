@@ -6,10 +6,5 @@
     file: '%rootDir%/tests/Issues/issue0982.php'
     name: 'ApiGenTests\Issues\Issue0982\ClassWithNonExistentParent'
     primary: true
-    dependencies: {
-      apigentests\issues\issue0982\missingparent: @ClassLikeReference(
-        full: 'ApiGenTests\Issues\Issue0982\MissingParent'
-      )
-    }
   ),
 ]

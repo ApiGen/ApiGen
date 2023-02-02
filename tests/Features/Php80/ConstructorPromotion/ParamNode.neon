@@ -170,16 +170,5 @@
     }
     name: 'ApiGenTests\Features\Php80\ConstructorPromotion\ParamNode'
     primary: true
-    dependencies: {
-      apigentests\features\php80\constructorpromotion\node: @ClassLikeReference(
-        full: 'ApiGenTests\Features\Php80\ConstructorPromotion\Node'
-      )
-      apigen\info\exprinfo: @ClassLikeReference(
-        full: 'ApiGen\Info\ExprInfo'
-      )
-      phpstan\phpdocparser\ast\type\typenode: @ClassLikeReference(
-        full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
-      )
-    }
   ),
 ]

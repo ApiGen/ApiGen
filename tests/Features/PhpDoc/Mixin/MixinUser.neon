@@ -24,10 +24,5 @@
         ),
       ]
     }
-    dependencies: {
-      apigentests\features\phpdoc\mixin\mixin: @ClassLikeReference(
-        full: 'ApiGenTests\Features\PhpDoc\Mixin\Mixin'
-      )
-    }
   ),
 ]

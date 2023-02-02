@@ -69,7 +69,6 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PropertyTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\ReturnTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode;
-use PHPStan\PhpDocParser\Ast\PhpDoc\ThrowsTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\UsesTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\VarTagValueNode;
@@ -123,7 +122,7 @@ class Analyzer
 		/** @var ClassLikeInfo[] $classLike indexed by [classLikeName] */
 		$classLike = [];
 
-		/** @var ClassLikeInfo[] $missing indexed by [classLikeName] */
+		/** @var array{ClassLikeInfo|FunctionInfo, ClassLikeReferenceInfo}[] $missing indexed by [classLikeName] */
 		$missing = [];
 
 		/** @var FunctionInfo[] $functions indexed by [functionName] */
@@ -145,9 +144,9 @@ class Analyzer
 		foreach ($tasks as &$task) {
 			foreach ($this->processTask($task) as $info) {
 				if ($info instanceof ClassLikeInfo || $info instanceof FunctionInfo) {
-					foreach ($info->dependencies as $dependency) {
+					foreach ($this->extractDependencies($info) as $dependency) {
 						if (!isset($classLike[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
-							$missing[$dependency->fullLower] = $info;
+							$missing[$dependency->fullLower] = [$info, $dependency];
 							$file = $this->locator->locate($dependency);
 
 							if ($file !== null) {
@@ -186,8 +185,7 @@ class Analyzer
 			$progressBar->advance();
 		}
 
-		foreach ($missing as $fullLower => $referencedBy) {
-			$dependency = $referencedBy->dependencies[$fullLower];
+		foreach ($missing as [$referencedBy, $dependency]) {
 			$classLike[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
 
 			if ($referencedBy->primary) {
@@ -304,14 +302,9 @@ class Analyzer
 				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
 			}
 
-			$info->dependencies += $info->extends ? [$info->extends->fullLower => $info->extends] : [];
-			$info->dependencies += $info->implements;
-			$info->dependencies += $info->uses;
-
 		} elseif ($node instanceof Node\Stmt\Interface_) {
 			$info = new InterfaceInfo($name, $task->primary);
 			$info->extends = $this->processNameList($node->extends, $tags, $extendsTagNames);
-			$info->dependencies += $info->extends;
 
 		} elseif ($node instanceof Node\Stmt\Trait_) {
 			$info = new TraitInfo($name, $task->primary);
@@ -327,9 +320,6 @@ class Analyzer
 				$info->uses += $this->processNameList($traitUse->traits, $tags, $useTagNames);
 			}
 
-			$info->dependencies += $info->implements;
-			$info->dependencies += $info->uses;
-
 		} else {
 			throw new \LogicException(sprintf('Unsupported ClassLike node %s', get_debug_type($node)));
 		}
@@ -342,11 +332,6 @@ class Analyzer
 		$info->endLine = $node->getEndLine();
 
 		$info->mixins = $this->processMixinTags($tags['mixin'] ?? []);
-		$info->dependencies += $info->mixins;
-
-		foreach ($info->genericParameters as $genericParameter) {
-			$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
-		}
 
 		foreach ($this->extractMembers($info->tags, $node) as $member) {
 			if (!$this->filter->filterMemberInfo($info, $member)) {
@@ -354,44 +339,19 @@ class Analyzer
 
 			} elseif ($member instanceof ConstantInfo) {
 				$info->constants[$member->name] = $member;
-				$info->dependencies += $this->extractExprDependencies($member->value);
 
 			} elseif ($member instanceof PropertyInfo) {
 				$info->properties[$member->name] = $member;
-				$info->dependencies += $this->extractExprDependencies($member->default);
-				$info->dependencies += $this->extractTypeDependencies($member->type);
 
 			} elseif ($member instanceof MethodInfo) {
 				$info->methods[$member->nameLower] = $member;
-				$info->dependencies += $this->extractTypeDependencies($member->returnType);
-
-				foreach ($member->tags['throws'] ?? [] as $tagValue) {
-					assert($tagValue instanceof ThrowsTagValueNode);
-					$info->dependencies += $this->extractTypeDependencies($tagValue->type);
-				}
-
-				foreach ($member->parameters as $parameterInfo) {
-					$info->dependencies += $this->extractTypeDependencies($parameterInfo->type);
-					$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
-				}
-
-				foreach ($member->genericParameters as $genericParameter) {
-					$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
-				}
 
 			} elseif ($member instanceof EnumCaseInfo) {
 				assert($info instanceof EnumInfo);
 				$info->cases[$member->name] = $member;
-				$info->dependencies += $this->extractExprDependencies($member->value);
 
 			} else {
 				throw new \LogicException(sprintf('Unexpected member type %s', get_debug_type($member)));
-			}
-		}
-
-		foreach ($info->dependencies as $dependency) {
-			foreach ($dependency->genericArgs as $genericArg) {
-				$info->dependencies += $this->extractTypeDependencies($genericArg);
 			}
 		}
 
@@ -640,22 +600,6 @@ class Analyzer
 		$info->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($node->returnType);
 		$info->returnDescription = $returnTag?->description ?? '';
 		$info->byRef = $node->byRef;
-
-		$info->dependencies += $this->extractTypeDependencies($info->returnType);
-
-		foreach ($info->tags['throws'] ?? [] as $tagValue) {
-			assert($tagValue instanceof ThrowsTagValueNode);
-			$info->dependencies += $this->extractTypeDependencies($tagValue->type);
-		}
-
-		foreach ($info->parameters as $parameterInfo) {
-			$info->dependencies += $this->extractTypeDependencies($parameterInfo->type);
-			$info->dependencies += $this->extractExprDependencies($parameterInfo->default);
-		}
-
-		foreach ($info->genericParameters as $genericParameter) {
-			$info->dependencies += $this->extractTypeDependencies($genericParameter->bound);
-		}
 
 		if (!$this->filter->filterFunctionInfo($info)) {
 			return null;
@@ -1040,86 +984,22 @@ class Analyzer
 	/**
 	 * @return ClassLikeReferenceInfo[] indexed by [classLike]
 	 */
-	protected function extractExprDependencies(?ExprInfo $expr): array
+	protected function extractDependencies(object $value): array
 	{
 		$dependencies = [];
+		$stack = [$value];
+		$index = 1;
 
-		if ($expr instanceof ArrayExprInfo) {
-			foreach ($expr->items as $item) {
-				$dependencies += $this->extractExprDependencies($item->key);
-				$dependencies += $this->extractExprDependencies($item->value);
+		while ($index > 0) {
+			$value = $stack[--$index];
+
+			if ($value instanceof ClassLikeReferenceInfo && $value->fullLower !== 'self' && $value->fullLower !== 'parent') {
+				$dependencies[$value->fullLower] ??= $value;
 			}
 
-		} elseif ($expr instanceof UnaryOpExprInfo) {
-			$dependencies += $this->extractExprDependencies($expr->expr);
-
-		} elseif ($expr instanceof BinaryOpExprInfo) {
-			$dependencies += $this->extractExprDependencies($expr->left);
-			$dependencies += $this->extractExprDependencies($expr->right);
-
-		} elseif ($expr instanceof TernaryExprInfo) {
-			$dependencies += $this->extractExprDependencies($expr->condition);
-			$dependencies += $this->extractExprDependencies($expr->if);
-			$dependencies += $this->extractExprDependencies($expr->else);
-
-		} elseif ($expr instanceof DimFetchExprInfo) {
-			$dependencies += $this->extractExprDependencies($expr->expr);
-			$dependencies += $this->extractExprDependencies($expr->dim);
-
-		} elseif ($expr instanceof PropertyFetchExprInfo || $expr instanceof NullSafePropertyFetchExprInfo) {
-			$dependencies += $this->extractExprDependencies($expr->expr);
-			$dependencies += is_string($expr->property) ? [] : $this->extractExprDependencies($expr->property);
-
-		} elseif ($expr instanceof ClassConstantFetchExprInfo) {
-			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {
-				$dependencies[$expr->classLike->fullLower] = $expr->classLike;
-			}
-
-		} elseif ($expr instanceof NewExprInfo) {
-			if ($expr->classLike->fullLower !== 'self' && $expr->classLike->fullLower !== 'parent') {
-				$dependencies[$expr->classLike->fullLower] = $expr->classLike;
-			}
-
-			foreach ($expr->args as $arg) {
-				$dependencies += $this->extractExprDependencies($arg->value);
-			}
-		}
-
-		return $dependencies;
-	}
-
-
-	/**
-	 * @return ClassLikeReferenceInfo[] indexed by [classLike]
-	 */
-	protected function extractTypeDependencies(?TypeNode $type): array
-	{
-		$dependencies = [];
-
-		if ($type !== null) {
-			$queue = new SplQueue();
-			$queue->push($type);
-
-			while (!$queue->isEmpty()) {
-				$value = $queue->pop();
-
-				if (is_array($value)) {
-					foreach ($value as $item) {
-						$queue->push($item);
-					}
-
-				} elseif (is_object($value)) {
-					if ($value instanceof ExprInfo) {
-						$dependencies += $this->extractExprDependencies($value);
-
-					} elseif ($value instanceof ClassLikeReferenceInfo) {
-						$dependencies[$value->fullLower] = $value;
-
-					} else {
-						foreach (get_mangled_object_vars($value) as $item) {
-							$queue->push($item);
-						}
-					}
+			foreach ((array) $value as $item) {
+				if (is_array($item) || is_object($item)) {
+					$stack[$index++] = $item;
 				}
 			}
 		}

@@ -59,10 +59,5 @@
     }
     name: 'ApiGenTests\Features\Php81\Enum\Size'
     primary: true
-    dependencies: {
-      unitenum: @ClassLikeReference(
-        full: 'UnitEnum'
-      )
-    }
   ),
 ]

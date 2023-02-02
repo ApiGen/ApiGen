@@ -51,13 +51,5 @@
     }
     name: 'ApiGenTests\Features\Php81\Enum\UnitEnum'
     primary: true
-    dependencies: {
-      apigentests\features\php81\enum\colorful: @ClassLikeReference(
-        full: 'ApiGenTests\Features\Php81\Enum\Colorful'
-      )
-      unitenum: @ClassLikeReference(
-        full: 'UnitEnum'
-      )
-    }
   ),
 ]

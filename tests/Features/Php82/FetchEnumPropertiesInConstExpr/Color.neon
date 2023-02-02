@@ -32,10 +32,5 @@
     file: '%rootDir%/tests/Features/Php82/FetchEnumPropertiesInConstExpr/Color.php'
     name: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
     primary: true
-    dependencies: {
-      backedenum: @ClassLikeReference(
-        full: 'BackedEnum'
-      )
-    }
   ),
 ]

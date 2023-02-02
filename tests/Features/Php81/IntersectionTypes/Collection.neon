@@ -97,13 +97,5 @@
     }
     name: 'ApiGenTests\Features\Php81\IntersectionTypes\Collection'
     primary: true
-    dependencies: {
-      countable: @ClassLikeReference(
-        full: 'Countable'
-      )
-      traversable: @ClassLikeReference(
-        full: 'Traversable'
-      )
-    }
   ),
 ]

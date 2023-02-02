@@ -14,10 +14,5 @@
     }
     name: 'ApiGenTests\Features\Php54\Traits\TheWorldIsNotEnough'
     primary: true
-    dependencies: {
-      apigentests\features\php54\traits\helloworld: @ClassLikeReference(
-        full: 'ApiGenTests\Features\Php54\Traits\HelloWorld'
-      )
-    }
   ),
 ]

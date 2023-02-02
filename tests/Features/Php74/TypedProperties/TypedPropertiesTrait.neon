@@ -243,10 +243,5 @@
     }
     name: 'ApiGenTests\Features\Php74\TypedProperties\TypedPropertiesTrait'
     primary: true
-    dependencies: {
-      datetimeinterface: @ClassLikeReference(
-        full: 'DateTimeInterface'
-      )
-    }
   ),
 ]

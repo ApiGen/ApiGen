@@ -39,10 +39,5 @@
     file: '%rootDir%/tests/Features/Php81/Enum/BackedEnum.php'
     name: 'ApiGenTests\Features\Php81\Enum\BackedEnum'
     primary: true
-    dependencies: {
-      backedenum: @ClassLikeReference(
-        full: 'BackedEnum'
-      )
-    }
   ),
 ]

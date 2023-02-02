@@ -124,13 +124,5 @@
     }
     name: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypes'
     primary: true
-    dependencies: {
-      apigentests\features\php70\returntypes\returntypesparent: @ClassLikeReference(
-        full: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypesParent'
-      )
-      datetimeinterface: @ClassLikeReference(
-        full: 'DateTimeInterface'
-      )
-    }
   ),
 ]

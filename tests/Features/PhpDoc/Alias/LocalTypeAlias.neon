@@ -72,10 +72,5 @@
     }
     name: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
     primary: true
-    dependencies: {
-      apigentests\features\phpdoc\alias\localtypealias: @ClassLikeReference(
-        full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
-      )
-    }
   ),
 ]

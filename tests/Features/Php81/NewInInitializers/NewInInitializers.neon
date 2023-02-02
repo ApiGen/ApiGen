@@ -103,16 +103,5 @@
     }
     name: 'ApiGenTests\Features\Php81\NewInInitializers\NewInInitializers'
     primary: true
-    dependencies: {
-      datetimeinterface: @ClassLikeReference(
-        full: 'DateTimeInterface'
-      )
-      datetimeimmutable: @ClassLikeReference(
-        full: 'DateTimeImmutable'
-      )
-      datetimezone: @ClassLikeReference(
-        full: 'DateTimeZone'
-      )
-    }
   ),
 ]

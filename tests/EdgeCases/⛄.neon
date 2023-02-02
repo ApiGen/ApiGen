@@ -42,10 +42,5 @@
     }
     name: 'ApiGenTests\EdgeCases\⛄'
     primary: true
-    dependencies: {
-      apigentests\edgecases\⛄: @ClassLikeReference(
-        full: 'ApiGenTests\EdgeCases\⛄'
-      )
-    }
   ),
 ]

@@ -2,7 +2,6 @@
 
 namespace ApiGen\Info;
 
-use ApiGen\Info\Traits\HasDependencies;
 use ApiGen\Info\Traits\HasGenericParameters;
 use ApiGen\Info\Traits\HasLineLocation;
 use ApiGen\Info\Traits\HasTags;
@@ -13,7 +12,6 @@ class FunctionInfo implements ElementInfo
 {
 	use HasTags;
 	use HasLineLocation;
-	use HasDependencies;
 	use HasGenericParameters;
 
 

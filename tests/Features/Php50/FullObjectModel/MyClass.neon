@@ -218,13 +218,5 @@
     }
     name: 'ApiGenTests\Features\Php50\FullObjectModel\MyClass'
     primary: true
-    dependencies: {
-      apigentests\features\php50\fullobjectmodel\myclassparent: @ClassLikeReference(
-        full: 'ApiGenTests\Features\Php50\FullObjectModel\MyClassParent'
-      )
-      apigentests\features\php50\fullobjectmodel\myinterface: @ClassLikeReference(
-        full: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
-      )
-    }
   ),
 ]

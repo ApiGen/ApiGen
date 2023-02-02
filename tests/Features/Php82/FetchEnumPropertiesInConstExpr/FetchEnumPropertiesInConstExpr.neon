@@ -78,10 +78,5 @@
     }
     name: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\FetchEnumPropertiesInConstExpr'
     primary: true
-    dependencies: {
-      apigentests\features\php82\fetchenumpropertiesinconstexpr\color: @ClassLikeReference(
-        full: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
-      )
-    }
   ),
 ]
