@@ -98,6 +98,7 @@ class ApiGen
 
 		} elseif ($this->output->isVerbose()) {
 			$this->output->text(sprintf('Found %d source files.', count($files)));
+			$this->output->newLine();
 		}
 
 		return $files;
