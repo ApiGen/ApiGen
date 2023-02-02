@@ -18,6 +18,10 @@
 				{else}
 					<span title="Alias">{$type}</span>
 				{/if}
+			{elseif $kind === ApiGen\Analyzer\IdentifierKind::Keyword && $type->name === 'parent' && $scope && isClass($scope) && $scope->extends}
+				{include classLikeLink, $index->classLike[$scope->extends->fullLower], text: 'parent'}
+			{elseif $kind === ApiGen\Analyzer\IdentifierKind::Keyword && $type->name === 'self' && $scope}
+				{include classLikeLink, $scope, text: 'self'}
 			{else}
 				{$type}
 			{/if}
