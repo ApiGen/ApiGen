@@ -29,10 +29,11 @@ jobs:
 
   apigen:
     name: ApiGen
-    runs-on: ubuntu-latest
     strategy:
       matrix:
+        os: [ubuntu-latest, windows-latest]
         php: ['8.1', '8.2']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
       - uses: shivammathur/setup-php@v2
@@ -40,4 +41,4 @@ jobs:
           php-version: ${{ matrix.php }}
           coverage: none
       - run: composer install --no-progress
-      - run: bin/apigen src tests
+      - run: composer exec apigen src tests
