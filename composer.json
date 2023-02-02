@@ -35,6 +35,11 @@
 	"suggest": {
 		"ext-pcntl": "for multiprocess rendering"
 	},
+	"replace": {
+		"symfony/polyfill-ctype": "*",
+		"symfony/polyfill-mbstring": "*",
+		"symfony/polyfill-php80": "*"
+	},
 	"autoload": {
 		"psr-4": {
 			"ApiGen\\": "src"
