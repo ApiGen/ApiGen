@@ -99,22 +99,32 @@ class AnalyzerTest extends TestCase
 				return self::dump($value->name);
 			}
 
-			$ref = new \ReflectionClass($value);
-			$name = $ref->getShortName();
+			$classRef = new \ReflectionClass($value);
+			$name = $classRef->getShortName();
 			$name = str_ends_with($name, 'Info') ? substr($name, 0, -4) : $name;
 			$name = str_ends_with($name, 'Node') ? substr($name, 0, -4) : $name;
 			$s = "@$name(\n";
 
-			foreach ($ref->getProperties() as $property) {
-				$k = $property->getName();
-				$v = $property->getValue($value);
+			foreach ($classRef->getProperties() as $propertyRef) {
+				$k = $propertyRef->getName();
+				$v = $propertyRef->getValue($value);
 
 				if ($k === 'startLine' || $k === 'endLine' || $k === 'fullLower' || $k === 'nameLower') {
 					continue;
 				}
 
-				if ($property->hasDefaultValue() && $property->getDefaultValue() === $v) {
+				if ($propertyRef->hasDefaultValue() && $propertyRef->getDefaultValue() === $v) {
 					continue;
+				}
+
+				if ($propertyRef->isPromoted()) {
+					$constructorRef = $classRef->getConstructor();
+
+					foreach ($constructorRef?->getParameters() ?? [] as $parameterRef) {
+						if ($parameterRef->getName() === $k && $parameterRef->isDefaultValueAvailable() && $parameterRef->getDefaultValue() === $v) {
+							continue 2;
+						}
+					}
 				}
 
 				$s .= "$indentation  $k: " . self::dump($v, $indentation . '  ') . "\n";

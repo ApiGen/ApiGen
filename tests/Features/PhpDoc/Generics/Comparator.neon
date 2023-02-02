@@ -49,8 +49,6 @@
       t: @GenericParameter(
         name: 'T'
         variance: 'Contravariant'
-        bound: null
-        description: ''
       )
     }
   ),
