@@ -79,9 +79,9 @@ class ApiGen
 		}
 
 		if (count($dirs) > 0) {
-			$finder = Finder::findFiles(...$this->include)
-				->exclude(...$this->exclude)
-				->from(...$dirs);
+			$finder = Finder::findFiles($this->include)
+				->exclude($this->exclude)
+				->from($dirs);
 
 			foreach ($finder as $file => $_) {
 				$files[] = $file;

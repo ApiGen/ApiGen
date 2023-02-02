@@ -77,7 +77,7 @@ class LatteRenderer implements Renderer
 	 */
 	protected function getTaskGroups(Index $index): array
 	{
-		$assets = iterator_to_array(Finder::findFiles()->from(__DIR__ . '/Template/assets'));
+		$assets = Finder::findFiles(__DIR__ . '/Template/assets/*')->collect();
 
 		return [
 			[$this->copyAsset(...), $assets],
