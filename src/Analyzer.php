@@ -77,7 +77,6 @@ use PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\NullableTypeNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 use PHPStan\PhpDocParser\Ast\Type\UnionTypeNode;
-use SplQueue;
 use Symfony\Component\Console\Helper\ProgressBar;
 use UnitEnum;
 
@@ -85,7 +84,6 @@ use function array_map;
 use function assert;
 use function count;
 use function get_debug_type;
-use function get_mangled_object_vars;
 use function implode;
 use function is_array;
 use function is_object;
@@ -131,31 +129,31 @@ class Analyzer
 		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
 		$errors = [];
 
-		$schedule = static function (string $file, bool $primary) use (&$tasks, $progressBar): void {
+		$scheduleFile = static function (string $file, bool $primary) use (&$tasks, $progressBar): void {
 			$file = Helpers::realPath($file);
 			$tasks[$file] ??= new AnalyzeTask($file, $primary);
 			$progressBar->setMaxSteps(count($tasks));
 		};
 
+		$scheduleDependencies = function (ClassLikeInfo | FunctionInfo $info) use (&$missing, &$classLike, $scheduleFile): void {
+			foreach ($this->extractDependencies($info) as $dependency) {
+				if (!isset($classLike[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
+					$missing[$dependency->fullLower] = [$info, $dependency];
+					$file = $this->locator->locate($dependency);
+
+					if ($file !== null) {
+						$scheduleFile($file, primary: false);
+					}
+				}
+			}
+		};
+
 		foreach ($files as $file) {
-			$schedule($file, primary: true);
+			$scheduleFile($file, primary: true);
 		}
 
 		foreach ($tasks as &$task) {
 			foreach ($this->processTask($task) as $info) {
-				if ($info instanceof ClassLikeInfo || $info instanceof FunctionInfo) {
-					foreach ($this->extractDependencies($info) as $dependency) {
-						if (!isset($classLike[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
-							$missing[$dependency->fullLower] = [$info, $dependency];
-							$file = $this->locator->locate($dependency);
-
-							if ($file !== null) {
-								$schedule($file, primary: false);
-							}
-						}
-					}
-				}
-
 				if ($info instanceof ClassLikeInfo) {
 					if (isset($classLike[$info->name->fullLower])) {
 						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $classLike[$info->name->fullLower]);
@@ -163,6 +161,7 @@ class Analyzer
 					} else {
 						unset($missing[$info->name->fullLower]);
 						$classLike[$info->name->fullLower] = $info;
+						$scheduleDependencies($info);
 					}
 
 				} elseif ($info instanceof FunctionInfo) {
@@ -171,6 +170,7 @@ class Analyzer
 
 					} else {
 						$functions[$info->name->fullLower] = $info;
+						$scheduleDependencies($info);
 					}
 
 				} elseif ($info instanceof ErrorInfo) {
