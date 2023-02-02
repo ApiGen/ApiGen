@@ -100,9 +100,9 @@
 			{include this, type: $type->subjectType, scope: $scope, short: $short}
 			{if $type->negated} is not {else} is {/if}
 			{include this, type: $type->targetType, scope: $scope, short: $short}
-			?
+			&nbsp;?&nbsp;
 			{include this, type: $type->if, scope: $scope, short: $short}
-			:
+			&nbsp;:&nbsp;
 			{include this, type: $type->else, scope: $scope, short: $short}
 			)
 
@@ -111,9 +111,9 @@
 			{$type->parameterName}
 			{if $type->negated} is not {else} is {/if}
 			{include this, type: $type->targetType, scope: $scope, short: $short}
-			?
+			&nbsp;?&nbsp;
 			{include this, type: $type->if, scope: $scope, short: $short}
-			:
+			&nbsp;:&nbsp;
 			{include this, type: $type->else, scope: $scope, short: $short}
 			)
 
