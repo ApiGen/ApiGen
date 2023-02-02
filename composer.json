@@ -39,5 +39,8 @@
 		"psr-4": {
 			"ApiGen\\": "src"
 		}
+	},
+	"config": {
+		"platform-check": true
 	}
 }
