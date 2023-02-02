@@ -1,69 +1,58 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php81/NewInInitializers/NewInInitializers.php'
     properties: {
-      time: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      time: @Property(
+        type: @IdentifierType(
           name: 'DateTimeInterface'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'ClassLike'
-            )
-            classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+            kind: 'ClassLike'
+            classLikeReference: @ClassLikeReference(
               full: 'DateTimeInterface'
-              fullLower: 'datetimeinterface'
             )
           }
         )
         name: 'time'
-        startLine: 13
-        endLine: 16
         public: true
       )
     }
     methods: {
-      __construct: @ApiGen\Info\MethodInfo(
-        nameLower: '__construct'
+      __construct: @Method(
         parameters: {
-          time: @ApiGen\Info\ParameterInfo(
+          time: @Parameter(
             name: 'time'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'DateTimeInterface'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'DateTimeInterface'
-                  fullLower: 'datetimeinterface'
                 )
               }
             )
-            default: @ApiGen\Info\Expr\NewExprInfo(
-              classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            default: @NewExpr(
+              classLike: @ClassLikeReference(
                 full: 'DateTimeImmutable'
-                fullLower: 'datetimeimmutable'
               )
               args: [
-                @ApiGen\Info\Expr\ArgExprInfo(
+                @ArgExpr(
                   name: null
-                  value: @ApiGen\Info\Expr\StringExprInfo(
+                  value: @StringExpr(
                     value: 'now'
                     raw: '''now'''
                   )
                 ),
-                @ApiGen\Info\Expr\ArgExprInfo(
+                @ArgExpr(
                   name: null
-                  value: @ApiGen\Info\Expr\NewExprInfo(
-                    classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+                  value: @NewExpr(
+                    classLike: @ClassLikeReference(
                       full: 'DateTimeZone'
-                      fullLower: 'datetimezone'
                     )
                     args: [
-                      @ApiGen\Info\Expr\ArgExprInfo(
+                      @ArgExpr(
                         name: null
-                        value: @ApiGen\Info\Expr\StringExprInfo(
+                        value: @StringExpr(
                           value: 'Europe/Prague'
                           raw: '''Europe/Prague'''
                         )
@@ -76,37 +65,30 @@
           )
         }
         name: '__construct'
-        startLine: 12
-        endLine: 18
         public: true
       )
-      test: @ApiGen\Info\MethodInfo(
-        nameLower: 'test'
+      test: @Method(
         parameters: {
-          time: @ApiGen\Info\ParameterInfo(
+          time: @Parameter(
             name: 'time'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'DateTimeInterface'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'DateTimeInterface'
-                  fullLower: 'datetimeinterface'
                 )
               }
             )
-            default: @ApiGen\Info\Expr\NewExprInfo(
-              classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            default: @NewExpr(
+              classLike: @ClassLikeReference(
                 full: 'DateTimeImmutable'
-                fullLower: 'datetimeimmutable'
               )
               args: [
-                @ApiGen\Info\Expr\ArgExprInfo(
+                @ArgExpr(
                   name: null
-                  value: @ApiGen\Info\Expr\StringExprInfo(
+                  value: @StringExpr(
                     value: 'today'
                     raw: '''today'''
                   )
@@ -116,27 +98,20 @@
           )
         }
         name: 'test'
-        startLine: 21
-        endLine: 23
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php81\NewInInitializers\NewInInitializers'
     primary: true
-    startLine: 10
-    endLine: 24
     dependencies: {
-      datetimeinterface: @ApiGen\Info\ClassLikeReferenceInfo(
+      datetimeinterface: @ClassLikeReference(
         full: 'DateTimeInterface'
-        fullLower: 'datetimeinterface'
       )
-      datetimeimmutable: @ApiGen\Info\ClassLikeReferenceInfo(
+      datetimeimmutable: @ClassLikeReference(
         full: 'DateTimeImmutable'
-        fullLower: 'datetimeimmutable'
       )
-      datetimezone: @ApiGen\Info\ClassLikeReferenceInfo(
+      datetimezone: @ClassLikeReference(
         full: 'DateTimeZone'
-        fullLower: 'datetimezone'
       )
     }
   ),

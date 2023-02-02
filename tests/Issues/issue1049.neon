@@ -1,9 +1,7 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Issues/issue1049.php'
     name: 'ApiGenTests\Issues\Issue1049\ClassInFileWithShortOpenTag'
     primary: true
-    startLine: 5
-    endLine: 6
   ),
 ]

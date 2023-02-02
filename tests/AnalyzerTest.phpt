@@ -19,6 +19,8 @@ use SplFileInfo;
 use Tester\Assert;
 use Tester\Environment;
 use Tester\TestCase;
+use UnitEnum;
+
 
 require __DIR__ . '/../vendor/autoload.php';
 
@@ -55,7 +57,7 @@ class AnalyzerTest extends TestCase
 	public function provideSnapshotsData(): iterable
 	{
 		foreach (Finder::findFiles('*.php')->from(__DIR__ . '/EdgeCases', __DIR__ . '/Features', __DIR__ . '/Issues') as $file) {
-			yield $file->getFilename() => [$file];
+			yield $file->getRealPath() => [$file];
 		}
 	}
 
@@ -93,16 +95,29 @@ class AnalyzerTest extends TestCase
 				return self::dump($value->full);
 			}
 
-			$s = '@' . $value::class . "(\n";
+			if ($value instanceof UnitEnum) {
+				return self::dump($value->name);
+			}
+
 			$ref = new \ReflectionClass($value);
+			$name = $ref->getShortName();
+			$name = str_ends_with($name, 'Info') ? substr($name, 0, -4) : $name;
+			$name = str_ends_with($name, 'Node') ? substr($name, 0, -4) : $name;
+			$s = "@$name(\n";
 
 			foreach ($ref->getProperties() as $property) {
 				$k = $property->getName();
 				$v = $property->getValue($value);
 
-				if (!$property->hasDefaultValue() || $property->getDefaultValue() !== $v) {
-					$s .= "$indentation  $k: " . self::dump($v, $indentation . '  ') . "\n";
+				if ($k === 'startLine' || $k === 'endLine' || $k === 'fullLower' || $k === 'nameLower') {
+					continue;
 				}
+
+				if ($property->hasDefaultValue() && $property->getDefaultValue() === $v) {
+					continue;
+				}
+
+				$s .= "$indentation  $k: " . self::dump($v, $indentation . '  ') . "\n";
 			}
 
 			$s .= "$indentation)";

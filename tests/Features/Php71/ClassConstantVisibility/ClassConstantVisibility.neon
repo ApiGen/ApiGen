@@ -1,42 +1,34 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php71/ClassConstantVisibility/ClassConstantVisibility.php'
     constants: {
-      DEFAULT_CONSTANT: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\IntegerExprInfo(
+      DEFAULT_CONSTANT: @Constant(
+        value: @IntegerExpr(
           value: 0
           base: 10
           raw: '0'
         )
         name: 'DEFAULT_CONSTANT'
-        startLine: 8
-        endLine: 8
         public: true
       )
-      PUBLIC_CONSTANT: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      PUBLIC_CONSTANT: @Constant(
+        value: @StringExpr(
           value: 'public'
           raw: '''public'''
         )
         name: 'PUBLIC_CONSTANT'
-        startLine: 10
-        endLine: 10
         public: true
       )
-      PROTECTED_CONSTANT: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      PROTECTED_CONSTANT: @Constant(
+        value: @StringExpr(
           value: 'protected'
           raw: '''protected'''
         )
         name: 'PROTECTED_CONSTANT'
-        startLine: 11
-        endLine: 11
         protected: true
       )
     }
     name: 'ApiGenTests\Features\Php71\ClassConstantVisibility\ClassConstantVisibility'
     primary: true
-    startLine: 6
-    endLine: 13
   ),
 ]

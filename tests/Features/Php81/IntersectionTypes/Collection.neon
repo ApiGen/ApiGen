@@ -1,72 +1,57 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php81/IntersectionTypes/Collection.php'
     properties: {
-      items: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode(
+      items: @Property(
+        type: @IntersectionType(
           types: [
-            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            @IdentifierType(
               name: 'Traversable'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'Traversable'
-                  fullLower: 'traversable'
                 )
               }
             ),
-            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            @IdentifierType(
               name: 'Countable'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'Countable'
-                  fullLower: 'countable'
                 )
               }
             ),
           ]
         )
         name: 'items'
-        startLine: 11
-        endLine: 11
         protected: true
       )
     }
     methods: {
-      setitems: @ApiGen\Info\MethodInfo(
-        nameLower: 'setitems'
+      setitems: @Method(
         parameters: {
-          items: @ApiGen\Info\ParameterInfo(
+          items: @Parameter(
             name: 'items'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode(
+            type: @IntersectionType(
               types: [
-                @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                @IdentifierType(
                   name: 'Traversable'
                   attributes: {
-                    kind: @ApiGen\Analyzer\IdentifierKind(
-                      name: 'ClassLike'
-                    )
-                    classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                    kind: 'ClassLike'
+                    classLikeReference: @ClassLikeReference(
                       full: 'Traversable'
-                      fullLower: 'traversable'
                     )
                   }
                 ),
-                @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                @IdentifierType(
                   name: 'Countable'
                   attributes: {
-                    kind: @ApiGen\Analyzer\IdentifierKind(
-                      name: 'ClassLike'
-                    )
-                    classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                    kind: 'ClassLike'
+                    classLikeReference: @ClassLikeReference(
                       full: 'Countable'
-                      fullLower: 'countable'
                     )
                   }
                 ),
@@ -74,67 +59,50 @@
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'void'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'setItems'
-        startLine: 14
-        endLine: 17
         public: true
       )
-      getitems: @ApiGen\Info\MethodInfo(
-        nameLower: 'getitems'
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode(
+      getitems: @Method(
+        returnType: @IntersectionType(
           types: [
-            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            @IdentifierType(
               name: 'Traversable'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'Traversable'
-                  fullLower: 'traversable'
                 )
               }
             ),
-            @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            @IdentifierType(
               name: 'Countable'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'Countable'
-                  fullLower: 'countable'
                 )
               }
             ),
           ]
         )
         name: 'getItems'
-        startLine: 20
-        endLine: 23
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php81\IntersectionTypes\Collection'
     primary: true
-    startLine: 9
-    endLine: 24
     dependencies: {
-      countable: @ApiGen\Info\ClassLikeReferenceInfo(
+      countable: @ClassLikeReference(
         full: 'Countable'
-        fullLower: 'countable'
       )
-      traversable: @ApiGen\Info\ClassLikeReferenceInfo(
+      traversable: @ClassLikeReference(
         full: 'Traversable'
-        fullLower: 'traversable'
       )
     }
   ),

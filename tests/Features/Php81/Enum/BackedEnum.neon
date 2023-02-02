@@ -1,59 +1,47 @@
 [
-  @ApiGen\Info\EnumInfo(
+  @Enum(
     scalarType: 'string'
     implements: {
-      backedenum: @ApiGen\Info\ClassLikeReferenceInfo(
+      backedenum: @ClassLikeReference(
         full: 'BackedEnum'
-        fullLower: 'backedenum'
       )
     }
     cases: {
-      Hearts: @ApiGen\Info\EnumCaseInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      Hearts: @EnumCase(
+        value: @StringExpr(
           value: 'H'
           raw: '''H'''
         )
         name: 'Hearts'
-        startLine: 8
-        endLine: 8
       )
-      Diamonds: @ApiGen\Info\EnumCaseInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      Diamonds: @EnumCase(
+        value: @StringExpr(
           value: 'D'
           raw: '''D'''
         )
         name: 'Diamonds'
-        startLine: 9
-        endLine: 9
       )
-      Clubs: @ApiGen\Info\EnumCaseInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      Clubs: @EnumCase(
+        value: @StringExpr(
           value: 'C'
           raw: '''C'''
         )
         name: 'Clubs'
-        startLine: 10
-        endLine: 10
       )
-      Spades: @ApiGen\Info\EnumCaseInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      Spades: @EnumCase(
+        value: @StringExpr(
           value: 'S'
           raw: '''S'''
         )
         name: 'Spades'
-        startLine: 11
-        endLine: 11
       )
     }
     file: '%rootDir%/tests/Features/Php81/Enum/BackedEnum.php'
     name: 'ApiGenTests\Features\Php81\Enum\BackedEnum'
     primary: true
-    startLine: 6
-    endLine: 12
     dependencies: {
-      backedenum: @ApiGen\Info\ClassLikeReferenceInfo(
+      backedenum: @ClassLikeReference(
         full: 'BackedEnum'
-        fullLower: 'backedenum'
       )
     }
   ),

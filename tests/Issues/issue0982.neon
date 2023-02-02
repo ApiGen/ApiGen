@@ -1,18 +1,14 @@
 [
-  @ApiGen\Info\ClassInfo(
-    extends: @ApiGen\Info\ClassLikeReferenceInfo(
+  @Class(
+    extends: @ClassLikeReference(
       full: 'ApiGenTests\Issues\Issue0982\MissingParent'
-      fullLower: 'apigentests\issues\issue0982\missingparent'
     )
     file: '%rootDir%/tests/Issues/issue0982.php'
     name: 'ApiGenTests\Issues\Issue0982\ClassWithNonExistentParent'
     primary: true
-    startLine: 5
-    endLine: 7
     dependencies: {
-      apigentests\issues\issue0982\missingparent: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\issues\issue0982\missingparent: @ClassLikeReference(
         full: 'ApiGenTests\Issues\Issue0982\MissingParent'
-        fullLower: 'apigentests\issues\issue0982\missingparent'
       )
     }
   ),

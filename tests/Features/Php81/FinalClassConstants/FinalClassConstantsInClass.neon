@@ -1,22 +1,18 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php81/FinalClassConstants/FinalClassConstantsInClass.php'
     constants: {
-      FINAL_CONSTANT: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      FINAL_CONSTANT: @Constant(
+        value: @StringExpr(
           value: 'final constant'
           raw: '''final constant'''
         )
         final: true
         name: 'FINAL_CONSTANT'
-        startLine: 8
-        endLine: 8
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php81\FinalClassConstants\FinalClassConstantsInClass'
     primary: true
-    startLine: 6
-    endLine: 9
   ),
 ]

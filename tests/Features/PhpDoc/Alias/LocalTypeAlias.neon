@@ -1,18 +1,15 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/PhpDoc/Alias/LocalTypeAlias.php'
     properties: {
-      address: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      address: @Property(
+        type: @IdentifierType(
           name: 'UserAddress'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Alias'
-            )
-            aliasReference: @ApiGen\Info\AliasReferenceInfo(
-              classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            kind: 'Alias'
+            aliasReference: @AliasReference(
+              classLike: @ClassLikeReference(
                 full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
-                fullLower: 'apigentests\features\phpdoc\alias\localtypealias'
               )
               alias: 'UserAddress'
               aliasLower: 'useraddress'
@@ -20,58 +17,49 @@
           }
         )
         name: 'address'
-        startLine: 13
-        endLine: 14
         public: true
       )
     }
     aliases: {
-      useraddress: @ApiGen\Info\AliasInfo(
+      useraddress: @Alias(
         name: 'UserAddress'
-        type: @PHPStan\PhpDocParser\Ast\Type\ArrayShapeNode(
+        type: @ArrayShape(
           items: [
-            @PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode(
-              keyName: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            @ArrayShapeItem(
+              keyName: @IdentifierType(
                 name: 'street'
               )
               optional: false
-              valueType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              valueType: @IdentifierType(
                 name: 'string'
                 attributes: {
-                  kind: @ApiGen\Analyzer\IdentifierKind(
-                    name: 'Keyword'
-                  )
+                  kind: 'Keyword'
                 }
               )
             ),
-            @PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode(
-              keyName: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            @ArrayShapeItem(
+              keyName: @IdentifierType(
                 name: 'city'
               )
               optional: false
-              valueType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              valueType: @IdentifierType(
                 name: 'string'
                 attributes: {
-                  kind: @ApiGen\Analyzer\IdentifierKind(
-                    name: 'Keyword'
-                  )
+                  kind: 'Keyword'
                 }
               )
             ),
-            @PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode(
-              keyName: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            @ArrayShapeItem(
+              keyName: @IdentifierType(
                 name: 'zip'
               )
               optional: false
-              valueType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+              valueType: @IdentifierType(
                 name: 'DateTimeImmutable'
                 attributes: {
-                  kind: @ApiGen\Analyzer\IdentifierKind(
-                    name: 'ClassLike'
-                  )
-                  classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                  kind: 'ClassLike'
+                  classLikeReference: @ClassLikeReference(
                     full: 'DateTimeImmutable'
-                    fullLower: 'datetimeimmutable'
                   )
                 }
               )
@@ -80,18 +68,13 @@
           sealed: true
           kind: 'array'
         )
-        startLine: 8
-        endLine: 10
       )
     }
     name: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
     primary: true
-    startLine: 11
-    endLine: 15
     dependencies: {
-      apigentests\features\phpdoc\alias\localtypealias: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\features\phpdoc\alias\localtypealias: @ClassLikeReference(
         full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
-        fullLower: 'apigentests\features\phpdoc\alias\localtypealias'
       )
     }
   ),

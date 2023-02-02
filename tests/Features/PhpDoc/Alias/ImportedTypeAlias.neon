@@ -1,18 +1,15 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/PhpDoc/Alias/ImportedTypeAlias.php'
     properties: {
-      a: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      a: @Property(
+        type: @IdentifierType(
           name: 'UserAddress'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Alias'
-            )
-            aliasReference: @ApiGen\Info\AliasReferenceInfo(
-              classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            kind: 'Alias'
+            aliasReference: @AliasReference(
+              classLike: @ClassLikeReference(
                 full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
-                fullLower: 'apigentests\features\phpdoc\alias\localtypealias'
               )
               alias: 'UserAddress'
               aliasLower: 'useraddress'
@@ -20,21 +17,16 @@
           }
         )
         name: 'a'
-        startLine: 12
-        endLine: 13
         public: true
       )
-      b: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      b: @Property(
+        type: @IdentifierType(
           name: 'DeliveryAddress'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Alias'
-            )
-            aliasReference: @ApiGen\Info\AliasReferenceInfo(
-              classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            kind: 'Alias'
+            aliasReference: @AliasReference(
+              classLike: @ClassLikeReference(
                 full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
-                fullLower: 'apigentests\features\phpdoc\alias\localtypealias'
               )
               alias: 'UserAddress'
               aliasLower: 'useraddress'
@@ -42,19 +34,14 @@
           }
         )
         name: 'b'
-        startLine: 15
-        endLine: 16
         public: true
       )
     }
     name: 'ApiGenTests\Features\PhpDoc\Alias\ImportedTypeAlias'
     primary: true
-    startLine: 10
-    endLine: 17
     dependencies: {
-      apigentests\features\phpdoc\alias\localtypealias: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\features\phpdoc\alias\localtypealias: @ClassLikeReference(
         full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
-        fullLower: 'apigentests\features\phpdoc\alias\localtypealias'
       )
     }
   ),

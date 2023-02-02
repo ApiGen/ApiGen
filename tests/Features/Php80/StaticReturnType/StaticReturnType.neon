@@ -1,61 +1,48 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php80/StaticReturnType/StaticReturnType.php'
     properties: {
-      value: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\IntegerExprInfo(
+      value: @Property(
+        default: @IntegerExpr(
           value: 0
           base: 10
           raw: '0'
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'int'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'value'
-        startLine: 8
-        endLine: 8
         public: true
       )
     }
     methods: {
-      withvalue: @ApiGen\Info\MethodInfo(
-        nameLower: 'withvalue'
+      withvalue: @Method(
         parameters: {
-          value: @ApiGen\Info\ParameterInfo(
+          value: @Parameter(
             name: 'value'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'int'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'static'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'withValue'
-        startLine: 11
-        endLine: 17
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php80\StaticReturnType\StaticReturnType'
     primary: true
-    startLine: 6
-    endLine: 18
   ),
 ]

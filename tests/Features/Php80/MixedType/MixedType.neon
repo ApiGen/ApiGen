@@ -1,91 +1,69 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php80/MixedType/MixedType.php'
     properties: {
-      mixedProperty: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      mixedProperty: @Property(
+        type: @IdentifierType(
           name: 'mixed'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'mixedProperty'
-        startLine: 8
-        endLine: 8
         public: true
       )
-      mixedPromoted: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      mixedPromoted: @Property(
+        type: @IdentifierType(
           name: 'mixed'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'mixedPromoted'
-        startLine: 12
-        endLine: 12
         public: true
       )
     }
     methods: {
-      __construct: @ApiGen\Info\MethodInfo(
-        nameLower: '__construct'
+      __construct: @Method(
         parameters: {
-          mixedPromoted: @ApiGen\Info\ParameterInfo(
+          mixedPromoted: @Parameter(
             name: 'mixedPromoted'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'mixed'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
         name: '__construct'
-        startLine: 11
-        endLine: 14
         public: true
       )
-      test: @ApiGen\Info\MethodInfo(
-        nameLower: 'test'
+      test: @Method(
         parameters: {
-          mixed: @ApiGen\Info\ParameterInfo(
+          mixed: @Parameter(
             name: 'mixed'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'mixed'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'mixed'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'test'
-        startLine: 17
-        endLine: 20
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php80\MixedType\MixedType'
     primary: true
-    startLine: 6
-    endLine: 21
   ),
 ]

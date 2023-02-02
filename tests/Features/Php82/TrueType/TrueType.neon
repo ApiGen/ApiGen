@@ -1,40 +1,31 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php82/TrueType/TrueType.php'
     methods: {
-      test: @ApiGen\Info\MethodInfo(
-        nameLower: 'test'
+      test: @Method(
         parameters: {
-          value: @ApiGen\Info\ParameterInfo(
+          value: @Parameter(
             name: 'value'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'true'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'true'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'test'
-        startLine: 8
-        endLine: 11
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php82\TrueType\TrueType'
     primary: true
-    startLine: 6
-    endLine: 12
   ),
 ]

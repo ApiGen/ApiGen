@@ -1,87 +1,67 @@
 [
-  @ApiGen\Info\EnumInfo(
+  @Enum(
     implements: {
-      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+      unitenum: @ClassLikeReference(
         full: 'UnitEnum'
-        fullLower: 'unitenum'
       )
     }
     cases: {
-      Small: @ApiGen\Info\EnumCaseInfo(
+      Small: @EnumCase(
         value: null
         name: 'Small'
-        startLine: 8
-        endLine: 8
       )
-      Medium: @ApiGen\Info\EnumCaseInfo(
+      Medium: @EnumCase(
         value: null
         name: 'Medium'
-        startLine: 9
-        endLine: 9
       )
-      Large: @ApiGen\Info\EnumCaseInfo(
+      Large: @EnumCase(
         value: null
         name: 'Large'
-        startLine: 10
-        endLine: 10
       )
     }
     file: '%rootDir%/tests/Features/Php81/Enum/Size.php'
     constants: {
-      Huge: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-          classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+      Huge: @Constant(
+        value: @ClassConstantFetchExpr(
+          classLike: @ClassLikeReference(
             full: 'self'
-            fullLower: 'self'
           )
           name: 'Large'
         )
         name: 'Huge'
-        startLine: 13
-        endLine: 13
         public: true
       )
     }
     methods: {
-      fromlength: @ApiGen\Info\MethodInfo(
-        nameLower: 'fromlength'
+      fromlength: @Method(
         parameters: {
-          cm: @ApiGen\Info\ParameterInfo(
+          cm: @Parameter(
             name: 'cm'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'int'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'self'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         static: true
         name: 'fromLength'
-        startLine: 16
-        endLine: 23
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php81\Enum\Size'
     primary: true
-    startLine: 6
-    endLine: 24
     dependencies: {
-      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+      unitenum: @ClassLikeReference(
         full: 'UnitEnum'
-        fullLower: 'unitenum'
       )
     }
   ),

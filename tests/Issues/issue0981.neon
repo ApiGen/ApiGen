@@ -1,65 +1,57 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Issues/issue0981.php'
     constants: {
-      A: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\IntegerExprInfo(
+      A: @Constant(
+        value: @IntegerExpr(
           value: 1
           base: 10
           raw: '1'
         )
         name: 'A'
-        startLine: 8
-        endLine: 8
         public: true
       )
-      B: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\IntegerExprInfo(
+      B: @Constant(
+        value: @IntegerExpr(
           value: 2
           base: 10
           raw: '2'
         )
         name: 'B'
-        startLine: 9
-        endLine: 9
         public: true
       )
-      C: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\IntegerExprInfo(
+      C: @Constant(
+        value: @IntegerExpr(
           value: 3
           base: 10
           raw: '3'
         )
         name: 'C'
-        startLine: 10
-        endLine: 10
         public: true
       )
-      X: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\ArrayExprInfo(
+      X: @Constant(
+        value: @ArrayExpr(
           items: [
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'A'
                 raw: '''A'''
               )
-              value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'A'
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'B'
                 raw: '''B'''
               )
-              value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'B'
               )
@@ -67,45 +59,41 @@
           ]
         )
         name: 'X'
-        startLine: 12
-        endLine: 15
         public: true
       )
-      Y: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\ArrayExprInfo(
+      Y: @Constant(
+        value: @ArrayExpr(
           items: [
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'C'
                 raw: '''C'''
               )
-              value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'C'
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'X'
                 raw: '''X'''
               )
-              value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'X'
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'Z'
                 raw: '''Z'''
               )
-              value: @ApiGen\Info\Expr\IntegerExprInfo(
+              value: @IntegerExpr(
                 value: 123
                 base: 10
                 raw: '123'
@@ -114,41 +102,35 @@
           ]
         )
         name: 'Y'
-        startLine: 17
-        endLine: 21
         public: true
       )
-      Z: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\ArrayExprInfo(
+      Z: @Constant(
+        value: @ArrayExpr(
           items: [
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            @ArrayItemExpr(
+              key: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'A'
               )
-              value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'X'
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            @ArrayItemExpr(
+              key: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'B'
               )
-              value: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'Y'
               )
@@ -156,14 +138,10 @@
           ]
         )
         name: 'Z'
-        startLine: 23
-        endLine: 26
         public: true
       )
     }
     name: 'ApiGenTests\Issues\Issue0981\Issue0981'
     primary: true
-    startLine: 6
-    endLine: 27
   ),
 ]

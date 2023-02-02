@@ -1,91 +1,69 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php71/IterableType/IterableType.php'
     properties: {
-      iterableProperty: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      iterableProperty: @Property(
+        type: @IdentifierType(
           name: 'iterable'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'iterableProperty'
-        startLine: 8
-        endLine: 8
         public: true
       )
-      iterablePromoted: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      iterablePromoted: @Property(
+        type: @IdentifierType(
           name: 'iterable'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'iterablePromoted'
-        startLine: 12
-        endLine: 12
         public: true
       )
     }
     methods: {
-      __construct: @ApiGen\Info\MethodInfo(
-        nameLower: '__construct'
+      __construct: @Method(
         parameters: {
-          iterablePromoted: @ApiGen\Info\ParameterInfo(
+          iterablePromoted: @Parameter(
             name: 'iterablePromoted'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'iterable'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
         name: '__construct'
-        startLine: 11
-        endLine: 14
         public: true
       )
-      test: @ApiGen\Info\MethodInfo(
-        nameLower: 'test'
+      test: @Method(
         parameters: {
-          iterable: @ApiGen\Info\ParameterInfo(
+          iterable: @Parameter(
             name: 'iterable'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'iterable'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'iterable'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'test'
-        startLine: 17
-        endLine: 20
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php71\IterableType\IterableType'
     primary: true
-    startLine: 6
-    endLine: 21
   ),
 ]

@@ -1,81 +1,64 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php82/DisjunctiveNormalFormTypes/DisjunctiveNormalFormTypes.php'
     methods: {
-      test: @ApiGen\Info\MethodInfo(
-        nameLower: 'test'
+      test: @Method(
         parameters: {
-          value: @ApiGen\Info\ParameterInfo(
+          value: @Parameter(
             name: 'value'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\UnionTypeNode(
+            type: @UnionType(
               types: [
-                @PHPStan\PhpDocParser\Ast\Type\IntersectionTypeNode(
+                @IntersectionType(
                   types: [
-                    @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                    @IdentifierType(
                       name: 'Traversable'
                       attributes: {
-                        kind: @ApiGen\Analyzer\IdentifierKind(
-                          name: 'ClassLike'
-                        )
-                        classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                        kind: 'ClassLike'
+                        classLikeReference: @ClassLikeReference(
                           full: 'Traversable'
-                          fullLower: 'traversable'
                         )
                       }
                     ),
-                    @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                    @IdentifierType(
                       name: 'Countable'
                       attributes: {
-                        kind: @ApiGen\Analyzer\IdentifierKind(
-                          name: 'ClassLike'
-                        )
-                        classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                        kind: 'ClassLike'
+                        classLikeReference: @ClassLikeReference(
                           full: 'Countable'
-                          fullLower: 'countable'
                         )
                       }
                     ),
                   ]
                 ),
-                @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+                @IdentifierType(
                   name: 'array'
                   attributes: {
-                    kind: @ApiGen\Analyzer\IdentifierKind(
-                      name: 'Keyword'
-                    )
+                    kind: 'Keyword'
                   }
                 ),
               ]
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'void'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'test'
-        startLine: 11
-        endLine: 13
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php82\DisjunctiveNormalFormTypes\DisjunctiveNormalFormTypes'
     primary: true
-    startLine: 9
-    endLine: 14
     dependencies: {
-      countable: @ApiGen\Info\ClassLikeReferenceInfo(
+      countable: @ClassLikeReference(
         full: 'Countable'
-        fullLower: 'countable'
       )
-      traversable: @ApiGen\Info\ClassLikeReferenceInfo(
+      traversable: @ClassLikeReference(
         full: 'Traversable'
-        fullLower: 'traversable'
       )
     }
   ),

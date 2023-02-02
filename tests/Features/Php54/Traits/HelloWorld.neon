@@ -1,25 +1,17 @@
 [
-  @ApiGen\Info\TraitInfo(
+  @Trait(
     file: '%rootDir%/tests/Features/Php54/Traits/HelloWorld.php'
     methods: {
-      sayhello: @ApiGen\Info\MethodInfo(
-        nameLower: 'sayhello'
+      sayhello: @Method(
         name: 'sayHello'
-        startLine: 8
-        endLine: 11
         public: true
       )
-      methodfromtrait: @ApiGen\Info\MethodInfo(
-        nameLower: 'methodfromtrait'
+      methodfromtrait: @Method(
         name: 'methodFromTrait'
-        startLine: 14
-        endLine: 17
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php54\Traits\HelloWorld'
     primary: true
-    startLine: 6
-    endLine: 18
   ),
 ]

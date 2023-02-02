@@ -1,34 +1,28 @@
 [
-  @ApiGen\Info\FunctionInfo(
+  @Function(
     file: '%rootDir%/tests/Features/Php71/NullableTypes/functions.php'
-    returnType: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-      type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+    returnType: @NullableType(
+      type: @IdentifierType(
         name: 'int'
         attributes: {
-          kind: @ApiGen\Analyzer\IdentifierKind(
-            name: 'Keyword'
-          )
+          kind: 'Keyword'
         }
       )
     )
     name: 'ApiGenTests\Features\Php71\NullableTypes\answer'
     primary: true
-    startLine: 6
-    endLine: 9
   ),
-  @ApiGen\Info\FunctionInfo(
+  @Function(
     file: '%rootDir%/tests/Features/Php71/NullableTypes/functions.php'
     parameters: {
-      msg: @ApiGen\Info\ParameterInfo(
+      msg: @Parameter(
         name: 'msg'
         position: 0
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'string'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
@@ -36,7 +30,5 @@
     }
     name: 'ApiGenTests\Features\Php71\NullableTypes\say'
     primary: true
-    startLine: 12
-    endLine: 17
   ),
 ]

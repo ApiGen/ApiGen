@@ -1,50 +1,38 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/PhpDoc/Mixin/Mixin.php'
     properties: {
-      name: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\StringExprInfo(
+      name: @Property(
+        default: @StringExpr(
           value: 'Hello'
           raw: '''Hello'''
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'string'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'name'
-        startLine: 10
-        endLine: 10
         public: true
       )
     }
     methods: {
-      hello: @ApiGen\Info\MethodInfo(
-        nameLower: 'hello'
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      hello: @Method(
+        returnType: @IdentifierType(
           name: 'void'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'hello'
-        startLine: 13
-        endLine: 15
         public: true
       )
-      getfoo: @ApiGen\Info\MethodInfo(
-        nameLower: 'getfoo'
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      getfoo: @Method(
+        returnType: @IdentifierType(
           name: 'string'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'getFoo'
@@ -56,14 +44,12 @@
     primary: true
     tags: {
       method: [
-        @PHPStan\PhpDocParser\Ast\PhpDoc\MethodTagValueNode(
+        @MethodTagValue(
           isStatic: false
-          returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+          returnType: @IdentifierType(
             name: 'string'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
           methodName: 'getFoo'
@@ -73,7 +59,5 @@
         ),
       ]
     }
-    startLine: 8
-    endLine: 16
   ),
 ]

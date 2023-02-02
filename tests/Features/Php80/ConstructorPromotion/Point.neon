@@ -1,112 +1,89 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php80/ConstructorPromotion/Point.php'
     properties: {
-      x: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      x: @Property(
+        type: @IdentifierType(
           name: 'float'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'x'
-        startLine: 9
-        endLine: 9
         public: true
       )
-      y: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      y: @Property(
+        type: @IdentifierType(
           name: 'float'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'y'
-        startLine: 10
-        endLine: 10
         public: true
       )
-      z: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      z: @Property(
+        type: @IdentifierType(
           name: 'float'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'z'
-        startLine: 11
-        endLine: 11
         public: true
       )
     }
     methods: {
-      __construct: @ApiGen\Info\MethodInfo(
-        nameLower: '__construct'
+      __construct: @Method(
         parameters: {
-          x: @ApiGen\Info\ParameterInfo(
+          x: @Parameter(
             name: 'x'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'float'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
-            default: @ApiGen\Info\Expr\FloatExprInfo(
+            default: @FloatExpr(
               value: 0.0
               raw: '0.0'
             )
           )
-          y: @ApiGen\Info\ParameterInfo(
+          y: @Parameter(
             name: 'y'
             position: 1
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'float'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
-            default: @ApiGen\Info\Expr\FloatExprInfo(
+            default: @FloatExpr(
               value: 0.0
               raw: '0.0'
             )
           )
-          z: @ApiGen\Info\ParameterInfo(
+          z: @Parameter(
             name: 'z'
             position: 2
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'float'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
-            default: @ApiGen\Info\Expr\FloatExprInfo(
+            default: @FloatExpr(
               value: 0.0
               raw: '0.0'
             )
           )
         }
         name: '__construct'
-        startLine: 8
-        endLine: 13
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php80\ConstructorPromotion\Point'
     primary: true
-    startLine: 6
-    endLine: 14
   ),
 ]

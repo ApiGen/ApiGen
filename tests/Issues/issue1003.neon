@@ -1,26 +1,19 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Issues/issue1003.php'
     methods: {
-      print: @ApiGen\Info\MethodInfo(
-        nameLower: 'print'
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      print: @Method(
+        returnType: @IdentifierType(
           name: 'void'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'print'
-        startLine: 7
-        endLine: 9
         public: true
       )
     }
     name: 'ApiGenTests\Issues\Issue1003\ClassWithPrintMethod'
     primary: true
-    startLine: 5
-    endLine: 10
   ),
 ]

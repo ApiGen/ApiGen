@@ -1,87 +1,70 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     abstract: true
     file: '%rootDir%/tests/Features/Php80/ConstructorPromotion/Node.php'
     properties: {
-      startLoc: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      startLoc: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'int'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'startLoc'
-        startLine: 9
-        endLine: 9
         protected: true
       )
-      endLoc: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      endLoc: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'int'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'endLoc'
-        startLine: 10
-        endLine: 10
         protected: true
       )
     }
     methods: {
-      __construct: @ApiGen\Info\MethodInfo(
-        nameLower: '__construct'
+      __construct: @Method(
         parameters: {
-          startLoc: @ApiGen\Info\ParameterInfo(
+          startLoc: @Parameter(
             name: 'startLoc'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-              type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @NullableType(
+              type: @IdentifierType(
                 name: 'int'
                 attributes: {
-                  kind: @ApiGen\Analyzer\IdentifierKind(
-                    name: 'Keyword'
-                  )
+                  kind: 'Keyword'
                 }
               )
             )
-            default: @ApiGen\Info\Expr\NullExprInfo(
+            default: @NullExpr(
             )
           )
-          endLoc: @ApiGen\Info\ParameterInfo(
+          endLoc: @Parameter(
             name: 'endLoc'
             position: 1
-            type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-              type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @NullableType(
+              type: @IdentifierType(
                 name: 'int'
                 attributes: {
-                  kind: @ApiGen\Analyzer\IdentifierKind(
-                    name: 'Keyword'
-                  )
+                  kind: 'Keyword'
                 }
               )
             )
-            default: @ApiGen\Info\Expr\NullExprInfo(
+            default: @NullExpr(
             )
           )
         }
         name: '__construct'
-        startLine: 8
-        endLine: 12
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php80\ConstructorPromotion\Node'
     primary: true
-    startLine: 6
-    endLine: 13
   ),
 ]

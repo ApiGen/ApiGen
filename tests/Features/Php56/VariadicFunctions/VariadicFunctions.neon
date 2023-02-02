@@ -1,33 +1,29 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php56/VariadicFunctions/VariadicFunctions.php'
     methods: {
-      querya: @ApiGen\Info\MethodInfo(
-        nameLower: 'querya'
+      querya: @Method(
         parameters: {
-          query: @ApiGen\Info\ParameterInfo(
+          query: @Parameter(
             name: 'query'
             position: 0
           )
-          params: @ApiGen\Info\ParameterInfo(
+          params: @Parameter(
             name: 'params'
             position: 1
             variadic: true
           )
         }
         name: 'queryA'
-        startLine: 10
-        endLine: 12
         public: true
       )
-      queryb: @ApiGen\Info\MethodInfo(
-        nameLower: 'queryb'
+      queryb: @Method(
         parameters: {
-          query: @ApiGen\Info\ParameterInfo(
+          query: @Parameter(
             name: 'query'
             position: 0
           )
-          params: @ApiGen\Info\ParameterInfo(
+          params: @Parameter(
             name: 'params'
             position: 1
             byRef: true
@@ -35,29 +31,23 @@
           )
         }
         name: 'queryB'
-        startLine: 15
-        endLine: 17
         public: true
       )
-      queryc: @ApiGen\Info\MethodInfo(
-        nameLower: 'queryc'
+      queryc: @Method(
         parameters: {
-          query: @ApiGen\Info\ParameterInfo(
+          query: @Parameter(
             name: 'query'
             position: 0
           )
-          params: @ApiGen\Info\ParameterInfo(
+          params: @Parameter(
             name: 'params'
             position: 1
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'DateTimeInterface'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'DateTimeInterface'
-                  fullLower: 'datetimeinterface'
                 )
               }
             )
@@ -65,29 +55,23 @@
           )
         }
         name: 'queryC'
-        startLine: 20
-        endLine: 22
         public: true
       )
-      queryd: @ApiGen\Info\MethodInfo(
-        nameLower: 'queryd'
+      queryd: @Method(
         parameters: {
-          query: @ApiGen\Info\ParameterInfo(
+          query: @Parameter(
             name: 'query'
             position: 0
           )
-          params: @ApiGen\Info\ParameterInfo(
+          params: @Parameter(
             name: 'params'
             position: 1
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'DateTimeInterface'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'DateTimeInterface'
-                  fullLower: 'datetimeinterface'
                 )
               }
             )
@@ -96,19 +80,14 @@
           )
         }
         name: 'queryD'
-        startLine: 25
-        endLine: 27
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php56\VariadicFunctions\VariadicFunctions'
     primary: true
-    startLine: 8
-    endLine: 28
     dependencies: {
-      datetimeinterface: @ApiGen\Info\ClassLikeReferenceInfo(
+      datetimeinterface: @ClassLikeReference(
         full: 'DateTimeInterface'
-        fullLower: 'datetimeinterface'
       )
     }
   ),

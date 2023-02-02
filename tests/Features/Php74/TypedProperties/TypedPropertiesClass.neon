@@ -1,344 +1,257 @@
 [
-  @ApiGen\Info\ClassInfo(
-    extends: @ApiGen\Info\ClassLikeReferenceInfo(
+  @Class(
+    extends: @ClassLikeReference(
       full: 'ApiGenTests\Features\Php74\TypedProperties\TypedPropertiesParent'
-      fullLower: 'apigentests\features\php74\typedproperties\typedpropertiesparent'
     )
     file: '%rootDir%/tests/Features/Php74/TypedProperties/TypedPropertiesClass.php'
     properties: {
-      bool: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\BooleanExprInfo(
+      bool: @Property(
+        default: @BooleanExpr(
           value: true
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'bool'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'bool'
-        startLine: 10
-        endLine: 10
         public: true
       )
-      boolNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      boolNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'bool'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'boolNullable'
-        startLine: 12
-        endLine: 12
         public: true
       )
-      int: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\IntegerExprInfo(
+      int: @Property(
+        default: @IntegerExpr(
           value: 123
           base: 10
           raw: '123'
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'int'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'int'
-        startLine: 14
-        endLine: 14
         public: true
       )
-      intNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      intNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'int'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'intNullable'
-        startLine: 16
-        endLine: 16
         public: true
       )
-      float: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\FloatExprInfo(
+      float: @Property(
+        default: @FloatExpr(
           value: 1.23
           raw: '1.23'
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'float'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'float'
-        startLine: 18
-        endLine: 18
         public: true
       )
-      floatNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      floatNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'float'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'floatNullable'
-        startLine: 20
-        endLine: 20
         public: true
       )
-      string: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      string: @Property(
+        type: @IdentifierType(
           name: 'string'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'string'
-        startLine: 22
-        endLine: 22
         public: true
       )
-      stringNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      stringNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'string'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'stringNullable'
-        startLine: 24
-        endLine: 24
         public: true
       )
-      array: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      array: @Property(
+        type: @IdentifierType(
           name: 'array'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'array'
-        startLine: 26
-        endLine: 26
         public: true
       )
-      arrayNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      arrayNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'array'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'arrayNullable'
-        startLine: 28
-        endLine: 28
         public: true
       )
-      object: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      object: @Property(
+        type: @IdentifierType(
           name: 'object'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'object'
-        startLine: 30
-        endLine: 30
         public: true
       )
-      objectNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      objectNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'object'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'objectNullable'
-        startLine: 32
-        endLine: 32
         public: true
       )
-      iterable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      iterable: @Property(
+        type: @IdentifierType(
           name: 'iterable'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'iterable'
-        startLine: 34
-        endLine: 34
         public: true
       )
-      iterableNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      iterableNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'iterable'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'iterableNullable'
-        startLine: 36
-        endLine: 36
         public: true
       )
-      dateTime: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      dateTime: @Property(
+        type: @IdentifierType(
           name: 'DateTimeInterface'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'ClassLike'
-            )
-            classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+            kind: 'ClassLike'
+            classLikeReference: @ClassLikeReference(
               full: 'DateTimeInterface'
-              fullLower: 'datetimeinterface'
             )
           }
         )
         name: 'dateTime'
-        startLine: 38
-        endLine: 38
         public: true
       )
-      dateTimeNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      dateTimeNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'DateTimeInterface'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'ClassLike'
-              )
-              classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+              kind: 'ClassLike'
+              classLikeReference: @ClassLikeReference(
                 full: 'DateTimeInterface'
-                fullLower: 'datetimeinterface'
               )
             }
           )
         )
         name: 'dateTimeNullable'
-        startLine: 40
-        endLine: 40
         public: true
       )
-      self: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      self: @Property(
+        type: @IdentifierType(
           name: 'self'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'self'
-        startLine: 42
-        endLine: 42
         public: true
       )
-      selfNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      selfNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'self'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'selfNullable'
-        startLine: 44
-        endLine: 44
         public: true
       )
-      parent: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      parent: @Property(
+        type: @IdentifierType(
           name: 'parent'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'parent'
-        startLine: 46
-        endLine: 46
         public: true
       )
-      parentNullable: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      parentNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'parent'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'parentNullable'
-        startLine: 48
-        endLine: 48
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php74\TypedProperties\TypedPropertiesClass'
     primary: true
-    startLine: 8
-    endLine: 49
     dependencies: {
-      apigentests\features\php74\typedproperties\typedpropertiesparent: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\features\php74\typedproperties\typedpropertiesparent: @ClassLikeReference(
         full: 'ApiGenTests\Features\Php74\TypedProperties\TypedPropertiesParent'
-        fullLower: 'apigentests\features\php74\typedproperties\typedpropertiesparent'
       )
-      datetimeinterface: @ApiGen\Info\ClassLikeReferenceInfo(
+      datetimeinterface: @ClassLikeReference(
         full: 'DateTimeInterface'
-        fullLower: 'datetimeinterface'
       )
     }
   ),

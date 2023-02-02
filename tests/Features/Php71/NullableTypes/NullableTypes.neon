@@ -1,101 +1,79 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php71/NullableTypes/NullableTypes.php'
     properties: {
-      nullableProperty: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      nullableProperty: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'int'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'nullableProperty'
-        startLine: 8
-        endLine: 8
         public: true
       )
-      nullablePromoted: @ApiGen\Info\PropertyInfo(
-        type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      nullablePromoted: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
             name: 'string'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'nullablePromoted'
-        startLine: 12
-        endLine: 12
         public: true
       )
     }
     methods: {
-      __construct: @ApiGen\Info\MethodInfo(
-        nameLower: '__construct'
+      __construct: @Method(
         parameters: {
-          nullablePromoted: @ApiGen\Info\ParameterInfo(
+          nullablePromoted: @Parameter(
             name: 'nullablePromoted'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-              type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @NullableType(
+              type: @IdentifierType(
                 name: 'string'
                 attributes: {
-                  kind: @ApiGen\Analyzer\IdentifierKind(
-                    name: 'Keyword'
-                  )
+                  kind: 'Keyword'
                 }
               )
             )
           )
         }
         name: '__construct'
-        startLine: 11
-        endLine: 14
         public: true
       )
-      test: @ApiGen\Info\MethodInfo(
-        nameLower: 'test'
+      test: @Method(
         parameters: {
-          nullable: @ApiGen\Info\ParameterInfo(
+          nullable: @Parameter(
             name: 'nullable'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-              type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @NullableType(
+              type: @IdentifierType(
                 name: 'array'
                 attributes: {
-                  kind: @ApiGen\Analyzer\IdentifierKind(
-                    name: 'Keyword'
-                  )
+                  kind: 'Keyword'
                 }
               )
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\NullableTypeNode(
-          type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @NullableType(
+          type: @IdentifierType(
             name: 'array'
             attributes: {
-              kind: @ApiGen\Analyzer\IdentifierKind(
-                name: 'Keyword'
-              )
+              kind: 'Keyword'
             }
           )
         )
         name: 'test'
-        startLine: 17
-        endLine: 20
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php71\NullableTypes\NullableTypes'
     primary: true
-    startLine: 6
-    endLine: 21
   ),
 ]

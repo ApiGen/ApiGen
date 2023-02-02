@@ -1,86 +1,62 @@
 [
-  @ApiGen\Info\EnumInfo(
+  @Enum(
     implements: {
-      apigentests\features\php81\enum\colorful: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\features\php81\enum\colorful: @ClassLikeReference(
         full: 'ApiGenTests\Features\Php81\Enum\Colorful'
-        fullLower: 'apigentests\features\php81\enum\colorful'
       )
-      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+      unitenum: @ClassLikeReference(
         full: 'UnitEnum'
-        fullLower: 'unitenum'
       )
     }
     cases: {
-      Hearts: @ApiGen\Info\EnumCaseInfo(
+      Hearts: @EnumCase(
         value: null
         name: 'Hearts'
-        startLine: 8
-        endLine: 8
       )
-      Diamonds: @ApiGen\Info\EnumCaseInfo(
+      Diamonds: @EnumCase(
         value: null
         name: 'Diamonds'
-        startLine: 9
-        endLine: 9
       )
-      Clubs: @ApiGen\Info\EnumCaseInfo(
+      Clubs: @EnumCase(
         value: null
         name: 'Clubs'
-        startLine: 10
-        endLine: 10
       )
-      Spades: @ApiGen\Info\EnumCaseInfo(
+      Spades: @EnumCase(
         value: null
         name: 'Spades'
-        startLine: 11
-        endLine: 11
       )
     }
     file: '%rootDir%/tests/Features/Php81/Enum/UnitEnum.php'
     methods: {
-      color: @ApiGen\Info\MethodInfo(
-        nameLower: 'color'
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      color: @Method(
+        returnType: @IdentifierType(
           name: 'string'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'color'
-        startLine: 14
-        endLine: 20
         public: true
       )
-      shape: @ApiGen\Info\MethodInfo(
-        nameLower: 'shape'
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+      shape: @Method(
+        returnType: @IdentifierType(
           name: 'string'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'shape'
-        startLine: 23
-        endLine: 26
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php81\Enum\UnitEnum'
     primary: true
-    startLine: 6
-    endLine: 27
     dependencies: {
-      apigentests\features\php81\enum\colorful: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\features\php81\enum\colorful: @ClassLikeReference(
         full: 'ApiGenTests\Features\Php81\Enum\Colorful'
-        fullLower: 'apigentests\features\php81\enum\colorful'
       )
-      unitenum: @ApiGen\Info\ClassLikeReferenceInfo(
+      unitenum: @ClassLikeReference(
         full: 'UnitEnum'
-        fullLower: 'unitenum'
       )
     }
   ),

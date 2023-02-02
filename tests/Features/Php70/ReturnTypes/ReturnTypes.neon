@@ -1,177 +1,135 @@
 [
-  @ApiGen\Info\ClassInfo(
-    extends: @ApiGen\Info\ClassLikeReferenceInfo(
+  @Class(
+    extends: @ClassLikeReference(
       full: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypesParent'
-      fullLower: 'apigentests\features\php70\returntypes\returntypesparent'
     )
     file: '%rootDir%/tests/Features/Php70/ReturnTypes/ReturnTypes.php'
     methods: {
-      arraymethod: @ApiGen\Info\MethodInfo(
-        nameLower: 'arraymethod'
+      arraymethod: @Method(
         parameters: {
-          array: @ApiGen\Info\ParameterInfo(
+          array: @Parameter(
             name: 'array'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'array'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'array'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'arrayMethod'
-        startLine: 10
-        endLine: 13
         public: true
       )
-      callablemethod: @ApiGen\Info\MethodInfo(
-        nameLower: 'callablemethod'
+      callablemethod: @Method(
         parameters: {
-          callable: @ApiGen\Info\ParameterInfo(
+          callable: @Parameter(
             name: 'callable'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'callable'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'callable'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'callableMethod'
-        startLine: 16
-        endLine: 19
         public: true
       )
-      parentmethod: @ApiGen\Info\MethodInfo(
-        nameLower: 'parentmethod'
+      parentmethod: @Method(
         parameters: {
-          parent: @ApiGen\Info\ParameterInfo(
+          parent: @Parameter(
             name: 'parent'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'parent'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'parent'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'parentMethod'
-        startLine: 22
-        endLine: 25
         public: true
       )
-      selfmethod: @ApiGen\Info\MethodInfo(
-        nameLower: 'selfmethod'
+      selfmethod: @Method(
         parameters: {
-          self: @ApiGen\Info\ParameterInfo(
+          self: @Parameter(
             name: 'self'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'self'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'self'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'selfMethod'
-        startLine: 28
-        endLine: 31
         public: true
       )
-      objectmethod: @ApiGen\Info\MethodInfo(
-        nameLower: 'objectmethod'
+      objectmethod: @Method(
         parameters: {
-          object: @ApiGen\Info\ParameterInfo(
+          object: @Parameter(
             name: 'object'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'DateTimeInterface'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'ClassLike'
-                )
-                classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
                   full: 'DateTimeInterface'
-                  fullLower: 'datetimeinterface'
                 )
               }
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'DateTimeInterface'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'ClassLike'
-            )
-            classLikeReference: @ApiGen\Info\ClassLikeReferenceInfo(
+            kind: 'ClassLike'
+            classLikeReference: @ClassLikeReference(
               full: 'DateTimeInterface'
-              fullLower: 'datetimeinterface'
             )
           }
         )
         name: 'objectMethod'
-        startLine: 34
-        endLine: 37
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypes'
     primary: true
-    startLine: 8
-    endLine: 38
     dependencies: {
-      apigentests\features\php70\returntypes\returntypesparent: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\features\php70\returntypes\returntypesparent: @ClassLikeReference(
         full: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypesParent'
-        fullLower: 'apigentests\features\php70\returntypes\returntypesparent'
       )
-      datetimeinterface: @ApiGen\Info\ClassLikeReferenceInfo(
+      datetimeinterface: @ClassLikeReference(
         full: 'DateTimeInterface'
-        fullLower: 'datetimeinterface'
       )
     }
   ),

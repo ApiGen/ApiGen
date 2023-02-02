@@ -1,32 +1,25 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php51/ArrayType/ArrayType.php'
     methods: {
-      test: @ApiGen\Info\MethodInfo(
-        nameLower: 'test'
+      test: @Method(
         parameters: {
-          array: @ApiGen\Info\ParameterInfo(
+          array: @Parameter(
             name: 'array'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'array'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
           )
         }
         name: 'test'
-        startLine: 8
-        endLine: 11
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php51\ArrayType\ArrayType'
     primary: true
-    startLine: 6
-    endLine: 12
   ),
 ]

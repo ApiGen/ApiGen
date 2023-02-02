@@ -1,405 +1,373 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php56/ConstExpressions/ConstExpressions.php'
     constants: {
-      FOO: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+      FOO: @Constant(
+        value: @BinaryOpExpr(
           op: '+'
-          left: @ApiGen\Info\Expr\IntegerExprInfo(
+          left: @IntegerExpr(
             value: 1
             base: 10
             raw: '1'
           )
-          right: @ApiGen\Info\Expr\IntegerExprInfo(
+          right: @IntegerExpr(
             value: 1
             base: 10
             raw: '1'
           )
         )
         name: 'FOO'
-        startLine: 8
-        endLine: 8
         public: true
       )
-      BAR: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+      BAR: @Constant(
+        value: @BinaryOpExpr(
           op: '<<'
-          left: @ApiGen\Info\Expr\IntegerExprInfo(
+          left: @IntegerExpr(
             value: 1
             base: 10
             raw: '1'
           )
-          right: @ApiGen\Info\Expr\IntegerExprInfo(
+          right: @IntegerExpr(
             value: 1
             base: 10
             raw: '1'
           )
         )
         name: 'BAR'
-        startLine: 9
-        endLine: 9
         public: true
       )
-      GREETING: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      GREETING: @Constant(
+        value: @StringExpr(
           value: 'HELLO'
           raw: '''HELLO'''
         )
         name: 'GREETING'
-        startLine: 10
-        endLine: 10
         public: true
       )
-      BAZ: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+      BAZ: @Constant(
+        value: @BinaryOpExpr(
           op: '.'
-          left: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-            classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+          left: @ClassConstantFetchExpr(
+            classLike: @ClassLikeReference(
               full: 'self'
-              fullLower: 'self'
             )
             name: 'GREETING'
           )
-          right: @ApiGen\Info\Expr\StringExprInfo(
+          right: @StringExpr(
             value: ' WORLD!'
             raw: ''' WORLD!'''
           )
         )
         name: 'BAZ'
-        startLine: 11
-        endLine: 11
         public: true
       )
     }
     properties: {
-      foo: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\BinaryOpExprInfo(
+      foo: @Property(
+        default: @BinaryOpExpr(
           op: '+'
-          left: @ApiGen\Info\Expr\IntegerExprInfo(
+          left: @IntegerExpr(
             value: 1
             base: 10
             raw: '1'
           )
-          right: @ApiGen\Info\Expr\IntegerExprInfo(
+          right: @IntegerExpr(
             value: 1
             base: 10
             raw: '1'
           )
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'int'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'foo'
-        startLine: 13
-        endLine: 14
         public: true
       )
-      bar: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\ArrayExprInfo(
+      bar: @Property(
+        default: @ArrayExpr(
           items: [
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+              value: @BinaryOpExpr(
                 op: '+'
-                left: @ApiGen\Info\Expr\IntegerExprInfo(
+                left: @IntegerExpr(
                   value: 1
                   base: 10
                   raw: '1'
                 )
-                right: @ApiGen\Info\Expr\IntegerExprInfo(
+                right: @IntegerExpr(
                   value: 1
                   base: 10
                   raw: '1'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+              value: @BinaryOpExpr(
                 op: '<<'
-                left: @ApiGen\Info\Expr\IntegerExprInfo(
+                left: @IntegerExpr(
                   value: 1
                   base: 10
                   raw: '1'
                 )
-                right: @ApiGen\Info\Expr\IntegerExprInfo(
+                right: @IntegerExpr(
                   value: 2
                   base: 10
                   raw: '2'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            @ArrayItemExpr(
+              key: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'BAZ'
               )
-              value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+              value: @BinaryOpExpr(
                 op: '.'
-                left: @ApiGen\Info\Expr\StringExprInfo(
+                left: @StringExpr(
                   value: 'foo '
                   raw: '''foo '''
                 )
-                right: @ApiGen\Info\Expr\StringExprInfo(
+                right: @StringExpr(
                   value: 'bar'
                   raw: '''bar'''
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+              value: @BinaryOpExpr(
                 op: '-'
-                left: @ApiGen\Info\Expr\IntegerExprInfo(
+                left: @IntegerExpr(
                   value: 7
                   base: 10
                   raw: '7'
                 )
-                right: @ApiGen\Info\Expr\IntegerExprInfo(
+                right: @IntegerExpr(
                   value: 3
                   base: 10
                   raw: '3'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+              value: @BinaryOpExpr(
                 op: '/'
-                left: @ApiGen\Info\Expr\IntegerExprInfo(
+                left: @IntegerExpr(
                   value: 6
                   base: 10
                   raw: '6'
                 )
-                right: @ApiGen\Info\Expr\IntegerExprInfo(
+                right: @IntegerExpr(
                   value: 2
                   base: 10
                   raw: '2'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+              value: @BinaryOpExpr(
                 op: '%'
-                left: @ApiGen\Info\Expr\IntegerExprInfo(
+                left: @IntegerExpr(
                   value: 10
                   base: 10
                   raw: '10'
                 )
-                right: @ApiGen\Info\Expr\IntegerExprInfo(
+                right: @IntegerExpr(
                   value: 3
                   base: 10
                   raw: '3'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\BinaryOpExprInfo(
+              value: @BinaryOpExpr(
                 op: '<=>'
-                left: @ApiGen\Info\Expr\IntegerExprInfo(
+                left: @IntegerExpr(
                   value: 1
                   base: 10
                   raw: '1'
                 )
-                right: @ApiGen\Info\Expr\IntegerExprInfo(
+                right: @IntegerExpr(
                   value: 2
                   base: 10
                   raw: '2'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\DimFetchExprInfo(
-                expr: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                  classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @DimFetchExpr(
+                expr: @ClassConstantFetchExpr(
+                  classLike: @ClassLikeReference(
                     full: 'self'
-                    fullLower: 'self'
                   )
                   name: 'GREETING'
                 )
-                dim: @ApiGen\Info\Expr\IntegerExprInfo(
+                dim: @IntegerExpr(
                   value: 0
                   base: 10
                   raw: '0'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\TernaryExprInfo(
-                condition: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                  classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @TernaryExpr(
+                condition: @ClassConstantFetchExpr(
+                  classLike: @ClassLikeReference(
                     full: 'self'
-                    fullLower: 'self'
                   )
                   name: 'BAR'
                 )
                 if: null
-                else: @ApiGen\Info\Expr\IntegerExprInfo(
+                else: @IntegerExpr(
                   value: 100
                   base: 10
                   raw: '100'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\UnaryOpExprInfo(
+              value: @UnaryOpExpr(
                 op: '+'
-                expr: @ApiGen\Info\Expr\IntegerExprInfo(
+                expr: @IntegerExpr(
                   value: 1
                   base: 10
                   raw: '1'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\UnaryOpExprInfo(
+              value: @UnaryOpExpr(
                 op: '-'
-                expr: @ApiGen\Info\Expr\IntegerExprInfo(
+                expr: @IntegerExpr(
                   value: 1
                   base: 10
                   raw: '1'
                 )
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
+            @ArrayItemExpr(
               key: null
-              value: @ApiGen\Info\Expr\ConstantFetchExprInfo(
+              value: @ConstantFetchExpr(
                 name: 'PHP_VERSION_ID'
               )
             ),
           ]
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'array'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'bar'
-        startLine: 16
-        endLine: 30
         public: true
       )
-      baseDir: @ApiGen\Info\PropertyInfo(
-        default: @ApiGen\Info\Expr\BinaryOpExprInfo(
+      baseDir: @Property(
+        default: @BinaryOpExpr(
           op: '.'
-          left: @ApiGen\Info\Expr\ConstantFetchExprInfo(
+          left: @ConstantFetchExpr(
             name: '__DIR__'
           )
-          right: @ApiGen\Info\Expr\StringExprInfo(
+          right: @StringExpr(
             value: '/base'
             raw: '''/base'''
           )
         )
-        type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        type: @IdentifierType(
           name: 'string'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'baseDir'
-        startLine: 32
-        endLine: 33
         public: true
       )
     }
     methods: {
-      foo: @ApiGen\Info\MethodInfo(
-        nameLower: 'foo'
+      foo: @Method(
         parameters: {
-          a: @ApiGen\Info\ParameterInfo(
+          a: @Parameter(
             name: 'a'
             position: 0
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'int'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
-            default: @ApiGen\Info\Expr\BinaryOpExprInfo(
+            default: @BinaryOpExpr(
               op: '+'
-              left: @ApiGen\Info\Expr\IntegerExprInfo(
+              left: @IntegerExpr(
                 value: 1
                 base: 10
                 raw: '1'
               )
-              right: @ApiGen\Info\Expr\IntegerExprInfo(
+              right: @IntegerExpr(
                 value: 1
                 base: 10
                 raw: '1'
               )
             )
           )
-          b: @ApiGen\Info\ParameterInfo(
+          b: @Parameter(
             name: 'b'
             position: 1
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'int'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
-            default: @ApiGen\Info\Expr\BinaryOpExprInfo(
+            default: @BinaryOpExpr(
               op: '<<'
-              left: @ApiGen\Info\Expr\IntegerExprInfo(
+              left: @IntegerExpr(
                 value: 2
                 base: 10
                 raw: '2'
               )
-              right: @ApiGen\Info\Expr\IntegerExprInfo(
+              right: @IntegerExpr(
                 value: 3
                 base: 10
                 raw: '3'
               )
             )
           )
-          c: @ApiGen\Info\ParameterInfo(
+          c: @Parameter(
             name: 'c'
             position: 2
-            type: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+            type: @IdentifierType(
               name: 'int'
               attributes: {
-                kind: @ApiGen\Analyzer\IdentifierKind(
-                  name: 'Keyword'
-                )
+                kind: 'Keyword'
               }
             )
-            default: @ApiGen\Info\Expr\TernaryExprInfo(
-              condition: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+            default: @TernaryExpr(
+              condition: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
                   full: 'self'
-                  fullLower: 'self'
                 )
                 name: 'BAR'
               )
-              if: @ApiGen\Info\Expr\IntegerExprInfo(
+              if: @IntegerExpr(
                 value: 10
                 base: 10
                 raw: '10'
               )
-              else: @ApiGen\Info\Expr\IntegerExprInfo(
+              else: @IntegerExpr(
                 value: 100
                 base: 10
                 raw: '100'
@@ -407,23 +375,17 @@
             )
           )
         }
-        returnType: @PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode(
+        returnType: @IdentifierType(
           name: 'void'
           attributes: {
-            kind: @ApiGen\Analyzer\IdentifierKind(
-              name: 'Keyword'
-            )
+            kind: 'Keyword'
           }
         )
         name: 'foo'
-        startLine: 36
-        endLine: 44
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php56\ConstExpressions\ConstExpressions'
     primary: true
-    startLine: 6
-    endLine: 45
   ),
 ]

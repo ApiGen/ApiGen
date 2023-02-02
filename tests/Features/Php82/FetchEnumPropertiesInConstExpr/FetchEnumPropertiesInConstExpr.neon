@@ -1,75 +1,69 @@
 [
-  @ApiGen\Info\ClassInfo(
+  @Class(
     file: '%rootDir%/tests/Features/Php82/FetchEnumPropertiesInConstExpr/FetchEnumPropertiesInConstExpr.php'
     constants: {
-      KEY: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\StringExprInfo(
+      KEY: @Constant(
+        value: @StringExpr(
           value: 'va'
           raw: '''va'''
         )
         name: 'KEY'
-        startLine: 8
-        endLine: 8
         public: true
       )
-      COLORS: @ApiGen\Info\ConstantInfo(
-        value: @ApiGen\Info\Expr\ArrayExprInfo(
+      COLORS: @Constant(
+        value: @ArrayExpr(
           items: [
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'blue'
                 raw: '''blue'''
               )
-              value: @ApiGen\Info\Expr\PropertyFetchExprInfo(
-                expr: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                  classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @PropertyFetchExpr(
+                expr: @ClassConstantFetchExpr(
+                  classLike: @ClassLikeReference(
                     full: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
-                    fullLower: 'apigentests\features\php82\fetchenumpropertiesinconstexpr\color'
                   )
                   name: 'Blue'
                 )
                 property: 'value'
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'red'
                 raw: '''red'''
               )
-              value: @ApiGen\Info\Expr\NullSafePropertyFetchExprInfo(
-                expr: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                  classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @NullSafePropertyFetchExpr(
+                expr: @ClassConstantFetchExpr(
+                  classLike: @ClassLikeReference(
                     full: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
-                    fullLower: 'apigentests\features\php82\fetchenumpropertiesinconstexpr\color'
                   )
                   name: 'Red'
                 )
                 property: 'value'
               )
             ),
-            @ApiGen\Info\Expr\ArrayItemExprInfo(
-              key: @ApiGen\Info\Expr\StringExprInfo(
+            @ArrayItemExpr(
+              key: @StringExpr(
                 value: 'green'
                 raw: '''green'''
               )
-              value: @ApiGen\Info\Expr\PropertyFetchExprInfo(
-                expr: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                  classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+              value: @PropertyFetchExpr(
+                expr: @ClassConstantFetchExpr(
+                  classLike: @ClassLikeReference(
                     full: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
-                    fullLower: 'apigentests\features\php82\fetchenumpropertiesinconstexpr\color'
                   )
                   name: 'Green'
                 )
-                property: @ApiGen\Info\Expr\BinaryOpExprInfo(
+                property: @BinaryOpExpr(
                   op: '.'
-                  left: @ApiGen\Info\Expr\ClassConstantFetchExprInfo(
-                    classLike: @ApiGen\Info\ClassLikeReferenceInfo(
+                  left: @ClassConstantFetchExpr(
+                    classLike: @ClassLikeReference(
                       full: 'self'
-                      fullLower: 'self'
                     )
                     name: 'KEY'
                   )
-                  right: @ApiGen\Info\Expr\StringExprInfo(
+                  right: @StringExpr(
                     value: 'lue'
                     raw: '''lue'''
                   )
@@ -79,19 +73,14 @@
           ]
         )
         name: 'COLORS'
-        startLine: 10
-        endLine: 14
         public: true
       )
     }
     name: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\FetchEnumPropertiesInConstExpr'
     primary: true
-    startLine: 6
-    endLine: 15
     dependencies: {
-      apigentests\features\php82\fetchenumpropertiesinconstexpr\color: @ApiGen\Info\ClassLikeReferenceInfo(
+      apigentests\features\php82\fetchenumpropertiesinconstexpr\color: @ClassLikeReference(
         full: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
-        fullLower: 'apigentests\features\php82\fetchenumpropertiesinconstexpr\color'
       )
     }
   ),
