@@ -962,7 +962,13 @@ class Analyzer
 		foreach ($node->children as $child) {
 			if ($child instanceof PhpDocTagNode && $child->value instanceof TemplateTagValueNode) {
 				$lower = strtolower($child->value->name);
-				$variance = str_ends_with($child->name, '-covariant') ? GenericParameterVariance::Covariant : GenericParameterVariance::Invariant;
+
+				$variance = match (true) {
+					str_ends_with($child->name, '-covariant') => GenericParameterVariance::Covariant,
+					str_ends_with($child->name, '-contravariant') => GenericParameterVariance::Contravariant,
+					default => GenericParameterVariance::Invariant,
+				};
+
 				$genericParameters[$lower] = new GenericParameterInfo($child->value->name, $variance, $child->value->bound, $child->value->description);
 			}
 		}
