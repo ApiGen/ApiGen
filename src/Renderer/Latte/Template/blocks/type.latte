@@ -64,8 +64,19 @@
 		{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\GenericTypeNode}
 			{include this, type: $type->type, scope: $scope, short: $short}
 			&lt;
-			{foreach $type->genericTypes as $genericType}
-				{include this, type: $genericType, scope: $scope, short: $short}
+			{foreach $type->genericTypes as $idx => $genericType}
+				{var $variance = $type->variances[$idx] ?? null}
+				{if $variance === PHPStan\PhpDocParser\Ast\Type\GenericTypeNode::VARIANCE_BIVARIANT}
+					*
+				{elseif $variance === PHPStan\PhpDocParser\Ast\Type\GenericTypeNode::VARIANCE_COVARIANT}
+					<span title="covariant">out</span>{=' '}
+					{include this, type: $genericType, scope: $scope, short: $short}
+				{elseif $variance === PHPStan\PhpDocParser\Ast\Type\GenericTypeNode::VARIANCE_CONTRAVARIANT}
+					<span title="contravariant">in</span>{=' '}
+					{include this, type: $genericType, scope: $scope, short: $short}
+				{else}
+					{include this, type: $genericType, scope: $scope, short: $short}
+				{/if}
 				{sep}, {/sep}
 			{/foreach}
 			&gt;
