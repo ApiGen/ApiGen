@@ -42,7 +42,6 @@ use SplQueue;
 
 use function assert;
 use function get_debug_type;
-use function get_object_vars;
 use function is_array;
 use function is_object;
 use function sprintf;
@@ -188,30 +187,25 @@ class PhpDocResolver extends NodeVisitorAbstract
 
 	protected function resolvePhpDoc(PhpDocNode $phpDoc): void
 	{
-		$queue = new SplQueue();
-		$queue->push($phpDoc);
+		$stack = [$phpDoc];
+		$index = 1;
 
-		while (!$queue->isEmpty()) {
-			$value = $queue->pop();
+		while ($index > 0) {
+			$value = $stack[--$index];
 
-			if (is_array($value)) {
-				foreach ($value as $item) {
-					$queue->push($item);
-				}
+			if ($value instanceof IdentifierTypeNode) {
+				$this->resolveIdentifier($value);
 
-			} elseif (is_object($value)) {
-				if ($value instanceof IdentifierTypeNode) {
-					$this->resolveIdentifier($value);
+			} elseif ($value instanceof ConstExprNode) {
+				$value->setAttribute('info', $this->resolveConstExpr($value));
 
-				} elseif ($value instanceof ConstExprNode) {
-					$value->setAttribute('info', $this->resolveConstExpr($value));
+			} elseif ($value instanceof ArrayShapeItemNode) {
+				$stack[$index++] = $value->valueType; // intentionally not pushing $value->keyName
 
-				} elseif ($value instanceof ArrayShapeItemNode) {
-					$queue->push($value->valueType); // intentionally not pushing $value->keyName
-
-				} else {
-					foreach (get_object_vars($value) as $item) {
-						$queue->push($item);
+			} else {
+				foreach ((array) $value as $item) {
+					if (is_array($item) || is_object($item)) {
+						$stack[$index++] = $item;
 					}
 				}
 			}
