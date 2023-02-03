@@ -8,12 +8,16 @@ use PhpParser\NodeVisitorAbstract;
 
 class BodySkipper extends NodeVisitorAbstract
 {
-	public function enterNode(Node $node)
+	public function enterNode(Node $node): null|int|Node
 	{
 		// It is not possible to return NodeTraverser::DONT_TRAVERSE_CHILDREN,
-		// because it would break PhpParser\NodeVisitor\NameResolver's resolution of Param nodes.
+		// because it would break PhpParser\NodeVisitor\NameResolver's resolution
+		// of default values in Param nodes.
 
-		if (($node instanceof Node\Stmt\Function_ || $node instanceof Node\Stmt\ClassMethod) && $node->stmts !== null) {
+		if ($node instanceof Node\Stmt\Function_) {
+			$node->stmts = [];
+
+		} elseif ($node instanceof Node\Stmt\ClassMethod && $node->stmts !== null) {
 			$node->stmts = [];
 		}
 

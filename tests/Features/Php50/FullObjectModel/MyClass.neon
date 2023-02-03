@@ -190,6 +190,16 @@
               }
             )
           )
+          a: @Parameter(
+            name: 'a'
+            position: 1
+            default: @ClassConstantFetchExpr(
+              classLike: @ClassLikeReference(
+                full: 'ApiGenTests\Features\Php50\FullObjectModel\MyClass'
+              )
+              name: 'A'
+            )
+          )
         }
         final: true
         name: 'a'

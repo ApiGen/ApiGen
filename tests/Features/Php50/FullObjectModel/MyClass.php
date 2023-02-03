@@ -50,9 +50,10 @@ final class MyClass extends MyClassParent implements MyInterface
 	}
 
 
-	final public function a(MyInterface $c)
+	final public function a(MyInterface $c, $a = MyClass::A)
 	{
 		$this->c = $c;
+		$this->a = $a;
 	}
 
 
