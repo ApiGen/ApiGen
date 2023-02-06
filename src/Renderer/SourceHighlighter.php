@@ -72,6 +72,7 @@ use const T_LNUMBER;
 use const T_LOGICAL_AND;
 use const T_LOGICAL_OR;
 use const T_LOGICAL_XOR;
+use const T_MATCH;
 use const T_NAMESPACE;
 use const T_NEW;
 use const T_OPEN_TAG;
@@ -183,6 +184,7 @@ class SourceHighlighter
 		T_NAMESPACE => self::PHP_KEYWORD,
 		T_ENUM => self::PHP_KEYWORD,
 		T_READONLY => self::PHP_KEYWORD,
+		T_MATCH => self::PHP_KEYWORD,
 		T_LNUMBER => self::PHP_NUMBER,
 		T_DNUMBER => self::PHP_NUMBER,
 		T_CONSTANT_ENCAPSED_STRING => self::PHP_STRING,
