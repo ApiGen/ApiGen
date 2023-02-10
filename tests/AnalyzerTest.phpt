@@ -56,7 +56,14 @@ class AnalyzerTest extends TestCase
 
 	public function provideSnapshotsData(): iterable
 	{
-		foreach (Finder::findFiles('*.php')->from([__DIR__ . '/EdgeCases', __DIR__ . '/Features', __DIR__ . '/Issues']) as $file) {
+		$paths = [
+			__DIR__ . '/EdgeCases',
+			__DIR__ . '/Errors',
+			__DIR__ . '/Features',
+			__DIR__ . '/Issues',
+		];
+
+		foreach (Finder::findFiles('*.php')->from($paths) as $file) {
 			yield $file->getRealPath() => [$file];
 		}
 	}

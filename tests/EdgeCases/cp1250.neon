@@ -1,6 +1,0 @@
-[
-  @Error(
-    kind: 'InvalidEncoding'
-    message: 'File %rootDir%/tests/EdgeCases/cp1250.php is not UTF-8 encoded'
-  ),
-]
