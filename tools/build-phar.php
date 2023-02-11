@@ -5,7 +5,6 @@ require __DIR__ . '/../vendor/autoload.php';
 $include = [
 	'/bin/**',
 	'/src/**',
-	'/stubs/**',
 	'/vendor/**',
 	'/apigen.neon',
 	'/composer.json',

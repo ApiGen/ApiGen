@@ -32,7 +32,6 @@ use function array_keys;
 use function array_map;
 use function array_sum;
 use function extension_loaded;
-use function iterator_to_array;
 use function lcfirst;
 use function pcntl_fork;
 use function pcntl_waitpid;
