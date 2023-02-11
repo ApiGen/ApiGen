@@ -17,6 +17,12 @@ class Filter
 	}
 
 
+	public function filterSitemapPage(): bool
+	{
+		return true;
+	}
+
+
 	public function filterNamespacePage(NamespaceIndex $namespace): bool
 	{
 		return true;

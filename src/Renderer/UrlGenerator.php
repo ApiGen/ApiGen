@@ -81,6 +81,18 @@ class UrlGenerator
 	}
 
 
+	public function getSitemapPath(): string
+	{
+		return 'sitemap.xml';
+	}
+
+
+	public function getSitemapUrl(): string
+	{
+		return $this->baseUrl . $this->getSitemapPath();
+	}
+
+
 	public function getNamespaceUrl(NamespaceIndex $namespace): string
 	{
 		return $this->baseUrl . $this->getNamespacePath($namespace);

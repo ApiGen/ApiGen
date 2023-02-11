@@ -14,6 +14,7 @@ use ApiGen\Renderer\Latte\Template\FunctionTemplate;
 use ApiGen\Renderer\Latte\Template\IndexTemplate;
 use ApiGen\Renderer\Latte\Template\LayoutParameters;
 use ApiGen\Renderer\Latte\Template\NamespaceTemplate;
+use ApiGen\Renderer\Latte\Template\SitemapTemplate;
 use ApiGen\Renderer\Latte\Template\SourceTemplate;
 use ApiGen\Renderer\Latte\Template\TreeTemplate;
 use ApiGen\Renderer\UrlGenerator;
@@ -83,6 +84,7 @@ class LatteRenderer implements Renderer
 			[$this->renderElementsJs(...), [null]],
 			[$this->renderIndex(...), [null]],
 			[$this->renderTree(...), $this->filter->filterTreePage() ? [null] : []],
+			[$this->renderSitemap(...), $this->filter->filterSitemapPage() ? [null] : []],
 			[$this->renderNamespace(...), array_filter($index->namespace, $this->filter->filterNamespacePage(...))],
 			[$this->renderClassLike(...), array_filter($index->classLike, $this->filter->filterClassLikePage(...))],
 			[$this->renderFunction(...), array_filter($index->function, $this->filter->filterFunctionPage(...))],
@@ -163,6 +165,15 @@ class LatteRenderer implements Renderer
 			index: $index,
 			config: $config,
 			layout: new LayoutParameters(activePage: 'tree', activeNamespace: null, activeElement: null),
+		));
+	}
+
+
+	public function renderSitemap(Index $index, ConfigParameters $config): string
+	{
+		return $this->renderTemplate($this->urlGenerator->getSitemapPath(), new SitemapTemplate(
+			index: $index,
+			config: $config,
 		));
 	}
 
