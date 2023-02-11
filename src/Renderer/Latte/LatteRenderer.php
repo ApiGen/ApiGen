@@ -2,6 +2,7 @@
 
 namespace ApiGen\Renderer\Latte;
 
+use ApiGen\Index\FileIndex;
 use ApiGen\Index\Index;
 use ApiGen\Index\NamespaceIndex;
 use ApiGen\Info\ClassLikeInfo;
@@ -29,7 +30,6 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use function array_column;
 use function array_filter;
 use function array_key_first;
-use function array_keys;
 use function array_map;
 use function array_sum;
 use function extension_loaded;
@@ -88,7 +88,7 @@ class LatteRenderer implements Renderer
 			[$this->renderNamespace(...), array_filter($index->namespace, $this->filter->filterNamespacePage(...))],
 			[$this->renderClassLike(...), array_filter($index->classLike, $this->filter->filterClassLikePage(...))],
 			[$this->renderFunction(...), array_filter($index->function, $this->filter->filterFunctionPage(...))],
-			[$this->renderSource(...), array_keys(array_filter($index->files, $this->filter->filterSourcePage(...)))],
+			[$this->renderSource(...), array_filter($index->files, $this->filter->filterSourcePage(...))],
 		];
 	}
 
@@ -215,17 +215,16 @@ class LatteRenderer implements Renderer
 	}
 
 
-	protected function renderSource(Index $index, ConfigParameters $config, string $path): string
+	protected function renderSource(Index $index, ConfigParameters $config, FileIndex $info): string
 	{
-		$file = $index->files[$path];
-		$activeElement = $file->classLike[array_key_first($file->classLike)] ?? $file->function[array_key_first($file->function)] ?? null;
+		$activeElement = $info->classLike[array_key_first($info->classLike)] ?? $info->function[array_key_first($info->function)] ?? null;
 		$activeNamespace = $activeElement ? $index->namespace[$activeElement->name->namespaceLower] : null;
 
-		return $this->renderTemplate($this->urlGenerator->getSourcePath($path), new SourceTemplate(
+		return $this->renderTemplate($this->urlGenerator->getSourcePath($info->path), new SourceTemplate(
 			index: $index,
 			config: $config,
-			layout: new LayoutParameters('source', $activeNamespace, $activeElement, noindex: !$file->primary),
-			path: $path,
+			layout: new LayoutParameters('source', $activeNamespace, $activeElement, noindex: !$info->primary),
+			path: $info->path,
 		));
 	}
 
