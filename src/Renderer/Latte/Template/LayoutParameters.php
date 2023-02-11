@@ -10,8 +10,9 @@ class LayoutParameters
 {
 	public function __construct(
 		public string $activePage,
-		public ?NamespaceIndex $activeNamespace,
-		public ?ElementInfo $activeElement,
+		public ?NamespaceIndex $activeNamespace = null,
+		public ?ElementInfo $activeElement = null,
+		public bool $noindex = false,
 	) {
 	}
 }

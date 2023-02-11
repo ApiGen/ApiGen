@@ -8,6 +8,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
+	{if $layout->noindex}<meta name="robots" content="noindex">{/if}
 	<title>{ifset title}{include title|spaceless} | {/ifset}{$config->title} API</title>
 	<link rel="stylesheet" href="{assetUrl('main.css')}">
 	<script src="{assetUrl('main.js')}" defer></script>

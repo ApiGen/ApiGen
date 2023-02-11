@@ -154,7 +154,7 @@ class LatteRenderer implements Renderer
 		return $this->renderTemplate($this->urlGenerator->getIndexPath(), new IndexTemplate(
 			index: $index,
 			config: $config,
-			layout: new LayoutParameters(activePage: 'index', activeNamespace: null, activeElement: null),
+			layout: new LayoutParameters(activePage: 'index'),
 		));
 	}
 
@@ -164,7 +164,7 @@ class LatteRenderer implements Renderer
 		return $this->renderTemplate($this->urlGenerator->getTreePath(), new TreeTemplate(
 			index: $index,
 			config: $config,
-			layout: new LayoutParameters(activePage: 'tree', activeNamespace: null, activeElement: null),
+			layout: new LayoutParameters(activePage: 'tree'),
 		));
 	}
 
@@ -183,7 +183,7 @@ class LatteRenderer implements Renderer
 		return $this->renderTemplate($this->urlGenerator->getNamespacePath($info), new NamespaceTemplate(
 			index: $index,
 			config: $config,
-			layout: new LayoutParameters('namespace', $info, activeElement: null),
+			layout: new LayoutParameters('namespace', activeNamespace: $info, noindex: !$info->primary),
 			namespace: $info,
 		));
 	}
@@ -196,7 +196,7 @@ class LatteRenderer implements Renderer
 		return $this->renderTemplate($this->urlGenerator->getClassLikePath($info), new ClassLikeTemplate(
 			index: $index,
 			config: $config,
-			layout: new LayoutParameters('classLike', $activeNamespace, $info),
+			layout: new LayoutParameters('classLike', $activeNamespace, $info, noindex: !$info->primary),
 			classLike: $info,
 		));
 	}
@@ -209,7 +209,7 @@ class LatteRenderer implements Renderer
 		return $this->renderTemplate($this->urlGenerator->getFunctionPath($info), new FunctionTemplate(
 			index: $index,
 			config: $config,
-			layout: new LayoutParameters('function', $activeNamespace, $info),
+			layout: new LayoutParameters('function', $activeNamespace, $info, noindex: !$info->primary),
 			function: $info,
 		));
 	}
@@ -224,7 +224,7 @@ class LatteRenderer implements Renderer
 		return $this->renderTemplate($this->urlGenerator->getSourcePath($path), new SourceTemplate(
 			index: $index,
 			config: $config,
-			layout: new LayoutParameters('source', $activeNamespace, $activeElement),
+			layout: new LayoutParameters('source', $activeNamespace, $activeElement, noindex: !$file->primary),
 			path: $path,
 		));
 	}
