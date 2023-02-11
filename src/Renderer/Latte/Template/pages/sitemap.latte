@@ -28,7 +28,7 @@
 
 	{foreach $index->files as $file}
 		{if sourcePageExists($file) && $file->primary}
-			<url><loc>{sourceUrl($file->name, null, null)}</loc></url>
+			<url><loc>{sourceUrl($file->path, null, null)}</loc></url>
 		{/if}
 	{/foreach}
 </urlset>

@@ -16,7 +16,7 @@ class FileIndex
 
 
 	public function __construct(
-		public string $name,
+		public string $path,
 		public bool $primary,
 	) {
 	}
