@@ -129,13 +129,13 @@ class PhpDocResolver extends NodeVisitorAbstract
 			$tokens = $this->lexer->tokenize($doc->getText());
 			$phpDoc = $this->parser->parse(new TokenIterator($tokens));
 
-			if ($node instanceof Node\Stmt\ClassLike || $node instanceof Node\FunctionLike) {
+			if ($node instanceof Node\Stmt\ClassLike) {
+				assert($node->namespacedName !== null);
+				$scope = new ClassLikeReferenceInfo($node->namespacedName->toString());
+				$this->nameContextFrame = $this->resolveNameContext($phpDoc, $this->nameContextFrame, $scope);
+
+			} elseif ($node instanceof Node\FunctionLike) {
 				$scope = $this->nameContextFrame->scope;
-
-				if ($node instanceof Node\Stmt\ClassLike && $node->namespacedName !== null) {
-					$scope = new ClassLikeReferenceInfo($node->namespacedName->toString());
-				}
-
 				$this->nameContextFrame = $this->resolveNameContext($phpDoc, $this->nameContextFrame, $scope);
 			}
 
