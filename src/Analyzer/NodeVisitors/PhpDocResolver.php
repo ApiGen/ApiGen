@@ -38,7 +38,6 @@ use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
-use SplQueue;
 
 use function assert;
 use function get_debug_type;
@@ -76,21 +75,28 @@ class PhpDocResolver extends NodeVisitorAbstract
 		'array-key' => true,
 		'associative-array' => true,
 		'boolean' => true,
+		'callable-object' => true,
 		'callable-string' => true,
 		'class-string' => true,
 		'double' => true,
+		'empty' => true,
 		'integer' => true,
 		'interface-string' => true,
 		'key-of' => true,
 		'list' => true,
 		'literal-string' => true,
+		'lowercase-string' => true,
 		'negative-int' => true,
 		'never-return' => true,
 		'never-returns' => true,
 		'no-return' => true,
 		'non-empty-array' => true,
 		'non-empty-list' => true,
+		'non-empty-lowercase-string' => true,
 		'non-empty-string' => true,
+		'non-falsy-string' => true,
+		'non-negative-int' => true,
+		'non-positive-int' => true,
 		'noreturn' => true,
 		'number' => true,
 		'numeric' => true,
@@ -99,6 +105,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 		'resource' => true,
 		'scalar' => true,
 		'trait-string' => true,
+		'truthy-string' => true,
 		'value-of' => true,
 	];
 
