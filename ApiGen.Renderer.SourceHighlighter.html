@@ -4,7 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Class ApiGen\Renderer\SourceHighlighter | ApiGen API</title>
+
+	<title>Class ApiGen\Renderer\SourceHighlighter |  API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -43,6 +44,11 @@
 		<div class="menu-section">
 			<h3>Classes</h3>
 			<ul>
+					<li>
+						<a href="ApiGen.Renderer.Filter.html">
+							Filter
+						</a>
+					</li>
 					<li class="active">
 						<a href="ApiGen.Renderer.SourceHighlighter.html">
 							SourceHighlighter
@@ -55,11 +61,6 @@
 					</li>
 			</ul>
 		</div>
-
-
-
-
-
 	</div>
 	</div>
 
@@ -100,12 +101,14 @@
 
 
 
+
 	</table>
 
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-Renderer.SourceHighlighter.html#100" title="Go to source code">Renderer/SourceHighlighter.php</a><br>
+			<b>Located at</b> <a href="source-Renderer.SourceHighlighter.html#104" title="Go to source code">Renderer/SourceHighlighter.php</a><br>
 		</div>
+
 
 
 		<table class="table" id="methods">
@@ -113,6 +116,32 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
 			</tr>
 
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.SourceHighlighter.html#205-208" title="Go to source code">__construct</a>(<span><a href="Symfony.Component.Console.Style.OutputStyle.html"><span title="Symfony\Component\Console\Style\OutputStyle">OutputStyle</span></a> <var>$output</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="highlight" id="_highlight">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -124,7 +153,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#200-221" title="Go to source code">highlight</a>(<span>string <var>$source</var></span>): string</code>
+				<code><a href="source-Renderer.SourceHighlighter.html#211-233" title="Go to source code">highlight</a>(<span>string <var>$path</var></span>): string</code>
 
 
 
@@ -150,7 +179,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.SourceHighlighter.html#224-241" title="Go to source code">tokenize</a>(<span>string <var>$source</var></span>): iterable&lt;int, string&gt;</code>
+				<code><a href="source-Renderer.SourceHighlighter.html#236-262" title="Go to source code">tokenize</a>(<span>string <var>$path</var></span>, <span>string <var>$source</var></span>): iterable&lt;int, string&gt;</code>
 
 
 
@@ -183,7 +212,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><a href="source-Renderer.SourceHighlighter.html#102" title="Go to source code">PHP_TAG</a> = <span class="php-str">'php-tag'</span></code>
+<code><a href="source-Renderer.SourceHighlighter.html#106" title="Go to source code">PHP_TAG</a> = <span class="php-str">'php-tag'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -202,7 +231,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><a href="source-Renderer.SourceHighlighter.html#103" title="Go to source code">PHP_KEYWORD</a> = <span class="php-str">'php-kw'</span></code>
+<code><a href="source-Renderer.SourceHighlighter.html#107" title="Go to source code">PHP_KEYWORD</a> = <span class="php-str">'php-kw'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -221,7 +250,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><a href="source-Renderer.SourceHighlighter.html#104" title="Go to source code">PHP_NUMBER</a> = <span class="php-str">'php-num'</span></code>
+<code><a href="source-Renderer.SourceHighlighter.html#108" title="Go to source code">PHP_NUMBER</a> = <span class="php-str">'php-num'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -240,7 +269,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><a href="source-Renderer.SourceHighlighter.html#105" title="Go to source code">PHP_STRING</a> = <span class="php-str">'php-str'</span></code>
+<code><a href="source-Renderer.SourceHighlighter.html#109" title="Go to source code">PHP_STRING</a> = <span class="php-str">'php-str'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -259,7 +288,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><a href="source-Renderer.SourceHighlighter.html#106" title="Go to source code">PHP_VARIABLE</a> = <span class="php-str">'php-var'</span></code>
+<code><a href="source-Renderer.SourceHighlighter.html#110" title="Go to source code">PHP_VARIABLE</a> = <span class="php-str">'php-var'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -278,7 +307,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><a href="source-Renderer.SourceHighlighter.html#107" title="Go to source code">PHP_COMMENT</a> = <span class="php-str">'php-comment'</span></code>
+<code><a href="source-Renderer.SourceHighlighter.html#111" title="Go to source code">PHP_COMMENT</a> = <span class="php-str">'php-comment'</span></code>
 
 
 	<div class="expandable-expandedView">
@@ -311,7 +340,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Renderer.SourceHighlighter.html#109-190" title="Go to source code">$tokenClass</a></var> = [
+<code><var><a href="source-Renderer.SourceHighlighter.html#113-195" title="Go to source code">$tokenClass</a></var> = [
 	T_OPEN_TAG =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
 	T_OPEN_TAG_WITH_ECHO =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
 	T_CLOSE_TAG =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_TAG">PHP_TAG</a>,
@@ -384,6 +413,7 @@
 	T_NAMESPACE =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
 	T_ENUM =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
 	T_READONLY =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
+	T_MATCH =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>,
 	T_LNUMBER =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_NUMBER">PHP_NUMBER</a>,
 	T_DNUMBER =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_NUMBER">PHP_NUMBER</a>,
 	T_CONSTANT_ENCAPSED_STRING =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_STRING">PHP_STRING</a>,
@@ -420,7 +450,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Renderer.SourceHighlighter.html#192-197" title="Go to source code">$identifierClass</a></var> = [<span class="php-str">'true'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'false'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'null'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>]</code>
+<code><var><a href="source-Renderer.SourceHighlighter.html#197-202" title="Go to source code">$identifierClass</a></var> = [<span class="php-str">'true'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'false'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>, <span class="php-str">'null'</span> =&gt; <b><span class="active" title="ApiGen\Renderer\SourceHighlighter">self</span></b>::<a href="ApiGen.Renderer.SourceHighlighter.html#PHP_KEYWORD">PHP_KEYWORD</a>]</code>
 				
 	<div class="expandable-collapsedView">
 		indexed by [identifierName]
@@ -435,13 +465,37 @@
 			<a href="#$identifierClass">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="output" id="$output">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Symfony.Component.Console.Style.OutputStyle.html"><span title="Symfony\Component\Console\Style\OutputStyle">OutputStyle</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.SourceHighlighter.html#206" title="Go to source code">$output</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$output">#</a>
+		</td>
+	</tr>
 		</table>
 
 
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
+			 API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
 		</div>
 	</div>
 

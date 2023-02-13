@@ -4,7 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Class ApiGen\Renderer\Latte\LatteRenderer | ApiGen API</title>
+
+	<title>Class ApiGen\Renderer\Latte\LatteRenderer |  API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -80,11 +81,6 @@
 					</li>
 			</ul>
 		</div>
-
-
-
-
-
 	</div>
 	</div>
 
@@ -124,6 +120,7 @@
 	<table class="classLikeSignatureTable">
 
 
+
 		<tr>
 			<th><code>implements</code></th>
 			<td>
@@ -136,6 +133,7 @@
 		<div class="classLikeSection">
 			<b>Located at</b> <a href="source-Renderer.Latte.LatteRenderer.html#49" title="Go to source code">Renderer/Latte/LatteRenderer.php</a><br>
 		</div>
+
 
 
 		<table class="table" id="methods">
@@ -154,8 +152,9 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#51-59" title="Go to source code">__construct</a>(
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#51-60" title="Go to source code">__construct</a>(
 	<span><a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a> <var>$latte</var></span>,
+	<span><a href="ApiGen.Renderer.Filter.html"><span title="ApiGen\Renderer\Filter">Filter</span></a> <var>$filter</var></span>,
 	<span><a href="ApiGen.Renderer.UrlGenerator.html"><span title="ApiGen\Renderer\UrlGenerator">UrlGenerator</span></a> <var>$urlGenerator</var></span>,
 	<span>int <var>$workerCount</var></span>,
 	<span>string <var>$title</var></span>,
@@ -187,7 +186,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#62-84" title="Go to source code">render</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#63-72" title="Go to source code">render</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>): void</code>
 
 
 
@@ -207,6 +206,32 @@
 			<a href="#_render">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="getTaskGroups" id="_getTaskGroups">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#75-93" title="Go to source code">getTaskGroups</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>): array&lt;array{(callable(<a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a>, <a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a>, mixed):&nbsp;string), array}&gt;</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTaskGroups">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="copyAsset" id="_copyAsset">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -218,7 +243,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#87-92" title="Go to source code">copyAsset</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="SplFileInfo.html"><span title="SplFileInfo">SplFileInfo</span></a> <var>$file</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#96-103" title="Go to source code">copyAsset</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="SplFileInfo.html"><span title="SplFileInfo">SplFileInfo</span></a> <var>$file</var></span>): string</code>
 
 
 
@@ -244,7 +269,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#95-128" title="Go to source code">renderElementsJs</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#106-149" title="Go to source code">renderElementsJs</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>): string</code>
 
 
 
@@ -270,7 +295,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#131-138" title="Go to source code">renderIndex</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#152-159" title="Go to source code">renderIndex</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>): string</code>
 
 
 
@@ -296,7 +321,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#141-148" title="Go to source code">renderTree</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#162-169" title="Go to source code">renderTree</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>): string</code>
 
 
 
@@ -311,6 +336,32 @@
 			<a href="#_renderTree">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="renderSitemap" id="_renderSitemap">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#172-178" title="Go to source code">renderSitemap</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderSitemap">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="renderNamespace" id="_renderNamespace">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -322,7 +373,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#151-159" title="Go to source code">renderNamespace</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="ApiGen.Index.NamespaceIndex.html"><span title="ApiGen\Index\NamespaceIndex">NamespaceIndex</span></a> <var>$info</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#181-189" title="Go to source code">renderNamespace</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="ApiGen.Index.NamespaceIndex.html"><span title="ApiGen\Index\NamespaceIndex">NamespaceIndex</span></a> <var>$info</var></span>): string</code>
 
 
 
@@ -348,7 +399,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#162-172" title="Go to source code">renderClassLike</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a> <var>$info</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#192-202" title="Go to source code">renderClassLike</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a> <var>$info</var></span>): string</code>
 
 
 
@@ -374,7 +425,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#175-185" title="Go to source code">renderFunction</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#205-215" title="Go to source code">renderFunction</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>): string</code>
 
 
 
@@ -400,7 +451,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#188-200" title="Go to source code">renderSource</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span>string <var>$path</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#218-229" title="Go to source code">renderSource</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>, <span><a href="ApiGen.Index.FileIndex.html"><span title="ApiGen\Index\FileIndex">FileIndex</span></a> <var>$info</var></span>): string</code>
 
 
 
@@ -426,7 +477,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#203-208" title="Go to source code">renderTemplate</a>(<span>string <var>$outputPath</var></span>, <span>object <var>$template</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#232-239" title="Go to source code">renderTemplate</a>(<span>string <var>$outputPath</var></span>, <span>object <var>$template</var></span>): string</code>
 
 
 
@@ -452,11 +503,11 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#211-222" title="Go to source code">createTaskIterator</a>(
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#242-253" title="Go to source code">createTaskIterator</a>(
 	<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>,
 	<span><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a> <var>$config</var></span>,
-	<span>array&lt;array{(callable(<a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a>, <a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a>, mixed):&nbsp;void), array}&gt; <var>$taskSets</var></span>,
-): iterable&lt;callable():&nbsp;void&gt;</code>
+	<span>array&lt;array{(callable(<a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a>, <a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a>, mixed):&nbsp;string), array}&gt; <var>$taskSets</var></span>,
+): iterable&lt;callable():&nbsp;string&gt;</code>
 
 
 
@@ -482,7 +533,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Renderer.Latte.LatteRenderer.html#225-281" title="Go to source code">forkLoop</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span>iterable&lt;callable():&nbsp;void&gt; <var>$it</var></span>): void</code>
+				<code><a href="source-Renderer.Latte.LatteRenderer.html#256-313" title="Go to source code">forkLoop</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span>iterable&lt;callable():&nbsp;string&gt; <var>$it</var></span>): void</code>
 
 
 
@@ -534,6 +585,30 @@
 			<a href="#$latte">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="filter" id="$filter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Renderer.Filter.html"><span title="ApiGen\Renderer\Filter">Filter</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.Latte.LatteRenderer.html#53" title="Go to source code">$filter</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$filter">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="urlGenerator" id="$urlGenerator">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -548,7 +623,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Renderer.Latte.LatteRenderer.html#53" title="Go to source code">$urlGenerator</a></var></code>
+<code><var><a href="source-Renderer.Latte.LatteRenderer.html#54" title="Go to source code">$urlGenerator</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -572,7 +647,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Renderer.Latte.LatteRenderer.html#54" title="Go to source code">$workerCount</a></var></code>
+<code><var><a href="source-Renderer.Latte.LatteRenderer.html#55" title="Go to source code">$workerCount</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -596,7 +671,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Renderer.Latte.LatteRenderer.html#55" title="Go to source code">$title</a></var></code>
+<code><var><a href="source-Renderer.Latte.LatteRenderer.html#56" title="Go to source code">$title</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -620,7 +695,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Renderer.Latte.LatteRenderer.html#56" title="Go to source code">$version</a></var></code>
+<code><var><a href="source-Renderer.Latte.LatteRenderer.html#57" title="Go to source code">$version</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -644,7 +719,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Renderer.Latte.LatteRenderer.html#57" title="Go to source code">$outputDir</a></var></code>
+<code><var><a href="source-Renderer.Latte.LatteRenderer.html#58" title="Go to source code">$outputDir</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -660,7 +735,7 @@
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
+			 API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
 		</div>
 	</div>
 

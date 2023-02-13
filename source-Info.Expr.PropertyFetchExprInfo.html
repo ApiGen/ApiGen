@@ -1,0 +1,180 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>File Info/Expr/PropertyFetchExprInfo.php |  API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Info.Expr.html">Expr</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.Traits.html">Traits</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li>
+						<a href="ApiGen.Info.Expr.ArgExprInfo.html">
+							ArgExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.ArrayExprInfo.html">
+							ArrayExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.ArrayItemExprInfo.html">
+							ArrayItemExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.BinaryOpExprInfo.html">
+							BinaryOpExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.BooleanExprInfo.html">
+							BooleanExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.ClassConstantFetchExprInfo.html">
+							ClassConstantFetchExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.ConstantFetchExprInfo.html">
+							ConstantFetchExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.DimFetchExprInfo.html">
+							DimFetchExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.FloatExprInfo.html">
+							FloatExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.IntegerExprInfo.html">
+							IntegerExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.NewExprInfo.html">
+							NewExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.NullExprInfo.html">
+							NullExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.NullSafePropertyFetchExprInfo.html">
+							NullSafePropertyFetchExprInfo
+						</a>
+					</li>
+					<li class="active">
+						<a href="ApiGen.Info.Expr.PropertyFetchExprInfo.html">
+							PropertyFetchExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.StringExprInfo.html">
+							StringExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.TernaryExprInfo.html">
+							TernaryExprInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.Expr.UnaryOpExprInfo.html">
+							UnaryOpExprInfo
+						</a>
+					</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-ApiGen.Info.Expr.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="ApiGen.Info.Expr.PropertyFetchExprInfo.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+	<table class="source"><tr id="1" class="source-line"><td><a class="source-lineNum" href="#1"> 1: </a></td><td><span class="php-tag">&lt;?php </span><span class="php-kw">declare</span>(strict_types = <span class="php-num">1</span>);</td></tr><tr id="2" class="source-line"><td><a class="source-lineNum" href="#2"> 2: </a></td><td></td></tr><tr id="3" class="source-line"><td><a class="source-lineNum" href="#3"> 3: </a></td><td><span class="php-kw">namespace</span> ApiGen\Info\Expr;</td></tr><tr id="4" class="source-line"><td><a class="source-lineNum" href="#4"> 4: </a></td><td></td></tr><tr id="5" class="source-line"><td><a class="source-lineNum" href="#5"> 5: </a></td><td><span class="php-kw">use</span> ApiGen\Info\ExprInfo;</td></tr><tr id="6" class="source-line"><td><a class="source-lineNum" href="#6"> 6: </a></td><td></td></tr><tr id="7" class="source-line"><td><a class="source-lineNum" href="#7"> 7: </a></td><td></td></tr><tr id="8" class="source-line"><td><a class="source-lineNum" href="#8"> 8: </a></td><td><span class="php-kw">class</span> PropertyFetchExprInfo <span class="php-kw">implements</span> ExprInfo</td></tr><tr id="9" class="source-line"><td><a class="source-lineNum" href="#9"> 9: </a></td><td>{</td></tr><tr id="10" class="source-line"><td><a class="source-lineNum" href="#10">10: </a></td><td>	<span class="php-kw">public</span> <span class="php-kw">function</span> __construct(</td></tr><tr id="11" class="source-line"><td><a class="source-lineNum" href="#11">11: </a></td><td>		<span class="php-kw">public</span> ExprInfo <span class="php-var">$expr</span>,</td></tr><tr id="12" class="source-line"><td><a class="source-lineNum" href="#12">12: </a></td><td>		<span class="php-kw">public</span> ExprInfo|string <span class="php-var">$property</span>,</td></tr><tr id="13" class="source-line"><td><a class="source-lineNum" href="#13">13: </a></td><td>	) {</td></tr><tr id="14" class="source-line"><td><a class="source-lineNum" href="#14">14: </a></td><td>	}</td></tr><tr id="15" class="source-line"><td><a class="source-lineNum" href="#15">15: </a></td><td>}</td></tr><tr id="16" class="source-line"><td><a class="source-lineNum" href="#16">16: </a></td><td></td></tr></table>
+		</div>
+
+		<div class="layout-footer">
+			 API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>

@@ -4,7 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Class Latte\Compiler\TagParser | ApiGen API</title>
+	<meta name="robots" content="noindex">
+	<title>Class Latte\Compiler\TagParser |  API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -110,11 +111,6 @@
 					</li>
 			</ul>
 		</div>
-
-
-
-
-
 	</div>
 	</div>
 
@@ -154,6 +150,7 @@
 	<table class="classLikeSignatureTable">
 
 			<tr><th><code>final</code></th></tr>
+
 		<tr>
 			<th><code>extends</code></th>
 			<td>
@@ -194,6 +191,7 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 		<div class="classLikeSection">
 
 		</div>
+
 
 
 		<table class="table" id="methods">
@@ -241,8 +239,13 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 				<code>parseExpression(): <a href="Latte.Compiler.Nodes.Php.ExpressionNode.html"><span title="Latte\Compiler\Nodes\Php\ExpressionNode">ExpressionNode</span></a></code>
 
 
+	<div class="expandable-collapsedView">
+		Parses PHP-like expression.
+	</div>
 
 	<div class="expandable-expandedView">
+	<div class="description"><p>Parses PHP-like expression.</p>
+</div>
 
 
 
@@ -267,8 +270,13 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 				<code>parseArguments(): <a href="Latte.Compiler.Nodes.Php.Expression.ArrayNode.html"><span title="Latte\Compiler\Nodes\Php\Expression\ArrayNode">ArrayNode</span></a></code>
 
 
+	<div class="expandable-collapsedView">
+		Parses optional list of arguments. Named and variadic arguments are also supported.
+	</div>
 
 	<div class="expandable-expandedView">
+	<div class="description"><p>Parses optional list of arguments. Named and variadic arguments are also supported.</p>
+</div>
 
 
 
@@ -293,8 +301,13 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 				<code>parseModifier(): <a href="Latte.Compiler.Nodes.Php.ModifierNode.html"><span title="Latte\Compiler\Nodes\Php\ModifierNode">ModifierNode</span></a></code>
 
 
+	<div class="expandable-collapsedView">
+		Parses optional list of filters.
+	</div>
 
 	<div class="expandable-expandedView">
+	<div class="description"><p>Parses optional list of filters.</p>
+</div>
 
 
 
@@ -303,6 +316,130 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 			</td>
 		<td class="table-anchor">
 			<a href="#_parseModifier">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parseUnquotedStringOrExpression" id="_parseUnquotedStringOrExpression">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>parseUnquotedStringOrExpression(<span>bool <var>$colon</var> = <span class="php-kw">true</span></span>): <a href="Latte.Compiler.Nodes.Php.ExpressionNode.html"><span title="Latte\Compiler\Nodes\Php\ExpressionNode">ExpressionNode</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Parses unquoted string or PHP-like expression.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Parses unquoted string or PHP-like expression.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_parseUnquotedStringOrExpression">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parseType" id="_parseType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>parseType(): ?<a href="Latte.Compiler.Nodes.Php.SuperiorTypeNode.html"><span title="Latte\Compiler\Nodes\Php\SuperiorTypeNode">SuperiorTypeNode</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Parses optional type declaration.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Parses optional type declaration.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_parseType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="tryConsumeTokenBeforeUnquotedString" id="_tryConsumeTokenBeforeUnquotedString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>tryConsumeTokenBeforeUnquotedString(<span>string ...<var>$kind</var></span>): ?<a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		Consumes optional token followed by whitespace. Suitable before parseUnquotedStringOrExpression().
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Consumes optional token followed by whitespace. Suitable before parseUnquotedStringOrExpression().</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_tryConsumeTokenBeforeUnquotedString">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="tryConsumeModifier" id="_tryConsumeModifier">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><span class="deprecated">tryConsumeModifier</span>(<span>string ...<var>$kind</var></span>): ?<a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+							<h4>Deprecated</h4>
+							<div>
+									<p>use tryConsumeTokenBeforeUnquotedString()</p>
+
+							</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_tryConsumeModifier">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="isEnd" id="_isEnd">
@@ -331,7 +468,7 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 			<a href="#_isEnd">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="parseUnquotedStringOrExpression" id="_parseUnquotedStringOrExpression">
+	<tr class="expandable collapsed" data-order="throwReservedKeywordException" id="_throwReservedKeywordException">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -342,7 +479,7 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 			</td>
 
 			<td class="table-cell">
-				<code>parseUnquotedStringOrExpression(<span>bool <var>$colon</var> = <span class="php-kw">true</span></span>): <a href="Latte.Compiler.Nodes.Php.ExpressionNode.html"><span title="Latte\Compiler\Nodes\Php\ExpressionNode">ExpressionNode</span></a></code>
+				<code>throwReservedKeywordException(<span><a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a> <var>$token</var></span>)</code>
 
 
 
@@ -354,21 +491,21 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_parseUnquotedStringOrExpression">#</a>
+			<a href="#_throwReservedKeywordException">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="tryConsumeModifier" id="_tryConsumeModifier">
+	<tr class="expandable collapsed" data-order="checkFunctionName" id="_checkFunctionName">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
-	public
+	protected
 					
 					
 				</code>
 			</td>
 
 			<td class="table-cell">
-				<code>tryConsumeModifier(<span>string ...<var>$modifiers</var></span>): ?<a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a></code>
+				<code>checkFunctionName(<span><a href="Latte.Compiler.Nodes.Php.Expression.FunctionCallNode.html"><span title="Latte\Compiler\Nodes\Php\Expression\FunctionCallNode">FunctionCallNode</span></a>|<a href="Latte.Compiler.Nodes.Php.Expression.FunctionCallableNode.html"><span title="Latte\Compiler\Nodes\Php\Expression\FunctionCallableNode">FunctionCallableNode</span></a> <var>$func</var></span>): <a href="Latte.Compiler.Nodes.Php.ExpressionNode.html"><span title="Latte\Compiler\Nodes\Php\ExpressionNode">ExpressionNode</span></a></code>
 
 
 
@@ -380,33 +517,7 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_tryConsumeModifier">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="parseType" id="_parseType">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>parseType(): ?<a href="Latte.Compiler.Nodes.Php.SuperiorTypeNode.html"><span title="Latte\Compiler\Nodes\Php\SuperiorTypeNode">SuperiorTypeNode</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_parseType">#</a>
+			<a href="#_checkFunctionName">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="handleBuiltinTypes" id="_handleBuiltinTypes">
@@ -608,7 +719,7 @@ Based on works by Nikita Popov, Moriyoshi Koizumi and Masato Bito.</p>
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
+			 API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
 		</div>
 	</div>
 

@@ -59,11 +59,64 @@ document.querySelectorAll('.search').forEach(el => {
 			: matchTokens(elementTokens, queryTokens, i, ii, j + 1, 0)
 	}
 
+	function* getResults(query, dataset) {
+		const queryTokens = tokenize(query)
+
+		for (const [name, path, tokens] of dataset) {
+			const matches = matchTokens(tokens, queryTokens)
+			yield* matches !== null ? [[name, path, matches]] : []
+		}
+	}
+
+	function* iteratorSlice(it, length) {
+		while (length--) {
+			const item = it.next()
+
+			if (item.done) {
+				return
+			}
+
+			yield item.value
+		}
+	}
+
+	function* iteratorMap(it, fn) {
+		for (const item of it) {
+			yield fn(item)
+		}
+	}
+
+	function renderResult([name, path, matches]) {
+		const li = document.createElement('li')
+		const anchor = li.appendChild(document.createElement('a'))
+		anchor.href = path
+
+		let i = 0
+		for (const [matchOffset, matchLength] of matches) {
+			anchor.append(name.slice(i, matchOffset))
+			anchor.appendChild(document.createElement('b')).innerText = name.slice(matchOffset, matchOffset + matchLength)
+			i = matchOffset + matchLength
+		}
+
+		if (i < name.length) {
+			anchor.append(name.slice(i))
+		}
+
+		return li
+	}
+
 	const searchInput = el.querySelector('.search-input')
 	const resultsDiv = el.querySelector('.search-results')
 
 	let dataset = null
 	let datasetPromise = null
+	let resultIterator = [][Symbol.iterator]()
+	let resultNext = resultIterator.next()
+	let resultItems = []
+	let headIndex = 0
+	let activeIndex = 0
+
+	const VISIBLE_COUNT = 20
 
 	searchInput.addEventListener('input', async () => {
 		dataset ??= await (datasetPromise ??= new Promise(resolve => {
@@ -87,58 +140,44 @@ document.querySelectorAll('.search').forEach(el => {
 			}
 		}))
 
-		const queryTokens = tokenize(searchInput.value)
-		const results = []
-
-		for (const [name, path, tokens] of dataset) {
-			const matches = matchTokens(tokens, queryTokens)
-
-			if (matches) {
-				results.push([name, path, matches])
-
-				if (results.length === 20) {
-					break
-				}
-			}
-		}
-
-		resultsDiv.replaceChildren(...results.map(([name, path, matches]) => {
-			const li = document.createElement('li')
-			const anchor = li.appendChild(document.createElement('a'))
-			anchor.href = path
-
-			let i = 0
-			for (const [matchOffset, matchLength] of matches) {
-				anchor.append(name.slice(i, matchOffset))
-				anchor.appendChild(document.createElement('b')).innerText = name.slice(matchOffset, matchOffset + matchLength)
-				i = matchOffset + matchLength
-			}
-
-			if (i < name.length) {
-				anchor.append(name.slice(i))
-			}
-
-			return li
-		}))
+		resultIterator = iteratorMap(getResults(searchInput.value, dataset), renderResult)
+		resultItems = Array.from(iteratorSlice(resultIterator, VISIBLE_COUNT))
+		resultNext = resultIterator.next()
+		resultsDiv.replaceChildren(...resultItems)
+		headIndex = 0
+		activeIndex = 0
+		resultItems[activeIndex]?.classList.add('active')
 	})
 
 	searchInput.addEventListener('keydown', e => {
 		if (e.key === 'Escape') {
 			searchInput.blur()
 
-		} else if (e.key === 'ArrowUp') {
+		} else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
 			e.preventDefault()
-			const active = resultsDiv.querySelector('.active')
-			const prev = active?.previousElementSibling ?? resultsDiv.lastElementChild
-			active?.classList.remove('active')
-			prev?.classList.add('active')
+			let nextIndex = activeIndex + { ArrowUp: -1, ArrowDown: +1 }[e.key]
 
-		} else if (e.key === 'ArrowDown') {
-			e.preventDefault()
-			const active = resultsDiv.querySelector('.active')
-			const next = active?.nextElementSibling ?? resultsDiv.firstElementChild
-			active?.classList.remove('active')
-			next?.classList.add('active')
+			if (nextIndex < 0) {
+				while (!resultNext.done) {
+					resultItems.push(resultNext.value)
+					resultNext = resultIterator.next()
+				}
+
+			} else if (nextIndex === resultItems.length) {
+				if (!resultNext.done) {
+					resultItems.push(resultNext.value)
+					resultNext = resultIterator.next()
+				}
+			}
+
+			nextIndex = (nextIndex + resultItems.length) % resultItems.length
+			headIndex = Math.max(headIndex, 0, nextIndex - VISIBLE_COUNT + 1)
+			headIndex = Math.min(headIndex, nextIndex)
+
+			resultsDiv.replaceChildren(...resultItems.slice(headIndex, headIndex + VISIBLE_COUNT))
+			resultItems[activeIndex]?.classList.remove('active')
+			resultItems[nextIndex]?.classList.add('active')
+			activeIndex = nextIndex
 
 		} else if (e.key === 'Enter') {
 			e.preventDefault()
@@ -155,7 +194,7 @@ let last = null
 const match = window.location.hash.slice(1).match(/^\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*$/)
 
 const handleLinesSelectionChange = () => {
-	history.replaceState({}, '', '#' + ranges.map(([a, b]) => a === b ? a : `${a}-${b}`).join(','));
+	history.replaceState({}, '', '#' + ranges.map(([a, b]) => a === b ? a : `${a}-${b}`).join(','))
 	document.querySelectorAll('.source-line.selected').forEach(el => el.classList.remove('selected'))
 
 	for (let [a, b] of ranges) {

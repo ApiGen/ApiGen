@@ -4,7 +4,8 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Class ApiGen\Analyzer\NodeVisitors\PhpDocResolver | ApiGen API</title>
+
+	<title>Class ApiGen\Analyzer\NodeVisitors\PhpDocResolver |  API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -55,11 +56,6 @@
 					</li>
 			</ul>
 		</div>
-
-
-
-
-
 	</div>
 	</div>
 
@@ -99,6 +95,7 @@
 	<table class="classLikeSignatureTable">
 
 
+
 		<tr>
 			<th><code>extends</code></th>
 			<td>
@@ -131,6 +128,7 @@
 		</div>
 
 
+
 		<table class="table" id="methods">
 			<tr>
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
@@ -147,7 +145,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#108-113" title="Go to source code">__construct</a>(<span><a href="PHPStan.PhpDocParser.Lexer.Lexer.html"><span title="PHPStan\PhpDocParser\Lexer\Lexer">Lexer</span></a> <var>$lexer</var></span>, <span><a href="PHPStan.PhpDocParser.Parser.PhpDocParser.html"><span title="PHPStan\PhpDocParser\Parser\PhpDocParser">PhpDocParser</span></a> <var>$parser</var></span>, <span><a href="PhpParser.NameContext.html"><span title="PhpParser\NameContext">NameContext</span></a> <var>$nameContext</var></span>)</code>
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#115-121" title="Go to source code">__construct</a>(<span><a href="PHPStan.PhpDocParser.Lexer.Lexer.html"><span title="PHPStan\PhpDocParser\Lexer\Lexer">Lexer</span></a> <var>$lexer</var></span>, <span><a href="PHPStan.PhpDocParser.Parser.PhpDocParser.html"><span title="PHPStan\PhpDocParser\Parser\PhpDocParser">PhpDocParser</span></a> <var>$parser</var></span>, <span><a href="PhpParser.NameContext.html"><span title="PhpParser\NameContext">NameContext</span></a> <var>$nameContext</var></span>)</code>
 
 
 
@@ -173,7 +171,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#116-138" title="Go to source code">enterNode</a>(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a></code>
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#124-150" title="Go to source code">enterNode</a>(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -231,7 +229,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#141-150" title="Go to source code">leaveNode</a>(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>|array</code>
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#153-165" title="Go to source code">leaveNode</a>(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>|array</code>
 
 
 	<div class="expandable-collapsedView">
@@ -280,7 +278,7 @@
 			<a href="#_leaveNode">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="resolveGenericNameContext" id="_resolveGenericNameContext">
+	<tr class="expandable collapsed" data-order="resolveNameContext" id="_resolveNameContext">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -291,36 +289,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#153-169" title="Go to source code">resolveGenericNameContext</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$doc</var></span>): <a href="ApiGen.Info.GenericParameterInfo.html"><span title="ApiGen\Info\GenericParameterInfo">GenericParameterInfo</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-							<h4>Returns</h4>
-							<div><p>indexed by [parameterName]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_resolveGenericNameContext">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="getTypes" id="_getTypes">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					static
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#172-211" title="Go to source code">getTypes</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$phpDocNode</var></span>): iterable&lt;<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a>&gt;</code>
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#168-192" title="Go to source code">resolveNameContext</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$doc</var></span>, <span><a href="ApiGen.Analyzer.NameContextFrame.html"><span title="ApiGen\Analyzer\NameContextFrame">NameContextFrame</span></a> <var>$parent</var></span>, <span>?<a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a> <var>$scope</var></span>): <a href="ApiGen.Analyzer.NameContextFrame.html"><span title="ApiGen\Analyzer\NameContextFrame">NameContextFrame</span></a></code>
 
 
 
@@ -332,59 +301,7 @@
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_getTypes">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="getExpressions" id="_getExpressions">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					static
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#214-228" title="Go to source code">getExpressions</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$phpDocNode</var></span>): iterable&lt;<a href="PHPStan.PhpDocParser.Ast.ConstExpr.ConstExprNode.html"><span title="PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode">ConstExprNode</span></a>&gt;</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_getExpressions">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="getIdentifiers" id="_getIdentifiers">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					static
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#231-281" title="Go to source code">getIdentifiers</a>(<span><a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a> <var>$typeNode</var></span>): iterable&lt;<a href="PHPStan.PhpDocParser.Ast.Type.IdentifierTypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode">IdentifierTypeNode</span></a>&gt;</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_getIdentifiers">#</a>
+			<a href="#_resolveNameContext">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="resolvePhpDoc" id="_resolvePhpDoc">
@@ -398,7 +315,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#284-313" title="Go to source code">resolvePhpDoc</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$phpDoc</var></span>): void</code>
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#195-220" title="Go to source code">resolvePhpDoc</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$phpDoc</var></span>): void</code>
 
 
 
@@ -424,7 +341,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#316-324" title="Go to source code">resolveIdentifier</a>(<span>string <var>$identifier</var></span>): string</code>
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#223-242" title="Go to source code">resolveIdentifier</a>(<span><a href="PHPStan.PhpDocParser.Ast.Type.IdentifierTypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode">IdentifierTypeNode</span></a> <var>$identifier</var></span>): void</code>
 
 
 
@@ -437,6 +354,58 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_resolveIdentifier">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="resolveClassLikeIdentifier" id="_resolveClassLikeIdentifier">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#245-253" title="Go to source code">resolveClassLikeIdentifier</a>(<span>string <var>$identifier</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_resolveClassLikeIdentifier">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="resolveConstExpr" id="_resolveConstExpr">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#256-300" title="Go to source code">resolveConstExpr</a>(<span><a href="PHPStan.PhpDocParser.Ast.ConstExpr.ConstExprNode.html"><span title="PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprNode">ConstExprNode</span></a> <var>$expr</var></span>): <a href="ApiGen.Info.ExprInfo.html"><span title="ApiGen\Info\ExprInfo">ExprInfo</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_resolveConstExpr">#</a>
 		</td>
 	</tr>
 		</table>
@@ -507,25 +476,32 @@
 			</td>
 
 			<td class="table-cell">
-<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#74-102" title="Go to source code">KEYWORDS</a> = <b><span class="active" title="ApiGen\Analyzer\NodeVisitors\PhpDocResolver">self</span></b>::<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html#NATIVE_KEYWORDS">NATIVE_KEYWORDS</a>+[
+<code><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#74-110" title="Go to source code">KEYWORDS</a> = <b><span class="active" title="ApiGen\Analyzer\NodeVisitors\PhpDocResolver">self</span></b>::<a href="ApiGen.Analyzer.NodeVisitors.PhpDocResolver.html#NATIVE_KEYWORDS">NATIVE_KEYWORDS</a> + [
 	<span class="php-str">'array-key'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'associative-array'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'boolean'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'callable-object'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'callable-string'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'class-string'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'double'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'empty'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'integer'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'interface-string'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'key-of'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'list'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'literal-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'lowercase-string'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'negative-int'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'never-return'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'never-returns'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'no-return'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'non-empty-array'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'non-empty-list'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'non-empty-lowercase-string'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'non-empty-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'non-falsy-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'non-negative-int'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'non-positive-int'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'noreturn'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'number'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'numeric'</span> =&gt; <span class="php-kw">true</span>,
@@ -534,6 +510,7 @@
 	<span class="php-str">'resource'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'scalar'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'trait-string'</span> =&gt; <span class="php-kw">true</span>,
+	<span class="php-str">'truthy-string'</span> =&gt; <span class="php-kw">true</span>,
 	<span class="php-str">'value-of'</span> =&gt; <span class="php-kw">true</span>,
 ]</code>
 
@@ -558,7 +535,7 @@
 				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="genericNameContextStack" id="$genericNameContextStack">
+	<tr class="expandable collapsed" data-order="nameContextFrame" id="$nameContextFrame">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	protected
@@ -568,23 +545,18 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="ApiGen.Info.GenericParameterInfo.html"><span title="ApiGen\Info\GenericParameterInfo">GenericParameterInfo</span></a>[][]</code>
+				<code class="nowrap"><a href="ApiGen.Analyzer.NameContextFrame.html"><span title="ApiGen\Analyzer\NameContextFrame">NameContextFrame</span></a></code>
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#104-105" title="Go to source code">$genericNameContextStack</a></var> = []</code>
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#112" title="Go to source code">$nameContextFrame</a></var></code>
 				
-	<div class="expandable-collapsedView">
-		indexed by [][parameterName]
-	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>indexed by [][parameterName]</p>
-</div>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$genericNameContextStack">#</a>
+			<a href="#$nameContextFrame">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="lexer" id="$lexer">
@@ -601,7 +573,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#109" title="Go to source code">$lexer</a></var></code>
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#116" title="Go to source code">$lexer</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -625,7 +597,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#110" title="Go to source code">$parser</a></var></code>
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#117" title="Go to source code">$parser</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -649,7 +621,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#111" title="Go to source code">$nameContext</a></var></code>
+<code><var><a href="source-Analyzer.NodeVisitors.PhpDocResolver.html#118" title="Go to source code">$nameContext</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -669,7 +641,7 @@
 		</div>
 
 		<div class="layout-footer">
-			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen v7.0.0-alpha</a>
+			 API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
 		</div>
 	</div>
 
