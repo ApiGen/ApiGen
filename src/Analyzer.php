@@ -737,17 +737,16 @@ class Analyzer
 		if ($node instanceof ComplexType) {
 			if ($node instanceof NullableType) {
 				return new NullableTypeNode($this->processType($node->type));
-			}
 
-			if ($node instanceof UnionType) {
-				return new UnionTypeNode(array_map([$this, 'processType'], $node->types));
-			}
+			} elseif ($node instanceof UnionType) {
+				return new UnionTypeNode(array_map($this->processType(...), $node->types));
 
-			if ($node instanceof IntersectionType) {
-				return new IntersectionTypeNode(array_map([$this, 'processType'], $node->types));
-			}
+			} elseif ($node instanceof IntersectionType) {
+				return new IntersectionTypeNode(array_map($this->processType(...), $node->types));
 
-			throw new \LogicException(sprintf('Unsupported complex type %s', get_debug_type($node)));
+			} else {
+				throw new \LogicException(sprintf('Unsupported complex type %s', get_debug_type($node)));
+			}
 
 		} elseif ($node instanceof Name && !$node->isSpecialClassName()) {
 			$identifier = new IdentifierTypeNode($node->toString());
