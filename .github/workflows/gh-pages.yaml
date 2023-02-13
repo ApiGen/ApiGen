@@ -25,7 +25,7 @@ jobs:
         run: composer install --no-progress --no-interaction --no-dev
 
       - name: Build Pages
-        run: bin/apigen src
+        run: bin/apigen --title ApiGen src
 
       - name: Publish Pages
         uses: JamesIves/github-pages-deploy-action@v4
