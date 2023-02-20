@@ -2,8 +2,10 @@
 
 namespace ApiGen\Analyzer;
 
+use ApiGen\Task\Task;
 
-class AnalyzeTask
+
+class AnalyzeTask implements Task
 {
 	public function __construct(
 		public string $sourceFile,

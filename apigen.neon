@@ -45,6 +45,12 @@ services:
 	locator:
 		factory: ApiGen\Locator::create(projectDir: %workingDir%)
 
+	# Scheduler
+	scheduler.analyzeTask:
+		type: ApiGen\Scheduler
+		factory: ApiGen\Scheduler\SchedulerFactory::create(handler: @ApiGen\Analyzer\AnalyzeTaskHandler, workerCount: %workerCount%)
+		autowired: false
+
 	# Analyzer
 	analyzer.bodySkipper:
 		factory: ApiGen\Analyzer\NodeVisitors\BodySkipper
@@ -67,7 +73,7 @@ services:
 		factory: ApiGen\Analyzer\AnalyzeTaskHandler
 
 	analyzer:
-		factory: ApiGen\Analyzer
+		factory: ApiGen\Analyzer(scheduler: @scheduler.analyzeTask)
 
 	# Indexer
 	indexer:

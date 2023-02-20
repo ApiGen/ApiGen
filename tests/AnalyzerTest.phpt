@@ -34,8 +34,8 @@ class AnalyzerTest extends TestCase
 	 */
 	public function testSnapshots(SplFileInfo $file): void
 	{
-		$analyzer = $this->createAnalyzeTaskHandler();
-		$result = $analyzer->handle(new AnalyzeTask($file->getRealPath(), primary: true));
+		$taskHandler = $this->createAnalyzeTaskHandler();
+		$result = $taskHandler->handle(new AnalyzeTask($file->getRealPath(), primary: true));
 		$serialized = self::dump($result) . "\n";
 		$serialized = str_replace(dirname(__DIR__), '%rootDir%', $serialized);
 

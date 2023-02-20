@@ -4,7 +4,6 @@ namespace ApiGen;
 
 use ApiGen\Analyzer\AnalyzeResult;
 use ApiGen\Analyzer\AnalyzeTask;
-use ApiGen\Analyzer\AnalyzeTaskHandler;
 use ApiGen\Info\ClassLikeInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
 use ApiGen\Info\ErrorInfo;
@@ -24,9 +23,12 @@ use function sprintf;
 
 class Analyzer
 {
+	/**
+	 * @param Scheduler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ErrorInfo>> $scheduler
+	 */
 	public function __construct(
 		protected Locator $locator,
-		protected AnalyzeTaskHandler $taskHandler,
+		protected Scheduler $scheduler,
 	) {
 	}
 
@@ -36,8 +38,8 @@ class Analyzer
 	 */
 	public function analyze(ProgressBar $progressBar, array $files): AnalyzeResult
 	{
-		/** @var AnalyzeTask[] $tasks indexed by [path] */
-		$tasks = [];
+		/** @var true[] $scheduled indexed by [path] */
+		$scheduled = [];
 
 		/** @var ClassLikeInfo[] $classLike indexed by [classLikeName] */
 		$classLike = [];
@@ -51,10 +53,14 @@ class Analyzer
 		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
 		$errors = [];
 
-		$scheduleFile = static function (string $file, bool $primary) use (&$tasks, $progressBar): void {
+		$scheduleFile = function (string $file, bool $primary) use (&$scheduled, $progressBar): void {
 			$file = Helpers::realPath($file);
-			$tasks[$file] ??= new AnalyzeTask($file, $primary);
-			$progressBar->setMaxSteps(count($tasks));
+
+			if (!isset($scheduled[$file])) {
+				$scheduled[$file] = true;
+				$progressBar->setMaxSteps(count($scheduled));
+				$this->scheduler->schedule(new AnalyzeTask($file, $primary));
+			}
 		};
 
 		$scheduleDependencies = function (ClassLikeInfo | FunctionInfo $info) use (&$missing, &$classLike, $scheduleFile): void {
@@ -74,8 +80,8 @@ class Analyzer
 			$scheduleFile($file, primary: true);
 		}
 
-		foreach ($tasks as &$task) {
-			foreach ($this->taskHandler->handle($task) as $info) {
+		foreach ($this->scheduler->results() as $task => $result) {
+			foreach ($result as $info) {
 				if ($info instanceof ClassLikeInfo) {
 					if (isset($classLike[$info->name->fullLower])) {
 						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $classLike[$info->name->fullLower]);

@@ -39,6 +39,8 @@ use ApiGen\Info\NameInfo;
 use ApiGen\Info\ParameterInfo;
 use ApiGen\Info\PropertyInfo;
 use ApiGen\Info\TraitInfo;
+use ApiGen\Task\Task;
+use ApiGen\Task\TaskHandler;
 use BackedEnum;
 use Iterator;
 use Nette\Utils\FileSystem;
@@ -90,7 +92,10 @@ use function substr;
 use function trim;
 
 
-class AnalyzeTaskHandler
+/**
+ * @implements TaskHandler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ErrorInfo>>
+ */
+class AnalyzeTaskHandler implements TaskHandler
 {
 	public function __construct(
 		protected Parser $parser,
@@ -100,10 +105,7 @@ class AnalyzeTaskHandler
 	}
 
 
-	/**
-	 * @return array<ClassLikeInfo | FunctionInfo | ErrorInfo>
-	 */
-	public function handle(AnalyzeTask $task): array
+	public function handle(Task $task): array
 	{
 		try {
 			$content = FileSystem::read($task->sourceFile);
