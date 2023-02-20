@@ -63,6 +63,9 @@ services:
 	analyzer.filter:
 		factory: ApiGen\Analyzer\Filter(excludeProtected: %excludeProtected%, excludePrivate: %excludePrivate%, excludeTagged: %excludeTagged%)
 
+	analyzer.taskHandler:
+		factory: ApiGen\Analyzer\AnalyzeTaskHandler
+
 	analyzer:
 		factory: ApiGen\Analyzer
 
