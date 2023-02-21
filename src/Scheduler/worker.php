@@ -33,8 +33,4 @@ $container = new $containerClassName;
 /** @var TaskHandler<Task, mixed> $handler */
 $handler = $container->getByType($handlerClassName) ?? throw new \LogicException();
 
-/** @var Task $task */
-while (($task = ExecScheduler::readMessage(STDIN)) !== null) {
-	$result = $handler->handle($task);
-	ExecScheduler::writeMessage(STDOUT, [$task, $result]);
-}
+WorkerScheduler::workerLoop($handler, STDIN, STDOUT);
