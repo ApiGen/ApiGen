@@ -7,7 +7,6 @@ use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
 use SplQueue;
 
-use function array_column;
 use function array_fill_keys;
 use function array_key_first;
 use function array_keys;
@@ -37,12 +36,16 @@ abstract class WorkerScheduler implements Scheduler
 	/** @var int total number of pending tasks (including those already sent to workers) */
 	protected int $pendingTaskCount = 0;
 
-	/** @var array<array{resource, resource}> indexed by [workerId] */
-	protected array $workerStreams = [];
+	/** @var resource[] indexed by [workerId] */
+	protected array $workerReadableStreams = [];
+
+	/** @var resource[] indexed by [workerId] */
+	protected array $workerWritableStreams = [];
 
 
-	public function __construct()
-	{
+	public function __construct(
+		protected int $workerCount,
+	) {
 		$this->tasks = new SplQueue();
 	}
 
@@ -85,9 +88,9 @@ abstract class WorkerScheduler implements Scheduler
 	 */
 	public static function workerLoop(TaskHandler $handler, $inputStream, $outputStream): void
 	{
-		while (($task = ExecScheduler::readMessage($inputStream)) !== null) {
+		while (($task = self::readMessage($inputStream)) !== null) {
 			$result = $handler->handle($task);
-			ExecScheduler::writeMessage($outputStream, [$task, $result]);
+			self::writeMessage($outputStream, [$task, $result]);
 		}
 	}
 
@@ -104,15 +107,13 @@ abstract class WorkerScheduler implements Scheduler
 		try {
 			$this->start();
 
-			$allWritableStreams = array_column($this->workerStreams, 0);
-			$allReadableStreams = array_column($this->workerStreams, 1);
-			$idleWorkers = array_fill_keys(array_keys($this->workerStreams), self::WORKER_CAPACITY_LIMIT);
+			$idleWorkers = array_fill_keys(array_keys($this->workerWritableStreams), self::WORKER_CAPACITY_LIMIT);
 
 			while ($this->pendingTaskCount > 0) {
 				while (count($idleWorkers) > 0 && !$this->tasks->isEmpty()) {
 					$idleWorkerId = array_key_first($idleWorkers);
 					$idleWorkerCapacity = $idleWorkers[$idleWorkerId];
-					self::writeMessage($allWritableStreams[$idleWorkerId], $this->tasks->dequeue());
+					self::writeMessage($this->workerWritableStreams[$idleWorkerId], $this->tasks->dequeue());
 					unset($idleWorkers[$idleWorkerId]);
 
 					if ($idleWorkerCapacity > 1) {
@@ -120,7 +121,7 @@ abstract class WorkerScheduler implements Scheduler
 					}
 				}
 
-				$readable = $allReadableStreams;
+				$readable = $this->workerReadableStreams;
 				$writable = null;
 				$except = null;
 				$changedCount = stream_select($readable, $writable, $except, null);

@@ -23,7 +23,7 @@ use const STDERR;
  */
 class ExecScheduler extends WorkerScheduler
 {
-	/** @var resource[] $workers indexed by [] */
+	/** @var resource[] $workers indexed by [workerId] */
 	protected array $workers = [];
 
 
@@ -32,15 +32,15 @@ class ExecScheduler extends WorkerScheduler
 	 */
 	public function __construct(
 		protected string $handlerClass,
-		protected int $workerCount,
+		int $workerCount,
 	) {
-		parent::__construct();
+		parent::__construct($workerCount);
 	}
 
 
 	protected function start(): void
 	{
-		$workerCommand = [
+		$command = [
 			PHP_BINARY,
 			__DIR__ . '/worker.php',
 			dirname(Helpers::classLikePath(ClassLoader::class), 2) . '/autoload.php',
@@ -49,19 +49,22 @@ class ExecScheduler extends WorkerScheduler
 			$this->handlerClass,
 		];
 
-		for ($i = 0; $i < $this->workerCount; $i++) {
-			$workerProcess = proc_open(
-				$workerCommand,
-				[['pipe', 'r'], ['pipe', 'w'], STDERR],
-				$this->workerStreams[$i],
-				options: ['bypass_shell' => true],
-			);
+		$descriptors = [
+			['pipe', 'r'],
+			['pipe', 'w'],
+			STDERR,
+		];
+
+		for ($workerId = 0; $workerId < $this->workerCount; $workerId++) {
+			$workerProcess = proc_open($command, $descriptors, $pipes);
 
 			if ($workerProcess === false) {
 				throw new \RuntimeException('Failed to start worker process, try running ApiGen with --workers 1');
 			}
 
-			$this->workers[$i] = $workerProcess;
+			$this->workers[$workerId] = $workerProcess;
+			$this->workerWritableStreams[$workerId] = $pipes[0];
+			$this->workerReadableStreams[$workerId] = $pipes[1];
 		}
 	}
 

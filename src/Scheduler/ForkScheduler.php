@@ -26,8 +26,8 @@ use const STREAM_SOCK_STREAM;
  */
 class ForkScheduler extends WorkerScheduler
 {
-	/** @var int[] $workersProcessIds indexed by [] */
-	protected array $workersProcessIds = [];
+	/** @var int[] $workers indexed by [workerId] */
+	protected array $workers = [];
 
 
 	/**
@@ -35,9 +35,9 @@ class ForkScheduler extends WorkerScheduler
 	 */
 	public function __construct(
 		protected TaskHandler $handler,
-		protected int $workerCount,
+		int $workerCount,
 	) {
-		parent::__construct();
+		parent::__construct($workerCount);
 	}
 
 
@@ -68,8 +68,9 @@ class ForkScheduler extends WorkerScheduler
 			} else {
 				fclose($workerInput);
 				fclose($workerOutput);
-				$this->workersProcessIds[$workerId] = $pid;
-				$this->workerStreams[$workerId] = [$masterOutput, $masterInput];
+				$this->workers[$workerId] = $pid;
+				$this->workerReadableStreams[$workerId] = $masterInput;
+				$this->workerWritableStreams[$workerId] = $masterOutput;
 			}
 		}
 	}
@@ -77,17 +78,19 @@ class ForkScheduler extends WorkerScheduler
 
 	protected function stop(): void
 	{
-		foreach ($this->workerStreams as [$output, $input]) {
-			fclose($output);
-			fclose($input);
+		foreach ($this->workerWritableStreams as $stream) {
+			fclose($stream);
 		}
 
-		foreach ($this->workersProcessIds as $pid) {
+		foreach ($this->workerReadableStreams as $stream) {
+			fclose($stream);
+		}
+
+		foreach ($this->workers as $pid) {
 			pcntl_waitpid($pid, $status);
 
 			if (pcntl_wifexited($status)) {
-				$exitCode = pcntl_wexitstatus($status);
-				if ($exitCode !== 0) {
+				if (($exitCode = pcntl_wexitstatus($status)) !== 0) {
 					throw new \RuntimeException("Worker with PID $pid exited with code $exitCode, try running ApiGen with --workers 1");
 				}
 
