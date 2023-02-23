@@ -146,7 +146,7 @@ class Indexer
 		}
 
 		// method overrides & implements
-		foreach ($index->classExtends[''] as $info) {
+		foreach ($index->classExtends[''] ?? [] as $info) {
 			$this->indexClassMethodOverrides($index, $info, [], []);
 		}
 
@@ -356,9 +356,11 @@ class Indexer
 		}
 
 		// move root namespace to end
-		$rootNamespace = $index->namespace[''];
-		unset($index->namespace[''], $rootNamespace->children['']);
-		$index->namespace[''] = $rootNamespace;
-		$rootNamespace->children[''] = $rootNamespace;
+		if (isset($index->namespace[''])) {
+			$rootNamespace = $index->namespace[''];
+			unset($index->namespace[''], $rootNamespace->children['']);
+			$index->namespace[''] = $rootNamespace;
+			$rootNamespace->children[''] = $rootNamespace;
+		}
 	}
 }
