@@ -81,6 +81,7 @@ use function assert;
 use function get_debug_type;
 use function implode;
 use function is_array;
+use function is_object;
 use function is_scalar;
 use function is_string;
 use function iterator_to_array;
@@ -93,7 +94,7 @@ use function trim;
 
 
 /**
- * @implements TaskHandler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ErrorInfo>>
+ * @implements TaskHandler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ClassLikeReferenceInfo | ErrorInfo>>
  */
 class AnalyzeTaskHandler implements TaskHandler
 {
@@ -131,7 +132,7 @@ class AnalyzeTaskHandler implements TaskHandler
 
 	/**
 	 * @param  Node[] $nodes indexed by []
-	 * @return Iterator<ClassLikeInfo | FunctionInfo>
+	 * @return Iterator<ClassLikeInfo | FunctionInfo | ClassLikeReferenceInfo>
 	 */
 	protected function processNodes(AnalyzeTask $task, array $nodes): Iterator
 	{
@@ -142,7 +143,9 @@ class AnalyzeTaskHandler implements TaskHandler
 			} elseif ($node instanceof Node\Stmt\ClassLike && $node->name !== null) {
 				try {
 					$task->primary = $task->primary && $this->filter->filterClassLikeNode($node);
-					yield $this->processClassLike($task, $node);
+					$classLike = $this->processClassLike($task, $node);
+					yield $classLike;
+					yield from $this->extractDependencies($classLike);
 
 				} catch (\Throwable $e) {
 					throw new \LogicException("Failed to analyze $node->namespacedName", 0, $e);
@@ -151,7 +154,11 @@ class AnalyzeTaskHandler implements TaskHandler
 			} elseif ($node instanceof Node\Stmt\Function_) {
 				try {
 					$functionInfo = $this->processFunction($task, $node);
-					yield from $functionInfo ? [$functionInfo] : [];
+
+					if ($functionInfo !== null) {
+						yield $functionInfo;
+						yield from $this->extractDependencies($functionInfo);
+					}
 
 				} catch (\Throwable $e) {
 					throw new \LogicException("Failed to analyze $node->namespacedName", 0, $e);
@@ -879,5 +886,32 @@ class AnalyzeTaskHandler implements TaskHandler
 		}
 
 		return $values;
+	}
+
+
+	/**
+	 * @return ClassLikeReferenceInfo[] indexed by [classLikeName]
+	 */
+	protected function extractDependencies(ClassLikeInfo | FunctionInfo $referencedBy): array
+	{
+		$dependencies = [];
+		$stack = [$referencedBy];
+		$index = 1;
+
+		while ($index > 0) {
+			$value = $stack[--$index];
+
+			if ($value instanceof ClassLikeReferenceInfo && $value->fullLower !== 'self' && $value->fullLower !== 'parent') {
+				$dependencies[$value->fullLower] ??= $value;
+			}
+
+			foreach ((array) $value as $item) {
+				if (is_array($item) || is_object($item)) {
+					$stack[$index++] = $item;
+				}
+			}
+		}
+
+		return $dependencies;
 	}
 }

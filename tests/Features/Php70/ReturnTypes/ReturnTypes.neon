@@ -125,4 +125,10 @@
     name: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypes'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\Php70\ReturnTypes\ReturnTypesParent'
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
 ]

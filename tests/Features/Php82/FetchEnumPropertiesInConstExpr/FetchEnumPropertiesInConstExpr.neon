@@ -79,4 +79,7 @@
     name: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\FetchEnumPropertiesInConstExpr'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
+  ),
 ]

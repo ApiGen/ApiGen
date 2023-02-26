@@ -86,4 +86,7 @@
     name: 'ApiGenTests\Features\Php56\VariadicFunctions\VariadicFunctions'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
 ]

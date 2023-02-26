@@ -73,4 +73,10 @@
     name: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'DateTimeImmutable'
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
+  ),
 ]

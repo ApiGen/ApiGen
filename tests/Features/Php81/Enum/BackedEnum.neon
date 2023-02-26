@@ -40,4 +40,7 @@
     name: 'ApiGenTests\Features\Php81\Enum\BackedEnum'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'BackedEnum'
+  ),
 ]

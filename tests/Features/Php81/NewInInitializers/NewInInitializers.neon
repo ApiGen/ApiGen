@@ -104,4 +104,13 @@
     name: 'ApiGenTests\Features\Php81\NewInInitializers\NewInInitializers'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'DateTimeImmutable'
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeZone'
+  ),
 ]

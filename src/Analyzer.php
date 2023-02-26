@@ -16,15 +16,13 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use function count;
 use function get_debug_type;
 use function implode;
-use function is_array;
-use function is_object;
 use function sprintf;
 
 
 class Analyzer
 {
 	/**
-	 * @param Scheduler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ErrorInfo>> $scheduler
+	 * @param Scheduler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ClassLikeReferenceInfo | ErrorInfo>> $scheduler
 	 */
 	public function __construct(
 		protected Locator $locator,
@@ -44,7 +42,7 @@ class Analyzer
 		/** @var ClassLikeInfo[] $classLike indexed by [classLikeName] */
 		$classLike = [];
 
-		/** @var array{ClassLikeInfo|FunctionInfo, ClassLikeReferenceInfo}[] $missing indexed by [classLikeName] */
+		/** @var array{ClassLikeReferenceInfo, ClassLikeInfo|FunctionInfo} $missing indexed by [classLikeName] */
 		$missing = [];
 
 		/** @var FunctionInfo[] $functions indexed by [functionName] */
@@ -52,6 +50,9 @@ class Analyzer
 
 		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
 		$errors = [];
+
+		/** @var ClassLikeInfo|FunctionInfo|null $prevInfo */
+		$prevInfo = null;
 
 		$scheduleFile = function (string $file, bool $primary) use (&$scheduled, $progressBar): void {
 			$file = Helpers::realPath($file);
@@ -63,46 +64,45 @@ class Analyzer
 			}
 		};
 
-		$scheduleDependencies = function (ClassLikeInfo | FunctionInfo $info) use (&$missing, &$classLike, $scheduleFile): void {
-			foreach ($this->extractDependencies($info) as $dependency) {
-				if (!isset($classLike[$dependency->fullLower]) && !isset($missing[$dependency->fullLower])) {
-					$missing[$dependency->fullLower] = [$info, $dependency];
-					$file = $this->locator->locate($dependency);
-
-					if ($file !== null) {
-						$scheduleFile($file, primary: false);
-					}
-				}
-			}
-		};
-
 		foreach ($files as $file) {
 			$scheduleFile($file, primary: true);
 		}
 
 		foreach ($this->scheduler->results() as $task => $result) {
 			foreach ($result as $info) {
-				if ($info instanceof ClassLikeInfo) {
+				if ($info instanceof ClassLikeReferenceInfo) {
+					if ($prevInfo !== null && !isset($classLike[$info->fullLower]) && !isset($missing[$info->fullLower])) {
+						$missing[$info->fullLower] = [$info, $prevInfo];
+
+						if (($file = $this->locator->locate($info)) !== null) {
+							$scheduleFile($file, primary: false);
+						}
+					}
+
+				} elseif ($info instanceof ClassLikeInfo) {
 					if (isset($classLike[$info->name->fullLower])) {
 						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $classLike[$info->name->fullLower]);
+						$prevInfo = null;
 
 					} else {
 						unset($missing[$info->name->fullLower]);
 						$classLike[$info->name->fullLower] = $info;
-						$scheduleDependencies($info);
+						$prevInfo = $info;
 					}
 
 				} elseif ($info instanceof FunctionInfo) {
 					if (isset($functions[$info->name->fullLower])) {
 						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $functions[$info->name->fullLower]);
+						$prevInfo = null;
 
 					} else {
 						$functions[$info->name->fullLower] = $info;
-						$scheduleDependencies($info);
+						$prevInfo = $info;
 					}
 
 				} elseif ($info instanceof ErrorInfo) {
 					$errors[$info->kind->name][] = $info;
+					$prevInfo = null;
 
 				} else {
 					throw new \LogicException(sprintf('Unexpected task result %s', get_debug_type($info)));
@@ -113,8 +113,9 @@ class Analyzer
 			$progressBar->advance();
 		}
 
-		foreach ($missing as [$referencedBy, $dependency]) {
-			$classLike[$dependency->fullLower] = new MissingInfo(new NameInfo($dependency->full, $dependency->fullLower), $referencedBy->name);
+		foreach ($missing as [$dependency, $referencedBy]) {
+			$name = new NameInfo($dependency->full, $dependency->fullLower);
+			$classLike[$dependency->fullLower] = new MissingInfo($name, $referencedBy->name);
 
 			if ($referencedBy->primary) {
 				$errors[ErrorKind::MissingSymbol->name][] = new ErrorInfo(
@@ -125,33 +126,6 @@ class Analyzer
 		}
 
 		return new AnalyzeResult($classLike, $functions, $errors);
-	}
-
-
-	/**
-	 * @return ClassLikeReferenceInfo[] indexed by [classLike]
-	 */
-	protected function extractDependencies(object $value): array
-	{
-		$dependencies = [];
-		$stack = [$value];
-		$index = 1;
-
-		while ($index > 0) {
-			$value = $stack[--$index];
-
-			if ($value instanceof ClassLikeReferenceInfo && $value->fullLower !== 'self' && $value->fullLower !== 'parent') {
-				$dependencies[$value->fullLower] ??= $value;
-			}
-
-			foreach ((array) $value as $item) {
-				if (is_array($item) || is_object($item)) {
-					$stack[$index++] = $item;
-				}
-			}
-		}
-
-		return $dependencies;
 	}
 
 

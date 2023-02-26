@@ -40,4 +40,7 @@
     name: 'ApiGenTests\Features\PhpDoc\Alias\ImportedTypeAlias'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\PhpDoc\Alias\LocalTypeAlias'
+  ),
 ]

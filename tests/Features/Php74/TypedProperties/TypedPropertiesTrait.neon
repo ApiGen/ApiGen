@@ -244,4 +244,7 @@
     name: 'ApiGenTests\Features\Php74\TypedProperties\TypedPropertiesTrait'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
 ]

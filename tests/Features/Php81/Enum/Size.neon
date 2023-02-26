@@ -60,4 +60,7 @@
     name: 'ApiGenTests\Features\Php81\Enum\Size'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'UnitEnum'
+  ),
 ]

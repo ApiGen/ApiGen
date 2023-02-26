@@ -25,4 +25,7 @@
       ]
     }
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\PhpDoc\Mixin\Mixin'
+  ),
 ]

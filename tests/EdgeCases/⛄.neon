@@ -43,4 +43,7 @@
     name: 'ApiGenTests\EdgeCases\⛄'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\EdgeCases\⛄'
+  ),
 ]
