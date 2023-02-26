@@ -10,6 +10,7 @@ use function extension_loaded;
 use function function_exists;
 
 use const PHP_OS_FAMILY;
+use const PHP_SAPI;
 
 
 class SchedulerFactory
@@ -23,7 +24,7 @@ class SchedulerFactory
 	 */
 	public static function create(TaskHandler $handler, int $workerCount): Scheduler
 	{
-		if ($workerCount > 1 && PHP_OS_FAMILY !== 'Windows') {
+		if ($workerCount > 1 && PHP_OS_FAMILY !== 'Windows' && PHP_SAPI === 'cli') {
 			if (extension_loaded('pcntl')) {
 				return new ForkScheduler($handler, $workerCount);
 
