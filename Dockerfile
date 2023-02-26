@@ -1,39 +1,24 @@
-FROM alpine:edge as php-base
+FROM php:8.2-alpine as php-base
 
 RUN addgroup --system --gid 1000 docker && \
 	adduser --system --uid 1000 --ingroup docker docker && \
 	mkdir /src && \
 	chown docker:docker /src
 
-RUN apk add --no-cache \
-		php82 \
-		php82-ctype \
-		php82-json \
-		php82-mbstring \
-		php82-opcache \
-		php82-pcntl \
-		php82-tokenizer && \
-	ln -s /usr/bin/php82 /usr/bin/php
+RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS && \
+	docker-php-ext-install opcache && \
+	docker-php-ext-install pcntl && \
+	apk del .build-deps
 
-COPY php.ini           /etc/php82/php.ini
+COPY php.ini           /usr/local/etc/php/php.ini
 
 
-FROM php-base as php-dev
-ARG TARGETARCH
-
-COPY --from=composer:2          /usr/bin/composer        /usr/bin/composer
-
-RUN apk add --no-cache \
-		php82-curl \
-		php82-openssl \
-		php82-phar
-
-
-FROM php-dev as apigen-builder
+FROM php-base as apigen-builder
 
 WORKDIR /src
 ARG COMPOSER_ROOT_VERSION
 
+COPY --from=composer:2       /usr/bin/composer        /usr/bin/composer
 COPY composer.json           /src/composer.json
 COPY composer.lock           /src/composer.lock
 RUN composer install --no-dev --no-progress --no-cache
