@@ -6,6 +6,7 @@ use ApiGen\Scheduler;
 use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
 
+use function extension_loaded;
 use function function_exists;
 
 
@@ -20,11 +21,15 @@ class SchedulerFactory
 	 */
 	public static function create(TaskHandler $handler, int $workerCount): Scheduler
 	{
-		if (function_exists('proc_open') && $workerCount > 1) {
-			return new ExecScheduler($handler::class, $workerCount);
+		if ($workerCount > 1) {
+			if (extension_loaded('pcntl')) {
+				return new ForkScheduler($handler, $workerCount);
 
-		} else {
-			return new SimpleScheduler($handler);
+			} elseif (function_exists('proc_open')) {
+				return new ExecScheduler($handler::class, $workerCount);
+			}
 		}
+
+		return new SimpleScheduler($handler);
 	}
 }
