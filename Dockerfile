@@ -8,6 +8,8 @@ RUN addgroup --system --gid 1000 docker && \
 RUN apk add --no-cache --virtual .build-deps $PHPIZE_DEPS && \
 	docker-php-ext-install opcache && \
 	docker-php-ext-install pcntl && \
+	pecl install igbinary && \
+	docker-php-ext-enable igbinary && \
 	apk del .build-deps
 
 COPY php.ini           /usr/local/etc/php/php.ini
