@@ -9,6 +9,8 @@ use ApiGen\Task\TaskHandler;
 use function extension_loaded;
 use function function_exists;
 
+use const PHP_OS_FAMILY;
+
 
 class SchedulerFactory
 {
@@ -21,7 +23,7 @@ class SchedulerFactory
 	 */
 	public static function create(TaskHandler $handler, int $workerCount): Scheduler
 	{
-		if ($workerCount > 1) {
+		if ($workerCount > 1 && PHP_OS_FAMILY !== 'Windows') {
 			if (extension_loaded('pcntl')) {
 				return new ForkScheduler($handler, $workerCount);
 
