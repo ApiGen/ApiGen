@@ -13,7 +13,10 @@ use function array_keys;
 use function base64_decode;
 use function base64_encode;
 use function count;
+use function extension_loaded;
 use function fwrite;
+use function igbinary_serialize;
+use function igbinary_unserialize;
 use function serialize;
 use function stream_get_line;
 use function stream_select;
@@ -55,7 +58,11 @@ abstract class WorkerScheduler implements Scheduler
 	 */
 	public static function writeMessage($stream, mixed $message): void
 	{
-		$line = base64_encode(serialize($message)) . "\n";
+		$serialized = extension_loaded('igbinary')
+			? igbinary_serialize($message) ?? throw new \LogicException('Failed to serialize message.')
+			: serialize($message);
+
+		$line = base64_encode($serialized) . "\n";
 
 		if (fwrite($stream, $line) !== strlen($line)) {
 			throw new \RuntimeException('Failed to write message to stream.');
@@ -74,7 +81,11 @@ abstract class WorkerScheduler implements Scheduler
 			return null;
 		}
 
-		return unserialize(base64_decode($line));
+		$serialized = base64_decode($line);
+
+		return extension_loaded('igbinary')
+			? igbinary_unserialize($serialized)
+			: unserialize($serialized);
 	}
 
 
