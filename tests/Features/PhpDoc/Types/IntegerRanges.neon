@@ -1,0 +1,148 @@
+[
+  @Interface(
+    file: '%rootDir%/tests/Features/PhpDoc/Types/IntegerRanges.php'
+    properties: {
+      positiveInt: @Property(
+        type: @IdentifierType(
+          name: 'positive-int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'positiveInt'
+        magic: true
+        public: true
+      )
+      negativeInt: @Property(
+        type: @IdentifierType(
+          name: 'negative-int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'negativeInt'
+        magic: true
+        public: true
+      )
+      intRange: @Property(
+        type: @GenericType(
+          type: @IdentifierType(
+            name: 'int'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+          genericTypes: [
+            @ConstType(
+              constExpr: @ConstExprInteger(
+                value: '0'
+                attributes: {
+                  info: @IntegerExpr(
+                    value: 0
+                    base: 10
+                    raw: '0'
+                  )
+                }
+              )
+            ),
+            @ConstType(
+              constExpr: @ConstExprInteger(
+                value: '10'
+                attributes: {
+                  info: @IntegerExpr(
+                    value: 10
+                    base: 10
+                    raw: '10'
+                  )
+                }
+              )
+            ),
+          ]
+          variances: [
+            'invariant',
+            'invariant',
+          ]
+        )
+        name: 'intRange'
+        magic: true
+        public: true
+      )
+      leftUnboundedIntRange: @Property(
+        type: @GenericType(
+          type: @IdentifierType(
+            name: 'int'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+          genericTypes: [
+            @IdentifierType(
+              name: 'min'
+              attributes: {
+                kind: 'Keyword'
+              }
+            ),
+            @ConstType(
+              constExpr: @ConstExprInteger(
+                value: '0'
+                attributes: {
+                  info: @IntegerExpr(
+                    value: 0
+                    base: 10
+                    raw: '0'
+                  )
+                }
+              )
+            ),
+          ]
+          variances: [
+            'invariant',
+            'invariant',
+          ]
+        )
+        name: 'leftUnboundedIntRange'
+        magic: true
+        public: true
+      )
+      rightUnboundedIntRange: @Property(
+        type: @GenericType(
+          type: @IdentifierType(
+            name: 'int'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+          genericTypes: [
+            @ConstType(
+              constExpr: @ConstExprInteger(
+                value: '0'
+                attributes: {
+                  info: @IntegerExpr(
+                    value: 0
+                    base: 10
+                    raw: '0'
+                  )
+                }
+              )
+            ),
+            @IdentifierType(
+              name: 'max'
+              attributes: {
+                kind: 'Keyword'
+              }
+            ),
+          ]
+          variances: [
+            'invariant',
+            'invariant',
+          ]
+        )
+        name: 'rightUnboundedIntRange'
+        magic: true
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Features\PhpDoc\Types\IntegerRanges'
+    primary: true
+  ),
+]
