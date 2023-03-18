@@ -264,6 +264,10 @@ class AnalyzeTaskHandler implements TaskHandler
 			}
 		}
 
+		unset($info->tags['mixin']);
+		unset($info->tags['property'], $info->tags['property-read'], $info->tags['property-write']);
+		unset($info->tags['method']);
+
 		if ($info->primary && !$this->filter->filterClassLikeInfo($info)) {
 			$info->primary = false;
 		}

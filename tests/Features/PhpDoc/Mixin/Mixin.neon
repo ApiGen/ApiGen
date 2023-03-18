@@ -42,22 +42,5 @@
     }
     name: 'ApiGenTests\Features\PhpDoc\Mixin\Mixin'
     primary: true
-    tags: {
-      method: [
-        @MethodTagValue(
-          isStatic: false
-          returnType: @IdentifierType(
-            name: 'string'
-            attributes: {
-              kind: 'Keyword'
-            }
-          )
-          methodName: 'getFoo'
-          templateTypes: []
-          parameters: []
-          description: ''
-        ),
-      ]
-    }
   ),
 ]
