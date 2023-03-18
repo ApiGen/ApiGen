@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Class Latte\Compiler\Nodes\Php\ComplexTypeNode | ApiGen API</title>
+	<title>Class Latte\Compiler\Nodes\Php\InterpolatedStringPartNode | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -64,7 +64,7 @@
 							ArgumentNode
 						</a>
 					</li>
-					<li class="active">
+					<li>
 						<a href="Latte.Compiler.Nodes.Php.ComplexTypeNode.html">
 							ComplexTypeNode
 						</a>
@@ -79,7 +79,7 @@
 							IdentifierNode
 						</a>
 					</li>
-					<li>
+					<li class="active">
 						<a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html">
 							InterpolatedStringPartNode
 						</a>
@@ -127,7 +127,7 @@
 						<a href="namespace-Latte.Compiler.Nodes.Php.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="Latte.Compiler.Nodes.Php.ComplexTypeNode.html">Class</a></li>				<li>
+<li class="active"><a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -143,12 +143,12 @@
 
 		<div class="layout-content">
 		<h1>
-			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Compiler.html">Compiler</a>\<a href="namespace-Latte.Compiler.Nodes.html">Nodes</a>\<a href="namespace-Latte.Compiler.Nodes.Php.html">Php</a>\<a href="Latte.Compiler.Nodes.Php.ComplexTypeNode.html">ComplexTypeNode</a>
+			Class <a href="namespace-Latte.html">Latte</a>\<a href="namespace-Latte.Compiler.html">Compiler</a>\<a href="namespace-Latte.Compiler.Nodes.html">Nodes</a>\<a href="namespace-Latte.Compiler.Nodes.Php.html">Php</a>\<a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html">InterpolatedStringPartNode</a>
 		</h1>
 
 
 	<table class="classLikeSignatureTable">
-			<tr><th><code>abstract</code></th></tr>
+
 
 
 		<tr>
@@ -171,16 +171,9 @@
 			<a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a>
 	<ul class="classTree">
 	<li>
-<b><span class="active">Latte\Compiler\Nodes\Php\ComplexTypeNode</span></b>
+<b><span class="active">Latte\Compiler\Nodes\Php\InterpolatedStringPartNode</span></b>
 
 
-	<ul class="classTree">
-	<li>
-<a href="Latte.Compiler.Nodes.Php.SuperiorTypeNode.html"><span>Latte\Compiler\Nodes\Php\SuperiorTypeNode</span></a>
-
-
-	</li>
-	</ul>
 	</li>
 	</ul>
 	</li>
@@ -193,14 +186,99 @@
 
 
 
-		<table class="table">
+		<table class="table" id="methods">
 			<tr>
-				<th class="table-heading">Methods inherited from <a href="Latte.Compiler.Node.html"><span>Latte\Compiler\Node</span></a></th>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
 			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Compiler.Node.html#_print">print()</a>, <a href="Latte.Compiler.Node.html#_getIterator">getIterator()</a></code>				</td>
-			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>string <var>$value</var></span>, <span>?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var> = <span class="php-kw">null</span></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="print" id="_print">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>print(<span><a href="Latte.Compiler.PrintContext.html"><span title="Latte\Compiler\PrintContext">PrintContext</span></a> <var>$context</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="Latte.Compiler.Node.html#_print">						<code>Latte\Compiler\Node::print()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_print">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getIterator" id="_getIterator">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					&amp;
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getIterator(): <a href="Generator.html"><span title="Generator">Generator</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="Latte.Compiler.Node.html#_getIterator">						<code>Latte\Compiler\Node::getIterator()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getIterator">#</a>
+		</td>
+	</tr>
 		</table>
 
 
@@ -227,14 +305,59 @@
 
 
 
-		<table class="table">
+		<table class="table" id="properties">
 			<tr>
-				<th class="table-heading">Properties inherited from <a href="Latte.Compiler.Node.html"><span>Latte\Compiler\Node</span></a></th>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
-			<tr>
-				<td class="table-cell">
-<code><var><a href="Latte.Compiler.Node.html#$position">$position</a></var></code>				</td>
-			</tr>
+
+	<tr class="expandable collapsed" data-order="value" id="$value">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$value</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$value">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="position" id="$position">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$position</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$position">#</a>
+		</td>
+	</tr>
 		</table>
 
 

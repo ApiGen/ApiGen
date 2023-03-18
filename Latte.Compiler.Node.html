@@ -250,7 +250,7 @@
 
 	<ul class="classTree">
 	<li>
-<a href="Latte.Compiler.Nodes.Php.Scalar.EncapsedStringNode.html"><span>Latte\Compiler\Nodes\Php\Scalar\EncapsedStringNode</span></a>
+<a href="Latte.Compiler.Nodes.Php.Scalar.InterpolatedStringNode.html"><span>Latte\Compiler\Nodes\Php\Scalar\InterpolatedStringNode</span></a>
 
 
 	</li>
@@ -299,6 +299,11 @@
 
 	</li>
 	</ul>
+	</li>
+	<li>
+<a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html"><span>Latte\Compiler\Nodes\Php\InterpolatedStringPartNode</span></a>
+
+
 	</li>
 	<li>
 <a href="Latte.Compiler.Nodes.Php.ArgumentNode.html"><span>Latte\Compiler\Nodes\Php\ArgumentNode</span></a>
@@ -364,7 +369,7 @@
 				<li>
 <a href="Latte.Compiler.Nodes.Php.Expression.VariableNode.html#_print">						<code>Latte\Compiler\Nodes\Php\Expression\VariableNode::print()</code></a>				</li>
 				<li>
-<a href="Latte.Compiler.Nodes.Php.Scalar.EncapsedStringNode.html#_print">						<code>Latte\Compiler\Nodes\Php\Scalar\EncapsedStringNode::print()</code></a>				</li>
+<a href="Latte.Compiler.Nodes.Php.Scalar.InterpolatedStringNode.html#_print">						<code>Latte\Compiler\Nodes\Php\Scalar\InterpolatedStringNode::print()</code></a>				</li>
 				<li>
 <a href="Latte.Compiler.Nodes.Php.Scalar.StringNode.html#_print">						<code>Latte\Compiler\Nodes\Php\Scalar\StringNode::print()</code></a>				</li>
 				<li>
@@ -380,6 +385,8 @@
 				<li>
 <a href="Latte.Compiler.Nodes.Php.SuperiorTypeNode.html#_print">						<code>Latte\Compiler\Nodes\Php\SuperiorTypeNode::print()</code></a>				</li>
 				<li>
+<a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html#_print">						<code>Latte\Compiler\Nodes\Php\InterpolatedStringPartNode::print()</code></a>				</li>
+				<li>
 <a href="Latte.Compiler.Nodes.Php.ArgumentNode.html#_print">						<code>Latte\Compiler\Nodes\Php\ArgumentNode::print()</code></a>				</li>
 		</ul>
 	</div>
@@ -391,7 +398,7 @@
 	<tr class="expandable collapsed" data-order="getIterator" id="_getIterator">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
-					
+					abstract
 	public
 					
 					&amp;
@@ -399,7 +406,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>getIterator(): <a href="Generator.html"><span title="Generator">Generator</span></a></code>
+				<code>getIterator(): <a href="Generator.html"><span title="Generator">Generator</span></a>&lt;<b><span class="active" title="Latte\Compiler\Node">self</span></b>&gt;</code>
 
 
 
@@ -408,7 +415,12 @@
 
 
 
-		<h4>Overriden by</h4>
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="IteratorAggregate.html#_getIterator">						<code>IteratorAggregate::getIterator()</code></a>				</li>
+		</ul>
+		<h4>Implemented by</h4>
 		<ul>
 				<li>
 <a href="ApiGen.Renderer.Latte.LattePreNode.html#_getIterator">						<code>ApiGen\Renderer\Latte\LattePreNode::getIterator()</code></a>				</li>
@@ -443,12 +455,9 @@
 				<li>
 <a href="Latte.Compiler.Nodes.Php.SuperiorTypeNode.html#_getIterator">						<code>Latte\Compiler\Nodes\Php\SuperiorTypeNode::getIterator()</code></a>				</li>
 				<li>
-<a href="Latte.Compiler.Nodes.Php.ArgumentNode.html#_getIterator">						<code>Latte\Compiler\Nodes\Php\ArgumentNode::getIterator()</code></a>				</li>
-		</ul>
-		<h4>Implements</h4>
-		<ul>
+<a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html#_getIterator">						<code>Latte\Compiler\Nodes\Php\InterpolatedStringPartNode::getIterator()</code></a>				</li>
 				<li>
-<a href="IteratorAggregate.html#_getIterator">						<code>IteratorAggregate::getIterator()</code></a>				</li>
+<a href="Latte.Compiler.Nodes.Php.ArgumentNode.html#_getIterator">						<code>Latte\Compiler\Nodes\Php\ArgumentNode::getIterator()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
