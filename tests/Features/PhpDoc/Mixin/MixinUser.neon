@@ -8,22 +8,6 @@
     }
     name: 'ApiGenTests\Features\PhpDoc\Mixin\MixinUser'
     primary: true
-    tags: {
-      mixin: [
-        @MixinTagValue(
-          type: @IdentifierType(
-            name: 'Mixin'
-            attributes: {
-              kind: 'ClassLike'
-              classLikeReference: @ClassLikeReference(
-                full: 'ApiGenTests\Features\PhpDoc\Mixin\Mixin'
-              )
-            }
-          )
-          description: ''
-        ),
-      ]
-    }
   ),
   @ClassLikeReference(
     full: 'ApiGenTests\Features\PhpDoc\Mixin\Mixin'

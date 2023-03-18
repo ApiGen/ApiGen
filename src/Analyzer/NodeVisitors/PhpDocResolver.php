@@ -86,6 +86,8 @@ class PhpDocResolver extends NodeVisitorAbstract
 		'list' => true,
 		'literal-string' => true,
 		'lowercase-string' => true,
+		'max' => true,
+		'min' => true,
 		'negative-int' => true,
 		'never-return' => true,
 		'never-returns' => true,
