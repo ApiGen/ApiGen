@@ -33,4 +33,7 @@
     name: 'ApiGenTests\Features\Php82\FetchEnumPropertiesInConstExpr\Color'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'BackedEnum'
+  ),
 ]

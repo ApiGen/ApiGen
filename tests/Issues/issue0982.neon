@@ -7,4 +7,7 @@
     name: 'ApiGenTests\Issues\Issue0982\ClassWithNonExistentParent'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Issues\Issue0982\MissingParent'
+  ),
 ]

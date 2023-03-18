@@ -171,4 +171,13 @@
     name: 'ApiGenTests\Features\Php80\ConstructorPromotion\ParamNode'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\Php80\ConstructorPromotion\Node'
+  ),
+  @ClassLikeReference(
+    full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+  ),
+  @ClassLikeReference(
+    full: 'ApiGen\Info\ExprInfo'
+  ),
 ]

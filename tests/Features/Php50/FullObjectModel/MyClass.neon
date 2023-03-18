@@ -229,4 +229,13 @@
     name: 'ApiGenTests\Features\Php50\FullObjectModel\MyClass'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\Php50\FullObjectModel\MyInterface'
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\Php50\FullObjectModel\MyClassParent'
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\Php50\FullObjectModel\MyClass'
+  ),
 ]

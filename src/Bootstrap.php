@@ -40,6 +40,13 @@ use const PHP_VERSION_ID;
 
 class Bootstrap
 {
+	/**
+	 * @internal
+	 * @var class-string<Container>
+	 */
+	public static string $containerClassName;
+
+
 	public static function configureErrorHandling(): void
 	{
 		error_reporting(E_ALL);
@@ -97,7 +104,9 @@ class Bootstrap
 			PHP_VERSION_ID - PHP_RELEASE_VERSION,
 		];
 
+		/** @var class-string<Container> $containerClassName */
 		$containerClassName = $containerLoader->load($containerGenerator, $containerKey);
+		self::$containerClassName = $containerClassName;
 
 		$container = new $containerClassName();
 		assert($container instanceof Container);

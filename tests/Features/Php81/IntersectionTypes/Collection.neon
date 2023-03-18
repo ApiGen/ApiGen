@@ -98,4 +98,10 @@
     name: 'ApiGenTests\Features\Php81\IntersectionTypes\Collection'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'Countable'
+  ),
+  @ClassLikeReference(
+    full: 'Traversable'
+  ),
 ]

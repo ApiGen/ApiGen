@@ -54,4 +54,10 @@
     name: 'ApiGenTests\Features\Php82\DisjunctiveNormalFormTypes\DisjunctiveNormalFormTypes'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'Countable'
+  ),
+  @ClassLikeReference(
+    full: 'Traversable'
+  ),
 ]

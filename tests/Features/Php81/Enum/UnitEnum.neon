@@ -52,4 +52,10 @@
     name: 'ApiGenTests\Features\Php81\Enum\UnitEnum'
     primary: true
   ),
+  @ClassLikeReference(
+    full: 'UnitEnum'
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Features\Php81\Enum\Colorful'
+  ),
 ]

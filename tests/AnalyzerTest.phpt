@@ -2,14 +2,12 @@
 
 namespace ApiGenTests;
 
-use ApiGen\Analyzer;
 use ApiGen\Analyzer\AnalyzeTask;
+use ApiGen\Analyzer\AnalyzeTaskHandler;
 use ApiGen\Analyzer\Filter;
 use ApiGen\Analyzer\NodeVisitors\BodySkipper;
 use ApiGen\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGen\Info\NameInfo;
-use ApiGen\Locator;
-use Composer;
 use Nette\Neon\Node;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
@@ -36,8 +34,8 @@ class AnalyzerTest extends TestCase
 	 */
 	public function testSnapshots(SplFileInfo $file): void
 	{
-		$analyzer = $this->createAnalyzer();
-		$result = $analyzer->processTask(new AnalyzeTask($file->getRealPath(), primary: true));
+		$taskHandler = $this->createAnalyzeTaskHandler();
+		$result = $taskHandler->handle(new AnalyzeTask($file->getRealPath(), primary: true));
 		$serialized = self::dump($result) . "\n";
 		$serialized = str_replace(dirname(__DIR__), '%rootDir%', $serialized);
 
@@ -69,9 +67,8 @@ class AnalyzerTest extends TestCase
 	}
 
 
-	private function createAnalyzer(): Analyzer
+	private function createAnalyzeTaskHandler(): AnalyzeTaskHandler
 	{
-		$locator = new Locator([], new Composer\Autoload\ClassLoader());
 		$phpParserFactory = new PhpParser\ParserFactory();
 		$phpParser = $phpParserFactory->create(PhpParser\ParserFactory::PREFER_PHP7);
 
@@ -91,7 +88,7 @@ class AnalyzerTest extends TestCase
 
 		$filter = new Filter(excludeProtected: false, excludePrivate: true, excludeTagged: []);
 
-		return new Analyzer($locator, $phpParser, $traverser, $filter);
+		return new AnalyzeTaskHandler($phpParser, $traverser, $filter);
 	}
 
 
