@@ -1,0 +1,365 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>Class ApiGen\Scheduler\ExecScheduler | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Task.html">Task</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li class="active">
+						<a href="ApiGen.Scheduler.ExecScheduler.html">
+							ExecScheduler
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Scheduler.ForkScheduler.html">
+							ForkScheduler
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Scheduler.SchedulerFactory.html">
+							SchedulerFactory
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Scheduler.SimpleScheduler.html">
+							SimpleScheduler
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Scheduler.WorkerScheduler.html">
+							WorkerScheduler
+						</a>
+					</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-ApiGen.Scheduler.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="ApiGen.Scheduler.ExecScheduler.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>\<a href="ApiGen.Scheduler.ExecScheduler.html">ExecScheduler</a>
+		</h1>
+
+			<h2><code>&lt;<span title="">T</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R</span>&gt;</code></h2>
+
+	<table class="classLikeSignatureTable">
+
+
+
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+<code><a href="ApiGen.Scheduler.WorkerScheduler.html"><span title="ApiGen\Scheduler\WorkerScheduler">WorkerScheduler</span></a>&lt;T, R&gt;</code>			</td>
+		</tr>
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<a href="ApiGen.Scheduler.WorkerScheduler.html"><span>ApiGen\Scheduler\WorkerScheduler</span></a>
+
+		implements
+			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;
+
+	<ul class="classTree">
+	<li>
+<b><span class="active">ApiGen\Scheduler\ExecScheduler</span></b>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Scheduler.ExecScheduler.html#24" title="Go to source code">Scheduler/ExecScheduler.php</a><br>
+		</div>
+
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Scheduler.ExecScheduler.html#30-38" title="Go to source code">__construct</a>(<span>class-string&lt;<a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T, R&gt;&gt; <var>$handlerClass</var></span>, <span>int <var>$workerCount</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Overrides</h4>
+		<ul>
+				<li>
+<a href="ApiGen.Scheduler.WorkerScheduler.html#___construct">						<code>ApiGen\Scheduler\WorkerScheduler::__construct()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="start" id="_start">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Scheduler.ExecScheduler.html#41-69" title="Go to source code">start</a>(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="ApiGen.Scheduler.WorkerScheduler.html#_start">						<code>ApiGen\Scheduler\WorkerScheduler::start()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_start">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="stop" id="_stop">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Scheduler.ExecScheduler.html#72-79" title="Go to source code">stop</a>(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="ApiGen.Scheduler.WorkerScheduler.html#_stop">						<code>ApiGen\Scheduler\WorkerScheduler::stop()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_stop">#</a>
+		</td>
+	</tr>
+		</table>
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="ApiGen.Scheduler.WorkerScheduler.html"><span>ApiGen\Scheduler\WorkerScheduler</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+<code><a href="ApiGen.Scheduler.WorkerScheduler.html#_writeMessage">writeMessage()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_readMessage">readMessage()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_workerLoop">workerLoop()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_schedule">schedule()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_results">results()</a>, </code>				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Constants inherited from <a href="ApiGen.Scheduler.WorkerScheduler.html"><span>ApiGen\Scheduler\WorkerScheduler</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+<code><a href="ApiGen.Scheduler.WorkerScheduler.html#WORKER_CAPACITY_LIMIT"><code>WORKER_CAPACITY_LIMIT</code></a></code>				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="workers" id="$workers">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">resource[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Scheduler.ExecScheduler.html#26-27" title="Go to source code">$workers</a></var> = []</code>
+				
+	<div class="expandable-collapsedView">
+		indexed by [workerId]
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by [workerId]</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$workers">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="handlerClass" id="$handlerClass">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">class-string&lt;<a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T, R&gt;&gt;</code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Scheduler.ExecScheduler.html#34" title="Go to source code">$handlerClass</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$handlerClass">#</a>
+		</td>
+	</tr>
+		</table>
+		<table class="table">
+			<tr>
+				<th class="table-heading">Properties inherited from <a href="ApiGen.Scheduler.WorkerScheduler.html"><span>ApiGen\Scheduler\WorkerScheduler</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+<code><var><a href="ApiGen.Scheduler.WorkerScheduler.html#$tasks">$tasks</a></var>, <var><a href="ApiGen.Scheduler.WorkerScheduler.html#$pendingTaskCount">$pendingTaskCount</a></var>, <var><a href="ApiGen.Scheduler.WorkerScheduler.html#$workerReadableStreams">$workerReadableStreams</a></var>, <var><a href="ApiGen.Scheduler.WorkerScheduler.html#$workerWritableStreams">$workerWritableStreams</a></var>, <var><a href="ApiGen.Scheduler.WorkerScheduler.html#$workerCount">$workerCount</a></var></code>				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>

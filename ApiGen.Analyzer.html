@@ -31,6 +31,12 @@
 			<li class="menuGroup-item">
 				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
 			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Task.html">Task</a>
+			</li>
 	</ul>
 			</li>
 	</ul>
@@ -77,6 +83,11 @@
 					<li>
 						<a href="ApiGen.Renderer.html">
 							Renderer
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Scheduler.html">
+							Scheduler
 						</a>
 					</li>
 			</ul>
@@ -126,7 +137,7 @@
 
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-Analyzer.html#101" title="Go to source code">Analyzer.php</a><br>
+			<b>Located at</b> <a href="source-Analyzer.html#22" title="Go to source code">Analyzer.php</a><br>
 		</div>
 
 
@@ -147,7 +158,10 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.html#103-109" title="Go to source code">__construct</a>(<span><a href="ApiGen.Locator.html"><span title="ApiGen\Locator">Locator</span></a> <var>$locator</var></span>, <span><a href="PhpParser.Parser.html"><span title="PhpParser\Parser">Parser</span></a> <var>$parser</var></span>, <span><a href="PhpParser.NodeTraverserInterface.html"><span title="PhpParser\NodeTraverserInterface">NodeTraverserInterface</span></a> <var>$traverser</var></span>, <span><a href="ApiGen.Analyzer.Filter.html"><span title="ApiGen\Analyzer\Filter">Filter</span></a> <var>$filter</var></span>)</code>
+				<code><a href="source-Analyzer.html#24-31" title="Go to source code">__construct</a>(
+	<span><a href="ApiGen.Locator.html"><span title="ApiGen\Locator">Locator</span></a> <var>$locator</var></span>,
+	<span><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;<a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a>, array&lt;<a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>|<a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>|<a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a>&gt;&gt; <var>$scheduler</var></span>,
+)</code>
 
 
 
@@ -173,7 +187,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.html#112-200" title="Go to source code">analyze</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span>string[] <var>$files</var></span>): <a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a></code>
+				<code><a href="source-Analyzer.html#34-129" title="Go to source code">analyze</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span>string[] <var>$files</var></span>): <a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a></code>
 
 
 
@@ -196,679 +210,6 @@
 			<a href="#_analyze">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="processTask" id="_processTask">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#203-227" title="Go to source code">processTask</a>(<span><a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a> <var>$task</var></span>): array&lt;<a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>|<a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a>&gt;</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processTask">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processNodes" id="_processNodes">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#230-271" title="Go to source code">processNodes</a>(<span><a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a> <var>$task</var></span>, <span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[] <var>$nodes</var></span>): <a href="Iterator.html"><span title="Iterator">Iterator</span></a>&lt;<a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>&gt;</code>
-
-
-
-	<div class="expandable-expandedView">
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$nodes</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by []</p>
-</td>
-									</tr>
-							</table>
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processNodes">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processClassLike" id="_processClassLike">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#274-363" title="Go to source code">processClassLike</a>(<span><a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a> <var>$task</var></span>, <span><a href="PhpParser.Node.Stmt.ClassLike.html"><span title="PhpParser\Node\Stmt\ClassLike">ClassLike</span></a> <var>$node</var></span>): <a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processClassLike">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractMembers" id="_extractMembers">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#366-374" title="Go to source code">extractMembers</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][] <var>$tags</var></span>, <span><a href="PhpParser.Node.Stmt.ClassLike.html"><span title="PhpParser\Node\Stmt\ClassLike">ClassLike</span></a> <var>$node</var></span>): iterable&lt;<a href="ApiGen.Info.MemberInfo.html"><span title="ApiGen\Info\MemberInfo">MemberInfo</span></a>&gt;</code>
-
-
-
-	<div class="expandable-expandedView">
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$tags</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by [tagName][]</p>
-</td>
-									</tr>
-							</table>
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractMembers">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractMembersFromBody" id="_extractMembersFromBody">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#377-517" title="Go to source code">extractMembersFromBody</a>(<span><a href="PhpParser.Node.Stmt.ClassLike.html"><span title="PhpParser\Node\Stmt\ClassLike">ClassLike</span></a> <var>$node</var></span>): iterable&lt;<a href="ApiGen.Info.MemberInfo.html"><span title="ApiGen\Info\MemberInfo">MemberInfo</span></a>&gt;</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractMembersFromBody">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractMembersFromTags" id="_extractMembersFromTags">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#520-568" title="Go to source code">extractMembersFromTags</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][] <var>$tags</var></span>): iterable&lt;<a href="ApiGen.Info.MemberInfo.html"><span title="ApiGen\Info\MemberInfo">MemberInfo</span></a>&gt;</code>
-
-
-
-	<div class="expandable-expandedView">
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$tags</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by [tagName][]</p>
-</td>
-									</tr>
-							</table>
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractMembersFromTags">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processFunction" id="_processFunction">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#571-609" title="Go to source code">processFunction</a>(<span><a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a> <var>$task</var></span>, <span><a href="PhpParser.Node.Stmt.Function_.html"><span title="PhpParser\Node\Stmt\Function_">Function_</span></a> <var>$node</var></span>): ?<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processFunction">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processParameters" id="_processParameters">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#612-636" title="Go to source code">processParameters</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode">ParamTagValueNode</span></a>[] <var>$paramTags</var></span>, <span><a href="PhpParser.Node.Param.html"><span title="PhpParser\Node\Param">Param</span></a>[] <var>$parameters</var></span>): <a href="ApiGen.Info.ParameterInfo.html"><span title="ApiGen\Info\ParameterInfo">ParameterInfo</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$paramTags</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by [parameterName]</p>
-</td>
-									</tr>
-									<tr>
-										<td><var>$parameters</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by []</p>
-</td>
-									</tr>
-							</table>
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processParameters">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processName" id="_processName">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#639-664" title="Go to source code">processName</a>(<span><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a> <var>$name</var></span>, <span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][] <var>$tagValues</var> = []</span>, <span>string[] <var>$tagNames</var> = []</span>): <a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$tagValues</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by [tagName][]</p>
-</td>
-									</tr>
-									<tr>
-										<td><var>$tagNames</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by []</p>
-</td>
-									</tr>
-							</table>
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processName">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processNameList" id="_processNameList">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#667-700" title="Go to source code">processNameList</a>(
-	<span><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>[] <var>$names</var></span>,
-	<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][] <var>$tagValues</var> = []</span>,
-	<span>string[] <var>$tagNames</var> = []</span>,
-): <a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$names</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by []</p>
-</td>
-									</tr>
-									<tr>
-										<td><var>$tagValues</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by [tagName][]</p>
-</td>
-									</tr>
-									<tr>
-										<td><var>$tagNames</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by []</p>
-</td>
-									</tr>
-							</table>
-
-							<h4>Returns</h4>
-							<div><p>indexed by [classLikeName]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processNameList">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processMixinTags" id="_processMixinTags">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#703-726" title="Go to source code">processMixinTags</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[] <var>$values</var></span>): <a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$values</var>&nbsp;&nbsp;</td>
-										<td><p>indexed by []</p>
-</td>
-									</tr>
-							</table>
-
-							<h4>Returns</h4>
-							<div><p>indexed by [classLikeName]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processMixinTags">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processTypeOrNull" id="_processTypeOrNull">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#729-732" title="Go to source code">processTypeOrNull</a>(<span><a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a>|null <var>$node</var></span>): ?<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processTypeOrNull">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processType" id="_processType">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#735-762" title="Go to source code">processType</a>(<span><a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a> <var>$node</var></span>): <a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processType">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processExprOrNull" id="_processExprOrNull">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#765-768" title="Go to source code">processExprOrNull</a>(<span>?<a href="PhpParser.Node.Expr.html"><span title="PhpParser\Node\Expr">Expr</span></a> <var>$expr</var></span>): ?<a href="ApiGen.Info.ExprInfo.html"><span title="ApiGen\Info\ExprInfo">ExprInfo</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processExprOrNull">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="processExpr" id="_processExpr">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#771-873" title="Go to source code">processExpr</a>(<span><a href="PhpParser.Node.Expr.html"><span title="PhpParser\Node\Expr">Expr</span></a> <var>$expr</var></span>): <a href="ApiGen.Info.ExprInfo.html"><span title="ApiGen\Info\ExprInfo">ExprInfo</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_processExpr">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractPhpDoc" id="_extractPhpDoc">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#876-879" title="Go to source code">extractPhpDoc</a>(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractPhpDoc">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractDescription" id="_extractDescription">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#882-895" title="Go to source code">extractDescription</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$node</var></span>): string</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractDescription">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractGenericParameters" id="_extractGenericParameters">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#898-926" title="Go to source code">extractGenericParameters</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$node</var></span>): <a href="ApiGen.Info.GenericParameterInfo.html"><span title="ApiGen\Info\GenericParameterInfo">GenericParameterInfo</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-							<h4>Returns</h4>
-							<div><p>indexed by [name]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractGenericParameters">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractAliases" id="_extractAliases">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#929-946" title="Go to source code">extractAliases</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$node</var></span>, <span>?int <var>$startLine</var></span>, <span>?int <var>$endLine</var></span>): <a href="ApiGen.Info.AliasInfo.html"><span title="ApiGen\Info\AliasInfo">AliasInfo</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-							<h4>Returns</h4>
-							<div><p>indexed by [name]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractAliases">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractTags" id="_extractTags">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#949-963" title="Go to source code">extractTags</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$node</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode">PhpDocTagValueNode</span></a>[][]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-							<h4>Returns</h4>
-							<div><p>indexed by [tagName][]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractTags">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractParamTagValues" id="_extractParamTagValues">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#966-980" title="Go to source code">extractParamTagValues</a>(<span><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode">PhpDocNode</span></a> <var>$node</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\ParamTagValueNode">ParamTagValueNode</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-							<h4>Returns</h4>
-							<div><p>indexed by [parameterName]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractParamTagValues">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="extractDependencies" id="_extractDependencies">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><a href="source-Analyzer.html#983-1007" title="Go to source code">extractDependencies</a>(<span>object <var>$value</var></span>): <a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>[]</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-							<h4>Returns</h4>
-							<div><p>indexed by [classLike]</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_extractDependencies">#</a>
-		</td>
-	</tr>
 	<tr class="expandable collapsed" data-order="createDuplicateSymbolError" id="_createDuplicateSymbolError">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -880,7 +221,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.html#1010-1017" title="Go to source code">createDuplicateSymbolError</a>(<span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$first</var></span>): <a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a></code>
+				<code><a href="source-Analyzer.html#132-139" title="Go to source code">createDuplicateSymbolError</a>(<span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$first</var></span>): <a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a></code>
 
 
 
@@ -921,7 +262,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Analyzer.html#104" title="Go to source code">$locator</a></var></code>
+<code><var><a href="source-Analyzer.html#28" title="Go to source code">$locator</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -931,7 +272,7 @@
 			<a href="#$locator">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="parser" id="$parser">
+	<tr class="expandable collapsed" data-order="scheduler" id="$scheduler">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	protected
@@ -941,66 +282,18 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="PhpParser.Parser.html"><span title="PhpParser\Parser">Parser</span></a></code>
+				<code class="nowrap"><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;<a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a>, array&lt;<a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>|<a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>|<a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a>&gt;&gt;</code>
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Analyzer.html#105" title="Go to source code">$parser</a></var></code>
+<code><var><a href="source-Analyzer.html#29" title="Go to source code">$scheduler</a></var></code>
 				
 
 	<div class="expandable-expandedView">
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$parser">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="traverser" id="$traverser">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="PhpParser.NodeTraverserInterface.html"><span title="PhpParser\NodeTraverserInterface">NodeTraverserInterface</span></a></code>
-			</td>
-
-			<td class="table-cell">
-<code><var><a href="source-Analyzer.html#106" title="Go to source code">$traverser</a></var></code>
-				
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$traverser">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="filter" id="$filter">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="ApiGen.Analyzer.Filter.html"><span title="ApiGen\Analyzer\Filter">Filter</span></a></code>
-			</td>
-
-			<td class="table-cell">
-<code><var><a href="source-Analyzer.html#107" title="Go to source code">$filter</a></var></code>
-				
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$filter">#</a>
+			<a href="#$scheduler">#</a>
 		</td>
 	</tr>
 		</table>

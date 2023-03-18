@@ -14,10 +14,13 @@
 			<url><loc>namespace-ApiGen.Renderer.html</loc></url>
 			<url><loc>namespace-ApiGen.Renderer.Latte.html</loc></url>
 			<url><loc>namespace-ApiGen.Renderer.Latte.Template.html</loc></url>
+			<url><loc>namespace-ApiGen.Scheduler.html</loc></url>
+			<url><loc>namespace-ApiGen.Task.html</loc></url>
 
 			<url><loc>ApiGen.Analyzer.html</loc></url>
 			<url><loc>ApiGen.Analyzer.AnalyzeResult.html</loc></url>
 			<url><loc>ApiGen.Analyzer.AnalyzeTask.html</loc></url>
+			<url><loc>ApiGen.Analyzer.AnalyzeTaskHandler.html</loc></url>
 			<url><loc>ApiGen.Analyzer.Filter.html</loc></url>
 			<url><loc>ApiGen.Analyzer.IdentifierKind.html</loc></url>
 			<url><loc>ApiGen.Analyzer.NameContextFrame.html</loc></url>
@@ -94,11 +97,20 @@
 			<url><loc>ApiGen.Renderer.Latte.Template.TreeTemplate.html</loc></url>
 			<url><loc>ApiGen.Renderer.SourceHighlighter.html</loc></url>
 			<url><loc>ApiGen.Renderer.UrlGenerator.html</loc></url>
+			<url><loc>ApiGen.Scheduler.html</loc></url>
+			<url><loc>ApiGen.Scheduler.ExecScheduler.html</loc></url>
+			<url><loc>ApiGen.Scheduler.ForkScheduler.html</loc></url>
+			<url><loc>ApiGen.Scheduler.SchedulerFactory.html</loc></url>
+			<url><loc>ApiGen.Scheduler.SimpleScheduler.html</loc></url>
+			<url><loc>ApiGen.Scheduler.WorkerScheduler.html</loc></url>
+			<url><loc>ApiGen.Task.Task.html</loc></url>
+			<url><loc>ApiGen.Task.TaskHandler.html</loc></url>
 
 
 			<url><loc>source-Analyzer.html</loc></url>
 			<url><loc>source-Analyzer.AnalyzeResult.html</loc></url>
 			<url><loc>source-Analyzer.AnalyzeTask.html</loc></url>
+			<url><loc>source-Analyzer.AnalyzeTaskHandler.html</loc></url>
 			<url><loc>source-Analyzer.Filter.html</loc></url>
 			<url><loc>source-Analyzer.IdentifierKind.html</loc></url>
 			<url><loc>source-Analyzer.NameContextFrame.html</loc></url>
@@ -175,4 +187,12 @@
 			<url><loc>source-Renderer.Latte.Template.TreeTemplate.html</loc></url>
 			<url><loc>source-Renderer.SourceHighlighter.html</loc></url>
 			<url><loc>source-Renderer.UrlGenerator.html</loc></url>
+			<url><loc>source-Scheduler.html</loc></url>
+			<url><loc>source-Scheduler.ExecScheduler.html</loc></url>
+			<url><loc>source-Scheduler.ForkScheduler.html</loc></url>
+			<url><loc>source-Scheduler.SchedulerFactory.html</loc></url>
+			<url><loc>source-Scheduler.SimpleScheduler.html</loc></url>
+			<url><loc>source-Scheduler.WorkerScheduler.html</loc></url>
+			<url><loc>source-Task.Task.html</loc></url>
+			<url><loc>source-Task.TaskHandler.html</loc></url>
 </urlset>
