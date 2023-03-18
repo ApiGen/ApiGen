@@ -2,19 +2,20 @@
 
 require __DIR__ . '/../vendor/autoload.php';
 
+$rootDir = __DIR__ . '/..';
+
 $include = [
-	'/bin/**',
-	'/src/**',
-	'/vendor/**',
-	'/apigen.neon',
-	'/composer.json',
-	'/composer.lock',
-	'/LICENSE',
-	'/README.md',
+	"$rootDir/bin/**/*",
+	"$rootDir/src/**/*",
+	"$rootDir/vendor/**/*",
+	"$rootDir/apigen.neon",
+	"$rootDir/composer.json",
+	"$rootDir/composer.lock",
+	"$rootDir/LICENSE",
+	"$rootDir/README.md",
 ];
 
-$rootDir = __DIR__ . '/..';
-$files = Nette\Utils\Finder::findFiles(...$include)->from($rootDir);
+$files = Nette\Utils\Finder::findFiles(...$include);
 
 $stub = <<<'STUB'
 	#!/usr/bin/env php
