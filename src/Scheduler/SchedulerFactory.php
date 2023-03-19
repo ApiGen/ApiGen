@@ -30,21 +30,38 @@ class SchedulerFactory
 	 * @template TContext
 	 *
 	 * @param    class-string<TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>>> $handlerFactoryType
-	 * @return   Scheduler<TTask, TResult, TContext>
+	 * @param    TContext                                                                $context
+	 * @return   Scheduler<TTask, TResult>
 	 */
-	public function create(string $handlerFactoryType): Scheduler
+	public function create(string $handlerFactoryType, mixed $context): Scheduler
 	{
 		if ($this->workerCount > 1 && PHP_OS_FAMILY !== 'Windows' && PHP_SAPI === 'cli') {
 			if (extension_loaded('pcntl')) {
-				$handlerFactory = $this->container->getByType($handlerFactoryType) ?? throw new \LogicException();
-				return new ForkScheduler($handlerFactory, $this->workerCount);
+				$handler = $this->createHandler($handlerFactoryType, $context);
+				return new ForkScheduler($handler, $this->workerCount);
 
 			} elseif (function_exists('proc_open')) {
-				return new ExecScheduler($this->container::class, $handlerFactoryType, $this->workerCount);
+				return new ExecScheduler($this->container::class, $handlerFactoryType, $context, $this->workerCount);
 			}
 		}
 
-		$handlerFactory = $this->container->getByType($handlerFactoryType) ?? throw new \LogicException();
-		return new SimpleScheduler($handlerFactory);
+		$handler = $this->createHandler($handlerFactoryType, $context);
+		return new SimpleScheduler($handler);
+	}
+
+
+	/**
+	 * @template TTask of Task
+	 * @template TResult
+	 * @template TContext
+	 *
+	 * @param    class-string<TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>>> $handlerFactoryType
+	 * @param    TContext                                                                $context
+	 * @return   TaskHandler<TTask, TResult>
+	 */
+	private function createHandler(string $handlerFactoryType, mixed $context): TaskHandler
+	{
+		$factory = $this->container->getByType($handlerFactoryType) ?? throw new \LogicException();
+		return $factory->create($context);
 	}
 }

@@ -35,7 +35,7 @@ class Analyzer
 	 */
 	public function analyze(ProgressBar $progressBar, array $files): AnalyzeResult
 	{
-		$scheduler = $this->schedulerFactory->create(AnalyzeTaskHandlerFactory::class);
+		$scheduler = $this->schedulerFactory->create(AnalyzeTaskHandlerFactory::class, context: null);
 
 		/** @var true[] $scheduled indexed by [path] */
 		$scheduled = [];
@@ -69,7 +69,7 @@ class Analyzer
 			$scheduleFile($file, primary: true);
 		}
 
-		foreach ($scheduler->process(context: null) as $task => $result) {
+		foreach ($scheduler->process() as $task => $result) {
 			foreach ($result as $info) {
 				if ($info instanceof ClassLikeReferenceInfo) {
 					if ($prevInfo !== null && !isset($classLike[$info->fullLower]) && !isset($missing[$info->fullLower])) {

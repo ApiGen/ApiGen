@@ -30,14 +30,14 @@ class LatteRenderer implements Renderer
 		FileSystem::createDir($this->outputDir);
 
 		$context = new LatteRenderTaskContext($index, new ConfigParameters($this->title, $this->version));
-		$scheduler = $this->schedulerFactory->create(LatteRenderTaskHandlerFactory::class);
+		$scheduler = $this->schedulerFactory->create(LatteRenderTaskHandlerFactory::class, $context);
 
 		foreach ($this->getRenderTasks($index) as $task) {
 			$scheduler->schedule($task);
 			$progressBar->setMaxSteps($progressBar->getMaxSteps() + 1);
 		}
 
-		foreach ($scheduler->process($context) as $path) {
+		foreach ($scheduler->process() as $path) {
 			$progressBar->setMessage($path);
 			$progressBar->advance();
 		}

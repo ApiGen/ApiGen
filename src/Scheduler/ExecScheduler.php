@@ -21,7 +21,7 @@ use const STDERR;
  * @template TTask of Task
  * @template TResult
  * @template TContext
- * @extends  WorkerScheduler<TTask, TResult, TContext>
+ * @extends  WorkerScheduler<TTask, TResult>
  */
 class ExecScheduler extends WorkerScheduler
 {
@@ -32,20 +32,19 @@ class ExecScheduler extends WorkerScheduler
 	/**
 	 * @param  class-string<Container>                                                 $containerClass
 	 * @param  class-string<TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>>> $handlerFactoryClass
+	 * @param  TContext                                                                $context
 	 */
 	public function __construct(
 		protected string $containerClass,
 		protected string $handlerFactoryClass,
+		protected mixed $context,
 		int $workerCount,
 	) {
 		parent::__construct($workerCount);
 	}
 
 
-	/**
-	 * @param  TContext $context
-	 */
-	protected function start(mixed $context): void
+	protected function start(): void
 	{
 		$command = [
 			PHP_BINARY,
@@ -72,7 +71,7 @@ class ExecScheduler extends WorkerScheduler
 			$this->workers[$workerId] = $workerProcess;
 			$this->workerWritableStreams[$workerId] = $pipes[0];
 			$this->workerReadableStreams[$workerId] = $pipes[1];
-			self::writeMessage($this->workerWritableStreams[$workerId], $context);
+			self::writeMessage($this->workerWritableStreams[$workerId], $this->context);
 		}
 	}
 

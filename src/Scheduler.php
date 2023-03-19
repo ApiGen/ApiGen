@@ -8,7 +8,6 @@ use ApiGen\Task\Task;
 /**
  * @template TTask of Task
  * @template TResult
- * @template TContext
  */
 interface Scheduler
 {
@@ -19,8 +18,7 @@ interface Scheduler
 
 
 	/**
-	 * @param  TContext $context
 	 * @return iterable<TTask, TResult>
 	 */
-	public function process(mixed $context): iterable;
+	public function process(): iterable;
 }

@@ -27,8 +27,7 @@ use function unserialize;
 /**
  * @template   TTask of Task
  * @template   TResult
- * @template   TContext
- * @implements Scheduler<TTask, TResult, TContext>
+ * @implements Scheduler<TTask, TResult>
  */
 abstract class WorkerScheduler implements Scheduler
 {
@@ -122,13 +121,12 @@ abstract class WorkerScheduler implements Scheduler
 
 
 	/**
-	 * @param  TContext $context
 	 * @return iterable<TTask, TResult>
 	 */
-	public function process(mixed $context): iterable
+	public function process(): iterable
 	{
 		try {
-			$this->start($context);
+			$this->start();
 
 			$idleWorkers = array_fill_keys(array_keys($this->workerWritableStreams), self::WORKER_CAPACITY_LIMIT);
 
@@ -168,10 +166,7 @@ abstract class WorkerScheduler implements Scheduler
 	}
 
 
-	/**
-	 * @param  TContext $context
-	 */
-	abstract protected function start(mixed $context): void;
+	abstract protected function start(): void;
 
 
 	abstract protected function stop(): void;

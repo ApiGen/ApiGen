@@ -5,15 +5,13 @@ namespace ApiGen\Scheduler;
 use ApiGen\Scheduler;
 use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
-use ApiGen\Task\TaskHandlerFactory;
 use SplQueue;
 
 
 /**
  * @template   TTask of Task
  * @template   TResult
- * @template   TContext
- * @implements Scheduler<TTask, TResult, TContext>
+ * @implements Scheduler<TTask, TResult>
  */
 class SimpleScheduler implements Scheduler
 {
@@ -22,10 +20,10 @@ class SimpleScheduler implements Scheduler
 
 
 	/**
-	 * @param TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>> $handlerFactory
+	 * @param TaskHandler<TTask, TResult> $handler
 	 */
 	public function __construct(
-		protected TaskHandlerFactory $handlerFactory,
+		protected TaskHandler $handler,
 	) {
 		$this->tasks = new SplQueue();
 	}
@@ -41,15 +39,13 @@ class SimpleScheduler implements Scheduler
 
 
 	/**
-	 * @param  TContext $context
 	 * @return iterable<TTask, TResult>
 	 */
-	public function process(mixed $context): iterable
+	public function process(): iterable
 	{
-		$handler = $this->handlerFactory->create($context);
 		while (!$this->tasks->isEmpty()) {
 			$task = $this->tasks->dequeue();
-			$result = $handler->handle($task);
+			$result = $this->handler->handle($task);
 			yield $task => $result;
 		}
 	}

@@ -4,7 +4,6 @@ namespace ApiGen\Scheduler;
 
 use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
-use ApiGen\Task\TaskHandlerFactory;
 
 use function fclose;
 use function pcntl_fork;
@@ -23,8 +22,7 @@ use const STREAM_SOCK_STREAM;
 /**
  * @template TTask of Task
  * @template TResult
- * @template TContext
- * @extends  WorkerScheduler<TTask, TResult, TContext>
+ * @extends  WorkerScheduler<TTask, TResult>
  */
 class ForkScheduler extends WorkerScheduler
 {
@@ -33,23 +31,18 @@ class ForkScheduler extends WorkerScheduler
 
 
 	/**
-	 * @param TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>> $handlerFactory
+	 * @param TaskHandler<TTask, TResult> $handler
 	 */
 	public function __construct(
-		protected TaskHandlerFactory $handlerFactory,
+		protected TaskHandler $handler,
 		int $workerCount,
 	) {
 		parent::__construct($workerCount);
 	}
 
 
-	/**
-	 * @param  TContext $context
-	 */
-	protected function start(mixed $context): void
+	protected function start(): void
 	{
-		$handler = $this->handlerFactory->create($context);
-
 		for ($workerId = 0; $workerId < $this->workerCount; $workerId++) {
 			$toWorker = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
 			$toMaster = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
@@ -69,7 +62,7 @@ class ForkScheduler extends WorkerScheduler
 			} elseif ($pid === 0) {
 				fclose($masterInput);
 				fclose($masterOutput);
-				self::workerLoop($handler, $workerInput, $workerOutput);
+				self::workerLoop($this->handler, $workerInput, $workerOutput);
 				exit(0);
 
 			} else {
