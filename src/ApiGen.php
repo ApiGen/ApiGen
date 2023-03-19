@@ -5,6 +5,7 @@ namespace ApiGen;
 use ApiGen\Analyzer\AnalyzeResult;
 use ApiGen\Index\Index;
 use Nette\Utils\Finder;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_column;
@@ -110,19 +111,17 @@ class ApiGen
 	 */
 	protected function analyze(array $files): AnalyzeResult
 	{
-		$progressBar = $this->output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% %bar% %percent:3s%% %message%');
-		$progressBar->setBarCharacter("\u{2588}");
-		$progressBar->setProgressCharacter('_');
-		$progressBar->setEmptyBarCharacter('_');
+		$progressBar = $this->createProgressBar('Analyzing');
+		$result = $this->analyzer->analyze($progressBar, $files);
 
-		$analyzeResult = $this->analyzer->analyze($progressBar, $files);
+		if ($progressBar->getMaxSteps() === $progressBar->getProgress()) {
+			$progressBar->setMessage('done');
+			$progressBar->finish();
+		}
 
-		$progressBar->setMessage('done');
-		$progressBar->finish();
 		$this->output->newLine(2);
 
-		return $analyzeResult;
+		return $result;
 	}
 
 
@@ -149,17 +148,27 @@ class ApiGen
 
 	protected function render(Index $index): void
 	{
+		$progressBar = $this->createProgressBar('Rendering');
+		$this->renderer->render($progressBar, $index);
+
+		if ($progressBar->getMaxSteps() === $progressBar->getProgress()) {
+			$progressBar->setMessage('done');
+			$progressBar->finish();
+		}
+
+		$this->output->newLine(2);
+	}
+
+
+	protected function createProgressBar(string $label): ProgressBar
+	{
 		$progressBar = $this->output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% %bar% %percent:3s%% %message%');
+		$progressBar->setFormat(" <fg=green>$label</> %current%/%max% %bar% %percent:3s%% %message%");
 		$progressBar->setBarCharacter("\u{2588}");
 		$progressBar->setProgressCharacter('_');
 		$progressBar->setEmptyBarCharacter('_');
 
-		$this->renderer->render($progressBar, $index);
-
-		$progressBar->setMessage('done');
-		$progressBar->finish();
-		$this->output->newLine(2);
+		return $progressBar;
 	}
 
 
