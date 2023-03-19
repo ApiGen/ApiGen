@@ -81,7 +81,11 @@ abstract class WorkerScheduler implements Scheduler
 			return null;
 		}
 
-		$serialized = base64_decode($line);
+		$serialized = base64_decode($line, strict: true);
+
+		if ($serialized === false) {
+			throw new \RuntimeException('Failed to decode message.');
+		}
 
 		return extension_loaded('igbinary')
 			? igbinary_unserialize($serialized)
