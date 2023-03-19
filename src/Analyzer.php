@@ -22,7 +22,7 @@ use function sprintf;
 class Analyzer
 {
 	/**
-	 * @param Scheduler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ClassLikeReferenceInfo | ErrorInfo>> $scheduler
+	 * @param Scheduler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ClassLikeReferenceInfo | ErrorInfo>, null> $scheduler
 	 */
 	public function __construct(
 		protected Locator $locator,
@@ -68,7 +68,7 @@ class Analyzer
 			$scheduleFile($file, primary: true);
 		}
 
-		foreach ($this->scheduler->results() as $task => $result) {
+		foreach ($this->scheduler->process(context: null) as $task => $result) {
 			foreach ($result as $info) {
 				if ($info instanceof ClassLikeReferenceInfo) {
 					if ($prevInfo !== null && !isset($classLike[$info->fullLower]) && !isset($missing[$info->fullLower])) {

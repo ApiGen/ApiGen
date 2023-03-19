@@ -48,7 +48,7 @@ services:
 	# Scheduler
 	scheduler.analyzeTask:
 		type: ApiGen\Scheduler
-		factory: ApiGen\Scheduler\SchedulerFactory::create(handler: @ApiGen\Analyzer\AnalyzeTaskHandler, workerCount: %workerCount%)
+		factory: ApiGen\Scheduler\SchedulerFactory::create(handlerFactoryType: ApiGen\Analyzer\AnalyzeTaskHandlerFactory, workerCount: %workerCount%)
 		autowired: false
 
 	# Analyzer
@@ -69,8 +69,8 @@ services:
 	analyzer.filter:
 		factory: ApiGen\Analyzer\Filter(excludeProtected: %excludeProtected%, excludePrivate: %excludePrivate%, excludeTagged: %excludeTagged%)
 
-	analyzer.taskHandler:
-		factory: ApiGen\Analyzer\AnalyzeTaskHandler
+	analyzer.taskHandlerFactory:
+		implement: ApiGen\Analyzer\AnalyzeTaskHandlerFactory
 
 	analyzer:
 		factory: ApiGen\Analyzer(scheduler: @scheduler.analyzeTask)

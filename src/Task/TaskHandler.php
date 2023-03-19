@@ -4,8 +4,8 @@ namespace ApiGen\Task;
 
 
 /**
- * @template T of Task
- * @template R
+ * @template-contravariant T of Task
+ * @template-covariant     R
  */
 interface TaskHandler
 {

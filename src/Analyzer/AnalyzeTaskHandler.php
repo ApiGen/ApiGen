@@ -98,10 +98,14 @@ use function trim;
  */
 class AnalyzeTaskHandler implements TaskHandler
 {
+	/**
+	 * @param  null $context
+	 */
 	public function __construct(
 		protected Parser $parser,
 		protected NodeTraverserInterface $traverser,
 		protected Filter $filter,
+		protected mixed $context = null,
 	) {
 	}
 

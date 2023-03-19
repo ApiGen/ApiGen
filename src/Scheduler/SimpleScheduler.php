@@ -5,41 +5,51 @@ namespace ApiGen\Scheduler;
 use ApiGen\Scheduler;
 use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
+use ApiGen\Task\TaskHandlerFactory;
 use SplQueue;
 
 
 /**
- * @template   T of Task
- * @template   R
- * @implements Scheduler<T, R>
+ * @template   TTask of Task
+ * @template   TResult
+ * @template   TContext
+ * @implements Scheduler<TTask, TResult, TContext>
  */
 class SimpleScheduler implements Scheduler
 {
-	/** @var SplQueue<T>  */
+	/** @var SplQueue<TTask>  */
 	protected SplQueue $tasks;
 
 
 	/**
-	 * @param TaskHandler<T, R> $handler
+	 * @param TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>> $handlerFactory
 	 */
 	public function __construct(
-		protected TaskHandler $handler,
+		protected TaskHandlerFactory $handlerFactory,
 	) {
 		$this->tasks = new SplQueue();
 	}
 
 
+	/**
+	 * @param  TTask $task
+	 */
 	public function schedule(Task $task): void
 	{
 		$this->tasks->enqueue($task);
 	}
 
 
-	public function results(): iterable
+	/**
+	 * @param  TContext $context
+	 * @return iterable<TTask, TResult>
+	 */
+	public function process(mixed $context): iterable
 	{
+		$handler = $this->handlerFactory->create($context);
 		while (!$this->tasks->isEmpty()) {
 			$task = $this->tasks->dequeue();
-			$result = $this->handler->handle($task);
+			$result = $handler->handle($task);
 			yield $task => $result;
 		}
 	}

@@ -5,6 +5,7 @@ namespace ApiGen\Scheduler;
 use ApiGen\Bootstrap;
 use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
+use ApiGen\Task\TaskHandlerFactory;
 use Nette\DI\Container;
 
 
@@ -21,8 +22,8 @@ $containerClassPath = $argv[2];
 /** @var class-string<Container> $containerClassName */
 $containerClassName = $argv[3];
 
-/** @var class-string<TaskHandler<Task, mixed>> $handlerClassName */
-$handlerClassName = $argv[4];
+/** @var class-string<TaskHandlerFactory<mixed, TaskHandler<Task, mixed>>> $handlerFactoryClassName */
+$handlerFactoryClassName = $argv[4];
 
 require $autoloadPath;
 Bootstrap::configureErrorHandling();
@@ -30,7 +31,7 @@ Bootstrap::configureErrorHandling();
 require $containerClassPath;
 $container = new $containerClassName;
 
-/** @var TaskHandler<Task, mixed> $handler */
-$handler = $container->getByType($handlerClassName) ?? throw new \LogicException();
-
+$context = WorkerScheduler::readMessage(STDIN);
+$handlerFactory = $container->getByType($handlerFactoryClassName) ?? throw new \LogicException();
+$handler = $handlerFactory->create($context);
 WorkerScheduler::workerLoop($handler, STDIN, STDOUT);

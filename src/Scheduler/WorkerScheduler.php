@@ -25,15 +25,16 @@ use function unserialize;
 
 
 /**
- * @template   T of Task
- * @template   R
- * @implements Scheduler<T, R>
+ * @template   TTask of Task
+ * @template   TResult
+ * @template   TContext
+ * @implements Scheduler<TTask, TResult, TContext>
  */
 abstract class WorkerScheduler implements Scheduler
 {
 	protected const WORKER_CAPACITY_LIMIT = 8;
 
-	/** @var SplQueue<T> queue of tasks which needs to be sent to workers */
+	/** @var SplQueue<TTask> queue of tasks which needs to be sent to workers */
 	protected SplQueue $tasks;
 
 	/** @var int total number of pending tasks (including those already sent to workers) */
@@ -110,6 +111,9 @@ abstract class WorkerScheduler implements Scheduler
 	}
 
 
+	/**
+	 * @param  TTask $task
+	 */
 	public function schedule(Task $task): void
 	{
 		$this->tasks->enqueue($task);
@@ -117,10 +121,14 @@ abstract class WorkerScheduler implements Scheduler
 	}
 
 
-	public function results(): iterable
+	/**
+	 * @param  TContext $context
+	 * @return iterable<TTask, TResult>
+	 */
+	public function process(mixed $context): iterable
 	{
 		try {
-			$this->start();
+			$this->start($context);
 
 			$idleWorkers = array_fill_keys(array_keys($this->workerWritableStreams), self::WORKER_CAPACITY_LIMIT);
 
@@ -160,7 +168,10 @@ abstract class WorkerScheduler implements Scheduler
 	}
 
 
-	abstract protected function start(): void;
+	/**
+	 * @param  TContext $context
+	 */
+	abstract protected function start(mixed $context): void;
 
 
 	abstract protected function stop(): void;
