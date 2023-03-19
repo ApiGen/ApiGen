@@ -6,7 +6,7 @@ use ApiGen\Index\Index;
 use ApiGen\Renderer;
 use ApiGen\Renderer\Filter;
 use ApiGen\Renderer\Latte\Template\ConfigParameters;
-use ApiGen\Scheduler;
+use ApiGen\Scheduler\SchedulerFactory;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use Symfony\Component\Console\Helper\ProgressBar;
@@ -14,11 +14,8 @@ use Symfony\Component\Console\Helper\ProgressBar;
 
 class LatteRenderer implements Renderer
 {
-	/**
-	 * @param  Scheduler<LatteRenderTask, string, LatteRenderTaskContext> $scheduler
-	 */
 	public function __construct(
-		protected Scheduler $scheduler,
+		protected SchedulerFactory $schedulerFactory,
 		protected Filter $filter,
 		protected string $title,
 		protected string $version,
@@ -33,13 +30,14 @@ class LatteRenderer implements Renderer
 		FileSystem::createDir($this->outputDir);
 
 		$context = new LatteRenderTaskContext($index, new ConfigParameters($this->title, $this->version));
+		$scheduler = $this->schedulerFactory->create(LatteRenderTaskHandlerFactory::class);
 
 		foreach ($this->getRenderTasks($index) as $task) {
-			$this->scheduler->schedule($task);
+			$scheduler->schedule($task);
 			$progressBar->setMaxSteps($progressBar->getMaxSteps() + 1);
 		}
 
-		foreach ($this->scheduler->process($context) as $path) {
+		foreach ($scheduler->process($context) as $path) {
 			$progressBar->setMessage($path);
 			$progressBar->advance();
 		}

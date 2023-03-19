@@ -17,6 +17,13 @@ use const PHP_SAPI;
 
 class SchedulerFactory
 {
+	public function __construct(
+		protected Container $container,
+		protected int $workerCount,
+	) {
+	}
+
+
 	/**
 	 * @template TTask of Task
 	 * @template TResult
@@ -25,19 +32,19 @@ class SchedulerFactory
 	 * @param    class-string<TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>>> $handlerFactoryType
 	 * @return   Scheduler<TTask, TResult, TContext>
 	 */
-	public static function create(Container $container, string $handlerFactoryType, int $workerCount): Scheduler
+	public function create(string $handlerFactoryType): Scheduler
 	{
-		if ($workerCount > 1 && PHP_OS_FAMILY !== 'Windows' && PHP_SAPI === 'cli') {
+		if ($this->workerCount > 1 && PHP_OS_FAMILY !== 'Windows' && PHP_SAPI === 'cli') {
 			if (extension_loaded('pcntl')) {
-				$handlerFactory = $container->getByType($handlerFactoryType) ?? throw new \LogicException();
-				return new ForkScheduler($handlerFactory, $workerCount);
+				$handlerFactory = $this->container->getByType($handlerFactoryType) ?? throw new \LogicException();
+				return new ForkScheduler($handlerFactory, $this->workerCount);
 
 			} elseif (function_exists('proc_open')) {
-				return new ExecScheduler($container::class, $handlerFactoryType, $workerCount);
+				return new ExecScheduler($this->container::class, $handlerFactoryType, $this->workerCount);
 			}
 		}
 
-		$handlerFactory = $container->getByType($handlerFactoryType) ?? throw new \LogicException();
+		$handlerFactory = $this->container->getByType($handlerFactoryType) ?? throw new \LogicException();
 		return new SimpleScheduler($handlerFactory);
 	}
 }

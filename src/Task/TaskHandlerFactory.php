@@ -4,8 +4,8 @@ namespace ApiGen\Task;
 
 
 /**
- * @template TContext
- * @template THandler of TaskHandler<never, mixed>
+ * @template           TContext
+ * @template-covariant THandler of TaskHandler<never, mixed>
  */
 interface TaskHandlerFactory
 {

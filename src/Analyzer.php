@@ -4,6 +4,7 @@ namespace ApiGen;
 
 use ApiGen\Analyzer\AnalyzeResult;
 use ApiGen\Analyzer\AnalyzeTask;
+use ApiGen\Analyzer\AnalyzeTaskHandlerFactory;
 use ApiGen\Info\ClassLikeInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
 use ApiGen\Info\ErrorInfo;
@@ -11,6 +12,7 @@ use ApiGen\Info\ErrorKind;
 use ApiGen\Info\FunctionInfo;
 use ApiGen\Info\MissingInfo;
 use ApiGen\Info\NameInfo;
+use ApiGen\Scheduler\SchedulerFactory;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 use function count;
@@ -21,12 +23,9 @@ use function sprintf;
 
 class Analyzer
 {
-	/**
-	 * @param Scheduler<AnalyzeTask, array<ClassLikeInfo | FunctionInfo | ClassLikeReferenceInfo | ErrorInfo>, null> $scheduler
-	 */
 	public function __construct(
+		protected SchedulerFactory $schedulerFactory,
 		protected Locator $locator,
-		protected Scheduler $scheduler,
 	) {
 	}
 
@@ -36,6 +35,8 @@ class Analyzer
 	 */
 	public function analyze(ProgressBar $progressBar, array $files): AnalyzeResult
 	{
+		$scheduler = $this->schedulerFactory->create(AnalyzeTaskHandlerFactory::class);
+
 		/** @var true[] $scheduled indexed by [path] */
 		$scheduled = [];
 
@@ -54,13 +55,13 @@ class Analyzer
 		/** @var ClassLikeInfo|FunctionInfo|null $prevInfo */
 		$prevInfo = null;
 
-		$scheduleFile = function (string $file, bool $primary) use (&$scheduled, $progressBar): void {
+		$scheduleFile = function (string $file, bool $primary) use ($scheduler, &$scheduled, $progressBar): void {
 			$file = Helpers::realPath($file);
 
 			if (!isset($scheduled[$file])) {
 				$scheduled[$file] = true;
 				$progressBar->setMaxSteps(count($scheduled));
-				$this->scheduler->schedule(new AnalyzeTask($file, $primary));
+				$scheduler->schedule(new AnalyzeTask($file, $primary));
 			}
 		};
 
@@ -68,7 +69,7 @@ class Analyzer
 			$scheduleFile($file, primary: true);
 		}
 
-		foreach ($this->scheduler->process(context: null) as $task => $result) {
+		foreach ($scheduler->process(context: null) as $task => $result) {
 			foreach ($result as $info) {
 				if ($info instanceof ClassLikeReferenceInfo) {
 					if ($prevInfo !== null && !isset($classLike[$info->fullLower]) && !isset($missing[$info->fullLower])) {
