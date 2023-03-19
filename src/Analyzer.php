@@ -3,6 +3,7 @@
 namespace ApiGen;
 
 use ApiGen\Analyzer\AnalyzeResult;
+use ApiGen\Analyzer\AnalyzeState;
 use ApiGen\Analyzer\AnalyzeTask;
 use ApiGen\Analyzer\AnalyzeTaskHandlerFactory;
 use ApiGen\Info\ClassLikeInfo;
@@ -16,9 +17,7 @@ use ApiGen\Scheduler\SchedulerFactory;
 use Symfony\Component\Console\Helper\ProgressBar;
 
 use function count;
-use function get_debug_type;
 use function implode;
-use function sprintf;
 
 
 class Analyzer
@@ -36,97 +35,107 @@ class Analyzer
 	public function analyze(ProgressBar $progressBar, array $files): AnalyzeResult
 	{
 		$scheduler = $this->schedulerFactory->create(AnalyzeTaskHandlerFactory::class, context: null);
-
-		/** @var true[] $scheduled indexed by [path] */
-		$scheduled = [];
-
-		/** @var ClassLikeInfo[] $classLike indexed by [classLikeName] */
-		$classLike = [];
-
-		/** @var array{ClassLikeReferenceInfo, ClassLikeInfo|FunctionInfo} $missing indexed by [classLikeName] */
-		$missing = [];
-
-		/** @var FunctionInfo[] $functions indexed by [functionName] */
-		$functions = [];
-
-		/** @var ErrorInfo[][] $errors indexed by [errorKind][] */
-		$errors = [];
-
-		/** @var ClassLikeInfo|FunctionInfo|null $prevInfo */
-		$prevInfo = null;
-
-		$scheduleFile = function (string $file, bool $primary) use ($scheduler, &$scheduled, $progressBar): void {
-			$file = Helpers::realPath($file);
-
-			if (!isset($scheduled[$file])) {
-				$scheduled[$file] = true;
-				$progressBar->setMaxSteps(count($scheduled));
-				$scheduler->schedule(new AnalyzeTask($file, $primary));
-			}
-		};
+		$state = new AnalyzeState($progressBar, $scheduler);
 
 		foreach ($files as $file) {
-			$scheduleFile($file, primary: true);
+			$this->scheduleFile($state, $file, primary: true);
 		}
 
 		foreach ($scheduler->process() as $task => $result) {
 			foreach ($result as $info) {
-				if ($info instanceof ClassLikeReferenceInfo) {
-					if ($prevInfo !== null && !isset($classLike[$info->fullLower]) && !isset($missing[$info->fullLower])) {
-						$missing[$info->fullLower] = [$info, $prevInfo];
-
-						if (($file = $this->locator->locate($info)) !== null) {
-							$scheduleFile($file, primary: false);
-						}
-					}
-
-				} elseif ($info instanceof ClassLikeInfo) {
-					if (isset($classLike[$info->name->fullLower])) {
-						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $classLike[$info->name->fullLower]);
-						$prevInfo = null;
-
-					} else {
-						unset($missing[$info->name->fullLower]);
-						$classLike[$info->name->fullLower] = $info;
-						$prevInfo = $info;
-					}
-
-				} elseif ($info instanceof FunctionInfo) {
-					if (isset($functions[$info->name->fullLower])) {
-						$errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $functions[$info->name->fullLower]);
-						$prevInfo = null;
-
-					} else {
-						$functions[$info->name->fullLower] = $info;
-						$prevInfo = $info;
-					}
-
-				} elseif ($info instanceof ErrorInfo) {
-					$errors[$info->kind->name][] = $info;
-					$prevInfo = null;
-
-				} else {
-					throw new \LogicException(sprintf('Unexpected task result %s', get_debug_type($info)));
-				}
+				match (true) {
+					$info instanceof ClassLikeReferenceInfo => $this->processClassLikeReference($state, $info),
+					$info instanceof ClassLikeInfo => $this->processClassLike($state, $info),
+					$info instanceof FunctionInfo => $this->processFunction($state, $info),
+					$info instanceof ErrorInfo => $this->processError($state, $info),
+				};
 			}
 
 			$progressBar->setMessage($task->sourceFile);
 			$progressBar->advance();
 		}
 
-		foreach ($missing as [$dependency, $referencedBy]) {
-			$name = new NameInfo($dependency->full, $dependency->fullLower);
-			$classLike[$dependency->fullLower] = new MissingInfo($name, $referencedBy->name);
+		foreach ($state->missing as $missing) {
+			$referencedBy = $state->classLikes[$missing->referencedBy->fullLower];
 
 			if ($referencedBy->primary) {
-				$errors[ErrorKind::MissingSymbol->name][] = new ErrorInfo(
-					ErrorKind::MissingSymbol,
-					"Missing {$dependency->full}\nreferenced by {$referencedBy->name->full}",
-				);
+				$state->errors[ErrorKind::MissingSymbol->name][] = $this->createMissingSymbolError($missing, $referencedBy);
 			}
 		}
 
-		return new AnalyzeResult($classLike, $functions, $errors);
+		return new AnalyzeResult($state->classLikes + $state->missing, $state->functions, $state->errors);
+	}
+
+
+	protected function scheduleFile(AnalyzeState $state, string $file, bool $primary): void
+	{
+		$file = Helpers::realPath($file);
+
+		if (isset($state->files[$file])) {
+			return;
+		}
+
+		$state->files[$file] = true;
+		$state->progressBar->setMaxSteps(count($state->files));
+		$state->scheduler->schedule(new AnalyzeTask($file, $primary));
+	}
+
+
+	protected function processClassLikeReference(AnalyzeState $state, ClassLikeReferenceInfo $info): void
+	{
+		if ($state->prevName !== null && !isset($state->classLikes[$info->fullLower]) && !isset($state->missing[$info->fullLower])) {
+			$name = new NameInfo($info->full, $info->fullLower);
+			$state->missing[$info->fullLower] = new MissingInfo($name, $state->prevName);
+
+			if (($file = $this->locator->locate($info)) !== null) {
+				$this->scheduleFile($state, $file, primary: false);
+			}
+		}
+	}
+
+
+	protected function processClassLike(AnalyzeState $state, ClassLikeInfo $info): void
+	{
+		if (!isset($state->classLikes[$info->name->fullLower])) {
+			unset($state->missing[$info->name->fullLower]);
+			$state->classLikes[$info->name->fullLower] = $info;
+			$state->prevName = $info->name;
+
+		} else {
+			$existing = $state->classLikes[$info->name->fullLower];
+			$state->errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $existing);
+			$state->prevName = null;
+		}
+	}
+
+
+	protected function processFunction(AnalyzeState $state, FunctionInfo $info): void
+	{
+		if (!isset($state->functions[$info->name->fullLower])) {
+			$state->functions[$info->name->fullLower] = $info;
+			$state->prevName = $info->name;
+
+		} else {
+			$existing = $state->functions[$info->name->fullLower];
+			$state->errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $existing);
+			$state->prevName = null;
+		}
+	}
+
+
+	protected function processError(AnalyzeState $state, ErrorInfo $info): void
+	{
+		$state->errors[$info->kind->name][] = $info;
+		$state->prevName = null;
+	}
+
+
+	protected function createMissingSymbolError(MissingInfo $dependency, ClassLikeInfo | FunctionInfo $referencedBy): ErrorInfo
+	{
+		return new ErrorInfo(ErrorKind::MissingSymbol, implode("\n", [
+			"Missing {$dependency->name->full}",
+			"referenced by {$referencedBy->name->full}",
+		]));
 	}
 
 
