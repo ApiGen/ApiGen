@@ -7,6 +7,9 @@ use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
 use ApiGen\Task\TaskHandlerFactory;
 use Nette\DI\Container;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 
 if (count($argv) !== 5) {
@@ -30,6 +33,7 @@ Bootstrap::configureErrorHandling();
 
 require $containerClassPath;
 $container = new $containerClassName;
+$container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput(), new NullOutput()));
 
 $context = WorkerScheduler::readMessage(STDIN);
 $handlerFactory = $container->getByType($handlerFactoryClassName) ?? throw new \LogicException();

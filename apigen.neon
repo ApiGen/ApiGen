@@ -51,6 +51,11 @@ services:
 		factory: ApiGen\Scheduler\SchedulerFactory::create(handlerFactoryType: ApiGen\Analyzer\AnalyzeTaskHandlerFactory, workerCount: %workerCount%)
 		autowired: false
 
+	scheduler.renderTask:
+		type: ApiGen\Scheduler
+		factory: ApiGen\Scheduler\SchedulerFactory::create(handlerFactoryType: ApiGen\Renderer\Latte\LatteRenderTaskHandlerFactory, workerCount: %workerCount%)
+		autowired: false
+
 	# Analyzer
 	analyzer.bodySkipper:
 		factory: ApiGen\Analyzer\NodeVisitors\BodySkipper
@@ -101,9 +106,14 @@ services:
 	renderer.latte.engine:
 		factory: @ApiGen\Renderer\Latte\LatteEngineFactory::create()
 
+	renderer.taskHandlerFactory:
+		implement: ApiGen\Renderer\Latte\LatteRenderTaskHandlerFactory
+		arguments:
+			outputDir: %outputDir%
+
 	renderer:
 		type: ApiGen\Renderer
-		factory: ApiGen\Renderer\Latte\LatteRenderer(workerCount: %workerCount%, outputDir: %outputDir%, title: %title%, version: %version%)
+		factory: ApiGen\Renderer\Latte\LatteRenderer(scheduler: @scheduler.renderTask, outputDir: %outputDir%, title: %title%, version: %version%)
 
 	# league/commonmark
 	commonMark:
