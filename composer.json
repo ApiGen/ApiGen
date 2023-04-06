@@ -33,9 +33,6 @@
 		"phpstan/phpstan": "^1.9",
 		"tracy/tracy": "^2.9"
 	},
-	"suggest": {
-		"ext-pcntl": "for multiprocess rendering"
-	},
 	"replace": {
 		"symfony/polyfill-ctype": "*",
 		"symfony/polyfill-mbstring": "*",

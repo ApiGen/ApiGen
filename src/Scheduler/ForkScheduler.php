@@ -14,15 +14,17 @@ use function pcntl_wifsignaled;
 use function pcntl_wtermsig;
 use function stream_socket_pair;
 
+use const STDERR;
+use const STDOUT;
 use const STREAM_IPPROTO_IP;
 use const STREAM_PF_UNIX;
 use const STREAM_SOCK_STREAM;
 
 
 /**
- * @template T of Task
- * @template R
- * @extends  WorkerScheduler<T, R>
+ * @template TTask of Task
+ * @template TResult
+ * @extends  WorkerScheduler<TTask, TResult>
  */
 class ForkScheduler extends WorkerScheduler
 {
@@ -31,7 +33,7 @@ class ForkScheduler extends WorkerScheduler
 
 
 	/**
-	 * @param TaskHandler<T, R> $handler
+	 * @param TaskHandler<TTask, TResult> $handler
 	 */
 	public function __construct(
 		protected TaskHandler $handler,
@@ -79,10 +81,6 @@ class ForkScheduler extends WorkerScheduler
 	protected function stop(): void
 	{
 		foreach ($this->workerWritableStreams as $stream) {
-			fclose($stream);
-		}
-
-		foreach ($this->workerReadableStreams as $stream) {
 			fclose($stream);
 		}
 

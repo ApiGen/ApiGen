@@ -4,7 +4,9 @@ namespace ApiGen;
 
 use ApiGen\Analyzer\AnalyzeResult;
 use ApiGen\Index\Index;
+use ApiGen\Info\ErrorKind;
 use Nette\Utils\Finder;
+use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function array_column;
@@ -37,7 +39,7 @@ class ApiGen
 	}
 
 
-	public function generate(): void
+	public function generate(): bool
 	{
 		$files = $this->findFiles();
 
@@ -54,7 +56,7 @@ class ApiGen
 		$renderTime += hrtime(true);
 
 		$this->performance($analyzeTime, $indexTime, $renderTime);
-		$this->finish($analyzeResult);
+		return $this->finish($analyzeResult);
 	}
 
 
@@ -110,19 +112,17 @@ class ApiGen
 	 */
 	protected function analyze(array $files): AnalyzeResult
 	{
-		$progressBar = $this->output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Analyzing</> %current%/%max% %bar% %percent:3s%% %message%');
-		$progressBar->setBarCharacter("\u{2588}");
-		$progressBar->setProgressCharacter('_');
-		$progressBar->setEmptyBarCharacter('_');
+		$progressBar = $this->createProgressBar('Analyzing');
+		$result = $this->analyzer->analyze($progressBar, $files);
 
-		$analyzeResult = $this->analyzer->analyze($progressBar, $files);
+		if ($progressBar->getMaxSteps() === $progressBar->getProgress()) {
+			$progressBar->setMessage('done');
+			$progressBar->finish();
+		}
 
-		$progressBar->setMessage('done');
-		$progressBar->finish();
 		$this->output->newLine(2);
 
-		return $analyzeResult;
+		return $result;
 	}
 
 
@@ -149,17 +149,27 @@ class ApiGen
 
 	protected function render(Index $index): void
 	{
+		$progressBar = $this->createProgressBar('Rendering');
+		$this->renderer->render($progressBar, $index);
+
+		if ($progressBar->getMaxSteps() === $progressBar->getProgress()) {
+			$progressBar->setMessage('done');
+			$progressBar->finish();
+		}
+
+		$this->output->newLine(2);
+	}
+
+
+	protected function createProgressBar(string $label): ProgressBar
+	{
 		$progressBar = $this->output->createProgressBar();
-		$progressBar->setFormat(' <fg=green>Rendering</> %current%/%max% %bar% %percent:3s%% %message%');
+		$progressBar->setFormat(" <fg=green>$label</> %current%/%max% %bar% %percent:3s%% %message%");
 		$progressBar->setBarCharacter("\u{2588}");
 		$progressBar->setProgressCharacter('_');
 		$progressBar->setEmptyBarCharacter('_');
 
-		$this->renderer->render($progressBar, $index);
-
-		$progressBar->setMessage('done');
-		$progressBar->finish();
-		$this->output->newLine(2);
+		return $progressBar;
 	}
 
 
@@ -180,14 +190,15 @@ class ApiGen
 	}
 
 
-	protected function finish(AnalyzeResult $analyzeResult): void
+	protected function finish(AnalyzeResult $analyzeResult): bool
 	{
-		if (!$analyzeResult->error) {
+		if (count($analyzeResult->error) === 0) {
 			$this->output->success('Finished OK');
-			return;
+			return true;
 		}
 
-		foreach ($analyzeResult->error as $errorGroup) {
+		$hasError = false;
+		foreach ($analyzeResult->error as $errorKind => $errorGroup) {
 			$errorLines = array_column($errorGroup, 'message');
 
 			if (!$this->output->isVerbose() && count($errorLines) > 5) {
@@ -196,9 +207,21 @@ class ApiGen
 				$errorLines[] = sprintf('and %d more (use --verbose to show all)', count($errorGroup) - 5);
 			}
 
-			$this->output->warning(implode("\n\n", $errorLines));
+			if ($errorKind === ErrorKind::InternalError->name) {
+				$hasError = true;
+				$this->output->error(implode("\n\n", $errorLines));
+
+			} else {
+				$this->output->warning(implode("\n\n", $errorLines));
+			}
 		}
 
-		$this->output->success('Finished with errors');
+		if ($hasError) {
+			$this->output->error('Finished with errors');
+			return false;
+		}
+
+		$this->output->success('Finished with warnings');
+		return true;
 	}
 }

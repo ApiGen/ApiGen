@@ -2,24 +2,27 @@
 
 namespace ApiGen\Scheduler;
 
-use ApiGen\Bootstrap;
 use ApiGen\Helpers;
 use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
+use ApiGen\Task\TaskHandlerFactory;
 use Composer\Autoload\ClassLoader;
+use Nette\DI\Container;
 
 use function dirname;
 use function proc_close;
 use function proc_open;
 
 use const PHP_BINARY;
+use const PHP_OS_FAMILY;
 use const STDERR;
 
 
 /**
- * @template T of Task
- * @template R
- * @extends  WorkerScheduler<T, R>
+ * @template TTask of Task
+ * @template TResult
+ * @template TContext
+ * @extends  WorkerScheduler<TTask, TResult>
  */
 class ExecScheduler extends WorkerScheduler
 {
@@ -28,10 +31,14 @@ class ExecScheduler extends WorkerScheduler
 
 
 	/**
-	 * @param class-string<TaskHandler<T, R>> $handlerClass
+	 * @param  class-string<Container>                                                 $containerClass
+	 * @param  class-string<TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>>> $handlerFactoryClass
+	 * @param  TContext                                                                $context
 	 */
 	public function __construct(
-		protected string $handlerClass,
+		protected string $containerClass,
+		protected string $handlerFactoryClass,
+		protected mixed $context,
 		int $workerCount,
 	) {
 		parent::__construct($workerCount);
@@ -44,14 +51,14 @@ class ExecScheduler extends WorkerScheduler
 			PHP_BINARY,
 			__DIR__ . '/worker.php',
 			dirname(Helpers::classLikePath(ClassLoader::class), 2) . '/autoload.php',
-			Helpers::classLikePath(Bootstrap::$containerClassName),
-			Bootstrap::$containerClassName,
-			$this->handlerClass,
+			Helpers::classLikePath($this->containerClass),
+			$this->containerClass,
+			$this->handlerFactoryClass,
 		];
 
 		$descriptors = [
-			['pipe', 'r'],
-			['pipe', 'w'],
+			PHP_OS_FAMILY === 'Windows' ? ['socket'] : ['pipe', 'r'],
+			PHP_OS_FAMILY === 'Windows' ? ['socket'] : ['pipe', 'w'],
 			STDERR,
 		];
 
@@ -65,6 +72,7 @@ class ExecScheduler extends WorkerScheduler
 			$this->workers[$workerId] = $workerProcess;
 			$this->workerWritableStreams[$workerId] = $pipes[0];
 			$this->workerReadableStreams[$workerId] = $pipes[1];
+			self::writeMessage($this->workerWritableStreams[$workerId], $this->context);
 		}
 	}
 

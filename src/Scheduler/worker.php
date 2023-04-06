@@ -5,7 +5,12 @@ namespace ApiGen\Scheduler;
 use ApiGen\Bootstrap;
 use ApiGen\Task\Task;
 use ApiGen\Task\TaskHandler;
+use ApiGen\Task\TaskHandlerFactory;
 use Nette\DI\Container;
+use Symfony\Component\Console\Input\ArgvInput;
+use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Style\SymfonyStyle;
+use function ini_set;
 
 
 if (count($argv) !== 5) {
@@ -21,16 +26,18 @@ $containerClassPath = $argv[2];
 /** @var class-string<Container> $containerClassName */
 $containerClassName = $argv[3];
 
-/** @var class-string<TaskHandler<Task, mixed>> $handlerClassName */
-$handlerClassName = $argv[4];
+/** @var class-string<TaskHandlerFactory<mixed, TaskHandler<Task, mixed>>> $handlerFactoryClassName */
+$handlerFactoryClassName = $argv[4];
 
 require $autoloadPath;
 Bootstrap::configureErrorHandling();
 
 require $containerClassPath;
 $container = new $containerClassName;
+$container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput(), new NullOutput()));
+ini_set('memory_limit', $container->parameters['memoryLimit']);
 
-/** @var TaskHandler<Task, mixed> $handler */
-$handler = $container->getByType($handlerClassName) ?? throw new \LogicException();
-
+$context = WorkerScheduler::readMessage(STDIN);
+$handlerFactory = $container->getByType($handlerFactoryClassName) ?? throw new \LogicException();
+$handler = $handlerFactory->create($context);
 WorkerScheduler::workerLoop($handler, STDIN, STDOUT);

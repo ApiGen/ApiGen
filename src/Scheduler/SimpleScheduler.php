@@ -9,18 +9,18 @@ use SplQueue;
 
 
 /**
- * @template   T of Task
- * @template   R
- * @implements Scheduler<T, R>
+ * @template   TTask of Task
+ * @template   TResult
+ * @implements Scheduler<TTask, TResult>
  */
 class SimpleScheduler implements Scheduler
 {
-	/** @var SplQueue<T>  */
+	/** @var SplQueue<TTask>  */
 	protected SplQueue $tasks;
 
 
 	/**
-	 * @param TaskHandler<T, R> $handler
+	 * @param TaskHandler<TTask, TResult> $handler
 	 */
 	public function __construct(
 		protected TaskHandler $handler,
@@ -29,13 +29,19 @@ class SimpleScheduler implements Scheduler
 	}
 
 
+	/**
+	 * @param  TTask $task
+	 */
 	public function schedule(Task $task): void
 	{
 		$this->tasks->enqueue($task);
 	}
 
 
-	public function results(): iterable
+	/**
+	 * @return iterable<TTask, TResult>
+	 */
+	public function process(): iterable
 	{
 		while (!$this->tasks->isEmpty()) {
 			$task = $this->tasks->dequeue();

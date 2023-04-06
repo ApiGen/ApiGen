@@ -14,26 +14,26 @@ use function base64_decode;
 use function base64_encode;
 use function count;
 use function extension_loaded;
+use function fgets;
 use function fwrite;
 use function igbinary_serialize;
 use function igbinary_unserialize;
 use function serialize;
-use function stream_get_line;
 use function stream_select;
 use function strlen;
 use function unserialize;
 
 
 /**
- * @template   T of Task
- * @template   R
- * @implements Scheduler<T, R>
+ * @template   TTask of Task
+ * @template   TResult
+ * @implements Scheduler<TTask, TResult>
  */
 abstract class WorkerScheduler implements Scheduler
 {
 	protected const WORKER_CAPACITY_LIMIT = 8;
 
-	/** @var SplQueue<T> queue of tasks which needs to be sent to workers */
+	/** @var SplQueue<TTask> queue of tasks which needs to be sent to workers */
 	protected SplQueue $tasks;
 
 	/** @var int total number of pending tasks (including those already sent to workers) */
@@ -75,13 +75,17 @@ abstract class WorkerScheduler implements Scheduler
 	 */
 	public static function readMessage($stream): mixed
 	{
-		$line = stream_get_line($stream, 128 * 1024 * 1024, "\n");
+		$line = fgets($stream);
 
 		if ($line === false) {
 			return null;
 		}
 
-		$serialized = base64_decode($line);
+		$serialized = base64_decode($line, strict: true);
+
+		if ($serialized === false) {
+			throw new \RuntimeException('Failed to decode message.');
+		}
 
 		return extension_loaded('igbinary')
 			? igbinary_unserialize($serialized)
@@ -106,6 +110,9 @@ abstract class WorkerScheduler implements Scheduler
 	}
 
 
+	/**
+	 * @param  TTask $task
+	 */
 	public function schedule(Task $task): void
 	{
 		$this->tasks->enqueue($task);
@@ -113,7 +120,10 @@ abstract class WorkerScheduler implements Scheduler
 	}
 
 
-	public function results(): iterable
+	/**
+	 * @return iterable<TTask, TResult>
+	 */
+	public function process(): iterable
 	{
 		try {
 			$this->start();

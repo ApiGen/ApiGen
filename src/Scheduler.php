@@ -6,19 +6,19 @@ use ApiGen\Task\Task;
 
 
 /**
- * @template T of Task
- * @template R
+ * @template TTask of Task
+ * @template TResult
  */
 interface Scheduler
 {
 	/**
-	 * @param T $task
+	 * @param  TTask $task
 	 */
 	public function schedule(Task $task): void;
 
 
 	/**
-	 * @return iterable<T, R>
+	 * @return iterable<TTask, TResult>
 	 */
-	public function results(): iterable;
+	public function process(): iterable;
 }
