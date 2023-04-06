@@ -117,7 +117,7 @@
 
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-Scheduler.SchedulerFactory.html#16" title="Go to source code">Scheduler/SchedulerFactory.php</a><br>
+			<b>Located at</b> <a href="source-Scheduler.SchedulerFactory.html#17" title="Go to source code">Scheduler/SchedulerFactory.php</a><br>
 		</div>
 
 
@@ -127,18 +127,47 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="create" id="_create">
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
 	public
-					static
+					
 					
 				</code>
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.SchedulerFactory.html#18-37" title="Go to source code">create</a>&lt;<span title="">T</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R</span>&gt;(<span><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T, R&gt; <var>$handler</var></span>, <span>int <var>$workerCount</var></span>): <a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;</code>
+				<code><a href="source-Scheduler.SchedulerFactory.html#19-23" title="Go to source code">__construct</a>(<span><a href="Nette.DI.Container.html"><span title="Nette\DI\Container">Container</span></a> <var>$container</var></span>, <span>int <var>$workerCount</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="create" id="_create">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Scheduler.SchedulerFactory.html#26-49" title="Go to source code">create</a>&lt;<span title="">TTask</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">TResult</span>, <span title="">TContext</span>&gt;(
+	<span>class-string&lt;<a href="ApiGen.Task.TaskHandlerFactory.html"><span title="ApiGen\Task\TaskHandlerFactory">TaskHandlerFactory</span></a>&lt;TContext, <a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;TTask, TResult&gt;&gt;&gt; <var>$handlerFactoryType</var></span>,
+	<span>TContext <var>$context</var></span>,
+): <a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;TTask, TResult&gt;</code>
 
 
 
@@ -160,6 +189,60 @@
 
 
 
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="container" id="$container">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Nette.DI.Container.html"><span title="Nette\DI\Container">Container</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Scheduler.SchedulerFactory.html#20" title="Go to source code">$container</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$container">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="workerCount" id="$workerCount">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">int</code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Scheduler.SchedulerFactory.html#21" title="Go to source code">$workerCount</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$workerCount">#</a>
+		</td>
+	</tr>
+		</table>
 
 
 		</div>

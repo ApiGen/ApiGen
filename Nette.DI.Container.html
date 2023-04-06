@@ -1,0 +1,899 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<meta name="robots" content="noindex">
+	<title>Class Nette\DI\Container | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Task.html">Task</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-Nette.html">Nette</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-Nette.DI.html">DI</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li class="active">
+						<a href="Nette.DI.Container.html">
+							Container
+						</a>
+					</li>
+			</ul>
+		</div>
+		<div class="menu-section">
+			<h3>Exceptions</h3>
+			<ul>
+					<li>
+						<a href="Nette.DI.InvalidConfigurationException.html">
+							InvalidConfigurationException
+						</a>
+					</li>
+					<li>
+						<a href="Nette.DI.MissingServiceException.html">
+							MissingServiceException
+						</a>
+					</li>
+					<li>
+						<a href="Nette.DI.NotAllowedDuringResolvingException.html">
+							NotAllowedDuringResolvingException
+						</a>
+					</li>
+					<li>
+						<a href="Nette.DI.ServiceCreationException.html">
+							ServiceCreationException
+						</a>
+					</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-Nette.DI.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="Nette.DI.Container.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-Nette.html">Nette</a>\<a href="namespace-Nette.DI.html">DI</a>\<a href="Nette.DI.Container.html">Container</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+		<tr>
+			<th><code>uses</code></th>
+			<td>
+<code><a href="Nette.SmartObject.html"><span title="Nette\SmartObject">SmartObject</span></a></code>			</td>
+		</tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>The dependency injection container default implementation.</p>
+</div>
+		</div>
+
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>array <var>$params</var> = []</span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getParameters" id="_getParameters">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getParameters(): array</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getParameters">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="addService" id="_addService">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>addService(<span>string <var>$name</var></span>, <span>object <var>$service</var></span>): static</code>
+
+
+	<div class="expandable-collapsedView">
+		Adds the service to the container.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Adds the service to the container.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$service</var>&nbsp;&nbsp;</td>
+										<td><p>service or its factory</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_addService">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="removeService" id="_removeService">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>removeService(<span>string <var>$name</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Removes the service from the container.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Removes the service from the container.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_removeService">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getService" id="_getService">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getService(<span>string <var>$name</var></span>): object</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the service object by name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the service object by name.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Nette.DI.MissingServiceException.html"><span>Nette\DI\MissingServiceException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getService">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getByName" id="_getByName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getByName(<span>string <var>$name</var></span>): object</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the service object by name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the service object by name.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Nette.DI.MissingServiceException.html"><span>Nette\DI\MissingServiceException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getByName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getServiceType" id="_getServiceType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getServiceType(<span>string <var>$name</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the service type by name.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the service type by name.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Nette.DI.MissingServiceException.html"><span>Nette\DI\MissingServiceException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getServiceType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hasService" id="_hasService">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>hasService(<span>string <var>$name</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Does the service exist?
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Does the service exist?</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_hasService">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isCreated" id="_isCreated">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isCreated(<span>string <var>$name</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		Is the service created?
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Is the service created?</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isCreated">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="createService" id="_createService">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>createService(<span>string <var>$name</var></span>, <span>array <var>$args</var> = []</span>): object</code>
+
+
+	<div class="expandable-collapsedView">
+		Creates new instance of the service.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Creates new instance of the service.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Nette.DI.MissingServiceException.html"><span>Nette\DI\MissingServiceException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_createService">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getByType" id="_getByType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getByType&lt;<span title="">T</span> is object&gt;(<span>class-string&lt;T&gt; <var>$type</var></span>, <span>bool <var>$throw</var> = <span class="php-kw">true</span></span>): ?T</code>
+
+
+	<div class="expandable-collapsedView">
+		Resolves service by type.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Resolves service by type.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Nette.DI.MissingServiceException.html"><span>Nette\DI\MissingServiceException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getByType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="findByType" id="_findByType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>findByType(<span>string <var>$type</var></span>): string[]</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the service names of the specified type.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the service names of the specified type.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_findByType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="findByTag" id="_findByTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>findByTag(<span>string <var>$tag</var></span>): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Gets the service names of the specified tag.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the service names of the specified tag.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>of [service name =&gt; tag attributes]</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_findByTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="createInstance" id="_createInstance">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>createInstance(<span>string <var>$class</var></span>, <span>array <var>$args</var> = []</span>): object</code>
+
+
+	<div class="expandable-collapsedView">
+		Creates new instance using autowiring.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Creates new instance using autowiring.</p>
+</div>
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="Nette.InvalidArgumentException.html"><span>Nette\InvalidArgumentException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_createInstance">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="callInjects" id="_callInjects">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>callInjects(<span>object <var>$service</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		Calls all methods starting with with "inject" using autowiring.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Calls all methods starting with with &quot;inject&quot; using autowiring.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_callInjects">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="callMethod" id="_callMethod">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>callMethod(<span>callable <var>$function</var></span>, <span>array <var>$args</var> = []</span>): mixed</code>
+
+
+	<div class="expandable-collapsedView">
+		Calls method using autowiring.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Calls method using autowiring.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_callMethod">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getMethodName" id="_getMethodName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					static
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getMethodName(<span>string <var>$name</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getMethodName">#</a>
+		</td>
+	</tr>
+		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods used from <a href="Nette.SmartObject.html"><span>Nette\SmartObject</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+<code><a href="Nette.SmartObject.html#___call">__call()</a>, <a href="Nette.SmartObject.html#___callStatic">__callStatic()</a>, <a href="Nette.SmartObject.html#___get">__get()</a>, <a href="Nette.SmartObject.html#___set">__set()</a>, <a href="Nette.SmartObject.html#___unset">__unset()</a>, <a href="Nette.SmartObject.html#___isset">__isset()</a></code>				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="parameters" id="$parameters">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">array</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$parameters</var> = []</code>
+				
+	<div class="expandable-collapsedView">
+		user parameters
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>user parameters</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$parameters">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="types" id="$types">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$types</var> = []</code>
+				
+	<div class="expandable-collapsedView">
+		services name =&gt; type (complete list of available services)
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>services name =&gt; type (complete list of available services)</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$types">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="aliases" id="$aliases">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$aliases</var> = []</code>
+				
+	<div class="expandable-collapsedView">
+		alias =&gt; service name
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>alias =&gt; service name</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$aliases">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="tags" id="$tags">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">array[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$tags</var> = []</code>
+				
+	<div class="expandable-collapsedView">
+		tag name =&gt; service name =&gt; tag value
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>tag name =&gt; service name =&gt; tag value</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$tags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="wiring" id="$wiring">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">array[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$wiring</var> = []</code>
+				
+	<div class="expandable-collapsedView">
+		type =&gt; level =&gt; services
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>type =&gt; level =&gt; services</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$wiring">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>

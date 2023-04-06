@@ -88,6 +88,11 @@
 
 	</li>
 	<li>
+<a href="ApiGen.Analyzer.AnalyzeState.html"><span>ApiGen\Analyzer\AnalyzeState</span></a>
+
+
+	</li>
+	<li>
 <a href="ApiGen.Analyzer.AnalyzeTask.html"><span>ApiGen\Analyzer\AnalyzeTask</span></a>
 
 		implements
@@ -417,6 +422,25 @@
 
 	</li>
 	<li>
+<a href="ApiGen.Renderer.Latte.LatteRenderTask.html"><span>ApiGen\Renderer\Latte\LatteRenderTask</span></a>
+
+		implements
+			<a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>
+
+	</li>
+	<li>
+<a href="ApiGen.Renderer.Latte.LatteRenderTaskContext.html"><span>ApiGen\Renderer\Latte\LatteRenderTaskContext</span></a>
+
+
+	</li>
+	<li>
+<a href="ApiGen.Renderer.Latte.LatteRenderTaskHandler.html"><span>ApiGen\Renderer\Latte\LatteRenderTaskHandler</span></a>
+
+		implements
+			<a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;<a href="ApiGen.Renderer.Latte.LatteRenderTask.html"><span title="ApiGen\Renderer\Latte\LatteRenderTask">LatteRenderTask</span></a>, string&gt;
+
+	</li>
+	<li>
 <a href="ApiGen.Renderer.Latte.Template.ClassLikeTemplate.html"><span>ApiGen\Renderer\Latte\Template\ClassLikeTemplate</span></a>
 
 
@@ -480,14 +504,14 @@
 <a href="ApiGen.Scheduler.SimpleScheduler.html"><span>ApiGen\Scheduler\SimpleScheduler</span></a>
 
 		implements
-			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;
+			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;TTask, TResult&gt;
 
 	</li>
 	<li>
 <a href="ApiGen.Scheduler.WorkerScheduler.html"><span>ApiGen\Scheduler\WorkerScheduler</span></a>
 
 		implements
-			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;
+			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;TTask, TResult&gt;
 
 	<ul class="classTree">
 	<li>
@@ -509,6 +533,20 @@
 			<a href="Dflydev.DotAccessData.DataInterface.html"><span title="Dflydev\DotAccessData\DataInterface">DataInterface</span></a>, 
 			<a href="ArrayAccess.html"><span title="ArrayAccess">ArrayAccess</span></a>&lt;string, mixed&gt;
 
+	</li>
+	<li>
+<a href="Error.html"><span>Error</span></a>
+
+		implements
+			<a href="Throwable.html"><span title="Throwable">Throwable</span></a>
+
+	<ul class="classTree">
+	<li>
+<a href="Nette.MemberAccessException.html"><span>Nette\MemberAccessException</span></a>
+
+
+	</li>
+	</ul>
 	</li>
 	<li>
 <a href="Exception.html"><span>Exception</span></a>
@@ -551,6 +589,47 @@
 <a href="InvalidArgumentException.html"><span>InvalidArgumentException</span></a>
 
 
+	<ul class="classTree">
+	<li>
+<a href="Nette.ArgumentOutOfRangeException.html"><span>Nette\ArgumentOutOfRangeException</span></a>
+
+
+	</li>
+	<li>
+<a href="Nette.InvalidArgumentException.html"><span>Nette\InvalidArgumentException</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	<li>
+<a href="Nette.NotImplementedException.html"><span>Nette\NotImplementedException</span></a>
+
+
+	</li>
+	<li>
+<a href="Nette.NotSupportedException.html"><span>Nette\NotSupportedException</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="Nette.DeprecatedException.html"><span>Nette\DeprecatedException</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	<li>
+<a href="OutOfRangeException.html"><span>OutOfRangeException</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="Nette.OutOfRangeException.html"><span>Nette\OutOfRangeException</span></a>
+
+
+	</li>
+	</ul>
 	</li>
 	</ul>
 	</li>
@@ -584,9 +663,65 @@
 
 	</li>
 	<li>
+<a href="Nette.InvalidStateException.html"><span>Nette\InvalidStateException</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="Nette.DI.InvalidConfigurationException.html"><span>Nette\DI\InvalidConfigurationException</span></a>
+
+
+	</li>
+	<li>
+<a href="Nette.DI.MissingServiceException.html"><span>Nette\DI\MissingServiceException</span></a>
+
+
+	</li>
+	<li>
+<a href="Nette.DI.NotAllowedDuringResolvingException.html"><span>Nette\DI\NotAllowedDuringResolvingException</span></a>
+
+
+	</li>
+	<li>
+<a href="Nette.DI.ServiceCreationException.html"><span>Nette\DI\ServiceCreationException</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	<li>
+<a href="Nette.IOException.html"><span>Nette\IOException</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="Nette.DirectoryNotFoundException.html"><span>Nette\DirectoryNotFoundException</span></a>
+
+
+	</li>
+	<li>
+<a href="Nette.FileNotFoundException.html"><span>Nette\FileNotFoundException</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	<li>
 <a href="PhpParser.Error.html"><span>PhpParser\Error</span></a>
 
 
+	</li>
+	<li>
+<a href="UnexpectedValueException.html"><span>UnexpectedValueException</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="Nette.UnexpectedValueException.html"><span>Nette\UnexpectedValueException</span></a>
+
+
+	</li>
+	</ul>
 	</li>
 	</ul>
 	</li>
@@ -935,6 +1070,13 @@
 <a href="League.CommonMark.Parser.CursorState.html"><span>League\CommonMark\Parser\CursorState</span></a>
 
 
+	</li>
+	<li>
+<a href="Nette.DI.Container.html"><span>Nette\DI\Container</span></a>
+
+
+		uses
+			<a href="Nette.SmartObject.html"><span title="Nette\SmartObject">SmartObject</span></a>
 	</li>
 	<li>
 <a href="PhpParser.Comment.html"><span>PhpParser\Comment</span></a>
@@ -1372,21 +1514,6 @@
 	</ul>
 	</li>
 	<li>
-<a href="SplFileInfo.html"><span>SplFileInfo</span></a>
-
-
-	<ul class="classTree">
-	<li>
-<a href="SplFileObject.html"><span>SplFileObject</span></a>
-
-		implements
-			<a href="RecursiveIterator.html"><span title="RecursiveIterator">RecursiveIterator</span></a>, 
-			<a href="SeekableIterator.html"><span title="SeekableIterator">SeekableIterator</span></a>
-
-	</li>
-	</ul>
-	</li>
-	<li>
 <a href="stdClass.html"><span>stdClass</span></a>
 
 
@@ -1409,6 +1536,13 @@
 			<h3>Interfaces</h3>
 	<ul class="classTree">
 	<li>
+<a href="ApiGen.Analyzer.AnalyzeTaskHandlerFactory.html"><span>ApiGen\Analyzer\AnalyzeTaskHandlerFactory</span></a>
+		extends
+			<a href="ApiGen.Task.TaskHandlerFactory.html"><span title="ApiGen\Task\TaskHandlerFactory">TaskHandlerFactory</span></a>&lt;null, <a href="ApiGen.Analyzer.AnalyzeTaskHandler.html"><span title="ApiGen\Analyzer\AnalyzeTaskHandler">AnalyzeTaskHandler</span></a>&gt;
+
+
+	</li>
+	<li>
 <a href="ApiGen.Info.ElementInfo.html"><span>ApiGen\Info\ElementInfo</span></a>
 
 
@@ -1424,6 +1558,13 @@
 
 	</li>
 	<li>
+<a href="ApiGen.Renderer.Latte.LatteRenderTaskHandlerFactory.html"><span>ApiGen\Renderer\Latte\LatteRenderTaskHandlerFactory</span></a>
+		extends
+			<a href="ApiGen.Task.TaskHandlerFactory.html"><span title="ApiGen\Task\TaskHandlerFactory">TaskHandlerFactory</span></a>&lt;<a href="ApiGen.Renderer.Latte.LatteRenderTaskContext.html"><span title="ApiGen\Renderer\Latte\LatteRenderTaskContext">LatteRenderTaskContext</span></a>, <a href="ApiGen.Renderer.Latte.LatteRenderTaskHandler.html"><span title="ApiGen\Renderer\Latte\LatteRenderTaskHandler">LatteRenderTaskHandler</span></a>&gt;
+
+
+	</li>
+	<li>
 <a href="ApiGen.Scheduler.html"><span>ApiGen\Scheduler</span></a>
 
 
@@ -1435,6 +1576,11 @@
 	</li>
 	<li>
 <a href="ApiGen.Task.TaskHandler.html"><span>ApiGen\Task\TaskHandler</span></a>
+
+
+	</li>
+	<li>
+<a href="ApiGen.Task.TaskHandlerFactory.html"><span>ApiGen\Task\TaskHandlerFactory</span></a>
 
 
 	</li>
@@ -1583,20 +1729,6 @@
 
 	</li>
 	<li>
-<a href="RecursiveIterator.html"><span>RecursiveIterator</span></a>
-		extends
-			<a href="Iterator.html"><span title="Iterator">Iterator</span></a>
-
-
-	</li>
-	<li>
-<a href="SeekableIterator.html"><span>SeekableIterator</span></a>
-		extends
-			<a href="Iterator.html"><span title="Iterator">Iterator</span></a>
-
-
-	</li>
-	<li>
 <a href="Serializable.html"><span>Serializable</span></a>
 
 
@@ -1678,6 +1810,11 @@
 
 	</li>
 	<li>
+<a href="Nette.SmartObject.html"><span>Nette\SmartObject</span></a>
+
+
+	</li>
+	<li>
 <a href="PHPStan.PhpDocParser.Ast.NodeAttributes.html"><span>PHPStan\PhpDocParser\Ast\NodeAttributes</span></a>
 
 
@@ -1702,6 +1839,13 @@
 	</li>
 	<li>
 <a href="ApiGen.Info.GenericParameterVariance.html"><span>ApiGen\Info\GenericParameterVariance</span></a>
+
+		implements
+			<a href="UnitEnum.html"><span title="UnitEnum">UnitEnum</span></a>
+
+	</li>
+	<li>
+<a href="ApiGen.Renderer.Latte.LatteRenderTaskType.html"><span>ApiGen\Renderer\Latte\LatteRenderTaskType</span></a>
 
 		implements
 			<a href="UnitEnum.html"><span title="UnitEnum">UnitEnum</span></a>

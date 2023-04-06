@@ -19,8 +19,10 @@
 
 			<url><loc>ApiGen.Analyzer.html</loc></url>
 			<url><loc>ApiGen.Analyzer.AnalyzeResult.html</loc></url>
+			<url><loc>ApiGen.Analyzer.AnalyzeState.html</loc></url>
 			<url><loc>ApiGen.Analyzer.AnalyzeTask.html</loc></url>
 			<url><loc>ApiGen.Analyzer.AnalyzeTaskHandler.html</loc></url>
+			<url><loc>ApiGen.Analyzer.AnalyzeTaskHandlerFactory.html</loc></url>
 			<url><loc>ApiGen.Analyzer.Filter.html</loc></url>
 			<url><loc>ApiGen.Analyzer.IdentifierKind.html</loc></url>
 			<url><loc>ApiGen.Analyzer.NameContextFrame.html</loc></url>
@@ -86,6 +88,11 @@
 			<url><loc>ApiGen.Renderer.Latte.LatteFunctions.html</loc></url>
 			<url><loc>ApiGen.Renderer.Latte.LattePreNode.html</loc></url>
 			<url><loc>ApiGen.Renderer.Latte.LatteRenderer.html</loc></url>
+			<url><loc>ApiGen.Renderer.Latte.LatteRenderTask.html</loc></url>
+			<url><loc>ApiGen.Renderer.Latte.LatteRenderTaskContext.html</loc></url>
+			<url><loc>ApiGen.Renderer.Latte.LatteRenderTaskHandler.html</loc></url>
+			<url><loc>ApiGen.Renderer.Latte.LatteRenderTaskHandlerFactory.html</loc></url>
+			<url><loc>ApiGen.Renderer.Latte.LatteRenderTaskType.html</loc></url>
 			<url><loc>ApiGen.Renderer.Latte.Template.ClassLikeTemplate.html</loc></url>
 			<url><loc>ApiGen.Renderer.Latte.Template.ConfigParameters.html</loc></url>
 			<url><loc>ApiGen.Renderer.Latte.Template.FunctionTemplate.html</loc></url>
@@ -105,12 +112,15 @@
 			<url><loc>ApiGen.Scheduler.WorkerScheduler.html</loc></url>
 			<url><loc>ApiGen.Task.Task.html</loc></url>
 			<url><loc>ApiGen.Task.TaskHandler.html</loc></url>
+			<url><loc>ApiGen.Task.TaskHandlerFactory.html</loc></url>
 
 
 			<url><loc>source-Analyzer.html</loc></url>
 			<url><loc>source-Analyzer.AnalyzeResult.html</loc></url>
+			<url><loc>source-Analyzer.AnalyzeState.html</loc></url>
 			<url><loc>source-Analyzer.AnalyzeTask.html</loc></url>
 			<url><loc>source-Analyzer.AnalyzeTaskHandler.html</loc></url>
+			<url><loc>source-Analyzer.AnalyzeTaskHandlerFactory.html</loc></url>
 			<url><loc>source-Analyzer.Filter.html</loc></url>
 			<url><loc>source-Analyzer.IdentifierKind.html</loc></url>
 			<url><loc>source-Analyzer.NameContextFrame.html</loc></url>
@@ -175,6 +185,11 @@
 			<url><loc>source-Renderer.Latte.LatteExtension.html</loc></url>
 			<url><loc>source-Renderer.Latte.LatteFunctions.html</loc></url>
 			<url><loc>source-Renderer.Latte.LattePreNode.html</loc></url>
+			<url><loc>source-Renderer.Latte.LatteRenderTask.html</loc></url>
+			<url><loc>source-Renderer.Latte.LatteRenderTaskContext.html</loc></url>
+			<url><loc>source-Renderer.Latte.LatteRenderTaskHandler.html</loc></url>
+			<url><loc>source-Renderer.Latte.LatteRenderTaskHandlerFactory.html</loc></url>
+			<url><loc>source-Renderer.Latte.LatteRenderTaskType.html</loc></url>
 			<url><loc>source-Renderer.Latte.LatteRenderer.html</loc></url>
 			<url><loc>source-Renderer.Latte.Template.ClassLikeTemplate.html</loc></url>
 			<url><loc>source-Renderer.Latte.Template.ConfigParameters.html</loc></url>
@@ -195,4 +210,5 @@
 			<url><loc>source-Scheduler.WorkerScheduler.html</loc></url>
 			<url><loc>source-Task.Task.html</loc></url>
 			<url><loc>source-Task.TaskHandler.html</loc></url>
+			<url><loc>source-Task.TaskHandlerFactory.html</loc></url>
 </urlset>

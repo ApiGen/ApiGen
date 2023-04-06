@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Interface SeekableIterator | ApiGen API</title>
+	<title>Class OutOfRangeException | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -59,16 +59,6 @@
 						</a>
 					</li>
 					<li>
-						<a href="SplFileInfo.html">
-							SplFileInfo
-						</a>
-					</li>
-					<li>
-						<a href="SplFileObject.html">
-							SplFileObject
-						</a>
-					</li>
-					<li>
 						<a href="SplQueue.html">
 							SplQueue
 						</a>
@@ -109,16 +99,6 @@
 						</a>
 					</li>
 					<li>
-						<a href="RecursiveIterator.html">
-							RecursiveIterator
-						</a>
-					</li>
-					<li class="active">
-						<a href="SeekableIterator.html">
-							SeekableIterator
-						</a>
-					</li>
-					<li>
 						<a href="Serializable.html">
 							Serializable
 						</a>
@@ -149,6 +129,11 @@
 			<h3>Exceptions</h3>
 			<ul>
 					<li>
+						<a href="Error.html">
+							Error
+						</a>
+					</li>
+					<li>
 						<a href="Exception.html">
 							Exception
 						</a>
@@ -163,9 +148,19 @@
 							LogicException
 						</a>
 					</li>
+					<li class="active">
+						<a href="OutOfRangeException.html">
+							OutOfRangeException
+						</a>
+					</li>
 					<li>
 						<a href="RuntimeException.html">
 							RuntimeException
+						</a>
+					</li>
+					<li>
+						<a href="UnexpectedValueException.html">
+							UnexpectedValueException
 						</a>
 					</li>
 			</ul>
@@ -186,7 +181,7 @@
 						<a href="namespace-none.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="SeekableIterator.html">Interface</a></li>				<li>
+<li class="active"><a href="OutOfRangeException.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -202,15 +197,18 @@
 
 		<div class="layout-content">
 		<h1>
-			Interface <a href="SeekableIterator.html">SeekableIterator</a>
+			Class <a href="OutOfRangeException.html">OutOfRangeException</a>
 		</h1>
 
 
 	<table class="classLikeSignatureTable">
+
+
+
 		<tr>
 			<th><code>extends</code></th>
 			<td>
-<code><a href="Iterator.html"><span title="Iterator">Iterator</span></a></code>			</td>
+<code><a href="LogicException.html"><span title="LogicException">LogicException</span></a></code>			</td>
 		</tr>
 
 	</table>
@@ -218,19 +216,30 @@
 			<div class="classLikeSection">
 	<ul class="classTree">
 	<li>
-<b><span class="active">SeekableIterator</span></b>
-		extends
-			<a href="Iterator.html"><span title="Iterator">Iterator</span></a>
+<a href="Exception.html"><span>Exception</span></a>
+
+		implements
+			<a href="Throwable.html"><span title="Throwable">Throwable</span></a>
+
+	<ul class="classTree">
+	<li>
+<a href="LogicException.html"><span>LogicException</span></a>
 
 
 	<ul class="classTree">
 	<li>
-<a href="SplFileObject.html"><span>SplFileObject</span></a>
+<b><span class="active">OutOfRangeException</span></b>
 
-		implements
-			<a href="RecursiveIterator.html"><span title="RecursiveIterator">RecursiveIterator</span></a>, 
-			<b><span class="active" title="SeekableIterator">SeekableIterator</span></b>
 
+	<ul class="classTree">
+	<li>
+<a href="Nette.OutOfRangeException.html"><span>Nette\OutOfRangeException</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
 	</li>
 	</ul>
 	</li>
@@ -243,52 +252,29 @@
 
 
 
-		<table class="table" id="methods">
-			<tr>
-				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
-			</tr>
 
-	<tr class="expandable collapsed" data-order="seek" id="_seek">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>seek(<span>int <var>$offset</var></span>): void</code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-
-		<h4>Implemented by</h4>
-		<ul>
-				<li>
-<a href="SplFileObject.html#_seek">						<code>SplFileObject::seek()</code></a>				</li>
-		</ul>
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_seek">#</a>
-		</td>
-	</tr>
-		</table>
 		<table class="table">
 			<tr>
-				<th class="table-heading">Methods inherited from <a href="Iterator.html"><span>Iterator</span></a></th>
+				<th class="table-heading">Methods inherited from <a href="Exception.html"><span>Exception</span></a></th>
 			</tr>
 			<tr>
 				<td class="table-cell">
-<code><a href="Iterator.html#_current">current()</a>, <a href="Iterator.html#_next">next()</a>, <a href="Iterator.html#_key">key()</a>, <a href="Iterator.html#_valid">valid()</a>, <a href="Iterator.html#_rewind">rewind()</a></code>				</td>
+<code><a href="Exception.html#___construct">__construct()</a>, <a href="Exception.html#___wakeup">__wakeup()</a>, <a href="Exception.html#_getMessage">getMessage()</a>, <a href="Exception.html#_getCode">getCode()</a>, <a href="Exception.html#_getFile">getFile()</a>, <a href="Exception.html#_getLine">getLine()</a>, <a href="Exception.html#_getTrace">getTrace()</a>, <a href="Exception.html#_getPrevious">getPrevious()</a>, <a href="Exception.html#_getTraceAsString">getTraceAsString()</a>, <a href="Exception.html#___toString">__toString()</a></code>				</td>
 			</tr>
 		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

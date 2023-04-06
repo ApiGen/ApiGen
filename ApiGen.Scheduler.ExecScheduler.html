@@ -107,7 +107,7 @@
 			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>\<a href="ApiGen.Scheduler.ExecScheduler.html">ExecScheduler</a>
 		</h1>
 
-			<h2><code>&lt;<span title="">T</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R</span>&gt;</code></h2>
+			<h2><code>&lt;<span title="">TTask</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">TResult</span>, <span title="">TContext</span>&gt;</code></h2>
 
 	<table class="classLikeSignatureTable">
 
@@ -116,7 +116,7 @@
 		<tr>
 			<th><code>extends</code></th>
 			<td>
-<code><a href="ApiGen.Scheduler.WorkerScheduler.html"><span title="ApiGen\Scheduler\WorkerScheduler">WorkerScheduler</span></a>&lt;T, R&gt;</code>			</td>
+<code><a href="ApiGen.Scheduler.WorkerScheduler.html"><span title="ApiGen\Scheduler\WorkerScheduler">WorkerScheduler</span></a>&lt;TTask, TResult&gt;</code>			</td>
 		</tr>
 
 	</table>
@@ -127,7 +127,7 @@
 <a href="ApiGen.Scheduler.WorkerScheduler.html"><span>ApiGen\Scheduler\WorkerScheduler</span></a>
 
 		implements
-			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;
+			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;TTask, TResult&gt;
 
 	<ul class="classTree">
 	<li>
@@ -141,7 +141,7 @@
 			</div>
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-Scheduler.ExecScheduler.html#24" title="Go to source code">Scheduler/ExecScheduler.php</a><br>
+			<b>Located at</b> <a href="source-Scheduler.ExecScheduler.html#27" title="Go to source code">Scheduler/ExecScheduler.php</a><br>
 		</div>
 
 
@@ -162,7 +162,12 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.ExecScheduler.html#30-38" title="Go to source code">__construct</a>(<span>class-string&lt;<a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T, R&gt;&gt; <var>$handlerClass</var></span>, <span>int <var>$workerCount</var></span>)</code>
+				<code><a href="source-Scheduler.ExecScheduler.html#33-45" title="Go to source code">__construct</a>(
+	<span>class-string&lt;<a href="Nette.DI.Container.html"><span title="Nette\DI\Container">Container</span></a>&gt; <var>$containerClass</var></span>,
+	<span>class-string&lt;<a href="ApiGen.Task.TaskHandlerFactory.html"><span title="ApiGen\Task\TaskHandlerFactory">TaskHandlerFactory</span></a>&lt;TContext, <a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;TTask, TResult&gt;&gt;&gt; <var>$handlerFactoryClass</var></span>,
+	<span>TContext <var>$context</var></span>,
+	<span>int <var>$workerCount</var></span>,
+)</code>
 
 
 
@@ -193,7 +198,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.ExecScheduler.html#41-69" title="Go to source code">start</a>(): void</code>
+				<code><a href="source-Scheduler.ExecScheduler.html#48-77" title="Go to source code">start</a>(): void</code>
 
 
 
@@ -224,7 +229,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.ExecScheduler.html#72-79" title="Go to source code">stop</a>(): void</code>
+				<code><a href="source-Scheduler.ExecScheduler.html#80-87" title="Go to source code">stop</a>(): void</code>
 
 
 
@@ -251,7 +256,7 @@
 			</tr>
 			<tr>
 				<td class="table-cell">
-<code><a href="ApiGen.Scheduler.WorkerScheduler.html#_writeMessage">writeMessage()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_readMessage">readMessage()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_workerLoop">workerLoop()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_schedule">schedule()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_results">results()</a>, </code>				</td>
+<code><a href="ApiGen.Scheduler.WorkerScheduler.html#_writeMessage">writeMessage()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_readMessage">readMessage()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_workerLoop">workerLoop()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_schedule">schedule()</a>, <a href="ApiGen.Scheduler.WorkerScheduler.html#_process">process()</a>, </code>				</td>
 			</tr>
 		</table>
 
@@ -296,7 +301,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Scheduler.ExecScheduler.html#26-27" title="Go to source code">$workers</a></var> = []</code>
+<code><var><a href="source-Scheduler.ExecScheduler.html#29-30" title="Go to source code">$workers</a></var> = []</code>
 				
 	<div class="expandable-collapsedView">
 		indexed by [workerId]
@@ -311,7 +316,7 @@
 			<a href="#$workers">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="handlerClass" id="$handlerClass">
+	<tr class="expandable collapsed" data-order="containerClass" id="$containerClass">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	protected
@@ -321,18 +326,66 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">class-string&lt;<a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T, R&gt;&gt;</code>
+				<code class="nowrap">class-string&lt;<a href="Nette.DI.Container.html"><span title="Nette\DI\Container">Container</span></a>&gt;</code>
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Scheduler.ExecScheduler.html#34" title="Go to source code">$handlerClass</a></var></code>
+<code><var><a href="source-Scheduler.ExecScheduler.html#39" title="Go to source code">$containerClass</a></var></code>
 				
 
 	<div class="expandable-expandedView">
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$handlerClass">#</a>
+			<a href="#$containerClass">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="handlerFactoryClass" id="$handlerFactoryClass">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">class-string&lt;<a href="ApiGen.Task.TaskHandlerFactory.html"><span title="ApiGen\Task\TaskHandlerFactory">TaskHandlerFactory</span></a>&lt;TContext, <a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;TTask, TResult&gt;&gt;&gt;</code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Scheduler.ExecScheduler.html#40" title="Go to source code">$handlerFactoryClass</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$handlerFactoryClass">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="context" id="$context">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">TContext</code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Scheduler.ExecScheduler.html#41" title="Go to source code">$context</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$context">#</a>
 		</td>
 	</tr>
 		</table>

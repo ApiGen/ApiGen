@@ -137,7 +137,7 @@
 
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-Analyzer.html#22" title="Go to source code">Analyzer.php</a><br>
+			<b>Located at</b> <a href="source-Analyzer.html#23" title="Go to source code">Analyzer.php</a><br>
 		</div>
 
 
@@ -158,10 +158,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.html#24-31" title="Go to source code">__construct</a>(
-	<span><a href="ApiGen.Locator.html"><span title="ApiGen\Locator">Locator</span></a> <var>$locator</var></span>,
-	<span><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;<a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a>, array&lt;<a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>|<a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>|<a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a>&gt;&gt; <var>$scheduler</var></span>,
-)</code>
+				<code><a href="source-Analyzer.html#25-29" title="Go to source code">__construct</a>(<span><a href="ApiGen.Scheduler.SchedulerFactory.html"><span title="ApiGen\Scheduler\SchedulerFactory">SchedulerFactory</span></a> <var>$schedulerFactory</var></span>, <span><a href="ApiGen.Locator.html"><span title="ApiGen\Locator">Locator</span></a> <var>$locator</var></span>)</code>
 
 
 
@@ -187,7 +184,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.html#34-129" title="Go to source code">analyze</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span>string[] <var>$files</var></span>): <a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a></code>
+				<code><a href="source-Analyzer.html#32-60" title="Go to source code">analyze</a>(<span><a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a> <var>$progressBar</var></span>, <span>string[] <var>$files</var></span>): <a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a></code>
 
 
 
@@ -210,6 +207,188 @@
 			<a href="#_analyze">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="scheduleFile" id="_scheduleFile">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.html#63-74" title="Go to source code">scheduleFile</a>(<span><a href="ApiGen.Analyzer.AnalyzeState.html"><span title="ApiGen\Analyzer\AnalyzeState">AnalyzeState</span></a> <var>$state</var></span>, <span>string <var>$file</var></span>, <span>bool <var>$primary</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_scheduleFile">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="processTaskResult" id="_processTaskResult">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.html#77-90" title="Go to source code">processTaskResult</a>(<span>array&lt;<a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>|<a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>|<a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a>&gt; <var>$result</var></span>, <span><a href="ApiGen.Analyzer.AnalyzeState.html"><span title="ApiGen\Analyzer\AnalyzeState">AnalyzeState</span></a> <var>$state</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_processTaskResult">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="processClassLikeReference" id="_processClassLikeReference">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.html#93-103" title="Go to source code">processClassLikeReference</a>(<span><a href="ApiGen.Analyzer.AnalyzeState.html"><span title="ApiGen\Analyzer\AnalyzeState">AnalyzeState</span></a> <var>$state</var></span>, <span><a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a> <var>$info</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_processClassLikeReference">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="processClassLike" id="_processClassLike">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.html#106-118" title="Go to source code">processClassLike</a>(<span><a href="ApiGen.Analyzer.AnalyzeState.html"><span title="ApiGen\Analyzer\AnalyzeState">AnalyzeState</span></a> <var>$state</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a> <var>$info</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_processClassLike">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="processFunction" id="_processFunction">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.html#121-132" title="Go to source code">processFunction</a>(<span><a href="ApiGen.Analyzer.AnalyzeState.html"><span title="ApiGen\Analyzer\AnalyzeState">AnalyzeState</span></a> <var>$state</var></span>, <span><a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_processFunction">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="processError" id="_processError">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.html#135-139" title="Go to source code">processError</a>(<span><a href="ApiGen.Analyzer.AnalyzeState.html"><span title="ApiGen\Analyzer\AnalyzeState">AnalyzeState</span></a> <var>$state</var></span>, <span><a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a> <var>$info</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_processError">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="createMissingSymbolError" id="_createMissingSymbolError">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Analyzer.html#142-148" title="Go to source code">createMissingSymbolError</a>(<span><a href="ApiGen.Info.MissingInfo.html"><span title="ApiGen\Info\MissingInfo">MissingInfo</span></a> <var>$dependency</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$referencedBy</var></span>): <a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_createMissingSymbolError">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="createDuplicateSymbolError" id="_createDuplicateSymbolError">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -221,7 +400,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Analyzer.html#132-139" title="Go to source code">createDuplicateSymbolError</a>(<span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$first</var></span>): <a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a></code>
+				<code><a href="source-Analyzer.html#151-158" title="Go to source code">createDuplicateSymbolError</a>(<span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$info</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a> <var>$first</var></span>): <a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a></code>
 
 
 
@@ -248,6 +427,30 @@
 				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
 
+	<tr class="expandable collapsed" data-order="schedulerFactory" id="$schedulerFactory">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Scheduler.SchedulerFactory.html"><span title="ApiGen\Scheduler\SchedulerFactory">SchedulerFactory</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Analyzer.html#26" title="Go to source code">$schedulerFactory</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$schedulerFactory">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="locator" id="$locator">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -262,7 +465,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Analyzer.html#28" title="Go to source code">$locator</a></var></code>
+<code><var><a href="source-Analyzer.html#27" title="Go to source code">$locator</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -270,30 +473,6 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#$locator">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="scheduler" id="$scheduler">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;<a href="ApiGen.Analyzer.AnalyzeTask.html"><span title="ApiGen\Analyzer\AnalyzeTask">AnalyzeTask</span></a>, array&lt;<a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a>|<a href="ApiGen.Info.FunctionInfo.html"><span title="ApiGen\Info\FunctionInfo">FunctionInfo</span></a>|<a href="ApiGen.Info.ClassLikeReferenceInfo.html"><span title="ApiGen\Info\ClassLikeReferenceInfo">ClassLikeReferenceInfo</span></a>|<a href="ApiGen.Info.ErrorInfo.html"><span title="ApiGen\Info\ErrorInfo">ErrorInfo</span></a>&gt;&gt;</code>
-			</td>
-
-			<td class="table-cell">
-<code><var><a href="source-Analyzer.html#29" title="Go to source code">$scheduler</a></var></code>
-				
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$scheduler">#</a>
 		</td>
 	</tr>
 		</table>

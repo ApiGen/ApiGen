@@ -55,6 +55,11 @@
 							TaskHandler
 						</a>
 					</li>
+					<li>
+						<a href="ApiGen.Task.TaskHandlerFactory.html">
+							TaskHandlerFactory
+						</a>
+					</li>
 			</ul>
 		</div>
 	</div>
@@ -92,7 +97,7 @@
 			Interface <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Task.html">Task</a>\<a href="ApiGen.Task.TaskHandler.html">TaskHandler</a>
 		</h1>
 
-			<h2><code>&lt;<span title="">T</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R</span>&gt;</code></h2>
+			<h2><code>&lt;<span title="contravariant">in</span> <span title="">T</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="covariant">out</span> <span title="">R</span>&gt;</code></h2>
 
 	<table class="classLikeSignatureTable">
 
@@ -105,6 +110,13 @@
 
 
 	<ul class="classTree">
+	<li>
+<a href="ApiGen.Renderer.Latte.LatteRenderTaskHandler.html"><span>ApiGen\Renderer\Latte\LatteRenderTaskHandler</span></a>
+
+		implements
+			<b><span class="active" title="ApiGen\Task\TaskHandler">TaskHandler</span></b>&lt;<a href="ApiGen.Renderer.Latte.LatteRenderTask.html"><span title="ApiGen\Renderer\Latte\LatteRenderTask">LatteRenderTask</span></a>, string&gt;
+
+	</li>
 	<li>
 <a href="ApiGen.Analyzer.AnalyzeTaskHandler.html"><span>ApiGen\Analyzer\AnalyzeTaskHandler</span></a>
 
@@ -150,6 +162,8 @@
 
 		<h4>Implemented by</h4>
 		<ul>
+				<li>
+<a href="ApiGen.Renderer.Latte.LatteRenderTaskHandler.html#_handle">						<code>ApiGen\Renderer\Latte\LatteRenderTaskHandler::handle()</code></a>				</li>
 				<li>
 <a href="ApiGen.Analyzer.AnalyzeTaskHandler.html#_handle">						<code>ApiGen\Analyzer\AnalyzeTaskHandler::handle()</code></a>				</li>
 		</ul>

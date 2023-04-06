@@ -137,7 +137,7 @@
 
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-ApiGen.html#21" title="Go to source code">ApiGen.php</a><br>
+			<b>Located at</b> <a href="source-ApiGen.html#23" title="Go to source code">ApiGen.php</a><br>
 		</div>
 
 
@@ -158,7 +158,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-ApiGen.html#23-37" title="Go to source code">__construct</a>(
+				<code><a href="source-ApiGen.html#25-39" title="Go to source code">__construct</a>(
 	<span><a href="Symfony.Component.Console.Style.OutputStyle.html"><span title="Symfony\Component\Console\Style\OutputStyle">OutputStyle</span></a> <var>$output</var></span>,
 	<span><a href="ApiGen.Analyzer.html"><span title="ApiGen\Analyzer">Analyzer</span></a> <var>$analyzer</var></span>,
 	<span><a href="ApiGen.Indexer.html"><span title="ApiGen\Indexer">Indexer</span></a> <var>$indexer</var></span>,
@@ -210,7 +210,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-ApiGen.html#40-58" title="Go to source code">generate</a>(): void</code>
+				<code><a href="source-ApiGen.html#42-60" title="Go to source code">generate</a>(): bool</code>
 
 
 
@@ -236,7 +236,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-ApiGen.html#61-105" title="Go to source code">findFiles</a>(): string[]</code>
+				<code><a href="source-ApiGen.html#63-107" title="Go to source code">findFiles</a>(): string[]</code>
 
 
 
@@ -265,7 +265,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-ApiGen.html#108-126" title="Go to source code">analyze</a>(<span>string[] <var>$files</var></span>): <a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a></code>
+				<code><a href="source-ApiGen.html#110-126" title="Go to source code">analyze</a>(<span>string[] <var>$files</var></span>): <a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a></code>
 
 
 
@@ -325,7 +325,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-ApiGen.html#150-163" title="Go to source code">render</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>): void</code>
+				<code><a href="source-ApiGen.html#150-161" title="Go to source code">render</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>): void</code>
 
 
 
@@ -340,6 +340,32 @@
 			<a href="#_render">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="createProgressBar" id="_createProgressBar">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-ApiGen.html#164-173" title="Go to source code">createProgressBar</a>(<span>string <var>$label</var></span>): <a href="Symfony.Component.Console.Helper.ProgressBar.html"><span title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_createProgressBar">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="performance" id="_performance">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -351,7 +377,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-ApiGen.html#166-180" title="Go to source code">performance</a>(<span>float <var>$analyzeTime</var></span>, <span>float <var>$indexTime</var></span>, <span>float <var>$renderTime</var></span>): void</code>
+				<code><a href="source-ApiGen.html#176-190" title="Go to source code">performance</a>(<span>float <var>$analyzeTime</var></span>, <span>float <var>$indexTime</var></span>, <span>float <var>$renderTime</var></span>): void</code>
 
 
 
@@ -377,7 +403,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-ApiGen.html#183-203" title="Go to source code">finish</a>(<span><a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a> <var>$analyzeResult</var></span>): void</code>
+				<code><a href="source-ApiGen.html#193-226" title="Go to source code">finish</a>(<span><a href="ApiGen.Analyzer.AnalyzeResult.html"><span title="ApiGen\Analyzer\AnalyzeResult">AnalyzeResult</span></a> <var>$analyzeResult</var></span>): bool</code>
 
 
 
@@ -418,7 +444,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-ApiGen.html#29" title="Go to source code">$output</a></var></code>
+<code><var><a href="source-ApiGen.html#31" title="Go to source code">$output</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -442,7 +468,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-ApiGen.html#30" title="Go to source code">$analyzer</a></var></code>
+<code><var><a href="source-ApiGen.html#32" title="Go to source code">$analyzer</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -466,7 +492,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-ApiGen.html#31" title="Go to source code">$indexer</a></var></code>
+<code><var><a href="source-ApiGen.html#33" title="Go to source code">$indexer</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -490,7 +516,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-ApiGen.html#32" title="Go to source code">$renderer</a></var></code>
+<code><var><a href="source-ApiGen.html#34" title="Go to source code">$renderer</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -514,7 +540,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-ApiGen.html#33" title="Go to source code">$paths</a></var></code>
+<code><var><a href="source-ApiGen.html#35" title="Go to source code">$paths</a></var></code>
 				
 	<div class="expandable-collapsedView">
 		indexed by []
@@ -543,7 +569,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-ApiGen.html#34" title="Go to source code">$include</a></var></code>
+<code><var><a href="source-ApiGen.html#36" title="Go to source code">$include</a></var></code>
 				
 	<div class="expandable-collapsedView">
 		indexed by []
@@ -572,7 +598,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-ApiGen.html#35" title="Go to source code">$exclude</a></var></code>
+<code><var><a href="source-ApiGen.html#37" title="Go to source code">$exclude</a></var></code>
 				
 	<div class="expandable-collapsedView">
 		indexed by []

@@ -107,7 +107,7 @@
 			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>\<a href="ApiGen.Scheduler.SimpleScheduler.html">SimpleScheduler</a>
 		</h1>
 
-			<h2><code>&lt;<span title="">T</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R</span>&gt;</code></h2>
+			<h2><code>&lt;<span title="">TTask</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">TResult</span>&gt;</code></h2>
 
 	<table class="classLikeSignatureTable">
 
@@ -116,7 +116,7 @@
 		<tr>
 			<th><code>implements</code></th>
 			<td>
-<code><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;</code>			</td>
+<code><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;TTask, TResult&gt;</code>			</td>
 		</tr>
 
 	</table>
@@ -144,7 +144,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.SimpleScheduler.html#22-29" title="Go to source code">__construct</a>(<span><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T, R&gt; <var>$handler</var></span>)</code>
+				<code><a href="source-Scheduler.SimpleScheduler.html#22-29" title="Go to source code">__construct</a>(<span><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;TTask, TResult&gt; <var>$handler</var></span>)</code>
 
 
 
@@ -170,7 +170,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.SimpleScheduler.html#32-35" title="Go to source code">schedule</a>(<span><a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a> <var>$task</var></span>): void</code>
+				<code><a href="source-Scheduler.SimpleScheduler.html#32-38" title="Go to source code">schedule</a>(<span>TTask <var>$task</var></span>): void</code>
 
 
 
@@ -190,7 +190,7 @@
 			<a href="#_schedule">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="results" id="_results">
+	<tr class="expandable collapsed" data-order="process" id="_process">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -201,7 +201,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.SimpleScheduler.html#38-45" title="Go to source code">results</a>(): iterable</code>
+				<code><a href="source-Scheduler.SimpleScheduler.html#41-51" title="Go to source code">process</a>(): iterable&lt;TTask, TResult&gt;</code>
 
 
 
@@ -213,12 +213,12 @@
 		<h4>Implements</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.html#_results">						<code>ApiGen\Scheduler::results()</code></a>				</li>
+<a href="ApiGen.Scheduler.html#_process">						<code>ApiGen\Scheduler::process()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_results">#</a>
+			<a href="#_process">#</a>
 		</td>
 	</tr>
 		</table>
@@ -244,7 +244,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="SplQueue.html"><span title="SplQueue">SplQueue</span></a>&lt;T&gt;</code>
+				<code class="nowrap"><a href="SplQueue.html"><span title="SplQueue">SplQueue</span></a>&lt;TTask&gt;</code>
 			</td>
 
 			<td class="table-cell">
@@ -268,7 +268,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T, R&gt;</code>
+				<code class="nowrap"><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;TTask, TResult&gt;</code>
 			</td>
 
 			<td class="table-cell">

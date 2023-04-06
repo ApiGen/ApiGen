@@ -1,0 +1,673 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>Class ApiGen\Renderer\Latte\LatteRenderTaskHandler | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-ApiGen.Renderer.Latte.html">Latte</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.Latte.Template.html">Template</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Task.html">Task</a>
+			</li>
+	</ul>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteCascadingLoader.html">
+							LatteCascadingLoader
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteEngineFactory.html">
+							LatteEngineFactory
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteExtension.html">
+							LatteExtension
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteFunctions.html">
+							LatteFunctions
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LattePreNode.html">
+							LattePreNode
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteRenderer.html">
+							LatteRenderer
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteRenderTask.html">
+							LatteRenderTask
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteRenderTaskContext.html">
+							LatteRenderTaskContext
+						</a>
+					</li>
+					<li class="active">
+						<a href="ApiGen.Renderer.Latte.LatteRenderTaskHandler.html">
+							LatteRenderTaskHandler
+						</a>
+					</li>
+			</ul>
+		</div>
+		<div class="menu-section">
+			<h3>Interfaces</h3>
+			<ul>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteRenderTaskHandlerFactory.html">
+							LatteRenderTaskHandlerFactory
+						</a>
+					</li>
+			</ul>
+		</div>
+		<div class="menu-section">
+			<h3>Enums</h3>
+			<ul>
+					<li>
+						<a href="ApiGen.Renderer.Latte.LatteRenderTaskType.html">
+							LatteRenderTaskType
+						</a>
+					</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-ApiGen.Renderer.Latte.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="ApiGen.Renderer.Latte.LatteRenderTaskHandler.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Renderer.html">Renderer</a>\<a href="namespace-ApiGen.Renderer.Latte.html">Latte</a>\<a href="ApiGen.Renderer.Latte.LatteRenderTaskHandler.html">LatteRenderTaskHandler</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+<code><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;<a href="ApiGen.Renderer.Latte.LatteRenderTask.html"><span title="ApiGen\Renderer\Latte\LatteRenderTask">LatteRenderTask</span></a>, string&gt;</code>			</td>
+		</tr>
+
+	</table>
+
+
+		<div class="classLikeSection">
+			<b>Located at</b> <a href="source-Renderer.Latte.LatteRenderTaskHandler.html#35" title="Go to source code">Renderer/Latte/LatteRenderTaskHandler.php</a><br>
+		</div>
+
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#41-51" title="Go to source code">__construct</a>(<span><a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a> <var>$latte</var></span>, <span><a href="ApiGen.Renderer.UrlGenerator.html"><span title="ApiGen\Renderer\UrlGenerator">UrlGenerator</span></a> <var>$urlGenerator</var></span>, <span><a href="ApiGen.Renderer.Filter.html"><span title="ApiGen\Renderer\Filter">Filter</span></a> <var>$filter</var></span>, <span>string <var>$outputDir</var></span>, <span>mixed <var>$context</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="handle" id="_handle">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#54-72" title="Go to source code">handle</a>(<span><a href="ApiGen.Renderer.Latte.LatteRenderTask.html"><span title="ApiGen\Renderer\Latte\LatteRenderTask">LatteRenderTask</span></a> <var>$task</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="ApiGen.Task.TaskHandler.html#_handle">						<code>ApiGen\Task\TaskHandler::handle()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_handle">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="copyAsset" id="_copyAsset">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#75-81" title="Go to source code">copyAsset</a>(<span>string <var>$key</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_copyAsset">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderElementsJs" id="_renderElementsJs">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#84-127" title="Go to source code">renderElementsJs</a>(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderElementsJs">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderIndex" id="_renderIndex">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#130-137" title="Go to source code">renderIndex</a>(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderIndex">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderTree" id="_renderTree">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#140-147" title="Go to source code">renderTree</a>(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderTree">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderSitemap" id="_renderSitemap">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#150-156" title="Go to source code">renderSitemap</a>(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderSitemap">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderNamespace" id="_renderNamespace">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#159-169" title="Go to source code">renderNamespace</a>(<span>string <var>$key</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderNamespace">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderClassLike" id="_renderClassLike">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#172-183" title="Go to source code">renderClassLike</a>(<span>string <var>$key</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderClassLike">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderFunction" id="_renderFunction">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#186-197" title="Go to source code">renderFunction</a>(<span>string <var>$key</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderFunction">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderSource" id="_renderSource">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#200-212" title="Go to source code">renderSource</a>(<span>string <var>$key</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderSource">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="renderTemplate" id="_renderTemplate">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#215-222" title="Go to source code">renderTemplate</a>(<span>string <var>$outputPath</var></span>, <span>object <var>$template</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_renderTemplate">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="index" id="$index">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#37" title="Go to source code">$index</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$index">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="config" id="$config">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Renderer.Latte.Template.ConfigParameters.html"><span title="ApiGen\Renderer\Latte\Template\ConfigParameters">ConfigParameters</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#39" title="Go to source code">$config</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$config">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="latte" id="$latte">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="Latte.Engine.html"><span title="Latte\Engine">Engine</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#42" title="Go to source code">$latte</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$latte">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="urlGenerator" id="$urlGenerator">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Renderer.UrlGenerator.html"><span title="ApiGen\Renderer\UrlGenerator">UrlGenerator</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#43" title="Go to source code">$urlGenerator</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$urlGenerator">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filter" id="$filter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="ApiGen.Renderer.Filter.html"><span title="ApiGen\Renderer\Filter">Filter</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#44" title="Go to source code">$filter</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$filter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="outputDir" id="$outputDir">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string</code>
+			</td>
+
+			<td class="table-cell">
+<code><var><a href="source-Renderer.Latte.LatteRenderTaskHandler.html#45" title="Go to source code">$outputDir</a></var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$outputDir">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>

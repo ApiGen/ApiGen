@@ -107,7 +107,7 @@
 			Class <a href="namespace-ApiGen.html">ApiGen</a>\<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>\<a href="ApiGen.Scheduler.WorkerScheduler.html">WorkerScheduler</a>
 		</h1>
 
-			<h2><code>&lt;<span title="">T</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R</span>&gt;</code></h2>
+			<h2><code>&lt;<span title="">TTask</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">TResult</span>&gt;</code></h2>
 
 	<table class="classLikeSignatureTable">
 			<tr><th><code>abstract</code></th></tr>
@@ -116,7 +116,7 @@
 		<tr>
 			<th><code>implements</code></th>
 			<td>
-<code><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;</code>			</td>
+<code><a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;TTask, TResult&gt;</code>			</td>
 		</tr>
 
 	</table>
@@ -127,16 +127,16 @@
 <b><span class="active">ApiGen\Scheduler\WorkerScheduler</span></b>
 
 		implements
-			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;T, R&gt;
+			<a href="ApiGen.Scheduler.html"><span title="ApiGen\Scheduler">Scheduler</span></a>&lt;TTask, TResult&gt;
 
 	<ul class="classTree">
 	<li>
-<a href="ApiGen.Scheduler.ExecScheduler.html"><span>ApiGen\Scheduler\ExecScheduler</span></a>
+<a href="ApiGen.Scheduler.ForkScheduler.html"><span>ApiGen\Scheduler\ForkScheduler</span></a>
 
 
 	</li>
 	<li>
-<a href="ApiGen.Scheduler.ForkScheduler.html"><span>ApiGen\Scheduler\ForkScheduler</span></a>
+<a href="ApiGen.Scheduler.ExecScheduler.html"><span>ApiGen\Scheduler\ExecScheduler</span></a>
 
 
 	</li>
@@ -179,9 +179,9 @@
 		<h4>Overriden by</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.ExecScheduler.html#___construct">						<code>ApiGen\Scheduler\ExecScheduler::__construct()</code></a>				</li>
-				<li>
 <a href="ApiGen.Scheduler.ForkScheduler.html#___construct">						<code>ApiGen\Scheduler\ForkScheduler::__construct()</code></a>				</li>
+				<li>
+<a href="ApiGen.Scheduler.ExecScheduler.html#___construct">						<code>ApiGen\Scheduler\ExecScheduler::__construct()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
@@ -226,7 +226,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.WorkerScheduler.html#73-89" title="Go to source code">readMessage</a>(<span>resource <var>$stream</var></span>): mixed</code>
+				<code><a href="source-Scheduler.WorkerScheduler.html#73-93" title="Go to source code">readMessage</a>(<span>resource <var>$stream</var></span>): mixed</code>
 
 
 
@@ -252,7 +252,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.WorkerScheduler.html#92-106" title="Go to source code">workerLoop</a>&lt;<span title="">T2</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R2</span>&gt;(<span><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T2, R2&gt; <var>$handler</var></span>, <span>resource <var>$inputStream</var></span>, <span>resource <var>$outputStream</var></span>): void</code>
+				<code><a href="source-Scheduler.WorkerScheduler.html#96-110" title="Go to source code">workerLoop</a>&lt;<span title="">T2</span> is <a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a>, <span title="">R2</span>&gt;(<span><a href="ApiGen.Task.TaskHandler.html"><span title="ApiGen\Task\TaskHandler">TaskHandler</span></a>&lt;T2, R2&gt; <var>$handler</var></span>, <span>resource <var>$inputStream</var></span>, <span>resource <var>$outputStream</var></span>): void</code>
 
 
 
@@ -278,7 +278,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.WorkerScheduler.html#109-113" title="Go to source code">schedule</a>(<span><a href="ApiGen.Task.Task.html"><span title="ApiGen\Task\Task">Task</span></a> <var>$task</var></span>): void</code>
+				<code><a href="source-Scheduler.WorkerScheduler.html#113-120" title="Go to source code">schedule</a>(<span>TTask <var>$task</var></span>): void</code>
 
 
 
@@ -298,7 +298,7 @@
 			<a href="#_schedule">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="results" id="_results">
+	<tr class="expandable collapsed" data-order="process" id="_process">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -309,7 +309,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.WorkerScheduler.html#116-156" title="Go to source code">results</a>(): iterable</code>
+				<code><a href="source-Scheduler.WorkerScheduler.html#123-166" title="Go to source code">process</a>(): iterable&lt;TTask, TResult&gt;</code>
 
 
 
@@ -321,12 +321,12 @@
 		<h4>Implements</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.html#_results">						<code>ApiGen\Scheduler::results()</code></a>				</li>
+<a href="ApiGen.Scheduler.html#_process">						<code>ApiGen\Scheduler::process()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_results">#</a>
+			<a href="#_process">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="start" id="_start">
@@ -340,7 +340,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.WorkerScheduler.html#159" title="Go to source code">start</a>(): void</code>
+				<code><a href="source-Scheduler.WorkerScheduler.html#169" title="Go to source code">start</a>(): void</code>
 
 
 
@@ -352,9 +352,9 @@
 		<h4>Implemented by</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.ExecScheduler.html#_start">						<code>ApiGen\Scheduler\ExecScheduler::start()</code></a>				</li>
-				<li>
 <a href="ApiGen.Scheduler.ForkScheduler.html#_start">						<code>ApiGen\Scheduler\ForkScheduler::start()</code></a>				</li>
+				<li>
+<a href="ApiGen.Scheduler.ExecScheduler.html#_start">						<code>ApiGen\Scheduler\ExecScheduler::start()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
@@ -373,7 +373,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Scheduler.WorkerScheduler.html#162" title="Go to source code">stop</a>(): void</code>
+				<code><a href="source-Scheduler.WorkerScheduler.html#172" title="Go to source code">stop</a>(): void</code>
 
 
 
@@ -385,9 +385,9 @@
 		<h4>Implemented by</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.ExecScheduler.html#_stop">						<code>ApiGen\Scheduler\ExecScheduler::stop()</code></a>				</li>
-				<li>
 <a href="ApiGen.Scheduler.ForkScheduler.html#_stop">						<code>ApiGen\Scheduler\ForkScheduler::stop()</code></a>				</li>
+				<li>
+<a href="ApiGen.Scheduler.ExecScheduler.html#_stop">						<code>ApiGen\Scheduler\ExecScheduler::stop()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
@@ -443,7 +443,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="SplQueue.html"><span title="SplQueue">SplQueue</span></a>&lt;T&gt;</code>
+				<code class="nowrap"><a href="SplQueue.html"><span title="SplQueue">SplQueue</span></a>&lt;TTask&gt;</code>
 			</td>
 
 			<td class="table-cell">
