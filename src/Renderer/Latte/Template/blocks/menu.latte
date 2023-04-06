@@ -4,12 +4,12 @@
 
 {define menu}
 	<div class="menu">
-		{if $index->namespace['']}
+		{ifset $index->namespace['']}
 			<div class="menu-section">
 				<h3>Namespaces</h3>
 				{include menuGroup, namespace: $index->namespace['']}
 			</div>
-		{/if}
+		{/ifset}
 
 		{if $layout->activeNamespace}
 			{include menuElements, elements: $layout->activeNamespace->class, heading: 'Classes', onlyPrimary: $layout->activeNamespace->primary}
