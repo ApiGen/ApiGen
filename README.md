@@ -142,11 +142,3 @@ parameters:
   # string, --memory-limit in CLI
   memoryLimit: '512M'
 ```
-
-
-## Performance
-
-To achieve the best performance you need
-
-* `pcntl` extension (required for parallel rendering) and
-* `opcache` extension with enabled JIT
