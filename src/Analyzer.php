@@ -41,16 +41,9 @@ class Analyzer
 			$this->scheduleFile($state, $file, primary: true);
 		}
 
+		/** @var AnalyzeTask $task */
 		foreach ($scheduler->process() as $task => $result) {
-			foreach ($result as $info) {
-				match (true) {
-					$info instanceof ClassLikeReferenceInfo => $this->processClassLikeReference($state, $info),
-					$info instanceof ClassLikeInfo => $this->processClassLike($state, $info),
-					$info instanceof FunctionInfo => $this->processFunction($state, $info),
-					$info instanceof ErrorInfo => $this->processError($state, $info),
-				};
-			}
-
+			$this->processTaskResult($result, $state);
 			$progressBar->setMessage($task->sourceFile);
 			$progressBar->advance();
 		}
@@ -78,6 +71,22 @@ class Analyzer
 		$state->files[$file] = true;
 		$state->progressBar->setMaxSteps(count($state->files));
 		$state->scheduler->schedule(new AnalyzeTask($file, $primary));
+	}
+
+
+	/**
+	 * @param  array<ClassLikeInfo | FunctionInfo | ClassLikeReferenceInfo | ErrorInfo> $result
+	 */
+	protected function processTaskResult(array $result, AnalyzeState $state): void
+	{
+		foreach ($result as $info) {
+			match (true) {
+				$info instanceof ClassLikeReferenceInfo => $this->processClassLikeReference($state, $info),
+				$info instanceof ClassLikeInfo => $this->processClassLike($state, $info),
+				$info instanceof FunctionInfo => $this->processFunction($state, $info),
+				$info instanceof ErrorInfo => $this->processError($state, $info),
+			};
+		}
 	}
 
 

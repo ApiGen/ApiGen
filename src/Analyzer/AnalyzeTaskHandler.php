@@ -110,6 +110,9 @@ class AnalyzeTaskHandler implements TaskHandler
 	}
 
 
+	/**
+	 * @param  AnalyzeTask $task
+	 */
 	public function handle(Task $task): array
 	{
 		try {
