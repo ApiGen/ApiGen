@@ -14,6 +14,8 @@ use function pcntl_wifsignaled;
 use function pcntl_wtermsig;
 use function stream_socket_pair;
 
+use const STDERR;
+use const STDOUT;
 use const STREAM_IPPROTO_IP;
 use const STREAM_PF_UNIX;
 use const STREAM_SOCK_STREAM;
@@ -79,10 +81,6 @@ class ForkScheduler extends WorkerScheduler
 	protected function stop(): void
 	{
 		foreach ($this->workerWritableStreams as $stream) {
-			fclose($stream);
-		}
-
-		foreach ($this->workerReadableStreams as $stream) {
 			fclose($stream);
 		}
 
