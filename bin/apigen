@@ -79,9 +79,8 @@ $app->setCode(function (InputInterface $input, ConsoleOutputInterface $output): 
 
 	$style = new SymfonyStyle($input, $output);
 	$apiGen = Bootstrap::createApiGen($style, $parameters, $options['config']);
-	$apiGen->generate();
 
-	return Command::SUCCESS;
+	return $apiGen->generate() ? Command::SUCCESS : Command::FAILURE;
 });
 
 $app->run();

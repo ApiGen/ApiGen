@@ -129,7 +129,9 @@ class AnalyzeTaskHandler implements TaskHandler
 			return [$error];
 
 		} catch (\Throwable $e) {
-			throw new \LogicException("Failed to analyze file $task->sourceFile", 0, $e);
+			$ex = new \LogicException("Failed to analyze file $task->sourceFile", 0, $e);
+			$error = new ErrorInfo(ErrorKind::InternalError, (string) $ex);
+			return [$error];
 		}
 	}
 
@@ -152,7 +154,7 @@ class AnalyzeTaskHandler implements TaskHandler
 					yield from $this->extractDependencies($classLike);
 
 				} catch (\Throwable $e) {
-					throw new \LogicException("Failed to analyze $node->namespacedName", 0, $e);
+					throw new \LogicException("Failed to analyze class-like $node->namespacedName", 0, $e);
 				}
 
 			} elseif ($node instanceof Node\Stmt\Function_) {
@@ -165,7 +167,7 @@ class AnalyzeTaskHandler implements TaskHandler
 					}
 
 				} catch (\Throwable $e) {
-					throw new \LogicException("Failed to analyze $node->namespacedName", 0, $e);
+					throw new \LogicException("Failed to analyze function $node->namespacedName", 0, $e);
 				}
 
 			} elseif ($node instanceof Node\Stmt) { // TODO: constants, class aliases

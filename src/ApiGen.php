@@ -4,6 +4,7 @@ namespace ApiGen;
 
 use ApiGen\Analyzer\AnalyzeResult;
 use ApiGen\Index\Index;
+use ApiGen\Info\ErrorKind;
 use Nette\Utils\Finder;
 use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Style\OutputStyle;
@@ -38,7 +39,7 @@ class ApiGen
 	}
 
 
-	public function generate(): void
+	public function generate(): bool
 	{
 		$files = $this->findFiles();
 
@@ -55,7 +56,7 @@ class ApiGen
 		$renderTime += hrtime(true);
 
 		$this->performance($analyzeTime, $indexTime, $renderTime);
-		$this->finish($analyzeResult);
+		return $this->finish($analyzeResult);
 	}
 
 
@@ -189,14 +190,15 @@ class ApiGen
 	}
 
 
-	protected function finish(AnalyzeResult $analyzeResult): void
+	protected function finish(AnalyzeResult $analyzeResult): bool
 	{
-		if (!$analyzeResult->error) {
+		if (count($analyzeResult->error) === 0) {
 			$this->output->success('Finished OK');
-			return;
+			return true;
 		}
 
-		foreach ($analyzeResult->error as $errorGroup) {
+		$hasError = false;
+		foreach ($analyzeResult->error as $errorKind => $errorGroup) {
 			$errorLines = array_column($errorGroup, 'message');
 
 			if (!$this->output->isVerbose() && count($errorLines) > 5) {
@@ -205,9 +207,21 @@ class ApiGen
 				$errorLines[] = sprintf('and %d more (use --verbose to show all)', count($errorGroup) - 5);
 			}
 
-			$this->output->warning(implode("\n\n", $errorLines));
+			if ($errorKind === ErrorKind::InternalError->name) {
+				$hasError = true;
+				$this->output->error(implode("\n\n", $errorLines));
+
+			} else {
+				$this->output->warning(implode("\n\n", $errorLines));
+			}
 		}
 
-		$this->output->success('Finished with errors');
+		if ($hasError) {
+			$this->output->error('Finished with errors');
+			return false;
+		}
+
+		$this->output->success('Finished with warnings');
+		return true;
 	}
 }
