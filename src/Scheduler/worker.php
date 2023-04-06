@@ -10,6 +10,7 @@ use Nette\DI\Container;
 use Symfony\Component\Console\Input\ArgvInput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use function ini_set;
 
 
 if (count($argv) !== 5) {
@@ -34,6 +35,7 @@ Bootstrap::configureErrorHandling();
 require $containerClassPath;
 $container = new $containerClassName;
 $container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput(), new NullOutput()));
+ini_set('memory_limit', $container->parameters['memoryLimit']);
 
 $context = WorkerScheduler::readMessage(STDIN);
 $handlerFactory = $container->getByType($handlerFactoryClassName) ?? throw new \LogicException();
