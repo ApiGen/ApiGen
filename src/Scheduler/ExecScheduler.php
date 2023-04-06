@@ -14,6 +14,7 @@ use function proc_close;
 use function proc_open;
 
 use const PHP_BINARY;
+use const PHP_OS_FAMILY;
 use const STDERR;
 
 
@@ -56,8 +57,8 @@ class ExecScheduler extends WorkerScheduler
 		];
 
 		$descriptors = [
-			['pipe', 'r'],
-			['pipe', 'w'],
+			PHP_OS_FAMILY === 'Windows' ? ['socket'] : ['pipe', 'r'],
+			PHP_OS_FAMILY === 'Windows' ? ['socket'] : ['pipe', 'w'],
 			STDERR,
 		];
 

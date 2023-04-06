@@ -11,7 +11,6 @@ use Nette\DI\Container;
 use function extension_loaded;
 use function function_exists;
 
-use const PHP_OS_FAMILY;
 use const PHP_SAPI;
 
 
@@ -35,7 +34,7 @@ class SchedulerFactory
 	 */
 	public function create(string $handlerFactoryType, mixed $context): Scheduler
 	{
-		if ($this->workerCount > 1 && PHP_OS_FAMILY !== 'Windows' && PHP_SAPI === 'cli') {
+		if ($this->workerCount > 1 && PHP_SAPI === 'cli') {
 			if (extension_loaded('pcntl')) {
 				$handler = $this->createHandler($handlerFactoryType, $context);
 				return new ForkScheduler($handler, $this->workerCount);
