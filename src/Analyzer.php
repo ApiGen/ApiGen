@@ -49,7 +49,7 @@ class Analyzer
 		}
 
 		foreach ($state->missing as $missing) {
-			$referencedBy = $state->classLikes[$missing->referencedBy->fullLower];
+			$referencedBy = $state->classLikes[$missing->referencedBy->fullLower] ?? $state->functions[$missing->referencedBy->fullLower];
 
 			if ($referencedBy->primary) {
 				$state->errors[ErrorKind::MissingSymbol->name][] = $this->createMissingSymbolError($missing, $referencedBy);
