@@ -14,8 +14,6 @@ use function pcntl_wifsignaled;
 use function pcntl_wtermsig;
 use function stream_socket_pair;
 
-use const STDERR;
-use const STDOUT;
 use const STREAM_IPPROTO_IP;
 use const STREAM_PF_UNIX;
 use const STREAM_SOCK_STREAM;
@@ -46,15 +44,11 @@ class ForkScheduler extends WorkerScheduler
 	protected function start(): void
 	{
 		for ($workerId = 0; $workerId < $this->workerCount; $workerId++) {
-			$toWorker = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
-			$toMaster = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
+			$pair = stream_socket_pair(STREAM_PF_UNIX, STREAM_SOCK_STREAM, STREAM_IPPROTO_IP);
 
-			if ($toWorker === false || $toMaster === false) {
+			if ($pair === false) {
 				throw new \RuntimeException('Failed to create socket pair, try running ApiGen with --workers 1');
 			}
-
-			[$masterOutput, $workerInput] = $toWorker;
-			[$workerOutput, $masterInput] = $toMaster;
 
 			$pid = pcntl_fork();
 
@@ -62,17 +56,15 @@ class ForkScheduler extends WorkerScheduler
 				throw new \RuntimeException('Failed to fork process, try running ApiGen with --workers 1');
 
 			} elseif ($pid === 0) {
-				fclose($masterInput);
-				fclose($masterOutput);
-				self::workerLoop($this->handler, $workerInput, $workerOutput);
+				fclose($pair[0]);
+				self::workerLoop($this->handler, $pair[1], $pair[1]);
 				exit(0);
 
 			} else {
-				fclose($workerInput);
-				fclose($workerOutput);
+				fclose($pair[1]);
 				$this->workers[$workerId] = $pid;
-				$this->workerReadableStreams[$workerId] = $masterInput;
-				$this->workerWritableStreams[$workerId] = $masterOutput;
+				$this->workerReadableStreams[$workerId] = $pair[0];
+				$this->workerWritableStreams[$workerId] = $pair[0];
 			}
 		}
 	}
