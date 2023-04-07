@@ -42,6 +42,16 @@
 			{if !$type->sealed}{if $type->items}, {/if}...{/if}
 			}
 
+		{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\ObjectShapeNode}
+			object{
+			{foreach $type->items as $item}
+				{$item->keyName}
+				{if $item->optional}?{/if}{=": "}
+				{include this, type: $item->valueType, scope: $scope, brackets: true, short: $short}
+				{sep}, {/sep}
+			{/foreach}
+			}
+
 		{elseif $type instanceof PHPStan\PhpDocParser\Ast\Type\NullableTypeNode}
 			?{include this, type: $type->type, scope: $scope, brackets: true, short: $short}
 

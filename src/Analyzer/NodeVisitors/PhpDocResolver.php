@@ -35,6 +35,7 @@ use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasImportTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
 use PHPStan\PhpDocParser\Ast\Type\ArrayShapeItemNode;
 use PHPStan\PhpDocParser\Ast\Type\IdentifierTypeNode;
+use PHPStan\PhpDocParser\Ast\Type\ObjectShapeItemNode;
 use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
@@ -208,7 +209,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 			} elseif ($value instanceof ConstExprNode) {
 				$value->setAttribute('info', $this->resolveConstExpr($value));
 
-			} elseif ($value instanceof ArrayShapeItemNode) {
+			} elseif ($value instanceof ArrayShapeItemNode || $value instanceof ObjectShapeItemNode) {
 				$stack[$index++] = $value->valueType; // intentionally not pushing $value->keyName
 
 			} else {
