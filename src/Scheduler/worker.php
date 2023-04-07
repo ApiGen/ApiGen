@@ -8,9 +8,12 @@ use ApiGen\Task\TaskHandler;
 use ApiGen\Task\TaskHandlerFactory;
 use Nette\DI\Container;
 use Symfony\Component\Console\Input\ArgvInput;
-use Symfony\Component\Console\Output\NullOutput;
+use Symfony\Component\Console\Output\StreamOutput;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use function ini_set;
+
+use const STDERR;
 
 
 if (count($argv) !== 5) {
@@ -34,7 +37,7 @@ Bootstrap::configureErrorHandling();
 
 require $containerClassPath;
 $container = new $containerClassName;
-$container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput(), new NullOutput()));
+$container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput(), new StreamOutput(STDERR)));
 ini_set('memory_limit', $container->parameters['memoryLimit']);
 
 $context = WorkerScheduler::readMessage(STDIN);
