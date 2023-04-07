@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Interface League\CommonMark\ConverterInterface | ApiGen API</title>
+	<title>Interface League\Config\Exception\ConfigurationExceptionInterface | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -43,8 +43,11 @@
 				<a href="namespace-League.html">League</a>
 	<ul>
 			<li class="menuGroup-item active">
-				<a href="namespace-League.CommonMark.html">CommonMark</a>
+				<a href="namespace-League.Config.html">Config</a>
 	<ul>
+			<li class="menuGroup-item active">
+				<a href="namespace-League.Config.Exception.html">Exception</a>
+			</li>
 	</ul>
 			</li>
 	</ul>
@@ -56,8 +59,8 @@
 			<h3>Interfaces</h3>
 			<ul>
 					<li class="active">
-						<a href="League.CommonMark.ConverterInterface.html">
-							ConverterInterface
+						<a href="League.Config.Exception.ConfigurationExceptionInterface.html">
+							ConfigurationExceptionInterface
 						</a>
 					</li>
 			</ul>
@@ -75,10 +78,10 @@
 				</li>
 				<li>
 					
-						<a href="namespace-League.CommonMark.html">Namespace</a>
+						<a href="namespace-League.Config.Exception.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="League.CommonMark.ConverterInterface.html">Interface</a></li>				<li>
+<li class="active"><a href="League.Config.Exception.ConfigurationExceptionInterface.html">Interface</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -94,18 +97,34 @@
 
 		<div class="layout-content">
 		<h1>
-			Interface <a href="namespace-League.html">League</a>\<a href="namespace-League.CommonMark.html">CommonMark</a>\<a href="League.CommonMark.ConverterInterface.html">ConverterInterface</a>
+			Interface <a href="namespace-League.html">League</a>\<a href="namespace-League.Config.html">Config</a>\<a href="namespace-League.Config.Exception.html">Exception</a>\<a href="League.Config.Exception.ConfigurationExceptionInterface.html">ConfigurationExceptionInterface</a>
 		</h1>
 
 
 	<table class="classLikeSignatureTable">
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+<code><a href="Throwable.html"><span title="Throwable">Throwable</span></a></code>			</td>
+		</tr>
 
 	</table>
 		<div class="classLikeDescription">
-	<div class="description"><p>Interface for a service which converts content from one format (like Markdown) to another (like HTML).</p>
+	<div class="description"><p>Marker interface for any/all exceptions thrown by this library</p>
 </div>
 		</div>
 
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<b><span class="active">League\Config\Exception\ConfigurationExceptionInterface</span></b>
+		extends
+			<a href="Throwable.html"><span title="Throwable">Throwable</span></a>
+
+
+	</li>
+	</ul>
+			</div>
 
 		<div class="classLikeSection">
 
@@ -113,49 +132,38 @@
 
 
 
-		<table class="table" id="methods">
+		<table class="table">
 			<tr>
-				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+				<th class="table-heading">Methods inherited from <a href="Throwable.html"><span>Throwable</span></a></th>
 			</tr>
-
-	<tr class="expandable collapsed" data-order="convert" id="_convert">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>convert(<span>string <var>$input</var></span>): <a href="League.CommonMark.Output.RenderedContentInterface.html"><span title="League\CommonMark\Output\RenderedContentInterface">RenderedContentInterface</span></a></code>
-
-
-
-	<div class="expandable-expandedView">
-
-
-
-							<h4>Throws</h4>
-							<table>
-									<tr>
-										<td><code><a href="League.CommonMark.Exception.CommonMarkException.html"><span>League\CommonMark\Exception\CommonMarkException</span></a></code>&nbsp;</td>
-										<td></td>
-									</tr>
-									<tr>
-										<td><code><a href="League.Config.Exception.ConfigurationExceptionInterface.html"><span>League\Config\Exception\ConfigurationExceptionInterface</span></a></code>&nbsp;</td>
-										<td></td>
-									</tr>
-							</table>
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_convert">#</a>
-		</td>
-	</tr>
+			<tr>
+				<td class="table-cell">
+<code><a href="Throwable.html#_getMessage">getMessage()</a>, <a href="Throwable.html#_getCode">getCode()</a>, <a href="Throwable.html#_getFile">getFile()</a>, <a href="Throwable.html#_getLine">getLine()</a>, <a href="Throwable.html#_getTrace">getTrace()</a>, <a href="Throwable.html#_getPrevious">getPrevious()</a>, <a href="Throwable.html#_getTraceAsString">getTraceAsString()</a></code>				</td>
+			</tr>
 		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="Stringable.html"><span>Stringable</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+<code><a href="Stringable.html#___toString">__toString()</a></code>				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
