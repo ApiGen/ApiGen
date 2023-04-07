@@ -90,7 +90,7 @@ class ApiGen
 			}
 		}
 
-		if (!count($files)) {
+		if (count($files) === 0) {
 			throw new \RuntimeException('No source files found.');
 
 		} elseif ($this->output->isDebug()) {
