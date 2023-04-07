@@ -12,6 +12,8 @@ use Nette\DI\Container;
 use function dirname;
 use function proc_close;
 use function proc_open;
+use function sprintf;
+use function var_export;
 
 use const PHP_BINARY;
 use const PHP_OS_FAMILY;
@@ -50,7 +52,9 @@ class ExecScheduler extends WorkerScheduler
 	{
 		$command = [
 			PHP_BINARY,
-			__DIR__ . '/worker.php',
+			'-r',
+			sprintf('require %s;', var_export(__DIR__ . '/worker.php', return: true)),
+			'--',
 			dirname(Helpers::classLikePath(ClassLoader::class), 2) . '/autoload.php',
 			Helpers::classLikePath($this->containerClass),
 			$this->containerClass,
