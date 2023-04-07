@@ -16,6 +16,7 @@ use Nette\Schema\Processor;
 use Nette\Utils\FileSystem;
 use Symfony\Component\Console\Style\OutputStyle;
 
+use function array_keys;
 use function array_map;
 use function assert;
 use function count;
@@ -83,13 +84,17 @@ class Bootstrap
 			...[['parameters' => self::resolvePaths($parameters, $workingDir)]],
 		);
 
-		self::validateParameters($config['parameters']);
-		$tempDir = DIHelpers::expand($config['parameters']['tempDir'], $config['parameters']);
-		$containerLoader = new ContainerLoader($tempDir, autoRebuild: true);
+		$parameters = $config['parameters'];
+		unset($config['parameters']);
 
-		$containerGenerator = function (Compiler $compiler) use ($config): void {
+		self::validateParameters($parameters);
+		$parameters = DIHelpers::expand($parameters, $parameters);
+		$containerLoader = new ContainerLoader($parameters['tempDir'], autoRebuild: true);
+
+		$containerGenerator = function (Compiler $compiler) use ($config, $parameters): void {
 			$compiler->addExtension('extensions', new ExtensionsExtension);
 			$compiler->addConfig($config);
+			$compiler->setDynamicParameterNames(array_keys($parameters));
 		};
 
 		$containerKey = [
@@ -100,7 +105,7 @@ class Bootstrap
 		/** @var class-string<Container> $containerClassName */
 		$containerClassName = $containerLoader->load($containerGenerator, $containerKey);
 
-		$container = new $containerClassName();
+		$container = new $containerClassName($parameters);
 		assert($container instanceof Container);
 		assert(method_exists($container, 'initialize'));
 

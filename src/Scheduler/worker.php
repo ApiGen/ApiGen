@@ -14,6 +14,8 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 use function ini_set;
 
 use const STDERR;
+use const STDIN;
+use const STDOUT;
 
 
 if (count($argv) !== 5) {
@@ -36,7 +38,9 @@ require $autoloadPath;
 Bootstrap::configureErrorHandling();
 
 require $containerClassPath;
-$container = new $containerClassName;
+
+$containerParameters = WorkerScheduler::readMessage(STDIN);
+$container = new $containerClassName($containerParameters);
 $container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput(), new StreamOutput(STDERR)));
 ini_set('memory_limit', $container->parameters['memoryLimit']);
 

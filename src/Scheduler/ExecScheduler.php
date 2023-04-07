@@ -37,6 +37,7 @@ class ExecScheduler extends WorkerScheduler
 	 */
 	public function __construct(
 		protected string $containerClass,
+		protected array $containerParameters,
 		protected string $handlerFactoryClass,
 		protected mixed $context,
 		int $workerCount,
@@ -72,6 +73,7 @@ class ExecScheduler extends WorkerScheduler
 			$this->workers[$workerId] = $workerProcess;
 			$this->workerWritableStreams[$workerId] = $pipes[0];
 			$this->workerReadableStreams[$workerId] = $pipes[1];
+			self::writeMessage($this->workerWritableStreams[$workerId], $this->containerParameters);
 			self::writeMessage($this->workerWritableStreams[$workerId], $this->context);
 		}
 	}
