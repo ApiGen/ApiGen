@@ -6,6 +6,7 @@ use ApiGen\Index\Index;
 use ApiGen\Renderer;
 use ApiGen\Renderer\Filter;
 use ApiGen\Renderer\Latte\Template\ConfigParameters;
+use ApiGen\Scheduler;
 use ApiGen\Scheduler\SchedulerFactory;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
@@ -29,8 +30,7 @@ class LatteRenderer implements Renderer
 		FileSystem::delete($this->outputDir);
 		FileSystem::createDir($this->outputDir);
 
-		$context = new LatteRenderTaskContext($index, new ConfigParameters($this->title, $this->version));
-		$scheduler = $this->schedulerFactory->create(LatteRenderTaskHandlerFactory::class, $context);
+		$scheduler = $this->createScheduler($index);
 
 		foreach ($this->getRenderTasks($index) as $task) {
 			$scheduler->schedule($task);
@@ -41,6 +41,16 @@ class LatteRenderer implements Renderer
 			$progressBar->setMessage($path);
 			$progressBar->advance();
 		}
+	}
+
+
+	/**
+	 * @return Scheduler<LatteRenderTask, string>
+	 */
+	protected function createScheduler(Index $index): Scheduler
+	{
+		$context = new LatteRenderTaskContext($index, new ConfigParameters($this->title, $this->version));
+		return $this->schedulerFactory->create(LatteRenderTaskHandlerFactory::class, $context);
 	}
 
 
