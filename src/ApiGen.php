@@ -175,7 +175,7 @@ class ApiGen
 
 	protected function performance(float $analyzeTime, float $indexTime, float $renderTime): void
 	{
-		if ($this->output->isDebug()) {
+		if ($this->output->isVeryVerbose()) {
 			$lines = [
 				'Analyze time' => sprintf('%6.0f ms', $analyzeTime / 1e6),
 				'Index time' => sprintf('%6.0f ms', $indexTime / 1e6),
