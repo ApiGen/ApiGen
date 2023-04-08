@@ -17,7 +17,10 @@ use function implode;
 use function is_dir;
 use function is_file;
 use function memory_get_peak_usage;
+use function memory_reset_peak_usage;
 use function sprintf;
+
+use const PHP_VERSION_ID;
 
 
 class ApiGen
@@ -43,19 +46,25 @@ class ApiGen
 	{
 		$files = $this->findFiles();
 
+		PHP_VERSION_ID >= 80200 && memory_reset_peak_usage();
 		$analyzeTime = -hrtime(true);
 		$analyzeResult = $this->analyze($files);
 		$analyzeTime += hrtime(true);
+		$analyzeMemory = memory_get_peak_usage();
 
+		PHP_VERSION_ID >= 80200 && memory_reset_peak_usage();
 		$indexTime = -hrtime(true);
 		$index = $this->index($analyzeResult);
 		$indexTime += hrtime(true);
+		$indexMemory = memory_get_peak_usage();
 
+		PHP_VERSION_ID >= 80200 && memory_reset_peak_usage();
 		$renderTime = -hrtime(true);
 		$this->render($index);
 		$renderTime += hrtime(true);
+		$renderMemory = memory_get_peak_usage();
 
-		$this->performance($analyzeTime, $indexTime, $renderTime);
+		$this->performance($analyzeTime, $analyzeMemory, $indexTime, $indexMemory, $renderTime, $renderMemory);
 		return $this->finish($analyzeResult);
 	}
 
@@ -173,14 +182,17 @@ class ApiGen
 	}
 
 
-	protected function performance(float $analyzeTime, float $indexTime, float $renderTime): void
+	protected function performance(float $analyzeTime, int $analyzeMemory, float $indexTime, int $indexMemory, float $renderTime, int $renderMemory): void
 	{
 		if ($this->output->isVeryVerbose()) {
 			$lines = [
 				'Analyze time' => sprintf('%6.0f ms', $analyzeTime / 1e6),
 				'Index time' => sprintf('%6.0f ms', $indexTime / 1e6),
 				'Render time' => sprintf('%6.0f ms', $renderTime / 1e6),
-				'Peak memory' => sprintf('%6.0f MB', memory_get_peak_usage() / 1e6),
+				'' => '',
+				'Analyze peak memory' => sprintf('%6.0f MB', $analyzeMemory / 1e6),
+				'Index peak memory' => sprintf('%6.0f MB', $indexMemory / 1e6),
+				'Render peak memory' => sprintf('%6.0f MB', $renderMemory / 1e6),
 			];
 
 			foreach ($lines as $label => $value) {
