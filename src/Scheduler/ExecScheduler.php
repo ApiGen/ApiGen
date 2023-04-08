@@ -52,7 +52,7 @@ class ExecScheduler extends WorkerScheduler
 	{
 		$command = [
 			PHP_BINARY,
-			'-r',
+			'--run',
 			sprintf('require %s;', var_export(__DIR__ . '/worker.php', return: true)),
 			'--',
 			dirname(Helpers::classLikePath(ClassLoader::class), 2) . '/autoload.php',
