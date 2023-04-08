@@ -27,9 +27,7 @@ class LatteRenderer implements Renderer
 
 	public function render(ProgressBar $progressBar, Index $index): void
 	{
-		FileSystem::delete($this->outputDir);
-		FileSystem::createDir($this->outputDir);
-
+		$this->prepareOutputDir();
 		$scheduler = $this->createScheduler($index);
 
 		foreach ($this->getRenderTasks($index) as $task) {
@@ -41,6 +39,13 @@ class LatteRenderer implements Renderer
 			$progressBar->setMessage($path);
 			$progressBar->advance();
 		}
+	}
+
+
+	protected function prepareOutputDir(): void
+	{
+		FileSystem::delete($this->outputDir);
+		FileSystem::createDir($this->outputDir);
 	}
 
 
