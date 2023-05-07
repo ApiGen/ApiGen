@@ -4,8 +4,8 @@ namespace ApiGenTests;
 
 use ApiGen\Analyzer\AnalyzeTask;
 use ApiGen\Analyzer\AnalyzeTaskHandler;
+use ApiGen\Analyzer\BodySkippingLexer;
 use ApiGen\Analyzer\Filter;
-use ApiGen\Analyzer\NodeVisitors\BodySkipper;
 use ApiGen\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGen\Info\NameInfo;
 use Nette\Neon\Node;
@@ -70,10 +70,10 @@ class AnalyzerTest extends TestCase
 	private function createAnalyzeTaskHandler(): AnalyzeTaskHandler
 	{
 		$phpParserFactory = new PhpParser\ParserFactory();
-		$phpParser = $phpParserFactory->create(PhpParser\ParserFactory::PREFER_PHP7);
+		$phpLexer = new BodySkippingLexer();
+		$phpParser = $phpParserFactory->create(PhpParser\ParserFactory::PREFER_PHP7, $phpLexer);
 
 		$traverser = new PhpParser\NodeTraverser();
-		$bodySkipper = new BodySkipper();
 		$nameResolver = new PhpParser\NodeVisitor\NameResolver();
 
 		$phpDocLexer = new PHPStan\PhpDocParser\Lexer\Lexer();
@@ -82,7 +82,6 @@ class AnalyzerTest extends TestCase
 		$phpDocParser = new PHPStan\PhpDocParser\Parser\PhpDocParser($phpDocTypeParser, $phpDocExprParser);
 		$phpDocResolver = new PhpDocResolver($phpDocLexer, $phpDocParser, $nameResolver->getNameContext());
 
-		$traverser->addVisitor($bodySkipper);
 		$traverser->addVisitor($nameResolver);
 		$traverser->addVisitor($phpDocResolver);
 

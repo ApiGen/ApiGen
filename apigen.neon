@@ -50,9 +50,6 @@ services:
 		factory: ApiGen\Scheduler\SchedulerFactory(workerCount: %workerCount%)
 
 	# Analyzer
-	analyzer.bodySkipper:
-		factory: ApiGen\Analyzer\NodeVisitors\BodySkipper
-
 	analyze.phpDocResolver:
 		factory: ApiGen\Analyzer\NodeVisitors\PhpDocResolver
 
@@ -60,7 +57,6 @@ services:
 		type: PhpParser\NodeTraverserInterface
 		factory: PhpParser\NodeTraverser
 		setup!:
-			- addVisitor(@ApiGen\Analyzer\NodeVisitors\BodySkipper)
 			- addVisitor(@PhpParser\NodeVisitor\NameResolver)
 			- addVisitor(@ApiGen\Analyzer\NodeVisitors\PhpDocResolver)
 
@@ -123,9 +119,13 @@ services:
 	phpParser.factory:
 		factory: PhpParser\ParserFactory
 
+	phpParser.lexer:
+		type: PhpParser\Lexer
+		factory: ApiGen\Analyzer\BodySkippingLexer
+
 	phpParser:
 		type: PhpParser\Parser
-		factory: @PhpParser\ParserFactory::create(PhpParser\ParserFactory::PREFER_PHP7)
+		factory: @PhpParser\ParserFactory::create(PhpParser\ParserFactory::PREFER_PHP7, @PhpParser\Lexer)
 
 	# phpstan/phpdoc-parser
 	phpDocParser.typeParser:
