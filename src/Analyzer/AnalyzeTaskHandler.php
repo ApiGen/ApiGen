@@ -146,10 +146,7 @@ class AnalyzeTaskHandler implements TaskHandler
 	protected function processNodes(AnalyzeTask $task, array $nodes): Iterator
 	{
 		foreach ($nodes as $node) {
-			if ($node instanceof Node\Stmt\Namespace_) {
-				yield from $this->processNodes($task, $node->stmts);
-
-			} elseif ($node instanceof Node\Stmt\ClassLike && $node->name !== null) {
+			if ($node instanceof Node\Stmt\ClassLike && $node->name !== null) {
 				try {
 					$task->primary = $task->primary && $this->filter->filterClassLikeNode($node);
 					$classLike = $this->processClassLike($task, $node);
