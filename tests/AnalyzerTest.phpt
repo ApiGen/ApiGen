@@ -8,6 +8,7 @@ use ApiGen\Analyzer\BodySkippingLexer;
 use ApiGen\Analyzer\Filter;
 use ApiGen\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGen\Info\NameInfo;
+use ApiGenTests\Utils\SnapshotTester;
 use Nette\Neon\Node;
 use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
@@ -40,18 +41,13 @@ class AnalyzerTest extends TestCase
 		$serialized = str_replace(dirname(__DIR__), '%rootDir%', $serialized);
 
 		$output = "{$file->getPath()}/{$file->getBasename('.php')}.neon";
-
-		if (is_file($output) || getenv('CI')) {
-			$actual = $serialized;
-			$expected = FileSystem::read($output);
-			Assert::same($expected, $actual);
-
-		} else {
-			FileSystem::write($output, $serialized);
-		}
+		SnapshotTester::assertSnapshotSame($output, $serialized);
 	}
 
 
+	/**
+	 * @return iterable<string, array{SplFileInfo}>
+	 */
 	public function provideSnapshotsData(): iterable
 	{
 		foreach (Finder::findFiles('*.php')->from(__DIR__ . '/Data') as $file) {

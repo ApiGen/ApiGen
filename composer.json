@@ -44,6 +44,11 @@
 			"ApiGen\\": "src"
 		}
 	},
+	"autoload-dev": {
+		"psr-4": {
+			"ApiGenTests\\": "tests"
+		}
+	},
 	"config": {
 		"platform-check": true,
 		"sort-packages": true
