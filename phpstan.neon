@@ -1,6 +1,8 @@
 parameters:
 	level: 8
-	paths: [src]
+	paths: [src, tests]
+	excludePaths: [tests/Data]
+	fileExtensions: [php, phpt]
 	checkMissingIterableValueType: false
 
 	ignoreErrors:
