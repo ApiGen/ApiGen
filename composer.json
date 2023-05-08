@@ -52,5 +52,13 @@
 	"config": {
 		"platform-check": true,
 		"sort-packages": true
+	},
+	"scripts": {
+		"check": [
+			"@check:phpstan",
+			"@check:tests"
+		],
+		"check:tests": "tester -C tests",
+		"check:phpstan": "phpstan analyse -vvv"
 	}
 }
