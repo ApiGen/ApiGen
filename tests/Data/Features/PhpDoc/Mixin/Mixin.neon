@@ -1,0 +1,46 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/PhpDoc/Mixin/Mixin.php'
+    properties: {
+      name: @Property(
+        default: @StringExpr(
+          value: 'Hello'
+          raw: '''Hello'''
+        )
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'name'
+        public: true
+      )
+    }
+    methods: {
+      hello: @Method(
+        returnType: @IdentifierType(
+          name: 'void'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'hello'
+        public: true
+      )
+      getfoo: @Method(
+        returnType: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'getFoo'
+        magic: true
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\PhpDoc\Mixin\Mixin'
+    primary: true
+  ),
+]

@@ -1,0 +1,7 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Issues/issue1049.php'
+    name: 'ApiGenTests\Data\Issues\Issue1049\ClassInFileWithShortOpenTag'
+    primary: true
+  ),
+]

@@ -1,7 +1,0 @@
-[
-  @Class(
-    file: '%rootDir%/tests/Issues/issue1049.php'
-    name: 'ApiGenTests\Issues\Issue1049\ClassInFileWithShortOpenTag'
-    primary: true
-  ),
-]

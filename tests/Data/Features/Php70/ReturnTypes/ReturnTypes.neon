@@ -1,0 +1,134 @@
+[
+  @Class(
+    extends: @ClassLikeReference(
+      full: 'ApiGenTests\Data\Features\Php70\ReturnTypes\ReturnTypesParent'
+    )
+    file: '%rootDir%/tests/Data/Features/Php70/ReturnTypes/ReturnTypes.php'
+    methods: {
+      arraymethod: @Method(
+        parameters: {
+          array: @Parameter(
+            name: 'array'
+            position: 0
+            type: @IdentifierType(
+              name: 'array'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'array'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'arrayMethod'
+        public: true
+      )
+      callablemethod: @Method(
+        parameters: {
+          callable: @Parameter(
+            name: 'callable'
+            position: 0
+            type: @IdentifierType(
+              name: 'callable'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'callable'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'callableMethod'
+        public: true
+      )
+      parentmethod: @Method(
+        parameters: {
+          parent: @Parameter(
+            name: 'parent'
+            position: 0
+            type: @IdentifierType(
+              name: 'parent'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'parent'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'parentMethod'
+        public: true
+      )
+      selfmethod: @Method(
+        parameters: {
+          self: @Parameter(
+            name: 'self'
+            position: 0
+            type: @IdentifierType(
+              name: 'self'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'self'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'selfMethod'
+        public: true
+      )
+      objectmethod: @Method(
+        parameters: {
+          object: @Parameter(
+            name: 'object'
+            position: 0
+            type: @IdentifierType(
+              name: 'DateTimeInterface'
+              attributes: {
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
+                  full: 'DateTimeInterface'
+                )
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'DateTimeInterface'
+          attributes: {
+            kind: 'ClassLike'
+            classLikeReference: @ClassLikeReference(
+              full: 'DateTimeInterface'
+            )
+          }
+        )
+        name: 'objectMethod'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php70\ReturnTypes\ReturnTypes'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\Features\Php70\ReturnTypes\ReturnTypesParent'
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
+]

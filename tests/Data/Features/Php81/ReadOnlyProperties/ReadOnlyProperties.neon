@@ -1,0 +1,49 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php81/ReadOnlyProperties/ReadOnlyProperties.php'
+    properties: {
+      a: @Property(
+        type: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        readOnly: true
+        name: 'a'
+        public: true
+      )
+      b: @Property(
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        readOnly: true
+        name: 'b'
+        public: true
+      )
+    }
+    methods: {
+      __construct: @Method(
+        parameters: {
+          b: @Parameter(
+            name: 'b'
+            position: 0
+            type: @IdentifierType(
+              name: 'string'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        name: '__construct'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php81\ReadOnlyProperties\ReadOnlyProperties'
+    primary: true
+  ),
+]

@@ -1,0 +1,46 @@
+[
+  @Enum(
+    scalarType: 'string'
+    implements: {
+      backedenum: @ClassLikeReference(
+        full: 'BackedEnum'
+      )
+    }
+    cases: {
+      Hearts: @EnumCase(
+        value: @StringExpr(
+          value: 'H'
+          raw: '''H'''
+        )
+        name: 'Hearts'
+      )
+      Diamonds: @EnumCase(
+        value: @StringExpr(
+          value: 'D'
+          raw: '''D'''
+        )
+        name: 'Diamonds'
+      )
+      Clubs: @EnumCase(
+        value: @StringExpr(
+          value: 'C'
+          raw: '''C'''
+        )
+        name: 'Clubs'
+      )
+      Spades: @EnumCase(
+        value: @StringExpr(
+          value: 'S'
+          raw: '''S'''
+        )
+        name: 'Spades'
+      )
+    }
+    file: '%rootDir%/tests/Data/Features/Php81/Enum/BackedEnum.php'
+    name: 'ApiGenTests\Data\Features\Php81\Enum\BackedEnum'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'BackedEnum'
+  ),
+]

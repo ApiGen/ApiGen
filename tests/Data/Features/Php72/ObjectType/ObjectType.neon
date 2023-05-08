@@ -1,0 +1,69 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php72/ObjectType/ObjectType.php'
+    properties: {
+      objectProperty: @Property(
+        type: @IdentifierType(
+          name: 'object'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'objectProperty'
+        public: true
+      )
+      objectPromoted: @Property(
+        type: @IdentifierType(
+          name: 'object'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'objectPromoted'
+        public: true
+      )
+    }
+    methods: {
+      __construct: @Method(
+        parameters: {
+          objectPromoted: @Parameter(
+            name: 'objectPromoted'
+            position: 0
+            type: @IdentifierType(
+              name: 'object'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        name: '__construct'
+        public: true
+      )
+      test: @Method(
+        parameters: {
+          object: @Parameter(
+            name: 'object'
+            position: 0
+            type: @IdentifierType(
+              name: 'object'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'object'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'test'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php72\ObjectType\ObjectType'
+    primary: true
+  ),
+]

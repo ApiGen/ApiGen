@@ -1,0 +1,19 @@
+[
+  @Interface(
+    file: '%rootDir%/tests/Data/Features/Php81/Enum/Colorful.php'
+    methods: {
+      color: @Method(
+        returnType: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'color'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php81\Enum\Colorful'
+    primary: true
+  ),
+]

@@ -1,0 +1,46 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/PhpDoc/Alias/ImportedTypeAlias.php'
+    properties: {
+      a: @Property(
+        type: @IdentifierType(
+          name: 'UserAddress'
+          attributes: {
+            kind: 'Alias'
+            aliasReference: @AliasReference(
+              classLike: @ClassLikeReference(
+                full: 'ApiGenTests\Data\Features\PhpDoc\Alias\LocalTypeAlias'
+              )
+              alias: 'UserAddress'
+              aliasLower: 'useraddress'
+            )
+          }
+        )
+        name: 'a'
+        public: true
+      )
+      b: @Property(
+        type: @IdentifierType(
+          name: 'DeliveryAddress'
+          attributes: {
+            kind: 'Alias'
+            aliasReference: @AliasReference(
+              classLike: @ClassLikeReference(
+                full: 'ApiGenTests\Data\Features\PhpDoc\Alias\LocalTypeAlias'
+              )
+              alias: 'UserAddress'
+              aliasLower: 'useraddress'
+            )
+          }
+        )
+        name: 'b'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\PhpDoc\Alias\ImportedTypeAlias'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\Features\PhpDoc\Alias\LocalTypeAlias'
+  ),
+]

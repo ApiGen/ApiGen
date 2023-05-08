@@ -1,0 +1,55 @@
+[
+  @Interface(
+    file: '%rootDir%/tests/Data/Features/PhpDoc/Generics/Comparator.php'
+    methods: {
+      compare: @Method(
+        parameters: {
+          a: @Parameter(
+            name: 'a'
+            position: 0
+            type: @IdentifierType(
+              name: 'T'
+              attributes: {
+                kind: 'Generic'
+              }
+            )
+          )
+          b: @Parameter(
+            name: 'b'
+            position: 1
+            type: @IdentifierType(
+              name: 'T'
+              attributes: {
+                kind: 'Generic'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'compare'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\PhpDoc\Generics\Comparator'
+    primary: true
+    tags: {
+      template-contravariant: [
+        @TemplateTagValue(
+          name: 'T'
+          description: ''
+        ),
+      ]
+    }
+    genericParameters: {
+      t: @GenericParameter(
+        name: 'T'
+        variance: 'Contravariant'
+      )
+    }
+  ),
+]

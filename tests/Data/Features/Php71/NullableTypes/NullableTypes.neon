@@ -1,0 +1,79 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php71/NullableTypes/NullableTypes.php'
+    properties: {
+      nullableProperty: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'int'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'nullableProperty'
+        public: true
+      )
+      nullablePromoted: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'string'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'nullablePromoted'
+        public: true
+      )
+    }
+    methods: {
+      __construct: @Method(
+        parameters: {
+          nullablePromoted: @Parameter(
+            name: 'nullablePromoted'
+            position: 0
+            type: @NullableType(
+              type: @IdentifierType(
+                name: 'string'
+                attributes: {
+                  kind: 'Keyword'
+                }
+              )
+            )
+          )
+        }
+        name: '__construct'
+        public: true
+      )
+      test: @Method(
+        parameters: {
+          nullable: @Parameter(
+            name: 'nullable'
+            position: 0
+            type: @NullableType(
+              type: @IdentifierType(
+                name: 'array'
+                attributes: {
+                  kind: 'Keyword'
+                }
+              )
+            )
+          )
+        }
+        returnType: @NullableType(
+          type: @IdentifierType(
+            name: 'array'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'test'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php71\NullableTypes\NullableTypes'
+    primary: true
+  ),
+]

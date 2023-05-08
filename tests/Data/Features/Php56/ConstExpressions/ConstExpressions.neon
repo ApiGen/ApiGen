@@ -1,0 +1,391 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php56/ConstExpressions/ConstExpressions.php'
+    constants: {
+      FOO: @Constant(
+        value: @BinaryOpExpr(
+          op: '+'
+          left: @IntegerExpr(
+            value: 1
+            base: 10
+            raw: '1'
+          )
+          right: @IntegerExpr(
+            value: 1
+            base: 10
+            raw: '1'
+          )
+        )
+        name: 'FOO'
+        public: true
+      )
+      BAR: @Constant(
+        value: @BinaryOpExpr(
+          op: '<<'
+          left: @IntegerExpr(
+            value: 1
+            base: 10
+            raw: '1'
+          )
+          right: @IntegerExpr(
+            value: 1
+            base: 10
+            raw: '1'
+          )
+        )
+        name: 'BAR'
+        public: true
+      )
+      GREETING: @Constant(
+        value: @StringExpr(
+          value: 'HELLO'
+          raw: '''HELLO'''
+        )
+        name: 'GREETING'
+        public: true
+      )
+      BAZ: @Constant(
+        value: @BinaryOpExpr(
+          op: '.'
+          left: @ClassConstantFetchExpr(
+            classLike: @ClassLikeReference(
+              full: 'self'
+            )
+            name: 'GREETING'
+          )
+          right: @StringExpr(
+            value: ' WORLD!'
+            raw: ''' WORLD!'''
+          )
+        )
+        name: 'BAZ'
+        public: true
+      )
+    }
+    properties: {
+      foo: @Property(
+        default: @BinaryOpExpr(
+          op: '+'
+          left: @IntegerExpr(
+            value: 1
+            base: 10
+            raw: '1'
+          )
+          right: @IntegerExpr(
+            value: 1
+            base: 10
+            raw: '1'
+          )
+        )
+        type: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'foo'
+        public: true
+      )
+      bar: @Property(
+        default: @ArrayExpr(
+          items: [
+            @ArrayItemExpr(
+              key: null
+              value: @BinaryOpExpr(
+                op: '+'
+                left: @IntegerExpr(
+                  value: 1
+                  base: 10
+                  raw: '1'
+                )
+                right: @IntegerExpr(
+                  value: 1
+                  base: 10
+                  raw: '1'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @BinaryOpExpr(
+                op: '<<'
+                left: @IntegerExpr(
+                  value: 1
+                  base: 10
+                  raw: '1'
+                )
+                right: @IntegerExpr(
+                  value: 2
+                  base: 10
+                  raw: '2'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
+                  full: 'self'
+                )
+                name: 'BAZ'
+              )
+              value: @BinaryOpExpr(
+                op: '.'
+                left: @StringExpr(
+                  value: 'foo '
+                  raw: '''foo '''
+                )
+                right: @StringExpr(
+                  value: 'bar'
+                  raw: '''bar'''
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @BinaryOpExpr(
+                op: '-'
+                left: @IntegerExpr(
+                  value: 7
+                  base: 10
+                  raw: '7'
+                )
+                right: @IntegerExpr(
+                  value: 3
+                  base: 10
+                  raw: '3'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @BinaryOpExpr(
+                op: '/'
+                left: @IntegerExpr(
+                  value: 6
+                  base: 10
+                  raw: '6'
+                )
+                right: @IntegerExpr(
+                  value: 2
+                  base: 10
+                  raw: '2'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @BinaryOpExpr(
+                op: '%'
+                left: @IntegerExpr(
+                  value: 10
+                  base: 10
+                  raw: '10'
+                )
+                right: @IntegerExpr(
+                  value: 3
+                  base: 10
+                  raw: '3'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @BinaryOpExpr(
+                op: '<=>'
+                left: @IntegerExpr(
+                  value: 1
+                  base: 10
+                  raw: '1'
+                )
+                right: @IntegerExpr(
+                  value: 2
+                  base: 10
+                  raw: '2'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @DimFetchExpr(
+                expr: @ClassConstantFetchExpr(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'GREETING'
+                )
+                dim: @IntegerExpr(
+                  value: 0
+                  base: 10
+                  raw: '0'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @TernaryExpr(
+                condition: @ClassConstantFetchExpr(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'BAR'
+                )
+                if: null
+                else: @IntegerExpr(
+                  value: 100
+                  base: 10
+                  raw: '100'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @UnaryOpExpr(
+                op: '+'
+                expr: @IntegerExpr(
+                  value: 1
+                  base: 10
+                  raw: '1'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @UnaryOpExpr(
+                op: '-'
+                expr: @IntegerExpr(
+                  value: 1
+                  base: 10
+                  raw: '1'
+                )
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @ConstantFetchExpr(
+                name: 'PHP_VERSION_ID'
+              )
+            ),
+          ]
+        )
+        type: @IdentifierType(
+          name: 'array'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'bar'
+        public: true
+      )
+      baseDir: @Property(
+        default: @BinaryOpExpr(
+          op: '.'
+          left: @ConstantFetchExpr(
+            name: '__DIR__'
+          )
+          right: @StringExpr(
+            value: '/base'
+            raw: '''/base'''
+          )
+        )
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'baseDir'
+        public: true
+      )
+    }
+    methods: {
+      foo: @Method(
+        parameters: {
+          a: @Parameter(
+            name: 'a'
+            position: 0
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+            default: @BinaryOpExpr(
+              op: '+'
+              left: @IntegerExpr(
+                value: 1
+                base: 10
+                raw: '1'
+              )
+              right: @IntegerExpr(
+                value: 1
+                base: 10
+                raw: '1'
+              )
+            )
+          )
+          b: @Parameter(
+            name: 'b'
+            position: 1
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+            default: @BinaryOpExpr(
+              op: '<<'
+              left: @IntegerExpr(
+                value: 2
+                base: 10
+                raw: '2'
+              )
+              right: @IntegerExpr(
+                value: 3
+                base: 10
+                raw: '3'
+              )
+            )
+          )
+          c: @Parameter(
+            name: 'c'
+            position: 2
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+            default: @TernaryExpr(
+              condition: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
+                  full: 'self'
+                )
+                name: 'BAR'
+              )
+              if: @IntegerExpr(
+                value: 10
+                base: 10
+                raw: '10'
+              )
+              else: @IntegerExpr(
+                value: 100
+                base: 10
+                raw: '100'
+              )
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'void'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'foo'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php56\ConstExpressions\ConstExpressions'
+    primary: true
+  ),
+]

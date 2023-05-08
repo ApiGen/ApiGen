@@ -1,0 +1,18 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php54/BinaryIntNotation/BinaryIntNotation.php'
+    constants: {
+      BINARY_NUMBER: @Constant(
+        value: @IntegerExpr(
+          value: 2010
+          base: 2
+          raw: '0b11111011010'
+        )
+        name: 'BINARY_NUMBER'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php54\BinaryIntNotation\BinaryIntNotation'
+    primary: true
+  ),
+]

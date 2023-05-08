@@ -1,0 +1,7 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php70/ReturnTypes/ReturnTypesParent.php'
+    name: 'ApiGenTests\Data\Features\Php70\ReturnTypes\ReturnTypesParent'
+    primary: true
+  ),
+]

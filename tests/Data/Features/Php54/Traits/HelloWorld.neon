@@ -1,0 +1,17 @@
+[
+  @Trait(
+    file: '%rootDir%/tests/Data/Features/Php54/Traits/HelloWorld.php'
+    methods: {
+      sayhello: @Method(
+        name: 'sayHello'
+        public: true
+      )
+      methodfromtrait: @Method(
+        name: 'methodFromTrait'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php54\Traits\HelloWorld'
+    primary: true
+  ),
+]

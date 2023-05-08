@@ -1,0 +1,31 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php71/VoidType/VoidType.php'
+    methods: {
+      say: @Method(
+        parameters: {
+          name: @Parameter(
+            name: 'name'
+            position: 0
+            type: @IdentifierType(
+              name: 'string'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'void'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'say'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php71\VoidType\VoidType'
+    primary: true
+  ),
+]

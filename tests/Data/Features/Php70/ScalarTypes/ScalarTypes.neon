@@ -1,0 +1,225 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php70/ScalarTypes/ScalarTypes.php'
+    properties: {
+      boolProperty: @Property(
+        type: @IdentifierType(
+          name: 'bool'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'boolProperty'
+        public: true
+      )
+      intProperty: @Property(
+        type: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'intProperty'
+        public: true
+      )
+      floatProperty: @Property(
+        type: @IdentifierType(
+          name: 'float'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'floatProperty'
+        public: true
+      )
+      stringProperty: @Property(
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'stringProperty'
+        public: true
+      )
+      boolPromoted: @Property(
+        type: @IdentifierType(
+          name: 'bool'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'boolPromoted'
+        public: true
+      )
+      intPromoted: @Property(
+        type: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'intPromoted'
+        public: true
+      )
+      floatPromoted: @Property(
+        type: @IdentifierType(
+          name: 'float'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'floatPromoted'
+        public: true
+      )
+      stringPromoted: @Property(
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'stringPromoted'
+        public: true
+      )
+    }
+    methods: {
+      __construct: @Method(
+        parameters: {
+          boolPromoted: @Parameter(
+            name: 'boolPromoted'
+            position: 0
+            type: @IdentifierType(
+              name: 'bool'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+          intPromoted: @Parameter(
+            name: 'intPromoted'
+            position: 1
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+          floatPromoted: @Parameter(
+            name: 'floatPromoted'
+            position: 2
+            type: @IdentifierType(
+              name: 'float'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+          stringPromoted: @Parameter(
+            name: 'stringPromoted'
+            position: 3
+            type: @IdentifierType(
+              name: 'string'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        name: '__construct'
+        public: true
+      )
+      boolmethod: @Method(
+        parameters: {
+          bool: @Parameter(
+            name: 'bool'
+            position: 0
+            type: @IdentifierType(
+              name: 'bool'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'bool'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'boolMethod'
+        public: true
+      )
+      intmethod: @Method(
+        parameters: {
+          int: @Parameter(
+            name: 'int'
+            position: 0
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'intMethod'
+        public: true
+      )
+      floatmethod: @Method(
+        parameters: {
+          float: @Parameter(
+            name: 'float'
+            position: 0
+            type: @IdentifierType(
+              name: 'float'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'float'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'floatMethod'
+        public: true
+      )
+      stringmethod: @Method(
+        parameters: {
+          string: @Parameter(
+            name: 'string'
+            position: 0
+            type: @IdentifierType(
+              name: 'string'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'stringMethod'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php70\ScalarTypes\ScalarTypes'
+    primary: true
+  ),
+]

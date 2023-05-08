@@ -1,0 +1,19 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Issues/issue1003.php'
+    methods: {
+      print: @Method(
+        returnType: @IdentifierType(
+          name: 'void'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'print'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Issues\Issue1003\ClassWithPrintMethod'
+    primary: true
+  ),
+]

@@ -1,0 +1,15 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/PhpDoc/Mixin/MixinUser.php'
+    mixins: {
+      apigentests\data\features\phpdoc\mixin\mixin: @ClassLikeReference(
+        full: 'ApiGenTests\Data\Features\PhpDoc\Mixin\Mixin'
+      )
+    }
+    name: 'ApiGenTests\Data\Features\PhpDoc\Mixin\MixinUser'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\Features\PhpDoc\Mixin\Mixin'
+  ),
+]

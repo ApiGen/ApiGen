@@ -1,0 +1,9 @@
+[
+  @Error(
+    kind: 'SyntaxError'
+    message: '''
+	Parse error in file %rootDir%/tests/Data/Errors/SyntaxError/unexpectedSemicolon.php:
+	Syntax error, unexpected ';', expecting '{' on line 6
+'''
+  ),
+]

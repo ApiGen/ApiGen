@@ -1,0 +1,31 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php82/FalseType/FalseType.php'
+    methods: {
+      test: @Method(
+        parameters: {
+          value: @Parameter(
+            name: 'value'
+            position: 0
+            type: @IdentifierType(
+              name: 'false'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'false'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'test'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php82\FalseType\FalseType'
+    primary: true
+  ),
+]

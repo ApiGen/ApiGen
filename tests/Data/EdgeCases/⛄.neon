@@ -1,0 +1,49 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/EdgeCases/⛄.php'
+    properties: {
+      ⛄: @Property(
+        type: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: '⛄'
+        public: true
+      )
+    }
+    methods: {
+      ⛄: @Method(
+        parameters: {
+          ⛄: @Parameter(
+            name: '⛄'
+            position: 0
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'ApiGenTests\Data\EdgeCases\⛄'
+          attributes: {
+            kind: 'ClassLike'
+            classLikeReference: @ClassLikeReference(
+              full: 'ApiGenTests\Data\EdgeCases\⛄'
+            )
+          }
+        )
+        name: '⛄'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\EdgeCases\⛄'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\EdgeCases\⛄'
+  ),
+]

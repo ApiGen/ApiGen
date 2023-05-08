@@ -1,0 +1,183 @@
+[
+  @Class(
+    extends: @ClassLikeReference(
+      full: 'ApiGenTests\Data\Features\Php80\ConstructorPromotion\Node'
+    )
+    file: '%rootDir%/tests/Data/Features/Php80/ConstructorPromotion/ParamNode.php'
+    properties: {
+      name: @Property(
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'name'
+        public: true
+      )
+      default: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'ApiGen\Info\ExprInfo'
+            attributes: {
+              kind: 'ClassLike'
+              classLikeReference: @ClassLikeReference(
+                full: 'ApiGen\Info\ExprInfo'
+              )
+            }
+          )
+        )
+        name: 'default'
+        public: true
+      )
+      type: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+            attributes: {
+              kind: 'ClassLike'
+              classLikeReference: @ClassLikeReference(
+                full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+              )
+            }
+          )
+        )
+        name: 'type'
+        public: true
+      )
+      byRef: @Property(
+        type: @IdentifierType(
+          name: 'bool'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'byRef'
+        public: true
+      )
+      variadic: @Property(
+        type: @IdentifierType(
+          name: 'bool'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'variadic'
+        public: true
+      )
+    }
+    methods: {
+      __construct: @Method(
+        parameters: {
+          name: @Parameter(
+            name: 'name'
+            position: 0
+            type: @IdentifierType(
+              name: 'string'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+          default: @Parameter(
+            name: 'default'
+            position: 1
+            type: @NullableType(
+              type: @IdentifierType(
+                name: 'ApiGen\Info\ExprInfo'
+                attributes: {
+                  kind: 'ClassLike'
+                  classLikeReference: @ClassLikeReference(
+                    full: 'ApiGen\Info\ExprInfo'
+                  )
+                }
+              )
+            )
+            default: @NullExpr(
+            )
+          )
+          type: @Parameter(
+            name: 'type'
+            position: 2
+            type: @NullableType(
+              type: @IdentifierType(
+                name: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+                attributes: {
+                  kind: 'ClassLike'
+                  classLikeReference: @ClassLikeReference(
+                    full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+                  )
+                }
+              )
+            )
+            default: @NullExpr(
+            )
+          )
+          byRef: @Parameter(
+            name: 'byRef'
+            position: 3
+            type: @IdentifierType(
+              name: 'bool'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+            default: @BooleanExpr(
+              value: false
+            )
+          )
+          variadic: @Parameter(
+            name: 'variadic'
+            position: 4
+            type: @IdentifierType(
+              name: 'bool'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+            default: @BooleanExpr(
+              value: false
+            )
+          )
+          startLoc: @Parameter(
+            name: 'startLoc'
+            position: 5
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+            default: @NullExpr(
+            )
+          )
+          endLoc: @Parameter(
+            name: 'endLoc'
+            position: 6
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+            default: @NullExpr(
+            )
+          )
+        }
+        name: '__construct'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php80\ConstructorPromotion\ParamNode'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\Features\Php80\ConstructorPromotion\Node'
+  ),
+  @ClassLikeReference(
+    full: 'PHPStan\PhpDocParser\Ast\Type\TypeNode'
+  ),
+  @ClassLikeReference(
+    full: 'ApiGen\Info\ExprInfo'
+  ),
+]

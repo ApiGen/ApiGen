@@ -1,0 +1,34 @@
+[
+  @Function(
+    file: '%rootDir%/tests/Data/Features/Php71/NullableTypes/functions.php'
+    returnType: @NullableType(
+      type: @IdentifierType(
+        name: 'int'
+        attributes: {
+          kind: 'Keyword'
+        }
+      )
+    )
+    name: 'ApiGenTests\Data\Features\Php71\NullableTypes\answer'
+    primary: true
+  ),
+  @Function(
+    file: '%rootDir%/tests/Data/Features/Php71/NullableTypes/functions.php'
+    parameters: {
+      msg: @Parameter(
+        name: 'msg'
+        position: 0
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'string'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php71\NullableTypes\say'
+    primary: true
+  ),
+]

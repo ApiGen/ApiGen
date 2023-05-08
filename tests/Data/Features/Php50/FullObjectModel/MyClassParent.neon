@@ -1,0 +1,59 @@
+[
+  @Class(
+    abstract: true
+    file: '%rootDir%/tests/Data/Features/Php50/FullObjectModel/MyClassParent.php'
+    properties: {
+      string: @Property(
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'string'
+        protected: true
+      )
+    }
+    methods: {
+      __construct: @Method(
+        parameters: {
+          int: @Parameter(
+            name: 'int'
+            position: 0
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+          string: @Parameter(
+            name: 'string'
+            position: 1
+            type: @IdentifierType(
+              name: 'string'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        name: '__construct'
+        public: true
+      )
+      getnumber: @Method(
+        returnType: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        abstract: true
+        name: 'getNumber'
+        protected: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php50\FullObjectModel\MyClassParent'
+    primary: true
+  ),
+]

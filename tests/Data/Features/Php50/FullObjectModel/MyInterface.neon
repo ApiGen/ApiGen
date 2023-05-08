@@ -1,0 +1,19 @@
+[
+  @Interface(
+    file: '%rootDir%/tests/Data/Features/Php50/FullObjectModel/MyInterface.php'
+    methods: {
+      getname: @Method(
+        returnType: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'getName'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php50\FullObjectModel\MyInterface'
+    primary: true
+  ),
+]

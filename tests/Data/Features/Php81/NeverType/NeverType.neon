@@ -1,0 +1,19 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php81/NeverType/NeverType.php'
+    methods: {
+      throwerror: @Method(
+        returnType: @IdentifierType(
+          name: 'never'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'throwError'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php81\NeverType\NeverType'
+    primary: true
+  ),
+]

@@ -1,0 +1,250 @@
+[
+  @Trait(
+    file: '%rootDir%/tests/Data/Features/Php74/TypedProperties/TypedPropertiesTrait.php'
+    properties: {
+      bool: @Property(
+        default: @BooleanExpr(
+          value: true
+        )
+        type: @IdentifierType(
+          name: 'bool'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'bool'
+        public: true
+      )
+      boolNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'bool'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'boolNullable'
+        public: true
+      )
+      int: @Property(
+        default: @IntegerExpr(
+          value: 123
+          base: 10
+          raw: '123'
+        )
+        type: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'int'
+        public: true
+      )
+      intNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'int'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'intNullable'
+        public: true
+      )
+      float: @Property(
+        default: @FloatExpr(
+          value: 1.23
+          raw: '1.23'
+        )
+        type: @IdentifierType(
+          name: 'float'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'float'
+        public: true
+      )
+      floatNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'float'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'floatNullable'
+        public: true
+      )
+      string: @Property(
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'string'
+        public: true
+      )
+      stringNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'string'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'stringNullable'
+        public: true
+      )
+      array: @Property(
+        type: @IdentifierType(
+          name: 'array'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'array'
+        public: true
+      )
+      arrayNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'array'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'arrayNullable'
+        public: true
+      )
+      object: @Property(
+        type: @IdentifierType(
+          name: 'object'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'object'
+        public: true
+      )
+      objectNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'object'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'objectNullable'
+        public: true
+      )
+      iterable: @Property(
+        type: @IdentifierType(
+          name: 'iterable'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'iterable'
+        public: true
+      )
+      iterableNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'iterable'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'iterableNullable'
+        public: true
+      )
+      dateTime: @Property(
+        type: @IdentifierType(
+          name: 'DateTimeInterface'
+          attributes: {
+            kind: 'ClassLike'
+            classLikeReference: @ClassLikeReference(
+              full: 'DateTimeInterface'
+            )
+          }
+        )
+        name: 'dateTime'
+        public: true
+      )
+      dateTimeNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'DateTimeInterface'
+            attributes: {
+              kind: 'ClassLike'
+              classLikeReference: @ClassLikeReference(
+                full: 'DateTimeInterface'
+              )
+            }
+          )
+        )
+        name: 'dateTimeNullable'
+        public: true
+      )
+      self: @Property(
+        type: @IdentifierType(
+          name: 'self'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'self'
+        public: true
+      )
+      selfNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'self'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'selfNullable'
+        public: true
+      )
+      parent: @Property(
+        type: @IdentifierType(
+          name: 'parent'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'parent'
+        public: true
+      )
+      parentNullable: @Property(
+        type: @NullableType(
+          type: @IdentifierType(
+            name: 'parent'
+            attributes: {
+              kind: 'Keyword'
+            }
+          )
+        )
+        name: 'parentNullable'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php74\TypedProperties\TypedPropertiesTrait'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
+]

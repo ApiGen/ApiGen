@@ -1,0 +1,25 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php54/CallableType/CallableType.php'
+    methods: {
+      test: @Method(
+        parameters: {
+          callable: @Parameter(
+            name: 'callable'
+            position: 0
+            type: @IdentifierType(
+              name: 'callable'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        name: 'test'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php54\CallableType\CallableType'
+    primary: true
+  ),
+]

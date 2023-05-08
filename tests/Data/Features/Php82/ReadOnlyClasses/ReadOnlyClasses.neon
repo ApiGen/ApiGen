@@ -1,0 +1,20 @@
+[
+  @Class(
+    readOnly: true
+    file: '%rootDir%/tests/Data/Features/Php82/ReadOnlyClasses/ReadOnlyClasses.php'
+    properties: {
+      value: @Property(
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'value'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php82\ReadOnlyClasses\ReadOnlyClasses'
+    primary: true
+  ),
+]

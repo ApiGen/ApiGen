@@ -1,0 +1,25 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php51/ArrayType/ArrayType.php'
+    methods: {
+      test: @Method(
+        parameters: {
+          array: @Parameter(
+            name: 'array'
+            position: 0
+            type: @IdentifierType(
+              name: 'array'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        name: 'test'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php51\ArrayType\ArrayType'
+    primary: true
+  ),
+]

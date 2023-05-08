@@ -1,0 +1,13 @@
+[
+  @Class(
+    extends: @ClassLikeReference(
+      full: 'ApiGenTests\Data\Issues\Issue0982\MissingParent'
+    )
+    file: '%rootDir%/tests/Data/Issues/issue0982.php'
+    name: 'ApiGenTests\Data\Issues\Issue0982\ClassWithNonExistentParent'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\Issues\Issue0982\MissingParent'
+  ),
+]

@@ -1,0 +1,7 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php74/TypedProperties/TypedPropertiesParent.php'
+    name: 'ApiGenTests\Data\Features\Php74\TypedProperties\TypedPropertiesParent'
+    primary: true
+  ),
+]

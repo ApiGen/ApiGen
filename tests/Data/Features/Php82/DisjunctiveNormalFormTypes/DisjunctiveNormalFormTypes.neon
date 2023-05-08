@@ -1,0 +1,63 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php82/DisjunctiveNormalFormTypes/DisjunctiveNormalFormTypes.php'
+    methods: {
+      test: @Method(
+        parameters: {
+          value: @Parameter(
+            name: 'value'
+            position: 0
+            type: @UnionType(
+              types: [
+                @IntersectionType(
+                  types: [
+                    @IdentifierType(
+                      name: 'Traversable'
+                      attributes: {
+                        kind: 'ClassLike'
+                        classLikeReference: @ClassLikeReference(
+                          full: 'Traversable'
+                        )
+                      }
+                    ),
+                    @IdentifierType(
+                      name: 'Countable'
+                      attributes: {
+                        kind: 'ClassLike'
+                        classLikeReference: @ClassLikeReference(
+                          full: 'Countable'
+                        )
+                      }
+                    ),
+                  ]
+                ),
+                @IdentifierType(
+                  name: 'array'
+                  attributes: {
+                    kind: 'Keyword'
+                  }
+                ),
+              ]
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'void'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'test'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php82\DisjunctiveNormalFormTypes\DisjunctiveNormalFormTypes'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'Countable'
+  ),
+  @ClassLikeReference(
+    full: 'Traversable'
+  ),
+]

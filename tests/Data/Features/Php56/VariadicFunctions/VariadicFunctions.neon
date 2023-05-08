@@ -1,0 +1,92 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php56/VariadicFunctions/VariadicFunctions.php'
+    methods: {
+      querya: @Method(
+        parameters: {
+          query: @Parameter(
+            name: 'query'
+            position: 0
+          )
+          params: @Parameter(
+            name: 'params'
+            position: 1
+            variadic: true
+          )
+        }
+        name: 'queryA'
+        public: true
+      )
+      queryb: @Method(
+        parameters: {
+          query: @Parameter(
+            name: 'query'
+            position: 0
+          )
+          params: @Parameter(
+            name: 'params'
+            position: 1
+            byRef: true
+            variadic: true
+          )
+        }
+        name: 'queryB'
+        public: true
+      )
+      queryc: @Method(
+        parameters: {
+          query: @Parameter(
+            name: 'query'
+            position: 0
+          )
+          params: @Parameter(
+            name: 'params'
+            position: 1
+            type: @IdentifierType(
+              name: 'DateTimeInterface'
+              attributes: {
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
+                  full: 'DateTimeInterface'
+                )
+              }
+            )
+            variadic: true
+          )
+        }
+        name: 'queryC'
+        public: true
+      )
+      queryd: @Method(
+        parameters: {
+          query: @Parameter(
+            name: 'query'
+            position: 0
+          )
+          params: @Parameter(
+            name: 'params'
+            position: 1
+            type: @IdentifierType(
+              name: 'DateTimeInterface'
+              attributes: {
+                kind: 'ClassLike'
+                classLikeReference: @ClassLikeReference(
+                  full: 'DateTimeInterface'
+                )
+              }
+            )
+            byRef: true
+            variadic: true
+          )
+        }
+        name: 'queryD'
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php56\VariadicFunctions\VariadicFunctions'
+    primary: true
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
+]
