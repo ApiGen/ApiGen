@@ -1,0 +1,745 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<meta name="robots" content="noindex">
+	<title>Class PhpParser\Lexer | ApiGen API</title>
+	<link rel="stylesheet" href="assets/main.css">
+	<script src="assets/main.js" defer></script>
+</head>
+
+<body class="layout">
+	<div class="layout-aside">
+	<div class="menu">
+			<div class="menu-section">
+				<h3>Namespaces</h3>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.html">ApiGen</a>
+	<ul>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Analyzer.html">Analyzer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Index.html">Index</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Info.html">Info</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Renderer.html">Renderer</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Scheduler.html">Scheduler</a>
+			</li>
+			<li class="menuGroup-item">
+				<a href="namespace-ApiGen.Task.html">Task</a>
+			</li>
+	</ul>
+			</li>
+			<li class="menuGroup-item active">
+				<a href="namespace-PhpParser.html">PhpParser</a>
+	<ul>
+	</ul>
+			</li>
+	</ul>
+			</div>
+
+		<div class="menu-section">
+			<h3>Classes</h3>
+			<ul>
+					<li>
+						<a href="PhpParser.Comment.html">
+							Comment
+						</a>
+					</li>
+					<li class="active">
+						<a href="PhpParser.Lexer.html">
+							Lexer
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.NameContext.html">
+							NameContext
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.NodeAbstract.html">
+							NodeAbstract
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.NodeVisitorAbstract.html">
+							NodeVisitorAbstract
+						</a>
+					</li>
+			</ul>
+		</div>
+		<div class="menu-section">
+			<h3>Interfaces</h3>
+			<ul>
+					<li>
+						<a href="PhpParser.ErrorHandler.html">
+							ErrorHandler
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.html">
+							Node
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.NodeTraverserInterface.html">
+							NodeTraverserInterface
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.NodeVisitor.html">
+							NodeVisitor
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Parser.html">
+							Parser
+						</a>
+					</li>
+			</ul>
+		</div>
+		<div class="menu-section">
+			<h3>Exceptions</h3>
+			<ul>
+					<li>
+						<a href="PhpParser.Error.html">
+							Error
+						</a>
+					</li>
+			</ul>
+		</div>
+	</div>
+	</div>
+
+	<div class="layout-main">
+		<div class="layout-navbar">
+	<nav class="navbar">
+		<div class="navbar-left">
+			<ul class="navbar-links">
+				<li>
+					<a href="index.html">Overview</a>
+				</li>
+				<li>
+					
+						<a href="namespace-PhpParser.html">Namespace</a>
+					
+				</li>
+<li class="active"><a href="PhpParser.Lexer.html">Class</a></li>				<li>
+					<a href="tree.html">Tree</a>
+				</li>
+			</ul>
+		</div>
+		<div class="navbar-right">
+	<div class="search" data-elements="assets/elements.js">
+		<input class="search-input" placeholder="Search class, function or namespace" autofocus>
+		<ul class="search-results"></ul>
+	</div>
+		</div>
+	</nav>
+		</div>
+
+		<div class="layout-content">
+		<h1>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="PhpParser.Lexer.html">Lexer</a>
+		</h1>
+
+
+	<table class="classLikeSignatureTable">
+
+
+
+
+	</table>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\Lexer</span></b>
+
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Lexer.Emulative.html"><span>PhpParser\Lexer\Emulative</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="ApiGen.Analyzer.BodySkippingLexer.html"><span>ApiGen\Analyzer\BodySkippingLexer</span></a>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
+
+		<div class="classLikeSection">
+
+		</div>
+
+
+
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>array <var>$options</var> = []</span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Creates a Lexer.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Creates a Lexer.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$options</var>&nbsp;&nbsp;</td>
+										<td><p>Options array. Currently only the 'usedAttributes' option is supported,
+which is an array of attributes to add to the AST nodes. Possible
+attributes are: 'comments', 'startLine', 'endLine', 'startTokenPos',
+'endTokenPos', 'startFilePos', 'endFilePos'. The option defaults to the
+first three. For more info see getNextToken() docs.</p>
+</td>
+									</tr>
+							</table>
+
+
+
+		<h4>Overriden by</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Lexer.Emulative.html#___construct">						<code>PhpParser\Lexer\Emulative::__construct()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="startLexing" id="_startLexing">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>startLexing(<span>string <var>$code</var></span>, <span><a href="PhpParser.ErrorHandler.html"><span title="PhpParser\ErrorHandler">ErrorHandler</span></a>|null <var>$errorHandler</var> = <span class="php-kw">null</span></span>)</code>
+
+
+	<div class="expandable-collapsedView">
+		Initializes the lexer for lexing the provided source code.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Initializes the lexer for lexing the provided source code.</p>
+<p>This function does not throw if lexing errors occur. Instead, errors may be retrieved using
+the getErrors() method.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$code</var>&nbsp;&nbsp;</td>
+										<td><p>The source code to lex</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$errorHandler</var>&nbsp;&nbsp;</td>
+										<td><p>Error handler to use for lexing errors. Defaults to
+ErrorHandler\Throwing</p>
+</td>
+									</tr>
+							</table>
+
+
+
+		<h4>Overriden by</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Lexer.Emulative.html#_startLexing">						<code>PhpParser\Lexer\Emulative::startLexing()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_startLexing">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="postprocessTokens" id="_postprocessTokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>postprocessTokens(<span><a href="PhpParser.ErrorHandler.html"><span title="PhpParser\ErrorHandler">ErrorHandler</span></a> <var>$errorHandler</var></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Overriden by</h4>
+		<ul>
+				<li>
+<a href="ApiGen.Analyzer.BodySkippingLexer.html#_postprocessTokens">						<code>ApiGen\Analyzer\BodySkippingLexer::postprocessTokens()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_postprocessTokens">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getNextToken" id="_getNextToken">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getNextToken(<span>mixed &amp;<var>$value</var> = <span class="php-kw">null</span></span>, <span>mixed &amp;<var>$startAttributes</var> = <span class="php-kw">null</span></span>, <span>mixed &amp;<var>$endAttributes</var> = <span class="php-kw">null</span></span>): int</code>
+
+
+	<div class="expandable-collapsedView">
+		Fetches the next token.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Fetches the next token.</p>
+<p>The available attributes are determined by the 'usedAttributes' option, which can
+be specified in the constructor. The following attributes are supported:</p>
+<ul>
+<li>'comments'      =&gt; Array of PhpParser\Comment or PhpParser\Comment\Doc instances,
+representing all comments that occurred between the previous
+non-discarded token and the current one.</li>
+<li>'startLine'     =&gt; Line in which the node starts.</li>
+<li>'endLine'       =&gt; Line in which the node ends.</li>
+<li>'startTokenPos' =&gt; Offset into the token array of the first token in the node.</li>
+<li>'endTokenPos'   =&gt; Offset into the token array of the last token in the node.</li>
+<li>'startFilePos'  =&gt; Offset into the code string of the first character that is part of the node.</li>
+<li>'endFilePos'    =&gt; Offset into the code string of the last character that is part of the node.</li>
+</ul>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$value</var>&nbsp;&nbsp;</td>
+										<td><p>Variable to store token content in</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$startAttributes</var>&nbsp;&nbsp;</td>
+										<td><p>Variable to store start attributes in</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$endAttributes</var>&nbsp;&nbsp;</td>
+										<td><p>Variable to store end attributes in</p>
+</td>
+									</tr>
+							</table>
+
+							<h4>Returns</h4>
+							<div><p>Token id</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getNextToken">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTokens" id="_getTokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTokens(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Returns the token array for current code.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns the token array for current code.</p>
+<p>The token array is in the same format as provided by the
+token_get_all() function and does not discard tokens (i.e.
+whitespace and comments are included). The token position
+attributes are against this token array.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Array of tokens in token_get_all() format</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTokens">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="handleHaltCompiler" id="_handleHaltCompiler">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>handleHaltCompiler(): string</code>
+
+
+	<div class="expandable-collapsedView">
+		Handles __halt_compiler() by returning the text after it.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Handles __halt_compiler() by returning the text after it.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Remaining text</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_handleHaltCompiler">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="createTokenMap" id="_createTokenMap">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>createTokenMap(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		Creates the token map.
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Creates the token map.</p>
+<p>The token map maps the PHP internal token identifiers
+to the identifiers used by the Parser. Additionally it
+maps T_OPEN_TAG_WITH_ECHO to T_ECHO and T_CLOSE_TAG to ';'.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>The token map</p>
+</div>
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_createTokenMap">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+
+
+
+
+		<table class="table" id="properties">
+			<tr>
+				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="code" id="$code">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$code</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$code">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="tokens" id="$tokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$tokens</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$tokens">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="pos" id="$pos">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$pos</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$pos">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="line" id="$line">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$line</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$line">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="filePos" id="$filePos">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$filePos</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$filePos">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="prevCloseTagHasNewline" id="$prevCloseTagHasNewline">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$prevCloseTagHasNewline</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$prevCloseTagHasNewline">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="tokenMap" id="$tokenMap">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$tokenMap</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$tokenMap">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="dropTokens" id="$dropTokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$dropTokens</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$dropTokens">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="identifierTokens" id="$identifierTokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$identifierTokens</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$identifierTokens">#</a>
+		</td>
+	</tr>
+		</table>
+
+
+		</div>
+
+		<div class="layout-footer">
+			ApiGen API documentation generated by <a href="https://www.apigen.org">ApiGen dev-master</a>
+		</div>
+	</div>
+
+	<div class="layout-rest">
+		<div class="navbar"></div>
+	</div>
+</body>
+</html>
