@@ -14,9 +14,9 @@ use ApiGen\Info\MissingInfo;
 use ApiGen\Info\NameInfo;
 use ApiGen\Info\TraitInfo;
 
+use function array_filter;
 use function array_keys;
 use function array_map;
-use function array_merge_recursive;
 use function count;
 use function implode;
 use function ksort;
@@ -221,7 +221,31 @@ class Indexer
 
 	protected function indexDirectedAcyclicGraph(Index $index): void
 	{
-		$dag = array_merge_recursive($index->classExtends, $index->classImplements, $index->classUses, $index->interfaceExtends, $index->enumImplements);
+		$edgeGroups = [
+			'class extends' => $index->classExtends,
+			'class implements' => $index->classImplements,
+			'class uses' => $index->classUses,
+			'interface extends' => $index->interfaceExtends,
+			'enum implements' => $index->enumImplements,
+		];
+
+		$dag = [];
+		foreach ($edgeGroups as $edgeGroup) {
+			foreach ($edgeGroup as $classLikeNameA => $classLikeGroup) {
+				foreach ($classLikeGroup as $classLikeNameB => $classLike) {
+					if (isset($dag[$classLikeNameA][$classLikeNameB])) {
+						$classLikeA = $index->classLike[$classLikeNameA];
+						$classLikeB = $index->classLike[$classLikeNameB];
+						$duplicateEdgeGroups = array_filter($edgeGroups, fn(array $edgeGroup) => isset($edgeGroup[$classLikeNameA][$classLikeNameB]));
+						$note = '(used both as \'' . implode('\' and \'', array_keys($duplicateEdgeGroups)) . '\')';
+						$path = "{$classLikeB->name->full} -> {$classLikeA->name->full}";
+						throw new \RuntimeException("Invalid directed acyclic graph because it contains duplicate edge {$note}:\n{$path}");
+					}
+
+					$dag[$classLikeNameA][$classLikeNameB] = $classLike;
+				}
+			}
+		}
 
 		$findCycle = static function (array $node, array $visited) use ($index, $dag, &$findCycle): void {
 			foreach ($node as $childKey => $_) {
