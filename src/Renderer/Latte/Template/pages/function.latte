@@ -16,7 +16,7 @@
 			<h2><code>{include genericParameters, $function->genericParameters}</code></h2>
 		{/if}
 
-		{include classLikeDescription, $function}
+		{include functionDescription, $function}
 
 		<div class="classLikeSection" n:if="$function->file && sourcePageExists($index->files[$function->file])">
 			<b>Located at</b> <a href="{functionSourceUrl($function)}" title="Go to source code">{relativePath($function->file)}</a>
@@ -38,7 +38,7 @@
 							{if $parameter->default} = {include expr, expr: $parameter->default}{/if}
 						</code>
 					</td>
-					<td class="table-cell">{longDescription($parameter->description)}</td>
+					<td class="table-cell">{longDescription($index, null, $parameter->description)}</td>
 					<td class="table-anchor">
 						<a href="#{parameterAnchor($parameter)}">#</a>
 					</td>
@@ -56,7 +56,7 @@
 					<code class="nowrap">{if $function->byRef}&amp;{/if}{include type, $function->returnType}</code>
 				</td>
 				<td class="table-cell" n:if="$function->returnDescription">
-					{longDescription($function->returnDescription)}
+					{longDescription($index, null, $function->returnDescription)}
 				</td>
 			</tr>
 		</table>
@@ -69,7 +69,7 @@
 			{foreach $function->tags[throws] as $tag}
 				<tr>
 					<td class="table-cell table-shrink"><code class="nowrap">{include type, type: $tag->type, short: false}</code></td>
-					<td class="table-cell" n:if="$tag->description">{longDescription($tag->description)}</td>
+					<td class="table-cell" n:if="$tag->description">{longDescription($index, $tag->description)}</td>
 				</tr>
 			{/foreach}
 		</table>

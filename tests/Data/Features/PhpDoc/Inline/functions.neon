@@ -1,0 +1,13 @@
+[
+  @Function(
+    file: '%rootDir%/tests/Data/Features/PhpDoc/Inline/functions.php'
+    returnType: @IdentifierType(
+      name: 'void'
+      attributes: {
+        kind: 'Keyword'
+      }
+    )
+    name: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+    primary: true
+  ),
+]

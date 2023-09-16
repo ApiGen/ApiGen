@@ -1,0 +1,1222 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/PhpDoc/Inline/InlineLink.php'
+    constants: {
+      FOO: @Constant(
+        value: @StringExpr(
+          value: 'foo'
+          raw: '''foo'''
+        )
+        name: 'FOO'
+        public: true
+      )
+    }
+    properties: {
+      foo: @Property(
+        default: @StringExpr(
+          value: 'bar'
+          raw: '''bar'''
+        )
+        type: @IdentifierType(
+          name: 'string'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        name: 'foo'
+        public: true
+      )
+    }
+    methods: {
+      foo: @Method(
+        parameters: {
+          a: @Parameter(
+            name: 'a'
+            position: 0
+            description: [
+              @PhpDocText(
+                text: 'Hello '
+              ),
+              @PhpDocText(
+                text: 'DateTimeImmutable'
+                attributes: {
+                  targets: [
+                    @ClassLikeReference(
+                      full: 'DateTimeImmutable'
+                    ),
+                    @FunctionReference(
+                      full: 'ApiGenTests\Data\Features\PhpDoc\Inline\DateTimeImmutable'
+                    ),
+                    @FunctionReference(
+                      full: 'DateTimeImmutable'
+                    ),
+                    @ConstantReference(
+                      classLike: @ClassLikeReference(
+                        full: 'self'
+                      )
+                      name: 'DateTimeImmutable'
+                    ),
+                    @MethodReference(
+                      classLike: @ClassLikeReference(
+                        full: 'self'
+                      )
+                      name: 'DateTimeImmutable'
+                    ),
+                  ]
+                }
+              ),
+              @PhpDocText(
+                text: ' world'
+              ),
+            ]
+            type: @IdentifierType(
+              name: 'int'
+              attributes: {
+                kind: 'Keyword'
+              }
+            )
+          )
+        }
+        returnType: @IdentifierType(
+          name: 'void'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        returnDescription: [
+          @PhpDocText(
+            text: 'Hello '
+          ),
+          @PhpDocText(
+            text: 'DateTimeImmutable'
+            attributes: {
+              targets: [
+                @ClassLikeReference(
+                  full: 'DateTimeImmutable'
+                ),
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\DateTimeImmutable'
+                ),
+                @FunctionReference(
+                  full: 'DateTimeImmutable'
+                ),
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'DateTimeImmutable'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'DateTimeImmutable'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: ' world'
+          ),
+        ]
+        name: 'foo'
+        description: [
+          @PhpDocText(
+            text: '''
+	My favorite links:
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'https://example.com'
+            attributes: {
+              targets: [
+                'https://example.com',
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'httpLink'
+            attributes: {
+              targets: [
+                'https://example.com',
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'DateTimeImmutable'
+            attributes: {
+              targets: [
+                @ClassLikeReference(
+                  full: 'DateTimeImmutable'
+                ),
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\DateTimeImmutable'
+                ),
+                @FunctionReference(
+                  full: 'DateTimeImmutable'
+                ),
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'DateTimeImmutable'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'DateTimeImmutable'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'classLink'
+            attributes: {
+              targets: [
+                @ClassLikeReference(
+                  full: 'DateTimeImmutable'
+                ),
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\DateTimeImmutable'
+                ),
+                @FunctionReference(
+                  full: 'DateTimeImmutable'
+                ),
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'DateTimeImmutable'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'DateTimeImmutable'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'DateTimeImmutable::createFromFormat()'
+            attributes: {
+              targets: [
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateTimeImmutable'
+                  )
+                  name: 'createFromFormat'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'methodLink'
+            attributes: {
+              targets: [
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateTimeImmutable'
+                  )
+                  name: 'createFromFormat'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'DateTimeInterface::RFC3339'
+            attributes: {
+              targets: [
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateTimeInterface'
+                  )
+                  name: 'RFC3339'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateTimeInterface'
+                  )
+                  name: 'RFC3339'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'constantLink'
+            attributes: {
+              targets: [
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateTimeInterface'
+                  )
+                  name: 'RFC3339'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateTimeInterface'
+                  )
+                  name: 'RFC3339'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'DateInterval::$days'
+            attributes: {
+              targets: [
+                @PropertyReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateInterval'
+                  )
+                  name: 'days'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'propertyLink'
+            attributes: {
+              targets: [
+                @PropertyReference(
+                  classLike: @ClassLikeReference(
+                    full: 'DateInterval'
+                  )
+                  name: 'days'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'hello()'
+            attributes: {
+              targets: [
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+                ),
+                @FunctionReference(
+                  full: 'hello'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'hello'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'hello'
+            attributes: {
+              targets: [
+                @ClassLikeReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+                ),
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+                ),
+                @FunctionReference(
+                  full: 'hello'
+                ),
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'hello'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'hello'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'strpos()'
+            attributes: {
+              targets: [
+                @FunctionReference(
+                  full: 'strpos'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'strpos'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'self'
+            attributes: {
+              targets: [
+                @ClassLikeReference(
+                  full: 'self'
+                ),
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\self'
+                ),
+                @FunctionReference(
+                  full: 'self'
+                ),
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'self'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'self'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'self::FOO'
+            attributes: {
+              targets: [
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'FOO'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'FOO'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'self::$foo'
+            attributes: {
+              targets: [
+                @PropertyReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'self::foo()'
+            attributes: {
+              targets: [
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'self::foo'
+            attributes: {
+              targets: [
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'FOO'
+            attributes: {
+              targets: [
+                @ClassLikeReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\FOO'
+                ),
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\FOO'
+                ),
+                @FunctionReference(
+                  full: 'FOO'
+                ),
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'FOO'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'FOO'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: '$foo'
+            attributes: {
+              targets: [
+                @PropertyReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'foo'
+            attributes: {
+              targets: [
+                @ClassLikeReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\foo'
+                ),
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\foo'
+                ),
+                @FunctionReference(
+                  full: 'foo'
+                ),
+                @ConstantReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+              ]
+            }
+          ),
+          @PhpDocText(
+            text: '''
+
+	 - 
+'''
+          ),
+          @PhpDocText(
+            text: 'foo()'
+            attributes: {
+              targets: [
+                @FunctionReference(
+                  full: 'ApiGenTests\Data\Features\PhpDoc\Inline\foo'
+                ),
+                @FunctionReference(
+                  full: 'foo'
+                ),
+                @MethodReference(
+                  classLike: @ClassLikeReference(
+                    full: 'self'
+                  )
+                  name: 'foo'
+                ),
+              ]
+            }
+          ),
+        ]
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\PhpDoc\Inline\InlineLink'
+    primary: true
+    description: [
+      @PhpDocText(
+        text: '''
+	My favorite links:
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'https://example.com'
+        attributes: {
+          targets: [
+            'https://example.com',
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'httpLink'
+        attributes: {
+          targets: [
+            'https://example.com',
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'DateTimeImmutable'
+        attributes: {
+          targets: [
+            @ClassLikeReference(
+              full: 'DateTimeImmutable'
+            ),
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\DateTimeImmutable'
+            ),
+            @FunctionReference(
+              full: 'DateTimeImmutable'
+            ),
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'DateTimeImmutable'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'DateTimeImmutable'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'classLink'
+        attributes: {
+          targets: [
+            @ClassLikeReference(
+              full: 'DateTimeImmutable'
+            ),
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\DateTimeImmutable'
+            ),
+            @FunctionReference(
+              full: 'DateTimeImmutable'
+            ),
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'DateTimeImmutable'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'DateTimeImmutable'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'DateTimeImmutable::createFromFormat()'
+        attributes: {
+          targets: [
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'DateTimeImmutable'
+              )
+              name: 'createFromFormat'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'methodLink'
+        attributes: {
+          targets: [
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'DateTimeImmutable'
+              )
+              name: 'createFromFormat'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'DateTimeInterface::RFC3339'
+        attributes: {
+          targets: [
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'DateTimeInterface'
+              )
+              name: 'RFC3339'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'DateTimeInterface'
+              )
+              name: 'RFC3339'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'constantLink'
+        attributes: {
+          targets: [
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'DateTimeInterface'
+              )
+              name: 'RFC3339'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'DateTimeInterface'
+              )
+              name: 'RFC3339'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'DateInterval::$days'
+        attributes: {
+          targets: [
+            @PropertyReference(
+              classLike: @ClassLikeReference(
+                full: 'DateInterval'
+              )
+              name: 'days'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'propertyLink'
+        attributes: {
+          targets: [
+            @PropertyReference(
+              classLike: @ClassLikeReference(
+                full: 'DateInterval'
+              )
+              name: 'days'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'hello()'
+        attributes: {
+          targets: [
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+            ),
+            @FunctionReference(
+              full: 'hello'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'hello'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'hello'
+        attributes: {
+          targets: [
+            @ClassLikeReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+            ),
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+            ),
+            @FunctionReference(
+              full: 'hello'
+            ),
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'hello'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'hello'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'strpos()'
+        attributes: {
+          targets: [
+            @FunctionReference(
+              full: 'strpos'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'strpos'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'self'
+        attributes: {
+          targets: [
+            @ClassLikeReference(
+              full: 'self'
+            ),
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\self'
+            ),
+            @FunctionReference(
+              full: 'self'
+            ),
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'self'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'self'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'self::FOO'
+        attributes: {
+          targets: [
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'FOO'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'FOO'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'self::$foo'
+        attributes: {
+          targets: [
+            @PropertyReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'self::foo()'
+        attributes: {
+          targets: [
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'self::foo'
+        attributes: {
+          targets: [
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'FOO'
+        attributes: {
+          targets: [
+            @ClassLikeReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\FOO'
+            ),
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\FOO'
+            ),
+            @FunctionReference(
+              full: 'FOO'
+            ),
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'FOO'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'FOO'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: '$foo'
+        attributes: {
+          targets: [
+            @PropertyReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'foo'
+        attributes: {
+          targets: [
+            @ClassLikeReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\foo'
+            ),
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\foo'
+            ),
+            @FunctionReference(
+              full: 'foo'
+            ),
+            @ConstantReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+          ]
+        }
+      ),
+      @PhpDocText(
+        text: '''
+
+	 - 
+'''
+      ),
+      @PhpDocText(
+        text: 'foo()'
+        attributes: {
+          targets: [
+            @FunctionReference(
+              full: 'ApiGenTests\Data\Features\PhpDoc\Inline\foo'
+            ),
+            @FunctionReference(
+              full: 'foo'
+            ),
+            @MethodReference(
+              classLike: @ClassLikeReference(
+                full: 'self'
+              )
+              name: 'foo'
+            ),
+          ]
+        }
+      ),
+    ]
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\Features\PhpDoc\Inline\foo'
+  ),
+  @ClassLikeReference(
+    full: 'ApiGenTests\Data\Features\PhpDoc\Inline\hello'
+  ),
+  @ClassLikeReference(
+    full: 'DateInterval'
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeInterface'
+  ),
+  @ClassLikeReference(
+    full: 'DateTimeImmutable'
+  ),
+]

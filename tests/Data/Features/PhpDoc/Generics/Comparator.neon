@@ -42,6 +42,9 @@
         @TemplateTagValue(
           name: 'T'
           description: ''
+          attributes: {
+            description: []
+          }
         ),
       ]
     }

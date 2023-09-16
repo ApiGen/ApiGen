@@ -6,6 +6,7 @@ use ApiGen\Analyzer\IdentifierKind;
 use ApiGen\Analyzer\NameContextFrame;
 use ApiGen\Info\AliasReferenceInfo;
 use ApiGen\Info\ClassLikeReferenceInfo;
+use ApiGen\Info\ConstantReferenceInfo;
 use ApiGen\Info\Expr\ArrayExprInfo;
 use ApiGen\Info\Expr\ArrayItemExprInfo;
 use ApiGen\Info\Expr\BooleanExprInfo;
@@ -16,8 +17,16 @@ use ApiGen\Info\Expr\IntegerExprInfo;
 use ApiGen\Info\Expr\NullExprInfo;
 use ApiGen\Info\Expr\StringExprInfo;
 use ApiGen\Info\ExprInfo;
+use ApiGen\Info\FunctionReferenceInfo;
+use ApiGen\Info\MemberReferenceInfo;
+use ApiGen\Info\MethodReferenceInfo;
+use ApiGen\Info\PropertyReferenceInfo;
+use LogicException;
+use Nette\Utils\Strings;
+use Nette\Utils\Validators;
 use PhpParser\NameContext;
 use PhpParser\Node;
+use PhpParser\Node\Stmt\Use_;
 use PhpParser\NodeVisitorAbstract;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprArrayNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprFalseNode;
@@ -30,6 +39,7 @@ use PHPStan\PhpDocParser\Ast\ConstExpr\ConstExprTrueNode;
 use PHPStan\PhpDocParser\Ast\ConstExpr\ConstFetchNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasImportTagValueNode;
 use PHPStan\PhpDocParser\Ast\PhpDoc\TypeAliasTagValueNode;
@@ -40,12 +50,17 @@ use PHPStan\PhpDocParser\Lexer\Lexer;
 use PHPStan\PhpDocParser\Parser\PhpDocParser;
 use PHPStan\PhpDocParser\Parser\TokenIterator;
 
+use function array_filter;
 use function assert;
+use function count;
+use function explode;
 use function get_debug_type;
 use function is_array;
 use function is_object;
+use function property_exists;
 use function sprintf;
 use function str_contains;
+use function strlen;
 use function strtolower;
 use function substr;
 
@@ -142,8 +157,7 @@ class PhpDocResolver extends NodeVisitorAbstract
 				$this->nameContextFrame = $this->resolveNameContext($phpDoc, $this->nameContextFrame, $scope);
 			}
 
-			$this->resolvePhpDoc($phpDoc);
-			$node->setAttribute('phpDoc', $phpDoc);
+			$node->setAttribute('phpDoc', $this->resolvePhpDoc($phpDoc));
 
 		} elseif ($node instanceof Node\Stmt\ClassLike || $node instanceof Node\FunctionLike) {
 			$this->nameContextFrame = new NameContextFrame($this->nameContextFrame);
@@ -195,9 +209,29 @@ class PhpDocResolver extends NodeVisitorAbstract
 	}
 
 
-	protected function resolvePhpDoc(PhpDocNode $phpDoc): void
+	protected function resolvePhpDoc(PhpDocNode $phpDoc): PhpDocNode
 	{
-		$stack = [$phpDoc];
+		$newChildren = [];
+
+		foreach ($phpDoc->children as $child) {
+			if ($child instanceof PhpDocTagNode) {
+				$this->resolvePhpDocTag($child);
+				$newChildren[] = $child;
+
+			} elseif ($child instanceof PhpDocTextNode) {
+				foreach ($this->resolvePhpDocTextNode($child->text) as $newChild) {
+					$newChildren[] = $newChild;
+				}
+			}
+		}
+
+		return new PhpDocNode($newChildren);
+	}
+
+
+	protected function resolvePhpDocTag(PhpDocTagNode $tag): void
+	{
+		$stack = [$tag];
 		$index = 1;
 
 		while ($index > 0) {
@@ -219,6 +253,138 @@ class PhpDocResolver extends NodeVisitorAbstract
 					}
 				}
 			}
+		}
+
+		if (property_exists($tag->value, 'description')) {
+			$tag->value->setAttribute('description', $this->resolvePhpDocTextNode($tag->value->description));
+		}
+	}
+
+
+	/**
+	 * @return PhpDocTextNode[] indexed by []
+	 */
+	public function resolvePhpDocTextNode(string $text): array
+	{
+		$matches = Strings::matchAll($text, '#\{(@(?:[a-z][a-z0-9-\\\\]+:)?[a-z][a-z0-9-\\\\]*+)(?:[ \t]++([^}]++))?\}#', captureOffset: true);
+
+		$nodes = [];
+		$offset = 0;
+
+		foreach ($matches as $match) {
+			$matchText = $match[0][0];
+			$matchOffset = $match[0][1];
+			$tagName = $match[1][0];
+			$tagValue = $match[2][0] ?? '';
+
+			$nodes[] = new PhpDocTextNode(substr($text, $offset, $matchOffset - $offset));
+			$nodes[] = $this->resolveInlineTag($tagName, $tagValue) ?? new PhpDocTextNode($matchText);
+			$offset = $matchOffset + strlen($matchText);
+		}
+
+		$nodes[] = new PhpDocTextNode(substr($text, $offset));
+		return array_filter($nodes, static fn(PhpDocTextNode $node): bool => $node->text !== '');
+	}
+
+
+	protected function resolveInlineTag(string $tagName, string $tagValue): ?PhpDocTextNode
+	{
+		if ($tagName === '@link' || $tagName === '@see') {
+			$parts = explode(' ', $tagValue, 2);
+			$node = new PhpDocTextNode($parts[1] ?? $parts[0]);
+			$references = $this->resolveLinkTarget($parts[0]);
+
+			if (count($references) > 0) {
+				$node->setAttribute('targets', $references);
+			}
+
+			return $node;
+		}
+
+		return null;
+	}
+
+
+	/**
+	 * @return list<ClassLikeReferenceInfo|MemberReferenceInfo|FunctionReferenceInfo|string>
+	 */
+	protected function resolveLinkTarget(string $target): array
+	{
+		$identifier = '[a-zA-Z_\\x7f-\\xff][a-zA-Z0-9_\\x7f-\\xff]*+';
+		$qualifiedIdentifier = "\\\\?+{$identifier}(?:\\\\{$identifier})*+";
+		$references = [];
+
+		if (($match = Strings::match($target, "#^{$qualifiedIdentifier}#")) !== null) {
+			$classLike = new ClassLikeReferenceInfo($this->resolveClassLikeIdentifier($match[0]));
+			$offset = strlen($match[0]);
+
+			if ($offset === strlen($target)) {
+				$references[] = $classLike;
+
+				foreach ($this->resolveFunctionLinkTarget($match[0]) as $functionReference) {
+					$references[] = $functionReference;
+				}
+
+				if (!str_contains($target, '\\')) {
+					$classLike = new ClassLikeReferenceInfo('self');
+					$references[] = new ConstantReferenceInfo($classLike, $target);
+					$references[] = new MethodReferenceInfo($classLike, $target);
+				}
+
+			} elseif (($match = Strings::match($target, "#::($identifier)\\(\\)$#A", offset: $offset)) !== null) {
+				$references[] = new MethodReferenceInfo($classLike, $match[1]);
+
+			} elseif (($match = Strings::match($target, "#::($identifier)$#A", offset: $offset)) !== null) {
+				$references[] = new ConstantReferenceInfo($classLike, $match[1]);
+				$references[] = new MethodReferenceInfo($classLike, $match[1]);
+
+			} elseif (($match = Strings::match($target, "#::\\\$($identifier)$#A", offset: $offset)) !== null) {
+				$references[] = new PropertyReferenceInfo($classLike, $match[1]);
+
+			} elseif (Strings::match($target, "#\\(\\)$#A", offset: $offset) !== null) {
+				$functionName = substr($target, 0, -2);
+				foreach ($this->resolveFunctionLinkTarget($functionName) as $functionReference) {
+					$references[] = $functionReference;
+				}
+
+				if (!str_contains($functionName, '\\')) {
+					$classLike = new ClassLikeReferenceInfo('self');
+					$references[] = new MethodReferenceInfo($classLike, $functionName);
+				}
+
+			} elseif (Validators::isUrl($target)) {
+				$references[] = $target;
+			}
+
+		} elseif (($match = Strings::match($target, "#^\\\$($identifier)$#")) !== null) {
+			$classLike = new ClassLikeReferenceInfo('self');
+			$references[] = new PropertyReferenceInfo($classLike, $match[1]);
+		}
+
+		return $references;
+	}
+
+
+	/**
+	 * @return FunctionReferenceInfo[] indexed by []
+	 */
+	protected function resolveFunctionLinkTarget(string $target): array
+	{
+		$resolvedFunctionIdentifier = $this->resolveFunctionIdentifier($target);
+
+		if ($resolvedFunctionIdentifier !== null) {
+			return [
+				new FunctionReferenceInfo($resolvedFunctionIdentifier),
+			];
+
+		} elseif (($namespace = $this->nameContext->getNamespace()?->toString()) !== null) {
+			return [
+				new FunctionReferenceInfo("{$namespace}\\{$target}"),
+				new FunctionReferenceInfo($target),
+			];
+
+		} else {
+			throw new LogicException("Unable to resolve function {$target}");
 		}
 	}
 
@@ -252,6 +418,17 @@ class PhpDocResolver extends NodeVisitorAbstract
 
 		} else {
 			return $this->nameContext->getResolvedClassName(new Node\Name($identifier))->toString();
+		}
+	}
+
+
+	protected function resolveFunctionIdentifier(string $identifier): ?string
+	{
+		if ($identifier[0] === '\\') {
+			return substr($identifier, 1);
+
+		} else {
+			return $this->nameContext->getResolvedName(new Node\Name($identifier), Use_::TYPE_FUNCTION)?->toString();
 		}
 	}
 

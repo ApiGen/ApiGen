@@ -4,8 +4,10 @@ namespace ApiGen\Info;
 
 use ApiGen\Index\Index;
 use ApiGen\Info\Traits\HasGenericParameters;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
+use function count;
 use function strtolower;
 
 
@@ -23,8 +25,8 @@ class MethodInfo extends MemberInfo
 	/** @var TypeNode|null */
 	public ?TypeNode $returnType = null;
 
-	/** @var string */
-	public string $returnDescription = '';
+	/** @var PhpDocTextNode[] indexed by [] */
+	public array $returnDescription = [];
 
 	/** @var bool */
 	public bool $byRef = false;
@@ -46,39 +48,45 @@ class MethodInfo extends MemberInfo
 	}
 
 
-	public function getEffectiveDescription(Index $index, ClassLikeInfo $classLike): string
+	/**
+	 * @return PhpDocTextNode[] indexed by []
+	 */
+	public function getEffectiveDescription(Index $index, ClassLikeInfo $classLike): array
 	{
-		if ($this->description !== '') {
+		if (count($this->description) > 0) {
 			return $this->description;
 		}
 
 		foreach ($this->ancestors($index, $classLike) as $ancestor) {
 			$description = $ancestor->methods[$this->nameLower]->getEffectiveDescription($index, $ancestor);
 
-			if ($description !== '') {
+			if (count($description) > 0) {
 				return $description;
 			}
 		}
 
-		return '';
+		return [];
 	}
 
 
-	public function getEffectiveReturnDescription(Index $index, ClassLikeInfo $classLike): string
+	/**
+	 * @return PhpDocTextNode[] indexed by []
+	 */
+	public function getEffectiveReturnDescription(Index $index, ClassLikeInfo $classLike): array
 	{
-		if ($this->returnDescription !== '') {
+		if (count($this->returnDescription) > 0) {
 			return $this->returnDescription;
 		}
 
 		foreach ($this->ancestors($index, $classLike) as $ancestor) {
 			$description = $ancestor->methods[$this->nameLower]->getEffectiveReturnDescription($index, $ancestor);
 
-			if ($description !== '') {
+			if (count($description) > 0) {
 				return $description;
 			}
 		}
 
-		return '';
+		return [];
 	}
 
 
