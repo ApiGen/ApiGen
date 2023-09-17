@@ -2,6 +2,7 @@
 
 namespace ApiGen\Info;
 
+use ApiGen\Index\Index;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 use function strtolower;
@@ -23,5 +24,19 @@ class ClassLikeReferenceInfo
 	{
 		$this->full = $full;
 		$this->fullLower = $fullLower ?? strtolower($full);
+	}
+
+
+	public function resolve(Index $index, ?ClassLikeInfo $scope = null): ?ClassLikeInfo
+	{
+		if ($this->fullLower === 'self' || $this->fullLower === 'static') {
+			return $scope;
+		}
+
+		if ($this->fullLower === 'parent' && $scope instanceof ClassInfo && $scope->extends !== null) {
+			return $index->classLike[$scope->extends->fullLower] ?? null;
+		}
+
+		return $index->classLike[$this->fullLower] ?? null;
 	}
 }

@@ -79,7 +79,6 @@ use UnitEnum;
 use function array_map;
 use function assert;
 use function get_debug_type;
-use function implode;
 use function is_array;
 use function is_object;
 use function is_scalar;
@@ -90,7 +89,6 @@ use function sprintf;
 use function str_ends_with;
 use function strtolower;
 use function substr;
-use function trim;
 
 
 /**
@@ -240,7 +238,7 @@ class AnalyzeTaskHandler implements TaskHandler
 		}
 
 		$info->genericParameters = $this->extractGenericParameters($classDoc);
-		$info->description = $this->extractDescription($classDoc);
+		$info->description = $this->extractMultiLineDescription($classDoc);
 		$info->tags = $tags;
 		$info->file = $task->sourceFile;
 		$info->startLine = $node->getStartLine();
@@ -300,7 +298,7 @@ class AnalyzeTaskHandler implements TaskHandler
 	{
 		foreach ($node->stmts as $member) {
 			$memberDoc = $this->extractPhpDoc($member);
-			$description = $this->extractDescription($memberDoc);
+			$description = $this->extractMultiLineDescription($memberDoc);
 			$tags = $this->extractTags($memberDoc);
 
 			if (!$this->filter->filterMemberTags($tags)) {
@@ -340,7 +338,7 @@ class AnalyzeTaskHandler implements TaskHandler
 				foreach ($member->props as $property) {
 					$memberInfo = new PropertyInfo($property->name->name);
 
-					$memberInfo->description = $varTag ? $varTag->description : $description;
+					$memberInfo->description = $this->extractSingleLineDescription($varTag);
 					$memberInfo->tags = $tags;
 
 					$memberInfo->startLine = $member->getComments() ? $member->getComments()[0]->getStartLine() : $member->getStartLine();
@@ -375,7 +373,7 @@ class AnalyzeTaskHandler implements TaskHandler
 				$memberInfo->genericParameters = $this->extractGenericParameters($memberDoc);
 				$memberInfo->parameters = $this->processParameters($this->extractParamTagValues($memberDoc), $member->params);
 				$memberInfo->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($member->returnType);
-				$memberInfo->returnDescription = $returnTag?->description ?? '';
+				$memberInfo->returnDescription = $this->extractSingleLineDescription($returnTag);
 				$memberInfo->byRef = $member->byRef;
 
 				$memberInfo->startLine = $member->getComments() ? $member->getComments()[0]->getStartLine() : $member->getStartLine();
@@ -455,7 +453,7 @@ class AnalyzeTaskHandler implements TaskHandler
 				$propertyInfo->magic = true;
 				$propertyInfo->public = true;
 				$propertyInfo->type = $value->type;
-				$propertyInfo->description = $value->description;
+				$propertyInfo->description = $this->extractSingleLineDescription($value);
 				$propertyInfo->readOnly = $readOnly;
 				$propertyInfo->writeOnly = $writeOnly;
 
@@ -470,7 +468,7 @@ class AnalyzeTaskHandler implements TaskHandler
 			$methodInfo->public = true;
 			$methodInfo->static = $value->isStatic;
 			$methodInfo->returnType = $value->returnType;
-			$methodInfo->description = $value->description;
+			$methodInfo->description = $this->extractSingleLineDescription($value);
 
 			foreach ($value->parameters as $position => $parameter) {
 				$parameterInfo = new ParameterInfo(substr($parameter->parameterName, 1), $position);
@@ -504,7 +502,7 @@ class AnalyzeTaskHandler implements TaskHandler
 		$name = new NameInfo($node->namespacedName->toString());
 		$info = new FunctionInfo($name, $task->primary);
 
-		$info->description = $this->extractDescription($phpDoc);
+		$info->description = $this->extractMultiLineDescription($phpDoc);
 		$info->tags = $tags;
 		$info->file = $task->sourceFile;
 		$info->startLine = $node->getStartLine();
@@ -517,7 +515,7 @@ class AnalyzeTaskHandler implements TaskHandler
 		$info->genericParameters = $this->extractGenericParameters($phpDoc);
 		$info->parameters = $this->processParameters($this->extractParamTagValues($phpDoc), $node->params);
 		$info->returnType = $returnTag ? $returnTag->type : $this->processTypeOrNull($node->returnType);
-		$info->returnDescription = $returnTag?->description ?? '';
+		$info->returnDescription = $this->extractSingleLineDescription($returnTag);
 		$info->byRef = $node->byRef;
 
 		if (!$this->filter->filterFunctionInfo($info)) {
@@ -542,7 +540,7 @@ class AnalyzeTaskHandler implements TaskHandler
 
 			$paramTag = $paramTags["\${$parameter->var->name}"] ?? null;
 			$parameterInfo = new ParameterInfo($parameter->var->name, $position);
-			$parameterInfo->description = $paramTag ? $paramTag->description : '';
+			$parameterInfo->description = $this->extractSingleLineDescription($paramTag);
 			$parameterInfo->type = $paramTag ? $paramTag->type : $this->processTypeOrNull($parameter->type);
 			$parameterInfo->byRef = $parameter->byRef;
 			$parameterInfo->variadic = $parameter->variadic || ($paramTag && $paramTag->isVariadic);
@@ -798,19 +796,32 @@ class AnalyzeTaskHandler implements TaskHandler
 	}
 
 
-	protected function extractDescription(PhpDocNode $node): string
+	/**
+	 * @return PhpDocTextNode[] indexed by []
+	 */
+	protected function extractMultiLineDescription(PhpDocNode $node): array
 	{
-		$lines = [];
+		$textNodes = [];
+
 		foreach ($node->children as $child) {
 			if ($child instanceof PhpDocTextNode) {
-				$lines[] = $child->text;
+				$textNodes[] = $child;
 
 			} else {
 				break;
 			}
 		}
 
-		return trim(implode("\n", $lines));
+		return $textNodes;
+	}
+
+
+	/**
+	 * @return PhpDocTextNode[] indexed by []
+	 */
+	protected function extractSingleLineDescription(?PhpDocTagValueNode $tagValue): array
+	{
+		return $tagValue?->getAttribute('description') ?? [];
 	}
 
 

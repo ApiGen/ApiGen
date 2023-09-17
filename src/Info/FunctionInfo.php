@@ -5,6 +5,7 @@ namespace ApiGen\Info;
 use ApiGen\Info\Traits\HasGenericParameters;
 use ApiGen\Info\Traits\HasLineLocation;
 use ApiGen\Info\Traits\HasTags;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 use PHPStan\PhpDocParser\Ast\Type\TypeNode;
 
 
@@ -24,8 +25,8 @@ class FunctionInfo implements ElementInfo
 	/** @var TypeNode|null */
 	public ?TypeNode $returnType = null;
 
-	/** @var string */
-	public string $returnDescription = '';
+	/** @var PhpDocTextNode[] indexed by [] */
+	public array $returnDescription = [];
 
 	/** @var bool */
 	public bool $byRef = false;

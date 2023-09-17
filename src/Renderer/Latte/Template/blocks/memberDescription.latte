@@ -6,11 +6,11 @@
 	{var $description = $member->getEffectiveDescription($index, $classLike)}
 
 	<div n:if="$description" class="expandable-collapsedView">
-		{shortDescription($description)}
+		{shortDescription($index, $classLike, $description)}
 	</div>
 
 	<div class="expandable-expandedView">
-		{include description, $description}
+		{include description, $description, $classLike}
 		{block details}{/block}
 	</div>
 {/define}

@@ -3,12 +3,13 @@
 namespace ApiGen\Info\Traits;
 
 use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTagValueNode;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 
 
 trait HasTags
 {
-	/** @var string */
-	public string $description = '';
+	/** @var PhpDocTextNode[] indexed by [] */
+	public array $description = [];
 
 	/** @var PhpDocTagValueNode[][] indexed by [tagName][] */
 	public array $tags = [];

@@ -6,6 +6,7 @@ use ApiGen\Index\Index;
 use ApiGen\Info\Traits\HasLineLocation;
 use ApiGen\Info\Traits\HasTags;
 use ApiGen\Info\Traits\HasVisibility;
+use PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode;
 
 
 abstract class MemberInfo
@@ -28,7 +29,10 @@ abstract class MemberInfo
 	}
 
 
-	public function getEffectiveDescription(Index $index, ClassLikeInfo $classLike): string
+	/**
+	 * @return PhpDocTextNode[] indexed by []
+	 */
+	public function getEffectiveDescription(Index $index, ClassLikeInfo $classLike): array
 	{
 		return $this->description;
 	}
