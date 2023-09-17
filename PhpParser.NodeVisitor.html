@@ -209,12 +209,16 @@
 
 
 	<div class="expandable-collapsedView">
-		Called once before traversal.
+		<p>Called once before traversal. Return value semantics:</p>
+<ul>
+<li>null:      $nodes stays as-is</li>
+<li>otherwise: $nodes is set to the return value</li>
+</ul>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Called once before traversal.</p>
-<p>Return value semantics:</p>
+	<div class="description"><p>Called once before traversal. Return value semantics:</p>
 <ul>
 <li>null:      $nodes stays as-is</li>
 <li>otherwise: $nodes is set to the return value</li>
@@ -261,12 +265,22 @@
 
 
 	<div class="expandable-collapsedView">
-		Called when entering a node.
+		<p>Called when entering a node. Return value semantics:</p>
+<ul>
+<li>null
+=&gt; $node stays as-is</li>
+<li>NodeTraverser::DONT_TRAVERSE_CHILDREN
+=&gt; Children of $node are not traversed. $node stays as-is</li>
+<li>NodeTraverser::STOP_TRAVERSAL
+=&gt; Traversal is aborted. $node stays as-is</li>
+<li>otherwise
+=&gt; $node is set to the return value</li>
+</ul>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Called when entering a node.</p>
-<p>Return value semantics:</p>
+	<div class="description"><p>Called when entering a node. Return value semantics:</p>
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
@@ -319,12 +333,24 @@
 
 
 	<div class="expandable-collapsedView">
-		Called when leaving a node.
+		<p>Called when leaving a node. Return value semantics:</p>
+<ul>
+<li>null
+=&gt; $node stays as-is</li>
+<li>NodeTraverser::REMOVE_NODE
+=&gt; $node is removed from the parent array</li>
+<li>NodeTraverser::STOP_TRAVERSAL
+=&gt; Traversal is aborted. $node stays as-is</li>
+<li>array (of Nodes)
+=&gt; The return value is merged into the parent array (at the position of the $node)</li>
+<li>otherwise
+=&gt; $node is set to the return value</li>
+</ul>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Called when leaving a node.</p>
-<p>Return value semantics:</p>
+	<div class="description"><p>Called when leaving a node. Return value semantics:</p>
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
@@ -379,12 +405,16 @@
 
 
 	<div class="expandable-collapsedView">
-		Called once after traversal.
+		<p>Called once after traversal. Return value semantics:</p>
+<ul>
+<li>null:      $nodes stays as-is</li>
+<li>otherwise: $nodes is set to the return value</li>
+</ul>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Called once after traversal.</p>
-<p>Return value semantics:</p>
+	<div class="description"><p>Called once after traversal. Return value semantics:</p>
 <ul>
 <li>null:      $nodes stays as-is</li>
 <li>otherwise: $nodes is set to the return value</li>

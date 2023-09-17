@@ -210,7 +210,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Creates a Lexer.
+		<p>Creates a Lexer.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -232,7 +233,7 @@ first three. For more info see getNextToken() docs.</p>
 
 
 
-		<h4>Overriden by</h4>
+		<h4>Overridden by</h4>
 		<ul>
 				<li>
 <a href="PhpParser.Lexer.Emulative.html#___construct">						<code>PhpParser\Lexer\Emulative::__construct()</code></a>				</li>
@@ -258,12 +259,13 @@ first three. For more info see getNextToken() docs.</p>
 
 
 	<div class="expandable-collapsedView">
-		Initializes the lexer for lexing the provided source code.
+		<p>Initializes the lexer for lexing the provided source code. This function does not throw if lexing errors occur. Instead, errors may be retrieved using
+the getErrors() method.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Initializes the lexer for lexing the provided source code.</p>
-<p>This function does not throw if lexing errors occur. Instead, errors may be retrieved using
+	<div class="description"><p>Initializes the lexer for lexing the provided source code. This function does not throw if lexing errors occur. Instead, errors may be retrieved using
 the getErrors() method.</p>
 </div>
 
@@ -284,7 +286,7 @@ ErrorHandler\Throwing</p>
 
 
 
-		<h4>Overriden by</h4>
+		<h4>Overridden by</h4>
 		<ul>
 				<li>
 <a href="PhpParser.Lexer.Emulative.html#_startLexing">						<code>PhpParser\Lexer\Emulative::startLexing()</code></a>				</li>
@@ -315,7 +317,7 @@ ErrorHandler\Throwing</p>
 
 
 
-		<h4>Overriden by</h4>
+		<h4>Overridden by</h4>
 		<ul>
 				<li>
 <a href="ApiGen.Analyzer.BodySkippingLexer.html#_postprocessTokens">						<code>ApiGen\Analyzer\BodySkippingLexer::postprocessTokens()</code></a>				</li>
@@ -341,17 +343,27 @@ ErrorHandler\Throwing</p>
 
 
 	<div class="expandable-collapsedView">
-		Fetches the next token.
+		<p>Fetches the next token. The available attributes are determined by the 'usedAttributes' option, which can
+be specified in the constructor. The following attributes are supported: * 'comments'      =&gt; Array of PhpParser\Comment or PhpParser\Comment\Doc instances,
+representing all comments that occurred between the previous
+non-discarded token and the current one.</p>
+<ul>
+<li>'startLine'     =&gt; Line in which the node starts.</li>
+<li>'endLine'       =&gt; Line in which the node ends.</li>
+<li>'startTokenPos' =&gt; Offset into the token array of the first token in the node.</li>
+<li>'endTokenPos'   =&gt; Offset into the token array of the last token in the node.</li>
+<li>'startFilePos'  =&gt; Offset into the code string of the first character that is part of the node.</li>
+<li>'endFilePos'    =&gt; Offset into the code string of the last character that is part of the node.</li>
+</ul>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Fetches the next token.</p>
-<p>The available attributes are determined by the 'usedAttributes' option, which can
-be specified in the constructor. The following attributes are supported:</p>
-<ul>
-<li>'comments'      =&gt; Array of PhpParser\Comment or PhpParser\Comment\Doc instances,
+	<div class="description"><p>Fetches the next token. The available attributes are determined by the 'usedAttributes' option, which can
+be specified in the constructor. The following attributes are supported: * 'comments'      =&gt; Array of PhpParser\Comment or PhpParser\Comment\Doc instances,
 representing all comments that occurred between the previous
-non-discarded token and the current one.</li>
+non-discarded token and the current one.</p>
+<ul>
 <li>'startLine'     =&gt; Line in which the node starts.</li>
 <li>'endLine'       =&gt; Line in which the node ends.</li>
 <li>'startTokenPos' =&gt; Offset into the token array of the first token in the node.</li>
@@ -406,12 +418,15 @@ non-discarded token and the current one.</li>
 
 
 	<div class="expandable-collapsedView">
-		Returns the token array for current code.
+		<p>Returns the token array for current code. The token array is in the same format as provided by the
+token_get_all() function and does not discard tokens (i.e.
+whitespace and comments are included). The token position
+attributes are against this token array.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Returns the token array for current code.</p>
-<p>The token array is in the same format as provided by the
+	<div class="description"><p>Returns the token array for current code. The token array is in the same format as provided by the
 token_get_all() function and does not discard tokens (i.e.
 whitespace and comments are included). The token position
 attributes are against this token array.</p>
@@ -444,7 +459,8 @@ attributes are against this token array.</p>
 
 
 	<div class="expandable-collapsedView">
-		Handles __halt_compiler() by returning the text after it.
+		<p>Handles __halt_compiler() by returning the text after it.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -478,12 +494,14 @@ attributes are against this token array.</p>
 
 
 	<div class="expandable-collapsedView">
-		Creates the token map.
+		<p>Creates the token map. The token map maps the PHP internal token identifiers
+to the identifiers used by the Parser. Additionally it
+maps T_OPEN_TAG_WITH_ECHO to T_ECHO and T_CLOSE_TAG to ';'.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Creates the token map.</p>
-<p>The token map maps the PHP internal token identifiers
+	<div class="description"><p>Creates the token map. The token map maps the PHP internal token identifiers
 to the identifiers used by the Parser. Additionally it
 maps T_OPEN_TAG_WITH_ECHO to T_ECHO and T_CLOSE_TAG to ';'.</p>
 </div>

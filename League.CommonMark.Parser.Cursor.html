@@ -174,7 +174,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Returns the position of the next character which is not a space (or tab)
+		<p>Returns the position of the next character which is not a space (or tab)</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -205,7 +206,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Returns the next character which isn't a space (or tab)
+		<p>Returns the next character which isn't a space (or tab)</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -236,7 +238,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Calculates the current indent (number of spaces after current position)
+		<p>Calculates the current indent (number of spaces after current position)</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -267,7 +270,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Whether the cursor is indented to INDENT_LEVEL
+		<p>Whether the cursor is indented to INDENT_LEVEL</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -324,7 +328,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Slightly-optimized version of getCurrent(null)
+		<p>Slightly-optimized version of getCurrent(null)</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -355,7 +360,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Returns the next character (or null, if none) without advancing forwards
+		<p>Returns the next character (or null, if none) without advancing forwards</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -386,7 +392,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Whether the remainder is blank
+		<p>Whether the remainder is blank</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -417,7 +424,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Move the cursor forwards
+		<p>Move the cursor forwards</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -448,7 +456,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Move the cursor forwards
+		<p>Move the cursor forwards</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -492,7 +501,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Advances the cursor by a single space or tab, if present
+		<p>Advances the cursor by a single space or tab, if present</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -523,7 +533,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Parse zero or more space/tab characters
+		<p>Parse zero or more space/tab characters</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -557,12 +568,12 @@
 
 
 	<div class="expandable-collapsedView">
-		Parse zero or more space characters, including at most one newline.
+		<p>Parse zero or more space characters, including at most one newline. Tab characters are not parsed with this function.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Parse zero or more space characters, including at most one newline.</p>
-<p>Tab characters are not parsed with this function.</p>
+	<div class="description"><p>Parse zero or more space characters, including at most one newline. Tab characters are not parsed with this function.</p>
 </div>
 
 
@@ -592,7 +603,8 @@
 
 
 	<div class="expandable-collapsedView">
-		Move the position to the very end of the line
+		<p>Move the position to the very end of the line</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -704,12 +716,12 @@
 
 
 	<div class="expandable-collapsedView">
-		Try to match a regular expression
+		<p>Try to match a regular expression Returns the matching text and advances to the end of that match</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Try to match a regular expression</p>
-<p>Returns the matching text and advances to the end of that match</p>
+	<div class="description"><p>Try to match a regular expression Returns the matching text and advances to the end of that match</p>
 </div>
 
 
@@ -736,12 +748,14 @@
 
 
 	<div class="expandable-collapsedView">
-		Encapsulates the current state of this cursor in case you need to rollback later.
+		<p>Encapsulates the current state of this cursor in case you need to rollback later. WARNING: Do not parse or use the return value for ANYTHING except for
+passing it back into restoreState(), as the number of values and their
+contents may change in any future release without warning.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Encapsulates the current state of this cursor in case you need to rollback later.</p>
-<p>WARNING: Do not parse or use the return value for ANYTHING except for
+	<div class="description"><p>Encapsulates the current state of this cursor in case you need to rollback later. WARNING: Do not parse or use the return value for ANYTHING except for
 passing it back into restoreState(), as the number of values and their
 contents may change in any future release without warning.</p>
 </div>
@@ -770,12 +784,12 @@ contents may change in any future release without warning.</p>
 
 
 	<div class="expandable-collapsedView">
-		Restore the cursor to a previous state.
+		<p>Restore the cursor to a previous state. Pass in the value previously obtained by calling saveState().</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Restore the cursor to a previous state.</p>
-<p>Pass in the value previously obtained by calling saveState().</p>
+	<div class="description"><p>Restore the cursor to a previous state. Pass in the value previously obtained by calling saveState().</p>
 </div>
 
 

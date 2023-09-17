@@ -84,6 +84,11 @@
 						</a>
 					</li>
 					<li>
+						<a href="ApiGen.Info.ConstantReferenceInfo.html">
+							ConstantReferenceInfo
+						</a>
+					</li>
+					<li>
 						<a href="ApiGen.Info.EnumCaseInfo.html">
 							EnumCaseInfo
 						</a>
@@ -104,6 +109,11 @@
 						</a>
 					</li>
 					<li>
+						<a href="ApiGen.Info.FunctionReferenceInfo.html">
+							FunctionReferenceInfo
+						</a>
+					</li>
+					<li>
 						<a href="ApiGen.Info.GenericParameterInfo.html">
 							GenericParameterInfo
 						</a>
@@ -119,8 +129,18 @@
 						</a>
 					</li>
 					<li>
+						<a href="ApiGen.Info.MemberReferenceInfo.html">
+							MemberReferenceInfo
+						</a>
+					</li>
+					<li>
 						<a href="ApiGen.Info.MethodInfo.html">
 							MethodInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.MethodReferenceInfo.html">
+							MethodReferenceInfo
 						</a>
 					</li>
 					<li>
@@ -141,6 +161,11 @@
 					<li>
 						<a href="ApiGen.Info.PropertyInfo.html">
 							PropertyInfo
+						</a>
+					</li>
+					<li>
+						<a href="ApiGen.Info.PropertyReferenceInfo.html">
+							PropertyReferenceInfo
 						</a>
 					</li>
 					<li>
@@ -225,7 +250,7 @@
 
 
 		<div class="classLikeSection">
-			<b>Located at</b> <a href="source-Info.ParameterInfo.html#11" title="Go to source code">Info/ParameterInfo.php</a><br>
+			<b>Located at</b> <a href="source-Info.ParameterInfo.html#13" title="Go to source code">Info/ParameterInfo.php</a><br>
 		</div>
 
 
@@ -246,7 +271,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Info.ParameterInfo.html#35-39" title="Go to source code">__construct</a>(<span>string <var>$name</var></span>, <span>int <var>$position</var></span>)</code>
+				<code><a href="source-Info.ParameterInfo.html#37-41" title="Go to source code">__construct</a>(<span>string <var>$name</var></span>, <span>int <var>$position</var></span>)</code>
 
 
 
@@ -272,13 +297,16 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Info.ParameterInfo.html#42-59" title="Go to source code">getEffectiveDescription</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a> <var>$classLike</var></span>, <span><a href="ApiGen.Info.MethodInfo.html"><span title="ApiGen\Info\MethodInfo">MethodInfo</span></a> <var>$method</var></span>): string</code>
+				<code><a href="source-Info.ParameterInfo.html#44-64" title="Go to source code">getEffectiveDescription</a>(<span><a href="ApiGen.Index.Index.html"><span title="ApiGen\Index\Index">Index</span></a> <var>$index</var></span>, <span><a href="ApiGen.Info.ClassLikeInfo.html"><span title="ApiGen\Info\ClassLikeInfo">ClassLikeInfo</span></a> <var>$classLike</var></span>, <span><a href="ApiGen.Info.MethodInfo.html"><span title="ApiGen\Info\MethodInfo">MethodInfo</span></a> <var>$method</var></span>): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTextNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode">PhpDocTextNode</span></a>[]</code>
 
 
 
 	<div class="expandable-expandedView">
 
 
+							<h4>Returns</h4>
+							<div><p>indexed by []</p>
+</div>
 
 
 	</div>
@@ -313,7 +341,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Info.ParameterInfo.html#13-14" title="Go to source code">$name</a></var></code>
+<code><var><a href="source-Info.ParameterInfo.html#15-16" title="Go to source code">$name</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -337,7 +365,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Info.ParameterInfo.html#16-17" title="Go to source code">$position</a></var></code>
+<code><var><a href="source-Info.ParameterInfo.html#18-19" title="Go to source code">$position</a></var></code>
 				
 
 	<div class="expandable-expandedView">
@@ -357,14 +385,20 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">string</code>
+				<code class="nowrap"><a href="PHPStan.PhpDocParser.Ast.PhpDoc.PhpDocTextNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\PhpDocTextNode">PhpDocTextNode</span></a>[]</code>
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Info.ParameterInfo.html#19-20" title="Go to source code">$description</a></var> = <span class="php-str">''</span></code>
+<code><var><a href="source-Info.ParameterInfo.html#21-22" title="Go to source code">$description</a></var> = []</code>
 				
+	<div class="expandable-collapsedView">
+		<p>indexed by []</p>
+
+	</div>
 
 	<div class="expandable-expandedView">
+	<div class="description"><p>indexed by []</p>
+</div>
 	</div>
 			</td>
 		<td class="table-anchor">
@@ -385,7 +419,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Info.ParameterInfo.html#22-23" title="Go to source code">$type</a></var> = <span class="php-kw">null</span></code>
+<code><var><a href="source-Info.ParameterInfo.html#24-25" title="Go to source code">$type</a></var> = <span class="php-kw">null</span></code>
 				
 
 	<div class="expandable-expandedView">
@@ -409,7 +443,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Info.ParameterInfo.html#25-26" title="Go to source code">$byRef</a></var> = <span class="php-kw">false</span></code>
+<code><var><a href="source-Info.ParameterInfo.html#27-28" title="Go to source code">$byRef</a></var> = <span class="php-kw">false</span></code>
 				
 
 	<div class="expandable-expandedView">
@@ -433,7 +467,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Info.ParameterInfo.html#28-29" title="Go to source code">$variadic</a></var> = <span class="php-kw">false</span></code>
+<code><var><a href="source-Info.ParameterInfo.html#30-31" title="Go to source code">$variadic</a></var> = <span class="php-kw">false</span></code>
 				
 
 	<div class="expandable-expandedView">
@@ -457,7 +491,7 @@
 			</td>
 
 			<td class="table-cell">
-<code><var><a href="source-Info.ParameterInfo.html#31-32" title="Go to source code">$default</a></var> = <span class="php-kw">null</span></code>
+<code><var><a href="source-Info.ParameterInfo.html#33-34" title="Go to source code">$default</a></var> = <span class="php-kw">null</span></code>
 				
 
 	<div class="expandable-expandedView">

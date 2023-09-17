@@ -110,7 +110,9 @@
 
 			<tr>
 				<td class="table-cell" colspan="1"><a href="PhpParser.Node.Expr.Error.html">Error</a></td>
-				<td class="table-cell">Error node used during parsing with error recovery.</td>
+				<td class="table-cell"><p>Error node used during parsing with error recovery. An error node may be placed at a position where an expression is required, but an error occurred.
+Error nodes will not be present if the parser is run in throwOnError mode (the default).</p>
+</td>
 			</tr>
 			<tr>
 				<td class="table-cell" colspan="1"><a href="PhpParser.Node.Expr.Variable.html">Variable</a></td>

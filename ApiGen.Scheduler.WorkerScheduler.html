@@ -131,12 +131,12 @@
 
 	<ul class="classTree">
 	<li>
-<a href="ApiGen.Scheduler.ForkScheduler.html"><span>ApiGen\Scheduler\ForkScheduler</span></a>
+<a href="ApiGen.Scheduler.ExecScheduler.html"><span>ApiGen\Scheduler\ExecScheduler</span></a>
 
 
 	</li>
 	<li>
-<a href="ApiGen.Scheduler.ExecScheduler.html"><span>ApiGen\Scheduler\ExecScheduler</span></a>
+<a href="ApiGen.Scheduler.ForkScheduler.html"><span>ApiGen\Scheduler\ForkScheduler</span></a>
 
 
 	</li>
@@ -176,12 +176,12 @@
 
 
 
-		<h4>Overriden by</h4>
+		<h4>Overridden by</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.ForkScheduler.html#___construct">						<code>ApiGen\Scheduler\ForkScheduler::__construct()</code></a>				</li>
-				<li>
 <a href="ApiGen.Scheduler.ExecScheduler.html#___construct">						<code>ApiGen\Scheduler\ExecScheduler::__construct()</code></a>				</li>
+				<li>
+<a href="ApiGen.Scheduler.ForkScheduler.html#___construct">						<code>ApiGen\Scheduler\ForkScheduler::__construct()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
@@ -352,9 +352,9 @@
 		<h4>Implemented by</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.ForkScheduler.html#_start">						<code>ApiGen\Scheduler\ForkScheduler::start()</code></a>				</li>
-				<li>
 <a href="ApiGen.Scheduler.ExecScheduler.html#_start">						<code>ApiGen\Scheduler\ExecScheduler::start()</code></a>				</li>
+				<li>
+<a href="ApiGen.Scheduler.ForkScheduler.html#_start">						<code>ApiGen\Scheduler\ForkScheduler::start()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
@@ -385,9 +385,9 @@
 		<h4>Implemented by</h4>
 		<ul>
 				<li>
-<a href="ApiGen.Scheduler.ForkScheduler.html#_stop">						<code>ApiGen\Scheduler\ForkScheduler::stop()</code></a>				</li>
-				<li>
 <a href="ApiGen.Scheduler.ExecScheduler.html#_stop">						<code>ApiGen\Scheduler\ExecScheduler::stop()</code></a>				</li>
+				<li>
+<a href="ApiGen.Scheduler.ForkScheduler.html#_stop">						<code>ApiGen\Scheduler\ForkScheduler::stop()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
@@ -450,7 +450,8 @@
 <code><var><a href="source-Scheduler.WorkerScheduler.html#36-37" title="Go to source code">$tasks</a></var></code>
 				
 	<div class="expandable-collapsedView">
-		queue of tasks which needs to be sent to workers
+		<p>queue of tasks which needs to be sent to workers</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -479,7 +480,8 @@
 <code><var><a href="source-Scheduler.WorkerScheduler.html#39-40" title="Go to source code">$pendingTaskCount</a></var> = <span class="php-num">0</span></code>
 				
 	<div class="expandable-collapsedView">
-		total number of pending tasks (including those already sent to workers)
+		<p>total number of pending tasks (including those already sent to workers)</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -508,7 +510,8 @@
 <code><var><a href="source-Scheduler.WorkerScheduler.html#42-43" title="Go to source code">$workerReadableStreams</a></var> = []</code>
 				
 	<div class="expandable-collapsedView">
-		indexed by [workerId]
+		<p>indexed by [workerId]</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -537,7 +540,8 @@
 <code><var><a href="source-Scheduler.WorkerScheduler.html#45-46" title="Go to source code">$workerWritableStreams</a></var> = []</code>
 				
 	<div class="expandable-collapsedView">
-		indexed by [workerId]
+		<p>indexed by [workerId]</p>
+
 	</div>
 
 	<div class="expandable-expandedView">

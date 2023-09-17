@@ -174,7 +174,8 @@
 			</tr>
 			<tr>
 				<td class="table-cell" colspan="1"><a href="PhpParser.Node.ComplexType.html">ComplexType</a></td>
-				<td class="table-cell">This is a base class for complex types, including nullable types and union types.</td>
+				<td class="table-cell"><p>This is a base class for complex types, including nullable types and union types. It does not provide any shared behavior and exists only for type-checking purposes.</p>
+</td>
 			</tr>
 			<tr>
 				<td class="table-cell" colspan="1"><a href="PhpParser.Node.Const_.html">Const_</a></td>
@@ -186,7 +187,8 @@
 			</tr>
 			<tr>
 				<td class="table-cell" colspan="1"><a href="PhpParser.Node.Identifier.html">Identifier</a></td>
-				<td class="table-cell">Represents a non-namespaced name. Namespaced names are represented using Name nodes.</td>
+				<td class="table-cell"><p>Represents a non-namespaced name. Namespaced names are represented using Name nodes.</p>
+</td>
 			</tr>
 			<tr>
 				<td class="table-cell" colspan="1"><a href="PhpParser.Node.Name.html">Name</a></td>
@@ -202,8 +204,10 @@
 			</tr>
 			<tr>
 				<td class="table-cell" colspan="1"><a href="PhpParser.Node.VarLikeIdentifier.html">VarLikeIdentifier</a></td>
-				<td class="table-cell">Represents a name that is written in source code with a leading dollar,
-but is not a proper variable. The leading…</td>
+				<td class="table-cell"><p>Represents a name that is written in source code with a leading dollar,
+but is not a proper variable. The leading dollar is not stored as part of the name. Examples: Names in property declarations are formatted as variables. Names in static property
+lookups are also formatted as variables.</p>
+</td>
 			</tr>
 
 		<tr>

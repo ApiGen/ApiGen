@@ -114,7 +114,11 @@
 			</tr>
 			<tr>
 				<td class="table-cell" colspan="1"><a href="League.CommonMark.Parser.CursorState.html">CursorState</a></td>
-				<td class="table-cell">Encapsulates the current state of a cursor in case you need to rollback later.</td>
+				<td class="table-cell"><p>Encapsulates the current state of a cursor in case you need to rollback later. WARNING: Do not attempt to use this class for ANYTHING except for
+type hinting and passing this object back into restoreState().
+The constructor, methods, and inner contents may change in any
+future release without warning!</p>
+</td>
 			</tr>
 
 		<tr>

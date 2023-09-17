@@ -237,7 +237,8 @@
 <code>ErrorSymbol = <span class="php-num">1</span></code>
 
 	<div class="expandable-collapsedView">
-		Symbol number of error recovery token
+		<p>Symbol number of error recovery token</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -261,7 +262,8 @@
 <code>DefaultAction = -<span class="php-num">8190</span></code>
 
 	<div class="expandable-collapsedView">
-		Action number signifying default action
+		<p>Action number signifying default action</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -285,7 +287,8 @@
 <code>UnexpectedTokenRule = <span class="php-num">8191</span></code>
 
 	<div class="expandable-collapsedView">
-		Rule number signifying that an unexpected token was encountered
+		<p>Rule number signifying that an unexpected token was encountered</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -328,7 +331,8 @@
 <code>NumNonLeafStates = <span class="php-num">350</span></code>
 
 	<div class="expandable-collapsedView">
-		Number of non-leaf states
+		<p>Number of non-leaf states</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -691,7 +695,8 @@
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of lexer tokens to internal symbols
+		<p>Map of lexer tokens to internal symbols</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -1323,8 +1328,10 @@
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of states to a displacement into the self::Action table. The corresponding action for this
- state/symbol pair is…
+		<p>Map of states to a displacement into the self::Action table. The corresponding action for this
+state/symbol pair is self::Action[self::ActionBase[$state] + $symbol]. If self::ActionBase[$state] is 0, the
+action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -1916,7 +1923,8 @@ action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Table of actions. Indexed according to self::ActionBase comment.
+		<p>Table of actions. Indexed according to self::ActionBase comment.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -2506,8 +2514,9 @@ action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Table indexed analogously to self::Action. If self::ActionCheck[self::ActionBase[$state] + $symbol] != $symbol
- then…
+		<p>Table indexed analogously to self::Action. If self::ActionCheck[self::ActionBase[$state] + $symbol] != $symbol
+then the action is defaulted, i.e. self::ActionDefault[$state] should be used instead.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -2883,7 +2892,8 @@ then the action is defaulted, i.e. self::ActionDefault[$state] should be used in
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of states to their default action
+		<p>Map of states to their default action</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -2981,8 +2991,9 @@ then the action is defaulted, i.e. self::ActionDefault[$state] should be used in
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of non-terminals to a displacement into the self::Goto table. The corresponding goto state for this
- non-terminal…
+		<p>Map of non-terminals to a displacement into the self::Goto table. The corresponding goto state for this
+non-terminal/state pair is self::Goto[self::GotoBase[$nonTerminal] + $state] (unless defaulted)</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -3361,7 +3372,8 @@ non-terminal/state pair is self::Goto[self::GotoBase[$nonTerminal] + $state] (un
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Table of states to goto after reduction. Indexed according to self::GotoBase comment.
+		<p>Table of states to goto after reduction. Indexed according to self::GotoBase comment.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -3739,8 +3751,9 @@ non-terminal/state pair is self::Goto[self::GotoBase[$nonTerminal] + $state] (un
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Table indexed analogously to self::Goto. If self::GotoCheck[self::GotoBase[$nonTerminal] + $state] != $nonTerminal
-…
+		<p>Table indexed analogously to self::Goto. If self::GotoCheck[self::GotoBase[$nonTerminal] + $state] != $nonTerminal
+then the goto state is defaulted, i.e. self::GotoDefault[$nonTerminal] should be used.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -3839,7 +3852,8 @@ then the goto state is defaulted, i.e. self::GotoDefault[$nonTerminal] should be
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of non-terminals to the default state to goto after their reduction
+		<p>Map of non-terminals to the default state to goto after their reduction</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -4146,8 +4160,9 @@ then the goto state is defaulted, i.e. self::GotoDefault[$nonTerminal] should be
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of rules to the non-terminal on their left-hand side, i.e. the non-terminal to use for
- determining the state to…
+		<p>Map of rules to the non-terminal on their left-hand side, i.e. the non-terminal to use for
+determining the state to goto after reduction.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -4455,8 +4470,9 @@ determining the state to goto after reduction.</p>
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of rules to the length of their right-hand side, which is the number of elements that have to
- be popped from the…
+		<p>Map of rules to the length of their right-hand side, which is the number of elements that have to
+be popped from the stack(s) on reduction.</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -4594,7 +4610,8 @@ be popped from the stack(s) on reduction.</p>
 ]</code>
 
 	<div class="expandable-collapsedView">
-		Map of symbols to their names
+		<p>Map of symbols to their names</p>
+
 	</div>
 
 	<div class="expandable-expandedView">
@@ -4631,13 +4648,8 @@ be popped from the stack(s) on reduction.</p>
 			<td class="table-cell">
 <code><var>$semValue</var> = <span class="php-kw">null</span></code>
 				
-	<div class="expandable-collapsedView">
-		Temporary value containing the result of last semantic action (reduction)
-	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Temporary value containing the result of last semantic action (reduction)</p>
-</div>
 	</div>
 			</td>
 		<td class="table-anchor">
@@ -4660,13 +4672,8 @@ be popped from the stack(s) on reduction.</p>
 			<td class="table-cell">
 <code><var>$semStack</var></code>
 				
-	<div class="expandable-collapsedView">
-		Semantic value stack (contains values of tokens and semantic action results)
-	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Semantic value stack (contains values of tokens and semantic action results)</p>
-</div>
 	</div>
 			</td>
 		<td class="table-anchor">
@@ -4690,7 +4697,8 @@ be popped from the stack(s) on reduction.</p>
 <code><var>$startTokenStack</var></code>
 				
 	<div class="expandable-collapsedView">
-		Start attribute stack
+		<p>Start attribute stack</p>
+
 	</div>
 
 	<div class="expandable-expandedView">

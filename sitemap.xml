@@ -41,6 +41,7 @@
 			<url><loc>ApiGen.Info.ClassLikeInfo.html</loc></url>
 			<url><loc>ApiGen.Info.ClassLikeReferenceInfo.html</loc></url>
 			<url><loc>ApiGen.Info.ConstantInfo.html</loc></url>
+			<url><loc>ApiGen.Info.ConstantReferenceInfo.html</loc></url>
 			<url><loc>ApiGen.Info.ElementInfo.html</loc></url>
 			<url><loc>ApiGen.Info.EnumCaseInfo.html</loc></url>
 			<url><loc>ApiGen.Info.EnumInfo.html</loc></url>
@@ -65,15 +66,19 @@
 			<url><loc>ApiGen.Info.Expr.UnaryOpExprInfo.html</loc></url>
 			<url><loc>ApiGen.Info.ExprInfo.html</loc></url>
 			<url><loc>ApiGen.Info.FunctionInfo.html</loc></url>
+			<url><loc>ApiGen.Info.FunctionReferenceInfo.html</loc></url>
 			<url><loc>ApiGen.Info.GenericParameterInfo.html</loc></url>
 			<url><loc>ApiGen.Info.GenericParameterVariance.html</loc></url>
 			<url><loc>ApiGen.Info.InterfaceInfo.html</loc></url>
 			<url><loc>ApiGen.Info.MemberInfo.html</loc></url>
+			<url><loc>ApiGen.Info.MemberReferenceInfo.html</loc></url>
 			<url><loc>ApiGen.Info.MethodInfo.html</loc></url>
+			<url><loc>ApiGen.Info.MethodReferenceInfo.html</loc></url>
 			<url><loc>ApiGen.Info.MissingInfo.html</loc></url>
 			<url><loc>ApiGen.Info.NameInfo.html</loc></url>
 			<url><loc>ApiGen.Info.ParameterInfo.html</loc></url>
 			<url><loc>ApiGen.Info.PropertyInfo.html</loc></url>
+			<url><loc>ApiGen.Info.PropertyReferenceInfo.html</loc></url>
 			<url><loc>ApiGen.Info.TraitInfo.html</loc></url>
 			<url><loc>ApiGen.Info.Traits.HasGenericParameters.html</loc></url>
 			<url><loc>ApiGen.Info.Traits.HasLineLocation.html</loc></url>
@@ -139,6 +144,7 @@
 			<url><loc>source-Info.ClassLikeInfo.html</loc></url>
 			<url><loc>source-Info.ClassLikeReferenceInfo.html</loc></url>
 			<url><loc>source-Info.ConstantInfo.html</loc></url>
+			<url><loc>source-Info.ConstantReferenceInfo.html</loc></url>
 			<url><loc>source-Info.ElementInfo.html</loc></url>
 			<url><loc>source-Info.EnumCaseInfo.html</loc></url>
 			<url><loc>source-Info.EnumInfo.html</loc></url>
@@ -163,15 +169,19 @@
 			<url><loc>source-Info.Expr.UnaryOpExprInfo.html</loc></url>
 			<url><loc>source-Info.ExprInfo.html</loc></url>
 			<url><loc>source-Info.FunctionInfo.html</loc></url>
+			<url><loc>source-Info.FunctionReferenceInfo.html</loc></url>
 			<url><loc>source-Info.GenericParameterInfo.html</loc></url>
 			<url><loc>source-Info.GenericParameterVariance.html</loc></url>
 			<url><loc>source-Info.InterfaceInfo.html</loc></url>
 			<url><loc>source-Info.MemberInfo.html</loc></url>
+			<url><loc>source-Info.MemberReferenceInfo.html</loc></url>
 			<url><loc>source-Info.MethodInfo.html</loc></url>
+			<url><loc>source-Info.MethodReferenceInfo.html</loc></url>
 			<url><loc>source-Info.MissingInfo.html</loc></url>
 			<url><loc>source-Info.NameInfo.html</loc></url>
 			<url><loc>source-Info.ParameterInfo.html</loc></url>
 			<url><loc>source-Info.PropertyInfo.html</loc></url>
+			<url><loc>source-Info.PropertyReferenceInfo.html</loc></url>
 			<url><loc>source-Info.TraitInfo.html</loc></url>
 			<url><loc>source-Info.Traits.HasGenericParameters.html</loc></url>
 			<url><loc>source-Info.Traits.HasLineLocation.html</loc></url>
