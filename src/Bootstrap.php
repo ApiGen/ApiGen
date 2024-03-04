@@ -158,7 +158,7 @@ class Bootstrap
 		foreach ($configs as $config) {
 			foreach ($config['parameters'] ?? [] as $key => $value) {
 				if (is_array($value)) {
-					$config['parameters'][$key][SchemaHelpers::PREVENT_MERGING] = true;
+					$config['parameters'][$key][SchemaHelpers::PreventMerging] = true;
 				}
 			}
 
