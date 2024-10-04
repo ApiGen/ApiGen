@@ -60,7 +60,7 @@ class SchedulerFactory
 	 */
 	private function createHandler(string $handlerFactoryType, mixed $context): TaskHandler
 	{
-		$factory = $this->container->getByType($handlerFactoryType) ?? throw new \LogicException();
+		$factory = $this->container->getByType($handlerFactoryType);
 		return $factory->create($context);
 	}
 }

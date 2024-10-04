@@ -113,7 +113,7 @@ class Bootstrap
 		$container->initialize();
 		ini_set('memory_limit', $container->parameters['memoryLimit']);
 
-		$apiGen = $container->getByType(ApiGen::class) ?? throw new \LogicException();
+		$apiGen = $container->getByType(ApiGen::class);
 		assert($apiGen instanceof ApiGen);
 
 		return $apiGen;

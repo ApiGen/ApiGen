@@ -45,6 +45,6 @@ $container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput()
 ini_set('memory_limit', $container->parameters['memoryLimit']);
 
 $context = WorkerScheduler::readMessage(STDIN);
-$handlerFactory = $container->getByType($handlerFactoryClassName) ?? throw new \LogicException();
+$handlerFactory = $container->getByType($handlerFactoryClassName);
 $handler = $handlerFactory->create($context);
 WorkerScheduler::workerLoop($handler, STDIN, STDOUT);
