@@ -6,12 +6,15 @@ use ApiGen\Info\ClassLikeReferenceInfo;
 use Composer\Autoload\ClassLoader;
 use JetBrains\PHPStormStub\PhpStormStubsMap;
 use League;
+use Nette\Utils\FileSystem;
+use Nette\Utils\Json;
 use PHPStan\Php8StubsMap;
 use Symfony\Component\Console\Style\OutputStyle;
 
 use function dirname;
 use function implode;
 use function is_dir;
+use function is_file;
 use function strtolower;
 
 use const PHP_VERSION_ID;
@@ -61,26 +64,39 @@ class Locator
 
 	protected static function createComposerClassLoader(OutputStyle $output, string $projectDir): ClassLoader
 	{
-		$vendorDir = "$projectDir/vendor";
 		$loader = new ClassLoader();
+		$composerJsonPath = "$projectDir/composer.json";
+
+		if (!is_file($composerJsonPath)) {
+			$output->warning(implode("\n", [
+				"Unable to use Composer autoloader for finding dependencies because file",
+				"$composerJsonPath does not exist. Use --working-dir to specify directory where composer.json is located",
+			]));
+
+			return $loader;
+		}
+
+		$composerJson = Json::decode(FileSystem::read($composerJsonPath), forceArrays: true);
+		$vendorDir = FileSystem::joinPaths($projectDir, $composerJson['config']['vendor-dir'] ?? 'vendor');
 
 		if (!is_dir($vendorDir)) {
 			$output->warning(implode("\n", [
 				"Unable to use Composer autoloader for finding dependencies because directory",
-				"$vendorDir does not exist. Use --worker-dir to specify directory where vendor directory is located",
+				"$vendorDir does not exist. Run composer install to install dependencies.",
 			]));
 
-		} else {
-			$output->text("Using Composer autoloader for finding dependencies in $vendorDir.\n");
-			$loader->addClassMap(require "$vendorDir/composer/autoload_classmap.php");
+			return $loader;
+		}
 
-			foreach (require "$vendorDir/composer/autoload_namespaces.php" as $prefix => $paths) {
-				$loader->set($prefix, $paths);
-			}
+		$output->text("Using Composer autoloader for finding dependencies in $vendorDir.\n");
+		$loader->addClassMap(require "$vendorDir/composer/autoload_classmap.php");
 
-			foreach (require "$vendorDir/composer/autoload_psr4.php" as $prefix => $paths) {
-				$loader->setPsr4($prefix, $paths);
-			}
+		foreach (require "$vendorDir/composer/autoload_namespaces.php" as $prefix => $paths) {
+			$loader->set($prefix, $paths);
+		}
+
+		foreach (require "$vendorDir/composer/autoload_psr4.php" as $prefix => $paths) {
+			$loader->setPsr4($prefix, $paths);
 		}
 
 		return $loader;
