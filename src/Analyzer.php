@@ -105,14 +105,18 @@ class Analyzer
 
 	protected function processClassLike(AnalyzeState $state, ClassLikeInfo $info): void
 	{
-		if (!isset($state->classLikes[$info->name->fullLower])) {
+		$existing = $state->classLikes[$info->name->fullLower] ?? null;
+
+		if ($existing === null || ($info->primary && !$existing->primary)) {
 			unset($state->missing[$info->name->fullLower]);
 			$state->classLikes[$info->name->fullLower] = $info;
 			$state->prevName = $info->name;
 
-		} else {
-			$existing = $state->classLikes[$info->name->fullLower];
+		} elseif ($info->primary) {
 			$state->errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $existing);
+			$state->prevName = null;
+
+		} else {
 			$state->prevName = null;
 		}
 	}
@@ -120,13 +124,17 @@ class Analyzer
 
 	protected function processFunction(AnalyzeState $state, FunctionInfo $info): void
 	{
-		if (!isset($state->functions[$info->name->fullLower])) {
+		$existing = $state->functions[$info->name->fullLower] ?? null;
+
+		if ($existing === null || ($info->primary && !$existing->primary)) {
 			$state->functions[$info->name->fullLower] = $info;
 			$state->prevName = $info->name;
 
-		} else {
-			$existing = $state->functions[$info->name->fullLower];
+		} elseif ($info->primary) {
 			$state->errors[ErrorKind::DuplicateSymbol->name][] = $this->createDuplicateSymbolError($info, $existing);
+			$state->prevName = null;
+
+		} else {
 			$state->prevName = null;
 		}
 	}
