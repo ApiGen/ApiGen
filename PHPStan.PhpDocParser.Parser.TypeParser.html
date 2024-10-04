@@ -156,7 +156,11 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>?<a href="PHPStan.PhpDocParser.Parser.ConstExprParser.html"><span title="PHPStan\PhpDocParser\Parser\ConstExprParser">ConstExprParser</span></a> <var>$constExprParser</var> = <span class="php-kw">null</span></span>)</code>
+				<code>__construct(
+	<span>?<a href="PHPStan.PhpDocParser.Parser.ConstExprParser.html"><span title="PHPStan\PhpDocParser\Parser\ConstExprParser">ConstExprParser</span></a> <var>$constExprParser</var> = <span class="php-kw">null</span></span>,
+	<span>bool <var>$quoteAwareConstExprString</var> = <span class="php-kw">false</span></span>,
+	<span>array{lines?: bool, indexes?: bool} <var>$usedAttributes</var> = []</span>,
+)</code>
 
 
 
@@ -273,6 +277,42 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_parseGenericTypeArgument">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parseTemplateTagValue" id="_parseTemplateTagValue">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>parseTemplateTagValue(
+	<span><a href="PHPStan.PhpDocParser.Parser.TokenIterator.html"><span title="PHPStan\PhpDocParser\Parser\TokenIterator">TokenIterator</span></a> <var>$tokens</var></span>,
+	<span>?(callable(<a href="PHPStan.PhpDocParser.Parser.TokenIterator.html"><span title="PHPStan\PhpDocParser\Parser\TokenIterator">TokenIterator</span></a>):&nbsp;string) <var>$parseDescription</var> = <span class="php-kw">null</span></span>,
+): <a href="PHPStan.PhpDocParser.Ast.PhpDoc.TemplateTagValueNode.html"><span title="PHPStan\PhpDocParser\Ast\PhpDoc\TemplateTagValueNode">TemplateTagValueNode</span></a></code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+							<h4>Throws</h4>
+							<table>
+									<tr>
+										<td><code><a href="PHPStan.PhpDocParser.Parser.ParserException.html"><span>PHPStan\PhpDocParser\Parser\ParserException</span></a></code>&nbsp;</td>
+										<td></td>
+									</tr>
+							</table>
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_parseTemplateTagValue">#</a>
 		</td>
 	</tr>
 		</table>

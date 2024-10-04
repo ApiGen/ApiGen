@@ -71,6 +71,11 @@
 						</a>
 					</li>
 					<li>
+						<a href="Latte.Compiler.Nodes.Php.ArrayItemNode.html">
+							ArrayItemNode
+						</a>
+					</li>
+					<li>
 						<a href="Latte.Compiler.Nodes.Php.ComplexTypeNode.html">
 							ComplexTypeNode
 						</a>
@@ -88,6 +93,11 @@
 					<li>
 						<a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html">
 							InterpolatedStringPartNode
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.Nodes.Php.ListNode.html">
+							ListNode
 						</a>
 					</li>
 					<li>
@@ -173,8 +183,6 @@
 		implements
 			<a href="IteratorAggregate.html"><span title="IteratorAggregate">IteratorAggregate</span></a>&lt;<a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a>&gt;
 
-		uses
-			<a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a>
 	<ul class="classTree">
 	<li>
 <b><span class="active">Latte\Compiler\Nodes\Php\ExpressionNode</span></b>
@@ -182,12 +190,12 @@
 
 	<ul class="classTree">
 	<li>
-<a href="Latte.Compiler.Nodes.Php.Expression.VariableNode.html"><span>Latte\Compiler\Nodes\Php\Expression\VariableNode</span></a>
+<a href="Latte.Compiler.Nodes.Php.Expression.ArrayNode.html"><span>Latte\Compiler\Nodes\Php\Expression\ArrayNode</span></a>
 
 
 	</li>
 	<li>
-<a href="Latte.Compiler.Nodes.Php.Expression.FunctionCallNode.html"><span>Latte\Compiler\Nodes\Php\Expression\FunctionCallNode</span></a>
+<a href="Latte.Compiler.Nodes.Php.Expression.VariableNode.html"><span>Latte\Compiler\Nodes\Php\Expression\VariableNode</span></a>
 
 
 	</li>
@@ -202,7 +210,7 @@
 
 	<ul class="classTree">
 	<li>
-<a href="Latte.Compiler.Nodes.Php.Scalar.StringNode.html"><span>Latte\Compiler\Nodes\Php\Scalar\StringNode</span></a>
+<a href="Latte.Compiler.Nodes.Php.Scalar.IntegerNode.html"><span>Latte\Compiler\Nodes\Php\Scalar\IntegerNode</span></a>
 
 
 	</li>
@@ -212,14 +220,14 @@
 
 	</li>
 	<li>
-<a href="Latte.Compiler.Nodes.Php.Scalar.IntegerNode.html"><span>Latte\Compiler\Nodes\Php\Scalar\IntegerNode</span></a>
+<a href="Latte.Compiler.Nodes.Php.Scalar.StringNode.html"><span>Latte\Compiler\Nodes\Php\Scalar\StringNode</span></a>
 
 
 	</li>
 	</ul>
 	</li>
 	<li>
-<a href="Latte.Compiler.Nodes.Php.Expression.ArrayNode.html"><span>Latte\Compiler\Nodes\Php\Expression\ArrayNode</span></a>
+<a href="Latte.Compiler.Nodes.Php.Expression.FunctionCallNode.html"><span>Latte\Compiler\Nodes\Php\Expression\FunctionCallNode</span></a>
 
 
 	</li>
@@ -236,6 +244,90 @@
 
 
 
+		<table class="table" id="methods">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="isWritable" id="_isWritable">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isWritable(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isWritable">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isVariable" id="_isVariable">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isVariable(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isVariable">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isCall" id="_isCall">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isCall(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isCall">#</a>
+		</td>
+	</tr>
+		</table>
 		<table class="table">
 			<tr>
 				<th class="table-heading">Methods inherited from <a href="Latte.Compiler.Node.html"><span>Latte\Compiler\Node</span></a></th>
@@ -247,16 +339,6 @@
 		</table>
 
 
-
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>				</td>
-			</tr>
-		</table>
 
 
 
@@ -279,7 +361,6 @@
 <code><var><a href="Latte.Compiler.Node.html#$position">$position</a></var></code>				</td>
 			</tr>
 		</table>
-
 
 
 

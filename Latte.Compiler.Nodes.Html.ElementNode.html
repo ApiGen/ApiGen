@@ -130,8 +130,6 @@
 		implements
 			<a href="IteratorAggregate.html"><span title="IteratorAggregate">IteratorAggregate</span></a>&lt;<a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a>&gt;
 
-		uses
-			<a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a>
 	<ul class="classTree">
 	<li>
 <a href="Latte.Compiler.Nodes.AreaNode.html"><span>Latte\Compiler\Nodes\AreaNode</span></a>
@@ -172,7 +170,13 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>string <var>$name</var></span>, <span>?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var> = <span class="php-kw">null</span></span>, <span>?<b><span class="active" title="Latte\Compiler\Nodes\Html\ElementNode">self</span></b> <var>$parent</var> = <span class="php-kw">null</span></span>, <span>?<a href="stdClass.html"><span title="stdClass">stdClass</span></a> <var>$data</var> = <span class="php-kw">null</span></span>)</code>
+				<code>__construct(
+	<span>string <var>$name</var></span>,
+	<span>?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var> = <span class="php-kw">null</span></span>,
+	<span>?<b><span class="active" title="Latte\Compiler\Nodes\Html\ElementNode">self</span></b> <var>$parent</var> = <span class="php-kw">null</span></span>,
+	<span>?<a href="stdClass.html"><span title="stdClass">stdClass</span></a> <var>$data</var> = <span class="php-kw">null</span></span>,
+	<span>string <var>$contentType</var> = <a href="Latte.ContentType.html"><span title="Latte\ContentType">ContentType</span></a>::<a href="Latte.ContentType.html#Html">Html</a></span>,
+)</code>
 
 
 
@@ -211,6 +215,58 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_getAttribute">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="is" id="_is">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>is(<span>string <var>$name</var></span>): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_is">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isRawText" id="_isRawText">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isRawText(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isRawText">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="print" id="_print">
@@ -281,16 +337,6 @@
 
 
 
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>				</td>
-			</tr>
-		</table>
-
 
 
 
@@ -313,7 +359,7 @@
 				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="customName" id="$customName">
+	<tr class="expandable collapsed" data-order="variableName" id="$variableName">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -323,18 +369,18 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">?<a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a></code>
+				<code class="nowrap">?<a href="Latte.Compiler.Nodes.Php.ExpressionNode.html"><span title="Latte\Compiler\Nodes\Php\ExpressionNode">ExpressionNode</span></a></code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$customName</var> = <span class="php-kw">null</span></code>
+<code><var>$variableName</var> = <span class="php-kw">null</span></code>
 				
 
 	<div class="expandable-expandedView">
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$customName">#</a>
+			<a href="#$variableName">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="attributes" id="$attributes">
@@ -481,6 +527,30 @@
 			<a href="#$captureTagName">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="breakable" id="$breakable">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$breakable</var> = <span class="php-kw">false</span></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$breakable">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="name" id="$name">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -577,8 +647,31 @@
 			<a href="#$data">#</a>
 		</td>
 	</tr>
-		</table>
+	<tr class="expandable collapsed" data-order="contentType" id="$contentType">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
 
+			<td class="table-cell table-shrink">
+				<code class="nowrap">string</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$contentType</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$contentType">#</a>
+		</td>
+	</tr>
+		</table>
 
 
 

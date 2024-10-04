@@ -174,16 +174,16 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setPlaceholderFormatterDefinition(<span>string <var>$name</var></span>, <span>callable <var>$callable</var></span>): void</code>
+				<code>setPlaceholderFormatterDefinition(<span>string <var>$name</var></span>, <span>callable(<b><span class="active" title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></b>):&nbsp;string <var>$callable</var></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Sets a placeholder formatter for a given name. This method also allow you to override an existing placeholder.</p>
+		<p>Sets a placeholder formatter for a given name, globally for all instances of ProgressBar. This method also allow you to override an existing placeholder.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Sets a placeholder formatter for a given name. This method also allow you to override an existing placeholder.</p>
+	<div class="description"><p>Sets a placeholder formatter for a given name, globally for all instances of ProgressBar. This method also allow you to override an existing placeholder.</p>
 </div>
 
 							<h4>Parameters</h4>
@@ -246,6 +246,86 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_getPlaceholderFormatterDefinition">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setPlaceholderFormatter" id="_setPlaceholderFormatter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setPlaceholderFormatter(<span>string <var>$name</var></span>, <span>callable(<b><span class="active" title="Symfony\Component\Console\Helper\ProgressBar">ProgressBar</span></b>):&nbsp;string <var>$callable</var></span>): void</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Sets a placeholder formatter for a given name, for this instance only.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets a placeholder formatter for a given name, for this instance only.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$callable</var>&nbsp;&nbsp;</td>
+										<td><p>A PHP callable</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setPlaceholderFormatter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getPlaceholderFormatter" id="_getPlaceholderFormatter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getPlaceholderFormatter(<span>string <var>$name</var></span>): ?callable</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Gets the placeholder formatter for a given name.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the placeholder formatter for a given name.</p>
+</div>
+
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>The placeholder name (including the delimiter char like %)</p>
+</td>
+									</tr>
+							</table>
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getPlaceholderFormatter">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="setFormatDefinition" id="_setFormatDefinition">
@@ -344,7 +424,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setMessage(<span>string <var>$message</var></span>, <span>string <var>$name</var> = <span class="php-str">'message'</span></span>)</code>
+				<code>setMessage(<span>string <var>$message</var></span>, <span>string <var>$name</var> = <span class="php-str">'message'</span></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -393,7 +473,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>getMessage(<span>string <var>$name</var> = <span class="php-str">'message'</span></span>)</code>
+				<code>getMessage(<span>string <var>$name</var> = <span class="php-str">'message'</span></span>): ?string</code>
 
 
 
@@ -601,7 +681,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setBarWidth(<span>int <var>$size</var></span>)</code>
+				<code>setBarWidth(<span>int <var>$size</var></span>): void</code>
 
 
 
@@ -653,7 +733,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setBarCharacter(<span>string <var>$char</var></span>)</code>
+				<code>setBarCharacter(<span>string <var>$char</var></span>): void</code>
 
 
 
@@ -705,7 +785,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setEmptyBarCharacter(<span>string <var>$char</var></span>)</code>
+				<code>setEmptyBarCharacter(<span>string <var>$char</var></span>): void</code>
 
 
 
@@ -757,7 +837,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setProgressCharacter(<span>string <var>$char</var></span>)</code>
+				<code>setProgressCharacter(<span>string <var>$char</var></span>): void</code>
 
 
 
@@ -809,7 +889,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setFormat(<span>string <var>$format</var></span>)</code>
+				<code>setFormat(<span>string <var>$format</var></span>): void</code>
 
 
 
@@ -835,7 +915,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setRedrawFrequency(<span>int|null <var>$freq</var></span>)</code>
+				<code>setRedrawFrequency(<span>int|null <var>$freq</var></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -927,7 +1007,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>iterate(<span>iterable <var>$iterable</var></span>, <span>int|null <var>$max</var> = <span class="php-kw">null</span></span>): iterable</code>
+				<code>iterate&lt;<span title="">TKey</span>, <span title="">TValue</span>&gt;(<span>iterable&lt;TKey, TValue&gt; <var>$iterable</var></span>, <span>int|null <var>$max</var> = <span class="php-kw">null</span></span>): iterable&lt;TKey, TValue&gt;</code>
 
 
 	<div class="expandable-collapsedView">
@@ -1012,7 +1092,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>advance(<span>int <var>$step</var> = <span class="php-num">1</span></span>)</code>
+				<code>advance(<span>int <var>$step</var> = <span class="php-num">1</span></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -1052,7 +1132,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setOverwrite(<span>bool <var>$overwrite</var></span>)</code>
+				<code>setOverwrite(<span>bool <var>$overwrite</var></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -1084,7 +1164,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setProgress(<span>int <var>$step</var></span>)</code>
+				<code>setProgress(<span>int <var>$step</var></span>): void</code>
 
 
 
@@ -1110,7 +1190,7 @@ when the corresponding placeholder is part of the custom format line
 			</td>
 
 			<td class="table-cell">
-				<code>setMaxSteps(<span>int <var>$max</var></span>)</code>
+				<code>setMaxSteps(<span>?int <var>$max</var></span>): void</code>
 
 
 

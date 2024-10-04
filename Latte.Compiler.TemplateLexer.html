@@ -157,11 +157,6 @@
 
 			<tr><th><code>final</code></th></tr>
 
-		<tr>
-			<th><code>uses</code></th>
-			<td>
-<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>			</td>
-		</tr>
 
 	</table>
 
@@ -177,6 +172,32 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
 			</tr>
 
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct()</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="tokenize" id="_tokenize">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -188,7 +209,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>tokenize(<span>string <var>$template</var></span>, <span>string <var>$contentType</var> = <a href="Latte.ContentType.html"><span title="Latte\ContentType">ContentType</span></a>::<a href="Latte.ContentType.html#Html">Html</a></span>): <a href="Generator.html"><span title="Generator">Generator</span></a>&lt;<a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a>&gt;</code>
+				<code>tokenize(<span>string <var>$template</var></span>): <a href="Generator.html"><span title="Generator">Generator</span></a>&lt;<a href="Latte.Compiler.Token.html"><span title="Latte\Compiler\Token">Token</span></a>&gt;</code>
 
 
 
@@ -203,7 +224,7 @@
 			<a href="#_tokenize">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="setContentType" id="_setContentType">
+	<tr class="expandable collapsed" data-order="setState" id="_setState">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -214,7 +235,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setContentType(<span>string <var>$type</var></span>): static</code>
+				<code>setState(<span>string <var>$state</var></span>, <span>...<var>$args</var></span>): void</code>
 
 
 
@@ -226,7 +247,85 @@
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_setContentType">#</a>
+			<a href="#_setState">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="pushState" id="_pushState">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>pushState(<span>string <var>$state</var></span>, <span>...<var>$args</var></span>): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_pushState">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="popState" id="_popState">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>popState(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_popState">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getState" id="_getState">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getState(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getState">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="setSyntax" id="_setSyntax">
@@ -261,16 +360,32 @@
 			<a href="#_setSyntax">#</a>
 		</td>
 	</tr>
-		</table>
+	<tr class="expandable collapsed" data-order="popSyntax" id="_popSyntax">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
 
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>				</td>
-			</tr>
+			<td class="table-cell">
+				<code>popSyntax(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_popSyntax">#</a>
+		</td>
+	</tr>
 		</table>
 
 
@@ -280,6 +395,196 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
 			</tr>
 
+	<tr class="expandable collapsed" data-order="StatePlain" id="StatePlain">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StatePlain = <span class="php-str">'Plain'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StatePlain">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateLatteTag" id="StateLatteTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateLatteTag = <span class="php-str">'LatteTag'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateLatteTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateLatteComment" id="StateLatteComment">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateLatteComment = <span class="php-str">'LatteComment'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateLatteComment">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateHtmlText" id="StateHtmlText">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateHtmlText = <span class="php-str">'HtmlText'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateHtmlText">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateHtmlTag" id="StateHtmlTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateHtmlTag = <span class="php-str">'HtmlTag'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateHtmlTag">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateHtmlQuotedValue" id="StateHtmlQuotedValue">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateHtmlQuotedValue = <span class="php-str">'HtmlQuotedValue'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateHtmlQuotedValue">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateHtmlQuotedNAttrValue" id="StateHtmlQuotedNAttrValue">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateHtmlQuotedNAttrValue = <span class="php-str">'HtmlQuotedNAttrValue'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateHtmlQuotedNAttrValue">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateHtmlRawText" id="StateHtmlRawText">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateHtmlRawText = <span class="php-str">'HtmlRawText'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateHtmlRawText">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateHtmlComment" id="StateHtmlComment">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateHtmlComment = <span class="php-str">'HtmlComment'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateHtmlComment">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="StateHtmlBogus" id="StateHtmlBogus">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>StateHtmlBogus = <span class="php-str">'HtmlBogus'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#StateHtmlBogus">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="ReTagName" id="ReTagName">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -333,61 +638,6 @@
 		</table>
 
 
-
-		<table class="table" id="properties">
-			<tr>
-				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
-			</tr>
-
-	<tr class="expandable collapsed" data-order="openDelimiter" id="$openDelimiter">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap">string</code>
-			</td>
-
-			<td class="table-cell">
-<code><var>$openDelimiter</var></code>
-				
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$openDelimiter">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="closeDelimiter" id="$closeDelimiter">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap">string</code>
-			</td>
-
-			<td class="table-cell">
-<code><var>$closeDelimiter</var></code>
-				
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$closeDelimiter">#</a>
-		</td>
-	</tr>
-		</table>
 
 
 

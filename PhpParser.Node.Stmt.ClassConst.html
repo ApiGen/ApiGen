@@ -202,7 +202,13 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span><a href="PhpParser.Node.Const_.html"><span title="PhpParser\Node\Const_">Const_</span></a>[] <var>$consts</var></span>, <span>int <var>$flags</var> = <span class="php-num">0</span></span>, <span>array <var>$attributes</var> = []</span>, <span><a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>[] <var>$attrGroups</var> = []</span>)</code>
+				<code>__construct(
+	<span><a href="PhpParser.Node.Const_.html"><span title="PhpParser\Node\Const_">Const_</span></a>[] <var>$consts</var></span>,
+	<span>int <var>$flags</var> = <span class="php-num">0</span></span>,
+	<span>array <var>$attributes</var> = []</span>,
+	<span><a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>[] <var>$attrGroups</var> = []</span>,
+	<span>null|string|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a> <var>$type</var> = <span class="php-kw">null</span></span>,
+)</code>
 
 
 	<div class="expandable-collapsedView">
@@ -234,6 +240,11 @@
 									<tr>
 										<td><var>$attrGroups</var>&nbsp;&nbsp;</td>
 										<td><p>PHP attribute groups</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$type</var>&nbsp;&nbsp;</td>
+										<td><p>Type declaration</p>
 </td>
 									</tr>
 							</table>
@@ -572,12 +583,48 @@
 			<td class="table-cell">
 <code><var>$attrGroups</var></code>
 				
+	<div class="expandable-collapsedView">
+		<p>PHP attribute groups</p>
+
+	</div>
 
 	<div class="expandable-expandedView">
+	<div class="description"><p>PHP attribute groups</p>
+</div>
 	</div>
 			</td>
 		<td class="table-anchor">
 			<a href="#$attrGroups">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="type" id="$type">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a>|null</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$type</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Type declaration</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Type declaration</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$type">#</a>
 		</td>
 	</tr>
 		</table>

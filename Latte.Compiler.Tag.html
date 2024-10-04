@@ -157,11 +157,6 @@
 
 			<tr><th><code>final</code></th></tr>
 
-		<tr>
-			<th><code>uses</code></th>
-			<td>
-<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>			</td>
-		</tr>
 
 	</table>
 		<div class="classLikeDescription">
@@ -198,11 +193,13 @@
 	<span><a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var></span>,
 	<span>bool <var>$void</var> = <span class="php-kw">false</span></span>,
 	<span>bool <var>$closing</var> = <span class="php-kw">false</span></span>,
-	<span>int <var>$location</var> = <span class="php-num">0</span></span>,
+	<span>bool <var>$inHead</var> = <span class="php-kw">false</span></span>,
+	<span>bool <var>$inTag</var> = <span class="php-kw">false</span></span>,
 	<span>?<a href="Latte.Compiler.Nodes.Html.ElementNode.html"><span title="Latte\Compiler\Nodes\Html\ElementNode">ElementNode</span></a> <var>$htmlElement</var> = <span class="php-kw">null</span></span>,
 	<span>?<b><span class="active" title="Latte\Compiler\Tag">self</span></b> <var>$parent</var> = <span class="php-kw">null</span></span>,
 	<span>?string <var>$prefix</var> = <span class="php-kw">null</span></span>,
-	<span>?<a href="stdClass.html"><span title="stdClass">stdClass</span></a> <var>$data</var> = <span class="php-kw">null</span></span>,
+	<span>?<a href="Latte.Compiler.Nodes.AreaNode.html"><span title="Latte\Compiler\Nodes\AreaNode">AreaNode</span></a> <var>$node</var> = <span class="php-kw">null</span></span>,
+	<span>?<a href="Latte.Compiler.Nodes.AreaNode.html"><span title="Latte\Compiler\Nodes\AreaNode">AreaNode</span></a> <var>$nAttributeNode</var> = <span class="php-kw">null</span></span>,
 )</code>
 
 
@@ -333,7 +330,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>closestTag(<span>string[] <var>$names</var></span>, <span>?callable <var>$condition</var> = <span class="php-kw">null</span></span>): ?<b><span class="active" title="Latte\Compiler\Tag">self</span></b></code>
+				<code>closestTag(<span>class-string[] <var>$classes</var></span>, <span>?callable <var>$condition</var> = <span class="php-kw">null</span></span>): ?<b><span class="active" title="Latte\Compiler\Tag">self</span></b></code>
 
 
 
@@ -385,7 +382,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>replaceNAttribute(<span><a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a> <var>$node</var></span>): void</code>
+				<code>replaceNAttribute(<span><a href="Latte.Compiler.Nodes.AreaNode.html"><span title="Latte\Compiler\Nodes\AreaNode">AreaNode</span></a> <var>$node</var></span>): void</code>
 
 
 
@@ -400,16 +397,6 @@
 			<a href="#_replaceNAttribute">#</a>
 		</td>
 	</tr>
-		</table>
-
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>				</td>
-			</tr>
 		</table>
 
 
@@ -686,7 +673,7 @@
 			<a href="#$closing">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="location" id="$location">
+	<tr class="expandable collapsed" data-order="inHead" id="$inHead">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -696,18 +683,42 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">int</code>
+				<code class="nowrap">bool</code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$location</var></code>
+<code><var>$inHead</var></code>
 				
 
 	<div class="expandable-expandedView">
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$location">#</a>
+			<a href="#$inHead">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="inTag" id="$inTag">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$inTag</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$inTag">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="htmlElement" id="$htmlElement">
@@ -782,7 +793,7 @@
 			<a href="#$prefix">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="data" id="$data">
+	<tr class="expandable collapsed" data-order="node" id="$node">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -792,22 +803,45 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">?<a href="stdClass.html"><span title="stdClass">stdClass</span></a></code>
+				<code class="nowrap">?<a href="Latte.Compiler.Nodes.AreaNode.html"><span title="Latte\Compiler\Nodes\AreaNode">AreaNode</span></a></code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$data</var></code>
+<code><var>$node</var></code>
 				
 
 	<div class="expandable-expandedView">
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$data">#</a>
+			<a href="#$node">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="nAttributeNode" id="$nAttributeNode">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">?<a href="Latte.Compiler.Nodes.AreaNode.html"><span title="Latte\Compiler\Nodes\AreaNode">AreaNode</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$nAttributeNode</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$nAttributeNode">#</a>
 		</td>
 	</tr>
 		</table>
-
 
 
 		</div>

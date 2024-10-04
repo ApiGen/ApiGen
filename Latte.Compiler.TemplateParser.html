@@ -157,11 +157,6 @@
 
 			<tr><th><code>final</code></th></tr>
 
-		<tr>
-			<th><code>uses</code></th>
-			<td>
-<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>			</td>
-		</tr>
 
 	</table>
 
@@ -177,6 +172,32 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
 			</tr>
 
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct()</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="parse" id="_parse">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -188,7 +209,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>parse(<span>string <var>$template</var></span>, <span><a href="Latte.Compiler.TemplateLexer.html"><span title="Latte\Compiler\TemplateLexer">TemplateLexer</span></a> <var>$lexer</var></span>): <a href="Latte.Compiler.Nodes.TemplateNode.html"><span title="Latte\Compiler\Nodes\TemplateNode">TemplateNode</span></a></code>
+				<code>parse(<span>string <var>$template</var></span>): <a href="Latte.Compiler.Nodes.TemplateNode.html"><span title="Latte\Compiler\Nodes\TemplateNode">TemplateNode</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -227,7 +248,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>parseFragment(<span>callable <var>$resolver</var></span>, <span>callable <var>$after</var> = <span class="php-kw">null</span></span>): <a href="Latte.Compiler.Nodes.FragmentNode.html"><span title="Latte\Compiler\Nodes\FragmentNode">FragmentNode</span></a></code>
+				<code>parseFragment(<span>callable <var>$resolver</var></span>, <span>?callable <var>$after</var> = <span class="php-kw">null</span></span>): <a href="Latte.Compiler.Nodes.FragmentNode.html"><span title="Latte\Compiler\Nodes\FragmentNode">FragmentNode</span></a></code>
 
 
 
@@ -331,7 +352,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>parseLatteStatement(): ?<a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a></code>
+				<code>parseLatteStatement(<span>?callable <var>$resolver</var> = <span class="php-kw">null</span></span>): ?<a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a></code>
 
 
 
@@ -660,81 +681,8 @@
 	</tr>
 		</table>
 
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>				</td>
-			</tr>
-		</table>
 
 
-
-		<table class="table" id="constants">
-			<tr>
-				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
-			</tr>
-
-	<tr class="expandable collapsed" data-order="LocationHead" id="LocationHead">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code>LocationHead = <span class="php-num">1</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#LocationHead">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="LocationText" id="LocationText">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code>LocationText = <span class="php-num">2</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#LocationText">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="LocationTag" id="LocationTag">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-				</code>
-			</td>
-
-			<td class="table-cell">
-<code>LocationTag = <span class="php-num">3</span></code>
-
-
-	<div class="expandable-expandedView">
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#LocationTag">#</a>
-		</td>
-	</tr>
-		</table>
 
 
 
@@ -791,7 +739,7 @@
 			<a href="#$blockLayer">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="location" id="$location">
+	<tr class="expandable collapsed" data-order="inHead" id="$inHead">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -801,18 +749,42 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">int</code>
+				<code class="nowrap">bool</code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$location</var> = <b><span class="active" title="Latte\Compiler\TemplateParser">self</span></b>::<a href="Latte.Compiler.TemplateParser.html#LocationHead">LocationHead</a></code>
+<code><var>$inHead</var> = <span class="php-kw">true</span></code>
 				
 
 	<div class="expandable-expandedView">
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$location">#</a>
+			<a href="#$inHead">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="strict" id="$strict">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$strict</var> = <span class="php-kw">false</span></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$strict">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="lastIndentation" id="$lastIndentation">
@@ -840,7 +812,6 @@
 		</td>
 	</tr>
 		</table>
-
 
 
 		</div>

@@ -109,6 +109,21 @@
 						</a>
 					</li>
 					<li>
+						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamClosureThisTagValueNode.html">
+							ParamClosureThisTagValueNode
+						</a>
+					</li>
+					<li>
+						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamImmediatelyInvokedCallableTagValueNode.html">
+							ParamImmediatelyInvokedCallableTagValueNode
+						</a>
+					</li>
+					<li>
+						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamLaterInvokedCallableTagValueNode.html">
+							ParamLaterInvokedCallableTagValueNode
+						</a>
+					</li>
+					<li>
 						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.ParamOutTagValueNode.html">
 							ParamOutTagValueNode
 						</a>
@@ -136,6 +151,21 @@
 					<li>
 						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PropertyTagValueNode.html">
 							PropertyTagValueNode
+						</a>
+					</li>
+					<li>
+						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.PureUnlessCallableIsImpureTagValueNode.html">
+							PureUnlessCallableIsImpureTagValueNode
+						</a>
+					</li>
+					<li>
+						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.RequireExtendsTagValueNode.html">
+							RequireExtendsTagValueNode
+						</a>
+					</li>
+					<li>
+						<a href="PHPStan.PhpDocParser.Ast.PhpDoc.RequireImplementsTagValueNode.html">
+							RequireImplementsTagValueNode
 						</a>
 					</li>
 					<li>
@@ -276,7 +306,13 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>string <var>$name</var></span>, <span>?<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a> <var>$bound</var></span>, <span>string <var>$description</var></span>, <span>?<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a> <var>$default</var> = <span class="php-kw">null</span></span>)</code>
+				<code>__construct(
+	<span>non-empty-string <var>$name</var></span>,
+	<span>?<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a> <var>$bound</var></span>,
+	<span>string <var>$description</var></span>,
+	<span>?<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a> <var>$default</var> = <span class="php-kw">null</span></span>,
+	<span>?<a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a> <var>$lowerBound</var> = <span class="php-kw">null</span></span>,
+)</code>
 
 
 
@@ -356,7 +392,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">string</code>
+				<code class="nowrap">non-empty-string</code>
 			</td>
 
 			<td class="table-cell">
@@ -392,6 +428,30 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#$bound">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="lowerBound" id="$lowerBound">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PHPStan.PhpDocParser.Ast.Type.TypeNode.html"><span title="PHPStan\PhpDocParser\Ast\Type\TypeNode">TypeNode</span></a>|null</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$lowerBound</var></code>
+				
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$lowerBound">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="default" id="$default">

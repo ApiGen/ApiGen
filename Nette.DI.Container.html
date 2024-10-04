@@ -125,11 +125,6 @@
 
 
 
-		<tr>
-			<th><code>uses</code></th>
-			<td>
-<code><a href="Nette.SmartObject.html"><span title="Nette\SmartObject">SmartObject</span></a></code>			</td>
-		</tr>
 
 	</table>
 		<div class="classLikeDescription">
@@ -201,6 +196,84 @@
 			<a href="#_getParameters">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="getParameter" id="_getParameter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getParameter(<span>string|int <var>$key</var></span>): mixed</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getParameter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getStaticParameters" id="_getStaticParameters">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getStaticParameters(): array</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getStaticParameters">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getDynamicParameter" id="_getDynamicParameter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getDynamicParameter(<span>string|int <var>$key</var></span>): mixed</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getDynamicParameter">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="addService" id="_addService">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -216,12 +289,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Adds the service to the container.</p>
+		<p>Adds the service or its factory to the container.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Adds the service to the container.</p>
+	<div class="description"><p>Adds the service or its factory to the container.</p>
 </div>
 
 							<h4>Parameters</h4>
@@ -256,12 +329,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Removes the service from the container.</p>
+		<p>Removes a service instance from the container.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Removes the service from the container.</p>
+	<div class="description"><p>Removes a service instance from the container.</p>
 </div>
 
 
@@ -288,12 +361,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Gets the service object by name.</p>
+		<p>Returns the service instance. If it has not been created yet, it creates it.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the service object by name.</p>
+	<div class="description"><p>Returns the service instance. If it has not been created yet, it creates it.</p>
 </div>
 
 
@@ -327,12 +400,14 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Gets the service object by name.</p>
+		<p>Returns the service instance. If it has not been created yet, it creates it.
+Alias for getService().</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the service object by name.</p>
+	<div class="description"><p>Returns the service instance. If it has not been created yet, it creates it.
+Alias for getService().</p>
 </div>
 
 
@@ -366,12 +441,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Gets the service type by name.</p>
+		<p>Returns type of the service.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the service type by name.</p>
+	<div class="description"><p>Returns type of the service.</p>
 </div>
 
 
@@ -437,12 +512,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Is the service created?</p>
+		<p>Has a service instance been created?</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Is the service created?</p>
+	<div class="description"><p>Has a service instance been created?</p>
 </div>
 
 
@@ -465,7 +540,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>createService(<span>string <var>$name</var></span>, <span>array <var>$args</var> = []</span>): object</code>
+				<code>createService(<span>string <var>$name</var></span>): object</code>
 
 
 	<div class="expandable-collapsedView">
@@ -504,16 +579,16 @@
 			</td>
 
 			<td class="table-cell">
-				<code>getByType&lt;<span title="">T</span> is object&gt;(<span>class-string&lt;T&gt; <var>$type</var></span>, <span>bool <var>$throw</var> = <span class="php-kw">true</span></span>): ?T</code>
+				<code>getByType&lt;<span title="">T</span> is object&gt;(<span>class-string&lt;T&gt; <var>$type</var></span>, <span>bool <var>$throw</var> = <span class="php-kw">true</span></span>): ($throw is true&nbsp;?&nbsp;T&nbsp;:&nbsp;?T)</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Resolves service by type.</p>
+		<p>Returns an instance of the autowired service of the given type. If it has not been created yet, it creates it.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Resolves service by type.</p>
+	<div class="description"><p>Returns an instance of the autowired service of the given type. If it has not been created yet, it creates it.</p>
 </div>
 
 
@@ -547,12 +622,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Gets the service names of the specified type.</p>
+		<p>Returns the names of all services of the given type.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the service names of the specified type.</p>
+	<div class="description"><p>Returns the names of all services of the given type.</p>
 </div>
 
 
@@ -579,12 +654,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Gets the service names of the specified tag.</p>
+		<p>Returns the names of services with the given tag.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the service names of the specified tag.</p>
+	<div class="description"><p>Returns the names of services with the given tag.</p>
 </div>
 
 
@@ -614,23 +689,16 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Creates new instance using autowiring.</p>
+		<p>Creates an instance of the class and passes dependencies to the constructor using autowiring.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Creates new instance using autowiring.</p>
+	<div class="description"><p>Creates an instance of the class and passes dependencies to the constructor using autowiring.</p>
 </div>
 
 
 
-							<h4>Throws</h4>
-							<table>
-									<tr>
-										<td><code><a href="Nette.InvalidArgumentException.html"><span>Nette\InvalidArgumentException</span></a></code>&nbsp;</td>
-										<td></td>
-									</tr>
-							</table>
 
 	</div>
 			</td>
@@ -653,12 +721,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Calls all methods starting with with &quot;inject&quot; using autowiring.</p>
+		<p>Calls all methods starting with 'inject' and passes dependencies to them via autowiring.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Calls all methods starting with with &quot;inject&quot; using autowiring.</p>
+	<div class="description"><p>Calls all methods starting with 'inject' and passes dependencies to them via autowiring.</p>
 </div>
 
 
@@ -685,12 +753,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Calls method using autowiring.</p>
+		<p>Calls the method and passes dependencies to it via autowiring.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Calls method using autowiring.</p>
+	<div class="description"><p>Calls the method and passes dependencies to it via autowiring.</p>
 </div>
 
 
@@ -705,7 +773,7 @@
 	<tr class="expandable collapsed" data-order="getMethodName" id="_getMethodName">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
-					
+					final
 	public
 					static
 					
@@ -714,6 +782,38 @@
 
 			<td class="table-cell">
 				<code>getMethodName(<span>string <var>$name</var></span>): string</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Returns the method name for creating a service.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Returns the method name for creating a service.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getMethodName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="initialize" id="_initialize">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>initialize(): void</code>
 
 
 
@@ -725,19 +825,9 @@
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_getMethodName">#</a>
+			<a href="#_initialize">#</a>
 		</td>
 	</tr>
-		</table>
-
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Nette.SmartObject.html"><span>Nette\SmartObject</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Nette.SmartObject.html#___call">__call()</a>, <a href="Nette.SmartObject.html#___callStatic">__callStatic()</a>, <a href="Nette.SmartObject.html#___get">__get()</a>, <a href="Nette.SmartObject.html#___set">__set()</a>, <a href="Nette.SmartObject.html#___unset">__unset()</a>, <a href="Nette.SmartObject.html#___isset">__isset()</a></code>				</td>
-			</tr>
 		</table>
 
 
@@ -760,54 +850,18 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">array</code>
+				<code class="nowrap">mixed[]</code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$parameters</var> = []</code>
+<code><var><span class="deprecated">$parameters</span></var> = []</code>
 				
-	<div class="expandable-collapsedView">
-		<p>user parameters</p>
-
-	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>user parameters</p>
-</div>
 	</div>
 			</td>
 		<td class="table-anchor">
 			<a href="#$parameters">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="types" id="$types">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	protected
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap">string[]</code>
-			</td>
-
-			<td class="table-cell">
-<code><var>$types</var> = []</code>
-				
-	<div class="expandable-collapsedView">
-		<p>services name =&gt; type (complete list of available services)</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>services name =&gt; type (complete list of available services)</p>
-</div>
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$types">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="aliases" id="$aliases">
@@ -887,12 +941,12 @@
 <code><var>$wiring</var> = []</code>
 				
 	<div class="expandable-collapsedView">
-		<p>type =&gt; level =&gt; services</p>
+		<p>type =&gt; (high, low, no) =&gt; services</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>type =&gt; level =&gt; services</p>
+	<div class="description"><p>type =&gt; (high, low, no) =&gt; services</p>
 </div>
 	</div>
 			</td>
@@ -901,7 +955,6 @@
 		</td>
 	</tr>
 		</table>
-
 
 
 		</div>

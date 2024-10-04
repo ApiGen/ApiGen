@@ -71,6 +71,11 @@
 						</a>
 					</li>
 					<li>
+						<a href="Latte.Compiler.Nodes.Php.ArrayItemNode.html">
+							ArrayItemNode
+						</a>
+					</li>
+					<li>
 						<a href="Latte.Compiler.Nodes.Php.ComplexTypeNode.html">
 							ComplexTypeNode
 						</a>
@@ -88,6 +93,11 @@
 					<li>
 						<a href="Latte.Compiler.Nodes.Php.InterpolatedStringPartNode.html">
 							InterpolatedStringPartNode
+						</a>
+					</li>
+					<li>
+						<a href="Latte.Compiler.Nodes.Php.ListNode.html">
+							ListNode
 						</a>
 					</li>
 					<li>
@@ -173,8 +183,6 @@
 		implements
 			<a href="IteratorAggregate.html"><span title="IteratorAggregate">IteratorAggregate</span></a>&lt;<a href="Latte.Compiler.Node.html"><span title="Latte\Compiler\Node">Node</span></a>&gt;
 
-		uses
-			<a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a>
 	<ul class="classTree">
 	<li>
 <b><span class="active">Latte\Compiler\Nodes\Php\NameNode</span></b>
@@ -208,7 +216,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>string|array <var>$name</var></span>, <span>int <var>$kind</var> = <b><span class="active" title="Latte\Compiler\Nodes\Php\NameNode">self</span></b>::<a href="Latte.Compiler.Nodes.Php.NameNode.html#KindNormal">KindNormal</a></span>, <span>?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var> = <span class="php-kw">null</span></span>)</code>
+				<code>__construct(<span>string <var>$name</var></span>, <span>int <var>$kind</var> = <b><span class="active" title="Latte\Compiler\Nodes\Php\NameNode">self</span></b>::<a href="Latte.Compiler.Nodes.Php.NameNode.html#KindNormal">KindNormal</a></span>, <span>?<a href="Latte.Compiler.Position.html"><span title="Latte\Compiler\Position">Position</span></a> <var>$position</var> = <span class="php-kw">null</span></span>)</code>
 
 
 
@@ -367,16 +375,6 @@
 
 
 
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___get">__get()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>				</td>
-			</tr>
-		</table>
-
 
 
 
@@ -438,7 +436,7 @@
 				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="parts" id="$parts">
+	<tr class="expandable collapsed" data-order="name" id="$name">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -448,18 +446,18 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">string[]</code>
+				<code class="nowrap">string</code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$parts</var></code>
+<code><var>$name</var></code>
 				
 
 	<div class="expandable-expandedView">
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$parts">#</a>
+			<a href="#$name">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="kind" id="$kind">
@@ -511,7 +509,6 @@
 		</td>
 	</tr>
 		</table>
-
 
 
 

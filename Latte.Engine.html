@@ -95,11 +95,6 @@
 							PositionAwareException
 						</a>
 					</li>
-					<li>
-						<a href="Latte.Strict.html">
-							Strict
-						</a>
-					</li>
 			</ul>
 		</div>
 		<div class="menu-section">
@@ -108,11 +103,6 @@
 					<li>
 						<a href="Latte.CompileException.html">
 							CompileException
-						</a>
-					</li>
-					<li>
-						<a href="Latte.RegexpException.html">
-							RegexpException
 						</a>
 					</li>
 					<li>
@@ -167,11 +157,6 @@
 
 
 
-		<tr>
-			<th><code>uses</code></th>
-			<td>
-<code><a href="Latte.Strict.html"><span title="Latte\Strict">Strict</span></a></code>			</td>
-		</tr>
 
 	</table>
 		<div class="classLikeDescription">
@@ -292,7 +277,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>createTemplate(<span>string <var>$name</var></span>, <span>mixed[] <var>$params</var> = []</span>): <a href="Latte.Runtime.Template.html"><span title="Latte\Runtime\Template">Template</span></a></code>
+				<code>createTemplate(<span>string <var>$name</var></span>, <span>mixed[] <var>$params</var> = []</span>, <span><var>$clearCache</var> = <span class="php-kw">true</span></span>): <a href="Latte.Runtime.Template.html"><span title="Latte\Runtime\Template">Template</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -356,7 +341,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>parse(<span>string <var>$source</var></span>): <a href="Latte.Compiler.Nodes.TemplateNode.html"><span title="Latte\Compiler\Nodes\TemplateNode">TemplateNode</span></a></code>
+				<code>parse(<span>string <var>$template</var></span>): <a href="Latte.Compiler.Nodes.TemplateNode.html"><span title="Latte\Compiler\Nodes\TemplateNode">TemplateNode</span></a></code>
 
 
 	<div class="expandable-collapsedView">
@@ -424,12 +409,12 @@
 
 
 	<div class="expandable-collapsedView">
-		<p>Generates template PHP code.</p>
+		<p>Generates compiled PHP code.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Generates template PHP code.</p>
+	<div class="description"><p>Generates compiled PHP code.</p>
 </div>
 
 
@@ -532,6 +517,70 @@
 			<a href="#_getTemplateClass">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="getCacheKey" id="_getCacheKey">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getCacheKey(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Values that affect the results of compilation and the name of the cache file.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Values that affect the results of compilation and the name of the cache file.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getCacheKey">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getCacheSignature" id="_getCacheSignature">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	protected
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getCacheSignature(<span>string <var>$name</var></span>): array</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Values that check the expiration of the compiled template.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Values that check the expiration of the compiled template.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getCacheSignature">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="addFilter" id="_addFilter">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -575,7 +624,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>addFilterLoader(<span>callable <var>$callback</var></span>): static</code>
+				<code>addFilterLoader(<span>callable <var>$loader</var></span>): static</code>
 
 
 	<div class="expandable-collapsedView">
@@ -819,7 +868,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>addProvider(<span>string <var>$name</var></span>, <span>mixed <var>$value</var></span>): static</code>
+				<code>addProvider(<span>string <var>$name</var></span>, <span>mixed <var>$provider</var></span>): static</code>
 
 
 	<div class="expandable-collapsedView">
@@ -935,7 +984,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setExceptionHandler(<span>callable <var>$callback</var></span>): static</code>
+				<code>setExceptionHandler(<span>callable <var>$handler</var></span>): static</code>
 
 
 
@@ -961,7 +1010,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setSandboxMode(<span>bool <var>$on</var> = <span class="php-kw">true</span></span>): static</code>
+				<code>setSandboxMode(<span>bool <var>$state</var> = <span class="php-kw">true</span></span>): static</code>
 
 
 
@@ -1045,7 +1094,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setAutoRefresh(<span>bool <var>$on</var> = <span class="php-kw">true</span></span>): static</code>
+				<code>setAutoRefresh(<span>bool <var>$state</var> = <span class="php-kw">true</span></span>): static</code>
 
 
 	<div class="expandable-collapsedView">
@@ -1077,7 +1126,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setStrictTypes(<span>bool <var>$on</var> = <span class="php-kw">true</span></span>): static</code>
+				<code>setStrictTypes(<span>bool <var>$state</var> = <span class="php-kw">true</span></span>): static</code>
 
 
 	<div class="expandable-collapsedView">
@@ -1096,6 +1145,116 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_setStrictTypes">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setStrictParsing" id="_setStrictParsing">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setStrictParsing(<span>bool <var>$state</var> = <span class="php-kw">true</span></span>): static</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setStrictParsing">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isStrictParsing" id="_isStrictParsing">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isStrictParsing(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isStrictParsing">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="setLocale" id="_setLocale">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>setLocale(<span>?string <var>$locale</var></span>): static</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Sets the locale. It uses the same identifiers as the PHP intl extension.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Sets the locale. It uses the same identifiers as the PHP intl extension.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_setLocale">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getLocale" id="_getLocale">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getLocale(): ?string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getLocale">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="setLoader" id="_setLoader">
@@ -1150,6 +1309,32 @@
 			<a href="#_getLoader">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="enablePhpLinter" id="_enablePhpLinter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>enablePhpLinter(<span>?string <var>$phpBinary</var></span>): static</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_enablePhpLinter">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="__get" id="___get">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -1178,16 +1363,6 @@
 	</tr>
 		</table>
 
-		<table class="table">
-			<tr>
-				<th class="table-heading">Methods used from <a href="Latte.Strict.html"><span>Latte\Strict</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><a href="Latte.Strict.html#___call">__call()</a>, <a href="Latte.Strict.html#___callStatic">__callStatic()</a>, <a href="Latte.Strict.html#___set">__set()</a>, <a href="Latte.Strict.html#___isset">__isset()</a>, <a href="Latte.Strict.html#___unset">__unset()</a></code>				</td>
-			</tr>
-		</table>
-
 
 
 		<table class="table" id="constants">
@@ -1195,6 +1370,44 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
 			</tr>
 
+	<tr class="expandable collapsed" data-order="Version" id="Version">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>Version = <span class="php-str">'3.0.18'</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#Version">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="VersionId" id="VersionId">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>VersionId = <span class="php-num">30018</span></code>
+
+
+	<div class="expandable-expandedView">
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#VersionId">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="VERSION" id="VERSION">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -1204,7 +1417,7 @@
 			</td>
 
 			<td class="table-cell">
-<code>VERSION = <span class="php-str">'3.0.6'</span></code>
+<code><span class="deprecated">VERSION</span> = <b><span class="active" title="Latte\Engine">self</span></b>::<a href="Latte.Engine.html#Version">Version</a></code>
 
 
 	<div class="expandable-expandedView">
@@ -1223,7 +1436,7 @@
 			</td>
 
 			<td class="table-cell">
-<code>VERSION_ID = <span class="php-num">30006</span></code>
+<code><span class="deprecated">VERSION_ID</span> = <b><span class="active" title="Latte\Engine">self</span></b>::<a href="Latte.Engine.html#VersionId">VersionId</a></code>
 
 
 	<div class="expandable-expandedView">
@@ -1348,7 +1561,6 @@
 		</td>
 	</tr>
 		</table>
-
 
 
 

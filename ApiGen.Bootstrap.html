@@ -184,7 +184,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Bootstrap.html#61-120" title="Go to source code">createApiGen</a>(<span><a href="Symfony.Component.Console.Style.OutputStyle.html"><span title="Symfony\Component\Console\Style\OutputStyle">OutputStyle</span></a> <var>$output</var></span>, <span>array <var>$parameters</var></span>, <span>string[] <var>$configPaths</var></span>): <a href="ApiGen.ApiGen.html"><span title="ApiGen\ApiGen">ApiGen</span></a></code>
+				<code><a href="source-Bootstrap.html#61-121" title="Go to source code">createApiGen</a>(<span><a href="Symfony.Component.Console.Style.OutputStyle.html"><span title="Symfony\Component\Console\Style\OutputStyle">OutputStyle</span></a> <var>$output</var></span>, <span>mixed[] <var>$parameters</var></span>, <span>string[] <var>$configPaths</var></span>): <a href="ApiGen.ApiGen.html"><span title="ApiGen\ApiGen">ApiGen</span></a></code>
 
 
 
@@ -192,6 +192,11 @@
 
 							<h4>Parameters</h4>
 							<table>
+									<tr>
+										<td><var>$parameters</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by [parameterName]</p>
+</td>
+									</tr>
 									<tr>
 										<td><var>$configPaths</var>&nbsp;&nbsp;</td>
 										<td><p>indexed by []</p>
@@ -218,12 +223,20 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Bootstrap.html#123-151" title="Go to source code">validateParameters</a>(<span>array <var>$parameters</var></span>): void</code>
+				<code><a href="source-Bootstrap.html#124-155" title="Go to source code">validateParameters</a>(<span>mixed[] <var>$parameters</var></span>): void</code>
 
 
 
 	<div class="expandable-expandedView">
 
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$parameters</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by [parameterName]</p>
+</td>
+									</tr>
+							</table>
 
 
 
@@ -244,13 +257,24 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Bootstrap.html#154-170" title="Go to source code">mergeConfigs</a>(<span>array ...<var>$configs</var></span>): array</code>
+				<code><a href="source-Bootstrap.html#158-178" title="Go to source code">mergeConfigs</a>(<span>mixed[][] ...<var>$configs</var></span>): mixed[]</code>
 
 
 
 	<div class="expandable-expandedView">
 
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td>...<var>$configs</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by [][configKey]</p>
+</td>
+									</tr>
+							</table>
 
+							<h4>Returns</h4>
+							<div><p>indexed by [configKey]</p>
+</div>
 
 
 	</div>
@@ -270,13 +294,16 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Bootstrap.html#173-179" title="Go to source code">loadConfig</a>(<span>string <var>$path</var></span>): array</code>
+				<code><a href="source-Bootstrap.html#181-190" title="Go to source code">loadConfig</a>(<span>string <var>$path</var></span>): mixed[]</code>
 
 
 
 	<div class="expandable-expandedView">
 
 
+							<h4>Returns</h4>
+							<div><p>indexed by [configKey]</p>
+</div>
 
 
 	</div>
@@ -296,13 +323,24 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Bootstrap.html#182-197" title="Go to source code">resolvePaths</a>(<span>array <var>$parameters</var></span>, <span>string <var>$base</var></span>): array</code>
+				<code><a href="source-Bootstrap.html#193-212" title="Go to source code">resolvePaths</a>(<span>mixed[] <var>$parameters</var></span>, <span>string <var>$base</var></span>): mixed[]</code>
 
 
 
 	<div class="expandable-expandedView">
 
+							<h4>Parameters</h4>
+							<table>
+									<tr>
+										<td><var>$parameters</var>&nbsp;&nbsp;</td>
+										<td><p>indexed by [parameterName]</p>
+</td>
+									</tr>
+							</table>
 
+							<h4>Returns</h4>
+							<div><p>indexed by [parameterName]</p>
+</div>
 
 
 	</div>
@@ -322,7 +360,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code><a href="source-Bootstrap.html#200-205" title="Go to source code">resolvePath</a>(<span>string <var>$path</var></span>, <span>string <var>$base</var></span>): string</code>
+				<code><a href="source-Bootstrap.html#215-220" title="Go to source code">resolvePath</a>(<span>string <var>$path</var></span>, <span>string <var>$base</var></span>): string</code>
 
 
 

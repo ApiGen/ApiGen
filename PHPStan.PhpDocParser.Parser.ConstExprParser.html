@@ -156,7 +156,11 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>bool <var>$unescapeStrings</var> = <span class="php-kw">false</span></span>)</code>
+				<code>__construct(
+	<span>bool <var>$unescapeStrings</var> = <span class="php-kw">false</span></span>,
+	<span>bool <var>$quoteAwareConstExprString</var> = <span class="php-kw">false</span></span>,
+	<span>array{lines?: bool, indexes?: bool} <var>$usedAttributes</var> = []</span>,
+)</code>
 
 
 
@@ -195,6 +199,40 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_parse">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="parseDoctrineString" id="_parseDoctrineString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>parseDoctrineString(<span>string <var>$text</var></span>, <span><a href="PHPStan.PhpDocParser.Parser.TokenIterator.html"><span title="PHPStan\PhpDocParser\Parser\TokenIterator">TokenIterator</span></a> <var>$tokens</var></span>): <a href="PHPStan.PhpDocParser.Ast.ConstExpr.DoctrineConstExprStringNode.html"><span title="PHPStan\PhpDocParser\Ast\ConstExpr\DoctrineConstExprStringNode">DoctrineConstExprStringNode</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		<p>This method is supposed to be called with TokenIterator after reading TOKEN_DOUBLE_QUOTED_STRING and shifting
+to the next token.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>This method is supposed to be called with TokenIterator after reading TOKEN_DOUBLE_QUOTED_STRING and shifting
+to the next token.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_parseDoctrineString">#</a>
 		</td>
 	</tr>
 		</table>

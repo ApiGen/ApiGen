@@ -156,7 +156,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>array <var>$tokens</var></span>, <span>int <var>$index</var> = <span class="php-num">0</span></span>)</code>
+				<code>__construct(<span>list&lt;array{string, int, int}&gt; <var>$tokens</var></span>, <span>int <var>$index</var> = <span class="php-num">0</span></span>)</code>
 
 
 
@@ -169,6 +169,84 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTokens" id="_getTokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTokens(): list&lt;array{string, int, int}&gt;</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTokens">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getContentBetween" id="_getContentBetween">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getContentBetween(<span>int <var>$startPos</var></span>, <span>int <var>$endPos</var></span>): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getContentBetween">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTokenCount" id="_getTokenCount">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTokenCount(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTokenCount">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="currentTokenValue" id="_currentTokenValue">
@@ -247,6 +325,84 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_currentTokenOffset">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="currentTokenLine" id="_currentTokenLine">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>currentTokenLine(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_currentTokenLine">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="currentTokenIndex" id="_currentTokenIndex">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>currentTokenIndex(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_currentTokenIndex">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="endIndexOfLastRelevantToken" id="_endIndexOfLastRelevantToken">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>endIndexOfLastRelevantToken(): int</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_endIndexOfLastRelevantToken">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="isCurrentTokenValue" id="_isCurrentTokenValue">
@@ -523,6 +679,58 @@
 			<a href="#_next">#</a>
 		</td>
 	</tr>
+	<tr class="expandable collapsed" data-order="addEndOfLineToSkippedTokens" id="_addEndOfLineToSkippedTokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>addEndOfLineToSkippedTokens(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_addEndOfLineToSkippedTokens">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="removeEndOfLineFromSkippedTokens" id="_removeEndOfLineFromSkippedTokens">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>removeEndOfLineFromSkippedTokens(): void</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_removeEndOfLineFromSkippedTokens">#</a>
+		</td>
+	</tr>
 	<tr class="expandable collapsed" data-order="forwardToTheEnd" id="_forwardToTheEnd">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -625,6 +833,128 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_rollback">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hasTokenImmediatelyBefore" id="_hasTokenImmediatelyBefore">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>hasTokenImmediatelyBefore(<span>int <var>$pos</var></span>, <span>int <var>$expectedTokenType</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Check whether the position is directly preceded by a certain token type. During this check TOKEN_HORIZONTAL_WS and TOKEN_PHPDOC_EOL are skipped</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Check whether the position is directly preceded by a certain token type. During this check TOKEN_HORIZONTAL_WS and TOKEN_PHPDOC_EOL are skipped</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_hasTokenImmediatelyBefore">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hasTokenImmediatelyAfter" id="_hasTokenImmediatelyAfter">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>hasTokenImmediatelyAfter(<span>int <var>$pos</var></span>, <span>int <var>$expectedTokenType</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Check whether the position is directly followed by a certain token type. During this check TOKEN_HORIZONTAL_WS and TOKEN_PHPDOC_EOL are skipped</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Check whether the position is directly followed by a certain token type. During this check TOKEN_HORIZONTAL_WS and TOKEN_PHPDOC_EOL are skipped</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_hasTokenImmediatelyAfter">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getDetectedNewline" id="_getDetectedNewline">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getDetectedNewline(): ?string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getDetectedNewline">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hasParentheses" id="_hasParentheses">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>hasParentheses(<span>int <var>$startPos</var></span>, <span>int <var>$endPos</var></span>): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Whether the given position is immediately surrounded by parenthesis.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the given position is immediately surrounded by parenthesis.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_hasParentheses">#</a>
 		</td>
 	</tr>
 		</table>
