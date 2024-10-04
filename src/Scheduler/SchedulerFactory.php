@@ -40,7 +40,7 @@ class SchedulerFactory
 				return new ForkScheduler($handler, $this->workerCount);
 
 			} elseif (function_exists('proc_open')) {
-				return new ExecScheduler($this->container::class, $this->container->parameters, $handlerFactoryType, $context, $this->workerCount);
+				return new ExecScheduler($this->container::class, $this->container->getParameters(), $handlerFactoryType, $context, $this->workerCount);
 			}
 		}
 

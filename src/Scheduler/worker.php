@@ -42,7 +42,7 @@ require $containerClassPath;
 $containerParameters = WorkerScheduler::readMessage(STDIN);
 $container = new $containerClassName($containerParameters);
 $container->addService('symfonyConsole.output', new SymfonyStyle(new ArgvInput(), new StreamOutput(STDERR)));
-ini_set('memory_limit', $container->parameters['memoryLimit']);
+ini_set('memory_limit', $container->getParameter('memoryLimit'));
 
 $context = WorkerScheduler::readMessage(STDIN);
 $handlerFactory = $container->getByType($handlerFactoryClassName);
