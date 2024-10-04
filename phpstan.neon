@@ -3,7 +3,6 @@ parameters:
 	paths: [src, tests]
 	excludePaths: [tests/Data, tests/Analyzer/Data]
 	fileExtensions: [php, phpt]
-	checkMissingIterableValueType: false
 
 	ignoreErrors:
 		- '#backward compatibility promise#'

@@ -25,7 +25,7 @@ class LattePreNode extends Latte\Compiler\Nodes\StatementNode
 
 
 	/**
-	 * @return Generator<int, ?array, array{AreaNode, ?Tag}, self>
+	 * @return Generator<int, null, array{AreaNode, ?Tag}, self>
 	 */
 	public static function create(Tag $tag, TemplateParser $parser): Generator
 	{

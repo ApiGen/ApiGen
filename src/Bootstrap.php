@@ -59,7 +59,8 @@ class Bootstrap
 
 
 	/**
-	 * @param string[] $configPaths indexed by []
+	 * @param  mixed[]  $parameters  indexed by [parameterName]
+	 * @param  string[] $configPaths indexed by []
 	 */
 	public static function createApiGen(OutputStyle $output, array $parameters, array $configPaths): ApiGen
 	{
@@ -120,6 +121,9 @@ class Bootstrap
 	}
 
 
+	/**
+	 * @param  mixed[] $parameters indexed by [parameterName]
+	 */
 	protected static function validateParameters(array $parameters): void
 	{
 		$schema = Expect::structure([
@@ -151,6 +155,10 @@ class Bootstrap
 	}
 
 
+	/**
+	 * @param  mixed[][] $configs indexed by [][configKey]
+	 * @return mixed[] indexed by [configKey]
+	 */
 	protected static function mergeConfigs(array...$configs): array
 	{
 		$mergedConfig = [];
@@ -170,6 +178,9 @@ class Bootstrap
 	}
 
 
+	/**
+	 * @return mixed[] indexed by [configKey]
+	 */
 	protected static function loadConfig(string $path): array
 	{
 		$data = (new Loader)->load($path);
@@ -179,6 +190,10 @@ class Bootstrap
 	}
 
 
+	/**
+	 * @param  mixed[] $parameters indexed by [parameterName]
+	 * @return mixed[] indexed by [parameterName]
+	 */
 	protected static function resolvePaths(array $parameters, string $base): array
 	{
 		foreach (['tempDir', 'workingDir', 'outputDir', 'themeDir'] as $parameterKey) {

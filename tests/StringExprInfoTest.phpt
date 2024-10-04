@@ -25,6 +25,9 @@ class StringExprInfoTest extends TestCase
 	}
 
 
+	/**
+	 * @return iterable<array{string, string}>
+	 */
 	public function provideToStringData(): iterable
 	{
 		yield ['foo', "'foo'"];

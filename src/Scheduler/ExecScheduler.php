@@ -34,6 +34,7 @@ class ExecScheduler extends WorkerScheduler
 
 	/**
 	 * @param  class-string<Container>                                                 $containerClass
+	 * @param  array<string, mixed>                                                    $containerParameters
 	 * @param  class-string<TaskHandlerFactory<TContext, TaskHandler<TTask, TResult>>> $handlerFactoryClass
 	 * @param  TContext                                                                $context
 	 */
