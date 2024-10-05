@@ -6,3 +6,5 @@ parameters:
 
 	ignoreErrors:
 		- '#backward compatibility promise#'
+		- '#Used function memory_reset_peak_usage not found#'
+		- '#Function memory_reset_peak_usage not found#'

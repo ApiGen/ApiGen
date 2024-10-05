@@ -26,7 +26,7 @@
 		"nikic/php-parser": "^5.3",
 		"phpstan/php-8-stubs": "^0.4.0",
 		"phpstan/phpdoc-parser": "^1.16",
-		"symfony/console": "^7.0"
+		"symfony/console": "^6.4"
 	},
 	"require-dev": {
 		"nette/neon": "^3.4",
@@ -51,7 +51,10 @@
 	},
 	"config": {
 		"platform-check": true,
-		"sort-packages": true
+		"sort-packages": true,
+		"platform": {
+			"php": "8.1"
+		}
 	},
 	"scripts": {
 		"check": [
