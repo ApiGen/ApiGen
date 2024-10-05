@@ -75,6 +75,11 @@
 							NodeVisitorAbstract
 						</a>
 					</li>
+					<li>
+						<a href="PhpParser.Token.html">
+							Token
+						</a>
+					</li>
 			</ul>
 		</div>
 		<div class="menu-section">
@@ -154,7 +159,7 @@
 
 
 	<table class="classLikeSignatureTable">
-
+			<tr><th><code>abstract</code></th></tr>
 
 
 		<tr>
@@ -270,9 +275,18 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::DONT_TRAVERSE_CHILDREN
+<li>array (of Nodes)
+=&gt; The return value is merged into the parent array (at the position of the $node)</li>
+<li>NodeVisitor::REMOVE_NODE
+=&gt; $node is removed from the parent array</li>
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::DONT_TRAVERSE_CHILDREN
 =&gt; Children of $node are not traversed. $node stays as-is</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::DONT_TRAVERSE_CURRENT_AND_CHILDREN
+=&gt; Further visitors for the current node are skipped, and its children are not
+traversed. $node stays as-is.</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>otherwise
 =&gt; $node is set to the return value</li>
@@ -285,9 +299,18 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::DONT_TRAVERSE_CHILDREN
+<li>array (of Nodes)
+=&gt; The return value is merged into the parent array (at the position of the $node)</li>
+<li>NodeVisitor::REMOVE_NODE
+=&gt; $node is removed from the parent array</li>
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::DONT_TRAVERSE_CHILDREN
 =&gt; Children of $node are not traversed. $node stays as-is</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::DONT_TRAVERSE_CURRENT_AND_CHILDREN
+=&gt; Further visitors for the current node are skipped, and its children are not
+traversed. $node stays as-is.</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>otherwise
 =&gt; $node is set to the return value</li>
@@ -343,9 +366,11 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::REMOVE_NODE
+<li>NodeVisitor::REMOVE_NODE
 =&gt; $node is removed from the parent array</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>array (of Nodes)
 =&gt; The return value is merged into the parent array (at the position of the $node)</li>
@@ -360,9 +385,11 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::REMOVE_NODE
+<li>NodeVisitor::REMOVE_NODE
 =&gt; $node is removed from the parent array</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>array (of Nodes)
 =&gt; The return value is merged into the parent array (at the position of the $node)</li>
@@ -462,6 +489,15 @@
 
 
 
+		<table class="table">
+			<tr>
+				<th class="table-heading">Constants inherited from <a href="PhpParser.NodeVisitor.html"><span>PhpParser\NodeVisitor</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+<code><a href="PhpParser.NodeVisitor.html#DONT_TRAVERSE_CHILDREN"><code>DONT_TRAVERSE_CHILDREN</code></a>, <a href="PhpParser.NodeVisitor.html#STOP_TRAVERSAL"><code>STOP_TRAVERSAL</code></a>, <a href="PhpParser.NodeVisitor.html#REMOVE_NODE"><code>REMOVE_NODE</code></a>, <a href="PhpParser.NodeVisitor.html#DONT_TRAVERSE_CURRENT_AND_CHILDREN"><code>DONT_TRAVERSE_CURRENT_AND_CHILDREN</code></a>, <a href="PhpParser.NodeVisitor.html#REPLACE_WITH_NULL"><code>REPLACE_WITH_NULL</code></a></code>				</td>
+			</tr>
+		</table>
 
 
 

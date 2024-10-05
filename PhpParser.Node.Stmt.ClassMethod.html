@@ -89,11 +89,6 @@
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.PropertyProperty.html">
-							PropertyProperty
-						</a>
-					</li>
-					<li>
 						<a href="PhpParser.Node.Stmt.TraitUse.html">
 							TraitUse
 						</a>
@@ -101,6 +96,11 @@
 					<li>
 						<a href="PhpParser.Node.Stmt.TraitUseAdaptation.html">
 							TraitUseAdaptation
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.Stmt.Use_.html">
+							Use_
 						</a>
 					</li>
 			</ul>
@@ -209,7 +209,11 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>string|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a> <var>$name</var></span>, <span>array <var>$subNodes</var> = []</span>, <span>array <var>$attributes</var> = []</span>)</code>
+				<code>__construct(
+	<span>string|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a> <var>$name</var></span>,
+	<span>array{flags?: int, byRef?: bool, params?: <a href="PhpParser.Node.Param.html"><span title="PhpParser\Node\Param">Param</span></a>[], returnType?: (null|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a>), stmts?: (<a href="PhpParser.Node.Stmt.html"><span title="PhpParser\Node\Stmt">Stmt</span></a>[]|null), attrGroups?: <a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>[]} <var>$subNodes</var> = []</span>,
+	<span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>,
+)</code>
 
 
 	<div class="expandable-collapsedView">
@@ -231,7 +235,7 @@
 									<tr>
 										<td><var>$subNodes</var>&nbsp;&nbsp;</td>
 										<td><p>Array of the following optional subnodes:
-'flags       =&gt; MODIFIER_PUBLIC: Flags
+'flags       =&gt; 0              : Flags
 'byRef'      =&gt; false          : Whether to return by reference
 'params'     =&gt; array()        : Parameters
 'returnType' =&gt; null           : Return type
@@ -421,7 +425,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>getStmts()</code>
+				<code>getStmts(): ?array</code>
 
 
 	<div class="expandable-collapsedView">

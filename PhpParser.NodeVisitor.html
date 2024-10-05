@@ -75,6 +75,11 @@
 							NodeVisitorAbstract
 						</a>
 					</li>
+					<li>
+						<a href="PhpParser.Token.html">
+							Token
+						</a>
+					</li>
 			</ul>
 		</div>
 		<div class="menu-section">
@@ -261,7 +266,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>enterNode(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a></code>
+				<code>enterNode(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a> <var>$node</var></span>): null|int|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>|<a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[]</code>
 
 
 	<div class="expandable-collapsedView">
@@ -269,9 +274,18 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::DONT_TRAVERSE_CHILDREN
+<li>array (of Nodes)
+=&gt; The return value is merged into the parent array (at the position of the $node)</li>
+<li>NodeVisitor::REMOVE_NODE
+=&gt; $node is removed from the parent array</li>
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::DONT_TRAVERSE_CHILDREN
 =&gt; Children of $node are not traversed. $node stays as-is</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::DONT_TRAVERSE_CURRENT_AND_CHILDREN
+=&gt; Further visitors for the current node are skipped, and its children are not
+traversed. $node stays as-is.</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>otherwise
 =&gt; $node is set to the return value</li>
@@ -284,9 +298,18 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::DONT_TRAVERSE_CHILDREN
+<li>array (of Nodes)
+=&gt; The return value is merged into the parent array (at the position of the $node)</li>
+<li>NodeVisitor::REMOVE_NODE
+=&gt; $node is removed from the parent array</li>
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::DONT_TRAVERSE_CHILDREN
 =&gt; Children of $node are not traversed. $node stays as-is</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::DONT_TRAVERSE_CURRENT_AND_CHILDREN
+=&gt; Further visitors for the current node are skipped, and its children are not
+traversed. $node stays as-is.</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>otherwise
 =&gt; $node is set to the return value</li>
@@ -337,9 +360,11 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::REMOVE_NODE
+<li>NodeVisitor::REMOVE_NODE
 =&gt; $node is removed from the parent array</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>array (of Nodes)
 =&gt; The return value is merged into the parent array (at the position of the $node)</li>
@@ -354,9 +379,11 @@
 <ul>
 <li>null
 =&gt; $node stays as-is</li>
-<li>NodeTraverser::REMOVE_NODE
+<li>NodeVisitor::REMOVE_NODE
 =&gt; $node is removed from the parent array</li>
-<li>NodeTraverser::STOP_TRAVERSAL
+<li>NodeVisitor::REPLACE_WITH_NULL
+=&gt; $node is replaced with null</li>
+<li>NodeVisitor::STOP_TRAVERSAL
 =&gt; Traversal is aborted. $node stays as-is</li>
 <li>array (of Nodes)
 =&gt; The return value is merged into the parent array (at the position of the $node)</li>
@@ -449,6 +476,155 @@
 		</table>
 
 
+		<table class="table" id="constants">
+			<tr>
+				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Constants</th>
+			</tr>
+
+	<tr class="expandable collapsed" data-order="DONT_TRAVERSE_CHILDREN" id="DONT_TRAVERSE_CHILDREN">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>DONT_TRAVERSE_CHILDREN = <span class="php-num">1</span></code>
+
+	<div class="expandable-collapsedView">
+		<p>If NodeVisitor::enterNode() returns DONT_TRAVERSE_CHILDREN, child nodes
+of the current node will not be traversed for any visitors. For subsequent visitors enterNode() will still be called on the current
+node and leaveNode() will also be invoked for the current node.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>If NodeVisitor::enterNode() returns DONT_TRAVERSE_CHILDREN, child nodes
+of the current node will not be traversed for any visitors. For subsequent visitors enterNode() will still be called on the current
+node and leaveNode() will also be invoked for the current node.</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#DONT_TRAVERSE_CHILDREN">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="STOP_TRAVERSAL" id="STOP_TRAVERSAL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>STOP_TRAVERSAL = <span class="php-num">2</span></code>
+
+	<div class="expandable-collapsedView">
+		<p>If NodeVisitor::enterNode() or NodeVisitor::leaveNode() returns
+STOP_TRAVERSAL, traversal is aborted. The afterTraverse() method will still be invoked.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>If NodeVisitor::enterNode() or NodeVisitor::leaveNode() returns
+STOP_TRAVERSAL, traversal is aborted. The afterTraverse() method will still be invoked.</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#STOP_TRAVERSAL">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="REMOVE_NODE" id="REMOVE_NODE">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>REMOVE_NODE = <span class="php-num">3</span></code>
+
+	<div class="expandable-collapsedView">
+		<p>If NodeVisitor::leaveNode() returns REMOVE_NODE for a node that occurs
+in an array, it will be removed from the array. For subsequent visitors leaveNode() will still be invoked for the
+removed node.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>If NodeVisitor::leaveNode() returns REMOVE_NODE for a node that occurs
+in an array, it will be removed from the array. For subsequent visitors leaveNode() will still be invoked for the
+removed node.</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#REMOVE_NODE">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="DONT_TRAVERSE_CURRENT_AND_CHILDREN" id="DONT_TRAVERSE_CURRENT_AND_CHILDREN">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>DONT_TRAVERSE_CURRENT_AND_CHILDREN = <span class="php-num">4</span></code>
+
+	<div class="expandable-collapsedView">
+		<p>If NodeVisitor::enterNode() returns DONT_TRAVERSE_CURRENT_AND_CHILDREN, child nodes
+of the current node will not be traversed for any visitors. For subsequent visitors enterNode() will not be called as well.
+leaveNode() will be invoked for visitors that has enterNode() method invoked.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>If NodeVisitor::enterNode() returns DONT_TRAVERSE_CURRENT_AND_CHILDREN, child nodes
+of the current node will not be traversed for any visitors. For subsequent visitors enterNode() will not be called as well.
+leaveNode() will be invoked for visitors that has enterNode() method invoked.</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#DONT_TRAVERSE_CURRENT_AND_CHILDREN">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="REPLACE_WITH_NULL" id="REPLACE_WITH_NULL">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+				</code>
+			</td>
+
+			<td class="table-cell">
+<code>REPLACE_WITH_NULL = <span class="php-num">5</span></code>
+
+	<div class="expandable-collapsedView">
+		<p>If NodeVisitor::enterNode() or NodeVisitor::leaveNode() returns REPLACE_WITH_NULL,
+the node will be replaced with null. This is not a legal return value if the node is part
+of an array, rather than another node.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>If NodeVisitor::enterNode() or NodeVisitor::leaveNode() returns REPLACE_WITH_NULL,
+the node will be replaced with null. This is not a legal return value if the node is part
+of an array, rather than another node.</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#REPLACE_WITH_NULL">#</a>
+		</td>
+	</tr>
+		</table>
 
 
 		</div>

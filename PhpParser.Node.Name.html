@@ -101,8 +101,23 @@
 						</a>
 					</li>
 					<li>
+						<a href="PhpParser.Node.PropertyHook.html">
+							PropertyHook
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.PropertyItem.html">
+							PropertyItem
+						</a>
+					</li>
+					<li>
 						<a href="PhpParser.Node.Stmt.html">
 							Stmt
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.UseItem.html">
+							UseItem
 						</a>
 					</li>
 					<li>
@@ -204,7 +219,7 @@
 	<tr class="expandable collapsed" data-order="__construct" id="___construct">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
-					
+					final
 	public
 					
 					
@@ -212,7 +227,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>string|string[]|<b><span class="active" title="PhpParser\Node\Name">self</span></b> <var>$name</var></span>, <span>array <var>$attributes</var> = []</span>)</code>
+				<code>__construct(<span>string|string[]|<b><span class="active" title="PhpParser\Node\Name">self</span></b> <var>$name</var></span>, <span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>)</code>
 
 
 	<div class="expandable-collapsedView">
@@ -782,7 +797,11 @@ concatenations using concat(). Offset and length have the same meaning as in arr
 			</td>
 
 			<td class="table-cell">
-				<code>concat(<span>string|string[]|<b><span class="active" title="PhpParser\Node\Name">self</span></b>|null <var>$name1</var></span>, <span>string|string[]|<b><span class="active" title="PhpParser\Node\Name">self</span></b>|null <var>$name2</var></span>, <span>array <var>$attributes</var> = []</span>): static|null</code>
+				<code>concat(
+	<span>string|string[]|<b><span class="active" title="PhpParser\Node\Name">self</span></b>|null <var>$name1</var></span>,
+	<span>string|string[]|<b><span class="active" title="PhpParser\Node\Name">self</span></b>|null <var>$name2</var></span>,
+	<span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>,
+): static|null</code>
 
 
 	<div class="expandable-collapsedView">
@@ -902,7 +921,7 @@ where $namespace is a Name node or null will work as expected.</p>
 				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="parts" id="$parts">
+	<tr class="expandable collapsed" data-order="name" id="$name">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -912,24 +931,24 @@ where $namespace is a Name node or null will work as expected.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap">string[]</code>
+				<code class="nowrap">string</code>
 			</td>
 
 			<td class="table-cell">
-<code><var><span class="deprecated">$parts</span></var></code>
+<code><var>$name</var></code>
 				
 	<div class="expandable-collapsedView">
-		<p>Parts of the name</p>
+		<p>Name as string</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Parts of the name</p>
+	<div class="description"><p>Name as string</p>
 </div>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$parts">#</a>
+			<a href="#$name">#</a>
 		</td>
 	</tr>
 		</table>

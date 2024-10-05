@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Class PhpParser\Node\AttributeGroup | ApiGen API</title>
+	<title>Class PhpParser\Node\UseItem | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -65,7 +65,7 @@
 							Attribute
 						</a>
 					</li>
-					<li class="active">
+					<li>
 						<a href="PhpParser.Node.AttributeGroup.html">
 							AttributeGroup
 						</a>
@@ -115,7 +115,7 @@
 							Stmt
 						</a>
 					</li>
-					<li>
+					<li class="active">
 						<a href="PhpParser.Node.UseItem.html">
 							UseItem
 						</a>
@@ -153,7 +153,7 @@
 						<a href="namespace-PhpParser.Node.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="PhpParser.Node.AttributeGroup.html">Class</a></li>				<li>
+<li class="active"><a href="PhpParser.Node.UseItem.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -169,7 +169,7 @@
 
 		<div class="layout-content">
 		<h1>
-			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Node.html">Node</a>\<a href="PhpParser.Node.AttributeGroup.html">AttributeGroup</a>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Node.html">Node</a>\<a href="PhpParser.Node.UseItem.html">UseItem</a>
 		</h1>
 
 
@@ -196,7 +196,7 @@
 
 	<ul class="classTree">
 	<li>
-<b><span class="active">PhpParser\Node\AttributeGroup</span></b>
+<b><span class="active">PhpParser\Node\UseItem</span></b>
 
 
 	</li>
@@ -227,28 +227,43 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span><a href="PhpParser.Node.Attribute.html"><span title="PhpParser\Node\Attribute">Attribute</span></a>[] <var>$attrs</var></span>, <span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>)</code>
+				<code>__construct(
+	<span><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a> <var>$name</var></span>,
+	<span>null|string|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a> <var>$alias</var> = <span class="php-kw">null</span></span>,
+	<span><a href="PhpParser.Node.Stmt.Use_.html"><span title="PhpParser\Node\Stmt\Use_">Use_</span></a>::TYPE_* <var>$type</var> = <a href="PhpParser.Node.Stmt.Use_.html"><span title="PhpParser\Node\Stmt\Use_">Use_</span></a>::<a href="PhpParser.Node.Stmt.Use_.html#TYPE_UNKNOWN">TYPE_UNKNOWN</a></span>,
+	<span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>,
+)</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Creates a Node.</p>
+		<p>Constructs an alias (use) item node.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Creates a Node.</p>
+	<div class="description"><p>Constructs an alias (use) item node.</p>
 </div>
 
 							<h4>Parameters</h4>
 							<table>
 									<tr>
-										<td><var>$attrs</var>&nbsp;&nbsp;</td>
-										<td><p>PHP attributes</p>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Namespace/Class to alias</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$alias</var>&nbsp;&nbsp;</td>
+										<td><p>Alias</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$type</var>&nbsp;&nbsp;</td>
+										<td><p>Type of the use element (for mixed group use only)</p>
 </td>
 									</tr>
 									<tr>
 										<td><var>$attributes</var>&nbsp;&nbsp;</td>
-										<td><p>Additional node attributes</p>
+										<td><p>Additional attributes</p>
 </td>
 									</tr>
 							</table>
@@ -304,6 +319,38 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_getSubNodeNames">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getAlias" id="_getAlias">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getAlias(): <a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a></code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Get alias. If not explicitly given this is the last component of the used name.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Get alias. If not explicitly given this is the last component of the used name.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getAlias">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="getType" id="_getType">
@@ -376,7 +423,7 @@
 				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="attrs" id="$attrs">
+	<tr class="expandable collapsed" data-order="type" id="$type">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -386,24 +433,84 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="PhpParser.Node.Attribute.html"><span title="PhpParser\Node\Attribute">Attribute</span></a>[]</code>
+				<code class="nowrap"><a href="PhpParser.Node.Stmt.Use_.html"><span title="PhpParser\Node\Stmt\Use_">Use_</span></a>::TYPE_*</code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$attrs</var></code>
+<code><var>$type</var></code>
 				
 	<div class="expandable-collapsedView">
-		<p>Attributes</p>
+		<p>One of the Stmt\Use_::TYPE_* constants. Will only differ from TYPE_UNKNOWN for mixed group uses</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Attributes</p>
+	<div class="description"><p>One of the Stmt\Use_::TYPE_* constants. Will only differ from TYPE_UNKNOWN for mixed group uses</p>
 </div>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$attrs">#</a>
+			<a href="#$type">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="name" id="$name">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$name</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Namespace, class, function or constant to alias</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Namespace, class, function or constant to alias</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$name">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="alias" id="$alias">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|null</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$alias</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Alias</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Alias</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$alias">#</a>
 		</td>
 	</tr>
 		</table>

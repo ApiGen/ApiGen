@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Class PhpParser\Comment\Doc | ApiGen API</title>
+	<title>Class PhpParser\Internal\TokenPolyfill | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -43,7 +43,7 @@
 				<a href="namespace-PhpParser.html">PhpParser</a>
 	<ul>
 			<li class="menuGroup-item active">
-				<a href="namespace-PhpParser.Comment.html">Comment</a>
+				<a href="namespace-PhpParser.Internal.html">Internal</a>
 			</li>
 	</ul>
 			</li>
@@ -54,8 +54,8 @@
 			<h3>Classes</h3>
 			<ul>
 					<li class="active">
-						<a href="PhpParser.Comment.Doc.html">
-							Doc
+						<a href="PhpParser.Internal.TokenPolyfill.html">
+							TokenPolyfill
 						</a>
 					</li>
 			</ul>
@@ -73,10 +73,10 @@
 				</li>
 				<li>
 					
-						<a href="namespace-PhpParser.Comment.html">Namespace</a>
+						<a href="namespace-PhpParser.Internal.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="PhpParser.Comment.Doc.html">Class</a></li>				<li>
+<li class="active"><a href="PhpParser.Internal.TokenPolyfill.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -92,7 +92,7 @@
 
 		<div class="layout-content">
 		<h1>
-			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Comment.html">Comment</a>\<a href="PhpParser.Comment.Doc.html">Doc</a>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Internal.html">Internal</a>\<a href="PhpParser.Internal.TokenPolyfill.html">TokenPolyfill</a>
 		</h1>
 
 
@@ -103,7 +103,7 @@
 		<tr>
 			<th><code>extends</code></th>
 			<td>
-<code><a href="PhpParser.Comment.html"><span title="PhpParser\Comment">Comment</span></a></code>			</td>
+<code><a href="PhpToken.html"><span title="PhpToken">PhpToken</span></a></code>			</td>
 		</tr>
 
 	</table>
@@ -111,16 +111,23 @@
 			<div class="classLikeSection">
 	<ul class="classTree">
 	<li>
-<a href="PhpParser.Comment.html"><span>PhpParser\Comment</span></a>
+<a href="PhpToken.html"><span>PhpToken</span></a>
 
 		implements
-			<a href="JsonSerializable.html"><span title="JsonSerializable">JsonSerializable</span></a>
+			<a href="Stringable.html"><span title="Stringable">Stringable</span></a>
 
 	<ul class="classTree">
 	<li>
-<b><span class="active">PhpParser\Comment\Doc</span></b>
+<b><span class="active">PhpParser\Internal\TokenPolyfill</span></b>
 
 
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Token.html"><span>PhpParser\Token</span></a>
+
+
+	</li>
+	</ul>
 	</li>
 	</ul>
 	</li>
@@ -135,11 +142,11 @@
 
 		<table class="table">
 			<tr>
-				<th class="table-heading">Methods inherited from <a href="PhpParser.Comment.html"><span>PhpParser\Comment</span></a></th>
+				<th class="table-heading">Methods inherited from <a href="PhpToken.html"><span>PhpToken</span></a></th>
 			</tr>
 			<tr>
 				<td class="table-cell">
-<code><a href="PhpParser.Comment.html#___construct">__construct()</a>, <a href="PhpParser.Comment.html#_getText">getText()</a>, <a href="PhpParser.Comment.html#_getStartLine">getStartLine()</a>, <a href="PhpParser.Comment.html#_getStartFilePos">getStartFilePos()</a>, <a href="PhpParser.Comment.html#_getStartTokenPos">getStartTokenPos()</a>, <a href="PhpParser.Comment.html#_getEndLine">getEndLine()</a>, <a href="PhpParser.Comment.html#_getEndFilePos">getEndFilePos()</a>, <a href="PhpParser.Comment.html#_getEndTokenPos">getEndTokenPos()</a>, <a href="PhpParser.Comment.html#___toString">__toString()</a>, <a href="PhpParser.Comment.html#_getReformattedText">getReformattedText()</a>, <a href="PhpParser.Comment.html#_jsonSerialize">jsonSerialize()</a></code>				</td>
+<code><a href="PhpToken.html#_tokenize">tokenize()</a>, <a href="PhpToken.html#___construct">__construct()</a>, <a href="PhpToken.html#_is">is()</a>, <a href="PhpToken.html#_isIgnorable">isIgnorable()</a>, <a href="PhpToken.html#_getTokenName">getTokenName()</a>, <a href="PhpToken.html#___toString">__toString()</a></code>				</td>
 			</tr>
 		</table>
 
@@ -156,15 +163,6 @@
 
 
 
-		<table class="table">
-			<tr>
-				<th class="table-heading">Properties inherited from <a href="PhpParser.Comment.html"><span>PhpParser\Comment</span></a></th>
-			</tr>
-			<tr>
-				<td class="table-cell">
-<code><var><a href="PhpParser.Comment.html#$text">$text</a></var>, <var><a href="PhpParser.Comment.html#$startLine">$startLine</a></var>, <var><a href="PhpParser.Comment.html#$startFilePos">$startFilePos</a></var>, <var><a href="PhpParser.Comment.html#$startTokenPos">$startTokenPos</a></var>, <var><a href="PhpParser.Comment.html#$endLine">$endLine</a></var>, <var><a href="PhpParser.Comment.html#$endFilePos">$endFilePos</a></var>, <var><a href="PhpParser.Comment.html#$endTokenPos">$endTokenPos</a></var></code>				</td>
-			</tr>
-		</table>
 
 
 

@@ -75,6 +75,11 @@
 							NodeVisitorAbstract
 						</a>
 					</li>
+					<li>
+						<a href="PhpParser.Token.html">
+							Token
+						</a>
+					</li>
 			</ul>
 		</div>
 		<div class="menu-section">
@@ -213,7 +218,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>__construct(<span>string <var>$message</var></span>, <span>array|int <var>$attributes</var> = []</span>)</code>
+				<code>__construct(<span>string <var>$message</var></span>, <span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>)</code>
 
 
 	<div class="expandable-collapsedView">
@@ -234,8 +239,7 @@
 									</tr>
 									<tr>
 										<td><var>$attributes</var>&nbsp;&nbsp;</td>
-										<td><p>Attributes of node/token where error occurred
-(or start line of error -- deprecated)</p>
+										<td><p>Attributes of node/token where error occurred</p>
 </td>
 									</tr>
 							</table>
@@ -369,7 +373,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>getAttributes(): array</code>
+				<code>getAttributes(): array&lt;string, mixed&gt;</code>
 
 
 	<div class="expandable-collapsedView">
@@ -401,7 +405,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setAttributes(<span>array <var>$attributes</var></span>)</code>
+				<code>setAttributes(<span>array&lt;string, mixed&gt; <var>$attributes</var></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -433,7 +437,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setRawMessage(<span>string <var>$message</var></span>)</code>
+				<code>setRawMessage(<span>string <var>$message</var></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -473,7 +477,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>setStartLine(<span>int <var>$line</var></span>)</code>
+				<code>setStartLine(<span>int <var>$line</var></span>): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -668,7 +672,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>updateMessage()</code>
+				<code>updateMessage(): void</code>
 
 
 	<div class="expandable-collapsedView">
@@ -736,7 +740,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">string</code>
 			</td>
 
 			<td class="table-cell">
@@ -760,7 +764,7 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">array&lt;string, mixed&gt;</code>
 			</td>
 
 			<td class="table-cell">

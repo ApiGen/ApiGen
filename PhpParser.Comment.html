@@ -75,6 +75,11 @@
 							NodeVisitorAbstract
 						</a>
 					</li>
+					<li>
+						<a href="PhpParser.Token.html">
+							Token
+						</a>
+					</li>
 			</ul>
 		</div>
 		<div class="menu-section">
@@ -503,126 +508,6 @@
 			<a href="#_getEndTokenPos">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="getLine" id="_getLine">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><span class="deprecated">getLine</span>(): int</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Gets the line number the comment started on.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the line number the comment started on.</p>
-</div>
-							<h4>Deprecated</h4>
-							<div>
-									<p>Use getStartLine() instead</p>
-
-							</div>
-
-
-							<h4>Returns</h4>
-							<div><p>Line number</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_getLine">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="getFilePos" id="_getFilePos">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><span class="deprecated">getFilePos</span>(): int</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Gets the file offset the comment started on.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the file offset the comment started on.</p>
-</div>
-							<h4>Deprecated</h4>
-							<div>
-									<p>Use getStartFilePos() instead</p>
-
-							</div>
-
-
-							<h4>Returns</h4>
-							<div><p>File offset</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_getFilePos">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="getTokenPos" id="_getTokenPos">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code><span class="deprecated">getTokenPos</span>(): int</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Gets the token offset the comment started on.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the token offset the comment started on.</p>
-</div>
-							<h4>Deprecated</h4>
-							<div>
-									<p>Use getStartTokenPos() instead</p>
-
-							</div>
-
-
-							<h4>Returns</h4>
-							<div><p>Token offset</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_getTokenPos">#</a>
-		</td>
-	</tr>
 	<tr class="expandable collapsed" data-order="__toString" id="___toString">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -669,22 +554,22 @@
 			</td>
 
 			<td class="table-cell">
-				<code>getReformattedText(): mixed|string</code>
+				<code>getReformattedText(): string</code>
 
 
 	<div class="expandable-collapsedView">
 		<p>Gets the reformatted comment text. &quot;Reformatted&quot; here means that we try to clean up the whitespace at the
 starts of the lines. This is necessary because we receive the comments
-without trailing whitespace on the first line, but with trailing whitespace
-on all subsequent lines.</p>
+without leading whitespace on the first line, but with leading whitespace
+on all subsequent lines. Additionally, this normalizes CRLF newlines to LF newlines.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
 	<div class="description"><p>Gets the reformatted comment text. &quot;Reformatted&quot; here means that we try to clean up the whitespace at the
 starts of the lines. This is necessary because we receive the comments
-without trailing whitespace on the first line, but with trailing whitespace
-on all subsequent lines.</p>
+without leading whitespace on the first line, but with leading whitespace
+on all subsequent lines. Additionally, this normalizes CRLF newlines to LF newlines.</p>
 </div>
 
 
@@ -707,7 +592,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell">
-				<code>jsonSerialize(): array</code>
+				<code>jsonSerialize(): array{nodeType: string, text: mixed, line: mixed, filePos: mixed}</code>
 
 
 
@@ -750,7 +635,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">string</code>
 			</td>
 
 			<td class="table-cell">
@@ -774,7 +659,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">int</code>
 			</td>
 
 			<td class="table-cell">
@@ -798,7 +683,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">int</code>
 			</td>
 
 			<td class="table-cell">
@@ -822,7 +707,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">int</code>
 			</td>
 
 			<td class="table-cell">
@@ -846,7 +731,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">int</code>
 			</td>
 
 			<td class="table-cell">
@@ -870,7 +755,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">int</code>
 			</td>
 
 			<td class="table-cell">
@@ -894,7 +779,7 @@ on all subsequent lines.</p>
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"></code>
+				<code class="nowrap">int</code>
 			</td>
 
 			<td class="table-cell">

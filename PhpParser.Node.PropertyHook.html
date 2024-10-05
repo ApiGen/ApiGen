@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Class PhpParser\Node\Stmt\Property | ApiGen API</title>
+	<title>Class PhpParser\Node\PropertyHook | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -45,9 +45,6 @@
 			<li class="menuGroup-item active">
 				<a href="namespace-PhpParser.Node.html">Node</a>
 	<ul>
-			<li class="menuGroup-item active">
-				<a href="namespace-PhpParser.Node.Stmt.html">Stmt</a>
-			</li>
 	</ul>
 			</li>
 	</ul>
@@ -59,48 +56,83 @@
 			<h3>Classes</h3>
 			<ul>
 					<li>
-						<a href="PhpParser.Node.Stmt.ClassConst.html">
-							ClassConst
+						<a href="PhpParser.Node.Arg.html">
+							Arg
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.ClassLike.html">
-							ClassLike
+						<a href="PhpParser.Node.Attribute.html">
+							Attribute
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.ClassMethod.html">
-							ClassMethod
+						<a href="PhpParser.Node.AttributeGroup.html">
+							AttributeGroup
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.EnumCase.html">
-							EnumCase
+						<a href="PhpParser.Node.ComplexType.html">
+							ComplexType
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.Function_.html">
-							Function_
+						<a href="PhpParser.Node.Const_.html">
+							Const_
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.Expr.html">
+							Expr
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.Identifier.html">
+							Identifier
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.Name.html">
+							Name
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.Param.html">
+							Param
 						</a>
 					</li>
 					<li class="active">
-						<a href="PhpParser.Node.Stmt.Property.html">
-							Property
+						<a href="PhpParser.Node.PropertyHook.html">
+							PropertyHook
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.TraitUse.html">
-							TraitUse
+						<a href="PhpParser.Node.PropertyItem.html">
+							PropertyItem
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.TraitUseAdaptation.html">
-							TraitUseAdaptation
+						<a href="PhpParser.Node.Stmt.html">
+							Stmt
 						</a>
 					</li>
 					<li>
-						<a href="PhpParser.Node.Stmt.Use_.html">
-							Use_
+						<a href="PhpParser.Node.UseItem.html">
+							UseItem
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.VarLikeIdentifier.html">
+							VarLikeIdentifier
+						</a>
+					</li>
+			</ul>
+		</div>
+		<div class="menu-section">
+			<h3>Interfaces</h3>
+			<ul>
+					<li>
+						<a href="PhpParser.Node.FunctionLike.html">
+							FunctionLike
 						</a>
 					</li>
 			</ul>
@@ -118,10 +150,10 @@
 				</li>
 				<li>
 					
-						<a href="namespace-PhpParser.Node.Stmt.html">Namespace</a>
+						<a href="namespace-PhpParser.Node.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="PhpParser.Node.Stmt.Property.html">Class</a></li>				<li>
+<li class="active"><a href="PhpParser.Node.PropertyHook.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -137,7 +169,7 @@
 
 		<div class="layout-content">
 		<h1>
-			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Node.html">Node</a>\<a href="namespace-PhpParser.Node.Stmt.html">Stmt</a>\<a href="PhpParser.Node.Stmt.Property.html">Property</a>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="namespace-PhpParser.Node.html">Node</a>\<a href="PhpParser.Node.PropertyHook.html">PropertyHook</a>
 		</h1>
 
 
@@ -148,7 +180,12 @@
 		<tr>
 			<th><code>extends</code></th>
 			<td>
-<code><a href="PhpParser.Node.Stmt.html"><span title="PhpParser\Node\Stmt">Stmt</span></a></code>			</td>
+<code><a href="PhpParser.NodeAbstract.html"><span title="PhpParser\NodeAbstract">NodeAbstract</span></a></code>			</td>
+		</tr>
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+<code><a href="PhpParser.Node.FunctionLike.html"><span title="PhpParser\Node\FunctionLike">FunctionLike</span></a></code>			</td>
 		</tr>
 
 	</table>
@@ -164,16 +201,11 @@
 
 	<ul class="classTree">
 	<li>
-<a href="PhpParser.Node.Stmt.html"><span>PhpParser\Node\Stmt</span></a>
+<b><span class="active">PhpParser\Node\PropertyHook</span></b>
 
+		implements
+			<a href="PhpParser.Node.FunctionLike.html"><span title="PhpParser\Node\FunctionLike">FunctionLike</span></a>
 
-	<ul class="classTree">
-	<li>
-<b><span class="active">PhpParser\Node\Stmt\Property</span></b>
-
-
-	</li>
-	</ul>
 	</li>
 	</ul>
 	</li>
@@ -203,54 +235,45 @@
 
 			<td class="table-cell">
 				<code>__construct(
-	<span>int <var>$flags</var></span>,
-	<span><a href="PhpParser.Node.PropertyItem.html"><span title="PhpParser\Node\PropertyItem">PropertyItem</span></a>[] <var>$props</var></span>,
+	<span>string|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a> <var>$name</var></span>,
+	<span>null|<a href="PhpParser.Node.Expr.html"><span title="PhpParser\Node\Expr">Expr</span></a>|<a href="PhpParser.Node.Stmt.html"><span title="PhpParser\Node\Stmt">Stmt</span></a>[] <var>$body</var></span>,
+	<span>array{flags?: int, byRef?: bool, params?: <a href="PhpParser.Node.Param.html"><span title="PhpParser\Node\Param">Param</span></a>[], attrGroups?: <a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>[]} <var>$subNodes</var> = []</span>,
 	<span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>,
-	<span>null|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a> <var>$type</var> = <span class="php-kw">null</span></span>,
-	<span><a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>[] <var>$attrGroups</var> = []</span>,
-	<span><a href="PhpParser.Node.PropertyHook.html"><span title="PhpParser\Node\PropertyHook">PropertyHook</span></a>[] <var>$hooks</var> = []</span>,
 )</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Constructs a class property list node.</p>
+		<p>Constructs a property hook node.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Constructs a class property list node.</p>
+	<div class="description"><p>Constructs a property hook node.</p>
 </div>
 
 							<h4>Parameters</h4>
 							<table>
 									<tr>
-										<td><var>$flags</var>&nbsp;&nbsp;</td>
-										<td><p>Modifiers</p>
+										<td><var>$name</var>&nbsp;&nbsp;</td>
+										<td><p>Hook name</p>
 </td>
 									</tr>
 									<tr>
-										<td><var>$props</var>&nbsp;&nbsp;</td>
-										<td><p>Properties</p>
+										<td><var>$body</var>&nbsp;&nbsp;</td>
+										<td><p>Hook body</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$subNodes</var>&nbsp;&nbsp;</td>
+										<td><p>Array of the following optional subnodes:
+'byRef'      =&gt; false  : Whether hook returns by reference
+'params'     =&gt; array(): Parameters
+'attrGroups' =&gt; array(): PHP attribute groups</p>
 </td>
 									</tr>
 									<tr>
 										<td><var>$attributes</var>&nbsp;&nbsp;</td>
 										<td><p>Additional attributes</p>
-</td>
-									</tr>
-									<tr>
-										<td><var>$type</var>&nbsp;&nbsp;</td>
-										<td><p>Type declaration</p>
-</td>
-									</tr>
-									<tr>
-										<td><var>$attrGroups</var>&nbsp;&nbsp;</td>
-										<td><p>PHP attribute groups</p>
-</td>
-									</tr>
-									<tr>
-										<td><var>$hooks</var>&nbsp;&nbsp;</td>
-										<td><p>Property hooks</p>
 </td>
 									</tr>
 							</table>
@@ -268,7 +291,7 @@
 			<a href="#___construct">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="getSubNodeNames" id="_getSubNodeNames">
+	<tr class="expandable collapsed" data-order="returnsByRef" id="_returnsByRef">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -279,36 +302,33 @@
 			</td>
 
 			<td class="table-cell">
-				<code>getSubNodeNames(): array</code>
+				<code>returnsByRef(): bool</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Gets the names of the sub nodes.</p>
+		<p>Whether to return by reference</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Gets the names of the sub nodes.</p>
+	<div class="description"><p>Whether to return by reference</p>
 </div>
 
 
-							<h4>Returns</h4>
-							<div><p>Names of sub nodes</p>
-</div>
 
 
 		<h4>Implements</h4>
 		<ul>
 				<li>
-<a href="PhpParser.Node.html#_getSubNodeNames">						<code>PhpParser\Node::getSubNodeNames()</code></a>				</li>
+<a href="PhpParser.Node.FunctionLike.html#_returnsByRef">						<code>PhpParser\Node\FunctionLike::returnsByRef()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_getSubNodeNames">#</a>
+			<a href="#_returnsByRef">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="isPublic" id="_isPublic">
+	<tr class="expandable collapsed" data-order="getParams" id="_getParams">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -319,28 +339,33 @@
 			</td>
 
 			<td class="table-cell">
-				<code>isPublic(): bool</code>
+				<code>getParams(): array</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Whether the property is explicitly or implicitly public.</p>
+		<p>List of parameters</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property is explicitly or implicitly public.</p>
+	<div class="description"><p>List of parameters</p>
 </div>
 
 
 
 
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getParams">						<code>PhpParser\Node\FunctionLike::getParams()</code></a>				</li>
+		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_isPublic">#</a>
+			<a href="#_getParams">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="isProtected" id="_isProtected">
+	<tr class="expandable collapsed" data-order="getReturnType" id="_getReturnType">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -351,28 +376,33 @@
 			</td>
 
 			<td class="table-cell">
-				<code>isProtected(): bool</code>
+				<code>getReturnType()</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Whether the property is protected.</p>
+		<p>Get the declared return type or null</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property is protected.</p>
+	<div class="description"><p>Get the declared return type or null</p>
 </div>
 
 
 
 
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getReturnType">						<code>PhpParser\Node\FunctionLike::getReturnType()</code></a>				</li>
+		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_isProtected">#</a>
+			<a href="#_getReturnType">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="isPrivate" id="_isPrivate">
+	<tr class="expandable collapsed" data-order="getStmts" id="_getStmts">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -383,28 +413,33 @@
 			</td>
 
 			<td class="table-cell">
-				<code>isPrivate(): bool</code>
+				<code>getStmts(): ?array</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Whether the property is private.</p>
+		<p>The function body</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property is private.</p>
+	<div class="description"><p>The function body</p>
 </div>
 
 
 
 
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getStmts">						<code>PhpParser\Node\FunctionLike::getStmts()</code></a>				</li>
+		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_isPrivate">#</a>
+			<a href="#_getStmts">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="isStatic" id="_isStatic">
+	<tr class="expandable collapsed" data-order="getAttrGroups" id="_getAttrGroups">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -415,153 +450,30 @@
 			</td>
 
 			<td class="table-cell">
-				<code>isStatic(): bool</code>
+				<code>getAttrGroups(): array</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Whether the property is static.</p>
+		<p>Get PHP attribute groups.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property is static.</p>
+	<div class="description"><p>Get PHP attribute groups.</p>
 </div>
 
 
 
 
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.FunctionLike.html#_getAttrGroups">						<code>PhpParser\Node\FunctionLike::getAttrGroups()</code></a>				</li>
+		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_isStatic">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="isReadonly" id="_isReadonly">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>isReadonly(): bool</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Whether the property is readonly.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property is readonly.</p>
-</div>
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_isReadonly">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="isPublicSet" id="_isPublicSet">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>isPublicSet(): bool</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Whether the property has explicit public(set) visibility.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property has explicit public(set) visibility.</p>
-</div>
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_isPublicSet">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="isProtectedSet" id="_isProtectedSet">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>isProtectedSet(): bool</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Whether the property has explicit protected(set) visibility.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property has explicit protected(set) visibility.</p>
-</div>
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_isProtectedSet">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="isPrivateSet" id="_isPrivateSet">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>isPrivateSet(): bool</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Whether the property has explicit private(set) visibility.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Whether the property has explicit private(set) visibility.</p>
-</div>
-
-
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_isPrivateSet">#</a>
+			<a href="#_getAttrGroups">#</a>
 		</td>
 	</tr>
 	<tr class="expandable collapsed" data-order="getType" id="_getType">
@@ -604,8 +516,47 @@
 			<a href="#_getType">#</a>
 		</td>
 	</tr>
-		</table>
+	<tr class="expandable collapsed" data-order="getSubNodeNames" id="_getSubNodeNames">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
 
+			<td class="table-cell">
+				<code>getSubNodeNames(): array</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Gets the names of the sub nodes.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Gets the names of the sub nodes.</p>
+</div>
+
+
+							<h4>Returns</h4>
+							<div><p>Names of sub nodes</p>
+</div>
+
+
+		<h4>Implements</h4>
+		<ul>
+				<li>
+<a href="PhpParser.Node.html#_getSubNodeNames">						<code>PhpParser\Node::getSubNodeNames()</code></a>				</li>
+		</ul>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getSubNodeNames">#</a>
+		</td>
+	</tr>
+		</table>
 		<table class="table">
 			<tr>
 				<th class="table-heading">Methods inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
@@ -632,105 +583,11 @@
 
 
 
-
-
-
-
 		<table class="table" id="properties">
 			<tr>
 				<th class="table-heading sortable" colspan="4" title="Switch between natural and alphabetical order">Properties</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="flags" id="$flags">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap">int</code>
-			</td>
-
-			<td class="table-cell">
-<code><var>$flags</var></code>
-				
-	<div class="expandable-collapsedView">
-		<p>Modifiers</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Modifiers</p>
-</div>
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$flags">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="props" id="$props">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="PhpParser.Node.PropertyItem.html"><span title="PhpParser\Node\PropertyItem">PropertyItem</span></a>[]</code>
-			</td>
-
-			<td class="table-cell">
-<code><var>$props</var></code>
-				
-	<div class="expandable-collapsedView">
-		<p>Properties</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Properties</p>
-</div>
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$props">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="type" id="$type">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell table-shrink">
-				<code class="nowrap">null|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a></code>
-			</td>
-
-			<td class="table-cell">
-<code><var>$type</var></code>
-				
-	<div class="expandable-collapsedView">
-		<p>Type declaration</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Type declaration</p>
-</div>
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#$type">#</a>
-		</td>
-	</tr>
 	<tr class="expandable collapsed" data-order="attrGroups" id="$attrGroups">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
@@ -761,7 +618,7 @@
 			<a href="#$attrGroups">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="hooks" id="$hooks">
+	<tr class="expandable collapsed" data-order="flags" id="$flags">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 	public
@@ -771,28 +628,147 @@
 			</td>
 
 			<td class="table-cell table-shrink">
-				<code class="nowrap"><a href="PhpParser.Node.PropertyHook.html"><span title="PhpParser\Node\PropertyHook">PropertyHook</span></a>[]</code>
+				<code class="nowrap">int</code>
 			</td>
 
 			<td class="table-cell">
-<code><var>$hooks</var></code>
+<code><var>$flags</var></code>
 				
 	<div class="expandable-collapsedView">
-		<p>Property hooks</p>
+		<p>Modifiers</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Property hooks</p>
+	<div class="description"><p>Modifiers</p>
 </div>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#$hooks">#</a>
+			<a href="#$flags">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="byRef" id="$byRef">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">bool</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$byRef</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Whether hook returns by reference</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether hook returns by reference</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$byRef">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="name" id="$name">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a></code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$name</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Hook name</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Hook name</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$name">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="params" id="$params">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.Param.html"><span title="PhpParser\Node\Param">Param</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$params</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Parameters</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Parameters</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$params">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="body" id="$body">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap">null|<a href="PhpParser.Node.Expr.html"><span title="PhpParser\Node\Expr">Expr</span></a>|<a href="PhpParser.Node.Stmt.html"><span title="PhpParser\Node\Stmt">Stmt</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$body</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Hook body</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Hook body</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$body">#</a>
 		</td>
 	</tr>
 		</table>
-
 		<table class="table">
 			<tr>
 				<th class="table-heading">Properties inherited from <a href="PhpParser.NodeAbstract.html"><span>PhpParser\NodeAbstract</span></a></th>
@@ -802,9 +778,6 @@
 <code><var><a href="PhpParser.NodeAbstract.html#$attributes">$attributes</a></var></code>				</td>
 			</tr>
 		</table>
-
-
-
 
 
 

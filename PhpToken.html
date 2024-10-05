@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Interface Serializable | ApiGen API</title>
+	<title>Class PhpToken | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -53,7 +53,7 @@
 							Generator
 						</a>
 					</li>
-					<li>
+					<li class="active">
 						<a href="PhpToken.html">
 							PhpToken
 						</a>
@@ -108,7 +108,7 @@
 							JsonSerializable
 						</a>
 					</li>
-					<li class="active">
+					<li>
 						<a href="Serializable.html">
 							Serializable
 						</a>
@@ -191,7 +191,7 @@
 						<a href="namespace-none.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="Serializable.html">Interface</a></li>				<li>
+<li class="active"><a href="PhpToken.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -207,47 +207,42 @@
 
 		<div class="layout-content">
 		<h1>
-			Interface <a href="Serializable.html">Serializable</a>
+			Class <a href="PhpToken.html">PhpToken</a>
 		</h1>
 
 
 	<table class="classLikeSignatureTable">
+
+
+
+		<tr>
+			<th><code>implements</code></th>
+			<td>
+<code><a href="Stringable.html"><span title="Stringable">Stringable</span></a></code>			</td>
+		</tr>
 
 	</table>
 
 			<div class="classLikeSection">
 	<ul class="classTree">
 	<li>
-<b><span class="active">Serializable</span></b>
-
-
-	<ul class="classTree">
-	<li>
-<a href="SplDoublyLinkedList.html"><span>SplDoublyLinkedList</span></a>
+<b><span class="active">PhpToken</span></b>
 
 		implements
-			<a href="Iterator.html"><span title="Iterator">Iterator</span></a>, 
-			<a href="Countable.html"><span title="Countable">Countable</span></a>, 
-			<a href="ArrayAccess.html"><span title="ArrayAccess">ArrayAccess</span></a>, 
-			<b><span class="active" title="Serializable">Serializable</span></b>
+			<a href="Stringable.html"><span title="Stringable">Stringable</span></a>
 
 	<ul class="classTree">
 	<li>
-<a href="SplQueue.html"><span>SplQueue</span></a>
+<a href="PhpParser.Internal.TokenPolyfill.html"><span>PhpParser\Internal\TokenPolyfill</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Token.html"><span>PhpParser\Token</span></a>
 
 
 	</li>
 	</ul>
-	</li>
-	<li>
-<a href="SplObjectStorage.html"><span>SplObjectStorage</span></a>
-
-		implements
-			<a href="Countable.html"><span title="Countable">Countable</span></a>, 
-			<a href="Iterator.html"><span title="Iterator">Iterator</span></a>, 
-			<b><span class="active" title="Serializable">Serializable</span></b>, 
-			<a href="ArrayAccess.html"><span title="ArrayAccess">ArrayAccess</span></a>
-
 	</li>
 	</ul>
 	</li>
@@ -265,18 +260,18 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="serialize" id="_serialize">
+	<tr class="expandable collapsed" data-order="tokenize" id="_tokenize">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
 	public
-					
+					static
 					
 				</code>
 			</td>
 
 			<td class="table-cell">
-				<code>serialize(): string|null</code>
+				<code>tokenize(<span>string <var>$code</var></span>, <span>int <var>$flags</var> = <span class="php-num">0</span></span>): static[]</code>
 
 
 
@@ -285,20 +280,39 @@
 
 
 
-		<h4>Implemented by</h4>
-		<ul>
-				<li>
-<a href="SplDoublyLinkedList.html#_serialize">						<code>SplDoublyLinkedList::serialize()</code></a>				</li>
-				<li>
-<a href="SplObjectStorage.html#_serialize">						<code>SplObjectStorage::serialize()</code></a>				</li>
-		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_serialize">#</a>
+			<a href="#_tokenize">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="unserialize" id="_unserialize">
+	<tr class="expandable collapsed" data-order="__construct" id="___construct">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					final
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__construct(<span>int <var>$id</var></span>, <span>string <var>$text</var></span>, <span>int <var>$line</var> = -<span class="php-num">1</span></span>, <span>int <var>$pos</var> = -<span class="php-num">1</span></span>)</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#___construct">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="is" id="_is">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -309,7 +323,7 @@
 			</td>
 
 			<td class="table-cell">
-				<code>unserialize(<span>string <var>$data</var></span>): void</code>
+				<code>is(<span>int|string|array <var>$kind</var></span>): bool</code>
 
 
 
@@ -318,20 +332,101 @@
 
 
 
-		<h4>Implemented by</h4>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_is">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isIgnorable" id="_isIgnorable">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isIgnorable(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isIgnorable">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="getTokenName" id="_getTokenName">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>getTokenName(): ?string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_getTokenName">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="__toString" id="___toString">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>__toString(): string</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+		<h4>Implements</h4>
 		<ul>
 				<li>
-<a href="SplDoublyLinkedList.html#_unserialize">						<code>SplDoublyLinkedList::unserialize()</code></a>				</li>
-				<li>
-<a href="SplObjectStorage.html#_unserialize">						<code>SplObjectStorage::unserialize()</code></a>				</li>
+<a href="Stringable.html#___toString">						<code>Stringable::__toString()</code></a>				</li>
 		</ul>
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_unserialize">#</a>
+			<a href="#___toString">#</a>
 		</td>
 	</tr>
 		</table>
+
+
+
+
+
 
 
 

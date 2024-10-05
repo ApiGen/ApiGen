@@ -5,7 +5,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
 	<meta name="robots" content="noindex">
-	<title>Interface PhpParser\NodeTraverserInterface | ApiGen API</title>
+	<title>Class PhpParser\Token | ApiGen API</title>
 	<link rel="stylesheet" href="assets/main.css">
 	<script src="assets/main.js" defer></script>
 </head>
@@ -75,7 +75,7 @@
 							NodeVisitorAbstract
 						</a>
 					</li>
-					<li>
+					<li class="active">
 						<a href="PhpParser.Token.html">
 							Token
 						</a>
@@ -95,7 +95,7 @@
 							Node
 						</a>
 					</li>
-					<li class="active">
+					<li>
 						<a href="PhpParser.NodeTraverserInterface.html">
 							NodeTraverserInterface
 						</a>
@@ -138,7 +138,7 @@
 						<a href="namespace-PhpParser.html">Namespace</a>
 					
 				</li>
-<li class="active"><a href="PhpParser.NodeTraverserInterface.html">Interface</a></li>				<li>
+<li class="active"><a href="PhpParser.Token.html">Class</a></li>				<li>
 					<a href="tree.html">Tree</a>
 				</li>
 			</ul>
@@ -154,14 +154,51 @@
 
 		<div class="layout-content">
 		<h1>
-			Interface <a href="namespace-PhpParser.html">PhpParser</a>\<a href="PhpParser.NodeTraverserInterface.html">NodeTraverserInterface</a>
+			Class <a href="namespace-PhpParser.html">PhpParser</a>\<a href="PhpParser.Token.html">Token</a>
 		</h1>
 
 
 	<table class="classLikeSignatureTable">
 
-	</table>
 
+
+		<tr>
+			<th><code>extends</code></th>
+			<td>
+<code><a href="PhpParser.Internal.TokenPolyfill.html"><span title="PhpParser\Internal\TokenPolyfill">TokenPolyfill</span></a></code>			</td>
+		</tr>
+
+	</table>
+		<div class="classLikeDescription">
+	<div class="description"><p>A PHP token. On PHP 8.0 this extends from PhpToken.</p>
+</div>
+		</div>
+
+			<div class="classLikeSection">
+	<ul class="classTree">
+	<li>
+<a href="PhpToken.html"><span>PhpToken</span></a>
+
+		implements
+			<a href="Stringable.html"><span title="Stringable">Stringable</span></a>
+
+	<ul class="classTree">
+	<li>
+<a href="PhpParser.Internal.TokenPolyfill.html"><span>PhpParser\Internal\TokenPolyfill</span></a>
+
+
+	<ul class="classTree">
+	<li>
+<b><span class="active">PhpParser\Token</span></b>
+
+
+	</li>
+	</ul>
+	</li>
+	</ul>
+	</li>
+	</ul>
+			</div>
 
 		<div class="classLikeSection">
 
@@ -174,7 +211,7 @@
 				<th class="table-heading sortable" colspan="3" title="Switch between natural and alphabetical order">Methods</th>
 			</tr>
 
-	<tr class="expandable collapsed" data-order="addVisitor" id="_addVisitor">
+	<tr class="expandable collapsed" data-order="getEndPos" id="_getEndPos">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -185,36 +222,28 @@
 			</td>
 
 			<td class="table-cell">
-				<code>addVisitor(<span><a href="PhpParser.NodeVisitor.html"><span title="PhpParser\NodeVisitor">NodeVisitor</span></a> <var>$visitor</var></span>): void</code>
+				<code>getEndPos(): int</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Adds a visitor.</p>
+		<p>Get (exclusive) zero-based end position of the token.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Adds a visitor.</p>
+	<div class="description"><p>Get (exclusive) zero-based end position of the token.</p>
 </div>
 
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$visitor</var>&nbsp;&nbsp;</td>
-										<td><p>Visitor to add</p>
-</td>
-									</tr>
-							</table>
 
 
 
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_addVisitor">#</a>
+			<a href="#_getEndPos">#</a>
 		</td>
 	</tr>
-	<tr class="expandable collapsed" data-order="removeVisitor" id="_removeVisitor">
+	<tr class="expandable collapsed" data-order="getEndLine" id="_getEndLine">
 			<td class="table-cell table-shrink">
 				<code class="nowrap">
 					
@@ -225,16 +254,16 @@
 			</td>
 
 			<td class="table-cell">
-				<code>removeVisitor(<span><a href="PhpParser.NodeVisitor.html"><span title="PhpParser\NodeVisitor">NodeVisitor</span></a> <var>$visitor</var></span>): void</code>
+				<code>getEndLine(): int</code>
 
 
 	<div class="expandable-collapsedView">
-		<p>Removes an added visitor.</p>
+		<p>Get 1-based end line number of the token.</p>
 
 	</div>
 
 	<div class="expandable-expandedView">
-	<div class="description"><p>Removes an added visitor.</p>
+	<div class="description"><p>Get 1-based end line number of the token.</p>
 </div>
 
 
@@ -243,53 +272,46 @@
 	</div>
 			</td>
 		<td class="table-anchor">
-			<a href="#_removeVisitor">#</a>
-		</td>
-	</tr>
-	<tr class="expandable collapsed" data-order="traverse" id="_traverse">
-			<td class="table-cell table-shrink">
-				<code class="nowrap">
-					
-	public
-					
-					
-				</code>
-			</td>
-
-			<td class="table-cell">
-				<code>traverse(<span><a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[] <var>$nodes</var></span>): <a href="PhpParser.Node.html"><span title="PhpParser\Node">Node</span></a>[]</code>
-
-
-	<div class="expandable-collapsedView">
-		<p>Traverses an array of nodes using the registered visitors.</p>
-
-	</div>
-
-	<div class="expandable-expandedView">
-	<div class="description"><p>Traverses an array of nodes using the registered visitors.</p>
-</div>
-
-							<h4>Parameters</h4>
-							<table>
-									<tr>
-										<td><var>$nodes</var>&nbsp;&nbsp;</td>
-										<td><p>Array of nodes</p>
-</td>
-									</tr>
-							</table>
-
-							<h4>Returns</h4>
-							<div><p>Traversed array of nodes</p>
-</div>
-
-
-	</div>
-			</td>
-		<td class="table-anchor">
-			<a href="#_traverse">#</a>
+			<a href="#_getEndLine">#</a>
 		</td>
 	</tr>
 		</table>
+
+		<table class="table">
+			<tr>
+				<th class="table-heading">Methods inherited from <a href="PhpToken.html"><span>PhpToken</span></a></th>
+			</tr>
+			<tr>
+				<td class="table-cell">
+<code><a href="PhpToken.html#_tokenize">tokenize()</a>, <a href="PhpToken.html#___construct">__construct()</a>, <a href="PhpToken.html#_is">is()</a>, <a href="PhpToken.html#_isIgnorable">isIgnorable()</a>, <a href="PhpToken.html#_getTokenName">getTokenName()</a>, <a href="PhpToken.html#___toString">__toString()</a></code>				</td>
+			</tr>
+		</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

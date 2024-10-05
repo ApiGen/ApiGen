@@ -101,8 +101,23 @@
 						</a>
 					</li>
 					<li>
+						<a href="PhpParser.Node.PropertyHook.html">
+							PropertyHook
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.PropertyItem.html">
+							PropertyItem
+						</a>
+					</li>
+					<li>
 						<a href="PhpParser.Node.Stmt.html">
 							Stmt
+						</a>
+					</li>
+					<li>
+						<a href="PhpParser.Node.UseItem.html">
+							UseItem
 						</a>
 					</li>
 					<li>
@@ -215,12 +230,13 @@
 				<code>__construct(
 	<span><a href="PhpParser.Node.Expr.Variable.html"><span title="PhpParser\Node\Expr\Variable">Variable</span></a>|<a href="PhpParser.Node.Expr.Error.html"><span title="PhpParser\Node\Expr\Error">Error</span></a> <var>$var</var></span>,
 	<span>null|<a href="PhpParser.Node.Expr.html"><span title="PhpParser\Node\Expr">Expr</span></a> <var>$default</var> = <span class="php-kw">null</span></span>,
-	<span>null|string|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a> <var>$type</var> = <span class="php-kw">null</span></span>,
+	<span>null|<a href="PhpParser.Node.Identifier.html"><span title="PhpParser\Node\Identifier">Identifier</span></a>|<a href="PhpParser.Node.Name.html"><span title="PhpParser\Node\Name">Name</span></a>|<a href="PhpParser.Node.ComplexType.html"><span title="PhpParser\Node\ComplexType">ComplexType</span></a> <var>$type</var> = <span class="php-kw">null</span></span>,
 	<span>bool <var>$byRef</var> = <span class="php-kw">false</span></span>,
 	<span>bool <var>$variadic</var> = <span class="php-kw">false</span></span>,
-	<span>array <var>$attributes</var> = []</span>,
+	<span>array&lt;string, mixed&gt; <var>$attributes</var> = []</span>,
 	<span>int <var>$flags</var> = <span class="php-num">0</span></span>,
-	<span><a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>[] <var>$attrGroups</var> = []</span>,
+	<span>list&lt;<a href="PhpParser.Node.AttributeGroup.html"><span title="PhpParser\Node\AttributeGroup">AttributeGroup</span></a>&gt; <var>$attrGroups</var> = []</span>,
+	<span><a href="PhpParser.Node.PropertyHook.html"><span title="PhpParser\Node\PropertyHook">PropertyHook</span></a>[] <var>$hooks</var> = []</span>,
 )</code>
 
 
@@ -273,6 +289,11 @@
 									<tr>
 										<td><var>$attrGroups</var>&nbsp;&nbsp;</td>
 										<td><p>PHP attribute groups</p>
+</td>
+									</tr>
+									<tr>
+										<td><var>$hooks</var>&nbsp;&nbsp;</td>
+										<td><p>Property hooks for promoted properties</p>
 </td>
 									</tr>
 							</table>
@@ -368,6 +389,238 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#_getType">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPromoted" id="_isPromoted">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPromoted(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Whether this parameter uses constructor property promotion.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether this parameter uses constructor property promotion.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPromoted">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPublic" id="_isPublic">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPublic(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPublic">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isProtected" id="_isProtected">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isProtected(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isProtected">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPrivate" id="_isPrivate">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPrivate(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPrivate">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isReadonly" id="_isReadonly">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isReadonly(): bool</code>
+
+
+
+	<div class="expandable-expandedView">
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isReadonly">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPublicSet" id="_isPublicSet">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPublicSet(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Whether the promoted property has explicit public(set) visibility.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the promoted property has explicit public(set) visibility.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPublicSet">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isProtectedSet" id="_isProtectedSet">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isProtectedSet(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Whether the promoted property has explicit protected(set) visibility.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the promoted property has explicit protected(set) visibility.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isProtectedSet">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="isPrivateSet" id="_isPrivateSet">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+					
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell">
+				<code>isPrivateSet(): bool</code>
+
+
+	<div class="expandable-collapsedView">
+		<p>Whether the promoted property has explicit private(set) visibility.</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Whether the promoted property has explicit private(set) visibility.</p>
+</div>
+
+
+
+
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#_isPrivateSet">#</a>
 		</td>
 	</tr>
 		</table>
@@ -566,8 +819,14 @@
 			<td class="table-cell">
 <code><var>$flags</var></code>
 				
+	<div class="expandable-collapsedView">
+		<p>Optional visibility flags</p>
+
+	</div>
 
 	<div class="expandable-expandedView">
+	<div class="description"><p>Optional visibility flags</p>
+</div>
 	</div>
 			</td>
 		<td class="table-anchor">
@@ -602,6 +861,36 @@
 			</td>
 		<td class="table-anchor">
 			<a href="#$attrGroups">#</a>
+		</td>
+	</tr>
+	<tr class="expandable collapsed" data-order="hooks" id="$hooks">
+			<td class="table-cell table-shrink">
+				<code class="nowrap">
+	public
+					
+					
+				</code>
+			</td>
+
+			<td class="table-cell table-shrink">
+				<code class="nowrap"><a href="PhpParser.Node.PropertyHook.html"><span title="PhpParser\Node\PropertyHook">PropertyHook</span></a>[]</code>
+			</td>
+
+			<td class="table-cell">
+<code><var>$hooks</var></code>
+				
+	<div class="expandable-collapsedView">
+		<p>Property hooks for promoted properties</p>
+
+	</div>
+
+	<div class="expandable-expandedView">
+	<div class="description"><p>Property hooks for promoted properties</p>
+</div>
+	</div>
+			</td>
+		<td class="table-anchor">
+			<a href="#$hooks">#</a>
 		</td>
 	</tr>
 		</table>
