@@ -1,4 +1,4 @@
-FROM php:8.2-alpine as php-base
+FROM php:8.3-alpine as php-base
 
 RUN addgroup --system --gid 1000 docker && \
 	adduser --system --uid 1000 --ingroup docker docker && \
