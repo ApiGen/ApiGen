@@ -116,16 +116,17 @@ services:
 	phpParser.nameContext:
 		factory: @PhpParser\NodeVisitor\NameResolver::getNameContext()
 
-	phpParser.factory:
-		factory: PhpParser\ParserFactory
-
 	phpParser.lexer:
 		type: PhpParser\Lexer
 		factory: ApiGen\Analyzer\BodySkippingLexer
 
+	phpParser.phpVersion:
+		type: PhpParser\PhpVersion
+		factory: PhpParser\PhpVersion::getHostVersion()
+
 	phpParser:
 		type: PhpParser\Parser
-		factory: @PhpParser\ParserFactory::create(PhpParser\ParserFactory::PREFER_PHP7, @PhpParser\Lexer)
+		factory: PhpParser\Parser\Php8
 
 	# phpstan/phpdoc-parser
 	phpDocParser.typeParser:

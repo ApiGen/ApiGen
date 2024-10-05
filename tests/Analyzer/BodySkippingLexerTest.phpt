@@ -28,18 +28,12 @@ class BodySkippingLexerTest extends TestCase
 	public function testPostProcessTokens(SplFileInfo $file): void
 	{
 		$lexer = new BodySkippingLexer();
-		$lexer->startLexing(FileSystem::read($file->getRealPath()));
+		$tokens = $lexer->tokenize(FileSystem::read($file->getRealPath()));
 		$actualOutput = '';
 
-		foreach ($lexer->getTokens() as $token) {
-			if (!is_array($token)) {
-				$actualOutput .= $token;
-
-			} elseif ($token[0] !== T_WHITESPACE) {
-				$actualOutput .= $token[1];
-
-			} else {
-				$actualOutput .= preg_replace('~\S+~', ' ', $token[1]);
+		foreach ($tokens as $token) {
+			if ($token->id !== 0) {
+				$actualOutput .= $token->text;
 			}
 		}
 

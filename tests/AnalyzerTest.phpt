@@ -10,12 +10,10 @@ use ApiGen\Analyzer\NodeVisitors\PhpDocResolver;
 use ApiGen\Info\NameInfo;
 use ApiGenTests\Utils\SnapshotTester;
 use Nette\Neon\Node;
-use Nette\Utils\FileSystem;
 use Nette\Utils\Finder;
 use PhpParser;
 use PHPStan;
 use SplFileInfo;
-use Tester\Assert;
 use Tester\Environment;
 use Tester\TestCase;
 use UnitEnum;
@@ -58,9 +56,8 @@ class AnalyzerTest extends TestCase
 
 	private function createAnalyzeTaskHandler(): AnalyzeTaskHandler
 	{
-		$phpParserFactory = new PhpParser\ParserFactory();
 		$phpLexer = new BodySkippingLexer();
-		$phpParser = $phpParserFactory->create(PhpParser\ParserFactory::PREFER_PHP7, $phpLexer);
+		$phpParser = new PhpParser\Parser\Php8($phpLexer);
 
 		$traverser = new PhpParser\NodeTraverser();
 		$nameResolver = new PhpParser\NodeVisitor\NameResolver();
