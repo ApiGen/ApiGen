@@ -12,6 +12,10 @@
 				</code>
 			</td>
 
+			<td class="table-cell table-shrink" n:pre>
+				<code class="nowrap" n:if="$constant->type">{include type, $constant->type, scope: $classLike}</code>
+			</td>
+
 			<td class="table-cell">
 				<code n:pre>
 					{embed memberSourceLink, classLike: $classLike, member: $constant}{block content}{$constant->name}{/block}{/embed}

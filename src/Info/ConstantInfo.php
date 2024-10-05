@@ -2,9 +2,14 @@
 
 namespace ApiGen\Info;
 
+use PHPStan\PhpDocParser\Ast\Type\TypeNode;
+
 
 class ConstantInfo extends MemberInfo
 {
+	/** @var TypeNode|null */
+	public ?TypeNode $type = null;
+
 	/** @var ExprInfo */
 	public ExprInfo $value;
 

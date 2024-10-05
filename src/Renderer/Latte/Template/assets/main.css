@@ -534,6 +534,13 @@ code a b {
 	background-color: var(--color-selected);
 }
 
+.table:not(:has(td:nth-of-type(1):not(:empty))) td:nth-of-type(1),
+.table:not(:has(td:nth-of-type(2):not(:empty))) td:nth-of-type(2),
+.table:not(:has(td:nth-of-type(3):not(:empty))) td:nth-of-type(3),
+.table:not(:has(td:nth-of-type(4):not(:empty))) td:nth-of-type(4) {
+	display: none;
+}
+
 
 /* mobile */
 @media (max-width: 980px) {

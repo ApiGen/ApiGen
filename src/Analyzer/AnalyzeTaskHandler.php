@@ -312,6 +312,7 @@ class AnalyzeTaskHandler implements TaskHandler
 
 				foreach ($member->consts as $constant) {
 					$memberInfo = new ConstantInfo($constant->name->name, $this->processExpr($constant->value));
+					$memberInfo->type = $this->processTypeOrNull($member->type);
 
 					$memberInfo->description = $description;
 					$memberInfo->tags = $tags;

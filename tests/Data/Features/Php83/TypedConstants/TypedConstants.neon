@@ -1,0 +1,107 @@
+[
+  @Class(
+    file: '%rootDir%/tests/Data/Features/Php83/TypedConstants/TypedConstants.php'
+    constants: {
+      INT_CONST: @Constant(
+        type: @IdentifierType(
+          name: 'int'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        value: @IntegerExpr(
+          value: 1
+          base: 10
+          raw: '1'
+        )
+        name: 'INT_CONST'
+        public: true
+      )
+      FLOAT_CONST: @Constant(
+        type: @IdentifierType(
+          name: 'float'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        value: @FloatExpr(
+          value: 1.1
+          raw: '1.1'
+        )
+        name: 'FLOAT_CONST'
+        public: true
+      )
+      ARRAY_CONST: @Constant(
+        type: @IdentifierType(
+          name: 'array'
+          attributes: {
+            kind: 'Keyword'
+          }
+        )
+        value: @ArrayExpr(
+          items: [
+            @ArrayItemExpr(
+              key: null
+              value: @ClassConstantFetchExpr(
+                classLike: @ClassLikeReference(
+                  full: 'self'
+                )
+                name: 'INT_CONST'
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @IntegerExpr(
+                value: 2
+                base: 10
+                raw: '2'
+              )
+            ),
+            @ArrayItemExpr(
+              key: null
+              value: @IntegerExpr(
+                value: 3
+                base: 10
+                raw: '3'
+              )
+            ),
+          ]
+        )
+        name: 'ARRAY_CONST'
+        tags: {
+          var: [
+            @VarTagValue(
+              type: @GenericType(
+                type: @IdentifierType(
+                  name: 'list'
+                  attributes: {
+                    kind: 'Keyword'
+                  }
+                )
+                genericTypes: [
+                  @IdentifierType(
+                    name: 'positive-int'
+                    attributes: {
+                      kind: 'Keyword'
+                    }
+                  ),
+                ]
+                variances: [
+                  'invariant',
+                ]
+              )
+              variableName: ''
+              description: ''
+              attributes: {
+                description: []
+              }
+            ),
+          ]
+        }
+        public: true
+      )
+    }
+    name: 'ApiGenTests\Data\Features\Php83\TypedConstants\TypedConstants'
+    primary: true
+  ),
+]
