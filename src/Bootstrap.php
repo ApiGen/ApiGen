@@ -107,17 +107,11 @@ class Bootstrap
 		$containerClassName = $containerLoader->load($containerGenerator, $containerKey);
 
 		$container = new $containerClassName($parameters);
-		assert($container instanceof Container);
-		assert(method_exists($container, 'initialize'));
-
 		$container->addService('symfonyConsole.output', $output);
 		$container->initialize();
 		ini_set('memory_limit', $container->getParameter('memoryLimit'));
 
-		$apiGen = $container->getByType(ApiGen::class);
-		assert($apiGen instanceof ApiGen);
-
-		return $apiGen;
+		return $container->getByType(ApiGen::class);
 	}
 
 

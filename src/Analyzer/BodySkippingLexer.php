@@ -45,13 +45,12 @@ class BodySkippingLexer extends Lexer
 				for ($i++, $level = 0; $i < $tokenCount; $i++) { // looking for closing curly brace of function body
 					switch ($tokens[$i]->id) {
 						case T_WHITESPACE:
-							break;
+							continue 2;
 
 						case self::CURLY_BRACE_OPEN:
 						case T_CURLY_OPEN:
 						case T_DOLLAR_OPEN_CURLY_BRACES:
 							$level++;
-							$tokens[$i] = new Token(T_WHITESPACE, ' ');
 							break;
 
 						case self::CURLY_BRACE_CLOSE:
@@ -60,12 +59,10 @@ class BodySkippingLexer extends Lexer
 							}
 
 							$level--;
-							$tokens[$i] = new Token(T_WHITESPACE, ' ');
 							break;
-
-						default:
-							$tokens[$i] = new Token(T_WHITESPACE, ' ');
 					}
+
+					$tokens[$i] = new Token(T_WHITESPACE, ' '); // @phpstan-ignore parameterByRef.type
 				}
 			}
 		}

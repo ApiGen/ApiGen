@@ -30,8 +30,6 @@ class LattePreNode extends Latte\Compiler\Nodes\StatementNode
 	public static function create(Tag $tag, TemplateParser $parser): Generator
 	{
 		[$content] = yield;
-		assert($content instanceof AreaNode);
-
 		$transformed = (new NodeTraverser)->traverse($content, self::removeWhitespace(...));
 		assert($transformed instanceof AreaNode);
 

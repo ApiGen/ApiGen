@@ -25,7 +25,7 @@ class NameContextFrame
 	{
 		$this->parent = $parent;
 		$this->scope = $parent?->scope;
-		$this->genericParameters = $parent?->genericParameters ?? [];
-		$this->aliases = $parent?->aliases ?? [];
+		$this->genericParameters = $parent->genericParameters ?? [];
+		$this->aliases = $parent->aliases ?? [];
 	}
 }

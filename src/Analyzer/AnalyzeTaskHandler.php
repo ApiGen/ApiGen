@@ -700,7 +700,6 @@ class AnalyzeTaskHandler implements TaskHandler
 			$items = [];
 
 			foreach ($expr->items as $item) {
-				assert($item !== null);
 				$key = $this->processExprOrNull($item->key);
 				$value = $this->processExpr($item->value);
 				$items[] = new ArrayItemExprInfo($key, $value);
