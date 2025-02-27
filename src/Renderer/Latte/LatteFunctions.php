@@ -261,6 +261,6 @@ class LatteFunctions
 			}
 		}
 
-		return implode(' ', $text);
+		return implode("\n\n", $text);
 	}
 }
